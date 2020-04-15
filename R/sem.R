@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-SEMSimple <- function(jaspResults, dataset = NULL, options) {
+SEM <- function(jaspResults, dataset = NULL, options) {
   
   dheader <- .readDataSetHeader(all.columns = TRUE)
   availableVars <- colnames(dheader)
@@ -840,12 +840,12 @@ SEMSimple <- function(jaspResults, dataset = NULL, options) {
   p <- try({
     if (!is.null(semContainer[["semResultsList"]]$object$semResults)) {
       semPlotModel <- .lavToPlotObj(semContainer[["semResultsList"]]$object$semResults)
-      .suppressGrDevice(do.call(semPlot::semPaths,
+      JASP:::.suppressGrDevice(do.call(semPlot::semPaths,
                                 c(plotArgs, list(object = semPlotModel, what = ifelse(options$outputpathdiagramstandardizedparameter, "std", "paths")))
       ))
     } else {
       semPlotModel <- .lavToPlotObj(semContainer[["semResultsList"]]$object$lavModel)
-      .suppressGrDevice(do.call(semPlot::semPaths,
+      JASP:::.suppressGrDevice(do.call(semPlot::semPaths,
                                 c(plotArgs, list(object = semPlotModel, what = "par", edge.color = "black"))
       ))
     }

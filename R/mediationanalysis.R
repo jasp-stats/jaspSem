@@ -47,7 +47,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   
   # Check for missing value handling
   if (options$estimator %in% c("GLS", "WLS", "ULS", "DWLS") && options$missing == "fiml")
-    .quitAnalysis(gettext("FIML only available with ML-type estimators."))
+    JASP:::.quitAnalysis(gettext("FIML only available with ML-type estimators."))
   
   # Exogenous variables can be binary or continuous
   exo <- ifelse(length(options$confounds) > 0, options$confounds, options$predictor)
@@ -542,7 +542,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   # create a qgraph object using semplot
   po <- .medLavToPlotObj(modelContainer[["model"]][["object"]])
 
-  pp <- .suppressGrDevice(semPlot::semPaths(
+  pp <- JASP:::.suppressGrDevice(semPlot::semPaths(
     object         = po,
     layout         = rbind(deps_l, medi_l, pred_l, conf_l),
     intercepts     = FALSE,
