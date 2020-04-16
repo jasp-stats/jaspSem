@@ -1,6 +1,7 @@
 {
   "moduleDescription":
   {
+    "name" : 	     "SEM",
     "title":       "SEM",
     "description": "SEM module.",
     "icon":        "sem-latreg.svg",
@@ -12,7 +13,7 @@
     "dynamic":     true
   },
 
-  "requiredPackages":  [],
+  "requiredPackages":  [ "lavaan" ],
 
   "menu":  [
     {
@@ -29,6 +30,11 @@
       "title":     "MIMIC Model",
       "qml":       "Mimic.qml",
       "function":  "MIMIC"
+    },
+    {
+      "title":     "Latent Growth Curve",
+      "qml":       "LatentGrowthCurve.qml",
+      "function":  "LatentGrowthCurve"
     }
   ]
 }

@@ -46,3 +46,35 @@ lavBootstrap <- function(fit, samples = 1000) {
   
   return(fit)
 }
+
+
+# Function to create a misfit plot
+.resCorToMisFitPlot <- function(rescor) {
+  ggmisfit <- reshape2::melt(abs(t(rescor)))
+  ggmisfit$labels <- substr(round(ggmisfit$value, 2), 2, 4)
+  ggmisfit$labels[ggmisfit$labels == ""] <- "0"
+  
+  levels(ggmisfit$Var1) <- .unv(levels(ggmisfit$Var1))
+  levels(ggmisfit$Var2) <- .unv(levels(ggmisfit$Var2))
+  
+  misfitplot <-
+    ggplot2::ggplot(ggmisfit, ggplot2::aes(x = Var1, y = Var2, fill = value,
+                                           label = labels)) +
+    ggplot2::geom_tile(na.rm = TRUE) +
+    ggplot2::geom_text(color = ifelse(ggmisfit$value > .5, "white", "black"),
+                       na.rm = TRUE) +
+    ggplot2::scale_y_discrete(limits = rev(levels(ggmisfit$Var1))) +
+    ggplot2::scale_x_discrete(position = "top") +
+    ggplot2::scale_fill_continuous(low = "#FFFFFF", high = "#000000",
+                                   na.value = "transparent",
+                                   limits = c(0, 1)) +
+    ggplot2::coord_fixed() +
+    ggplot2::labs(x = "", y = "") +
+    ggplot2::theme(axis.ticks.x = ggplot2::element_blank()) +
+    ggplot2::theme(axis.ticks.y = ggplot2::element_blank()) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
+                                                       hjust = 0)) +
+    JASPgraphs::themeJaspRaw()
+  
+  return(misfitplot)
+}
