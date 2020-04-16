@@ -46,4 +46,3 @@ lavBootstrap <- function(fit, samples = 1000) {
   
   return(fit)
 }
-
