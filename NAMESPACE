@@ -1,3 +1,2 @@
 export(SEM)
 export(MediationAnalysis)
-export(MIMIC)
