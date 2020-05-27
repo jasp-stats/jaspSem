@@ -1,8 +1,8 @@
 Package: SEM
 Type: Package
 Title: SEM Module for JASP
-Version: 0.0.0
-Date: 2020-04-22
+Version: 0.13.0
+Date: 2020-05-27
 Author: JASP Team
 Website: jasp-stats.org
 Maintainer: JASP Team <info@jasp-stats.org>

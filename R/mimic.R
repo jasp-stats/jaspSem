@@ -179,7 +179,6 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
 .mimicFitTable <- function(modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["fittab"]])) return()
  
-  fittab <- createJaspTable(title = gettext("Model fit"))
   fittab <- createJaspTable(title = gettext("Chi Square test"))
   fittab$position <- 0
   

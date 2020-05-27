@@ -16,8 +16,8 @@ Description
 	Analysis
 	{
 		title:	qsTr("Structural Equation Modeling")
-		qml:	"SEMSimple.qml"
-		func:	"SEMSimple"
+		qml:	"SEM.qml"
+		func:	"SEM"
 	}
 
 	Analysis

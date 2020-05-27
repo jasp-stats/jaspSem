@@ -37,7 +37,8 @@ SEM <- function(jaspResults, dataset = NULL, options) {
   }
   
   semContainer <- .getSemContainer(jaspResults)
-  semContainer[["model"]] <- createJaspState(object = .translateModel(options$model, variables))
+  semContainer[["model"]] <- 
+    createJaspState(object = .translateModel(options$model, variables))
   
   semErrorCheck <- .semCheckErrors(dataset, options, ready, semContainer)
   
