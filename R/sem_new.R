@@ -264,7 +264,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
 
 # output functions
 
-.semFitTab <- function(modelContainer, dataset, options, ready) {
+.semFitTab <- function(jaspResults, modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["fittab"]])) return()
   
   fittab <- createJaspTable(title = gettext("Model fit"))
