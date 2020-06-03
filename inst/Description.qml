@@ -34,10 +34,10 @@ Description
 		func:	"MIMIC"
 	}
 	
-	/*Analysis
+	Analysis
 	{
 		title:	qsTr("Latent Growth")
-		qml:	"lgcm.qml"
-		func:	"LGCM"
-	}*/
+		qml:	"LatentGrowthCurve.qml"
+		func:	"LatentGrowthCurve"
+	}
 }
