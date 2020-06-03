@@ -28,15 +28,12 @@ Form
 	TabView
 	{
 		id: models
-		name: "Model"
-		maximumItems: 10
-		newItemName: qsTr("New model")
+		name: "models"
+		maximumItems: 9
+		newItemName: qsTr("Model 1")
 		optionKey: "modelName"
 
-		content: Group
-		{
-			TextArea { name: "syntax"; width: tabView.width; height: 200 }
-		}
+		content: TextArea { name: "syntax"; width: models.width; textType: "lavaan"}
 	}
 
 	RadioButtonGroup
@@ -51,30 +48,18 @@ Form
 			IntegerField { name: "SampleSize"; label: qsTr("Sample size"); defaultValue: 0 }
 		}
 	}
+
+	DropDown
+	{
+		name: "sampling.weights"
+		label: qsTr("Sampling weights")
+		showVariableTypeIcon: true
+		addEmptyValue: true
+	}
   
 	Section
 	{
 		title: qsTr("Output options")
-
-		RadioButtonGroup
-		{
-			title: qsTr("Error Calculation")
-			name: "errorCalculation"
-			RadioButton { value: "standard";	label: qsTr("Standard"); checked: true		}
-			RadioButton { value: "robust";		label: qsTr("Robust")						}
-			RadioButton
-			{
-				value: "bootstrap";	label: qsTr("Bootstrap")
-				IntegerField
-				{
-					name: "errorCalculationBootstrapSamples"
-					label: qsTr("Bootstrap samples")
-					fieldWidth: 60
-					defaultValue: 1000
-					min: 1
-				}
-			}
-		}
 
 		Group
 		{
@@ -136,45 +121,86 @@ Form
 		CheckBox { name: "auto.delta";			label: qsTr("Add scaling parameters");			checked: true	}
 		CheckBox { name: "auto.efa";			label: qsTr("Constrain EFA blocks");			checked: true	}
 
-		Group
+	}
+
+	Section
+	{
+		title: qsTr("Data options")
+		
+		CheckBox{name: "std.ov"; label: qsTr("Standardize variables before analysis"); checked: false}
+
+		DropDown
 		{
-			title: qsTr("Advanced options")
-			RadioButtonGroup
-			{
-				name: "estimator"
-				title: qsTr("Estimator")
-				RadioButton { value: "automatic";	label: qsTr("Auto"); checked: true	}
-				RadioButton { value: "ML";			label: qsTr("ML")					}
-				RadioButton { value: "GLS";			label: qsTr("GLS")					}
-				RadioButton { value: "WLS";			label: qsTr("WLS")					}
-				RadioButton { value: "ULS";			label: qsTr("ULS")					}
-				RadioButton { value: "DWLS";		label: qsTr("DWLS")					}
-				RadioButton { value: "PML";			label: qsTr("DWLS")					}
-			}
+			name: "missing"
+			label: qsTr("Missing data handling")
+			values:
+			[
+				{ label: qsTr("FIML")				, value: "ml"				},
+				{ label: qsTr("Listwise deletion")	, value: "listwise"			},
+				{ label: qsTr("Pairwise")			, value: "pairwise"			},
+				{ label: qsTr("Two-stage")			, value: "two.stage"		}, 
+				{ label: qsTr("Robust two-stage")	, value: "robust.two.stage"	},
+				{ label: qsTr("Doubly robust")		, value: "doubly.robust"	},
+			]
+		}
+	}
 
-			DropDown
-			{
-				name: "missing"
-				label: qsTr("Missing data handling")
-				values:
-				[
-					{ label: qsTr("FIML")				, value: "ml"				},
-					{ label: qsTr("Listwise deletion")	, value: "listwise"			},
-					{ label: qsTr("Pairwise")			, value: "pairwise"			},
-					{ label: qsTr("Two-stage")			, value: "two.stage"		}, 
-					{ label: qsTr("Robust two-stage")	, value: "robust.two.stage"	},
-					{ label: qsTr("Doubly robust")		, value: "doubly.robust"	},
-				]
-			}
+	Section
+	{
+		title: qsTr("Estimation options")
 
-			RadioButtonGroup
+		RadioButtonGroup
+		{
+			title: qsTr("Error Calculation")
+			name: "se"
+			RadioButton { value: "standard";	label: qsTr("Standard"); checked: true		}
+			RadioButton { value: "robust";		label: qsTr("Robust")						}
+			RadioButton
 			{
-				name: "emulation"
-				title: qsTr("Emulation")
-				RadioButton { value: "lavaan";	label: qsTr("None"); checked: true	}
-				RadioButton { value: "Mplus";	label: qsTr("Mplus")				}
-				RadioButton { value: "EQS";		label: qsTr("EQS")					}
+				value: "bootstrap";	label: qsTr("Bootstrap")
+				IntegerField
+				{
+					name: "errorCalculationBootstrapSamples"
+					label: qsTr("Bootstrap samples")
+					fieldWidth: 60
+					defaultValue: 1000
+					min: 1
+				}
 			}
+		}
+
+		RadioButtonGroup
+		{
+			title: qsTr("Information")
+			name: "information"
+			RadioButton { value: "expected"; label: qsTr("Expected"); checked: true }
+			RadioButton { value: "observed"; label: qsTr("Observed"); 				}
+		}
+		
+		DropDown
+		{
+			name: "estimator"
+			label: qsTr("Estimator")
+			values: [
+				{ value: "automatic",	label: qsTr("Auto") },
+				{ value: "ML",			label: qsTr("ML")	},
+				{ value: "GLS",			label: qsTr("GLS")	},
+				{ value: "WLS",			label: qsTr("WLS")	},
+				{ value: "ULS",			label: qsTr("ULS")	},
+				{ value: "DWLS",		label: qsTr("DWLS")	},
+				{ value: "PML",			label: qsTr("PML")	}
+			]
+		}
+
+		DropDown
+		{
+			name: "emulation"
+			title: qsTr("Emulation")
+			values: [
+				{ value: "lavaan",	label: qsTr("None") 	},
+				{ value: "Mplus",	label: qsTr("Mplus") 	},
+				{ value: "EQS",		label: qsTr("EQS") 		}
+			] 
 		}
 	}
 	
@@ -185,7 +211,7 @@ Form
 		DropDown 
 		{ 
 			name: "groupingVariable"
-			text: qsTr("Grouping Variable")
+			label: qsTr("Grouping Variable")
 			showVariableTypeIcon: true
 			addEmptyValue: true
 		} // No model or source: it takes all variables per default
@@ -202,20 +228,6 @@ Form
 			CheckBox { name: "eq_regressions";			label: qsTr("Regressions")			}
 			CheckBox { name: "eq_variances";			label: qsTr("Latent variances")		}
 			CheckBox { name: "eq_lvcovariances";		label: qsTr("Latent covariances")	}
-		}
-	}
-
-	Section
-	{
-		
-		
-
-		Group
-		{
-			title: qsTr("Options")
-			columns: 2
-			Layout.columnSpan: 2
-			
 		}
 	}
 }

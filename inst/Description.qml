@@ -27,10 +27,17 @@ Description
 		func:	"MediationAnalysis"
 	}
 
-	/*Analysis
+	Analysis
 	{
 		title:	qsTr("MIMIC Model")
 		qml:	"Mimic.qml"
 		func:	"MIMIC"
+	}
+	
+	/*Analysis
+	{
+		title:	qsTr("Latent Growth")
+		qml:	"lgcm.qml"
+		func:	"LGCM"
 	}*/
 }
