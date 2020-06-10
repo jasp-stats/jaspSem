@@ -62,145 +62,183 @@ Form
 		title: qsTr("Output options")
 
 		Group
-		{
+		{	
 			CheckBox { name: "outputAdditionalFitMeasures";				label: qsTr("Additional fit measures")				}
 			CheckBox { name: "outputRSquared";                          label: qsTr("R-squared")                            }
 			CheckBox { name: "outputFittedCovarianceCorrelations";		label: qsTr("Fitted covariances / correlations")	}
 			CheckBox { name: "outputObservedCovarianceCorrelations";	label: qsTr("Observed covariances / correlations")	}
 			CheckBox { name: "outputResidualCovarianceCorrelations";	label: qsTr("Residual covariances / correlations")	}
 			CheckBox { name: "outputMardiasCoefficients";				label: qsTr("Mardia's coefficient")					}
+		}
+		Group
+		{
+			CheckBox{name: "std"; label: qsTr("Standardized estimates"); checked: false}
+			CheckBox 
+			{
+				name: "addPathDiagram";
+				text: qsTr("Path diagram");
+				checked: false
+				CheckBox {
+					name: "outputpathdiagramstandardizedparameter"
+					text: qsTr("Show standardized parameters")
+					checked: false
+				}
+			}
 			CheckBox
 			{
-				name: "outputModificationIndices";						label: qsTr("Modification indices")
+				name: "outputModificationIndices"
+				label: qsTr("Modification indices")
 				CheckBox
 				{
-					name: "outputModificationIndicesHideLowIndices";	label: qsTr("Hide low indices")
-					IntegerField { name: "outputModificationIndicesHideLowIndicesThreshold"; label: qsTr("Threshold"); defaultValue: 10 }
+					name: "outputModificationIndicesHideLowIndices"
+					label: qsTr("Hide low indices")
+					IntegerField 
+					{ 
+						name: "outputModificationIndicesHideLowIndicesThreshold"
+						label: qsTr("Threshold")
+						defaultValue: 10 
+					}
 				}
 			}
 		}
-
-		CheckBox 
-		{
-			name: "addPathDiagram";
-			text: qsTr("Path diagram");
-			checked: false
-			CheckBox {
-				name: "outputpathdiagramstandardizedparameter"
-				text: qsTr("Show standardized parameters")
-				checked: false
-			}
-		}
+		
 	}
 
 	Section
 	{
 		title: qsTr("Model Options")
-		CheckBox { name: "meanstructure";	label: qsTr("Include mean structure")							}
-		CheckBox { name: "int.ov.fixed";	label: qsTr("Fix manifest intercepts to zero")					}
-		CheckBox { name: "int.lv.fixed";	label: qsTr("Fix latent intercepts to zero");	checked: true	}
-		CheckBox { name: "orthogonal";		label: qsTr("Assume factors uncorrelated")						}
-		CheckBox { name: "fixed.x";			label: qsTr("Fix exogenous covariates"); 		checked: true	}
-		DropDown
+		Group
 		{
-			name: "factorStandardisation"
-			label: qsTr("Factor scaling")
-			values:
-			[
-				{ label: qsTr("Factor loadings")	, value: "auto.fix.first"	},
-				{ label: qsTr("Residual variance")	, value: "std.lv"			},
-				{ label: qsTr("Effects coding")		, value: "effect.coding"	}, 
-				{ label: qsTr("None")				, value: "none"				}
-			]
+			DropDown
+			{
+				name: "factorStandardisation"
+				label: qsTr("Factor scaling")
+				values:
+				[
+					{ label: qsTr("Factor loadings")	, value: "auto.fix.first"	},
+					{ label: qsTr("Factor variance")	, value: "std.lv"			},
+					{ label: qsTr("Effects coding")		, value: "effect.coding"	}, 
+					{ label: qsTr("None")				, value: "none"				}
+				]
+			}
+			CheckBox { name: "meanstructure";	label: qsTr("Include mean structure")							}
+			CheckBox { name: "int.ov.fixed";	label: qsTr("Fix manifest intercepts to zero")					}
+			CheckBox { name: "int.lv.fixed";	label: qsTr("Fix latent intercepts to zero");	checked: true	}
+			CheckBox { name: "orthogonal";		label: qsTr("Assume factors uncorrelated")						}
 		}
-		CheckBox { name: "auto.fix.single";		label: qsTr("Omit residual single indicator");	checked: true	}
-		CheckBox { name: "auto.var";			label: qsTr("Residual variances");				checked: true	}
-		CheckBox { name: "auto.cov.lv.x";		label: qsTr("Correlate exogenous latents");		checked: true	}
-		CheckBox { name: "auto.cov.y";			label: qsTr("Correlate dependent variables");	checked: true	}
-		CheckBox { name: "auto.th";				label: qsTr("Add thresholds");					checked: true	}
-		CheckBox { name: "auto.delta";			label: qsTr("Add scaling parameters");			checked: true	}
-		CheckBox { name: "auto.efa";			label: qsTr("Constrain EFA blocks");			checked: true	}
-
-	}
-
-	Section
-	{
-		title: qsTr("Data options")
 		
-		CheckBox{name: "std.ov"; label: qsTr("Standardize variables before analysis"); checked: false}
-
-		DropDown
+		Group
 		{
-			name: "missing"
-			label: qsTr("Missing data handling")
-			values:
-			[
-				{ label: qsTr("FIML")				, value: "ml"				},
-				{ label: qsTr("Listwise deletion")	, value: "listwise"			},
-				{ label: qsTr("Pairwise")			, value: "pairwise"			},
-				{ label: qsTr("Two-stage")			, value: "two.stage"		}, 
-				{ label: qsTr("Robust two-stage")	, value: "robust.two.stage"	},
-				{ label: qsTr("Doubly robust")		, value: "doubly.robust"	},
-			]
+			
+			CheckBox { name: "fixed.x";				label: qsTr("Fix exogenous covariates"); 		checked: true	}
+			CheckBox { name: "auto.fix.single";		label: qsTr("Omit residual single indicator");	checked: true	}
+			CheckBox { name: "auto.var";			label: qsTr("Include residual variances");		checked: true	}
+			CheckBox { name: "auto.cov.lv.x";		label: qsTr("Correlate exogenous latents");		checked: true	}
+			CheckBox { name: "auto.cov.y";			label: qsTr("Correlate dependent variables");	checked: true	}
+			CheckBox { name: "auto.th";				label: qsTr("Add thresholds");					checked: true	}
+			CheckBox { name: "auto.delta";			label: qsTr("Add scaling parameters");			checked: true	}
+			CheckBox { name: "auto.efa";			label: qsTr("Constrain EFA blocks");			checked: true	}
 		}
 	}
 
 	Section
 	{
 		title: qsTr("Estimation options")
-
-		RadioButtonGroup
+		
+		Group
 		{
-			title: qsTr("Error Calculation")
-			name: "se"
-			RadioButton { value: "standard";	label: qsTr("Standard"); checked: true		}
-			RadioButton { value: "robust";		label: qsTr("Robust")						}
-			RadioButton
+			
+			DropDown
 			{
-				value: "bootstrap";	label: qsTr("Bootstrap")
-				IntegerField
+				label: qsTr("Information matrix")
+				name: "information"
+				values: [
+					{ value: "expected", label: qsTr("Expected") },
+					{ value: "observed", label: qsTr("Observed") }
+				] 
+			}
+
+			RadioButtonGroup
+			{
+				title: qsTr("Error calculation")
+				name: "se"
+				RadioButton { value: "standard";	label: qsTr("Standard"); checked: true		}
+				RadioButton { value: "robust";		label: qsTr("Robust")						}
+				RadioButton
 				{
-					name: "errorCalculationBootstrapSamples"
-					label: qsTr("Bootstrap samples")
-					fieldWidth: 60
-					defaultValue: 1000
-					min: 1
+					value: "bootstrap";	label: qsTr("Bootstrap")
+					IntegerField
+					{
+						name: "errorCalculationBootstrapSamples"
+						label: qsTr("Bootstrap samples")
+						fieldWidth: 60
+						defaultValue: 1000
+						min: 1
+					}
+					DropDown {
+                        label: qsTr("Type")
+                        name: "bootCItype"
+                        values: [
+                            { label: qsTr("Bias-corrected percentile"), value: "bca.simple"   },
+                            { label: qsTr("Percentile"),                value: "perc"         },
+                            { label: qsTr("Normal theory"),             value: "norm"         }
+                        ]
+                    }
 				}
 			}
-		}
+			
+			CIField {
+				text: qsTr("Confidence intervals")
+				name: "ciWidth"
+			}
 
-		RadioButtonGroup
-		{
-			title: qsTr("Information")
-			name: "information"
-			RadioButton { value: "expected"; label: qsTr("Expected"); checked: true }
-			RadioButton { value: "observed"; label: qsTr("Observed"); 				}
+			
 		}
 		
-		DropDown
+		Group 
 		{
-			name: "estimator"
-			label: qsTr("Estimator")
-			values: [
-				{ value: "automatic",	label: qsTr("Auto") },
-				{ value: "ML",			label: qsTr("ML")	},
-				{ value: "GLS",			label: qsTr("GLS")	},
-				{ value: "WLS",			label: qsTr("WLS")	},
-				{ value: "ULS",			label: qsTr("ULS")	},
-				{ value: "DWLS",		label: qsTr("DWLS")	},
-				{ value: "PML",			label: qsTr("PML")	}
-			]
-		}
+			DropDown
+			{
+				name: "estimator"
+				label: qsTr("Estimator")
+				values: [
+					{ value: "automatic",	label: qsTr("Auto") },
+					{ value: "ML",			label: qsTr("ML")	},
+					{ value: "GLS",			label: qsTr("GLS")	},
+					{ value: "WLS",			label: qsTr("WLS")	},
+					{ value: "ULS",			label: qsTr("ULS")	},
+					{ value: "DWLS",		label: qsTr("DWLS")	},
+					{ value: "PML",			label: qsTr("PML")	}
+				]
+			}
 
-		DropDown
-		{
-			name: "emulation"
-			title: qsTr("Emulation")
-			values: [
-				{ value: "lavaan",	label: qsTr("None") 	},
-				{ value: "Mplus",	label: qsTr("Mplus") 	},
-				{ value: "EQS",		label: qsTr("EQS") 		}
-			] 
+			DropDown
+			{
+				name: "missing"
+				label: qsTr("Missing data handling")
+				values:
+				[
+					{ label: qsTr("FIML")				, value: "ml"				},
+					{ label: qsTr("Listwise deletion")	, value: "listwise"			},
+					{ label: qsTr("Pairwise")			, value: "pairwise"			},
+					{ label: qsTr("Two-stage")			, value: "two.stage"		}, 
+					{ label: qsTr("Robust two-stage")	, value: "robust.two.stage"	},
+					{ label: qsTr("Doubly robust")		, value: "doubly.robust"	},
+				]
+			}
+
+			DropDown
+			{
+				name: "emulation"
+				label: qsTr("Emulation")
+				values: [
+					{ value: "lavaan",	label: qsTr("None") 	},
+					{ value: "Mplus",	label: qsTr("Mplus") 	},
+					{ value: "EQS",		label: qsTr("EQS") 		}
+				] 
+			}
+
+			CheckBox{name: "std.ov"; label: qsTr("Standardize variables before estimation"); checked: false}
 		}
 	}
 	
