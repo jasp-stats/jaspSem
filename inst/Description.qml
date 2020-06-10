@@ -39,6 +39,6 @@ Description
 		title:	qsTr("Latent Growth")
 		qml:	"LatentGrowthCurve.qml"
 		func:	"LatentGrowthCurve"
-		enabled: false
+		//enabled: false
 	}
 }
