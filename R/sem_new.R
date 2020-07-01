@@ -97,6 +97,8 @@ SEM <- function(jaspResults, dataset, options, ...) {
   # Output functions
   .semFitTab(jaspResults, modelContainer, dataset, options, ready)
   .semParameters(modelContainer, dataset, options, ready)
+  .semAdditionalFits(modelContainer, dataset, options, ready)
+  .semRsquared(modelContainer, dataset, options, ready)
 }
 
 # helper functions
@@ -125,7 +127,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
                    USE.NAMES = FALSE)])
 }
 
-.semModelContainer <- function(jaspResults, options) {
+.semModelContainer <- function(jaspResults) {
   if (!is.null(jaspResults[["modelContainer"]])) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
@@ -307,7 +309,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
     lrt_args[["model.names"]] <- vapply(options[["models"]], getElement, name = "modelName", "")
     lrt <- do.call(lavaan::lavTestLRT, lrt_args)
     lrt1 <- lavaan::lavTestLRT(semResults[[1]])
-    lrt[1,] <- lrt1[2,]
+    lrt[1,] <- lrt1[2,] ## TODO!
     lrt[1,5:7] <- NA
   }
   
@@ -423,7 +425,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
   # Latent covariances
   lcovtab <- createJaspTable(title = gettext("Factor covariances"))
   
-  lcovtab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
+  lcovtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
   lcovtab$addColumnInfo(name = "label",    title = "",                    type = "string")
   lcovtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
   lcovtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
@@ -473,7 +475,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
   # Residual covariances
   covtab <- createJaspTable(title = gettext("Residual covariances"))
   
-  covtab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
+  covtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
   covtab$addColumnInfo(name = "label",    title = "",                    type = "string")
   covtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
   covtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
@@ -494,6 +496,33 @@ SEM <- function(jaspResults, dataset, options, ...) {
   }
   
   pecont[["cov"]] <- covtab
+  
+  # Means
+  if (options[["meanstructure"]]) {
+    mutab <- createJaspTable(title = gettext("Means"))
+    
+    mutab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
+    mutab$addColumnInfo(name = "label",    title = "",                    type = "string")
+    mutab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
+    mutab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+    mutab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+    mutab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+    mutab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+    mutab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+    
+    if (options[["std"]]) {
+      mutab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number", format = "sf:4;dp:3", 
+                          overtitle = gettext("Standardized"))
+      mutab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number", format = "sf:4;dp:3", 
+                          overtitle = gettext("Standardized"))
+      mutab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number", format = "sf:4;dp:3", 
+                          overtitle = gettext("Standardized"))
+    }
+    
+    pecont[["mu"]] <- mutab
+  }
   
   parentContainer[[modelname]] <- pecont
   
@@ -572,8 +601,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
   pe_lcov <- pe[pe$op == "~~" & pe$lhs %in% lvnames & pe$rhs %in% lvnames & pe$lhs != pe$rhs,]
   if (nrow(pe_lcov) == 0) pecont[["lcov"]] <- NULL # remove if no estimates
   
-  lcovtab[["rhs"]]      <- .unv(pe_lcov[["rhs"]])
-  lcovtab[["lhs"]]      <- .unv(pe_lcov[["lhs"]])
+  lcovtab[["lhs"]]      <- paste(.unv(pe_lcov[["lhs"]]), "-", .unv(pe_lcov[["rhs"]]))
   lcovtab[["label"]]    <- pe_lcov[["label"]]
   lcovtab[["est"]]      <- pe_lcov[["est"]]
   lcovtab[["se"]]       <- pe_lcov[["se"]]
@@ -612,8 +640,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
   pe_cov <- pe[pe$op == "~~" & pe$lhs %in% ovnames & pe$rhs %in% ovnames & pe$lhs != pe$rhs,]
   if (nrow(pe_cov) == 0) pecont[["cov"]] <- NULL # remove if no estimates
   
-  covtab[["rhs"]]      <- .unv(pe_cov[["rhs"]])
-  covtab[["lhs"]]      <- .unv(pe_cov[["lhs"]])
+  covtab[["lhs"]]      <- paste(.unv(pe_cov[["lhs"]]), "-", .unv(pe_cov[["rhs"]]))
   covtab[["label"]]    <- pe_cov[["label"]]
   covtab[["est"]]      <- pe_cov[["est"]]
   covtab[["se"]]       <- pe_cov[["se"]]
@@ -628,4 +655,181 @@ SEM <- function(jaspResults, dataset, options, ...) {
     covtab[["std.nox"]] <- pe_cov[["std.nox"]]
   }
   
+  
+  # Means
+  if (options[["meanstructure"]]) {
+    pe_mu <- pe[pe$op == "~1",]
+    mutab[["lhs"]] <- .unv(pe_mu[["lhs"]])
+    mutab[["label"]]    <- pe_mu[["label"]]
+    mutab[["est"]]      <- pe_mu[["est"]]
+    mutab[["se"]]       <- pe_mu[["se"]]
+    mutab[["z"]]        <- pe_mu[["z"]]
+    mutab[["pvalue"]]   <- pe_mu[["pvalue"]]
+    mutab[["ci.lower"]] <- pe_mu[["ci.lower"]]
+    mutab[["ci.upper"]] <- pe_mu[["ci.upper"]]
+    if (options[["std"]]) {
+      mutab[["std.all"]] <- pe_mu[["std.all"]]
+      mutab[["std.lv"]]  <- pe_mu[["std.lv"]]
+      mutab[["std.nox"]] <- pe_mu[["std.nox"]]
+    }
+  }
 }
+
+.semAdditionalFits <- function(modelContainer, dataset, options, ready) {
+  if (!options[["outputAdditionalFitMeasures"]] || !is.null(modelContainer[["addfit"]])) return()
+  
+  fitms <- createJaspContainer(gettext("Additional fit measures"))
+  fitms$dependOn("outputAdditionalFitMeasures")
+  fitms$position <- 0.5
+  
+  # Fit indices
+  fitms[["indices"]] <- fitin <- createJaspTable(gettext("Fit indices"))
+  fitin$addColumnInfo(name = "index", title = gettext("Index"), type = "string")
+  if (length(options[["models"]]) < 2) {
+    fitin$addColumnInfo(name = "value", title = gettext("Value"), type = "number", format = "sf:4;dp:3")
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      fitin$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["modelName"]], type = "number", 
+                          format = "sf:4;dp:3")
+    }
+  }
+  fitin$setExpectedSize(rows = 1, cols = 2)
+  
+  # information criteria
+  fitms[["incrits"]] <- fitic <- createJaspTable(gettext("Information criteria"))
+  fitic$addColumnInfo(name = "index", title = "",               type = "string")
+  if (length(options[["models"]]) < 2) {
+    fitic$addColumnInfo(name = "value", title = gettext("Value"), type = "number", format = "sf:4;dp:3")
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      fitic$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["modelName"]], type = "number", 
+                          format = "sf:4;dp:3")
+    }
+  }
+  fitic$setExpectedSize(rows = 1, cols = 2)
+  
+  # other fit measures
+  fitms[["others"]] <- fitot <- createJaspTable(gettext("Other fit measures"))
+  fitot$addColumnInfo(name = "index", title = gettext("Metric"), type = "string")
+  if (length(options[["models"]]) < 2) {
+    fitot$addColumnInfo(name = "value", title = gettext("Value"), type = "number", format = "sf:4;dp:3")
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      fitot$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["modelName"]], type = "number", 
+                          format = "sf:4;dp:3")
+    }
+  }
+  fitot$setExpectedSize(rows = 1, cols = 2)
+  
+  modelContainer[["addfit"]] <- fitms
+  
+  if (!ready || modelContainer$getError()) return()
+  
+  # actually compute the fit measures
+  fmli <- lapply(modelContainer[["results"]][["object"]], lavaan::fitmeasures)
+  
+  # Fit indices
+  fitin[["index"]] <- c(
+    gettext("Comparative Fit Index (CFI)"),
+    gettext("Tucker-Lewis Index (TLI)"),
+    gettext("Bentler-Bonett Non-normed Fit Index (NNFI)"),
+    gettext("Bentler-Bonett Normed Fit Index (NFI)"),
+    gettext("Parsimony Normed Fit Index (PNFI)"),
+    gettext("Bollen's Relative Fit Index (RFI)"),
+    gettext("Bollen's Incremental Fit Index (IFI)"),
+    gettext("Relative Noncentrality Index (RNI)")
+  )
+  if (length(options[["models"]]) == 1) {
+    fitin[["value"]] <- fmli[[1]][c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      fitin[[paste0("value_", i)]] <- fmli[[i]][c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
+    }
+  }
+  
+  # information criteria
+  fitic[["index"]] <- c(
+    gettext("Log-likelihood"),
+    gettext("Number of free parameters"),
+    gettext("Akaike (AIC)"),
+    gettext("Bayesian (BIC)"),
+    gettext("Sample-size adjusted Bayesian (SSABIC)")
+  )
+  
+  if (length(options[["models"]]) == 1) {
+    fitic[["value"]] <- fmli[[1]][c("logl", "npar", "aic", "bic", "bic2")]
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      fitic[[paste0("value_", i)]] <- fmli[[i]][c("logl", "npar", "aic", "bic", "bic2")]
+    }
+  }
+  
+  # other fitmeasures
+  fitot[["index"]] <- c(
+    gettext("Root mean square error of approximation (RMSEA)"),
+    gettextf("RMSEA 90%% CI lower bound"),
+    gettextf("RMSEA 90%% CI upper bound"),
+    gettext("RMSEA p-value"),
+    gettext("Standardized root mean square residual (SRMR)"),
+    gettextf("Hoelter's critical N (%s = .05)","\u03B1"),
+    gettextf("Hoelter's critical N (%s = .01)","\u03B1"),
+    gettext("Goodness of fit index (GFI)"),
+    gettext("McDonald fit index (MFI)"),
+    gettext("Expected cross validation index (ECVI)")
+  )
+  if (length(options[["models"]]) == 1) {
+    fitot[["value"]] <- fmli[[1]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
+                                    "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      fitot[[paste0("value_", i)]] <- fmli[[i]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
+                                                  "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
+    }
+  }
+}
+
+
+.semRsquared <- function(modelContainer, dataset, options, ready) {
+  if (!options[["outputRSquared"]] || !is.null(modelContainer[["rsquared"]])) return()
+  
+  tabr2 <- createJaspTable(gettext("R-Squared"))
+  tabr2$addColumnInfo(name = "__var__", title = "", type = "string")
+  if (length(options[["models"]]) < 2) {
+    tabr2$addColumnInfo(name = "rsq", title = "R\u00B2", type = "number", format = "sf:4;dp:3")
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      tabr2$addColumnInfo(name = paste0("rsq_", i), title = options[["models"]][[i]][["modelName"]], 
+                          overtitle = "R\u00B2", type = "number", format = "sf:4;dp:3")
+    }
+  }
+  
+  tabr2$dependOn(options = "outputRSquared")
+  tabr2$position <- .75
+  
+  modelContainer[["rsquared"]] <- tabr2 
+  
+  if (!ready || modelContainer$getError()) return()
+  
+  if (length(options[["models"]]) < 2) {
+    r2res              <- lavaan::inspect(modelContainer[["results"]][["object"]][[1]], "r2")
+    tabr2[["__var__"]] <- .unv(names(r2res))
+    tabr2[["rsq"]]     <- r2res
+  } else {
+    # determine variable names
+    r2li <- lapply(modelContainer[["results"]][["object"]], lavaan::inspect, what = "r2")
+    
+    # generate df with these names
+    r2df <- data.frame("varname__" = unique(unlist(lapply(r2li, names))))
+    tabr2[["__var__"]] <- .unv(unique(unlist(lapply(r2li, names))))
+    
+    for (i in 1:length(r2li)) {
+      # fill matching vars from model with df
+      r2df[match(names(r2li[[i]]), r2df[["varname__"]]), i + 1] <- r2li[[i]]
+      # add column to table
+      tabr2[[paste0("rsq_", i)]] <- r2df[[i + 1]]
+    }
+  }
+}
+
+
+
