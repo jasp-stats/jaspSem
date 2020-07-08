@@ -99,6 +99,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
   .semParameters(modelContainer, dataset, options, ready)
   .semAdditionalFits(modelContainer, dataset, options, ready)
   .semRsquared(modelContainer, dataset, options, ready)
+  .semCov(modelContainer, dataset, options, ready)
 }
 
 # helper functions
@@ -190,8 +191,8 @@ SEM <- function(jaspResults, dataset, options, ...) {
   }
   
   # store in model container
-  deps <- c("meanstructure", "int.ov.free", "int.lv.free", "fixed.x", "orthogonal", "std.lv", "effect.coding", 
-            "auto.fix.first", "auto.fix.single", "auto.var", "auto.cov.lv.x", "auto.cov.y", "auto.th", "auto.delta", 
+  deps <- c("meanstructure", "int.ov.fixed", "int.lv.fixed", "fixed.x", "orthogonal", "factorStandardisation", 
+            "auto.fix.single", "auto.var", "auto.cov.lv.x", "auto.cov.y", "auto.th", "auto.delta", 
             "auto.efa", "std.ov", "missing", "estimator", "se", "information", "emulation")
   modelContainer[["results"]] <- createJaspState(results, dependencies = deps)
   modelContainer[["models"]]  <- createJaspState(options[["models"]], dependencies = deps)
@@ -299,33 +300,36 @@ SEM <- function(jaspResults, dataset, options, ...) {
   
   if (modelContainer$getError()) return()
   
-  # create args for likelihood-ratio test (anova table)
   lrt_args <- semResults
   if (length(semResults) == 1) {
-    lrt <- lavaan::lavTestLRT(semResults[[1]])[-1, ]
-    rownames(lrt) <- options[["models"]][[1]][["modelName"]]
+    lrt <- .withWarnings(lavaan::lavTestLRT(semResults[[1]])[-1, ])
+    rownames(lrt$value) <- options[["models"]][[1]][["modelName"]]
   } else {
     names(lrt_args) <- "object" # (the first result is object, the others ...)
     lrt_args[["model.names"]] <- vapply(options[["models"]], getElement, name = "modelName", "")
-    lrt <- do.call(lavaan::lavTestLRT, lrt_args)
-    lrt1 <- lavaan::lavTestLRT(semResults[[1]])
-    lrt[1,] <- lrt1[2,] ## TODO!
-    lrt[1,5:7] <- NA
+    lrt <- .withWarnings(do.call(lavaan::lavTestLRT, lrt_args))
+    lrt$value[1,5:7] <- NA
   }
   
-  fittab[["Model"]]    <- rownames(lrt)
-  fittab[["AIC"]]      <- lrt[["AIC"]]
-  fittab[["BIC"]]      <- lrt[["BIC"]]
-  fittab[["Chisq"]]    <- lrt[["Chisq"]]
-  fittab[["Df"]]       <- lrt[["Df"]]
-  fittab[["PrChisq"]]  <- pchisq(q = lrt[["Chisq"]], df = lrt[["Df"]], lower.tail = FALSE)
-  fittab[["dchisq"]]   <- lrt[["Chisq diff"]]
-  fittab[["ddf"]]      <- lrt[["Df diff"]]
-  fittab[["dPrChisq"]] <- lrt[["Pr(>Chisq)"]]
+  fittab[["Model"]]    <- rownames(lrt$value)
+  fittab[["AIC"]]      <- lrt$value[["AIC"]]
+  fittab[["BIC"]]      <- lrt$value[["BIC"]]
+  fittab[["Chisq"]]    <- lrt$value[["Chisq"]]
+  fittab[["Df"]]       <- lrt$value[["Df"]]
+  fittab[["PrChisq"]]  <- pchisq(q = lrt$value[["Chisq"]], df = lrt$value[["Df"]], lower.tail = FALSE)
+  fittab[["dchisq"]]   <- lrt$value[["Chisq diff"]]
+  fittab[["ddf"]]      <- lrt$value[["Df diff"]]
+  fittab[["dPrChisq"]] <- lrt$value[["Pr(>Chisq)"]]
+  
+  # add warning footnote
+  if (!is.null(lrt$warnings)) {
+    fittab$addFootnote(gsub("lavaan WARNING: ", "", lrt$warnings[[1]]$message))
+  }
 }
 
 .semParameters <- function(modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["params"]])) return()
+  
   
   params <- createJaspContainer("Parameter estimates")
   params$position <- 1
@@ -333,17 +337,25 @@ SEM <- function(jaspResults, dataset, options, ...) {
   
   modelContainer[["params"]] <- params
   
-  for (i in seq_along(options[["models"]])) {
-    fit <- modelContainer[["results"]][["object"]][[i]]
-    modelname <- options[["models"]][[i]][["modelName"]]
-    .semParameterTables(fit, modelname, params, options, ready)
+  if (length(options[["models"]]) < 2) {
+    .semParameterTables(modelContainer[["results"]][["object"]][[1]], NULL, params, options, ready)
+  } else {
+    
+    for (i in seq_along(options[["models"]])) {
+      fit <- modelContainer[["results"]][["object"]][[i]]
+      modelname <- options[["models"]][[i]][["modelName"]]
+      .semParameterTables(fit, modelname, params, options, ready)
+    }
   }
-  
 }
 
 .semParameterTables <- function(fit, modelname, parentContainer, options, ready) {
-  pecont <- createJaspContainer(modelname)
-  # pecont[["collapsed"]] <- TRUE
+  if (is.null(modelname)) {
+    pecont <- parentContainer 
+  } else {
+    pecont <- createJaspContainer(modelname, initCollapsed = TRUE)
+  }
+  
   
   # Measurement model
   indtab <- createJaspTable(title = gettext("Factor Loadings"))
@@ -524,7 +536,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
     pecont[["mu"]] <- mutab
   }
   
-  parentContainer[[modelname]] <- pecont
+  if (!is.null(modelname)) parentContainer[[modelname]] <- pecont
   
   if (!ready || !inherits(fit, "lavaan")) return()
   
@@ -788,7 +800,6 @@ SEM <- function(jaspResults, dataset, options, ...) {
   }
 }
 
-
 .semRsquared <- function(modelContainer, dataset, options, ready) {
   if (!options[["outputRSquared"]] || !is.null(modelContainer[["rsquared"]])) return()
   
@@ -830,6 +841,131 @@ SEM <- function(jaspResults, dataset, options, ...) {
     }
   }
 }
+
+.semCov <- function(modelContainer, dataset, options, ready) {
+  if (!(options[["outputObservedCovariances"]] || options[["outputImpliedCovariances"]] || 
+        options[["outputResidualCovariances"]]) || !is.null(modelContainer[["covars"]])) return()
+  
+  covars <- createJaspContainer("Covariance tables")
+  covars$position <- 3
+  covars$dependOn(c("outputObservedCovariances", "outputImpliedCovariances", "outputResidualCovariances"))
+  
+  modelContainer[["covars"]] <- covars
+  
+  if (length(options[["models"]]) < 2) {
+    .semCovTables(modelContainer[["results"]][["object"]][[1]], NULL, covars, options, ready)
+  } else {
+    
+    for (i in seq_along(options[["models"]])) {
+      fit <- modelContainer[["results"]][["object"]][[i]]
+      modelname <- options[["models"]][[i]][["modelName"]]
+      .semCovTables(fit, modelname, covars, options, ready)
+    }
+  }
+}
+
+.semCovTables <- function(fit, modelname, parentContainer, options, ready) {
+  if (is.null(modelname)) {
+    cocont <- parentContainer 
+  } else {
+    cocont <- createJaspContainer(modelname, initCollapsed = TRUE)
+  }
+  
+  if (options[["outputObservedCovariances"]]) {
+    octab <- createJaspTable("Observed covariance matrix")
+    octab$dependOn("outputObservedCovariances")
+    octab$position <- 1
+    cocont[["observed"]] <- octab
+  }
+  
+  if (options[["outputImpliedCovariances"]]) {
+    ictab <- createJaspTable("Implied covariance matrix")
+    ictab$dependOn("outputImpliedCovariances")
+    ictab$position <- 2
+    cocont[["implied"]] <- ictab
+  }
+  
+  if (options[["outputResidualCovariances"]]) {
+    rctab <- createJaspTable("Residual covariance matrix")
+    rctab$dependOn("outputResidualCovariances")
+    rctab$position <- 3
+    cocont[["residual"]] <- rctab
+  }
+    
+  if (!ready || !inherits(fit, "lavaan")) return()
+  
+  
+  if (options[["outputObservedCovariances"]]) {
+    # actually compute the observed covariance
+    ov <- lavaan::inspect(fit, "sampstat")
+    oc <- ov$cov
+    oc[upper.tri(oc)] <- NA
+    
+    for (i in 1:ncol(oc)) {
+      nm <- colnames(oc)[i]
+      octab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+    }
+    octab$addRows(oc, rowNames = colnames(oc))
+  }
+  
+  if (options[["outputImpliedCovariances"]]) {
+    # actually compute the implied covariance
+    fv <- lavaan::fitted.values(fit)
+    ic <- fv$cov
+    ic[upper.tri(ic)] <- NA
+    
+    for (i in 1:ncol(ic)) {
+      nm <- colnames(ic)[i]
+      ictab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+    }
+    ictab$addRows(ic, rowNames = colnames(ic))
+  }
+  
+  if (options[["outputResidualCovariances"]]) {
+    # actually compute the implied covariance
+    rv <- lavaan::residuals(fit)
+    rc <- rv$cov
+    rc[upper.tri(rc)] <- NA
+    
+    for (i in 1:ncol(rc)) {
+      nm <- colnames(rc)[i]
+      rctab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+    }
+    rctab$addRows(rc, rowNames = colnames(rc))
+    
+  }
+  
+  if (!is.null(modelname)) {
+    parentContainer[[modelname]] <- cocont
+  }
+  
+  return()
+}
+
+
+.semResidualCovTable <- function(modelContainer, dataset, options, ready) {
+  if (!options[["residCov"]]) return()
+  tab <- createJaspTable("Residual covariance matrix")
+  tab$dependOn("residCov")
+  tab$position <- 5
+  modelContainer[["rescov"]] <- tab
+  
+  if (!ready || modelContainer$getError()) return()
+  
+  # actually compute the implied covariance
+  rv <- lavaan::residuals(modelContainer[["model"]][["object"]])
+  rc <- rv$cov
+  rc[upper.tri(rc)] <- NA
+  
+  for (i in 1:ncol(rc)) {
+    nm <- colnames(rc)[i]
+    tab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+  }
+  tab$addRows(rc, rowNames = colnames(rc))
+  
+  return()
+}
+
 
 
 

@@ -63,12 +63,12 @@ Form
 
 		Group
 		{	
-			CheckBox { name: "outputAdditionalFitMeasures";				label: qsTr("Additional fit measures")				}
-			CheckBox { name: "outputRSquared";                          label: qsTr("R-squared")                            }
-			CheckBox { name: "outputFittedCovarianceCorrelations";		label: qsTr("Fitted covariances / correlations")	}
-			CheckBox { name: "outputObservedCovarianceCorrelations";	label: qsTr("Observed covariances / correlations")	}
-			CheckBox { name: "outputResidualCovarianceCorrelations";	label: qsTr("Residual covariances / correlations")	}
-			CheckBox { name: "outputMardiasCoefficients";				label: qsTr("Mardia's coefficient")					}
+			CheckBox { name: "outputAdditionalFitMeasures";	label: qsTr("Additional fit measures")	}
+			CheckBox { name: "outputRSquared";				label: qsTr("R-squared")				}
+			CheckBox { name: "outputObservedCovariances";	label: qsTr("Observed covariances")		}
+			CheckBox { name: "outputImpliedCovariances";	label: qsTr("Implied covariances")		}
+			CheckBox { name: "outputResidualCovariances";	label: qsTr("Residual covariances")		}
+			CheckBox { name: "outputMardiasCoefficients";	label: qsTr("Mardia's coefficient")		}
 		}
 		Group
 		{
