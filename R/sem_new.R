@@ -99,7 +99,10 @@ SEM <- function(jaspResults, dataset, options, ...) {
   .semParameters(modelContainer, dataset, options, ready)
   .semAdditionalFits(modelContainer, dataset, options, ready)
   .semRsquared(modelContainer, dataset, options, ready)
+  .semMardiasCoefficient(modelContainer, dataset, options, ready)
   .semCov(modelContainer, dataset, options, ready)
+  .semMI(modelContainer, datset, options, ready)
+  .semPathPlot(modelContainer, dataset, options, ready)
 }
 
 # helper functions
@@ -278,6 +281,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
   fittab$addColumnInfo(name = "Model",    title = "",                            type = "string" )
   fittab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
   fittab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
+  fittab$addColumnInfo(name = "N",        title = gettext("n"),                  type = "integer")
   fittab$addColumnInfo(name = "Chisq",    title = gettext("&#967;&sup2;"),       type = "number" ,
                        overtitle = gettext("Baseline test"))
   fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
@@ -300,11 +304,13 @@ SEM <- function(jaspResults, dataset, options, ...) {
   
   if (modelContainer$getError()) return()
   
-  lrt_args <- semResults
   if (length(semResults) == 1) {
     lrt <- .withWarnings(lavaan::lavTestLRT(semResults[[1]])[-1, ])
     rownames(lrt$value) <- options[["models"]][[1]][["modelName"]]
+    Ns <- lavaan::lavInspect(semResults[[1]], "ntotal")
   } else {
+    Ns <- vapply(semResults, lavaan::lavInspect, 0L, what = "ntotal")
+    lrt_args <- semResults
     names(lrt_args) <- "object" # (the first result is object, the others ...)
     lrt_args[["model.names"]] <- vapply(options[["models"]], getElement, name = "modelName", "")
     lrt <- .withWarnings(do.call(lavaan::lavTestLRT, lrt_args))
@@ -314,6 +320,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
   fittab[["Model"]]    <- rownames(lrt$value)
   fittab[["AIC"]]      <- lrt$value[["AIC"]]
   fittab[["BIC"]]      <- lrt$value[["BIC"]]
+  fittab[["N"]]        <- Ns
   fittab[["Chisq"]]    <- lrt$value[["Chisq"]]
   fittab[["Df"]]       <- lrt$value[["Df"]]
   fittab[["PrChisq"]]  <- pchisq(q = lrt$value[["Chisq"]], df = lrt$value[["Df"]], lower.tail = FALSE)
@@ -842,6 +849,58 @@ SEM <- function(jaspResults, dataset, options, ...) {
   }
 }
 
+.semMardiasCoefficient <- function(modelContainer, dataset, options, ready) {
+  if (!options[["outputMardiasCoefficients"]] || !is.null(modelContainer[["semMardiasTable"]])) return()
+  
+  mardiatab <- createJaspTable(title = gettext("Mardia's coefficients"))
+  mardiatab$position <- .2
+  
+  mardiatab$addColumnInfo(name = "Type",        title = "",                      type = "string")
+  mardiatab$addColumnInfo(name = "Coefficient", title = gettext("Coefficient"),  type = "number")
+  mardiatab$addColumnInfo(name = "z",           title = gettext("z"),            type = "number")
+  mardiatab$addColumnInfo(name = "Chisq",       title = gettext("&#967;&sup2;"), type = "number")
+  mardiatab$addColumnInfo(name = "DF",          title = gettext("df"),           type = "integer")
+  mardiatab$addColumnInfo(name = "pvalue",      title = gettext("p"),            type = "pvalue")
+  
+  mardiatab$dependOn(c("outputMardiasCoefficients", "models"))
+  modelContainer[["mardiasTable"]] <- mardiatab
+  
+  if (!ready || modelContainer$getError()) return()
+  
+  varNames <- unique(unlist(lapply(modelContainer[["results"]][["object"]], lavaan::lavaanNames, type = "ov")))
+  if (length(options[["models"]]) > 1) 
+    mardiatab$addFootnote(
+      gettext("Multivariate skewness and kurtosis calculated for observed variables from all models.")
+    )
+  
+  
+  if (!all(sapply(dataset[, varNames, drop = FALSE], is.numeric))) {
+    mardiatab$setError(gettext("Not all used variables are numeric. Mardia's coefficients not available."))
+    return()
+  }
+  
+  mardiaSkew <- unname(semTools:::mardiaSkew(dataset[, varNames]))
+  mardiaKurtosis <- unname(semTools:::mardiaKurtosis(dataset[, varNames]))
+  mardiatab$addRows(
+    data.frame(Type        = gettext("Skewness"), 
+               Coefficient = mardiaSkew[1], 
+               z           = NA, 
+               Chisq       = mardiaSkew[2], 
+               DF          = mardiaSkew[3], 
+               pvalue      = mardiaSkew[4])
+  )
+  mardiatab$addRows(
+    data.frame(Type        = gettext("Kurtosis"), 
+               Coefficient = mardiaKurtosis[1], 
+               z           = mardiaKurtosis[2], 
+               Chisq       = NA, 
+               DF          = NA, 
+               pvalue      = mardiaKurtosis[3])
+  )
+  
+  return()
+}
+
 .semCov <- function(modelContainer, dataset, options, ready) {
   if (!(options[["outputObservedCovariances"]] || options[["outputImpliedCovariances"]] || 
         options[["outputResidualCovariances"]]) || !is.null(modelContainer[["covars"]])) return()
@@ -942,30 +1001,134 @@ SEM <- function(jaspResults, dataset, options, ...) {
   return()
 }
 
-
-.semResidualCovTable <- function(modelContainer, dataset, options, ready) {
-  if (!options[["residCov"]]) return()
-  tab <- createJaspTable("Residual covariance matrix")
-  tab$dependOn("residCov")
-  tab$position <- 5
-  modelContainer[["rescov"]] <- tab
+.semMI <- function(modelContainer, dataset, options, ready) {
+  if (!options[["outputModificationIndices"]] || !is.null(modelContainer[["modindices"]])) return()
   
-  if (!ready || modelContainer$getError()) return()
+  modindices <- createJaspContainer(gettext("Modification indices"))
+  modindices$position <- 4
+  modindices$dependOn(c("outputModificationIndices", "miHideLow", "miThreshold"))
   
-  # actually compute the implied covariance
-  rv <- lavaan::residuals(modelContainer[["model"]][["object"]])
-  rc <- rv$cov
-  rc[upper.tri(rc)] <- NA
+  modelContainer[["modindices"]] <- modindices
   
-  for (i in 1:ncol(rc)) {
-    nm <- colnames(rc)[i]
-    tab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+  if (length(options[["models"]]) < 2) {
+    .semMITable(modelContainer[["results"]][["object"]][[1]], NULL, modindices, options, ready)
+  } else {
+    
+    for (i in seq_along(options[["models"]])) {
+      fit <- modelContainer[["results"]][["object"]][[i]]
+      modelname <- options[["models"]][[i]][["modelName"]]
+      .semMITable(fit, modelname, modindices, options, ready)
+    }
   }
-  tab$addRows(rc, rowNames = colnames(rc))
+}
+
+.semMITable <- function(fit, modelname, parentContainer, options, ready) {
+  if (is.null(modelname)) {
+    micont <- parentContainer
+  } else {
+    micont <- createJaspContainer(modelname, initCollapsed = TRUE)
+  }
+  
+  semModIndicesTable <- createJaspTable(title = gettext("Modification Indices"))
+  
+  semModIndicesTable$addColumnInfo(name = "lhs",       title = "",                    type = "string")
+  semModIndicesTable$addColumnInfo(name = "op",        title = "",                    type = "string")
+  semModIndicesTable$addColumnInfo(name = "rhs",       title = "",                    type = "string")
+  semModIndicesTable$addColumnInfo(name = "mi",        title = gettext("mi"),         type = "number")
+  semModIndicesTable$addColumnInfo(name = "epc",       title = gettext("epc"),        type = "number")
+  semModIndicesTable$addColumnInfo(name = "sepc.lv",   title = gettext("sepc (lv)"),  type = "number")
+  semModIndicesTable$addColumnInfo(name = "sepc.all",  title = gettext("sepc (all)"), type = "number")
+  semModIndicesTable$addColumnInfo(name = "sepc.nox",  title = gettext("sepc (nox)"), type = "number")
+  
+  semModIndicesTable$showSpecifiedColumnsOnly <- TRUE
+  
+  micont[["table"]] <- semModIndicesTable
+  
+  if (!ready || !inherits(fit, "lavaan")) return()
+  
+  # Extract modidffication indices:
+  semModIndResult <- lavaan:::modificationIndices(fit)
+  
+  ### Remove NA:
+  semModIndResult <- semModIndResult[!is.na(semModIndResult$mi), , drop=FALSE]
+  
+  ## Sort:
+  semModIndResult <- semModIndResult[order(semModIndResult$mi, decreasing=TRUE), , drop=FALSE]
+  
+  ### Remove low indices:
+  if (isTRUE(options$miHideLow)) {
+    semModIndResult <- semModIndResult[semModIndResult$mi > options$miThreshold, , drop=FALSE]
+  }
+  
+  semModIndicesTable$setData(lapply(semModIndResult, .unv))
+  
+  
+  if (!is.null(modelname)) {
+    parentContainer[[modelname]] <- micont
+  }
   
   return()
 }
 
-
-
-
+.semPathPlot <- function(modelContainer, dataset, options, ready) {
+  if (!options[["outputPathPlot"]] || !ready || !is.null(modelContainer[["plot"]])) return()
+  
+  pcont <- createJaspContainer(gettext("Path diagram"))
+  pcont$position <- 7
+  pcont$dependOn(c("outputPathPlot", "pathPlotPar", "pathPlotLegend"))
+  
+  modelContainer[["plot"]] <- pcont
+  
+  if (length(options[["models"]]) < 2) {
+    .semCreatePathPlot(modelContainer[["results"]][["object"]][[1]], NULL, pcont, options, ready)
+  } else {
+    
+    for (i in seq_along(options[["models"]])) {
+      fit <- modelContainer[["results"]][["object"]][[i]]
+      modelname <- options[["models"]][[i]][["modelName"]]
+      .semCreatePathPlot(fit, modelname, pcont, options, ready)
+    }
+  }
+}
+  
+.semCreatePathPlot <- function(fit, modelname, parentContainer, options, ready) {
+  cat("YOYOYOY")
+  if (is.null(modelname)) {
+    modelname <- gettext("Path diagram")
+  }
+  
+  plt <- createJaspPlot(title = modelname, width = 600, height = 400)
+  plt$dependOn(c("outputPathPlot", "pathPlotPar", "pathPlotLegend"))
+  
+  parentContainer[[modelname]] <- plt
+  
+  if (!ready || !inherits(fit, "lavaan")) return()
+  
+  if (length(lavaan::lavInspect(fit, "ordered")) > 0) {
+    plt$setError(gettext("Model plot not available with ordinal variables"))
+    return()
+  }
+  
+  # create a qgraph object using semplot
+  po <- .lavToPlotObj(fit)
+  pp <- JASP:::.suppressGrDevice(semPlot::semPaths(
+    object         = po,
+    layout         = "tree2",
+    intercepts     = FALSE,
+    reorder        = FALSE,
+    whatLabels     = ifelse(options[["pathPlotPar"]], "par", "name"),
+    edge.color     = "black",
+    color          = list(lat = "#EAEAEA", man = "#EAEAEA", int = "#FFFFFF"),
+    title          = FALSE,
+    legend         = options[["pathPlotLegend"]],
+    legend.mode    = "names",
+    legend.cex     = 0.6,
+    label.cex      = 1.3,
+    edge.label.cex = 0.9,
+    nodeNames      = decodeColNames(po@Vars$name),
+    nCharNodes     = 3,
+    rotation       = 2
+  ))
+  
+  plt$plotObject <- pp
+}

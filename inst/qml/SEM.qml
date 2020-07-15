@@ -75,12 +75,17 @@ Form
 			CheckBox{name: "std"; label: qsTr("Standardized estimates"); checked: false}
 			CheckBox 
 			{
-				name: "addPathDiagram";
+				name: "outputPathPlot";
 				text: qsTr("Path diagram");
 				checked: false
 				CheckBox {
-					name: "outputpathdiagramstandardizedparameter"
-					text: qsTr("Show standardized parameters")
+					name: "pathPlotPar"
+					text: qsTr("Show parameter estimates")
+					checked: false
+				}
+				CheckBox {
+					name: "pathPlotLegend"
+					text: qsTr("Show legend")
 					checked: false
 				}
 			}
@@ -90,12 +95,14 @@ Form
 				label: qsTr("Modification indices")
 				CheckBox
 				{
-					name: "outputModificationIndicesHideLowIndices"
+					name: "miHideLow"
 					label: qsTr("Hide low indices")
-					IntegerField 
+					DoubleField 
 					{ 
-						name: "outputModificationIndicesHideLowIndicesThreshold"
+						name: "miThreshold"
 						label: qsTr("Threshold")
+						negativeValues: false
+						decimals: 2
 						defaultValue: 10 
 					}
 				}

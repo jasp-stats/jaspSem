@@ -89,3 +89,24 @@ lavBootstrap <- function(fit, samples = 1000) {
   val <- withCallingHandlers(expr, warning = wHandler)
   list(value = val, warnings = myWarnings)
 }
+
+# plotting stuff
+.lavToPlotObj <- function(lavResult) {
+  # Create semplot model and decode the names of the manifest variables
+  # Sorry, this code is really ugly but all it does is replace names for plot.
+  semPlotMod <- semPlot::semPlotModel(list(lavResult), list(mplusStd = "std"))[[1]]
+  
+  manifests <- semPlotMod@Vars$name[semPlotMod@Vars$manifest]
+  semPlotMod@Vars$name[semPlotMod@Vars$manifest] <- JASP:::decodeColNames(manifests)
+  
+  lhsAreManifest <- semPlotMod@Pars$lhs %in% manifests
+  if (any(lhsAreManifest)) 
+    semPlotMod@Pars$lhs[lhsAreManifest] <- JASP:::decodeColNames(semPlotMod@Pars$lhs[lhsAreManifest])
+  
+  rhsAreManifest <- semPlotMod@Pars$rhs %in% manifests
+  if (any(rhsAreManifest)) 
+    semPlotMod@Pars$rhs[rhsAreManifest] <- JASP:::decodeColNames(semPlotMod@Pars$rhs[rhsAreManifest])
+  
+  return(semPlotMod)
+}
+
