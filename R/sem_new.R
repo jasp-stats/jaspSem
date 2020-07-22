@@ -136,10 +136,12 @@ SEM <- function(jaspResults, dataset, options, ...) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("meanstructure", "int.ov.free", "int.lv.free", "fixed.x", "orthogonal", "std.lv", 
-                              "effect.coding", "auto.fix.first", "auto.fix.single", "auto.var", "auto.cov.lv.x", 
+    modelContainer$dependOn(c("meanstructure", "int.ov.free", "int.lv.free", "fixed.x", "orthogonal", 
+                              "factorStandardisation", "auto.fix.single", "auto.var", "auto.cov.lv.x", 
                               "auto.cov.y", "auto.th", "auto.delta", "auto.efa", "std.ov", "missing", "estimator",
-                              "se", "information", "emulation"))
+                              "se", "information", "emulation", "groupingVariable", "eq_loadings", "eq_intercepts", 
+                              "eq_residuals", "eq_residualcovariances", "eq_means", "eq_thresholds", "eq_regressions", 
+                              "eq_variances", "eq_lvcovariances"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
   
@@ -236,6 +238,30 @@ SEM <- function(jaspResults, dataset, options, ...) {
   lavopts[["estimator"]]   <- ifelse(options[["estimator"]] == "automatic",  "default",  options[["estimator"]])
   lavopts[["se"]]          <- ifelse(options[["se"]] == "bootstrap", "standard", options[["se"]])
   lavopts[["information"]] <- options[["information"]]
+  
+  # group.equal options
+  equality_constraints <- c(
+    options[["eq_loadings"]],
+    options[["eq_intercepts"]],
+    options[["eq_means"]],
+    options[["eq_thresholds"]],
+    options[["eq_regressions"]],
+    options[["eq_residuals"]],
+    options[["eq_residualcovariances"]],
+    options[["eq_variances"]],
+    options[["eq_lvcovariances"]]
+  )
+  
+  if (any(equality_constraints)) {
+    lavopts[["group.equal"]] <- c("loadings", "intercepts", "means", "thresholds", "regressions", "residuals", 
+                                  "residual.covariances", "lv.variances", "lv.covariances")[equality_constraints]
+  }
+  
+  # group variable
+  if (options[["groupingVariable"]] != "") {
+    lavopts[["group"]] <- .v(options[["groupingVariable"]])
+  }
+  
   
   return(lavopts)
 }
@@ -367,6 +393,9 @@ SEM <- function(jaspResults, dataset, options, ...) {
   # Measurement model
   indtab <- createJaspTable(title = gettext("Factor Loadings"))
   
+  if (options[["groupingVariable"]] != "")
+    indtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+  
   indtab$addColumnInfo(name = "lhs",      title = gettext("Latent"),     type = "string", combine = TRUE)
   indtab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
   indtab$addColumnInfo(name = "label",    title = "",                    type = "string")
@@ -392,6 +421,9 @@ SEM <- function(jaspResults, dataset, options, ...) {
   
   # Structural Model
   regtab <- createJaspTable(title = gettext("Regression coefficients"))
+  
+  if (options[["groupingVariable"]] != "")
+    regtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
   
   regtab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string", combine = TRUE)
   regtab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),    type = "string")
@@ -419,6 +451,9 @@ SEM <- function(jaspResults, dataset, options, ...) {
   # Latent variances
   lvartab <- createJaspTable(title = gettext("Factor variances"))
   
+  if (options[["groupingVariable"]] != "")
+    lvartab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+  
   lvartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
   lvartab$addColumnInfo(name = "label",    title = "",                    type = "string")
   lvartab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
@@ -443,6 +478,9 @@ SEM <- function(jaspResults, dataset, options, ...) {
   
   # Latent covariances
   lcovtab <- createJaspTable(title = gettext("Factor covariances"))
+  
+  if (options[["groupingVariable"]] != "")
+    lcovtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
   
   lcovtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
   lcovtab$addColumnInfo(name = "label",    title = "",                    type = "string")
@@ -469,6 +507,9 @@ SEM <- function(jaspResults, dataset, options, ...) {
   # Residual variances
   vartab <- createJaspTable(title = gettext("Residual variances"))
   
+  if (options[["groupingVariable"]] != "")
+    vartab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+  
   vartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
   vartab$addColumnInfo(name = "label",    title = "",                    type = "string")
   vartab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
@@ -493,6 +534,9 @@ SEM <- function(jaspResults, dataset, options, ...) {
   
   # Residual covariances
   covtab <- createJaspTable(title = gettext("Residual covariances"))
+  
+  if (options[["groupingVariable"]] != "")
+    covtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
   
   covtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
   covtab$addColumnInfo(name = "label",    title = "",                    type = "string")
@@ -519,6 +563,9 @@ SEM <- function(jaspResults, dataset, options, ...) {
   # Means
   if (options[["meanstructure"]]) {
     mutab <- createJaspTable(title = gettext("Means"))
+    
+    if (options[["groupingVariable"]] != "")
+      mutab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
     
     mutab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
     mutab$addColumnInfo(name = "label",    title = "",                    type = "string")
@@ -554,10 +601,19 @@ SEM <- function(jaspResults, dataset, options, ...) {
                                    boot.ci.type = options[["bootCItype"]])
   pe <- lavaan::lavMatrixRepresentation(lavaan::lav_partable_complete(pe))
   
+  if (options[["groupingVariable"]] != "")  {
+    pe[["groupname"]] <- lavaan::lavInspect(fit, "group.label")[pe[["group"]]]
+  } else {
+    pe[["group"]] <- 0
+  }
+  
   # Measurement model
   pe_ind <- pe[pe$op == "=~",]
-  pe_ind <- pe_ind[order(pe_ind$lhs),]
+  pe_ind <- pe_ind[order(pe_ind[["group"]], pe_ind[["lhs"]]),]
   if (nrow(pe_ind) == 0) pecont[["int"]] <- NULL # remove if no estimates
+  
+  if (options[["groupingVariable"]] != "") 
+    indtab[["group"]] <- pe_ind[["groupname"]]
   
   indtab[["rhs"]]      <- .unv(pe_ind[["rhs"]])
   indtab[["lhs"]]      <- .unv(pe_ind[["lhs"]])
@@ -577,8 +633,11 @@ SEM <- function(jaspResults, dataset, options, ...) {
   
   # Structural model
   pe_reg <- pe[pe$op == "~",]
-  pe_reg <- pe_reg[order(pe_reg$lhs),]
+  pe_reg <- pe_reg[order(pe_reg[["group"]], pe_reg[["lhs"]]),]
   if (nrow(pe_reg) == 0) pecont[["reg"]] <- NULL # remove if no estimates
+  
+  if (options[["groupingVariable"]] != "") 
+    regtab[["group"]] <- pe_reg[["groupname"]]
   
   regtab[["rhs"]]      <- .unv(pe_reg[["rhs"]])
   regtab[["lhs"]]      <- .unv(pe_reg[["lhs"]])
@@ -600,6 +659,9 @@ SEM <- function(jaspResults, dataset, options, ...) {
   pe_lvar <- pe[pe$op == "~~" & pe$lhs %in% lvnames & pe$lhs == pe$rhs,]
   if (nrow(pe_lvar) == 0) pecont[["lvar"]] <- NULL # remove if no estimates
   
+  if (options[["groupingVariable"]] != "") 
+    lvartab[["group"]] <- pe_lvar[["groupname"]]
+  
   lvartab[["rhs"]]      <- .unv(pe_lvar[["rhs"]])
   lvartab[["lhs"]]      <- .unv(pe_lvar[["lhs"]])
   lvartab[["label"]]    <- pe_lvar[["label"]]
@@ -620,6 +682,9 @@ SEM <- function(jaspResults, dataset, options, ...) {
   pe_lcov <- pe[pe$op == "~~" & pe$lhs %in% lvnames & pe$rhs %in% lvnames & pe$lhs != pe$rhs,]
   if (nrow(pe_lcov) == 0) pecont[["lcov"]] <- NULL # remove if no estimates
   
+  if (options[["groupingVariable"]] != "") 
+    lcovtab[["group"]] <- pe_lcov[["groupname"]]
+  
   lcovtab[["lhs"]]      <- paste(.unv(pe_lcov[["lhs"]]), "-", .unv(pe_lcov[["rhs"]]))
   lcovtab[["label"]]    <- pe_lcov[["label"]]
   lcovtab[["est"]]      <- pe_lcov[["est"]]
@@ -638,6 +703,9 @@ SEM <- function(jaspResults, dataset, options, ...) {
   # Residual variances
   pe_var <- pe[pe$op == "~~" & pe$lhs %in% ovnames & pe$lhs == pe$rhs,]
   if (nrow(pe_var) == 0) pecont[["var"]] <- NULL # remove if no estimates
+  
+  if (options[["groupingVariable"]] != "") 
+    vartab[["group"]] <- pe_var[["groupname"]]
   
   vartab[["rhs"]]      <- .unv(pe_var[["rhs"]])
   vartab[["lhs"]]      <- .unv(pe_var[["lhs"]])
@@ -659,6 +727,9 @@ SEM <- function(jaspResults, dataset, options, ...) {
   pe_cov <- pe[pe$op == "~~" & pe$lhs %in% ovnames & pe$rhs %in% ovnames & pe$lhs != pe$rhs,]
   if (nrow(pe_cov) == 0) pecont[["cov"]] <- NULL # remove if no estimates
   
+  if (options[["groupingVariable"]] != "") 
+    covtab[["group"]] <- pe_cov[["groupname"]]
+  
   covtab[["lhs"]]      <- paste(.unv(pe_cov[["lhs"]]), "-", .unv(pe_cov[["rhs"]]))
   covtab[["label"]]    <- pe_cov[["label"]]
   covtab[["est"]]      <- pe_cov[["est"]]
@@ -678,6 +749,10 @@ SEM <- function(jaspResults, dataset, options, ...) {
   # Means
   if (options[["meanstructure"]]) {
     pe_mu <- pe[pe$op == "~1",]
+    
+    if (options[["groupingVariable"]] != "") 
+      mutab[["group"]] <- pe_mu[["groupname"]]
+    
     mutab[["lhs"]] <- .unv(pe_mu[["lhs"]])
     mutab[["label"]]    <- pe_mu[["label"]]
     mutab[["est"]]      <- pe_mu[["est"]]
@@ -686,6 +761,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
     mutab[["pvalue"]]   <- pe_mu[["pvalue"]]
     mutab[["ci.lower"]] <- pe_mu[["ci.lower"]]
     mutab[["ci.upper"]] <- pe_mu[["ci.upper"]]
+    
     if (options[["std"]]) {
       mutab[["std.all"]] <- pe_mu[["std.all"]]
       mutab[["std.lv"]]  <- pe_mu[["std.lv"]]
@@ -930,68 +1006,164 @@ SEM <- function(jaspResults, dataset, options, ...) {
     cocont <- createJaspContainer(modelname, initCollapsed = TRUE)
   }
   
-  if (options[["outputObservedCovariances"]]) {
-    octab <- createJaspTable("Observed covariance matrix")
-    octab$dependOn("outputObservedCovariances")
-    octab$position <- 1
-    cocont[["observed"]] <- octab
+  if (options[["groupingVariable"]] == "") {
+    
+    # without groups, these are tables
+    
+    if (options[["outputObservedCovariances"]]) {
+      octab <- createJaspTable("Observed covariance matrix")
+      octab$dependOn("outputObservedCovariances")
+      octab$position <- 1
+      cocont[["observed"]] <- octab
+    }
+    
+    if (options[["outputImpliedCovariances"]]) {
+      ictab <- createJaspTable("Implied covariance matrix")
+      ictab$dependOn("outputImpliedCovariances")
+      ictab$position <- 2
+      cocont[["implied"]] <- ictab
+    }
+    
+    if (options[["outputResidualCovariances"]]) {
+      rctab <- createJaspTable("Residual covariance matrix")
+      rctab$dependOn("outputResidualCovariances")
+      rctab$position <- 3
+      cocont[["residual"]] <- rctab
+    }
+    
+  } else {
+    
+    # with multiple groups these become containers
+    
+    if (options[["outputObservedCovariances"]]) {
+      occont <- createJaspContainer("Observed covariance matrix", initCollapsed = TRUE)
+      occont$dependOn("outputObservedCovariances")
+      occont$position <- 1
+      cocont[["observed"]] <- occont
+    }
+    
+    if (options[["outputImpliedCovariances"]]) {
+      iccont <- createJaspContainer("Implied covariance matrix", initCollapsed = TRUE)
+      iccont$dependOn("outputImpliedCovariances")
+      iccont$position <- 2
+      cocont[["implied"]] <- iccont
+    }
+    
+    if (options[["outputResidualCovariances"]]) {
+      rccont <- createJaspContainer("Residual covariance matrix", initCollapsed = TRUE)
+      rccont$dependOn("outputResidualCovariances")
+      rccont$position <- 3
+      cocont[["residual"]] <- rccont
+    }
   }
   
-  if (options[["outputImpliedCovariances"]]) {
-    ictab <- createJaspTable("Implied covariance matrix")
-    ictab$dependOn("outputImpliedCovariances")
-    ictab$position <- 2
-    cocont[["implied"]] <- ictab
-  }
-  
-  if (options[["outputResidualCovariances"]]) {
-    rctab <- createJaspTable("Residual covariance matrix")
-    rctab$dependOn("outputResidualCovariances")
-    rctab$position <- 3
-    cocont[["residual"]] <- rctab
-  }
     
   if (!ready || !inherits(fit, "lavaan")) return()
   
   
-  if (options[["outputObservedCovariances"]]) {
-    # actually compute the observed covariance
-    ov <- lavaan::inspect(fit, "sampstat")
-    oc <- ov$cov
-    oc[upper.tri(oc)] <- NA
+  if (options[["groupingVariable"]] == "") {
     
-    for (i in 1:ncol(oc)) {
-      nm <- colnames(oc)[i]
-      octab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
-    }
-    octab$addRows(oc, rowNames = colnames(oc))
-  }
+    # without groups, just fill the tables
   
-  if (options[["outputImpliedCovariances"]]) {
-    # actually compute the implied covariance
-    fv <- lavaan::fitted.values(fit)
-    ic <- fv$cov
-    ic[upper.tri(ic)] <- NA
-    
-    for (i in 1:ncol(ic)) {
-      nm <- colnames(ic)[i]
-      ictab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+    if (options[["outputObservedCovariances"]]) {
+      # actually compute the observed covariance
+      ov <- lavaan::inspect(fit, "sampstat")
+      oc <- ov$cov
+      oc[upper.tri(oc)] <- NA
+      
+      for (i in 1:ncol(oc)) {
+        nm <- colnames(oc)[i]
+        octab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+      }
+      octab$addRows(oc, rowNames = colnames(oc))
     }
-    ictab$addRows(ic, rowNames = colnames(ic))
-  }
-  
-  if (options[["outputResidualCovariances"]]) {
-    # actually compute the implied covariance
-    rv <- lavaan::residuals(fit)
-    rc <- rv$cov
-    rc[upper.tri(rc)] <- NA
     
-    for (i in 1:ncol(rc)) {
-      nm <- colnames(rc)[i]
-      rctab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+    if (options[["outputImpliedCovariances"]]) {
+      # actually compute the implied covariance
+      fv <- lavaan::fitted.values(fit)
+      ic <- fv$cov
+      ic[upper.tri(ic)] <- NA
+      
+      for (i in 1:ncol(ic)) {
+        nm <- colnames(ic)[i]
+        ictab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+      }
+      ictab$addRows(ic, rowNames = colnames(ic))
     }
-    rctab$addRows(rc, rowNames = colnames(rc))
     
+    if (options[["outputResidualCovariances"]]) {
+      # actually compute the implied covariance
+      rv <- lavaan::residuals(fit)
+      rc <- rv$cov
+      rc[upper.tri(rc)] <- NA
+      
+      for (i in 1:ncol(rc)) {
+        nm <- colnames(rc)[i]
+        rctab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+      }
+      rctab$addRows(rc, rowNames = colnames(rc))
+    }
+    
+  } else {
+    
+    # with groups, create tables and fill them
+    
+    if (options[["outputObservedCovariances"]]) {
+      # actually compute the observed covariance
+      ov <- lavaan::inspect(fit, "sampstat")
+      level_names <- names(ov)
+      
+      for (i in 1:length(ov)) {
+        oc <- ov[[i]]$cov
+        oc[upper.tri(oc)] <- NA
+        
+        occont[[level_names[i]]] <- createJaspTable(level_names[i])
+        
+        for (j in 1:ncol(oc)) {
+          nm <- colnames(oc)[j]
+          occont[[level_names[i]]]$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+        }
+        occont[[level_names[i]]]$addRows(oc, rowNames = colnames(oc))
+      }
+    }
+    
+    if (options[["outputImpliedCovariances"]]) {
+      # actually compute the observed covariance
+      fv <- lavaan::fitted.values(fit)
+      level_names <- names(fv)
+      
+      for (i in 1:length(fv)) {
+        ic <- fv[[i]]$cov
+        ic[upper.tri(ic)] <- NA
+        
+        iccont[[level_names[i]]] <- createJaspTable(level_names[i])
+        
+        for (j in 1:ncol(ic)) {
+          nm <- colnames(ic)[j]
+          iccont[[level_names[i]]]$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+        }
+        iccont[[level_names[i]]]$addRows(ic, rowNames = colnames(ic))
+      }
+    }
+    
+    if (options[["outputResidualCovariances"]]) {
+      # actually compute the observed covariance
+      rv <- lavaan::residuals(fit)
+      level_names <- names(rv)
+      
+      for (i in 1:length(rv)) {
+        rc <- rv[[i]]$cov
+        rc[upper.tri(rc)] <- NA
+        
+        rccont[[level_names[i]]] <- createJaspTable(level_names[i])
+        
+        for (j in 1:ncol(rc)) {
+          nm <- colnames(rc)[j]
+          rccont[[level_names[i]]]$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+        }
+        rccont[[level_names[i]]]$addRows(rc, rowNames = colnames(rc))
+      }
+    }
   }
   
   if (!is.null(modelname)) {
@@ -1034,6 +1206,8 @@ SEM <- function(jaspResults, dataset, options, ...) {
   semModIndicesTable$addColumnInfo(name = "lhs",       title = "",                    type = "string")
   semModIndicesTable$addColumnInfo(name = "op",        title = "",                    type = "string")
   semModIndicesTable$addColumnInfo(name = "rhs",       title = "",                    type = "string")
+  if (options[["groupingVariable"]] != "")
+    semModIndicesTable$addColumnInfo(name = "group",   title = gettext("group"),      type = "string")
   semModIndicesTable$addColumnInfo(name = "mi",        title = gettext("mi"),         type = "number")
   semModIndicesTable$addColumnInfo(name = "epc",       title = gettext("epc"),        type = "number")
   semModIndicesTable$addColumnInfo(name = "sepc.lv",   title = gettext("sepc (lv)"),  type = "number")
@@ -1053,12 +1227,15 @@ SEM <- function(jaspResults, dataset, options, ...) {
   semModIndResult <- semModIndResult[!is.na(semModIndResult$mi), , drop=FALSE]
   
   ## Sort:
-  semModIndResult <- semModIndResult[order(semModIndResult$mi, decreasing=TRUE), , drop=FALSE]
+  semModIndResult <- semModIndResult[order(semModIndResult$mi, decreasing = TRUE), , drop=FALSE]
   
   ### Remove low indices:
   if (isTRUE(options$miHideLow)) {
     semModIndResult <- semModIndResult[semModIndResult$mi > options$miThreshold, , drop=FALSE]
   }
+  
+  if (options[["groupingVariable"]] != "")
+    semModIndResult[["group"]] <- lavaan::lavInspect(fit, "group.label")[semModIndResult[["group"]]]
   
   semModIndicesTable$setData(lapply(semModIndResult, .unv))
   
@@ -1092,14 +1269,17 @@ SEM <- function(jaspResults, dataset, options, ...) {
 }
   
 .semCreatePathPlot <- function(fit, modelname, parentContainer, options, ready) {
-  cat("YOYOYOY")
   if (is.null(modelname)) {
     modelname <- gettext("Path diagram")
   }
   
-  plt <- createJaspPlot(title = modelname, width = 600, height = 400)
-  plt$dependOn(c("outputPathPlot", "pathPlotPar", "pathPlotLegend"))
+  if (options[["groupingVariable"]] == "") {
+    plt <- createJaspPlot(title = modelname, width = 600, height = 400)
+  } else {
+    plt <- createJaspContainer(title = modelname, initCollapsed = TRUE)
+  }
   
+  plt$dependOn(c("outputPathPlot", "pathPlotPar", "pathPlotLegend"))
   parentContainer[[modelname]] <- plt
   
   if (!ready || !inherits(fit, "lavaan")) return()
@@ -1130,5 +1310,13 @@ SEM <- function(jaspResults, dataset, options, ...) {
     rotation       = 2
   ))
   
-  plt$plotObject <- pp
+  if (options[["groupingVariable"]] == "") {
+    plt$plotObject <- pp
+  } else {
+    level_names <- lavaan::lavInspect(fit, "group.label")
+    for (i in seq_along(level_names)) {
+      plt[[level_names[i]]] <- createJaspPlot(title = level_names[i], width = 600, height = 400)
+      plt[[level_names[i]]]$plotObject <- pp[[i]]
+    }
+  }
 }

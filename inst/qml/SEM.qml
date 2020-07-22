@@ -204,6 +204,7 @@ Form
 		
 		Group 
 		{
+			CheckBox{name: "std.ov"; label: qsTr("Standardize variables before estimation"); checked: false}
 			DropDown
 			{
 				name: "estimator"
@@ -245,7 +246,6 @@ Form
 				] 
 			}
 
-			CheckBox{name: "std.ov"; label: qsTr("Standardize variables before estimation"); checked: false}
 		}
 	}
 	
