@@ -15,80 +15,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# options <- list(
-#   models = list(
-#     list(
-#       modelName = "Model 1",
-#       syntax = "visual  =~ x1 + x2 + x3\ntextual =~ x4 + x5 + x6\nspeed   =~ x7 + x8 + x9"
-#     ),
-#     list(
-#       modelName = "Model 2",
-#       syntax = "visual  =~ x1 + x2 + x3\ntextual =~ x4 + x5 + x6\nspeed   =~ x7 + x8 + x9\nx4~~x7"
-#     ),
-#     list(
-#       modelName = "Model 3",
-#       syntax = "visual  =~ x1 + a*x2 + x3\ntextual =~ x4 + a*x5 + x6\nspeed   =~ x7 + x8 + x9\nx4~~x7"
-#     )
-#   ),
-#   errorCalculation = "standard",
-#   errorCalculationBootstrapSamples = 1000
-# )
-# 
-# # here are all the options we should support
-# 
-# opts <-  list(
-#   .meta = list(), 
-#   Data = "raw", 
-#   SampleSize = 0, 
-#   addPathDiagram = FALSE, 
-#   ddScalingParameters = TRUE, 
-#   addThresholds = TRUE, 
-#   assumeFactorsUncorrelated = FALSE, 
-#   correlateDependentVariables = TRUE, 
-#   correlateExogenousLatents = TRUE, 
-#   emulation = "none", 
-#   eq_intercepts = FALSE, 
-#   eq_loadings = FALSE, 
-#   eq_lvcovariances = FALSE, 
-#   eq_means = FALSE, 
-#   eq_regressions = FALSE, 
-#   eq_residualcovariances = FALSE, 
-#   eq_residuals = FALSE, 
-#   eq_thresholds = FALSE, 
-#   eq_variances = FALSE, 
-#   errorCalculation = "standard", 
-#   errorCalculationBootstrapSamples = 1000, 
-#   estimator = "automatic", 
-#   factorStandardisation = "factorLoadings", 
-#   fixExogenousCovariates = TRUE, 
-#   fixLatentInterceptsToZero = TRUE, 
-#   fixManifestInterceptsToZero = FALSE,
-#   groupingVariable = "", 
-#   includeMeanStructure = FALSE, 
-#   model = "contGamma ~ contNormal", 
-#   omitResidualSingleIndicator = TRUE, 
-#   utputAdditionalFitMeasures = FALSE, 
-#   outputFittedCovarianceCorrelations = FALSE, 
-#   outputMardiasCoefficients = FALSE, 
-#   outputModificationIndices = FALSE, 
-#   outputModificationIndicesHideLowIndices = FALSE, 
-#   outputModificationIndicesHideLowIndicesThreshold = 10, 
-#   outputObservedCovarianceCorrelations = FALSE, 
-#   outputRSquared = FALSE, 
-#   outputResidualCovarianceCorrelations = FALSE, 
-#   outputpathdiagramstandardizedparameter = FALSE, 
-#   plotHeight = 320, 
-#   plotWidth = 480, 
-#   residualVariances = TRUE
-# )
-# 
-# dataset <- lavaan::HolzingerSwineford1939
-# 
-
 SEM <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
   
   # Read dataset
+  options <- .semPrepOpts(options)
   dataset <- .semReadData(dataset, options)
   ready   <- .semIsReady(dataset, options)
   
@@ -106,6 +37,11 @@ SEM <- function(jaspResults, dataset, options, ...) {
 }
 
 # helper functions
+.semPrepOpts <- function(options) {
+  emptymod <- vapply(options[["models"]], function(x) x[["syntax"]] == "", TRUE)
+  options[["models"]] <- options[["models"]][!emptymod]
+  return(options)
+}
 
 .semReadData <- function(dataset, options) {
   if (!is.null(dataset)) return(dataset)
@@ -113,11 +49,12 @@ SEM <- function(jaspResults, dataset, options, ...) {
 }
 
 .semIsReady <- function(dataset, options) {
+  if (length(options[["models"]]) < 1) return(FALSE)
   usedvars <- unique(unlist(lapply(options[["models"]], function(x) {
     .semGetUsedVars(x[["syntax"]], colnames(dataset))
   })))
   
-  ready <- length(usedvars) > 1 && options[["models"]][[1]][["syntax"]] != ""
+  if (length(usedvars) > 1) TRUE
 }
 
 .semGetUsedVars <- function(syntax, availablevars) {
@@ -136,7 +73,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("meanstructure", "int.ov.free", "int.lv.free", "fixed.x", "orthogonal", 
+    modelContainer$dependOn(c("sampling.weights", "meanstructure", "int.ov.free", "int.lv.free", "fixed.x", "orthogonal", 
                               "factorStandardisation", "auto.fix.single", "auto.var", "auto.cov.lv.x", 
                               "auto.cov.y", "auto.th", "auto.delta", "auto.efa", "std.ov", "missing", "estimator",
                               "se", "information", "emulation", "groupingVariable", "eq_loadings", "eq_intercepts", 
@@ -155,24 +92,22 @@ SEM <- function(jaspResults, dataset, options, ...) {
   oldmodels  <- modelContainer[["models"]][["object"]]
   oldresults <- modelContainer[["results"]][["object"]]
   reuse <- match(options[["models"]], oldmodels)
-  if (identical(reuse, seq_along(reuse))) {
-    # store in model container
-    print("IDENTICAL!")
-    return(oldresults) # reuse everything
-  }
+  if (identical(reuse, seq_along(reuse))) return(oldresults) # reuse everything
+  cat("reusing: ", reuse, "\n")
   
   # create results list
   results <- vector("list", length(options[["models"]]))
   if (any(!is.na(reuse))) {
     # where possible, prefill results with old results
-    results[seq_along(reuse)] <- options[["oldresults"]][reuse]
+    results[seq_along(reuse)] <- oldresults[reuse]
   }
+  str(results, max.level = 2)
   
   # generate lavaan options list
   lavopts <- .semOptionsToLavOptions(options)
   
   for (i in seq_along(results)) {
-    if (!is.null(results[[i]])) {print(i, "reused"); next} # existing model is reused
+    if (!is.null(results[[i]])) next # existing model is reused
     
     # create options
     lav_args <- lavopts
@@ -187,20 +122,24 @@ SEM <- function(jaspResults, dataset, options, ...) {
       errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(fit, "condition")$message)
       modelContainer$setError(paste0("Error in model \"", options[["models"]][[i]][["modelName"]], "\" - ", 
                                     .decodeVarsInMessage(names(dataset), errmsg)))
+      modelContainer$dependOn("models") # add dependency so everything gets updated upon model change
+      break
     }
     
     if (options[["se"]] == "bootstrap") {
       fit <- lavBootstrap(fit, options[["errorCalculationBootstrapSamples"]])
     }
     results[[i]] <- fit
+    
   }
   
   # store in model container
-  deps <- c("meanstructure", "int.ov.fixed", "int.lv.fixed", "fixed.x", "orthogonal", "factorStandardisation", 
-            "auto.fix.single", "auto.var", "auto.cov.lv.x", "auto.cov.y", "auto.th", "auto.delta", 
-            "auto.efa", "std.ov", "missing", "estimator", "se", "information", "emulation")
-  modelContainer[["results"]] <- createJaspState(results, dependencies = deps)
-  modelContainer[["models"]]  <- createJaspState(options[["models"]], dependencies = deps)
+  if (!modelContainer$getError()) {
+    modelContainer[["results"]] <- createJaspState(results)
+    modelContainer[["results"]]$dependOn(optionsFromObject = modelContainer)
+    modelContainer[["models"]]  <- createJaspState(options[["models"]])
+    modelContainer[["models"]]$dependOn(optionsFromObject = modelContainer)
+  }
   
   return(results)
 }
@@ -260,6 +199,11 @@ SEM <- function(jaspResults, dataset, options, ...) {
   # group variable
   if (options[["groupingVariable"]] != "") {
     lavopts[["group"]] <- .v(options[["groupingVariable"]])
+  }
+  
+  # sampling weights
+  if (options[["sampling.weights"]] != "") {
+    lavopts[["sampling.weights"]] <- .v(options[["sampling.weights"]])
   }
   
   

@@ -21,7 +21,7 @@ lavBootstrap <- function(fit, samples = 1000) {
   # Run bootstrap, track progress with progress bar
   # Notes: faulty runs are simply ignored
   # recommended: add a warning if not all boot samples are successful
-  # fit <- semBootstrap(fit, samples = 1000)
+  # fit <- lavBootstrap(fit, samples = 1000)
   # if (nrow(fit@boot$coef) < 1000) 
   #  tab$addFootnote(gettextf("Not all bootstrap samples were successful: CI based on %.0f samples.", nrow(fit@boot$coef)), 
   #                  "<em>Note.</em>")
@@ -34,10 +34,10 @@ lavBootstrap <- function(fit, samples = 1000) {
     # and then every time on a successful bootstrap:
     # https://github.com/yrosseel/lavaan/blob/77a568a574e4113245e2f6aff1d7c3120a26dd90/R/lav_bootstrap.R#L375
     # i.e., samples + 1 times
-    progressbarTick()
+    JASP:::progressbarTick()
     return(lavaan::coef(lav_object))
   }
-  startProgressbar(samples + 1)
+  JASP:::startProgressbar(samples + 1)
   bootres <- lavaan:::bootstrap.internal(object = fit, R = samples, FUN = coef_with_callback)
   
   # Add the bootstrap samples to the fit object
@@ -79,7 +79,6 @@ lavBootstrap <- function(fit, samples = 1000) {
   return(misfitplot)
 }
 
-
 .withWarnings <- function(expr) {
   myWarnings <- NULL
   wHandler <- function(w) {
@@ -88,6 +87,15 @@ lavBootstrap <- function(fit, samples = 1000) {
   }
   val <- withCallingHandlers(expr, warning = wHandler)
   list(value = val, warnings = myWarnings)
+}
+
+.decodeVarsInMessage <- function(encodedVars, message) {
+  if (length(encodedVars) == 0 || !is.character(encodedVars) || !is.character(message))
+    return(message)
+  
+  decodedVars <- .unv(encodedVars)
+  names(decodedVars) <- encodedVars
+  stringr::str_replace_all(message, decodedVars)
 }
 
 # plotting stuff
