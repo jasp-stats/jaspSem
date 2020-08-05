@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2013-2018 University of Amsterdam
+# Copyright (C) 2013-2020 University of Amsterdam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,241 +15,52 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-SEM <- function(jaspResults, dataset = NULL, options) {
+SEM <- function(jaspResults, dataset, options, ...) {
+  jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
   
-  dheader <- .readDataSetHeader(all.columns = TRUE)
-  availableVars <- colnames(dheader)
-  variables <- .getUsedVars(options$model, availableVars)
+  # Read dataset
+  options <- .semPrepOpts(options)
+  dataset <- .semReadData(dataset, options)
+  ready   <- .semIsReady(dataset, options)
   
-  ready <- length(variables) > 1 && length(dheader) > 1 && options$model != ""
+  modelContainer <- .semModelContainer(jaspResults)
   
-  if (options$groupingVariable != "")
-    variables <- unique(c(variables, options$groupingVariable))
+  # check for errors
+  .semCheckErrors(dataset, options, ready, modelContainer)
   
-  if (is.null(dataset)) {
-    if (ready && options$Data != "varcov") {
-      dataset <- .readDataSetToEnd(columns = variables)
-    } else if (ready && options$Data == "varcov") {
-      dataset <- .readDataSetToEnd(all.columns = TRUE)
-    } else {
-      dataset <- dheader
-    }
-  }
-  
-  semContainer <- .getSemContainer(jaspResults)
-  semContainer[["model"]] <- 
-    createJaspState(object = .translateModel(options$model, variables))
-  
-  semErrorCheck <- .semCheckErrors(dataset, options, ready, semContainer)
-  
-  if (options$Data == "varcov") 
-    options$includeMeanStructure <- FALSE
-  
-  .getSemResult(semContainer, options, dataset, ready)
-  
-  .semMainTable(semContainer, options, dataset, ready, position = 1)
-  
-  .semEstimatesTable(semContainer, options, dataset, ready, variables, position = 2)
-  
-  .semAdditionalFitMeasuresTables(semContainer, options, dataset, ready, position = 3)
-  
-  .semRSquaredTable(semContainer, options, dataset, ready, position = 4)
-  
-  .semCovCorTable(semContainer, options, dataset, ready, position = 5)
-  
-  .semModIndicesTable(semContainer, options, dataset, ready, position = 6)
-  
-  .semMardiasCoefficientTable(semContainer, options, dataset, ready, position = 7)
-
-  .lavCreatePathDiagram(semContainer, options, ready, position = 8)
-  
-  return()  
+  # Output functions
+  .semFitTab(jaspResults, modelContainer, dataset, options, ready)
+  .semParameters(modelContainer, dataset, options, ready)
+  .semAdditionalFits(modelContainer, dataset, options, ready)
+  .semRsquared(modelContainer, dataset, options, ready)
+  .semMardiasCoefficient(modelContainer, dataset, options, ready)
+  .semCov(modelContainer, dataset, options, ready)
+  .semMI(modelContainer, datset, options, ready)
+  .semPathPlot(modelContainer, dataset, options, ready)
 }
 
-.getSemContainer <- function(jaspResults) {
-  if (!is.null(jaspResults[["semContainer"]])) {
-    semContainer <- jaspResults[["semContainer"]]
-  } else {
-    # semContainer <- createJaspContainer(title = "Structural Equation Modeling<br/><span style='color:#888888;font-family:monospace;font-size:12px;font-weight:normal;'>Powered by lavaan.org</span>")
-    semContainer <- createJaspContainer()
-    
-    semContainer$dependOn(c("model",  "model", "SampleSize", "errorCalculationBootstrapSamples", 
-                            "groupingVariable", "eq_loadings", "eq_intercepts", "eq_residuals", "eq_residualcovariances",
-                            "eq_means", "eq_thresholds", "eq_regressions", "eq_variances", "eq_lvcovariances", 
-                            "includeMeanStructure", "assumeFactorsUncorrelated", "fixExogenousCovariates", 
-                            "factorStandardisation", "fixManifestInterceptsToZero", "fixLatentInterceptsToZero",
-                            "omitResidualSingleIndicator", "residualVariances", "correlateExogenousLatents", 
-                            "addThresholds", "addScalingParameters", "correlateDependentVariables",
-                            "Data", "errorCalculation", "estimator", "emulation"))
-    jaspResults[["semContainer"]] <- semContainer
-  }
-  return(semContainer)
+# helper functions
+.semPrepOpts <- function(options) {
+  emptymod <- vapply(options[["models"]], function(x) x[["syntax"]] == "", TRUE)
+  options[["models"]] <- options[["models"]][!emptymod]
+  return(options)
 }
 
-.getSemResult <- function(semContainer, options, dataset, ready) {
-  if (!ready  || !is.null(semContainer[["semResultsList"]]))
-    return()
-  
-  groupVar <- NULL
-  
-  if (.v(options$groupingVariable) %in% names(dataset)) 
-    groupVar <- .v(options$groupingVariable)
-  
-  # group equal:
-  groupEqual <- ""
-  if (isTRUE(options$eq_loadings)) {
-    groupEqual <- c(groupEqual, "loadings")
-  }
-  
-  if (isTRUE(options$eq_intercepts)) {
-    groupEqual <- c(groupEqual, "intercepts")
-  }
-  
-  if (isTRUE(options$eq_means)) {
-    groupEqual <- c(groupEqual, "means")
-  }
-  
-  if (isTRUE(options$eq_thresholds)) {
-    groupEqual <- c(groupEqual, "thresholds")
-  }
-  
-  if (isTRUE(options$eq_regressions)) {
-    groupEqual <- c(groupEqual, "regressions")
-  }
-  
-  if (isTRUE(options$eq_residuals)) {
-    groupEqual <- c(groupEqual, "residuals")
-  }
-  
-  if (isTRUE(options$eq_residualcovariances)) {
-    groupEqual <- c(groupEqual, "residual.covariances")
-  }
-  
-  if (isTRUE(options$eq_variances)) {
-    groupEqual <- c(groupEqual, "lv.variances")
-  }
-  
-  if (isTRUE(options$eq_lvcovariances)) {
-    groupEqual <- c(groupEqual, "lv.covariances")
-  }
-  
-  if (length(groupEqual)>1) {
-    groupEqual <- groupEqual[groupEqual!=""]
-  }
-  
-  # Mean structure:
-  if (!isTRUE(options$includeMeanStructure)) {
-    options$includeMeanStructure <- "default"
-  }
-
-  ### RUN SEM ###
-  semResults <- lavModel <- NULL
-  if (ready) {
-    # Raw data:
-    if (options$Data == "raw"){
-      semResults <- try(
-        lavaan:::lavaan(model=semContainer[["model"]]$object, data=dataset,
-                        auto.delta=options$addScalingParameters,
-                        auto.th=options$addThresholds,
-                        orthogonal=options$assumeFactorsUncorrelated,
-                        auto.cov.y=options$correlateDependentVariables,
-                        auto.cov.lv.x=options$correlateExogenousLatents,
-                        mimic=ifelse(options$emulation=="none","lavaan", options$emulation),
-                        se=options$errorCalculation,
-                        bootstrap=options$errorCalculationBootstrapSamples,
-                        estimator=ifelse(options$estimator == "automatic", "default", options$estimator),
-                        std.lv=options$factorStandardisation == "residualVariance",
-                        auto.fix.first=options$factorStandardisation == "factorLoadings",
-                        fixed.x=options$fixExogenousCovariates,
-                        int.lv.free=!options$fixLatentInterceptsToZero,
-                        int.ov.free=!options$fixManifestInterceptsToZero,
-                        meanstructure=options$includeMeanStructure,
-                        auto.fix.single=options$omitResidualSingleIndicator,
-                        auto.var=options$residualVariances,
-                        group = groupVar, group.equal = groupEqual)
-      )
-    } else {
-      # Var-cov matrix 
-      S <- as.matrix(dataset)
-      rownames(S) <- colnames(S)
-
-      semResults <- try(
-        lavaan:::lavaan(model=semContainer[["model"]]$object, sample.cov=S,
-                        sample.nobs=as.numeric(options$SampleSize),
-                        auto.delta=options$addScalingParameters,
-                        auto.th=options$addThresholds,
-                        orthogonal=options$assumeFactorsUncorrelated,
-                        auto.cov.y=options$correlateDependentVariables,
-                        auto.cov.lv.x=options$correlateExogenousLatents,
-                        mimic=ifelse(options$emulation=="none","lavaan",options$emulation),
-                        se=options$errorCalculation,
-                        bootstrap=options$errorCalculationBootstrapSamples,
-                        estimator=ifelse(options$estimator=="automatic", "default", options$estimator),
-                        std.lv=options$factorStandardisation=="residualVariance",
-                        auto.fix.first=options$factorStandardisation == "factorLoadings",
-                        fixed.x=options$fixExogenousCovariates,
-                        int.lv.free = !options$fixLatentInterceptsToZero,
-                        int.ov.free = !options$fixManifestInterceptsToZero,
-                        meanstructure=options$includeMeanStructure,
-                        auto.fix.single=options$omitResidualSingleIndicator,
-                        auto.var=options$residualVariances, group=groupVar,
-                        group.equal=groupEqual)
-      )
-    }
-
-    # Check if worked:
-    if (isTryError(semResults)) {
-      errorMessage <- gsub(as.character(semResults), pattern = "\n", replacement = "")
-      # Better Error messages:
-      if (errorMessage == "Error in start.idx[i]:end.idx[i] : NA/NaN argument") {
-        semContainer$setError(gettext("Model misspecified"))
-      } else {
-        semContainer$setError(errorMessage)
-      }
-      return()
-    }
-  } else {
-    
-    lavModel <- try(lavaan:::lavaanify(model=semContainer[["model"]]$object, auto.delta=options$addScalingParameters,
-                                       auto.th=options$addThresholds,
-                                       orthogonal=options$assumeFactorsUncorrelated,
-                                       auto.cov.y=options$correlateDependentVariables,
-                                       auto.cov.lv.x=options$correlateExogenousLatents,
-                                       # mimic = ifelse(options$emulation=="none","lavaan",options$emulation),
-                                       # se = options$errorCalculation,
-                                       # bootstrap = options$errorCalculationBootstrapSamples,
-                                       # estimator = ifelse(options$estimator == "automatic", "default", options$estimator),
-                                       std.lv=options$factorStandardisation == "residualVariance",
-                                       auto.fix.first=options$factorStandardisation == "factorLoadings",
-                                       fixed.x=options$fixExogenousCovariates,
-                                       int.lv.free = !options$fixLatentInterceptsToZero,
-                                       int.ov.free = !options$fixManifestInterceptsToZero,
-                                       meanstructure=options$includeMeanStructure,
-                                       auto.fix.single=options$omitResidualSingleIndicator,
-                                       auto.var=options$residualVariances,
-                                       ngroups=length(unique(dataset[[groupVar]])),
-                                       group.equal = groupEqual)
-    )
-    
-    # Check if worked:
-    if (isTryError(lavModel)) {
-      errorMessage <- as.character(lavModel)
-      # Better Error messages:
-      if (errorMessage == "Error in start.idx[i]:end.idx[i] : NA/NaN argument\n") {
-        semContainer$setError(gettext("Model misspecified"))
-      } else {
-        semContainer$setError(errorMessage)
-      }
-      return()
-    } 
-  }
-  
-  semContainer[["semResultsList"]] <- createJaspState(object = list(semResults = semResults, 
-                                                                    lavModel = lavModel))
-  return()
+.semReadData <- function(dataset, options) {
+  if (!is.null(dataset)) return(dataset)
+  return(JASP::.readDataSetToEnd(all.columns = TRUE))
 }
 
-.semCheckErrors <- function(dataset, options, ready, semContainer) {
+.semIsReady <- function(dataset, options) {
+  if (length(options[["models"]]) < 1) return(FALSE)
+  usedvars <- unique(unlist(lapply(options[["models"]], function(x) {
+    .semGetUsedVars(x[["syntax"]], colnames(dataset))
+  })))
+  
+  if (length(usedvars) > 1) TRUE
+}
+
+.semCheckErrors <- function(dataset, options, ready, modelContainer) {
   if (!ready) return()
   
   if (options$Data == "varcov") {
@@ -261,654 +72,1387 @@ SEM <- function(jaspResults, dataset = NULL, options) {
                message='default', exitAnalysisIfErrors = TRUE)
   } 
   
+  # check FIML
+  if (!options[["estimator"]] %in% c("default", "ML") && options[["missing"]] == "ml") {
+    modelContainer$setError(gettext("FIML missing data handling only available with ML-type estimators"))
+  }
+  
+  # Check whether grouping variable is a grouping variable
+  if (options[["groupingVariable"]] != "") {
+    groupfac <- factor(dataset[[.v(options[["groupingVariable"]])]])
+    factab <- table(groupfac)
+    if (any(factab < 3)) {
+      violations <- names(table(groupfac))[table(groupfac) < 3]
+      JASP:::.quitAnalysis(gettextf("Grouping variable has fewer than 3 observations in group %s", 
+                                    paste(violations, collapse = ", ")))
+      
+    }
+  }
+  
+  
   # Check mean structure:
-  if (options$Data == "varcov") {
-    if (isTRUE(options$includeMeanStructure)) {
-      semContainer$setError(gettext("Mean structure can not be included when data is variance-covariance matrix"))
+  if (options[["Data"]] == "varcov") {
+    if (options[["meanstructure"]]) {
+      modelContainer$setError(gettext("Mean structure can not be included when data is variance-covariance matrix"))
       return()
     }
     
-    options$includeMeanStructure <- FALSE
+    options$meanstructure <- FALSE
     
-    if (options$SampleSize == 0) {
-      semContainer$setError(gettext("Please set the sample size!"))
+    if (options[["SampleSize"]] == 0) {
+      modelContainer$setError(gettext("Please set the sample size!"))
       return()
     }
     
     # Check for multiple groups:
-    if (options$groupingVariable!="") {
-      semContainer$setError(gettext("Multiple group analysis not (yet) supported when data is variance-covariance matrix"))
+    if (options[["groupingVariable"]] != "") {
+      modelContainer$setError(gettext("Multiple group analysis not supported when data is variance-covariance matrix"))
       return()
     }
     
   } else {
     if (ncol(dataset) > 0 && !nrow(dataset) > ncol(dataset)) {
-      semContainer$setError(gettext("Not more cases than number of variables. Is your data a variance-covariance matrix?"))
+      modelContainer$setError(gettext("Not more cases than number of variables. Is your data a variance-covariance matrix?"))
       return()
     }
   }
 }
 
-.semMainTable <- function(semContainer, options, dataset, ready, position) {
-  if (!is.null(semContainer[["semFitTable"]]))
-    return()
-  
-  semFitTable <- createJaspTable(title = gettext("Chi Square Test Statistic (unscaled)"))
-  semFitTable$position <- position
-  
-  semFitTable$addColumnInfo(name="Model",   title = "",                      type = "string")
-  semFitTable$addColumnInfo(name="Df",      title = gettext("df"),           type = "number")
-  semFitTable$addColumnInfo(name="AIC",     title = gettext("AIC"),          type = "number")
-  semFitTable$addColumnInfo(name="BIC",     title = gettext("BIC"),          type = "number")
-  semFitTable$addColumnInfo(name="Chisq",   title = gettext("&#967;&sup2;"), type = "number")
-  semFitTable$addColumnInfo(name="PrChisq", title = gettext("p"),            type = "number")
-  
-  semFitTable$showSpecifiedColumnsOnly <- TRUE
-  semFitTable$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
-  
-  semContainer[["semFitTable"]] <- semFitTable
+.semGetUsedVars <- function(syntax, availablevars) {
+  vv <- .unv(availablevars)
+  findpattern <- paste0("(?<=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|^)\\Q",
+                        vv,
+                        "\\E(?=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|$)")
+  return(vv[vapply(findpattern,
+                   function(p) stringr::str_detect(syntax, p),
+                   FUN.VALUE = TRUE,
+                   USE.NAMES = FALSE)])
+}
 
-  if (is.null(semContainer[["semResultsList"]]$object$semResults) || !ready || semContainer$getError()) 
-    return()
+.semModelContainer <- function(jaspResults) {
+  if (!is.null(jaspResults[["modelContainer"]])) {
+    modelContainer <- jaspResults[["modelContainer"]]
+  } else {
+    modelContainer <- createJaspContainer()
+    modelContainer$dependOn(c("sampling.weights", "meanstructure", "int.ov.free", "int.lv.free", "fixed.x", "orthogonal", 
+                              "factorStandardisation", "auto.fix.single", "auto.var", "auto.cov.lv.x", 
+                              "auto.cov.y", "auto.th", "auto.delta", "auto.efa", "std.ov", "missing", "estimator", "test",
+                              "se", "information", "emulation", "groupingVariable", "eq_loadings", "eq_intercepts", 
+                              "eq_residuals", "eq_residualcovariances", "eq_means", "eq_thresholds", "eq_regressions", 
+                              "eq_variances", "eq_lvcovariances", "Data", "SampleSize"))
+    jaspResults[["modelContainer"]] <- modelContainer
+  }
+  
+  return(modelContainer)
+}
+
+.semComputeResults <- function(modelContainer, dataset, options) {
+  #' create result list from options
+  
+  # find reusable results
+  oldmodels  <- modelContainer[["models"]][["object"]]
+  oldresults <- modelContainer[["results"]][["object"]]
+  reuse <- match(options[["models"]], oldmodels)
+  if (identical(reuse, seq_along(reuse))) return(oldresults) # reuse everything
+  cat("reusing: ", reuse, "\n")
+  
+  # create results list
+  results <- vector("list", length(options[["models"]]))
+  if (any(!is.na(reuse))) {
+    # where possible, prefill results with old results
+    results[seq_along(reuse)] <- oldresults[reuse]
+  }
+  str(results, max.level = 2)
+  
+  # generate lavaan options list
+  lavopts <- .semOptionsToLavOptions(options)
+  
+  for (i in seq_along(results)) {
+    if (!is.null(results[[i]])) next # existing model is reused
     
-  # Current to saturated:
-  fitTableResult <- lavaan::lavTestLRT(semContainer[["semResultsList"]]$object$semResults)[-1, ]
-  rownames(fitTableResult) <- gettext("Model")
-  colnames(fitTableResult) <- c("Df", "AIC", "BIC", "Chisq", "ChisqDiff", "DfDiff", "PrChisq")
+    # create options
+    lav_args <- lavopts
+    syntax   <- .semTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
+    lav_args[["model"]] <- syntax
+    if (options[["Data"]] == "raw") {
+      lav_args[["data"]]  <- dataset
+    } else {
+      lav_args[["sample.cov"]] <- .semDataCovariance(dataset, options[["models"]][[i]][["syntax"]])
+      lav_args[["sample.nobs"]] <- options[["SampleSize"]]
+    }
+    
+    # fit the model
+    fit <- try(do.call(lavaan::lavaan, lav_args))
+    
+    if (inherits(fit, "try-error")) {
+      errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(fit, "condition")$message)
+      modelContainer$setError(paste0("Error in model \"", options[["models"]][[i]][["modelName"]], "\" - ", 
+                                    .decodeVarsInMessage(names(dataset), errmsg)))
+      modelContainer$dependOn("models") # add dependency so everything gets updated upon model change
+      break
+    }
+    
+    if (options[["se"]] == "bootstrap") {
+      fit <- lavBootstrap(fit, options[["errorCalculationBootstrapSamples"]])
+    }
+    results[[i]] <- fit
+    
+  }
+  
+  # store in model container
+  if (!modelContainer$getError()) {
+    modelContainer[["results"]] <- createJaspState(results)
+    modelContainer[["results"]]$dependOn(optionsFromObject = modelContainer)
+    modelContainer[["models"]]  <- createJaspState(options[["models"]])
+    modelContainer[["models"]]$dependOn(optionsFromObject = modelContainer)
+  }
+  
+  return(results)
+}
+
+.semDataCovariance <- function(dataset, syntax) {
+  print(.unv(colnames(dataset)))
+  usedvars <- .semGetUsedVars(syntax, colnames(dataset))
+  print(usedvars)
+  var_idx  <- match(usedvars, .unv(colnames(dataset)))
+  print(var_idx)
+  mat <- try(as.matrix(dataset[var_idx, var_idx]))
+  if (inherits(mat, "try-error") || any(is.na(mat)))
+    JASP:::.quitAnalysis("Input data does not seem to be a covariance matrix! Please check the format of the input data. 
+                         All cells must be numeric, and the number of rows must equal the number of columns.")
+  colnames(mat) <- rownames(mat) <- colnames(dataset)[var_idx]
+  print(mat)
+  return(mat)
+}
+
+.semOptionsToLavOptions <- function(options) {
+  #' mapping the QML options from JASP to lavaan options
+  #' see ?lavOptions for documentation
+  lavopts <- lavaan::lavOptions()
+  
+  lavopts[["mimic"]] <- options[["emulation"]]
   
   
+  # model features
+  lavopts[["meanstructure"]]   <- options[["meanstructure"]]
+  lavopts[["int.ov.free"]]     <- !options[["int.ov.fixed"]]
+  lavopts[["int.lv.free"]]     <- !options[["int.lv.fixed"]]
+  lavopts[["fixed.x"]]         <- options[["fixed.x"]]
+  lavopts[["orthogonal"]]      <- options[["orthogonal"]]
+  lavopts[["std.lv"]]          <- options[["factorStandardisation"]] == "std.lv"
+  lavopts[["effect.coding"]]   <- options[["factorStandardisation"]] == "effect.coding"
+  lavopts[["auto.fix.first"]]  <- options[["factorStandardisation"]] == "auto.fix.first"
+  lavopts[["auto.fix.single"]] <- options[["auto.fix.single"]]
+  lavopts[["auto.var"]]        <- options[["auto.var"]]
+  lavopts[["auto.cov.lv.x"]]   <- options[["auto.cov.lv.x"]]
+  lavopts[["auto.cov.y"]]      <- options[["auto.cov.y"]]
+  lavopts[["auto.th"]]         <- options[["auto.th"]]
+  lavopts[["auto.delta"]]      <- options[["auto.delta"]]
+  lavopts[["auto.efa"]]        <- options[["auto.efa"]]
   
-  fitTableResult[["Model"]] <- rownames(fitTableResult)
-  semFitTable$setData(fitTableResult)
+  # data options
+  lavopts[["std.ov"]]  <- options[["std.ov"]]
+  lavopts[["missing"]] <- options[["missing"]]
+  
+  # estimation options
+  lavopts[["estimator"]]   <- options[["estimator"]]
+  lavopts[["se"]]          <- ifelse(options[["se"]] == "bootstrap", "standard", options[["se"]])
+  lavopts[["information"]] <- options[["information"]]
+  lavopts[["test"]]        <- options[["test"]]
+  
+  # group.equal options
+  equality_constraints <- c(
+    options[["eq_loadings"]],
+    options[["eq_intercepts"]],
+    options[["eq_means"]],
+    options[["eq_thresholds"]],
+    options[["eq_regressions"]],
+    options[["eq_residuals"]],
+    options[["eq_residualcovariances"]],
+    options[["eq_variances"]],
+    options[["eq_lvcovariances"]]
+  )
+  
+  if (any(equality_constraints)) {
+    lavopts[["group.equal"]] <- c("loadings", "intercepts", "means", "thresholds", "regressions", "residuals", 
+                                  "residual.covariances", "lv.variances", "lv.covariances")[equality_constraints]
+  }
+  
+  # group variable
+  if (options[["groupingVariable"]] != "") {
+    lavopts[["group"]] <- .v(options[["groupingVariable"]])
+  }
+  
+  # sampling weights
+  if (options[["sampling.weights"]] != "") {
+    lavopts[["sampling.weights"]] <- .v(options[["sampling.weights"]])
+  }
+  
+  
+  return(lavopts)
+}
+
+.semTranslateModel <- function(syntax, dataset) {
+  #' translate model syntax to jasp column names syntax
+  usedvars <- .semGetUsedVars(syntax, colnames(dataset))
+  
+  if (length(usedvars) == 0) {
+    return(syntax)
+  }
+  
+  usedvars <- usedvars[order(nchar(usedvars), decreasing = TRUE)]
+  with.s.quotes <- paste("\\b'", usedvars, "'\\b", sep="")
+  with.d.quotes <- paste('\\b"', usedvars, '"\\b', sep="")
+  
+  new.names <- .v(usedvars)
+  
+  for (i in 1:length(usedvars)) {
+    syntax <- gsub(with.d.quotes[i], new.names[i], syntax)
+  }
+  
+  for (i in 1:length(usedvars)) {
+    syntax <- gsub(with.s.quotes[i], new.names[i], syntax)
+  }
+  
+  for (i in 1:length(usedvars)) {
+    syntax <- gsub(paste0("\\b", usedvars[i], "\\b"), new.names[i], syntax)
+  }
+  
+  return(syntax)
+}
+
+# output functions
+
+.semFitTab <- function(jaspResults, modelContainer, dataset, options, ready) {
+  if (!is.null(modelContainer[["fittab"]])) return()
+  
+  fittab <- createJaspTable(title = gettext("Model fit"))
+  fittab$dependOn("models")
+  fittab$position <- 0
+  
+  fittab$addColumnInfo(name = "Model",    title = "",                            type = "string" )
+  fittab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
+  fittab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
+  fittab$addColumnInfo(name = "N",        title = gettext("n"),                  type = "integer")
+  fittab$addColumnInfo(name = "Chisq",    title = gettext("&#967;&sup2;"),       type = "number" ,
+                       overtitle = gettext("Baseline test"))
+  fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
+                       overtitle = gettext("Baseline test"))
+  fittab$addColumnInfo(name = "PrChisq",  title = gettext("p"),                  type = "pvalue",
+                       overtitle = gettext("Baseline test"))
+  fittab$addColumnInfo(name = "dchisq",   title = gettext("&#916;&#967;&sup2;"), type = "number" , 
+                       overtitle = gettext("Difference test"))
+  fittab$addColumnInfo(name = "ddf",      title = gettext("&#916;df"),           type = "integer", 
+                       overtitle = gettext("Difference test"))
+  fittab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" , 
+                       overtitle = gettext("Difference test"))
+  
+  modelContainer[["fittab"]] <- fittab
+  
+  if (!ready) return()
+  
+  # add data to the table!
+  semResults <- .semComputeResults(modelContainer, dataset, options)
+  
+  if (modelContainer$getError()) return()
+  
+  if (length(semResults) == 1) {
+    lrt <- .withWarnings(lavaan::lavTestLRT(semResults[[1]])[-1, ])
+    rownames(lrt$value) <- options[["models"]][[1]][["modelName"]]
+    Ns <- lavaan::lavInspect(semResults[[1]], "ntotal")
+  } else {
+    Ns <- vapply(semResults, lavaan::lavInspect, 0, what = "ntotal")
+    lrt_args <- semResults
+    names(lrt_args) <- "object" # (the first result is object, the others ...)
+    lrt_args[["model.names"]] <- vapply(options[["models"]], getElement, name = "modelName", "")
+    lrt <- .withWarnings(do.call(lavaan::lavTestLRT, lrt_args))
+    lrt$value[1,5:7] <- NA
+  }
+  
+  fittab[["Model"]]    <- rownames(lrt$value)
+  fittab[["AIC"]]      <- lrt$value[["AIC"]]
+  fittab[["BIC"]]      <- lrt$value[["BIC"]]
+  fittab[["N"]]        <- Ns
+  fittab[["Chisq"]]    <- lrt$value[["Chisq"]]
+  fittab[["Df"]]       <- lrt$value[["Df"]]
+  fittab[["PrChisq"]]  <- pchisq(q = lrt$value[["Chisq"]], df = lrt$value[["Df"]], lower.tail = FALSE)
+  fittab[["dchisq"]]   <- lrt$value[["Chisq diff"]]
+  fittab[["ddf"]]      <- lrt$value[["Df diff"]]
+  fittab[["dPrChisq"]] <- lrt$value[["Pr(>Chisq)"]]
+  
+  # add warning footnote
+  if (!is.null(lrt$warnings)) {
+    fittab$addFootnote(gsub("lavaan WARNING: ", "", lrt$warnings[[1]]$message))
+  }
+  
+  # add test statistic correction footnote
+  test <- lavaan::lavInspect(semResults[[1]], "options")[["test"]]
+  
+  if (test != "standard") {
+    LUT <- tibble::tribble(
+      ~option,              ~name,
+      "Satorra.Bentler",    gettext("Satorra-Bentler scaled test-statistic"),
+      "Yuan.Bentler",       gettext("Yuan-Bentler scaled test-statistic"),
+      "Yuan.Bentler.Mplus", gettext("Yuan-Bentler (Mplus) scaled test-statistic"),
+      "mean.var.adjusted",  gettext("mean and variance adjusted test-statistic"),
+      "Satterthwaite",      gettext("mean and variance adjusted test-statistic"),
+      "scaled.shifted",     gettext("scaled and shifted test-statistic"),
+      "Bollen.Stine",       gettext("bootstrap (Bollen-Stine) probability value"),
+      "bootstrap",          gettext("bootstrap (Bollen-Stine) probability value"),
+      "boot",               gettext("bootstrap (Bollen-Stine) probability value")
+    )
+    testname <- LUT[test == tolower(LUT$option), "name"][[1]]
+    ftext <- gettextf("Model tests based on %s.", testname)
+    fittab$addFootnote(message = ftext)
+  }
+}
+
+.semParameters <- function(modelContainer, dataset, options, ready) {
+  if (!is.null(modelContainer[["params"]])) return()
+  
+  
+  params <- createJaspContainer("Parameter estimates")
+  params$position <- 1
+  params$dependOn(c("ciWidth", "bootCItype", "std", "models"))
+  
+  modelContainer[["params"]] <- params
+  
+  if (length(options[["models"]]) < 2) {
+    .semParameterTables(modelContainer[["results"]][["object"]][[1]], NULL, params, options, ready)
+  } else {
+    
+    for (i in seq_along(options[["models"]])) {
+      fit <- modelContainer[["results"]][["object"]][[i]]
+      modelname <- options[["models"]][[i]][["modelName"]]
+      .semParameterTables(fit, modelname, params, options, ready)
+    }
+  }
+}
+
+.semParameterTables <- function(fit, modelname, parentContainer, options, ready) {
+  if (is.null(modelname)) {
+    pecont <- parentContainer 
+  } else {
+    pecont <- createJaspContainer(modelname, initCollapsed = TRUE)
+  }
+  
+  
+  # Measurement model
+  indtab <- createJaspTable(title = gettext("Factor Loadings"))
+  
+  if (options[["groupingVariable"]] != "")
+    indtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+  
+  indtab$addColumnInfo(name = "lhs",      title = gettext("Latent"),     type = "string", combine = TRUE)
+  indtab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
+  indtab$addColumnInfo(name = "label",    title = "",                    type = "string")
+  indtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
+  indtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  indtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+  indtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+  indtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  indtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  
+  if (options[["std"]]) {
+    indtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number", format = "sf:4;dp:3", 
+                         overtitle = gettext("Standardized"))
+    indtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number", format = "sf:4;dp:3", 
+                         overtitle = gettext("Standardized"))
+    indtab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number", format = "sf:4;dp:3", 
+                         overtitle = gettext("Standardized"))
+  }
+  
+  pecont[["ind"]] <- indtab
+  
+  # Structural Model
+  regtab <- createJaspTable(title = gettext("Regression coefficients"))
+  
+  if (options[["groupingVariable"]] != "")
+    regtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+  
+  regtab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string", combine = TRUE)
+  regtab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),    type = "string")
+  regtab$addColumnInfo(name = "label",    title = "",                    type = "string")
+  regtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
+  regtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  regtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+  regtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+  regtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  regtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  
+  if (options[["std"]]) {
+    regtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number", format = "sf:4;dp:3", 
+                         overtitle = gettext("Standardized"))
+    regtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number", format = "sf:4;dp:3", 
+                         overtitle = gettext("Standardized"))
+    regtab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number", format = "sf:4;dp:3", 
+                         overtitle = gettext("Standardized"))
+  }
+  
+  pecont[["reg"]] <- regtab
+  
+  # Latent variances
+  lvartab <- createJaspTable(title = gettext("Factor variances"))
+  
+  if (options[["groupingVariable"]] != "")
+    lvartab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+  
+  lvartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
+  lvartab$addColumnInfo(name = "label",    title = "",                    type = "string")
+  lvartab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
+  lvartab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  lvartab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+  lvartab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+  lvartab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  lvartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  
+  if (options[["std"]]) {
+    lvartab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number", format = "sf:4;dp:3", 
+                          overtitle = gettext("Standardized"))
+    lvartab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number", format = "sf:4;dp:3", 
+                          overtitle = gettext("Standardized"))
+    lvartab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number", format = "sf:4;dp:3", 
+                          overtitle = gettext("Standardized"))
+  }
+  
+  pecont[["lvar"]] <- lvartab
+  
+  # Latent covariances
+  lcovtab <- createJaspTable(title = gettext("Factor covariances"))
+  
+  if (options[["groupingVariable"]] != "")
+    lcovtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+  
+  lcovtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
+  lcovtab$addColumnInfo(name = "label",    title = "",                    type = "string")
+  lcovtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
+  lcovtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  lcovtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+  lcovtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+  lcovtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  lcovtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  
+  if (options[["std"]]) {
+    lcovtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number", format = "sf:4;dp:3", 
+                          overtitle = gettext("Standardized"))
+    lcovtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number", format = "sf:4;dp:3", 
+                          overtitle = gettext("Standardized"))
+    lcovtab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number", format = "sf:4;dp:3", 
+                          overtitle = gettext("Standardized"))
+  }
+  
+  pecont[["lcov"]] <- lcovtab
+  
+  # Residual variances
+  vartab <- createJaspTable(title = gettext("Residual variances"))
+  
+  if (options[["groupingVariable"]] != "")
+    vartab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+  
+  vartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
+  vartab$addColumnInfo(name = "label",    title = "",                    type = "string")
+  vartab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
+  vartab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  vartab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+  vartab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+  vartab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  vartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  
+  if (options[["std"]]) {
+    vartab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number", format = "sf:4;dp:3", 
+                         overtitle = gettext("Standardized"))
+    vartab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number", format = "sf:4;dp:3", 
+                         overtitle = gettext("Standardized"))
+    vartab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number", format = "sf:4;dp:3", 
+                         overtitle = gettext("Standardized"))
+  }
+  
+  pecont[["var"]] <- vartab
+  
+  # Residual covariances
+  covtab <- createJaspTable(title = gettext("Residual covariances"))
+  
+  if (options[["groupingVariable"]] != "")
+    covtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+  
+  covtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
+  covtab$addColumnInfo(name = "label",    title = "",                    type = "string")
+  covtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
+  covtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  covtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+  covtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+  covtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  covtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  
+  if (options[["std"]]) {
+    covtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number", format = "sf:4;dp:3", 
+                         overtitle = gettext("Standardized"))
+    covtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number", format = "sf:4;dp:3", 
+                         overtitle = gettext("Standardized"))
+    covtab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number", format = "sf:4;dp:3", 
+                         overtitle = gettext("Standardized"))
+  }
+  
+  pecont[["cov"]] <- covtab
+  
+  # Means
+  if (options[["meanstructure"]]) {
+    mutab <- createJaspTable(title = gettext("Means"))
+    
+    if (options[["groupingVariable"]] != "")
+      mutab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+    
+    mutab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
+    mutab$addColumnInfo(name = "label",    title = "",                    type = "string")
+    mutab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
+    mutab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+    mutab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+    mutab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+    mutab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+    mutab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+    
+    if (options[["std"]]) {
+      mutab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number", format = "sf:4;dp:3", 
+                          overtitle = gettext("Standardized"))
+      mutab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number", format = "sf:4;dp:3", 
+                          overtitle = gettext("Standardized"))
+      mutab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number", format = "sf:4;dp:3", 
+                          overtitle = gettext("Standardized"))
+    }
+    
+    pecont[["mu"]] <- mutab
+  }
+  
+  deftab <- createJaspTable(title = gettext("Defined parameters"))
+  
+  deftab$addColumnInfo(name = "lhs",      title = gettext("Name"),       type = "string")
+  deftab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
+  deftab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  deftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+  deftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+  deftab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                      overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  deftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                      overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  
+  if (options[["std"]]) {
+    deftab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number", format = "sf:4;dp:3", 
+                        overtitle = gettext("Standardized"))
+    deftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number", format = "sf:4;dp:3", 
+                        overtitle = gettext("Standardized"))
+    deftab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number", format = "sf:4;dp:3", 
+                        overtitle = gettext("Standardized"))
+  }
+  
+  pecont[["def"]] <- deftab
+  
+  if (!is.null(modelname)) parentContainer[[modelname]] <- pecont
+  
+  if (!ready || !inherits(fit, "lavaan")) return()
+  
+  # fill tables with values
+  lvnames <- lavaan::lavNames(fit, "lv")
+  ovnames <- lavaan::lavNames(fit, "ov")
+  pe <- lavaan::parameterestimates(fit, standardized = TRUE, level = options[["ciWidth"]], 
+                                   boot.ci.type = options[["bootCItype"]])
+  pe <- lavaan::lavMatrixRepresentation(lavaan::lav_partable_complete(pe))
+  
+  if (options[["groupingVariable"]] != "")  {
+    pe[pe[["op"]] != ":=", "groupname"] <- lavaan::lavInspect(fit, "group.label")[pe[["group"]]]
+  } else {
+    pe[["group"]] <- 0
+  }
+  
+  # Measurement model
+  pe_ind <- pe[pe$op == "=~",]
+  pe_ind <- pe_ind[order(pe_ind[["group"]], pe_ind[["lhs"]]),]
+  if (nrow(pe_ind) == 0) pecont[["int"]] <- NULL # remove if no estimates
+  
+  if (options[["groupingVariable"]] != "") 
+    indtab[["group"]] <- pe_ind[["groupname"]]
+  
+  indtab[["rhs"]]      <- .unv(pe_ind[["rhs"]])
+  indtab[["lhs"]]      <- .unv(pe_ind[["lhs"]])
+  indtab[["label"]]    <- pe_ind[["label"]]
+  indtab[["est"]]      <- pe_ind[["est"]]
+  indtab[["se"]]       <- pe_ind[["se"]]
+  indtab[["z"]]        <- pe_ind[["z"]]
+  indtab[["pvalue"]]   <- pe_ind[["pvalue"]]
+  indtab[["ci.lower"]] <- pe_ind[["ci.lower"]]
+  indtab[["ci.upper"]] <- pe_ind[["ci.upper"]]
+  
+  if (options[["std"]]) {
+    indtab[["std.all"]] <- pe_ind[["std.all"]]
+    indtab[["std.lv"]]  <- pe_ind[["std.lv"]]
+    indtab[["std.nox"]] <- pe_ind[["std.nox"]]
+  }
+  
+  # Structural model
+  pe_reg <- pe[pe$op == "~",]
+  pe_reg <- pe_reg[order(pe_reg[["group"]], pe_reg[["lhs"]]),]
+  if (nrow(pe_reg) == 0) pecont[["reg"]] <- NULL # remove if no estimates
+  
+  if (options[["groupingVariable"]] != "") 
+    regtab[["group"]] <- pe_reg[["groupname"]]
+  
+  regtab[["rhs"]]      <- .unv(pe_reg[["rhs"]])
+  regtab[["lhs"]]      <- .unv(pe_reg[["lhs"]])
+  regtab[["label"]]    <- pe_reg[["label"]]
+  regtab[["est"]]      <- pe_reg[["est"]]
+  regtab[["se"]]       <- pe_reg[["se"]]
+  regtab[["z"]]        <- pe_reg[["z"]]
+  regtab[["pvalue"]]   <- pe_reg[["pvalue"]]
+  regtab[["ci.lower"]] <- pe_reg[["ci.lower"]]
+  regtab[["ci.upper"]] <- pe_reg[["ci.upper"]]
+  
+  if (options[["std"]]) {
+    regtab[["std.all"]] <- pe_reg[["std.all"]]
+    regtab[["std.lv"]]  <- pe_reg[["std.lv"]]
+    regtab[["std.nox"]] <- pe_reg[["std.nox"]]
+  }
+  
+  # Latent variances
+  pe_lvar <- pe[pe$op == "~~" & pe$lhs %in% lvnames & pe$lhs == pe$rhs,]
+  if (nrow(pe_lvar) == 0) pecont[["lvar"]] <- NULL # remove if no estimates
+  
+  if (options[["groupingVariable"]] != "") 
+    lvartab[["group"]] <- pe_lvar[["groupname"]]
+  
+  lvartab[["rhs"]]      <- .unv(pe_lvar[["rhs"]])
+  lvartab[["lhs"]]      <- .unv(pe_lvar[["lhs"]])
+  lvartab[["label"]]    <- pe_lvar[["label"]]
+  lvartab[["est"]]      <- pe_lvar[["est"]]
+  lvartab[["se"]]       <- pe_lvar[["se"]]
+  lvartab[["z"]]        <- pe_lvar[["z"]]
+  lvartab[["pvalue"]]   <- pe_lvar[["pvalue"]]
+  lvartab[["ci.lower"]] <- pe_lvar[["ci.lower"]]
+  lvartab[["ci.upper"]] <- pe_lvar[["ci.upper"]]
+  
+  if (options[["std"]]) {
+    lvartab[["std.all"]] <- pe_lvar[["std.all"]]
+    lvartab[["std.lv"]]  <- pe_lvar[["std.lv"]]
+    lvartab[["std.nox"]] <- pe_lvar[["std.nox"]]
+  }
+  
+  # Latent covariances
+  pe_lcov <- pe[pe$op == "~~" & pe$lhs %in% lvnames & pe$rhs %in% lvnames & pe$lhs != pe$rhs,]
+  if (nrow(pe_lcov) == 0) pecont[["lcov"]] <- NULL # remove if no estimates
+  
+  if (options[["groupingVariable"]] != "") 
+    lcovtab[["group"]] <- pe_lcov[["groupname"]]
+  
+  lcovtab[["lhs"]]      <- paste(.unv(pe_lcov[["lhs"]]), "-", .unv(pe_lcov[["rhs"]]))
+  lcovtab[["label"]]    <- pe_lcov[["label"]]
+  lcovtab[["est"]]      <- pe_lcov[["est"]]
+  lcovtab[["se"]]       <- pe_lcov[["se"]]
+  lcovtab[["z"]]        <- pe_lcov[["z"]]
+  lcovtab[["pvalue"]]   <- pe_lcov[["pvalue"]]
+  lcovtab[["ci.lower"]] <- pe_lcov[["ci.lower"]]
+  lcovtab[["ci.upper"]] <- pe_lcov[["ci.upper"]]
+  
+  if (options[["std"]]) {
+    lcovtab[["std.all"]] <- pe_lcov[["std.all"]]
+    lcovtab[["std.lv"]]  <- pe_lcov[["std.lv"]]
+    lcovtab[["std.nox"]] <- pe_lcov[["std.nox"]]
+  }
+  
+  # Residual variances
+  pe_var <- pe[pe$op == "~~" & pe$lhs %in% ovnames & pe$lhs == pe$rhs,]
+  if (nrow(pe_var) == 0) pecont[["var"]] <- NULL # remove if no estimates
+  
+  if (options[["groupingVariable"]] != "") 
+    vartab[["group"]] <- pe_var[["groupname"]]
+  
+  vartab[["rhs"]]      <- .unv(pe_var[["rhs"]])
+  vartab[["lhs"]]      <- .unv(pe_var[["lhs"]])
+  vartab[["label"]]    <- pe_var[["label"]]
+  vartab[["est"]]      <- pe_var[["est"]]
+  vartab[["se"]]       <- pe_var[["se"]]
+  vartab[["z"]]        <- pe_var[["z"]]
+  vartab[["pvalue"]]   <- pe_var[["pvalue"]]
+  vartab[["ci.lower"]] <- pe_var[["ci.lower"]]
+  vartab[["ci.upper"]] <- pe_var[["ci.upper"]]
+  
+  if (options[["std"]]) {
+    vartab[["std.all"]] <- pe_var[["std.all"]]
+    vartab[["std.lv"]]  <- pe_var[["std.lv"]]
+    vartab[["std.nox"]] <- pe_var[["std.nox"]]
+  }
+  
+  # Residual covariances
+  pe_cov <- pe[pe$op == "~~" & pe$lhs %in% ovnames & pe$rhs %in% ovnames & pe$lhs != pe$rhs,]
+  if (nrow(pe_cov) == 0) pecont[["cov"]] <- NULL # remove if no estimates
+  
+  if (options[["groupingVariable"]] != "") 
+    covtab[["group"]] <- pe_cov[["groupname"]]
+  
+  covtab[["lhs"]]      <- paste(.unv(pe_cov[["lhs"]]), "-", .unv(pe_cov[["rhs"]]))
+  covtab[["label"]]    <- pe_cov[["label"]]
+  covtab[["est"]]      <- pe_cov[["est"]]
+  covtab[["se"]]       <- pe_cov[["se"]]
+  covtab[["z"]]        <- pe_cov[["z"]]
+  covtab[["pvalue"]]   <- pe_cov[["pvalue"]]
+  covtab[["ci.lower"]] <- pe_cov[["ci.lower"]]
+  covtab[["ci.upper"]] <- pe_cov[["ci.upper"]]
+  
+  if (options[["std"]]) {
+    covtab[["std.all"]] <- pe_cov[["std.all"]]
+    covtab[["std.lv"]]  <- pe_cov[["std.lv"]]
+    covtab[["std.nox"]] <- pe_cov[["std.nox"]]
+  }
+  
+  
+  # Means
+  if (options[["meanstructure"]]) {
+    pe_mu <- pe[pe$op == "~1",]
+    
+    if (options[["groupingVariable"]] != "") 
+      mutab[["group"]] <- pe_mu[["groupname"]]
+    
+    mutab[["lhs"]] <- .unv(pe_mu[["lhs"]])
+    mutab[["label"]]    <- pe_mu[["label"]]
+    mutab[["est"]]      <- pe_mu[["est"]]
+    mutab[["se"]]       <- pe_mu[["se"]]
+    mutab[["z"]]        <- pe_mu[["z"]]
+    mutab[["pvalue"]]   <- pe_mu[["pvalue"]]
+    mutab[["ci.lower"]] <- pe_mu[["ci.lower"]]
+    mutab[["ci.upper"]] <- pe_mu[["ci.upper"]]
+    
+    if (options[["std"]]) {
+      mutab[["std.all"]] <- pe_mu[["std.all"]]
+      mutab[["std.lv"]]  <- pe_mu[["std.lv"]]
+      mutab[["std.nox"]] <- pe_mu[["std.nox"]]
+    }
+  }
+  
+  # defined parameters
+  pe_def <- pe[pe$op == ":=",]
+  if (nrow(pe_def) == 0) pecont[["def"]] <- NULL # remove if no estimates
+  
+  deftab[["lhs"]]      <- pe_def[["lhs"]]
+  deftab[["est"]]      <- pe_def[["est"]]
+  deftab[["se"]]       <- pe_def[["se"]]
+  deftab[["z"]]        <- pe_def[["z"]]
+  deftab[["pvalue"]]   <- pe_def[["pvalue"]]
+  deftab[["ci.lower"]] <- pe_def[["ci.lower"]]
+  deftab[["ci.upper"]] <- pe_def[["ci.upper"]]
+  
+  if (options[["std"]]) {
+    deftab[["std.all"]] <- pe_def[["std.all"]]
+    deftab[["std.lv"]]  <- pe_def[["std.lv"]]
+    deftab[["std.nox"]] <- pe_def[["std.nox"]]
+  }
+  
+}
+
+.semAdditionalFits <- function(modelContainer, dataset, options, ready) {
+  if (!options[["outputAdditionalFitMeasures"]] || !is.null(modelContainer[["addfit"]])) return()
+  
+  fitms <- createJaspContainer(gettext("Additional fit measures"))
+  fitms$dependOn(c("outputAdditionalFitMeasures", "models"))
+  fitms$position <- 0.5
+  
+  # Fit indices
+  fitms[["indices"]] <- fitin <- createJaspTable(gettext("Fit indices"))
+  fitin$addColumnInfo(name = "index", title = gettext("Index"), type = "string")
+  if (length(options[["models"]]) < 2) {
+    fitin$addColumnInfo(name = "value", title = gettext("Value"), type = "number", format = "sf:4;dp:3")
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      fitin$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["modelName"]], type = "number", 
+                          format = "sf:4;dp:3")
+    }
+  }
+  fitin$setExpectedSize(rows = 1, cols = 2)
+  
+  # information criteria
+  fitms[["incrits"]] <- fitic <- createJaspTable(gettext("Information criteria"))
+  fitic$addColumnInfo(name = "index", title = "",               type = "string")
+  if (length(options[["models"]]) < 2) {
+    fitic$addColumnInfo(name = "value", title = gettext("Value"), type = "number", format = "sf:4;dp:3")
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      fitic$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["modelName"]], type = "number", 
+                          format = "sf:4;dp:3")
+    }
+  }
+  fitic$setExpectedSize(rows = 1, cols = 2)
+  
+  # other fit measures
+  fitms[["others"]] <- fitot <- createJaspTable(gettext("Other fit measures"))
+  fitot$addColumnInfo(name = "index", title = gettext("Metric"), type = "string")
+  if (length(options[["models"]]) < 2) {
+    fitot$addColumnInfo(name = "value", title = gettext("Value"), type = "number", format = "sf:4;dp:3")
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      fitot$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["modelName"]], type = "number", 
+                          format = "sf:4;dp:3")
+    }
+  }
+  fitot$setExpectedSize(rows = 1, cols = 2)
+  
+  modelContainer[["addfit"]] <- fitms
+  
+  if (!ready || modelContainer$getError()) return()
+  
+  # actually compute the fit measures
+  fmli <- lapply(modelContainer[["results"]][["object"]], lavaan::fitmeasures)
+  
+  # Fit indices
+  fitin[["index"]] <- c(
+    gettext("Comparative Fit Index (CFI)"),
+    gettext("Tucker-Lewis Index (TLI)"),
+    gettext("Bentler-Bonett Non-normed Fit Index (NNFI)"),
+    gettext("Bentler-Bonett Normed Fit Index (NFI)"),
+    gettext("Parsimony Normed Fit Index (PNFI)"),
+    gettext("Bollen's Relative Fit Index (RFI)"),
+    gettext("Bollen's Incremental Fit Index (IFI)"),
+    gettext("Relative Noncentrality Index (RNI)")
+  )
+  if (length(options[["models"]]) == 1) {
+    fitin[["value"]] <- fmli[[1]][c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      fitin[[paste0("value_", i)]] <- fmli[[i]][c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
+    }
+  }
+  
+  # information criteria
+  fitic[["index"]] <- c(
+    gettext("Log-likelihood"),
+    gettext("Number of free parameters"),
+    gettext("Akaike (AIC)"),
+    gettext("Bayesian (BIC)"),
+    gettext("Sample-size adjusted Bayesian (SSABIC)")
+  )
+  
+  if (length(options[["models"]]) == 1) {
+    fitic[["value"]] <- fmli[[1]][c("logl", "npar", "aic", "bic", "bic2")]
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      fitic[[paste0("value_", i)]] <- fmli[[i]][c("logl", "npar", "aic", "bic", "bic2")]
+    }
+  }
+  
+  # other fitmeasures
+  fitot[["index"]] <- c(
+    gettext("Root mean square error of approximation (RMSEA)"),
+    gettextf("RMSEA 90%% CI lower bound"),
+    gettextf("RMSEA 90%% CI upper bound"),
+    gettext("RMSEA p-value"),
+    gettext("Standardized root mean square residual (SRMR)"),
+    gettextf("Hoelter's critical N (%s = .05)","\u03B1"),
+    gettextf("Hoelter's critical N (%s = .01)","\u03B1"),
+    gettext("Goodness of fit index (GFI)"),
+    gettext("McDonald fit index (MFI)"),
+    gettext("Expected cross validation index (ECVI)")
+  )
+  if (length(options[["models"]]) == 1) {
+    fitot[["value"]] <- fmli[[1]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
+                                    "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      fitot[[paste0("value_", i)]] <- fmli[[i]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
+                                                  "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
+    }
+  }
+}
+
+.semRsquared <- function(modelContainer, dataset, options, ready) {
+  if (!options[["outputRSquared"]] || !is.null(modelContainer[["rsquared"]])) return()
+  
+  tabr2 <- createJaspTable(gettext("R-Squared"))
+  tabr2$addColumnInfo(name = "__var__", title = "", type = "string")
+  if (length(options[["models"]]) < 2) {
+    tabr2$addColumnInfo(name = "rsq", title = "R\u00B2", type = "number", format = "sf:4;dp:3")
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      tabr2$addColumnInfo(name = paste0("rsq_", i), title = options[["models"]][[i]][["modelName"]], 
+                          overtitle = "R\u00B2", type = "number", format = "sf:4;dp:3")
+    }
+  }
+  
+  tabr2$dependOn(c("outputRSquared", "models"))
+  tabr2$position <- .75
+  
+  modelContainer[["rsquared"]] <- tabr2 
+  
+  if (!ready || modelContainer$getError()) return()
+  
+  if (length(options[["models"]]) < 2) {
+    r2res              <- lavaan::inspect(modelContainer[["results"]][["object"]][[1]], "r2")
+    tabr2[["__var__"]] <- .unv(names(r2res))
+    tabr2[["rsq"]]     <- r2res
+  } else {
+    # determine variable names
+    r2li <- lapply(modelContainer[["results"]][["object"]], lavaan::inspect, what = "r2")
+    
+    # generate df with these names
+    r2df <- data.frame("varname__" = unique(unlist(lapply(r2li, names))))
+    tabr2[["__var__"]] <- .unv(unique(unlist(lapply(r2li, names))))
+    
+    for (i in 1:length(r2li)) {
+      # fill matching vars from model with df
+      r2df[match(names(r2li[[i]]), r2df[["varname__"]]), i + 1] <- r2li[[i]]
+      # add column to table
+      tabr2[[paste0("rsq_", i)]] <- r2df[[i + 1]]
+    }
+  }
+}
+
+.semMardiasCoefficient <- function(modelContainer, dataset, options, ready) {
+  if (!options[["outputMardiasCoefficients"]] || !is.null(modelContainer[["semMardiasTable"]])) return()
+  
+  mardiatab <- createJaspTable(title = gettext("Mardia's coefficients"))
+  mardiatab$position <- .2
+  
+  mardiatab$addColumnInfo(name = "Type",        title = "",                      type = "string")
+  mardiatab$addColumnInfo(name = "Coefficient", title = gettext("Coefficient"),  type = "number")
+  mardiatab$addColumnInfo(name = "z",           title = gettext("z"),            type = "number")
+  mardiatab$addColumnInfo(name = "Chisq",       title = gettext("&#967;&sup2;"), type = "number")
+  mardiatab$addColumnInfo(name = "DF",          title = gettext("df"),           type = "integer")
+  mardiatab$addColumnInfo(name = "pvalue",      title = gettext("p"),            type = "pvalue")
+  
+  mardiatab$dependOn(c("outputMardiasCoefficients", "models"))
+  modelContainer[["mardiasTable"]] <- mardiatab
+  
+  if (!ready || modelContainer$getError()) return()
+  
+  varNames <- unique(unlist(lapply(modelContainer[["results"]][["object"]], lavaan::lavaanNames, type = "ov")))
+  if (length(options[["models"]]) > 1) 
+    mardiatab$addFootnote(
+      gettext("Multivariate skewness and kurtosis calculated for observed variables from all models.")
+    )
+  
+  
+  if (!all(sapply(dataset[, varNames, drop = FALSE], is.numeric))) {
+    mardiatab$setError(gettext("Not all used variables are numeric. Mardia's coefficients not available."))
+    return()
+  }
+  
+  mardiaSkew <- unname(semTools:::mardiaSkew(dataset[, varNames]))
+  mardiaKurtosis <- unname(semTools:::mardiaKurtosis(dataset[, varNames]))
+  mardiatab$addRows(
+    data.frame(Type        = gettext("Skewness"), 
+               Coefficient = mardiaSkew[1], 
+               z           = NA, 
+               Chisq       = mardiaSkew[2], 
+               DF          = mardiaSkew[3], 
+               pvalue      = mardiaSkew[4])
+  )
+  mardiatab$addRows(
+    data.frame(Type        = gettext("Kurtosis"), 
+               Coefficient = mardiaKurtosis[1], 
+               z           = mardiaKurtosis[2], 
+               Chisq       = NA, 
+               DF          = NA, 
+               pvalue      = mardiaKurtosis[3])
+  )
   
   return()
 }
 
-.semEstimatesTable <- function(semContainer, options, dataset, ready, variables, position) {
-  if (!is.null(semContainer[["semEstimatesTable"]]))
-    return()
+.semCov <- function(modelContainer, dataset, options, ready) {
+  if (!(options[["outputObservedCovariances"]] || options[["outputImpliedCovariances"]] || 
+        options[["outputResidualCovariances"]]) || !is.null(modelContainer[["covars"]])) return()
   
-  semEstimatesTable <- createJaspTable(title = "Parameter Estimates")
-  semEstimatesTable$position <- position
+  covars <- createJaspContainer("Covariance tables")
+  covars$position <- 3
+  covars$dependOn(c("outputObservedCovariances", "outputImpliedCovariances", "outputResidualCovariances",
+                    "outputStandardizedResiduals", "models"))
   
-  semEstimatesTable$addColumnInfo(name = "lhs",      title = "",                    type = "string")
-  semEstimatesTable$addColumnInfo(name = "op",       title = "",                    type = "string")
-  semEstimatesTable$addColumnInfo(name = "rhs",      title = "",                    type = "string")
-  semEstimatesTable$addColumnInfo(name = "label",    title = gettext("label"),      type = "string")
-  semEstimatesTable$addColumnInfo(name = "est",      title = gettext("est"),        type = "number")
-  semEstimatesTable$addColumnInfo(name = "se",       title = gettext("se"),         type = "number")
-  semEstimatesTable$addColumnInfo(name = "z",        title = gettext("z"),          type = "number")
-  semEstimatesTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
-  semEstimatesTable$addColumnInfo(name = "ci.lower", title = gettext("CI (lower)"), type = "number")
-  semEstimatesTable$addColumnInfo(name = "ci.upper", title = gettext("CI (upper)"), type = "number")
-  semEstimatesTable$addColumnInfo(name = "std.lv",   title = gettext("std (lv)"),   type = "number")
-  semEstimatesTable$addColumnInfo(name = "std.all",  title = gettext("std (all)"),  type = "number")
-  semEstimatesTable$addColumnInfo(name = "std.nox",  title = gettext("std (nox)"),  type = "number")
-  semEstimatesTable$addColumnInfo(name = "group",    title = gettext("group"),      type = "string")
+  modelContainer[["covars"]] <- covars
   
-  semEstimatesTable$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
-  semEstimatesTable$showSpecifiedColumnsOnly <- TRUE
-  
-  semContainer[["semEstimatesTable"]] <- semEstimatesTable
-  
-  if (!ready || semContainer$getError())
-    return()
-
-  semEstimates <- lavaan:::parameterEstimates(semContainer[["semResultsList"]]$object$semResults, standardized=TRUE)
-  semEstimatesTable$setData(lapply(semEstimates, .unv))
-      
-  return()
+  if (length(options[["models"]]) < 2) {
+    .semCovTables(modelContainer[["results"]][["object"]][[1]], NULL, covars, options, ready)
+  } else {
+    
+    for (i in seq_along(options[["models"]])) {
+      fit <- modelContainer[["results"]][["object"]][[i]]
+      modelname <- options[["models"]][[i]][["modelName"]]
+      .semCovTables(fit, modelname, covars, options, ready)
+    }
+  }
 }
 
-.semAdditionalFitMeasuresTables <- function(semContainer, options, dataset, ready, position) {
-  if (!options[["outputAdditionalFitMeasures"]] || !is.null(semContainer[["fitMeasuresModelTest"]]))
-    return()
+.semCovTables <- function(fit, modelname, parentContainer, options, ready) {
+  if (is.null(modelname)) {
+    cocont <- parentContainer 
+  } else {
+    cocont <- createJaspContainer(modelname, initCollapsed = TRUE)
+  }
   
-  fitMeasures <- createJaspContainer()
-  fitMeasures$position <- position
-  
-  semContainer[["fitMeasures"]] <- fitMeasures
-  
-  ## Model test
-  semModelTestTable <- createJaspTable(title = "Model test baseline model")
-  
-  semModelTestTable$addColumnInfo(name = "model",  title = "",                                         type = "string")
-  semModelTestTable$addColumnInfo(name = "fmin",   title = gettext("Minimum Function Test Statistic"), type = "number")
-  semModelTestTable$addColumnInfo(name = "chisq",  title = gettext("&#967;&sup2;"),                    type = "number")
-  semModelTestTable$addColumnInfo(name = "df",     title = gettext("Degrees of freedom"),              type = "number")
-  semModelTestTable$addColumnInfo(name = "pvalue", title = gettext("p"),                               type = "pvalue")
-  
-  semModelTestTable$transpose <- TRUE
-  semModelTestTable$dependOn("outputAdditionalFitMeasures")
-  fitMeasures[["fitMeasuresModelTest"]] <- semModelTestTable
-  
-  ### Baseline
-  semBaselineTable <- createJaspTable(title = "User model versus baseline model")
-  
-  semBaselineTable$addColumnInfo(name = "model", title = "",                                                    type = "string")
-  semBaselineTable$addColumnInfo(name = "cfi",   title = gettext("Comparative Fit Index (CFI)"),                type = "number")
-  semBaselineTable$addColumnInfo(name = "tli",   title = gettext("Tucker-Lewis Index (TLI)"),                   type = "number")
-  semBaselineTable$addColumnInfo(name = "nnfi",  title = gettext("Bentler-Bonett Non-normed Fit Index (NNFI)"), type = "number")
-  semBaselineTable$addColumnInfo(name = "nfi",   title = gettext("Bentler-Bonett Normed Fit Index (NFI)"),      type = "number")
-  semBaselineTable$addColumnInfo(name = "pnfi",  title = gettext("Parsimony Normed Fit Index (PNFI)"),          type = "number")
-  semBaselineTable$addColumnInfo(name = "rfi",   title = gettext("Bollen's Relative Fit Index (RFI)"),          type = "number")
-  semBaselineTable$addColumnInfo(name = "ifi",   title = gettext("Bollen's Incremental Fit Index (IFI)"),       type = "number")
-  semBaselineTable$addColumnInfo(name = "rni",   title = gettext("Relative Noncentrality Index (RNI)"),         type = "number")
-  
-  semBaselineTable$transpose <- TRUE
-  semBaselineTable$dependOn("outputAdditionalFitMeasures")
-  fitMeasures[["fitMeasuresBaseline"]] <- semBaselineTable
-  
-  ### LogLik measures
-  semLoglikTable <- createJaspTable(title = gettext("Loglikelihood and Information Criteria"))
-  
-  semLoglikTable$addColumnInfo(name="model",             title = "",                                               type = "string")
-  semLoglikTable$addColumnInfo(name="logl",              title = gettext("Loglikelihood user model (H0)"),         type = "number")
-  semLoglikTable$addColumnInfo(name="unrestricted.logl", title = gettext("Loglikelihood unrestricted model (H1)"), type = "number")
-  semLoglikTable$addColumnInfo(name="npar",              title = gettext("Number of free parameters"),             type = "integer")
-  semLoglikTable$addColumnInfo(name="aic",               title = gettext("Akaike (AIC)"),                          type = "number")
-  semLoglikTable$addColumnInfo(name="bic",               title = gettext("Bayesian (BIC)"),                        type = "number")
-  semLoglikTable$addColumnInfo(name="bic2",              title = gettext("Sample-size adjusted Bayesian (BIC)"),   type = "number")
-  
-  semLoglikTable$transpose <- TRUE
-  semLoglikTable$dependOn("outputAdditionalFitMeasures")
-  fitMeasures[["fitMeasuresLikelihood"]] <- semLoglikTable
-  
-  
-  ### RMSEA measures
-  semRMSEATable <- createJaspTable(title = gettext("Root Mean Square Error of Approximation"))
-  
-  semRMSEATable$addColumnInfo(name = "model",          title = "",                                type = "string")
-  semRMSEATable$addColumnInfo(name = "rmsea",          title = gettext("RMSEA"),                  type = "number")
-  semRMSEATable$addColumnInfo(name = "rmsea.ci.upper", title = gettextf("Upper 90%% CI"),           type = "number")
-  semRMSEATable$addColumnInfo(name = "rmsea.ci.lower", title = gettextf("Lower 90%% CI"),           type = "number")
-  semRMSEATable$addColumnInfo(name = "rmsea.pvalue",   title = gettext("p-value RMSEA <= 0.05 "), type = "pvalue")  
-  
-  semRMSEATable$transpose <- TRUE
-  semRMSEATable$dependOn("outputAdditionalFitMeasures")
-  fitMeasures[["fitMeasuresRMSEA"]] <- semRMSEATable
-  
-  
-  ### RMR measures
-  semRMRTable <- createJaspTable(title = "Standardized Root Mean Square Residual")
-  
-  semRMRTable$addColumnInfo(name = "model",      title = "",                       type = "string")
-  semRMRTable$addColumnInfo(name = "rmr",        title = gettext("RMR"),           type = "number")
-  semRMRTable$addColumnInfo(name = "rmr_nomean", title = gettext("RMR (No Mean)"), type = "number")
-  semRMRTable$addColumnInfo(name = "srmr",       title = gettext("SRMR"),          type = "number")
-  
-  semRMRTable$transpose <- TRUE
-  semRMRTable$dependOn("outputAdditionalFitMeasures")
-  fitMeasures[["fitMeasuresRMR"]] <- semRMRTable
-  
-  ### Other fit measures
-  semOtherFitTable <- createJaspTable(title = gettext("Other Fit Indices"))
-  
-  semOtherFitTable$addColumnInfo(name = "model", title = "",                                               type = "string")
-  semOtherFitTable$addColumnInfo(name = "cn_05", title = gettext("Hoelter Critical N (CN) alpha=0.05"),    type = "number")
-  semOtherFitTable$addColumnInfo(name = "cn_01", title = gettext("Hoelter Critical N (CN) alpha=0.01"),    type = "number")
-  semOtherFitTable$addColumnInfo(name = "gfi",   title = gettext("Goodness of Fit Index (GFI)"),           type = "number")
-  semOtherFitTable$addColumnInfo(name = "agfi",  title = gettext("Parsimony Goodness of Fit Index (GFI)"), type = "number")
-  semOtherFitTable$addColumnInfo(name = "mfi",   title = gettext("McDonald Fit Index (MFI)"),              type = "number")
-  # semOtherFitTable$addColumnInfo(name="ecvi", title="Expected Cross-Validation Index (ECVI)", type="number")
-  
-  semOtherFitTable$transpose <- TRUE
-  semOtherFitTable$dependOn("outputAdditionalFitMeasures")
-  fitMeasures[["fitMeasuresOther"]] <- semOtherFitTable
-  
-  if (!ready || semContainer$getError())
-    return()
-  
-  semFitMeasures <- unlist(lavaan:::fitMeasures(semContainer[["semResultsList"]]$object$semResults))
-  
-  modl <- list(model = gettext("Model"))
-  semModelTestTable$setData(c(modl, semFitMeasures[c('fmin', 'chisq', 'df', 'pvalue')]))
-  semBaselineTable$setData( c(modl, semFitMeasures[c('cfi', 'tli', 'nnfi', 'nfi', 'pnfi', 'rfi', 'ifi', 'rni')]))
-  semLoglikTable$setData(   c(modl, semFitMeasures[c('logl', 'unrestricted.logl', 'npar', 'aic', 'bic', 'bic2')]))
-  semRMSEATable$setData(    c(modl, semFitMeasures[c('rmsea', 'rmsea.ci.lower', 'rmsea.ci.upper', 'rmsea.pvalue')]))
-  semRMRTable$setData(      c(modl, semFitMeasures[c('rmr', 'rmr_nomean', 'srmr')]))
-  semOtherFitTable$setData( c(modl, semFitMeasures[c('cn_05', 'cn_01', 'gfi', 'agfi', 'mfi')]))
-  
-  return()
-}
-
-.semRSquaredTable <- function(semContainer, options, dataset, ready, position) {
-  if (!options[["outputRSquared"]] || !is.null(semContainer[["semRSquaredTable"]]))
-    return()
-  
-  semRSquaredTable <- createJaspTable(title = gettext("R-Squared"))
-  semRSquaredTable$position <- position
-  
-  semRSquaredTable$addColumnInfo(name = "var", title = gettext("Variable"), type = "string")
-  semRSquaredTable$dependOn("outputRSquared")
-  
-  semContainer[["rSquaredTable"]] <- semRSquaredTable
-  
-  if (!ready || semContainer$getError())
-    return()
-  
-  r2 <- lavaan::inspect(semContainer[["semResultsList"]]$object$semResults, "r2")
-  nm <- names(r2)
-
-  if (options$groupingVariable == "") {
-    semRSquaredTable$addColumnInfo(name = "R2",  title = gettext("R&sup2;"),  type = "number")
-    semRSquaredTable$addRows(data.frame(var = .unv(names(r2)), R2 = r2))
+  if (options[["groupingVariable"]] == "") {
+    
+    # without groups, these are tables
+    
+    if (options[["outputObservedCovariances"]]) {
+      octab <- createJaspTable("Observed covariance matrix")
+      octab$dependOn("outputObservedCovariances")
+      octab$position <- 1
+      cocont[["observed"]] <- octab
+    }
+    
+    if (options[["outputImpliedCovariances"]]) {
+      ictab <- createJaspTable("Implied covariance matrix")
+      ictab$dependOn("outputImpliedCovariances")
+      ictab$position <- 2
+      cocont[["implied"]] <- ictab
+    }
+    
+    if (options[["outputResidualCovariances"]]) {
+      rctab <- createJaspTable("Residual covariance matrix")
+      rctab$dependOn("outputResidualCovariances")
+      rctab$position <- 3
+      cocont[["residual"]] <- rctab
+    }
+    
+    if (options[["outputStandardizedResiduals"]]) {
+      srtab <- createJaspTable("Standardized residuals matrix")
+      srtab$dependOn("outputStandardizedResiduals")
+      srtab$position <- 4
+      cocont[["stdres"]] <- srtab
+    }
     
   } else {
     
-    semRSquaredTable$addColumns(data.frame(var = .unv(names(r2[[1]]))))
-                                
-    for (i in 1:length(r2)) {
-      semRSquaredTable$addColumnInfo(name = paste0("R2", i), title = gettextf("Group %i", nm[i]), 
-                                     overtitle = gettext("R&sup2;"), type = "number")
-      thisCol <- data.frame(rr = r2[[i]])
-      names(thisCol) <- paste0("R2", i)
-      semRSquaredTable$addColumns(cols = thisCol)
+    # with multiple groups these become containers
+    
+    if (options[["outputObservedCovariances"]]) {
+      occont <- createJaspContainer("Observed covariance matrix", initCollapsed = TRUE)
+      occont$dependOn("outputObservedCovariances")
+      occont$position <- 1
+      cocont[["observed"]] <- occont
+    }
+    
+    if (options[["outputImpliedCovariances"]]) {
+      iccont <- createJaspContainer("Implied covariance matrix", initCollapsed = TRUE)
+      iccont$dependOn("outputImpliedCovariances")
+      iccont$position <- 2
+      cocont[["implied"]] <- iccont
+    }
+    
+    if (options[["outputResidualCovariances"]]) {
+      rccont <- createJaspContainer("Residual covariance matrix", initCollapsed = TRUE)
+      rccont$dependOn("outputResidualCovariances")
+      rccont$position <- 3
+      cocont[["residual"]] <- rccont
+    }
+    
+    if (options[["outputStandardizedResiduals"]]) {
+      srcont <- createJaspContainer("Standardized residuals matrix", initCollapsed = TRUE)
+      srcont$dependOn("outputStandardizedResiduals")
+      srcont$position <- 4
+      cocont[["stdres"]] <- srcont
     }
   }
-
+  
+    
+  if (!ready || !inherits(fit, "lavaan")) return()
+  
+  
+  if (options[["groupingVariable"]] == "") {
+    
+    # without groups, just fill the tables
+  
+    if (options[["outputObservedCovariances"]]) {
+      # actually compute the observed covariance
+      ov <- lavaan::inspect(fit, "sampstat")
+      oc <- ov$cov
+      oc[upper.tri(oc)] <- NA
+      
+      for (i in 1:ncol(oc)) {
+        nm <- colnames(oc)[i]
+        octab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3;p:.001")
+      }
+      octab$addRows(oc, rowNames = colnames(oc))
+    }
+    
+    if (options[["outputImpliedCovariances"]]) {
+      # actually compute the implied covariance
+      fv <- lavaan::fitted.values(fit)
+      ic <- fv$cov
+      ic[upper.tri(ic)] <- NA
+      
+      for (i in 1:ncol(ic)) {
+        nm <- colnames(ic)[i]
+        ictab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3;p:.001")
+      }
+      ictab$addRows(ic, rowNames = colnames(ic))
+    }
+    
+    if (options[["outputResidualCovariances"]]) {
+      # actually compute the implied covariance
+      rv <- lavaan::residuals(fit)
+      rc <- rv$cov
+      rc[upper.tri(rc)] <- NA
+      
+      for (i in 1:ncol(rc)) {
+        nm <- colnames(rc)[i]
+        rctab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3;p:.001")
+      }
+      rctab$addRows(rc, rowNames = colnames(rc))
+    }
+    
+    if (options[["outputStandardizedResiduals"]]) {
+      # actually compute the implied covariance
+      sv <- lavaan::residuals(fit, type = "standardized")
+      sr <- sv$cov
+      sr[upper.tri(sr)] <- NA
+      
+      for (i in 1:ncol(sr)) {
+        nm <- colnames(sr)[i]
+        srtab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3;p:.001")
+      }
+      srtab$addRows(sr, rowNames = colnames(sr))
+    }
+    
+  } else {
+    
+    # with groups, create tables and fill them
+    
+    if (options[["outputObservedCovariances"]]) {
+      # actually compute the observed covariance
+      ov <- lavaan::inspect(fit, "sampstat")
+      level_names <- names(ov)
+      
+      for (i in 1:length(ov)) {
+        oc <- ov[[i]]$cov
+        oc[upper.tri(oc)] <- NA
+        
+        occont[[level_names[i]]] <- createJaspTable(level_names[i])
+        
+        for (j in 1:ncol(oc)) {
+          nm <- colnames(oc)[j]
+          occont[[level_names[i]]]$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3;p:.001")
+        }
+        occont[[level_names[i]]]$addRows(oc, rowNames = colnames(oc))
+      }
+    }
+    
+    if (options[["outputImpliedCovariances"]]) {
+      # actually compute the observed covariance
+      fv <- lavaan::fitted.values(fit)
+      level_names <- names(fv)
+      
+      for (i in 1:length(fv)) {
+        ic <- fv[[i]]$cov
+        ic[upper.tri(ic)] <- NA
+        
+        iccont[[level_names[i]]] <- createJaspTable(level_names[i])
+        
+        for (j in 1:ncol(ic)) {
+          nm <- colnames(ic)[j]
+          iccont[[level_names[i]]]$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3;p:.001")
+        }
+        iccont[[level_names[i]]]$addRows(ic, rowNames = colnames(ic))
+      }
+    }
+    
+    if (options[["outputResidualCovariances"]]) {
+      # actually compute the observed covariance
+      rv <- lavaan::residuals(fit)
+      level_names <- names(rv)
+      
+      for (i in 1:length(rv)) {
+        rc <- rv[[i]]$cov
+        rc[upper.tri(rc)] <- NA
+        
+        rccont[[level_names[i]]] <- createJaspTable(level_names[i])
+        
+        for (j in 1:ncol(rc)) {
+          nm <- colnames(rc)[j]
+          rccont[[level_names[i]]]$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3;p:.001")
+        }
+        rccont[[level_names[i]]]$addRows(rc, rowNames = colnames(rc))
+      }
+    }
+    
+    if (options[["outputStandardizedResiduals"]]) {
+      # actually compute the observed covariance
+      sv <- lavaan::residuals(fit, type = "standardized")
+      level_names <- names(sv)
+      
+      for (i in 1:length(sv)) {
+        sr <- sv[[i]]$cov
+        sr[upper.tri(sr)] <- NA
+        
+        srcont[[level_names[i]]] <- createJaspTable(level_names[i])
+        
+        for (j in 1:ncol(sr)) {
+          nm <- colnames(sr)[j]
+          srcont[[level_names[i]]]$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3;p:.001")
+        }
+        srcont[[level_names[i]]]$addRows(sr, rowNames = colnames(sr))
+      }
+    }
+  }
+  
+  if (!is.null(modelname)) {
+    parentContainer[[modelname]] <- cocont
+  }
+  
   return()
 }
 
-.semModIndicesTable <- function(semContainer, options, dataset, ready, position) {
-  if (!options[["outputModificationIndices"]] || !is.null(semContainer[["semModIndicesTable"]]))
-    return()
+.semMI <- function(modelContainer, dataset, options, ready) {
+  if (!options[["outputModificationIndices"]] || !is.null(modelContainer[["modindices"]])) return()
+  
+  modindices <- createJaspContainer(gettext("Modification indices"))
+  modindices$position <- 4
+  modindices$dependOn(c("outputModificationIndices", "miHideLow", "miThreshold", "models"))
+  
+  modelContainer[["modindices"]] <- modindices
+  
+  if (length(options[["models"]]) < 2) {
+    .semMITable(modelContainer[["results"]][["object"]][[1]], NULL, modindices, options, ready)
+  } else {
+    
+    for (i in seq_along(options[["models"]])) {
+      fit <- modelContainer[["results"]][["object"]][[i]]
+      modelname <- options[["models"]][[i]][["modelName"]]
+      .semMITable(fit, modelname, modindices, options, ready)
+    }
+  }
+}
+
+.semMITable <- function(fit, modelname, parentContainer, options, ready) {
+  if (is.null(modelname)) {
+    micont <- parentContainer
+  } else {
+    micont <- createJaspContainer(modelname, initCollapsed = TRUE)
+  }
   
   semModIndicesTable <- createJaspTable(title = gettext("Modification Indices"))
-  semModIndicesTable$position <- position
   
   semModIndicesTable$addColumnInfo(name = "lhs",       title = "",                    type = "string")
   semModIndicesTable$addColumnInfo(name = "op",        title = "",                    type = "string")
   semModIndicesTable$addColumnInfo(name = "rhs",       title = "",                    type = "string")
+  if (options[["groupingVariable"]] != "")
+    semModIndicesTable$addColumnInfo(name = "group",   title = gettext("group"),      type = "string")
   semModIndicesTable$addColumnInfo(name = "mi",        title = gettext("mi"),         type = "number")
   semModIndicesTable$addColumnInfo(name = "epc",       title = gettext("epc"),        type = "number")
   semModIndicesTable$addColumnInfo(name = "sepc.lv",   title = gettext("sepc (lv)"),  type = "number")
   semModIndicesTable$addColumnInfo(name = "sepc.all",  title = gettext("sepc (all)"), type = "number")
   semModIndicesTable$addColumnInfo(name = "sepc.nox",  title = gettext("sepc (nox)"), type = "number")
   
-  semModIndicesTable$dependOn(c("outputModificationIndices", "outputModificationIndicesHideLowIndices", 
-                                "outputModificationIndicesHideLowIndicesThreshold"))
   semModIndicesTable$showSpecifiedColumnsOnly <- TRUE
   
-  semContainer[["semModIndicesTable"]] <- semModIndicesTable
+  micont[["table"]] <- semModIndicesTable
   
-  if (!ready || semContainer$getError())
-    return()
+  if (!ready || !inherits(fit, "lavaan")) return()
   
   # Extract modidffication indices:
-  semModIndResult <- lavaan:::modificationIndices(semContainer[["semResultsList"]]$object$semResults)
+  semModIndResult <- lavaan:::modificationIndices(fit)
   
   ### Remove NA:
   semModIndResult <- semModIndResult[!is.na(semModIndResult$mi), , drop=FALSE]
   
   ## Sort:
-  semModIndResult <- semModIndResult[order(semModIndResult$mi, decreasing=TRUE), , drop=FALSE]
+  semModIndResult <- semModIndResult[order(semModIndResult$mi, decreasing = TRUE), , drop=FALSE]
   
   ### Remove low indices:
-  if (isTRUE(options$outputModificationIndicesHideLowIndices)) {
-    semModIndResult <- semModIndResult[semModIndResult$mi > options$outputModificationIndicesHideLowIndicesThreshold, , drop=FALSE]
+  if (isTRUE(options$miHideLow)) {
+    semModIndResult <- semModIndResult[semModIndResult$mi > options$miThreshold, , drop=FALSE]
   }
+  
+  if (options[["groupingVariable"]] != "")
+    semModIndResult[["group"]] <- lavaan::lavInspect(fit, "group.label")[semModIndResult[["group"]]]
   
   semModIndicesTable$setData(lapply(semModIndResult, .unv))
   
-  return()
-}
-
-.semCovCorTable <- function(semContainer, options, dataset, ready, position) {
-  if (!(options$outputObservedCovarianceCorrelations || options$outputFittedCovarianceCorrelations || 
-                  options$outputResidualCovarianceCorrelations) || !is.null(semContainer[["semCovCorCollection"]]))
-    return()
- 
-  semCovCorCollection <- createJaspContainer()
-  semCovCorCollection$position <- position
-  semContainer[["semCovCorCollection"]] <- semCovCorCollection
   
-  semCovCorCollection$dependOn(c("outputFittedCovarianceCorrelations", "outputObservedCovarianceCorrelations", 
-                                 "outputResidualCovarianceCorrelations"))
-  
-  if (!ready || semContainer$getError()) 
-    return()
-    
-  include <- c("observed", "fitted", "residual")[ c(options$outputObservedCovarianceCorrelations, 
-                                                    options$outputFittedCovarianceCorrelations,
-                                                    options$outputResidualCovarianceCorrelations)]
-
-  mainTitle <- gettext("Covariances (lower triangle) / correlations (upper triangle)")
-  nm <- ""
-  if (options$groupingVariable != "") {
-    semCovCorCollection$title <- mainTitle
-    nm <- names(lavaan::inspect(semContainer[["semResultsList"]]$object$semResults, "sampstat"))
+  if (!is.null(modelname)) {
+    parentContainer[[modelname]] <- micont
   }
-  
-  for (thisGroup in 1:length(nm)) {
-    
-    if (options$groupingVariable == "") {
-      observedCov <- lavaan::inspect(semContainer[["semResultsList"]]$object$semResults, "sampstat")$cov
-      fittedCov <- lavaan::fitted(semContainer[["semResultsList"]]$object$semResults)$cov
-    } else {
-      observedCov <- lavaan::inspect(semContainer[["semResultsList"]]$object$semResults, "sampstat")[[thisGroup]]$cov
-      fittedCov <- lavaan::fitted(semContainer[["semResultsList"]]$object$semResults)[[thisGroup]]$cov
-    }
-    
-    residualCov <- observedCov - fittedCov
-    
-    varNames <- colnames(observedCov)
-    
-    covList <- list(observed=observedCov,
-                    fitted=fittedCov,
-                    residual=residualCov)
-    
-    corList <- list(observed=stats::cov2cor(observedCov),
-                    fitted=stats::cov2cor(fittedCov),
-                    residual=stats::cov2cor(observedCov) - stats::cov2cor(fittedCov))
-    
-    n <- ncol(covList[[1]])
-    
-    matList <- mapply(cov = covList, cor = corList, type = names(covList), FUN=function(cov, cor, type){
-      cov[upper.tri(cov,diag=FALSE)] <- cor[upper.tri(cor,diag=FALSE)]
-      cbind(..sortingDummy = seq_len(NROW(cov)), ..varName = .unv(rownames(cov)), ..type = type, as.data.frame(cov), stringsAsFactors = FALSE)
-    }, SIMPLIFY = FALSE)
-    
-    matDF <- do.call(rbind, matList)
-    matDF <- matDF[matDF$..type %in% include, ]
-    matDF$..type <- as.character(matDF$..type)
-    matDF <- matDF[order(matDF$..sortingDummy), ]
-    matDF <- matDF[, -1]
-    
-    if (options$groupingVariable == "")
-      thisTitle <- mainTitle
-    else
-      thisTitle <- paste0("Level of ", options$groupingVariable, ": ", nm[thisGroup])
-    
-    semCovCorCollection[[paste0("semCovCorTable", thisGroup)]] <- createJaspTable(title = thisTitle)
-    semCovCorCollection[[paste0("semCovCorTable", thisGroup)]]$addColumnInfo(name="Variable", title="", type="string", 
-                                                                             combine = TRUE)
-    semCovCorCollection[[paste0("semCovCorTable", thisGroup)]]$addColumnInfo(name="Type", title="", type="string")
-    
-    for (i in 1:n)
-      semCovCorCollection[[paste0("semCovCorTable", thisGroup)]]$addColumnInfo(name=varNames[i], title=.unv(varNames[i]), type="number")
-
-    names(matDF)[1:2] <- c("Variable", "Type")
-    semCovCorCollection[[paste0("semCovCorTable", thisGroup)]]$setData(matDF)
-  }
-
-  return()
-}
-
-.semMardiasCoefficientTable <- function(semContainer, options, dataset, ready, position) {
-  if (!options[["outputMardiasCoefficients"]] || !is.null(semContainer[["semMardiasTable"]]))
-    return()
-  
-  semMardiasTable <- createJaspTable(title = gettext("Mardia's coefficients"))
-  semMardiasTable$position <- position
-  
-  semMardiasTable$addColumnInfo(name = "Type",        title = "",                      type = "string")
-  semMardiasTable$addColumnInfo(name = "Coefficient", title = gettext("Coefficient"),  type = "number")
-  semMardiasTable$addColumnInfo(name = "z",           title = gettext("z"),            type = "number")
-  semMardiasTable$addColumnInfo(name = "Chisq",       title = gettext("&#967;&sup2;"), type = "number")
-  semMardiasTable$addColumnInfo(name = "DF",          title = gettext("df"),           type = "number")
-  semMardiasTable$addColumnInfo(name = "pvalue",      title = gettext("p"),            type = "pvalue")
-  
-  semMardiasTable$dependOn("outputMardiasCoefficients")
-  semContainer[["mardiasTable"]] <- semMardiasTable
-  
-  if (!ready || semContainer$getError())
-    return()
-  
-  varNames <- lavaan::lavaanNames(semContainer[["semResultsList"]]$object$semResults, type="ov")
-  
-  if (!all(sapply(dataset[, varNames, drop = FALSE], is.numeric))) {
-    semMardiasTable$setError(gettext("Not all used variables are numeric. Mardia's coefficients not available."))
-    return()
-  }
-  
-  mardiaSkew <- unname(semTools:::mardiaSkew(dataset[, varNames]))
-  mardiaKurtosis <- unname(semTools:::mardiaKurtosis(dataset[, varNames]))
-  semMardiasTable$addRows(data.frame(Type=gettext("Skewness"), Coefficient=mardiaSkew[1], z=NA, Chisq=mardiaSkew[2], 
-                                     DF=mardiaSkew[3], "pvalue"=mardiaSkew[4]))
-  semMardiasTable$addRows(data.frame(Type=gettext("Kurtosis"), Coefficient=mardiaKurtosis[1], z=mardiaKurtosis[2], 
-                                     Chisq=NA, DF=NA, "pvalue"=mardiaKurtosis[3]))
-  
   
   return()
 }
 
-.is.raw.letter <- function(ch) {
-  (ch >= 0x61 && ch <= 0x7A) || (ch >= 0x41 && ch <= 0x5A)
-}
-
-.is.alpha.numeric <- function(ch) {
-  (ch >= 0x61 && ch <= 0x7A) || (ch >= 0x41 && ch <= 0x5A) || (ch >= 0x30 && ch <= 0x39)
-}
-
-.extractVariables <- function(model) {
-  reserved.words <- c("c", "start", "equal", "NA")
+.semPathPlot <- function(modelContainer, dataset, options, ready) {
+  if (!options[["outputPathPlot"]] || !ready || !is.null(modelContainer[["plot"]])) return()
   
-  bytes <- c(charToRaw(model), 0)
+  pcont <- createJaspContainer(gettext("Path diagram"))
+  pcont$position <- 7
+  pcont$dependOn(c("outputPathPlot", "pathPlotPar", "pathPlotLegend", "models"))
   
-  variables <- c()
+  modelContainer[["plot"]] <- pcont
   
-  none <- 0
-  in.double.quote <- 1
-  in.single.quote <- 2
-  in.unquoted <- 3
-  in.comment <- 4
-  
-  parse.state <- none
-  token.start <- 1
-  
-  sq <- charToRaw("'")
-  dq <- charToRaw('"')
-  hash <- charToRaw('#')
-  nl <- charToRaw('\n')
-  
-  i <- 1
-  while (i <= length(bytes)) {
-    ch <- bytes[i]
-    
-    if (parse.state == none) {
-      
-      if (.is.raw.letter(ch)) {
-        token.start <- i
-        parse.state <- in.unquoted
-      } else if (ch == sq) {
-        token.start <- i
-        parse.state <- in.single.quote
-      } else if (ch == dq) {
-        token.start <- i
-        parse.state <- in.double.quote
-      } else if (ch == hash) {
-        parse.state <- in.comment
-      }
-    } else if (parse.state == in.single.quote) {
-      if (ch == sq) {
-        variable <- substr(model, token.start, i)
-        variables <- c(variables, variable)
-        parse.state <- none
-      }
-    } else if (parse.state == in.double.quote) {
-      if (ch == dq) {
-        variable <- substr(model, token.start, i)
-        variables <- c(variables, variable)
-        parse.state <- none
-      }
-    } else if (parse.state == in.unquoted) {
-      if (.is.alpha.numeric(ch) == FALSE) {
-        variable <- substr(model, token.start, i - 1)
-        variables <- c(variables, variable)
-        parse.state <- none
-        i <- i - 1
-      }
-    } else if (parse.state == in.comment) {
-      if (ch == nl) {
-        parse.state <- none
-      }
-    }
-    
-    i <- i + 1
-  }
-  
-  variables <- unique(variables)
-  
-  if (length(variables) > 0) {
-    for (i in 1:length(variables)) {
-      variable <- variables[i]
-      if ((regexpr("'.*'", variable) == 1) ||
-          (regexpr("\".*\"", variable) == 1)) {
-        variable <- substr(variable, 2, nchar(variable) - 1)
-      }
-      variables[i] <- variable
-    }
-  }
-  
-  variables <- variables[ ! (variables %in% reserved.words)]
-  return(variables)
-}
-
-.translateModel <- function(model, variables) {
-  if (length(variables) == 0) {
-    return(model)
-  }
-  
-  variables <- variables[order(nchar(variables), decreasing = TRUE)]
-  with.s.quotes <- paste("\\b'", variables, "'\\b", sep="")
-  with.d.quotes <- paste('\\b"', variables, '"\\b', sep="")
-  
-  new.names <- .v(variables)
-  
-  for (i in 1:length(variables)) {
-    model <- gsub(with.d.quotes[i], new.names[i], model)
-  }
-  
-  for (i in 1:length(variables)) {
-    model <- gsub(with.s.quotes[i], new.names[i], model)
-  }
-  
-  for (i in 1:length(variables)) {
-    model <- gsub(paste0("\\b",variables[i], "\\b"), new.names[i], model)
-  }
-  
-  return(model)
-}
-
-.getUsedVars <- function(model, vars) {
-  vv <- .unv(vars)
-  findpattern <- paste0("(?<=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|^)\\Q",
-                        vv,
-                        "\\E(?=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|$)")
-  return(vv[vapply(findpattern,
-                   function(p) stringr::str_detect(model, p),
-                   FUN.VALUE = TRUE,
-                   USE.NAMES = FALSE)])
-}
-
-.decodeVarsInMessage <- function(encodedVars, message) {
-  if (length(encodedVars) == 0 || !is.character(encodedVars) || !is.character(message))
-    return(message)
-  
-  decodedVars <- .unv(encodedVars)
-  names(decodedVars) <- encodedVars
-  stringr::str_replace_all(message, decodedVars)
-}
-
-.lavCreatePathDiagram <- function(semContainer, options, ready, position) {
-  if (!is.null(semContainer[["pathDiagramPlotCollection"]]) || !options[["addPathDiagram"]])
-    return()
-  
-  pathDiagramPlotCollection <- createJaspContainer()
-  pathDiagramPlotCollection$position <- position
-  
-  pathDiagramPlotCollection$dependOn(c("addPathDiagram", "outputpathdiagramstandardizedparameter"))
-  
-  semContainer[["pathDiagramPlotCollection"]] <- pathDiagramPlotCollection
-  
-  if (!ready || semContainer$getError()) {
-    pathDiagramPlotCollection[["placeHolderPathDiagram"]] <- createJaspPlot(title = "Path Diagram")
-    return()
-  }
-  
-  plotArgs <- list(
-    DoNotPlot = TRUE,
-    ask = FALSE,
-    layout = "tree",
-    color = list(lat = "#EAEAEA", man = "#EAEAEA", int = "#FFFFFF"),
-    border.width = 1.5,
-    edge.label.cex = 0.9,
-    lty = 2,
-    title = FALSE
-  )
-
-  p <- try({
-    if (!is.null(semContainer[["semResultsList"]]$object$semResults)) {
-      semPlotModel <- .lavToPlotObj(semContainer[["semResultsList"]]$object$semResults)
-      JASP:::.suppressGrDevice(do.call(semPlot::semPaths,
-                                c(plotArgs, list(object = semPlotModel, what = ifelse(options$outputpathdiagramstandardizedparameter, "std", "paths")))
-      ))
-    } else {
-      semPlotModel <- .lavToPlotObj(semContainer[["semResultsList"]]$object$lavModel)
-      JASP:::.suppressGrDevice(do.call(semPlot::semPaths,
-                                c(plotArgs, list(object = semPlotModel, what = "par", edge.color = "black"))
-      ))
-    }
-  })
-  
-  if (isTryError(p)) {
-    errorMessage <- .extractErrorMessage(p)
-    pathDiagramPlotCollection[["placeHolderPathDiagram"]] <- createJaspPlot(title = gettext("Path Diagram"))
-    pathDiagramPlotCollection[["placeHolderPathDiagram"]]$setError(errorMessage)
-    return()
-  }
-  
-  if (options$groupingVariable != "") {
-    pathDiagramPlotCollection$title <- gettext("Path Diagrams")
-    
-    # semplot returns an unnamed list, but which plot belongs to which grouping level?
-    # The order should match the order of the levels in the lavaan model..
-    titles <- semPlotModel@Original[[1]]@Data@group.label
-    titles <- paste0("Path Diagram - level of ", options$groupingVariable, ": ", titles)
-    
-    if (!is.character(titles) || (length(titles) != length(p)))
-      titles <- seq_along(p)
-    
-    plotList <- list()
-    keep <- NULL
-    for (i in seq_along(p)) {
-      .lavWritePathDiagram(p[[i]], titles[i], options, pathDiagramPlotCollection)
-    }
-    
+  if (length(options[["models"]]) < 2) {
+    .semCreatePathPlot(modelContainer[["results"]][["object"]][[1]], NULL, pcont, options, ready)
   } else {
-    .lavWritePathDiagram(p, gettext("Path Diagram"), options, pathDiagramPlotCollection)
-  }
     
-  return()
+    for (i in seq_along(options[["models"]])) {
+      fit <- modelContainer[["results"]][["object"]][[i]]
+      modelname <- options[["models"]][[i]][["modelName"]]
+      .semCreatePathPlot(fit, modelname, pcont, options, ready)
+    }
+  }
 }
-
-.lavWritePathDiagram <- function(plotObj, title, options, pathDiagramPlotCollection) {
-  width <- options$plotWidth
-  height <- options$plotHeight
-  if (height == 0)
-    height <- 1 + 299 * (length(options$variables) / 5)
-
-  pathDiagramPlotCollection[[paste0("pathPlot", title)]] <- createJaspPlot(width = width, 
-                         height = height, plot = plotObj, title = title)
   
-  return()
+.semCreatePathPlot <- function(fit, modelname, parentContainer, options, ready) {
+  if (is.null(modelname)) {
+    modelname <- gettext("Path diagram")
+  }
+  
+  if (options[["groupingVariable"]] == "") {
+    plt <- createJaspPlot(title = modelname, width = 600, height = 400)
+  } else {
+    plt <- createJaspContainer(title = modelname, initCollapsed = TRUE)
+  }
+  
+  plt$dependOn(c("outputPathPlot", "pathPlotPar", "pathPlotLegend"))
+  parentContainer[[modelname]] <- plt
+  
+  if (!ready || !inherits(fit, "lavaan")) return()
+  
+  if (length(lavaan::lavInspect(fit, "ordered")) > 0) {
+    plt$setError(gettext("Model plot not available with ordinal variables"))
+    return()
+  }
+  
+  # create a qgraph object using semplot
+  po <- .lavToPlotObj(fit)
+  pp <- JASP:::.suppressGrDevice(semPlot::semPaths(
+    object         = po,
+    layout         = "tree2",
+    intercepts     = FALSE,
+    reorder        = FALSE,
+    whatLabels     = ifelse(options[["pathPlotPar"]], "par", "name"),
+    edge.color     = "black",
+    color          = list(lat = "#EAEAEA", man = "#EAEAEA", int = "#FFFFFF"),
+    title          = FALSE,
+    legend         = options[["pathPlotLegend"]],
+    legend.mode    = "names",
+    legend.cex     = 0.6,
+    label.cex      = 1.3,
+    edge.label.cex = 0.9,
+    nodeNames      = decodeColNames(po@Vars$name),
+    nCharNodes     = 3,
+    rotation       = 2
+  ))
+  
+  if (options[["groupingVariable"]] == "") {
+    plt$plotObject <- pp
+  } else {
+    level_names <- lavaan::lavInspect(fit, "group.label")
+    for (i in seq_along(level_names)) {
+      plt[[level_names[i]]] <- createJaspPlot(title = level_names[i], width = 600, height = 400)
+      plt[[level_names[i]]]$plotObject <- pp[[i]]
+    }
+  }
 }
-
-.lavToPlotObj <- function(lavResult) {
-  # Create semplot model and decode the names of the manifest variables
-  # Sorry, this code is really ugly but all it does is replace names for plot.
-  semPlotMod <- semPlot::semPlotModel(list(lavResult), list(mplusStd = "std"))[[1]]
-  
-  manifests <- semPlotMod@Vars$name[semPlotMod@Vars$manifest]
-  semPlotMod@Vars$name[semPlotMod@Vars$manifest] <- decodeColNames(manifests)
-  
-  lhsAreManifest <- semPlotMod@Pars$lhs %in% manifests
-  if (any(lhsAreManifest)) semPlotMod@Pars$lhs[lhsAreManifest] <- decodeColNames(semPlotMod@Pars$lhs[lhsAreManifest])
-  
-  rhsAreManifest <- semPlotMod@Pars$rhs %in% manifests
-  if (any(rhsAreManifest)) semPlotMod@Pars$rhs[rhsAreManifest] <- decodeColNames(semPlotMod@Pars$rhs[rhsAreManifest])
-  
-  return(semPlotMod)
-}
-
