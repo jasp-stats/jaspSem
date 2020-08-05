@@ -68,6 +68,7 @@ Form
 			CheckBox { name: "outputObservedCovariances";	label: qsTr("Observed covariances")		}
 			CheckBox { name: "outputImpliedCovariances";	label: qsTr("Implied covariances")		}
 			CheckBox { name: "outputResidualCovariances";	label: qsTr("Residual covariances")		}
+			CheckBox { name: "outputStandardizedResiduals"; label: qsTr("Standardized residuals")	}
 			CheckBox { name: "outputMardiasCoefficients";	label: qsTr("Mardia's coefficient")		}
 		}
 		Group
@@ -210,13 +211,28 @@ Form
 				name: "estimator"
 				label: qsTr("Estimator")
 				values: [
-					{ value: "automatic",	label: qsTr("Auto") },
-					{ value: "ML",			label: qsTr("ML")	},
-					{ value: "GLS",			label: qsTr("GLS")	},
-					{ value: "WLS",			label: qsTr("WLS")	},
-					{ value: "ULS",			label: qsTr("ULS")	},
-					{ value: "DWLS",		label: qsTr("DWLS")	},
-					{ value: "PML",			label: qsTr("PML")	}
+					{ value: "default",	label: qsTr("Auto") },
+					{ value: "ML",		label: qsTr("ML")	},
+					{ value: "GLS",		label: qsTr("GLS")	},
+					{ value: "WLS",		label: qsTr("WLS")	},
+					{ value: "ULS",		label: qsTr("ULS")	},
+					{ value: "DWLS",	label: qsTr("DWLS")	},
+					{ value: "PML",		label: qsTr("PML")	}
+				]
+			}
+
+			DropDown
+			{
+				name: "test"
+				label: qsTr("Model test")
+				values: [
+					{ value: "default",				label: qsTr("Auto") 						},
+					{ value: "standard",			label: qsTr("Standard")						},
+					{ value: "Satorra.Bentler",		label: qsTr("Satorra-Bentler")				},
+					{ value: "Yuan.Bentler",		label: qsTr("Yuan-Bentler")					},
+					{ value: "mean.var.adjusted",	label: qsTr("Mean and Variance adjusted")	},
+					{ value: "scaled.shifted",		label: qsTr("Scaled and shifted")			},
+					{ value: "Bollen.Stine",		label: qsTr("Bootstrap (Bollen-Stine)")		}
 				]
 			}
 
