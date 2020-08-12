@@ -139,7 +139,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
                               "auto.cov.y", "auto.th", "auto.delta", "auto.efa", "std.ov", "missing", "estimator", "test",
                               "se", "information", "emulation", "groupingVariable", "eq_loadings", "eq_intercepts", 
                               "eq_residuals", "eq_residualcovariances", "eq_means", "eq_thresholds", "eq_regressions", 
-                              "eq_variances", "eq_lvcovariances", "Data", "SampleSize"))
+                              "eq_variances", "eq_lvcovariances", "Data", "SampleSize", "group.partial"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
   
@@ -163,7 +163,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
   }
   
   # generate lavaan options list
-  lavopts <- .semOptionsToLavOptions(options)
+  lavopts <- .semOptionsToLavOptions(options, dataset)
   
   for (i in seq_along(results)) {
     if (!is.null(results[[i]])) next # existing model is reused
@@ -223,7 +223,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
   return(mat)
 }
 
-.semOptionsToLavOptions <- function(options) {
+.semOptionsToLavOptions <- function(options, dataset) {
   #' mapping the QML options from JASP to lavaan options
   #' see ?lavOptions for documentation
   lavopts <- lavaan::lavOptions()
@@ -275,6 +275,12 @@ SEM <- function(jaspResults, dataset, options, ...) {
     lavopts[["group.equal"]] <- c("loadings", "intercepts", "means", "thresholds", "regressions", "residuals", 
                                   "residual.covariances", "lv.variances", "lv.covariances")[equality_constraints]
   }
+  
+  # group.partial options
+  # split params
+  splitted <- strsplit(options[["group.partial"]], "[\\n,;]+", perl = TRUE)[[1]]
+  lavopts[["group.partial"]] <-  vapply(splitted, .semTranslateModel, dataset = dataset, "")
+  
   
   # group variable
   if (options[["groupingVariable"]] != "") {

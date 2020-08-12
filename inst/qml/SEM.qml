@@ -268,40 +268,42 @@ Form
 	Section
 	{
 		title: qsTr("Multigroup SEM")
-		
-		DropDown 
-		{ 
-			name: "groupingVariable"
-			label: qsTr("Grouping Variable")
-			showVariableTypeIcon: true
-			addEmptyValue: true
-		} // No model or source: it takes all variables per default
-
-		Group
+		id: multigroup
+		Group 
 		{
-			title: qsTr("Equality Constraints")
-			CheckBox { name: "eq_loadings";				label: qsTr("Loadings")				}
-			CheckBox { name: "eq_intercepts";			label: qsTr("Intercepts")			}
-			CheckBox { name: "eq_residuals";			label: qsTr("Residuals")			}
-			CheckBox { name: "eq_residualcovariances";	label: qsTr("Residual covariances")	}
-			CheckBox { name: "eq_means";				label: qsTr("Means")				}
-			CheckBox { name: "eq_thresholds";			label: qsTr("Threshold")			}
-			CheckBox { name: "eq_regressions";			label: qsTr("Regressions")			}
-			CheckBox { name: "eq_variances";			label: qsTr("Latent variances")		}
-			CheckBox { name: "eq_lvcovariances";		label: qsTr("Latent covariances")	}
-		}
-
-		Group
-		{
-			title: qsTr("Group partial parameters")
-			TextField
+			DropDown 
+			{ 
+				id: grpvar
+				name: "groupingVariable"
+				label: qsTr("Grouping Variable")
+				showVariableTypeIcon: true
+				addEmptyValue: true
+			} // No model or source: it takes all variables per default
+			Group
 			{
-				name: "group.partial"
-				label: qsTr("labels (space-separated)")
-				fieldWidth: 200
-				visible: eq_loadings.checked 
+				id: constraints
+				title: qsTr("Equality Constraints")
+				CheckBox { id: eq_loadings; 			name: "eq_loadings";			label: qsTr("Loadings")				}
+				CheckBox { id: eq_intercepts; 			name: "eq_intercepts";			label: qsTr("Intercepts")			}
+				CheckBox { id: eq_residuals; 			name: "eq_residuals";			label: qsTr("Residuals")			}
+				CheckBox { id: eq_residualcovariances; 	name: "eq_residualcovariances";	label: qsTr("Residual covariances")	}
+				CheckBox { id: eq_means; 				name: "eq_means";				label: qsTr("Means")				}
+				CheckBox { id: eq_thresholds; 			name: "eq_thresholds";			label: qsTr("Threshold")			}
+				CheckBox { id: eq_regressions; 			name: "eq_regressions";			label: qsTr("Regressions")			}
+				CheckBox { id: eq_variances; 			name: "eq_variances";			label: qsTr("Latent variances")		}
+				CheckBox { id: eq_lvcovariances; 		name: "eq_lvcovariances";		label: qsTr("Latent covariances")	}
 			}
+			
 		}
-		
+		TextArea
+		{
+			name: "group.partial"
+			title: qsTr("Release constraints (one per line)")
+			width: multigroup.width / 2
+			height: constraints.height + grpvar.height
+			textType: "source"
+			separator: [";", "\n", ","]
+			visible: eq_loadings.checked || eq_intercepts.checked || eq_residuals.checked || eq_residualcovariances.checked || eq_means.checked || eq_thresholds.checked || eq_regressions.checked || eq_variances.checked || eq_lvcovariances.checked
+		}			
 	}
 }
