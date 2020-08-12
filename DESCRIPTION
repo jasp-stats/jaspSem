@@ -1,4 +1,4 @@
-Package: SEM
+Package: jaspSem
 Type: Package
 Title: SEM Module for JASP
 Version: 0.0.0

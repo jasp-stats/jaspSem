@@ -3,7 +3,7 @@ import JASP.Module 	1.0
 
 Description
 {
-	name:			"SEM"
+	name:			"jaspSem"
 	title : 		qsTr("SEM")
 	description:	qsTr("SEM module.")
 	icon:			"sem-latreg.svg"
