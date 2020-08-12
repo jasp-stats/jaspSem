@@ -47,7 +47,7 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
   
   # Check for missing value handling
   if (options$estimator %in% c("GLS", "WLS", "ULS", "DWLS") && options$missing == "fiml")
-    JASP:::.quitAnalysis(gettext("FIML only available with ML-type estimators."))
+    jaspBase:::.quitAnalysis(gettext("FIML only available with ML-type estimators."))
   
   # Exogenous variables can be binary or continuous
   exo <- options$predictors
@@ -409,7 +409,7 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
   
   # create a qgraph object using semplot
   po <- .lavToPlotObj(modelContainer[["model"]][["object"]])
-  pp <- JASP:::.suppressGrDevice(semPlot::semPaths(
+  pp <- jaspBase:::.suppressGrDevice(semPlot::semPaths(
     object         = po,
     layout         = "tree2",
     intercepts     = FALSE,
@@ -439,7 +439,7 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
 }
 
 .mimicFootMessage <- function(fit) {
-  check <- JASP:::.withWarnings(lavaan:::lav_object_post_check(fit))
+  check <- jaspBase:::.withWarnings(lavaan:::lav_object_post_check(fit))
   if (check$value) return("")
   wrn <- lapply(check$warnings, function(w) w$message)
   return(paste(wrn, collapse = "\n- "))
