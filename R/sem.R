@@ -840,12 +840,12 @@ SEM <- function(jaspResults, dataset = NULL, options) {
   p <- try({
     if (!is.null(semContainer[["semResultsList"]]$object$semResults)) {
       semPlotModel <- .lavToPlotObj(semContainer[["semResultsList"]]$object$semResults)
-      JASP:::.suppressGrDevice(do.call(semPlot::semPaths,
+      jaspBase:::.suppressGrDevice(do.call(semPlot::semPaths,
                                 c(plotArgs, list(object = semPlotModel, what = ifelse(options$outputpathdiagramstandardizedparameter, "std", "paths")))
       ))
     } else {
       semPlotModel <- .lavToPlotObj(semContainer[["semResultsList"]]$object$lavModel)
-      JASP:::.suppressGrDevice(do.call(semPlot::semPaths,
+      jaspBase:::.suppressGrDevice(do.call(semPlot::semPaths,
                                 c(plotArgs, list(object = semPlotModel, what = "par", edge.color = "black"))
       ))
     }
