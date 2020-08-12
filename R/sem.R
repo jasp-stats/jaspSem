@@ -154,7 +154,6 @@ SEM <- function(jaspResults, dataset, options, ...) {
   oldresults <- modelContainer[["results"]][["object"]]
   reuse <- match(options[["models"]], oldmodels)
   if (identical(reuse, seq_along(reuse))) return(oldresults) # reuse everything
-  cat("reusing: ", reuse, "\n")
   
   # create results list
   results <- vector("list", length(options[["models"]]))
@@ -162,7 +161,6 @@ SEM <- function(jaspResults, dataset, options, ...) {
     # where possible, prefill results with old results
     results[seq_along(reuse)] <- oldresults[reuse]
   }
-  str(results, max.level = 2)
   
   # generate lavaan options list
   lavopts <- .semOptionsToLavOptions(options)
@@ -975,7 +973,10 @@ SEM <- function(jaspResults, dataset, options, ...) {
 .semRsquared <- function(modelContainer, dataset, options, ready) {
   if (!options[["outputRSquared"]] || !is.null(modelContainer[["rsquared"]])) return()
   
+  # init table
   tabr2 <- createJaspTable(gettext("R-Squared"))
+  if (options[["groupingVariable"]] != "")
+    tabr2$addColumnInfo(name = "__grp__", title = "", type = "string", combine = TRUE)
   tabr2$addColumnInfo(name = "__var__", title = "", type = "string")
   if (length(options[["models"]]) < 2) {
     tabr2$addColumnInfo(name = "rsq", title = "R\u00B2", type = "number", format = "sf:4;dp:3")
@@ -993,24 +994,88 @@ SEM <- function(jaspResults, dataset, options, ...) {
   
   if (!ready || modelContainer$getError()) return()
   
-  if (length(options[["models"]]) < 2) {
-    r2res              <- lavaan::inspect(modelContainer[["results"]][["object"]][[1]], "r2")
-    tabr2[["__var__"]] <- .unv(names(r2res))
-    tabr2[["rsq"]]     <- r2res
-  } else {
-    # determine variable names
-    r2li <- lapply(modelContainer[["results"]][["object"]], lavaan::inspect, what = "r2")
+  # compute data and fill table
+  if (options[["groupingVariable"]] == "") {
     
-    # generate df with these names
-    r2df <- data.frame("varname__" = unique(unlist(lapply(r2li, names))))
-    tabr2[["__var__"]] <- .unv(unique(unlist(lapply(r2li, names))))
-    
-    for (i in 1:length(r2li)) {
-      # fill matching vars from model with df
-      r2df[match(names(r2li[[i]]), r2df[["varname__"]]), i + 1] <- r2li[[i]]
-      # add column to table
-      tabr2[[paste0("rsq_", i)]] <- r2df[[i + 1]]
+    if (length(options[["models"]]) < 2) {
+      
+      r2res              <- lavaan::inspect(modelContainer[["results"]][["object"]][[1]], "r2")
+      tabr2[["__var__"]] <- .unv(names(r2res))
+      tabr2[["rsq"]]     <- r2res
+      
+    } else {
+      
+      # determine variable names
+      r2li <- lapply(modelContainer[["results"]][["object"]], lavaan::inspect, what = "r2")
+      
+      # generate df with these names
+      r2df <- data.frame("varname__" = unique(unlist(lapply(r2li, names))))
+      tabr2[["__var__"]] <- .unv(unique(unlist(lapply(r2li, names))))
+      
+      for (i in 1:length(r2li)) {
+        # fill matching vars from model with df
+        r2df[match(names(r2li[[i]]), r2df[["varname__"]]), i + 1] <- r2li[[i]]
+        # add column to table
+        tabr2[[paste0("rsq_", i)]] <- r2df[[i + 1]]
+      }
+      
     }
+    
+  } else {
+    
+    if (length(options[["models"]]) < 2) {
+      
+      r2res              <- lavaan::inspect(modelContainer[["results"]][["object"]][[1]], "r2")
+      tabr2[["__grp__"]] <- rep(names(r2res), vapply(r2res, length, 0))
+      tabr2[["__var__"]] <- .unv(unlist(lapply(r2res, names)))
+      tabr2[["rsq"]]     <- unlist(r2res)
+      
+    } else {
+      
+      # here is the most difficult case with multiple groups and multiple models
+      # create a list with r2 results per model. each element is a list with ngroup elements
+      r2li <- lapply(modelContainer[["results"]][["object"]], lavaan::inspect, what = "r2")
+      
+      # now comes the difficult part: determine unique variable names in each group
+      # for each group, find all variable names in each model
+      unique_per_group <- lapply(seq_along(r2li[[1]]), function(grp) {
+        
+        all_names <- lapply(r2li, function(r2res) {
+          # get names for each model
+          names(r2res[[grp]])
+        })
+        
+        # find the unique variable names
+        unique(unlist(all_names))
+      })
+      
+      
+      # generate df with these names
+      r2df <- data.frame(
+        "grpname__" = rep(names(r2li[[1]]), vapply(unique_per_group, length, 0)),
+        "varname__" = unlist(unique_per_group),
+        stringsAsFactors = FALSE
+      )
+     
+      
+      for (mod_idx in seq_along(r2li)) {
+        for (grpname in names(r2li[[1]])) {
+          # find correct rows in r2df for each model and group in r2li
+          grp_idx <- which(r2df[["grpname__"]] == grpname)
+          # complex code because varnames in r2res can be in different order
+          row_idx <- grp_idx[match(names(r2li[[mod_idx]][[grpname]]), r2df[grp_idx, "varname__"])]
+          # fill r2df with r2 results
+          r2df[row_idx, mod_idx + 2] <- r2li[[mod_idx]][[grpname]]
+        }
+      }
+      
+      # fill jasp table with data
+      tabr2[["__grp__"]] <- r2df[["grpname__"]]
+      tabr2[["__var__"]] <- .unv(r2df[["varname__"]])
+      for (i in seq_along(r2li)) tabr2[[paste0("rsq_", i)]] <- r2df[[i + 2]]
+      
+    }
+    
   }
 }
 

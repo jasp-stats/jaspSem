@@ -290,5 +290,18 @@ Form
 			CheckBox { name: "eq_variances";			label: qsTr("Latent variances")		}
 			CheckBox { name: "eq_lvcovariances";		label: qsTr("Latent covariances")	}
 		}
+
+		Group
+		{
+			title: qsTr("Group partial parameters")
+			TextField
+			{
+				name: "group.partial"
+				label: qsTr("labels (space-separated)")
+				fieldWidth: 200
+				visible: eq_loadings.checked 
+			}
+		}
+		
 	}
 }

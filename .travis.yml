@@ -1,7 +1,7 @@
 os: osx
 language: r
 r: 3.6.1
-r_github_packages: TimKDJ/jaspTools
+r_github_packages: jasp-stats/jaspTools
 before_install: 
   - "git clone --branch=MacOS-Original https://github.com/jasp-stats/jasp-required-files.git ~/pkgs"
 script:
