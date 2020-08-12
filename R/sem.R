@@ -678,7 +678,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
   # Measurement model
   pe_ind <- pe[pe$op == "=~",]
   pe_ind <- pe_ind[order(pe_ind[["group"]], pe_ind[["lhs"]]),]
-  if (nrow(pe_ind) == 0) pecont[["int"]] <- NULL # remove if no estimates
+  if (nrow(pe_ind) == 0) pecont[["ind"]] <- NULL # remove if no estimates
   
   if (options[["groupingVariable"]] != "") 
     indtab[["group"]] <- pe_ind[["groupname"]]
@@ -1508,7 +1508,8 @@ SEM <- function(jaspResults, dataset, options, ...) {
     edge.label.cex = 0.9,
     nodeNames      = decodeColNames(po@Vars$name),
     nCharNodes     = 3,
-    rotation       = 2
+    rotation       = 2,
+    ask            = FALSE
   ))
   
   if (options[["groupingVariable"]] == "") {
