@@ -641,16 +641,16 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
     ggplot2::geom_point(data = points_long, position = pos, size = 2) +
     ggplot2::geom_line(alpha = transparency, size = 0.8) +
     ggplot2::labs(y = "Value", x = "Time") +
-    JASPgraphs::themeJaspRaw() +
-    JASPgraphs::scale_x_continuous() +
-    JASPgraphs::scale_y_continuous()
+    jaspGraphs::themeJaspRaw() +
+    jaspGraphs::scale_x_continuous() +
+    jaspGraphs::scale_y_continuous()
   
   if (ctgcl) 
     return(
       p + 
         ggplot2::aes_(colour = as.name(options[["plot_categorical"]]), 
                       shape  = as.name(options[["plot_categorical"]])) +
-        JASPgraphs::scale_JASPcolor_discrete(options[["colorPalette"]])
+        jaspGraphs::scale_JASPcolor_discrete(options[["colorPalette"]])
     )
   
   return(p)

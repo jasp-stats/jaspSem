@@ -8,3 +8,19 @@ Website: jasp-stats.org
 Maintainer: JASP Team <info@jasp-stats.org>
 Description: SEM module.
 License: GPL (>= 2)
+Encoding: UTF-8
+Imports:
+  forcats,
+  ggplot2,
+  jaspBase,
+  jaspGraphs,
+  lavaan,
+  reshape2,
+  semPlot,
+  semTools,
+  stringr,
+  tibble,
+  tidyr
+Remotes:
+  jasp-stats/jaspBase,
+  jasp-stats/jaspGraphs

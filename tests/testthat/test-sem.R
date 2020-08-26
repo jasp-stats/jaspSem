@@ -10,7 +10,7 @@ test_that("Basic SEM works", {
   options$information      <- "expected"
   options$missing          <- "ML"
   options$test             <- "standard"
-  results <- jaspTools::runAnalysis("SEM", "../poldem_grouped.csv", options)
+  results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
   
   fittab   <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   expect_equal_tables(fittab, list(48.156355426353, 59.7437959940346, 0, 0, "Model1", 75, 1, "", 0, 0), "Model fit table")
@@ -69,7 +69,7 @@ test_that("Multigroup, multimodel SEM works", {
     list(modelName = "more constrained", syntax = " # latent variable definitions\n    ind60 =~ x1 + x2 + x3\n    dem60 =~ c(a1, a2)*y1 + c(b1, b2)*y2 + c(c1, c2)*y3 + c(d1, d2)*y4\n    dem65 =~ c(a1, a2)*y5 + c(b1, b2)*y6 + c(c1, c2)*y7 + c(d1, d2)*y8\n  # regressions\n    dem60 ~ ind60\n    dem65 ~ ind60 + dem60\n  # residual (co)variances\n    y1 ~~ y5\n    y2 ~~ y4 + y6\n    y3 ~~ y7\n    y4 ~~ y8\n    y6 ~~ y8")
   )
   
-  results <- jaspTools::runAnalysis("SEM", "../poldem_grouped.csv", options)
+  results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
   
   fittab   <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   expect_equal_tables(fittab, list(3189.26691715402, 3383.93591869107, 82.2032643259552, 70, "default",

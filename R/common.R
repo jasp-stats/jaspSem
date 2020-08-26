@@ -34,10 +34,10 @@ lavBootstrap <- function(fit, samples = 1000) {
     # and then every time on a successful bootstrap:
     # https://github.com/yrosseel/lavaan/blob/77a568a574e4113245e2f6aff1d7c3120a26dd90/R/lav_bootstrap.R#L375
     # i.e., samples + 1 times
-    JASP:::progressbarTick()
+    progressbarTick()
     return(lavaan::coef(lav_object))
   }
-  JASP:::startProgressbar(samples + 1)
+  startProgressbar(samples + 1)
   bootres <- lavaan:::bootstrap.internal(object = fit, R = samples, FUN = coef_with_callback)
   
   # Add the bootstrap samples to the fit object
@@ -74,7 +74,7 @@ lavBootstrap <- function(fit, samples = 1000) {
     ggplot2::theme(axis.ticks.y = ggplot2::element_blank()) +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
                                                        hjust = 0)) +
-    JASPgraphs::themeJaspRaw()
+    jaspGraphs::themeJaspRaw()
   
   return(misfitplot)
 }
