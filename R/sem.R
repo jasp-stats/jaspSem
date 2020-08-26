@@ -48,7 +48,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
 
 .semReadData <- function(dataset, options) {
   if (!is.null(dataset)) return(dataset)
-  return(JASP::.readDataSetToEnd(all.columns = TRUE))
+  return(.readDataSetToEnd(all.columns = TRUE))
 }
 
 .semIsReady <- function(dataset, options) {
@@ -83,8 +83,8 @@ SEM <- function(jaspResults, dataset, options, ...) {
     factab <- table(groupfac)
     if (any(factab < 3)) {
       violations <- names(table(groupfac))[table(groupfac) < 3]
-      JASP:::.quitAnalysis(gettextf("Grouping variable has fewer than 3 observations in group %s", 
-                                    paste(violations, collapse = ", ")))
+      .quitAnalysis(gettextf("Grouping variable has fewer than 3 observations in group %s", 
+                    paste(violations, collapse = ", ")))
       
     }
   }
@@ -216,8 +216,8 @@ SEM <- function(jaspResults, dataset, options, ...) {
   print(var_idx)
   mat <- try(as.matrix(dataset[var_idx, var_idx]))
   if (inherits(mat, "try-error") || any(is.na(mat)))
-    JASP:::.quitAnalysis("Input data does not seem to be a covariance matrix! Please check the format of the input data. 
-                         All cells must be numeric, and the number of rows must equal the number of columns.")
+    .quitAnalysis("Input data does not seem to be a covariance matrix! Please check the format of the input data. 
+                   All cells must be numeric, and the number of rows must equal the number of columns.")
   colnames(mat) <- rownames(mat) <- colnames(dataset)[var_idx]
   print(mat)
   return(mat)
@@ -1498,7 +1498,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
   
   # create a qgraph object using semplot
   po <- .lavToPlotObj(fit)
-  pp <- JASP:::.suppressGrDevice(semPlot::semPaths(
+  pp <- .suppressGrDevice(semPlot::semPaths(
     object         = po,
     layout         = "tree2",
     intercepts     = FALSE,
