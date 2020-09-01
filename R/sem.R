@@ -415,7 +415,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
   if (!is.null(modelContainer[["params"]])) return()
   
   
-  params <- createJaspContainer("Parameter estimates")
+  params <- createJaspContainer(gettext("Parameter estimates"))
   params$position <- 1
   params$dependOn(c("ciWidth", "bootCItype", "std", "models"))
   
@@ -1141,7 +1141,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
   if (!(options[["outputObservedCovariances"]] || options[["outputImpliedCovariances"]] || 
         options[["outputResidualCovariances"]]) || !is.null(modelContainer[["covars"]])) return()
   
-  covars <- createJaspContainer("Covariance tables")
+  covars <- createJaspContainer(gettext("Covariance tables"))
   covars$position <- 3
   covars$dependOn(c("outputObservedCovariances", "outputImpliedCovariances", "outputResidualCovariances",
                     "outputStandardizedResiduals", "models"))
