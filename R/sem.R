@@ -57,7 +57,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
     .semGetUsedVars(x[["syntax"]], colnames(dataset))
   })))
   
-  if (length(usedvars) > 1) TRUE
+  if (length(usedvars) > 1) TRUE else FALSE
 }
 
 .semCheckErrors <- function(dataset, options, ready, modelContainer) {
@@ -68,8 +68,12 @@ SEM <- function(jaspResults, dataset, options, ...) {
     .hasErrors(dataset, type = c("varCovMatrix", "infinity"),
                message='default', exitAnalysisIfErrors = TRUE)
   } else if (ncol(dataset) > 0) {
-    .hasErrors(dataset, type = c("infinity"),
-               message='default', exitAnalysisIfErrors = TRUE)
+    if (length(options[["models"]]) < 1) return(FALSE)
+    usedvars <- unique(unlist(lapply(options[["models"]], function(x) {
+      .semGetUsedVars(x[["syntax"]], colnames(dataset))
+    })))
+    .hasErrors(dataset[,usedvars], 
+               type = c("infinity"), message='default', exitAnalysisIfErrors = TRUE)
   } 
   
   # check FIML
@@ -209,11 +213,8 @@ SEM <- function(jaspResults, dataset, options, ...) {
 }
 
 .semDataCovariance <- function(dataset, syntax) {
-  print(.unv(colnames(dataset)))
   usedvars <- .semGetUsedVars(syntax, colnames(dataset))
-  print(usedvars)
   var_idx  <- match(usedvars, .unv(colnames(dataset)))
-  print(var_idx)
   mat <- try(as.matrix(dataset[var_idx, var_idx]))
   if (inherits(mat, "try-error") || any(is.na(mat)))
     .quitAnalysis("Input data does not seem to be a covariance matrix! Please check the format of the input data. 

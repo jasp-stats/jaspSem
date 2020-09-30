@@ -3,14 +3,14 @@ import JASP.Module 	1.0
 
 Description
 {
-	name:			"SEM"
+	name:			"jaspSem"
 	title : 		qsTr("SEM")
-	description:	qsTr("SEM module.")
+	description:	qsTr("The SEM module for JASP.")
 	icon:			"sem-latreg.svg"
-	version:		"0.13"
+	version:		"0.14"
 	author:			"JASP Team"
 	maintainer:		"JASP Team <info@jasp-stats.org>"
-	website:		"jasp-stats.org"
+	website:		"https://github.com/jasp-stats/jaspSem/"
 	license:		"GPL (>= 2)"
 
 	Analysis

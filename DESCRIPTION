@@ -1,12 +1,12 @@
-Package: SEM
+Package: jaspSem
 Type: Package
 Title: SEM Module for JASP
-Version: 0.13.0
-Date: 2020-08-26
+Version: 0.14.0
+Date: 2020-09-30
 Author: JASP Team
-Website: jasp-stats.org
+Website: https://github.com/jasp-stats/jaspSem/
 Maintainer: JASP Team <info@jasp-stats.org>
-Description: SEM module.
+Description: The SEM module for JASP.
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports:
