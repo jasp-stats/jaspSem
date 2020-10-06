@@ -1,2 +1,6 @@
 export(SEM)
 export(MediationAnalysis)
+export(MIMIC)
+export(LatentGrowthCurve)
+import(jaspBase)
+import(jaspGraphs)

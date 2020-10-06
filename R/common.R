@@ -21,7 +21,7 @@ lavBootstrap <- function(fit, samples = 1000) {
   # Run bootstrap, track progress with progress bar
   # Notes: faulty runs are simply ignored
   # recommended: add a warning if not all boot samples are successful
-  # fit <- semBootstrap(fit, samples = 1000)
+  # fit <- lavBootstrap(fit, samples = 1000)
   # if (nrow(fit@boot$coef) < 1000) 
   #  tab$addFootnote(gettextf("Not all bootstrap samples were successful: CI based on %.0f samples.", nrow(fit@boot$coef)), 
   #                  "<em>Note.</em>")
@@ -46,3 +46,75 @@ lavBootstrap <- function(fit, samples = 1000) {
   
   return(fit)
 }
+
+
+# Function to create a misfit plot
+.resCorToMisFitPlot <- function(rescor) {
+  ggmisfit <- reshape2::melt(abs(t(rescor)))
+  ggmisfit$labels <- substr(round(ggmisfit$value, 2), 2, 4)
+  ggmisfit$labels[ggmisfit$labels == ""] <- "0"
+  
+  levels(ggmisfit$Var1) <- .unv(levels(ggmisfit$Var1))
+  levels(ggmisfit$Var2) <- .unv(levels(ggmisfit$Var2))
+  
+  misfitplot <-
+    ggplot2::ggplot(ggmisfit, ggplot2::aes(x = Var1, y = Var2, fill = value,
+                                           label = labels)) +
+    ggplot2::geom_tile(na.rm = TRUE) +
+    ggplot2::geom_text(color = ifelse(ggmisfit$value > .5, "white", "black"),
+                       na.rm = TRUE) +
+    ggplot2::scale_y_discrete(limits = rev(levels(ggmisfit$Var1))) +
+    ggplot2::scale_x_discrete(position = "top") +
+    ggplot2::scale_fill_continuous(low = "#FFFFFF", high = "#000000",
+                                   na.value = "transparent",
+                                   limits = c(0, 1)) +
+    ggplot2::coord_fixed() +
+    ggplot2::labs(x = "", y = "") +
+    ggplot2::theme(axis.ticks.x = ggplot2::element_blank()) +
+    ggplot2::theme(axis.ticks.y = ggplot2::element_blank()) +
+    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
+                                                       hjust = 0)) +
+    jaspGraphs::themeJaspRaw()
+  
+  return(misfitplot)
+}
+
+.withWarnings <- function(expr) {
+  myWarnings <- NULL
+  wHandler <- function(w) {
+    myWarnings <<- c(myWarnings, list(w))
+    invokeRestart("muffleWarning")
+  }
+  val <- withCallingHandlers(expr, warning = wHandler)
+  list(value = val, warnings = myWarnings)
+}
+
+.decodeVarsInMessage <- function(encodedVars, message) {
+  if (length(encodedVars) == 0 || !is.character(encodedVars) || !is.character(message))
+    return(message)
+  
+  decodedVars <- .unv(encodedVars)
+  names(decodedVars) <- encodedVars
+  stringr::str_replace_all(message, decodedVars)
+}
+
+# plotting stuff
+.lavToPlotObj <- function(lavResult) {
+  # Create semplot model and decode the names of the manifest variables
+  # Sorry, this code is really ugly but all it does is replace names for plot.
+  semPlotMod <- semPlot::semPlotModel(list(lavResult), list(mplusStd = "std"))[[1]]
+  
+  manifests <- semPlotMod@Vars$name[semPlotMod@Vars$manifest]
+  semPlotMod@Vars$name[semPlotMod@Vars$manifest] <- decodeColNames(manifests)
+  
+  lhsAreManifest <- semPlotMod@Pars$lhs %in% manifests
+  if (any(lhsAreManifest)) 
+    semPlotMod@Pars$lhs[lhsAreManifest] <- decodeColNames(semPlotMod@Pars$lhs[lhsAreManifest])
+  
+  rhsAreManifest <- semPlotMod@Pars$rhs %in% manifests
+  if (any(rhsAreManifest)) 
+    semPlotMod@Pars$rhs[rhsAreManifest] <- decodeColNames(semPlotMod@Pars$rhs[rhsAreManifest])
+  
+  return(semPlotMod)
+}
+

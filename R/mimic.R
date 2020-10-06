@@ -179,7 +179,6 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
 .mimicFitTable <- function(modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["fittab"]])) return()
  
-  fittab <- createJaspTable(title = gettext("Model fit"))
   fittab <- createJaspTable(title = gettext("Chi Square test"))
   fittab$position <- 0
   
@@ -315,7 +314,7 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
   ## lambdas
   lamtab <- createJaspTable(title = gettext("Indicator coefficients"))
   
-  lamtab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string")
+  lamtab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
   lamtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
   lamtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
   lamtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")

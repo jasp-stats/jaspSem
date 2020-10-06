@@ -5,19 +5,19 @@ Description
 {
 	name:			"jaspSem"
 	title : 		qsTr("SEM")
-	description:	qsTr("SEM module.")
+	description:	qsTr("The SEM module for JASP.")
 	icon:			"sem-latreg.svg"
-	version:		"0.13"
+	version:		"0.14"
 	author:			"JASP Team"
 	maintainer:		"JASP Team <info@jasp-stats.org>"
-	website:		"jasp-stats.org"
+	website:		"https://github.com/jasp-stats/jaspSem/"
 	license:		"GPL (>= 2)"
 
 	Analysis
 	{
 		title:	qsTr("Structural Equation Modeling")
-		qml:	"SEMSimple.qml"
-		func:	"SEMSimple"
+		qml:	"SEM.qml"
+		func:	"SEM"
 	}
 
 	Analysis
@@ -27,10 +27,18 @@ Description
 		func:	"MediationAnalysis"
 	}
 
-	/*Analysis
+	Analysis
 	{
-		title:	qsTr("MIMIC Model")
+		title:	qsTr("MIMIC Model (beta)")
 		qml:	"Mimic.qml"
 		func:	"MIMIC"
-	}*/
+	}
+	
+	Analysis
+	{
+		title:	qsTr("Latent Growth (beta)")
+		qml:	"LatentGrowthCurve.qml"
+		func:	"LatentGrowthCurve"
+		//enabled: false
+	}
 }
