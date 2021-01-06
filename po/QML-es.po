@@ -1,0 +1,1171 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Language: en_US\n"
+"X-Source-Language: American English\n"
+"X-Qt-Contexts: true\n"
+
+#, fuzzy
+msgctxt "Description|"
+msgid "SEM"
+msgstr "SEM"
+
+#, fuzzy
+msgctxt "Description|"
+msgid "The SEM module for JASP."
+msgstr "Módulo SEM."
+
+#, fuzzy
+msgctxt "Description|"
+msgid "Structural Equation Modeling"
+msgstr "Modelos de ecuaciones estructurales"
+
+#, fuzzy
+msgctxt "Description|"
+msgid "Mediation Analysis"
+msgstr "Análisis de mediación"
+
+#, fuzzy
+msgctxt "Description|"
+msgid "MIMIC Model (beta)"
+msgstr "Modelado visual (Beta)"
+
+msgctxt "Description|"
+msgid "Latent Growth (beta)"
+msgstr ""
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Variables"
+msgstr "Variables"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Regressions"
+msgstr "Regresiones"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Factor"
+msgstr "Factor"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Time-varying covariates"
+msgstr "Número de covariables"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Timings"
+msgstr ""
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Model Options"
+msgstr "Opciones del Modelo"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Growth curve shape"
+msgstr ""
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Intercept"
+msgstr "Intercepta"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Linear"
+msgstr "Lineal"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Quadratic"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Cubic"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Covarying latent curve"
+msgstr ""
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Additional Output"
+msgstr "Output adicional"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Additional Fit Measures"
+msgstr "Medidas de ajuste adicionales"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "R-Squared"
+msgstr "R-cuadrado"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Standardized estimates"
+msgstr "Estimaciones estandarizadas"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Implied covariance matrix"
+msgstr "Matriz de covarianza implícita"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Residual covariance matrix"
+msgstr "Matriz de covarianza residual"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Show lavaan syntax"
+msgstr "Mostrar sintaxis de lavaan"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Plots"
+msgstr "Gráficos"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Color palette"
+msgstr "Paleta de color"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Colorblind"
+msgstr "Daltónico"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Colorblind Alt."
+msgstr "Daltonismo Alt."
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Viridis"
+msgstr "Viridis"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "ggplot2"
+msgstr "ggplot2"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Gray"
+msgstr "gris"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Curve plot"
+msgstr "Gráfico de sedimentación"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Misfit plot"
+msgstr "Parcela inadaptada"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Model plot"
+msgstr "Gráfico del modelo"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Show parameters"
+msgstr "Mostrar parámetros"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Show means"
+msgstr "Mostrar medias"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Advanced"
+msgstr "Avanzado"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Emulation"
+msgstr "Emulación"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "None"
+msgstr "Ninguna"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Mplus"
+msgstr "Mplus"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "EQS"
+msgstr "EQS"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Missing value handling"
+msgstr "Manejo de valor faltante"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Full Information Maximum Likelihood"
+msgstr "Máxima probabilidad de información completa"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Exclude cases listwise"
+msgstr "Excluir casos según la lista"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Error calculation"
+msgstr "Cálculo de error"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "CI width"
+msgstr "Ancho CI"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Method"
+msgstr "Método"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Standard"
+msgstr "Estándar"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Robust"
+msgstr "Robusto"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Bootstrap CI"
+msgstr "Bootstrap CI"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Bootstrap samples"
+msgstr "Muestras de Bootstrap"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Estimator"
+msgstr "Estimador"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Auto"
+msgstr "Auto"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "ML"
+msgstr "ML"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "GLS"
+msgstr "GLS"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "WLS"
+msgstr "WLS"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "ULS"
+msgstr "ULS"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "DWLS"
+msgstr "DWLS"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Options"
+msgstr "Opciones"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Fix manifest intercepts to zero"
+msgstr "Corregir intercepciones de manifiesto a cero"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Fix latent intercepts to zero"
+msgstr "Fijar intercepciones latentes a cero"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Omit residual single indicator"
+msgstr "Omitir indicador único residual"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Residual variances"
+msgstr "Variaciones residuales"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Correlate exogenous latents"
+msgstr "Correlación de latentes exógenos"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Add thresholdds"
+msgstr "Agregar umbrales"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Add scalings parameters"
+msgstr "Agregar parámetros de escalamiento"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Correlate dependent variables"
+msgstr "Correlacionar variables dependientes"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Multigroup LGCM"
+msgstr "CFA multigrupo"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Grouping variable"
+msgstr "Variable de agrupación"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Predictors"
+msgstr "Predictores"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Mediators"
+msgstr "Mediadores"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Outcome"
+msgstr "Salir"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Background confounders"
+msgstr "Confusores de fondo"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Options"
+msgstr "Opciones"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Standardized estimates"
+msgstr "Estimaciones estandarizadas"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Lavaan syntax"
+msgstr "Sintaxis de Lavaan"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "R-squared"
+msgstr "R-cuadrado"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Additional parameter estimates"
+msgstr "Estimaciones de parámetros adicionales"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Total indirect effects"
+msgstr "Efectos indirectos totales"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Residual covariances"
+msgstr "Covarianzas residuales"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Confidence intervals"
+msgstr "Intervalos de confianza"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Method"
+msgstr "Método"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Standard"
+msgstr "Estándar"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Robust"
+msgstr "Robusto"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Bootstrap"
+msgstr "Oreja"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Replications"
+msgstr "Replicaciones"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Type"
+msgstr "Tipo"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Bias-corrected percentile"
+msgstr "Percentil corregido por sesgo"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Percentile"
+msgstr "Percentil"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Normal theory"
+msgstr "Teoría normal"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Plots"
+msgstr "Parcelas"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Model plot"
+msgstr "Parcela modelo"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Parameter estimates"
+msgstr "Estimaciones de parámetros"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Legend"
+msgstr "Leyenda"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Advanced"
+msgstr "Avanzado"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Missing value handling"
+msgstr "Manejo de valor faltante"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Full Information Maximum Likelihood"
+msgstr "Máxima probabilidad de información completa"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Exclude cases listwise"
+msgstr "Excluir casos según la lista"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Emulation"
+msgstr "Emulación"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "None"
+msgstr "Ninguna"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Mplus"
+msgstr "Mplus"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "EQS"
+msgstr "EQS"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Estimator"
+msgstr "Estimador"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "Auto"
+msgstr "Auto"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "ML"
+msgstr "ML"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "GLS"
+msgstr "GLS"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "WLS"
+msgstr "WLS"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "ULS"
+msgstr "ULS"
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "DWLS"
+msgstr "DWLS"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Indicators"
+msgstr "Mediadores"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Predictors"
+msgstr "Predictores"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Options"
+msgstr "Opciones"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Standardized estimates"
+msgstr "Estimaciones estandarizadas"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Lavaan syntax"
+msgstr "Sintaxis de Lavaan"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "R-squared"
+msgstr "R-cuadrado"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Additional fit measures"
+msgstr "Medidas de ajuste adicionales"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Confidence intervals"
+msgstr "Intervalos de confianza"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Method"
+msgstr "Método"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Standard"
+msgstr "Estándar"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Robust"
+msgstr "Robusto"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Bootstrap"
+msgstr "Bootstrap"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Replications"
+msgstr "Replicaciones"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Type"
+msgstr "Tipo"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Bias-corrected percentile"
+msgstr "Percentil corregido por sesgo"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Percentile"
+msgstr "Percentil"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Normal theory"
+msgstr "Teoría normal"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Plots"
+msgstr "Gráficos"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Model plot"
+msgstr "Gráfico del modelo"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Parameter estimates"
+msgstr "Estimaciones de parámetros"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Legend"
+msgstr "Leyenda"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Advanced"
+msgstr "Avanzado"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Missing value handling"
+msgstr "Manejo de valor faltante"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Full Information Maximum Likelihood"
+msgstr "Máxima probabilidad de información completa"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Exclude cases listwise"
+msgstr "Excluir casos según la lista"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Emulation"
+msgstr "Emulación"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "None"
+msgstr "Ninguna"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Mplus"
+msgstr "Mplus"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "EQS"
+msgstr "EQS"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Estimator"
+msgstr "Estimador"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "Auto"
+msgstr "Auto"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "ML"
+msgstr "ML"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "GLS"
+msgstr "GLS"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "WLS"
+msgstr "WLS"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "ULS"
+msgstr "ULS"
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "DWLS"
+msgstr "DWLS"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Model 1"
+msgstr "Modelo"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Data"
+msgstr "Datos"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Raw"
+msgstr "Crudo"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Variance-covariance matrix"
+msgstr "Matriz de varianza-covarianza"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Sample size"
+msgstr "Tamaño de la muestra"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Sampling weights"
+msgstr "Unidades de muestreo"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Output options"
+msgstr "Opciones de salida"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Additional fit measures"
+msgstr "Medidas de ajuste adicionales"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "R-squared"
+msgstr "R-cuadrado"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Observed covariances"
+msgstr "Covarianzas / correlaciones observadas"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Implied covariances"
+msgstr "Matriz de covarianza implícita"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Residual covariances"
+msgstr "Covarianzas residuales"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Standardized residuals"
+msgstr "Residuos estandarizados"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Mardia's coefficient"
+msgstr "Coeficiente de Mardia"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Standardized estimates"
+msgstr "Estimaciones estandarizadas"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Path diagram"
+msgstr "Diagrama de ruta"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Show parameter estimates"
+msgstr "Mostrar estimaciones de parámetros"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Show legend"
+msgstr "Mostrar leyenda"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Modification indices"
+msgstr "Índices de modificación"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Hide low indices"
+msgstr "Ocultar índices bajos"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Threshold"
+msgstr "Límite"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Model Options"
+msgstr "Opciones del Modelo"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Factor scaling"
+msgstr "Escalamiento de factores"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Factor loadings"
+msgstr "Cargas factoriales"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Factor variance"
+msgstr "Variaciones de factores"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Effects coding"
+msgstr "Codificación de efectos"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "None"
+msgstr "Ninguna"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Include mean structure"
+msgstr "Incluir estructura media"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Fix manifest intercepts to zero"
+msgstr "Corregir intercepciones de manifiesto a cero"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Fix latent intercepts to zero"
+msgstr "Fijar intercepciones latentes a cero"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Assume factors uncorrelated"
+msgstr "Asumir que los factores no están correlacionados"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Fix exogenous covariates"
+msgstr "Fijar covariables exógenas"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Omit residual single indicator"
+msgstr "Omitir indicador único residual"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Include residual variances"
+msgstr "Variaciones residuales"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Correlate exogenous latents"
+msgstr "Correlación de latentes exógenos"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Correlate dependent variables"
+msgstr "Correlacionar variables dependientes"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Add thresholds"
+msgstr "Agregar umbrales"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Add scaling parameters"
+msgstr "Agregar parámetros de escalamiento"
+
+msgctxt "SEM|"
+msgid "Constrain EFA blocks"
+msgstr ""
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Estimation options"
+msgstr "Información de estimación"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Information matrix"
+msgstr "Matriz de correlación"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Expected"
+msgstr "Esperado"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Observed"
+msgstr "Observado"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Error calculation"
+msgstr "Cálculo de error"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Standard"
+msgstr "Estándar"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Robust"
+msgstr "Robusto"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Bootstrap"
+msgstr "Bootstrap"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Bootstrap samples"
+msgstr "Muestras de Bootstrap"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Type"
+msgstr "Tipo"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Bias-corrected percentile"
+msgstr "Percentil corregido por sesgo"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Percentile"
+msgstr "Percentil"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Normal theory"
+msgstr "Teoría normal"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Confidence intervals"
+msgstr "Intervalos de confianza"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Standardize variables before estimation"
+msgstr "Estimaciones estandarizadas"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Estimator"
+msgstr "Estimador"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Auto"
+msgstr "Auto"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "ML"
+msgstr "ML"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "GLS"
+msgstr "GLS"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "WLS"
+msgstr "WLS"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "ULS"
+msgstr "ULS"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "DWLS"
+msgstr "DWLS"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "PML"
+msgstr "ML"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Model test"
+msgstr "Términos modelo"
+
+msgctxt "SEM|"
+msgid "Satorra-Bentler"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Yuan-Bentler"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Mean and Variance adjusted"
+msgstr ""
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Scaled and shifted"
+msgstr "Escala el tamaño de la etiqueta"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Bootstrap (Bollen-Stine)"
+msgstr "Opciones de Bootstrap"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Missing data handling"
+msgstr "Manejo de datos faltantes"
+
+msgctxt "SEM|"
+msgid "FIML"
+msgstr ""
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Listwise deletion"
+msgstr "Selección de dos caras"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Pairwise"
+msgstr "Pares"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Two-stage"
+msgstr "De dos caras"
+
+msgctxt "SEM|"
+msgid "Robust two-stage"
+msgstr ""
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Doubly robust"
+msgstr "MAD Robusto"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Emulation"
+msgstr "Emulación"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Mplus"
+msgstr "Mplus"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "EQS"
+msgstr "EQS"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Multigroup SEM"
+msgstr "CFA multigrupo"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Grouping Variable"
+msgstr "Variable de agrupación"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Equality Constraints"
+msgstr "Restricciones de igualdad"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Loadings"
+msgstr "Cargas"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Intercepts"
+msgstr "Intercepta"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Residuals"
+msgstr "Residuos"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Means"
+msgstr "Medias"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Regressions"
+msgstr "Regresiones"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Latent variances"
+msgstr "Variaciones latentes"
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Latent covariances"
+msgstr "Covarianzas latentes"
+
+msgctxt "SEM|"
+msgid "Release constraints (one per line)"
+msgstr ""

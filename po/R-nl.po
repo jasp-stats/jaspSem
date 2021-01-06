@@ -1,0 +1,552 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: R 3.6.1\n"
+"Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
+"POT-Creation-Date: 2021-01-05 09:38\n"
+"PO-Revision-Date: 2020-12-02 21:29+0000\n"
+"Last-Translator: JASP Stats <F.A.M.Meerhoff@uva.nl>\n"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jasp-engine/"
+"nl/>\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
+"X-Generator: Weblate 4.4-dev\n"
+
+msgid "The model could not be estimated due to nonconvergence."
+msgstr "Het model kon niet worden geschat door niet-convergentie."
+
+msgid "The model could not be estimated: No degrees of freedom left."
+msgstr "Het model kon niet worden geschat: Geen vrijheidsgraden over."
+
+#, fuzzy
+msgid "Chi-square Test"
+msgstr "Chikwadraattoets"
+
+msgid "Baseline model"
+msgstr "Baseline model"
+
+msgid "Growth curve model"
+msgstr ""
+
+msgid "The model is not admissible: %s"
+msgstr "Het model is niet geoorloofd: %s"
+
+#, fuzzy
+msgid "Warning."
+msgstr "Waarschuwing:"
+
+msgid "Parameter estimates"
+msgstr "Parameterschattingen"
+
+msgid "Component"
+msgstr "Component"
+
+msgid "Parameter"
+msgstr "Parameter"
+
+msgid "Estimate"
+msgstr "Schatting"
+
+msgid "Std. Error"
+msgstr "Std. fout"
+
+msgid "z-value"
+msgstr "z-waarde"
+
+msgid "p"
+msgstr "p"
+
+msgid "Lower"
+msgstr "Onder"
+
+#, fuzzy
+msgid "95% Confidence Interval"
+msgstr "95%% Betrouwbaarheidsintervallen"
+
+#, fuzzy
+msgid "Latent covariances"
+msgstr "Factorcovarianties"
+
+#, fuzzy
+msgid "LV"
+msgstr "V"
+
+#, fuzzy
+msgid "Std. Est."
+msgstr "Std. Schatting (%s)"
+
+msgid "All"
+msgstr ""
+
+msgid "No X"
+msgstr ""
+
+#, fuzzy
+msgid "Predictor"
+msgstr "Voorspeld"
+
+msgid "Variable"
+msgstr "Variabele"
+
+msgid "Intercept"
+msgstr "Intercept"
+
+msgid "Linear slope"
+msgstr ""
+
+msgid "Quadratic slope"
+msgstr ""
+
+msgid "Cubic slope"
+msgstr ""
+
+msgid "Mean"
+msgstr "Gemiddelde"
+
+msgid "Variance"
+msgstr "Variantie"
+
+msgid ""
+"Residual variance is negative. This may indicate model misspecification."
+msgstr ""
+
+#, fuzzy
+msgid "Additional Fit measures"
+msgstr "Extra pasmaten"
+
+msgid "Fit indices"
+msgstr "Pas indices"
+
+msgid "Index"
+msgstr "Index"
+
+msgid "Value"
+msgstr "Waarde"
+
+msgid "Information criteria"
+msgstr "Informatie criteria"
+
+msgid "Other fit measures"
+msgstr "Andere pasmaten"
+
+msgid "Metric"
+msgstr "Metrisch"
+
+msgid "Comparative Fit Index (CFI)"
+msgstr "Comparatieve Fit Index (CFI)"
+
+msgid "Tucker-Lewis Index (TLI)"
+msgstr "Tucker-Lewis Index (TLI)"
+
+msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
+msgstr "Bentler-Bonett Niet-genormeerde Fit Index (NNFI)"
+
+msgid "Bentler-Bonett Normed Fit Index (NFI)"
+msgstr "Bentler-Bonett Genormeerde Fit Index (NFI)"
+
+msgid "Parsimony Normed Fit Index (PNFI)"
+msgstr "Spaarzaamheid Genormeerde Index (PNFI)"
+
+msgid "Bollen's Relative Fit Index (RFI)"
+msgstr "Bollen's Relatieve Fit index (RFI)"
+
+msgid "Bollen's Incremental Fit Index (IFI)"
+msgstr "Bollen's incrementele Fit Index (IFI)"
+
+msgid "Relative Noncentrality Index (RNI)"
+msgstr "Relatieve Noncentraliteits Index (RNI)"
+
+msgid "Log-likelihood"
+msgstr "Log-likelihood"
+
+msgid "Number of free parameters"
+msgstr "Aantal vrije parameters"
+
+msgid "Akaike (AIC)"
+msgstr "Akaike (AIC)"
+
+msgid "Bayesian (BIC)"
+msgstr "Bayesiaans (BIC)"
+
+msgid "Sample-size adjusted Bayesian (SSABIC)"
+msgstr "Op Steekproef-grootte bijgestelde Bayesiaanse (SSABIC)"
+
+msgid "Root mean square error of approximation (RMSEA)"
+msgstr "Wortel van de gemiddelde fout kwadraat van benadering (RMSEA)"
+
+#, fuzzy
+msgid "RMSEA 90% CI lower bound"
+msgstr "RMSEA 90%% BI ondergrens"
+
+#, fuzzy
+msgid "RMSEA 90% CI upper bound"
+msgstr "RMSEA 90%% BI bovengrens"
+
+msgid "RMSEA p-value"
+msgstr "RMSEA P-waarde"
+
+msgid "Standardized root mean square residual (SRMR)"
+msgstr ""
+"Gestandaardiseerde wortel van het gemiddelde kwadraat van residuen (SRMR)"
+
+msgid "Hoelter's critical N (%s = .05)"
+msgstr "Hoelter's kritische N (%s = .05)"
+
+msgid "Hoelter's critical N (%s = .01)"
+msgstr "Hoelter's kritische N (%s = .01)"
+
+msgid "Goodness of fit index (GFI)"
+msgstr "Pasmaat index (GFI)"
+
+msgid "McDonald fit index (MFI)"
+msgstr "McDonald fit index (MFI)"
+
+msgid "Expected cross validation index (ECVI)"
+msgstr "Verwachte kruisvalidatie index (ECVI)"
+
+msgid "R-Squared"
+msgstr "R-kwadraat"
+
+msgid "Implied covariance matrix"
+msgstr "Geïmpliceerde covariantie matrices"
+
+msgid "Residual covariance matrix"
+msgstr "Residu covariantie matrices"
+
+#, fuzzy
+msgid "Curve plot"
+msgstr "ROC Kurven Grafiek"
+
+msgid "Model plot"
+msgstr "Modelgrafiek"
+
+msgid "Misfit plot"
+msgstr "Misfit grafiek"
+
+msgid "Curve + variance + uncertainty"
+msgstr ""
+
+#, fuzzy
+msgid "Curve + variance"
+msgstr "Factorvarianties"
+
+msgid "Curve + parameter uncertainty"
+msgstr ""
+
+msgid "FIML only available with ML-type estimators."
+msgstr "FIML alleen beschikbaar met ML-type schatters."
+
+msgid ""
+"Not all exogenous variables are admissible. Inadmissible exogenous "
+"variables: %s. Only binary or continuous exogenous variables allowed."
+msgstr ""
+"Niet alle exogene variabelen zijn toelaatbaar. Niet-toelaatbare "
+"exogenevariabelen: %s. Slechts binaire en continue variabelen toegestaan."
+
+msgid ""
+"Not all endogenous variables are admissible. Inadmissible endogenous "
+"variables: %s. Only scale or ordinal endogenous variables allowed."
+msgstr ""
+"Niet alle endogene variabelen zijn toelaatbaar. Niet-toelaatbare "
+"endogenevariabelen: %s. Slechts schaal en ordinale variabelen toegestaan."
+
+msgid ""
+"FIML missing value handling only available when all endogenous variables are "
+"of scale type. Ordinal endogenous variables in the model: %s"
+msgstr ""
+"FIML ontbrekende waardebehandeling slechts beschikbaar wanneer alle endogene "
+"variabelen van het type schaal zijn. Ordinale endogene variabelen in het "
+"model: %s"
+
+msgid ""
+"Estimation failed\n"
+"Message:\n"
+"%s"
+msgstr ""
+"Schatting mislukt\n"
+"Melding:\n"
+"%s"
+
+msgid "Direct effects"
+msgstr "Directe effecten"
+
+msgid "%s%% Confidence Interval"
+msgstr "%s%% Betrouwbaarheidsinterval"
+
+msgid "Upper"
+msgstr "Boven"
+
+msgid "Indirect effects"
+msgstr "Indirecte effecten"
+
+msgid "Total indirect effects"
+msgstr "Totale indirecte effecten"
+
+msgid "Residual covariances"
+msgstr "Residu covarianties"
+
+msgid "Delta method"
+msgstr "Deltamethode"
+
+msgid "Robust"
+msgstr "Robuust"
+
+msgid "percentile bootstrap"
+msgstr "percentiel bootstrap"
+
+msgid "normal theory bootstrap"
+msgstr "normaaltheorie bootstrap"
+
+msgid "bias-corrected percentile bootstrap"
+msgstr "Onzuiverheid-gecorrigeerde percentiel bootstrap"
+
+msgid "normal theory"
+msgstr "normaaltheorie"
+
+msgid "robust"
+msgstr "robuust"
+
+msgid "%1$s standard errors, %2$s confidence intervals."
+msgstr "%1$s standaard fouten, %2$s betrouwbaarheidsintervallen."
+
+msgid ""
+"%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all "
+"bootstrap samples were successful: CI based on %4$.0f samples."
+msgstr ""
+"%1$s standaardfouten, %2$s betrouwbaarheidsintervallen, %3$s schatter. NB: "
+"Niet alle bootstrap steekproeven waren succesvol: BI gebaseerd op %4$.0f "
+"steekproeven."
+
+msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
+msgstr "%1$s standaardfouten, %2$s betrouwbaarheidsintervallen, %3$s schatter."
+
+msgid "Path plot"
+msgstr "Paddiagram"
+
+msgid "Model syntax"
+msgstr "Model syntax"
+
+#, fuzzy
+msgid "Chi Square test"
+msgstr "Chikwadraattoets"
+
+msgid "df"
+msgstr "vg"
+
+msgid "&#967;&sup2;"
+msgstr "&#967;&sup2;"
+
+msgid "Factor model"
+msgstr "Factor model"
+
+msgid "Additional fit measures"
+msgstr "Extra pasmaten"
+
+msgid "RMSEA 90%% CI lower bound"
+msgstr "RMSEA 90%% BI ondergrens"
+
+msgid "RMSEA 90%% CI upper bound"
+msgstr "RMSEA 90%% BI bovengrens"
+
+#, fuzzy
+msgid "Predictor coefficients"
+msgstr "Mardia's coëfficiënten"
+
+msgid "Standardized"
+msgstr "Gestandaardiseerd"
+
+msgid "Endo"
+msgstr ""
+
+#, fuzzy
+msgid "Indicator coefficients"
+msgstr "Mardia's coëfficiënten"
+
+msgid "Indicator"
+msgstr "Indicator"
+
+msgid "Latent"
+msgstr ""
+
+#, fuzzy
+msgid "Model plot not available with ordinal variables"
+msgstr ""
+"Screeplot niet beschikbaar. \n"
+"Interne foutmelding: %s"
+
+#, fuzzy
+msgid "FIML missing data handling only available with ML-type estimators"
+msgstr "FIML alleen beschikbaar met ML-type schatters."
+
+msgid "Grouping variable has fewer than 3 observations in group %s"
+msgstr ""
+
+msgid ""
+"Mean structure can not be included when data is variance-covariance matrix"
+msgstr ""
+"Structuur van het gemiddelde kan niet worden meegenomen wanneer de data uit "
+"een variantie-covariantie matrix bestaat"
+
+msgid "Please set the sample size!"
+msgstr "Selecteer a.u.b een steekproefgrootte!"
+
+#, fuzzy
+msgid ""
+"Multiple group analysis not supported when data is variance-covariance matrix"
+msgstr ""
+"Meerdere groepen analyse (nog) niet ondersteund als data een variantie-"
+"covariantie matrix is"
+
+msgid ""
+"Not more cases than number of variables. Is your data a variance-covariance "
+"matrix?"
+msgstr ""
+"Niet meer waarnemingen dan het aantal variabelen. Is uw data een variantie-"
+"covariantiematrix?"
+
+msgid "Model fit"
+msgstr "Model passing"
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "n"
+msgstr "n"
+
+#, fuzzy
+msgid "Baseline test"
+msgstr "Baseline model"
+
+#, fuzzy
+msgid "&#916;&#967;&sup2;"
+msgstr "&#967;&sup2;"
+
+#, fuzzy
+msgid "Difference test"
+msgstr "Verschilschatter"
+
+msgid "&#916;df"
+msgstr ""
+
+msgid "Satorra-Bentler scaled test-statistic"
+msgstr ""
+
+msgid "Yuan-Bentler scaled test-statistic"
+msgstr ""
+
+msgid "Yuan-Bentler (Mplus) scaled test-statistic"
+msgstr ""
+
+msgid "mean and variance adjusted test-statistic"
+msgstr ""
+
+msgid "scaled and shifted test-statistic"
+msgstr ""
+
+msgid "bootstrap (Bollen-Stine) probability value"
+msgstr ""
+
+#, fuzzy
+msgid "Model tests based on %s."
+msgstr "Model termen getest met %s methode."
+
+msgid "Factor Loadings"
+msgstr "Factorladingen"
+
+msgid "Group"
+msgstr "Groep"
+
+#, fuzzy
+msgid "Regression coefficients"
+msgstr "Regressie Coëfficiënten"
+
+#, fuzzy
+msgid "Outcome"
+msgstr "Geobserveerde Uitkomst"
+
+msgid "Factor variances"
+msgstr "Factorvarianties"
+
+#, fuzzy
+msgid "Factor covariances"
+msgstr "Factorcovarianties"
+
+msgid "Variables"
+msgstr "Variabelen"
+
+msgid "Residual variances"
+msgstr "Residu varianties"
+
+#, fuzzy
+msgid "Means"
+msgstr "Gemiddelde"
+
+#, fuzzy
+msgid "Defined parameters"
+msgstr "Geschatte Parameters"
+
+msgid "Name"
+msgstr ""
+
+msgid "Mardia's coefficients"
+msgstr "Mardia's coëfficiënten"
+
+msgid "Coefficient"
+msgstr "Coëfficiënt"
+
+msgid "z"
+msgstr "z"
+
+msgid ""
+"Multivariate skewness and kurtosis calculated for observed variables from "
+"all models."
+msgstr ""
+
+msgid ""
+"Not all used variables are numeric. Mardia's coefficients not available."
+msgstr ""
+"Niet alle variabelen zijn numeriek. Mardia's Coëfficiënten niet beschikbaar."
+
+msgid "Skewness"
+msgstr "Scheefheid"
+
+msgid "Kurtosis"
+msgstr "Gepiektheid"
+
+#, fuzzy
+msgid "Covariance tables"
+msgstr "Covariaat"
+
+#, fuzzy
+msgid "Modification indices"
+msgstr "Modificatie Indices"
+
+msgid "Modification Indices"
+msgstr "Modificatie Indices"
+
+msgid "group"
+msgstr "groep"
+
+msgid "mi"
+msgstr "mi"
+
+msgid "epc"
+msgstr "epc"
+
+msgid "sepc (lv)"
+msgstr "sepc (lv)"
+
+msgid "sepc (all)"
+msgstr "sepc (all)"
+
+msgid "sepc (nox)"
+msgstr "sepc (nox)"
+
+#, fuzzy
+msgid "Path diagram"
+msgstr "Paddiagram"
