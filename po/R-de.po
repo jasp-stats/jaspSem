@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-01-05 09:38\n"
-"PO-Revision-Date: 2021-01-17 18:32+0000\n"
+"PO-Revision-Date: 2021-02-01 08:41+0000\n"
 "Last-Translator: Johannes Keyser <johanneskeyser@posteo.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
@@ -27,7 +27,7 @@ msgid "Baseline model"
 msgstr "Baseline-Modell"
 
 msgid "Growth curve model"
-msgstr ""
+msgstr "Wachstumskurvenmodell"
 
 msgid "The model is not admissible: %s"
 msgstr "Das Modell ist nicht zulässig: %s"
@@ -59,30 +59,26 @@ msgstr "p"
 msgid "Lower"
 msgstr "Untere"
 
-#, fuzzy
 msgid "95% Confidence Interval"
-msgstr "95%% Konfidenzintervall"
+msgstr "95% Konfidenzintervall"
 
-#, fuzzy
 msgid "Latent covariances"
-msgstr "Faktorkovarianzen"
+msgstr "Latente Kovarianzen"
 
-#, fuzzy
 msgid "LV"
-msgstr "V"
+msgstr "LV"
 
 msgid "Std. Est."
 msgstr "Std. Schätzung"
 
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
 msgid "No X"
-msgstr ""
+msgstr "Kein X"
 
-#, fuzzy
 msgid "Predictor"
-msgstr "Vorhergesagt"
+msgstr "Prädiktor"
 
 msgid "Variable"
 msgstr "Variable"
@@ -91,13 +87,13 @@ msgid "Intercept"
 msgstr "Konstante"
 
 msgid "Linear slope"
-msgstr ""
+msgstr "Lineare Steigung"
 
 msgid "Quadratic slope"
-msgstr ""
+msgstr "Quadratische Steigung"
 
 msgid "Cubic slope"
-msgstr ""
+msgstr "Kubische Steigung"
 
 msgid "Mean"
 msgstr "Mittelwert"
@@ -108,10 +104,11 @@ msgstr "Varianz"
 msgid ""
 "Residual variance is negative. This may indicate model misspecification."
 msgstr ""
+"Die Residualvarianz ist negativ. Dies kann auf eine Fehlspezifikation des "
+"Modells hinweisen."
 
-#, fuzzy
 msgid "Additional Fit measures"
-msgstr "Weitere Anpassungsmetriken"
+msgstr "Weitere Anpassungsgütemaße"
 
 msgid "Fit indices"
 msgstr "Anpassungsindikatoren"
