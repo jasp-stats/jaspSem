@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-01-17 20:32+0000\n"
+"PO-Revision-Date: 2021-01-31 10:41+0000\n"
 "Last-Translator: Johannes Keyser <johanneskeyser@posteo.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "de/>\n"
@@ -36,7 +36,7 @@ msgstr "MIMIC Modell (beta)"
 
 msgctxt "Description|"
 msgid "Latent Growth (beta)"
-msgstr ""
+msgstr "Latentes Wachstum (Beta)"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Variables"
@@ -50,157 +50,131 @@ msgctxt "LatentGrowthCurve|"
 msgid "Factor"
 msgstr "Faktor"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Time-varying covariates"
-msgstr "Anzahl Kovariate"
+msgstr "Zeitlich variierende Kovariaten"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Timings"
 msgstr ""
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Model Options"
 msgstr "Modelloptionen"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Growth curve shape"
-msgstr ""
+msgstr "Form der Wachstumskurve"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Intercept"
-msgstr "Konstanten"
+msgstr "Konstante"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Linear"
 msgstr "Linear"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Quadratic"
-msgstr ""
+msgstr "Quadratisch"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Cubic"
-msgstr ""
+msgstr "Kubisch"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Covarying latent curve"
-msgstr ""
+msgstr "Kovariierende latente Kurve"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Additional Output"
-msgstr "Weitere Ausgabe"
+msgstr "Zusätzliche Ausgabe"
 
 #, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Additional Fit Measures"
-msgstr "Extra Pasmaten"
+msgstr "Weitere Anpassungsgütemaße"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "R-Squared"
 msgstr "R-Quadrat"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Standardized estimates"
 msgstr "Standardisierte Schätzungen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Implied covariance matrix"
 msgstr "Implizierte Kovarianzmatrix"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Residual covariance matrix"
 msgstr "Residualkovarianzmatrix"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Show lavaan syntax"
 msgstr "Lavaan-Syntax anzeigen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Plots"
 msgstr "Abbildungen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Color palette"
 msgstr "Farbpalette"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Colorblind"
 msgstr "Farbenblind"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Colorblind Alt."
 msgstr "Farbenblind alt."
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Viridis"
 msgstr "Viridis"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "ggplot2"
 msgstr "ggplot2"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Gray"
 msgstr "Grau"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Curve plot"
-msgstr "Screeplot"
+msgstr "Kurvendiagramm"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Misfit plot"
-msgstr "Niet-passings grafiek"
+msgstr ""
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Model plot"
 msgstr "Modellabbildung"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Show parameters"
 msgstr "Parameter anzeigen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Show means"
 msgstr "Mittelwerte anzeigen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Advanced"
 msgstr "Weiteres"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Emulation"
 msgstr "Emulation"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "None"
 msgstr "Keine"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Mplus"
 msgstr "Mplus"
@@ -210,22 +184,18 @@ msgctxt "LatentGrowthCurve|"
 msgid "EQS"
 msgstr "EQS"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Missing value handling"
 msgstr "Behandlung fehlender Werte"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Full Information Maximum Likelihood"
 msgstr "Volle-Information-Maximum-Likelihood"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Exclude cases listwise"
 msgstr "Fälle listenweise ausschließen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Error calculation"
 msgstr "Fehlerberechnung"
