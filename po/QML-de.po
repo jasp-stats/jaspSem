@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-01-31 10:41+0000\n"
+"PO-Revision-Date: 2021-02-08 10:50+0000\n"
 "Last-Translator: Johannes Keyser <johanneskeyser@posteo.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "de/>\n"
@@ -704,67 +704,55 @@ msgctxt "SEM|"
 msgid "R-squared"
 msgstr "R-Quadrat"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Observed covariances"
-msgstr "Beobachtete Kovarianzen / Korrelationen"
+msgstr "Beobachtete Kovarianzen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Implied covariances"
-msgstr "Implizierte Kovarianzmatrix"
+msgstr "Implizierte Kovarianzen"
 
 #, fuzzy
 msgctxt "SEM|"
 msgid "Residual covariances"
 msgstr "Kovarianz der Residuen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Standardized residuals"
 msgstr "Standardisierte Residuen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Mardia's coefficient"
 msgstr "Mardias Koeffizient"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Standardized estimates"
 msgstr "Standardisierte Schätzungen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Path diagram"
 msgstr "Pfaddiagramm"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Show parameter estimates"
 msgstr "Parameterschätzungen anzeigen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Show legend"
 msgstr "Legende anzeigen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Modification indices"
 msgstr "Modifizierungsindizes"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Hide low indices"
-msgstr "Kleine Indizes verbergen"
+msgstr "Niedrige Indizes ausblenden"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Threshold"
 msgstr "Schwellenwert"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Model Options"
 msgstr "Modelloptionen"
@@ -774,60 +762,50 @@ msgctxt "SEM|"
 msgid "Factor scaling"
 msgstr "Faktorskalierung"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Factor loadings"
 msgstr "Faktorladungen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Factor variance"
-msgstr "Faktorvarianzen"
+msgstr "Faktorvarianz"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Effects coding"
 msgstr "Effektkodierung"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "None"
 msgstr "Keine"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Include mean structure"
 msgstr "Mittelwertstruktur einbeziehen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Fix manifest intercepts to zero"
-msgstr "Manifeste Konstanten auf 0 fixieren"
+msgstr "Manifeste Konstanten auf Null fixieren"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Fix latent intercepts to zero"
-msgstr "Latente Konstanten auf 0 fixieren"
+msgstr "Latente Konstanten auf Null fixieren"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Assume factors uncorrelated"
-msgstr "Annahme: Unkorrelierte Faktoren"
+msgstr "Faktoren als unkorreliert annehmen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Fix exogenous covariates"
-msgstr "Exogene Kovariaten fixiert"
+msgstr "Exogene Kovariaten fixieren"
 
 #, fuzzy
 msgctxt "SEM|"
 msgid "Omit residual single indicator"
 msgstr "Residuellen Einzel-Indikator weglassen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Include residual variances"
-msgstr "Residualvarianz"
+msgstr "Residualvarianzen einbeziehen"
 
 #, fuzzy
 msgctxt "SEM|"
