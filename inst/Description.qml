@@ -7,7 +7,7 @@ Description
 	title : 		qsTr("SEM")
 	description:	qsTr("The SEM module for JASP.")
 	icon:			"sem-latreg.svg"
-	version:		"0.14"
+	version:		"0.15"
 	author:			"JASP Team"
 	maintainer:		"JASP Team <info@jasp-stats.org>"
 	website:		"https://github.com/jasp-stats/jaspSem/"
