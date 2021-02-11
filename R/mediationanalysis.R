@@ -352,11 +352,11 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     y = .medGetTermsFromLavaanTable(terms, 4, "y")
   )
 
-  indtab[["x"]]        <- .unv(options[["predictor"]][termsCombinations[["x"]]])
+  indtab[["x"]]        <- options[["predictor"]][termsCombinations[["x"]]]
   indtab[["op1"]]      <- rep("\u2192", nrow(pe_ind))
-  indtab[["m"]]        <- .unv(options[["mediators"]][termsCombinations[["m"]]])
+  indtab[["m"]]        <- options[["mediators"]][termsCombinations[["m"]]]
   indtab[["op2"]]      <- rep("\u2192", nrow(pe_ind))
-  indtab[["y"]]        <- .unv(options[["dependent"]][termsCombinations[["y"]]])
+  indtab[["y"]]        <- options[["dependent"]][termsCombinations[["y"]]]
   indtab[["est"]]      <- pe_ind$est
   indtab[["se"]]       <- pe_ind$se
   indtab[["z"]]        <- pe_ind$z
@@ -376,9 +376,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     y = .medGetTermsFromLavaanTable(terms, 3, "y")
   )
 
-  tottab[["lhs"]]      <- .unv(options[["predictor"]][termsCombinations[["x"]]])
+  tottab[["lhs"]]      <- options[["predictor"]][termsCombinations[["x"]]]
   tottab[["op"]]       <- rep("\u2192", nrow(pe_tot))
-  tottab[["rhs"]]      <- .unv(options[["dependent"]][termsCombinations[["y"]]])
+  tottab[["rhs"]]      <- options[["dependent"]][termsCombinations[["y"]]]
   tottab[["est"]]      <- pe_tot$est
   tottab[["se"]]       <- pe_tot$se
   tottab[["z"]]        <- pe_tot$z
@@ -422,9 +422,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     x = .medGetTermsFromLavaanTable(terms, 2, "x"),
     y = .medGetTermsFromLavaanTable(terms, 3, "y")
   )
-  ttitab[["lhs"]]      <- .unv(options[["predictor"]][termsCombinations[["x"]]])
+  ttitab[["lhs"]]      <- options[["predictor"]][termsCombinations[["x"]]]
   ttitab[["op"]]       <- rep("\u2192", nrow(pe_tti))
-  ttitab[["rhs"]]      <- .unv(options[["dependent"]][termsCombinations[["y"]]])
+  ttitab[["rhs"]]      <- options[["dependent"]][termsCombinations[["y"]]]
   ttitab[["est"]]      <- pe_tti$est
   ttitab[["se"]]       <- pe_tti$se
   ttitab[["z"]]        <- pe_tti$z
