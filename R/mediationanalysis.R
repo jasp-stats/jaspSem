@@ -347,9 +347,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   # get predictors, mediators, outcome combinations
   terms <- strsplit(pe_ind[["label"]], "_")
   termsCombinations <- list(
-    x = as.integer(gsub("x", "", sapply(terms, "[[", 2))),
-    m = as.integer(gsub("m", "", sapply(terms, "[[", 3))),
-    y = as.integer(gsub("y", "", sapply(terms, "[[", 4)))
+    x = .medGetTermsFromLavaanTable(terms, 2, "x"),
+    m = .medGetTermsFromLavaanTable(terms, 3, "m"),
+    y = .medGetTermsFromLavaanTable(terms, 4, "y")
   )
 
   indtab[["x"]]        <- .unv(options[["predictor"]][termsCombinations[["x"]]])
@@ -372,8 +372,8 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   # get predictors, outcome combinations
   terms <- strsplit(pe_tot[["label"]], "_")
   termsCombinations <- list(
-    x = as.integer(gsub("x", "", sapply(terms, "[[", 2))),
-    y = as.integer(gsub("y", "", sapply(terms, "[[", 3)))
+    x = .medGetTermsFromLavaanTable(terms, 2, "x"),
+    y = .medGetTermsFromLavaanTable(terms, 3, "y")
   )
 
   tottab[["lhs"]]      <- .unv(options[["predictor"]][termsCombinations[["x"]]])
@@ -419,8 +419,8 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   # get predictors, outcome combinations
   terms <- strsplit(pe_tti[["label"]], "_")
   termsCombinations <- list(
-    x = as.integer(gsub("x", "", sapply(terms, "[[", 2))),
-    y = as.integer(gsub("y", "", sapply(terms, "[[", 3)))
+    x = .medGetTermsFromLavaanTable(terms, 2, "x"),
+    y = .medGetTermsFromLavaanTable(terms, 3, "y")
   )
   ttitab[["lhs"]]      <- .unv(options[["predictor"]][termsCombinations[["x"]]])
   ttitab[["op"]]       <- rep("\u2192", nrow(pe_tti))
@@ -644,3 +644,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   modelContainer[["syntax"]]$position <- 3
 }
 
+# Helper functions ----
+.medGetTermsFromLavaanTable <- function(terms, which, strip) {
+  as.integer(gsub(strip, "", vapply(terms, FUN = "[[", FUN.VALUE = character(1), which)))
+}
