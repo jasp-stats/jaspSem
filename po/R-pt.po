@@ -1,14 +1,20 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: jaspSem 0.15.0\n"
+"Project-Id-Version: R 3.6.1\n"
+"Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-03-06 15:52\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2020-12-02 21:29+0000\n"
+"Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
+"Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
+"jaspSem/pt/>\n"
+"Language: pt\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Language: en_US\n"
+"X-Source-Language: American English\n"
+"X-Qt-Contexts: true\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr ""
@@ -31,23 +37,29 @@ msgstr ""
 msgid "Warning."
 msgstr ""
 
+#, fuzzy
 msgid "Parameter estimates"
-msgstr ""
+msgstr "Parâmetros"
 
+#, fuzzy
 msgid "Component"
-msgstr ""
+msgstr "Componentes"
 
+#, fuzzy
 msgid "Parameter"
-msgstr ""
+msgstr "Parâmetros"
 
+#, fuzzy
 msgid "Estimate"
-msgstr ""
+msgstr "Estimativas"
 
+#, fuzzy
 msgid "Std. Error"
-msgstr ""
+msgstr "Erro padrão"
 
+#, fuzzy
 msgid "z-value"
-msgstr ""
+msgstr "Valor"
 
 msgid "p"
 msgstr ""
@@ -55,11 +67,13 @@ msgstr ""
 msgid "Lower"
 msgstr ""
 
+#, fuzzy
 msgid "95% Confidence Interval"
-msgstr ""
+msgstr "Intervalo de Confiança"
 
+#, fuzzy
 msgid "Latent covariances"
-msgstr ""
+msgstr "Covariâncias latentes"
 
 msgid "LV"
 msgstr ""
@@ -67,20 +81,24 @@ msgstr ""
 msgid "Std. Est."
 msgstr ""
 
+#, fuzzy
 msgid "All"
-msgstr ""
+msgstr "Todas"
 
+#, fuzzy
 msgid "No X"
-msgstr ""
+msgstr "Sem X"
 
 msgid "Predictor"
 msgstr ""
 
+#, fuzzy
 msgid "Variable"
-msgstr ""
+msgstr "Variáveis"
 
+#, fuzzy
 msgid "Intercept"
-msgstr ""
+msgstr "Interceptos"
 
 msgid "Linear slope"
 msgstr ""
@@ -91,35 +109,43 @@ msgstr ""
 msgid "Cubic slope"
 msgstr ""
 
+#, fuzzy
 msgid "Mean"
-msgstr ""
+msgstr "Médias"
 
+#, fuzzy
 msgid "Variance"
+msgstr "Variáveis"
+
+msgid ""
+"Residual variance is negative. This may indicate model misspecification."
 msgstr ""
 
-msgid "Residual variance is negative. This may indicate model misspecification."
-msgstr ""
-
+#, fuzzy
 msgid "Additional Fit measures"
-msgstr ""
+msgstr "Medidas Adicionais de Ajuste"
 
+#, fuzzy
 msgid "Fit indices"
-msgstr ""
+msgstr "Ocultar índices baixos"
 
 msgid "Index"
 msgstr ""
 
+#, fuzzy
 msgid "Value"
-msgstr ""
+msgstr "Valor"
 
 msgid "Information criteria"
 msgstr ""
 
+#, fuzzy
 msgid "Other fit measures"
-msgstr ""
+msgstr "Medidas adicionais de ajuste"
 
+#, fuzzy
 msgid "Metric"
-msgstr ""
+msgstr "Métrica"
 
 msgid "Comparative Fit Index (CFI)"
 msgstr ""
@@ -163,11 +189,13 @@ msgstr ""
 msgid "Root mean square error of approximation (RMSEA)"
 msgstr ""
 
+#, fuzzy
 msgid "RMSEA 90% CI lower bound"
-msgstr ""
+msgstr "limite inferior:"
 
+#, fuzzy
 msgid "RMSEA 90% CI upper bound"
-msgstr ""
+msgstr "limite superior:"
 
 msgid "RMSEA p-value"
 msgstr ""
@@ -193,17 +221,21 @@ msgstr ""
 msgid "R-Squared"
 msgstr ""
 
+#, fuzzy
 msgid "Implied covariance matrix"
-msgstr ""
+msgstr "Matriz de covariância implícita"
 
+#, fuzzy
 msgid "Residual covariance matrix"
-msgstr ""
+msgstr "Matriz de covariância residual"
 
+#, fuzzy
 msgid "Curve plot"
-msgstr ""
+msgstr "Diagrama de barra"
 
+#, fuzzy
 msgid "Model plot"
-msgstr ""
+msgstr "Gráfico do modelo"
 
 msgid "Misfit plot"
 msgstr ""
@@ -211,8 +243,9 @@ msgstr ""
 msgid "Curve + variance + uncertainty"
 msgstr ""
 
+#, fuzzy
 msgid "Curve + variance"
-msgstr ""
+msgstr "Variâncias latentes"
 
 msgid "Curve + parameter uncertainty"
 msgstr ""
@@ -220,23 +253,33 @@ msgstr ""
 msgid "FIML only available with ML-type estimators."
 msgstr ""
 
-msgid "Not all exogenous variables are admissible. Inadmissible exogenous variables: %s. Only binary or continuous exogenous variables allowed."
+msgid ""
+"Not all exogenous variables are admissible. Inadmissible exogenous "
+"variables: %s. Only binary or continuous exogenous variables allowed."
 msgstr ""
 
-msgid "Not all endogenous variables are admissible. Inadmissible endogenous variables: %s. Only scale or ordinal endogenous variables allowed."
+msgid ""
+"Not all endogenous variables are admissible. Inadmissible endogenous "
+"variables: %s. Only scale or ordinal endogenous variables allowed."
 msgstr ""
 
-msgid "FIML missing value handling only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s"
+msgid ""
+"FIML missing value handling only available when all endogenous variables are "
+"of scale type. Ordinal endogenous variables in the model: %s"
 msgstr ""
 
-msgid "Estimation failed\nMessage:\n%s"
+msgid ""
+"Estimation failed\n"
+"Message:\n"
+"%s"
 msgstr ""
 
 msgid "Direct effects"
 msgstr ""
 
+#, fuzzy
 msgid "%s%% Confidence Interval"
-msgstr ""
+msgstr "Intervalo de Confiança"
 
 msgid "Upper"
 msgstr ""
@@ -244,17 +287,20 @@ msgstr ""
 msgid "Indirect effects"
 msgstr ""
 
+#, fuzzy
 msgid "Total indirect effects"
-msgstr ""
+msgstr "Tamanho de efeito padronizado"
 
+#, fuzzy
 msgid "Residual covariances"
-msgstr ""
+msgstr "Covariâncias residual"
 
 msgid "Delta method"
 msgstr ""
 
+#, fuzzy
 msgid "Robust"
-msgstr ""
+msgstr "Robusto"
 
 msgid "percentile bootstrap"
 msgstr ""
@@ -268,38 +314,46 @@ msgstr ""
 msgid "normal theory"
 msgstr ""
 
+#, fuzzy
 msgid "robust"
-msgstr ""
+msgstr "Robusto"
 
 msgid "%1$s standard errors, %2$s confidence intervals."
 msgstr ""
 
-msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all bootstrap samples were successful: CI based on %4$.0f samples."
+msgid ""
+"%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all "
+"bootstrap samples were successful: CI based on %4$.0f samples."
 msgstr ""
 
 msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
 msgstr ""
 
+#, fuzzy
 msgid "Path plot"
-msgstr ""
+msgstr "Diagrama de barra"
 
+#, fuzzy
 msgid "Model syntax"
-msgstr ""
+msgstr "Gráfico do modelo"
 
 msgid "Chi Square test"
 msgstr ""
 
+#, fuzzy
 msgid "df"
-msgstr ""
+msgstr "gl:"
 
 msgid "&#967;&sup2;"
 msgstr ""
 
+#, fuzzy
 msgid "Factor model"
-msgstr ""
+msgstr "Fatores"
 
+#, fuzzy
 msgid "Additional fit measures"
-msgstr ""
+msgstr "Medidas adicionais de ajuste"
 
 msgid "RMSEA 90%% CI lower bound"
 msgstr ""
@@ -307,23 +361,27 @@ msgstr ""
 msgid "RMSEA 90%% CI upper bound"
 msgstr ""
 
+#, fuzzy
 msgid "Predictor coefficients"
-msgstr ""
+msgstr "Coeficiente de Mardia"
 
+#, fuzzy
 msgid "Standardized"
-msgstr ""
+msgstr "Padrão"
 
 msgid "Endo"
 msgstr ""
 
+#, fuzzy
 msgid "Indicator coefficients"
-msgstr ""
+msgstr "Coeficiente de Mardia"
 
 msgid "Indicator"
 msgstr ""
 
+#, fuzzy
 msgid "Latent"
-msgstr ""
+msgstr "Latentes"
 
 msgid "Model plot not available with ordinal variables"
 msgstr ""
@@ -334,26 +392,33 @@ msgstr ""
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr ""
 
-msgid "Mean structure can not be included when data is variance-covariance matrix"
+msgid ""
+"Mean structure can not be included when data is variance-covariance matrix"
 msgstr ""
 
 msgid "Please set the sample size!"
 msgstr ""
 
-msgid "Multiple group analysis not supported when data is variance-covariance matrix"
+msgid ""
+"Multiple group analysis not supported when data is variance-covariance matrix"
 msgstr ""
 
-msgid "Not more cases than number of variables. Is your data a variance-covariance matrix?"
+msgid ""
+"Not more cases than number of variables. Is your data a variance-covariance "
+"matrix?"
 msgstr ""
 
+#, fuzzy
 msgid "Model fit"
-msgstr ""
+msgstr "Gráfico do modelo"
 
+#, fuzzy
 msgid "AIC"
-msgstr ""
+msgstr "AIC"
 
+#, fuzzy
 msgid "BIC"
-msgstr ""
+msgstr "BIC"
 
 msgid "n"
 msgstr ""
@@ -391,52 +456,65 @@ msgstr ""
 msgid "Model tests based on %s."
 msgstr ""
 
+#, fuzzy
 msgid "Factor Loadings"
-msgstr ""
+msgstr "Cargas"
 
 msgid "Group"
 msgstr ""
 
+#, fuzzy
 msgid "Regression coefficients"
-msgstr ""
+msgstr "Coeficiente de Mardia"
 
 msgid "Outcome"
 msgstr ""
 
+#, fuzzy
 msgid "Factor variances"
-msgstr ""
+msgstr "Variâncias latentes"
 
+#, fuzzy
 msgid "Factor covariances"
-msgstr ""
+msgstr "Covariâncias latentes"
 
+#, fuzzy
 msgid "Variables"
-msgstr ""
+msgstr "Variáveis"
 
+#, fuzzy
 msgid "Residual variances"
-msgstr ""
+msgstr "Variâncias residual"
 
+#, fuzzy
 msgid "Means"
-msgstr ""
+msgstr "Médias"
 
+#, fuzzy
 msgid "Defined parameters"
-msgstr ""
+msgstr "Exibir parâmetros"
 
 msgid "Name"
 msgstr ""
 
+#, fuzzy
 msgid "Mardia's coefficients"
-msgstr ""
+msgstr "Coeficiente de Mardia"
 
+#, fuzzy
 msgid "Coefficient"
-msgstr ""
+msgstr "Coeficiente de Mardia"
 
 msgid "z"
 msgstr ""
 
-msgid "Multivariate skewness and kurtosis calculated for observed variables from all models."
+msgid ""
+"Multivariate skewness and kurtosis calculated for observed variables from "
+"all models."
 msgstr ""
 
-msgid "Not all used variables are numeric. Mardia's coefficients not available."
+msgid ""
+"Not all used variables are numeric. Mardia's coefficients not available."
 msgstr ""
 
 msgid "Skewness"
@@ -445,14 +523,17 @@ msgstr ""
 msgid "Kurtosis"
 msgstr ""
 
+#, fuzzy
 msgid "Covariance tables"
-msgstr ""
+msgstr "Covariáveis"
 
+#, fuzzy
 msgid "Modification indices"
-msgstr ""
+msgstr "Índices de modificação"
 
+#, fuzzy
 msgid "Modification Indices"
-msgstr ""
+msgstr "Índices de modificação"
 
 msgid "group"
 msgstr ""
@@ -474,3 +555,4 @@ msgstr ""
 
 msgid "Path diagram"
 msgstr ""
+
