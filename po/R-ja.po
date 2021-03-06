@@ -1,0 +1,484 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: jaspSem 0.14.0\n"
+"POT-Creation-Date: 2021-01-05 09:38\n"
+"PO-Revision-Date: 2021-02-21 04:50+0000\n"
+"Last-Translator: Koji Kosugi <kosugitti@gmail.com>\n"
+"Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
+"ja/>\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.5\n"
+
+msgid "The model could not be estimated due to nonconvergence."
+msgstr "収束しなかったため，モデルは推定できませんでした。"
+
+msgid "The model could not be estimated: No degrees of freedom left."
+msgstr "モデルは推定できませんでした: 自由度が残っていません。"
+
+msgid "Chi-square Test"
+msgstr "カイ二乗検定"
+
+msgid "Baseline model"
+msgstr "ベースラインモデル"
+
+msgid "Growth curve model"
+msgstr "成長曲線モデル"
+
+msgid "The model is not admissible: %s"
+msgstr "モデルは許容されません :%s"
+
+msgid "Warning."
+msgstr "警告"
+
+msgid "Parameter estimates"
+msgstr "パラメータ推定"
+
+msgid "Component"
+msgstr "コンポーネント"
+
+msgid "Parameter"
+msgstr "パラメータ"
+
+msgid "Estimate"
+msgstr "推定"
+
+msgid "Std. Error"
+msgstr "標準誤差"
+
+msgid "z-value"
+msgstr "z値"
+
+msgid "p"
+msgstr "p"
+
+msgid "Lower"
+msgstr "下"
+
+msgid "95% Confidence Interval"
+msgstr "95% 信頼区間"
+
+msgid "Latent covariances"
+msgstr "潜在的な共分散"
+
+msgid "LV"
+msgstr "LV"
+
+msgid "Std. Est."
+msgstr "標準化推定値"
+
+msgid "All"
+msgstr "すべて"
+
+msgid "No X"
+msgstr ""
+
+msgid "Predictor"
+msgstr "予測変数"
+
+msgid "Variable"
+msgstr "変数"
+
+msgid "Intercept"
+msgstr "切片"
+
+msgid "Linear slope"
+msgstr ""
+
+msgid "Quadratic slope"
+msgstr ""
+
+msgid "Cubic slope"
+msgstr ""
+
+msgid "Mean"
+msgstr "平均値"
+
+msgid "Variance"
+msgstr "分散"
+
+msgid "Residual variance is negative. This may indicate model misspecification."
+msgstr "残差分散が負になりました。モデルの指定が間違っている可能性があります。"
+
+msgid "Additional Fit measures"
+msgstr "追加の適合度指標"
+
+msgid "Fit indices"
+msgstr "適合度指標"
+
+msgid "Index"
+msgstr ""
+
+msgid "Value"
+msgstr "値"
+
+msgid "Information criteria"
+msgstr "情報量規準"
+
+msgid "Other fit measures"
+msgstr "その他の適合度指標"
+
+msgid "Metric"
+msgstr "計量的"
+
+msgid "Comparative Fit Index (CFI)"
+msgstr "相対適合度指標(CFI)"
+
+msgid "Tucker-Lewis Index (TLI)"
+msgstr "Tucker-Lewisの指標(TLI)"
+
+msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
+msgstr "Bentler-Bonettの非正規化適合度指標(NNFI)"
+
+msgid "Bentler-Bonett Normed Fit Index (NFI)"
+msgstr "Bentler-Bonettの正規化指標(NFI)"
+
+msgid "Parsimony Normed Fit Index (PNFI)"
+msgstr ""
+
+msgid "Bollen's Relative Fit Index (RFI)"
+msgstr "Bollenの相対適合度指標(RFI)"
+
+msgid "Bollen's Incremental Fit Index (IFI)"
+msgstr ""
+
+msgid "Relative Noncentrality Index (RNI)"
+msgstr "相対的非中心性指数(RNI)"
+
+msgid "Log-likelihood"
+msgstr "対数尤度"
+
+msgid "Number of free parameters"
+msgstr "自由パラメーターの数"
+
+msgid "Akaike (AIC)"
+msgstr "赤池情報量規準(AIC)"
+
+msgid "Bayesian (BIC)"
+msgstr "ベイズ情報量規準(BIC)"
+
+msgid "Sample-size adjusted Bayesian (SSABIC)"
+msgstr "サンプルサイズ調整済みベイジアン情報量規準(SSABIC)"
+
+msgid "Root mean square error of approximation (RMSEA)"
+msgstr ""
+
+msgid "RMSEA 90% CI lower bound"
+msgstr "RMSEA 90% CI 下限"
+
+msgid "RMSEA 90% CI upper bound"
+msgstr "RMSEA 90% CI上限"
+
+msgid "RMSEA p-value"
+msgstr "RMSEA のp 値"
+
+msgid "Standardized root mean square residual (SRMR)"
+msgstr "標準化二乗平均平方差差(SRMR)"
+
+msgid "Hoelter's critical N (%s = .05)"
+msgstr ""
+
+msgid "Hoelter's critical N (%s = .01)"
+msgstr "HoelterのN (%s = .01)"
+
+msgid "Goodness of fit index (GFI)"
+msgstr "適合度指標(GFI)"
+
+msgid "McDonald fit index (MFI)"
+msgstr "マクドナルドの適合度指標(MFI)"
+
+msgid "Expected cross validation index (ECVI)"
+msgstr ""
+
+msgid "R-Squared"
+msgstr ""
+
+msgid "Implied covariance matrix"
+msgstr ""
+
+msgid "Residual covariance matrix"
+msgstr "残差共分散行列"
+
+msgid "Curve plot"
+msgstr "曲線プロット"
+
+msgid "Model plot"
+msgstr "モデルプロット"
+
+msgid "Misfit plot"
+msgstr "不適合プロット"
+
+msgid "Curve + variance + uncertainty"
+msgstr ""
+
+msgid "Curve + variance"
+msgstr ""
+
+msgid "Curve + parameter uncertainty"
+msgstr ""
+
+msgid "FIML only available with ML-type estimators."
+msgstr "FIMLは、MLタイプの推定量でのみ使用できます。"
+
+msgid "Not all exogenous variables are admissible. Inadmissible exogenous variables: %s. Only binary or continuous exogenous variables allowed."
+msgstr "いくつかの外生変数が許容されませんでした。許容されない外生変数は：%s です。許容される外生変数はバイナリまたは連続変数です。"
+
+msgid "Not all endogenous variables are admissible. Inadmissible endogenous variables: %s. Only scale or ordinal endogenous variables allowed."
+msgstr "いくつかの内生変数が許容されませんでした。許容されない内生変数は：%s です。内生変数として許容されるのは，スケールまたは順序変数です。"
+
+msgid "FIML missing value handling only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s"
+msgstr ""
+
+msgid "Estimation failed\nMessage:\n%s"
+msgstr ""
+"推定失敗\n"
+"メッセージ :\n"
+"%s"
+
+msgid "Direct effects"
+msgstr "直接効果"
+
+msgid "%s%% Confidence Interval"
+msgstr "% s%% 信頼区間"
+
+msgid "Upper"
+msgstr "上"
+
+msgid "Indirect effects"
+msgstr "間接効果"
+
+msgid "Total indirect effects"
+msgstr "総間接効果"
+
+msgid "Residual covariances"
+msgstr "残差共分散"
+
+msgid "Delta method"
+msgstr "デルタ法"
+
+msgid "Robust"
+msgstr "ロバスト"
+
+msgid "percentile bootstrap"
+msgstr "パーセンタイル ブートストラップ"
+
+msgid "normal theory bootstrap"
+msgstr ""
+
+msgid "bias-corrected percentile bootstrap"
+msgstr "バイアス補正パーセンタイル ブートストラップ"
+
+msgid "normal theory"
+msgstr ""
+
+msgid "robust"
+msgstr "ロバスト"
+
+msgid "%1$s standard errors, %2$s confidence intervals."
+msgstr "%1$ の標準誤差、%2$ の信頼区間。"
+
+msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all bootstrap samples were successful: CI based on %4$.0f samples."
+msgstr ""
+"%1$ の標準誤差，%2$の信用区間，%3$の推定法。注意: 全てのブートストラップサンプルが成功したわけではありません。 Clはサンプルの%4$ "
+"に基づいています。"
+
+msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
+msgstr "%1$ の標準誤差，%2$の信用区間，%3$の推定法。"
+
+msgid "Path plot"
+msgstr "パスプロット"
+
+msgid "Model syntax"
+msgstr "モデルのシンタックス"
+
+msgid "Chi Square test"
+msgstr "カイ二乗検定"
+
+msgid "df"
+msgstr "自由度"
+
+msgid "&#967;&sup2;"
+msgstr "&#967;2&sup2;"
+
+msgid "Factor model"
+msgstr "因子モデル"
+
+msgid "Additional fit measures"
+msgstr "追加の適合度指標"
+
+msgid "RMSEA 90%% CI lower bound"
+msgstr "RMSEA 90% CI 下限"
+
+msgid "RMSEA 90%% CI upper bound"
+msgstr "RMSEA 90%% CI 上限"
+
+msgid "Predictor coefficients"
+msgstr "予測係数"
+
+msgid "Standardized"
+msgstr "標準化"
+
+msgid "Endo"
+msgstr ""
+
+msgid "Indicator coefficients"
+msgstr ""
+
+msgid "Indicator"
+msgstr ""
+
+msgid "Latent"
+msgstr "潜在"
+
+msgid "Model plot not available with ordinal variables"
+msgstr "順序変数ではモデルプロットを使用できません"
+
+msgid "FIML missing data handling only available with ML-type estimators"
+msgstr "FIML の欠損値処理は，ML タイプの推定法でのみ使用可能です"
+
+msgid "Grouping variable has fewer than 3 observations in group %s"
+msgstr "グループ化変数のグループ％sの観測値が3未満です"
+
+msgid "Mean structure can not be included when data is variance-covariance matrix"
+msgstr "データが分散-共分散行列の時は平均構造を含めることができません"
+
+msgid "Please set the sample size!"
+msgstr "サンプルサイズを設定してください!"
+
+msgid "Multiple group analysis not supported when data is variance-covariance matrix"
+msgstr "データが分散共分散行列の場合、多母集団分析はサポートされません"
+
+msgid "Not more cases than number of variables. Is your data a variance-covariance matrix?"
+msgstr "変数の数よりもケースの数が少ないです。このデータは分散共分散行列ですか?"
+
+msgid "Model fit"
+msgstr ""
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "n"
+msgstr "n"
+
+msgid "Baseline test"
+msgstr "ベースラインテスト"
+
+msgid "&#916;&#967;&sup2;"
+msgstr "&#916;2&#967;3&sup2;"
+
+msgid "Difference test"
+msgstr ""
+
+msgid "&#916;df"
+msgstr "&#916;自由度"
+
+msgid "Satorra-Bentler scaled test-statistic"
+msgstr ""
+
+msgid "Yuan-Bentler scaled test-statistic"
+msgstr ""
+
+msgid "Yuan-Bentler (Mplus) scaled test-statistic"
+msgstr ""
+
+msgid "mean and variance adjusted test-statistic"
+msgstr "平均および分散調整済み検定統計量"
+
+msgid "scaled and shifted test-statistic"
+msgstr ""
+
+msgid "bootstrap (Bollen-Stine) probability value"
+msgstr ""
+
+msgid "Model tests based on %s."
+msgstr "%s に基づくモデルテスト"
+
+msgid "Factor Loadings"
+msgstr "因子負荷量"
+
+msgid "Group"
+msgstr "群"
+
+msgid "Regression coefficients"
+msgstr "回帰係数"
+
+msgid "Outcome"
+msgstr "結果変数"
+
+msgid "Factor variances"
+msgstr "因子の分散"
+
+msgid "Factor covariances"
+msgstr "因子の共分散"
+
+msgid "Variables"
+msgstr "変数"
+
+msgid "Residual variances"
+msgstr "残差分散"
+
+msgid "Means"
+msgstr "平均値"
+
+msgid "Defined parameters"
+msgstr "定義されたパラメータ"
+
+msgid "Name"
+msgstr "名前"
+
+msgid "Mardia's coefficients"
+msgstr ""
+
+msgid "Coefficient"
+msgstr "係数"
+
+msgid "z"
+msgstr "z"
+
+msgid "Multivariate skewness and kurtosis calculated for observed variables from all models."
+msgstr ""
+
+msgid "Not all used variables are numeric. Mardia's coefficients not available."
+msgstr "いくつかの使用された変数は数値ではありません。マルディアの係数は利用できません。"
+
+msgid "Skewness"
+msgstr "歪度"
+
+msgid "Kurtosis"
+msgstr "尖度"
+
+msgid "Covariance tables"
+msgstr "共分散表"
+
+msgid "Modification indices"
+msgstr "修正指数"
+
+msgid "Modification Indices"
+msgstr "修正指数"
+
+msgid "group"
+msgstr "群"
+
+msgid "mi"
+msgstr "mi"
+
+msgid "epc"
+msgstr "epc"
+
+msgid "sepc (lv)"
+msgstr "sept(lv)"
+
+msgid "sepc (all)"
+msgstr "spec(all)"
+
+msgid "sepc (nox)"
+msgstr "sept(nox)"
+
+msgid "Path diagram"
+msgstr "パス図"
