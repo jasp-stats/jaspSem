@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-03-06 15:52\n"
-"PO-Revision-Date: 2021-03-11 14:02+0000\n"
+"PO-Revision-Date: 2021-03-19 18:18+0000\n"
 "Last-Translator: Alex França <alex.tonante@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
 "jaspsem-r/pt/>\n"
@@ -63,10 +63,11 @@ msgid "z-value"
 msgstr "Valor"
 
 msgid "p"
-msgstr ""
+msgstr "p"
 
+#, fuzzy
 msgid "Lower"
-msgstr ""
+msgstr "Inferior"
 
 #, fuzzy
 msgid "95% Confidence Interval"
@@ -281,8 +282,9 @@ msgstr ""
 msgid "%s%% Confidence Interval"
 msgstr "Intervalo de Confiança"
 
+#, fuzzy
 msgid "Upper"
-msgstr ""
+msgstr "Superior"
 
 msgid "Indirect effects"
 msgstr ""
@@ -340,9 +342,8 @@ msgstr "Gráfico do modelo"
 msgid "Chi Square test"
 msgstr ""
 
-#, fuzzy
 msgid "df"
-msgstr "gl:"
+msgstr "gl"
 
 msgid "&#967;&sup2;"
 msgstr ""
