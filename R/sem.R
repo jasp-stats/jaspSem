@@ -20,6 +20,8 @@ SEM <- function(jaspResults, dataset, options, ...) {
   
   # Read dataset
   options <- .semPrepOpts(options)
+  
+  # TODO: don't read data if we aren't ready anyway...
   dataset <- .semReadData(dataset, options)
   ready   <- .semIsReady(dataset, options)
   
@@ -41,7 +43,16 @@ SEM <- function(jaspResults, dataset, options, ...) {
 
 # helper functions
 .semPrepOpts <- function(options) {
-  options[["models"]] <- lapply(options[["models"]], function(x) c(x[1], x[[2]]))
+
+  # backwards compatability after changes to bouncontrollavaantextarea.cpp
+  fixModel <- function(model) {
+    newModel <- c(model[1], model[[2]])
+    names(newModel)[names(newModel) == "model"] <- "syntax"
+    return(newModel)
+  }
+
+  options[["models"]] <- lapply(options[["models"]], fixModel)
+
   emptymod <- vapply(options[["models"]], function(x) x[["syntax"]] == "", TRUE)
   options[["models"]] <- options[["models"]][!emptymod]
   return(options)
@@ -49,7 +60,12 @@ SEM <- function(jaspResults, dataset, options, ...) {
 
 .semReadData <- function(dataset, options) {
   if (!is.null(dataset)) return(dataset)
-  return(.readDataSetToEnd(all.columns = TRUE))
+
+  variablesToRead <- character()
+  for (model in options[["models"]])
+    variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
+
+  return(.readDataSetToEnd(columns = variablesToRead))
 }
 
 .semIsReady <- function(dataset, options) {
@@ -126,13 +142,14 @@ SEM <- function(jaspResults, dataset, options, ...) {
 }
 
 checkLavaanModel <- function(model, availableVars) {
+  
   # function returns informative printable string if there is an error, else ""
   if (model == "") return("Enter a model")
 
   # translate to base64 - function from semsimple.R
-  vvars    <- .availableVars
-  usedvars <- .semGetUsedVars(model, vvars)
-  vmodel   <- .translateModel(model, usedvars)
+  vvars    <- availableVars
+  usedvars <- vvars #.semGetUsedVars(model, vvars)
+  vmodel   <- model # .semTranslateModel(model, usedvars)
 
   unvvars <- availableVars
   names(unvvars) <- vvars
