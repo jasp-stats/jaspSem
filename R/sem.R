@@ -41,6 +41,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
 
 # helper functions
 .semPrepOpts <- function(options) {
+  options[["models"]] <- lapply(options[["models"]], function(x) c(x[1], x[[2]]))
   emptymod <- vapply(options[["models"]], function(x) x[["syntax"]] == "", TRUE)
   options[["models"]] <- options[["models"]][!emptymod]
   return(options)
@@ -52,12 +53,14 @@ SEM <- function(jaspResults, dataset, options, ...) {
 }
 
 .semIsReady <- function(dataset, options) {
+
   if (length(options[["models"]]) < 1) return(FALSE)
-  usedvars <- unique(unlist(lapply(options[["models"]], function(x) {
-    .semGetUsedVars(x[["syntax"]], colnames(dataset))
-  })))
-  
-  if (length(usedvars) > 1) TRUE else FALSE
+
+  for (m in options[["models"]])
+    if (length(m[["columns"]]) > 0)
+      return(TRUE)
+
+  return(FALSE)
 }
 
 .semCheckErrors <- function(dataset, options, ready, modelContainer) {
@@ -121,6 +124,48 @@ SEM <- function(jaspResults, dataset, options, ...) {
     }
   }
 }
+
+checkLavaanModel <- function(model, availableVars) {
+  # function returns informative printable string if there is an error, else ""
+  if (model == "") return("Enter a model")
+
+  # translate to base64 - function from semsimple.R
+  vvars    <- .availableVars
+  usedvars <- .semGetUsedVars(model, vvars)
+  vmodel   <- .translateModel(model, usedvars)
+
+  unvvars <- availableVars
+  names(unvvars) <- vvars
+
+  # Check model syntax
+  parsed <- try(lavaan::lavParseModelString(vmodel, TRUE), silent = TRUE)
+  if (inherits(parsed, "try-error")) {
+    msg <- attr(parsed, "condition")$message
+    if (msg == "NA/NaN argument") {
+      return("Enter a model")
+    }
+    return(stringr::str_replace_all(msg, unvvars))
+  }
+
+  # Check variable names
+  if (!missing(availableVars)) {
+    latents <- unique(parsed[parsed$op == "=~",]$lhs)
+    modelVars <- setdiff(unique(c(parsed$lhs, parsed$rhs)), latents)
+    modelVars <- modelVars[modelVars != ""] # e.g., x1 ~ 1 yields an empty rhs entry
+
+    modelVarsInAvailableVars <- (modelVars %in% vvars)
+    if (!all(modelVarsInAvailableVars)) {
+      notRecognized <- modelVars[!modelVarsInAvailableVars]
+      return(paste("Variable(s) in model syntax not recognized:",
+                   paste(stringr::str_replace_all(notRecognized, unvvars),
+                         collapse = ", ")))
+    }
+  }
+
+  # if checks pass, return empty string
+  return("")
+}
+
 
 .semGetUsedVars <- function(syntax, availablevars) {
   vv <- .unv(availablevars)
