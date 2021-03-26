@@ -61,7 +61,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
 .semReadData <- function(dataset, options) {
   if (!is.null(dataset)) return(dataset)
 
-  variablesToRead <- character()
+  variablesToRead <- if (options[["groupingVariable"]] == "") character() else options[["groupingVariable"]]
   for (model in options[["models"]])
     variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
 
