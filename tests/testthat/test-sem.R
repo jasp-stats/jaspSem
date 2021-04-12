@@ -2,7 +2,7 @@ context("Structural Equation Modeling")
 
 test_that("Basic SEM works", {
   options <- jaspTools::analysisOptions("SEM")
-  options$models <- list(list(modelName = "Model1", syntax = "x1 ~ x2 + x3 + y1"))
+  options$models <- list(list(modelName = "Model1", syntax = list(model = "x1 ~ x2 + x3 + y1", columns = c("x1", "x2", "x3", "y1"))))
   options$emulation        <- "lavaan"
   options$estimator        <- "default" 
   options$groupingVariable <- ""
@@ -63,10 +63,57 @@ test_that("Multigroup, multimodel SEM works", {
   options$std                         = TRUE
   options$test                        = "Satorra.Bentler"
   options$sampling.weights            = ""
+
+  modelDefault <- list(model = "
+  # latent variable definitions
+    ind60 =~ x1 + x2 + x3
+    dem60 =~ y1 + y2 + y3 + y4
+    dem65 =~ y5 + y6 + y7 + y8
+  # regressions
+    dem60 ~ ind60
+    dem65 ~ ind60 + dem60
+  # residual (co)variances
+    y1 ~~ y5
+    y2 ~~ y4 + y6
+    y3 ~~ y7
+    y4 ~~ y8
+    y6 ~~ y8
+  ", columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))
+  modelConstrained <- list(model = "
+  # latent variable definitions
+    ind60 =~ x1 + x2 + x3
+    dem60 =~ a*y1 + b*y2 + c*y3 + d*y4
+    dem65 =~ a*y5 + b*y6 + c*y7 + d*y8
+  # regressions
+    dem60 ~ ind60
+    dem65 ~ ind60 + dem60
+  # residual (co)variances
+    y1 ~~ y5
+    y2 ~~ y4 + y6
+    y3 ~~ y7
+    y4 ~~ y8
+    y6 ~~ y8
+  ", columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))
+  modelMoreConstrained <- list(model = "
+  # latent variable definitions
+    ind60 =~ x1 + x2 + x3
+    dem60 =~ c(a1, a2)*y1 + c(b1, b2)*y2 + c(c1, c2)*y3 + c(d1, d2)*y4
+    dem65 =~ c(a1, a2)*y5 + c(b1, b2)*y6 + c(c1, c2)*y7 + c(d1, d2)*y8
+  # regressions
+    dem60 ~ ind60
+    dem65 ~ ind60 + dem60
+  # residual (co)variances
+    y1 ~~ y5
+    y2 ~~ y4 + y6
+    y3 ~~ y7
+    y4 ~~ y8
+    y6 ~~ y8
+  ", columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))
+
   options$models = list(
-    list(modelName = "default",          syntax = " # latent variable definitions\n    ind60 =~ x1 + x2 + x3\n    dem60 =~ y1 + y2 + y3 + y4\n    dem65 =~ y5 + y6 + y7 + y8\n  # regressions\n    dem60 ~ ind60\n    dem65 ~ ind60 + dem60\n  # residual (co)variances\n    y1 ~~ y5\n    y2 ~~ y4 + y6\n    y3 ~~ y7\n    y4 ~~ y8\n    y6 ~~ y8"), 
-    list(modelName = "constrained",      syntax = " # latent variable definitions\n    ind60 =~ x1 + x2 + x3\n    dem60 =~ a*y1 + b*y2 + c*y3 + d*y4\n    dem65 =~ a*y5 + b*y6 + c*y7 + d*y8\n  # regressions\n    dem60 ~ ind60\n    dem65 ~ ind60 + dem60\n  # residual (co)variances\n    y1 ~~ y5\n    y2 ~~ y4 + y6\n    y3 ~~ y7\n    y4 ~~ y8\n    y6 ~~ y8"), 
-    list(modelName = "more constrained", syntax = " # latent variable definitions\n    ind60 =~ x1 + x2 + x3\n    dem60 =~ c(a1, a2)*y1 + c(b1, b2)*y2 + c(c1, c2)*y3 + c(d1, d2)*y4\n    dem65 =~ c(a1, a2)*y5 + c(b1, b2)*y6 + c(c1, c2)*y7 + c(d1, d2)*y8\n  # regressions\n    dem60 ~ ind60\n    dem65 ~ ind60 + dem60\n  # residual (co)variances\n    y1 ~~ y5\n    y2 ~~ y4 + y6\n    y3 ~~ y7\n    y4 ~~ y8\n    y6 ~~ y8")
+    list(modelName = "default",          syntax = modelDefault),
+    list(modelName = "constrained",      syntax = modelConstrained),
+    list(modelName = "more constrained", syntax = modelMoreConstrained)
   )
   
   results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
