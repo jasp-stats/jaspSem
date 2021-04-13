@@ -605,10 +605,10 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   
   manifests <- semPlotMod@Vars$name[semPlotMod@Vars$manifest]
   semPlotMod@Vars$name[semPlotMod@Vars$manifest] <- decodeColNames(manifests)
-  semPlotMod@Pars$lhs <- vapply(semPlotMod@Pars$lhs, function(v) ifelse(nchar(v) > 0, decodeColNames(v), ""), "")
-  semPlotMod@Pars$rhs <- vapply(semPlotMod@Pars$rhs, function(v) ifelse(nchar(v) > 0, decodeColNames(v), ""), "")
+  semPlotMod@Pars$lhs <- ifelse(nchar(semPlotMod@Pars$lhs) > 0 , decodeColNames(semPlotMod@Pars$lhs), "")
+  semPlotMod@Pars$rhs <- ifelse(nchar(semPlotMod@Pars$rhs) > 0 , decodeColNames(semPlotMod@Pars$rhs), "")
   if(.hasSlot(semPlotMod, "Thresholds"))
-    semPlotMod@Thresholds$lhs <- vapply(semPlotMod@Thresholds$lhs, function(v) ifelse(nchar(v) > 0, decodeColNames(v), ""), "")
+    semPlotMod@Thresholds$lhs <- ifelse(nchar(semPlotMod@Thresholds$lhs) > 0, decodeColNames(semPlotMod@Thresholds$lhs), "")
 
   return(semPlotMod)
 }
