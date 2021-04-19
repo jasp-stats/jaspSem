@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
 "POT-Creation-Date: 2021-01-05 09:38\n"
-"PO-Revision-Date: 2021-02-21 04:50+0000\n"
+"PO-Revision-Date: 2021-04-20 13:29+0000\n"
 "Last-Translator: Koji Kosugi <kosugitti@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "ja/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.5\n"
+"X-Generator: Weblate 4.7-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "収束しなかったため，モデルは推定できませんでした。"
@@ -74,7 +74,7 @@ msgid "All"
 msgstr "すべて"
 
 msgid "No X"
-msgstr ""
+msgstr "Xがありません"
 
 msgid "Predictor"
 msgstr "予測変数"
@@ -86,13 +86,13 @@ msgid "Intercept"
 msgstr "切片"
 
 msgid "Linear slope"
-msgstr ""
+msgstr "線形勾配"
 
 msgid "Quadratic slope"
-msgstr ""
+msgstr "二次の勾配"
 
 msgid "Cubic slope"
-msgstr ""
+msgstr "三次の勾配"
 
 msgid "Mean"
 msgstr "平均値"
@@ -110,7 +110,7 @@ msgid "Fit indices"
 msgstr "適合度指標"
 
 msgid "Index"
-msgstr ""
+msgstr "指標"
 
 msgid "Value"
 msgstr "値"
@@ -137,13 +137,13 @@ msgid "Bentler-Bonett Normed Fit Index (NFI)"
 msgstr "Bentler-Bonettの正規化指標(NFI)"
 
 msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr ""
+msgstr "倹約正規化適合度指標(PNFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
 msgstr "Bollenの相対適合度指標(RFI)"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
-msgstr ""
+msgstr "ボレンのインクリメンタルフィット指数(IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
 msgstr "相対的非中心性指数(RNI)"
@@ -164,7 +164,7 @@ msgid "Sample-size adjusted Bayesian (SSABIC)"
 msgstr "サンプルサイズ調整済みベイジアン情報量規準(SSABIC)"
 
 msgid "Root mean square error of approximation (RMSEA)"
-msgstr ""
+msgstr "二乗平均平方根誤差(RMSEA)"
 
 msgid "RMSEA 90% CI lower bound"
 msgstr "RMSEA 90% CI 下限"
@@ -179,7 +179,7 @@ msgid "Standardized root mean square residual (SRMR)"
 msgstr "標準化二乗平均平方差差(SRMR)"
 
 msgid "Hoelter's critical N (%s = .05)"
-msgstr ""
+msgstr "Hoelterの臨界N（％s = .05）"
 
 msgid "Hoelter's critical N (%s = .01)"
 msgstr "HoelterのN (%s = .01)"
@@ -191,13 +191,13 @@ msgid "McDonald fit index (MFI)"
 msgstr "マクドナルドの適合度指標(MFI)"
 
 msgid "Expected cross validation index (ECVI)"
-msgstr ""
+msgstr "期待される交差検証指数（ECVI）"
 
 msgid "R-Squared"
-msgstr ""
+msgstr "決定係数"
 
 msgid "Implied covariance matrix"
-msgstr ""
+msgstr "暗黙の共分散行列"
 
 msgid "Residual covariance matrix"
 msgstr "残差共分散行列"
@@ -212,13 +212,13 @@ msgid "Misfit plot"
 msgstr "不適合プロット"
 
 msgid "Curve + variance + uncertainty"
-msgstr ""
+msgstr "曲線 + 分散 + 不確実性"
 
 msgid "Curve + variance"
-msgstr ""
+msgstr "曲線+分散"
 
 msgid "Curve + parameter uncertainty"
-msgstr ""
+msgstr "曲線+パラメータの不確かさ"
 
 msgid "FIML only available with ML-type estimators."
 msgstr "FIMLは、MLタイプの推定量でのみ使用できます。"
@@ -230,7 +230,7 @@ msgid "Not all endogenous variables are admissible. Inadmissible endogenous vari
 msgstr "いくつかの内生変数が許容されませんでした。許容されない内生変数は：%s です。内生変数として許容されるのは，スケールまたは順序変数です。"
 
 msgid "FIML missing value handling only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s"
-msgstr ""
+msgstr "FIML 欠損値処理は、すべての内生変数がスケール・タイプの場合にのみ使用できます。モデルに順序型内生変数があります: %s"
 
 msgid "Estimation failed\nMessage:\n%s"
 msgstr ""
@@ -266,13 +266,13 @@ msgid "percentile bootstrap"
 msgstr "パーセンタイル ブートストラップ"
 
 msgid "normal theory bootstrap"
-msgstr ""
+msgstr "正規理論のブートストラップ"
 
 msgid "bias-corrected percentile bootstrap"
 msgstr "バイアス補正パーセンタイル ブートストラップ"
 
 msgid "normal theory"
-msgstr ""
+msgstr "正規理論"
 
 msgid "robust"
 msgstr "ロバスト"
@@ -322,13 +322,13 @@ msgid "Standardized"
 msgstr "標準化"
 
 msgid "Endo"
-msgstr ""
+msgstr "Endo"
 
 msgid "Indicator coefficients"
-msgstr ""
+msgstr "指標係数"
 
 msgid "Indicator"
-msgstr ""
+msgstr "指標"
 
 msgid "Latent"
 msgstr "潜在"
@@ -355,7 +355,7 @@ msgid "Not more cases than number of variables. Is your data a variance-covarian
 msgstr "変数の数よりもケースの数が少ないです。このデータは分散共分散行列ですか?"
 
 msgid "Model fit"
-msgstr ""
+msgstr "モデル適合"
 
 msgid "AIC"
 msgstr "AIC"
@@ -373,28 +373,28 @@ msgid "&#916;&#967;&sup2;"
 msgstr "&#916;2&#967;3&sup2;"
 
 msgid "Difference test"
-msgstr ""
+msgstr "差異の検定"
 
 msgid "&#916;df"
 msgstr "&#916;自由度"
 
 msgid "Satorra-Bentler scaled test-statistic"
-msgstr ""
+msgstr "Satorra-Bentlerのスケーリングされた検定統計量"
 
 msgid "Yuan-Bentler scaled test-statistic"
-msgstr ""
+msgstr "Yuan-Bentlerのスケーリングされた検定統計量"
 
 msgid "Yuan-Bentler (Mplus) scaled test-statistic"
-msgstr ""
+msgstr "Yuan-Bentler（Mplus）のスケーリングされた検定統計量"
 
 msgid "mean and variance adjusted test-statistic"
 msgstr "平均および分散調整済み検定統計量"
 
 msgid "scaled and shifted test-statistic"
-msgstr ""
+msgstr "スケーリングとシフトした検定統計量"
 
 msgid "bootstrap (Bollen-Stine) probability value"
-msgstr ""
+msgstr "ブートストラップ (ボレン・スティン) 確率値"
 
 msgid "Model tests based on %s."
 msgstr "%s に基づくモデルテスト"
@@ -433,7 +433,7 @@ msgid "Name"
 msgstr "名前"
 
 msgid "Mardia's coefficients"
-msgstr ""
+msgstr "マルディアの係数"
 
 msgid "Coefficient"
 msgstr "係数"
@@ -442,7 +442,7 @@ msgid "z"
 msgstr "z"
 
 msgid "Multivariate skewness and kurtosis calculated for observed variables from all models."
-msgstr ""
+msgstr "すべてのモデルの観測変数について、多変量解析による歪度と尖度を算出"
 
 msgid "Not all used variables are numeric. Mardia's coefficients not available."
 msgstr "いくつかの使用された変数は数値ではありません。マルディアの係数は利用できません。"
