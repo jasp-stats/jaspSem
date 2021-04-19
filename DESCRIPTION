@@ -6,7 +6,7 @@ Date: 2020-09-30
 Author: JASP Team
 Website: https://github.com/jasp-stats/jaspSem/
 Maintainer: JASP Team <info@jasp-stats.org>
-Description: The SEM module for JASP.
+Description: Evaluate latent data structures with Yves Rosseel’s lavaan program
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports:
