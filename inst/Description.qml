@@ -5,7 +5,7 @@ Description
 {
 	name:			"jaspSem"
 	title : 		qsTr("SEM")
-	description:	qsTr("The SEM module for JASP.")
+	description:	qsTr("Evaluate latent data structures with Yves Rosseel’s lavaan program")
 	icon:			"sem-latreg.svg"
 	version:		"0.15"
 	author:			"JASP Team"
