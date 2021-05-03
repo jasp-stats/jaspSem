@@ -4,47 +4,47 @@ test_that("Basic SEM works", {
   options <- jaspTools::analysisOptions("SEM")
   options$models <- list(list(modelName = "Model1", syntax = list(model = "x1 ~ x2 + x3 + y1", columns = c("x1", "x2", "x3", "y1"))))
   options$emulation        <- "lavaan"
-  options$estimator        <- "default" 
+  options$estimator        <- "default"
   options$groupingVariable <- ""
   options$sampling.weights <- ""
   options$information      <- "expected"
   options$missing          <- "ML"
   options$test             <- "standard"
   results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
-  
+
   fittab   <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   expect_equal_tables(fittab, list(48.156355426353, 59.7437959940346, 0, 0, "Model1", 75, 1, "", 0, 0), "Model fit table")
-  
+
   parcont <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]]
   parcov  <- parcont[["modelContainer_params_cov"]][["data"]]
   parreg  <- parcont[["modelContainer_params_reg"]][["data"]]
   parvar  <- parcont[["modelContainer_params_var"]][["data"]]
-  
+
   expect_equal_tables(parcov, list(1.782009228184, 1.782009228184, 1.782009228184, "", "x2 - x3",
                                    "", 0, "", 1.2564136096, 1.2564136096, 1.2564136096, "", "x2 - y1",
                                    "", 0, "", 0.899301179999998, 0.899301179999998, 0.899301179999998,
-                                   "", "x3 - y1", "", 0, ""), 
+                                   "", "x3 - y1", "", 0, ""),
                       "Covariance parameter table")
   expect_equal_tables(parreg, list(0.263488906058747, 0.446867420003606, 0.355178163031176, "", "x1",
                                    3.13082892944294e-14, "x2", 0.0467810927627561, 7.59234430098531,
                                    -0.0183778904533448, 0.174214399574164, 0.0779182545604095,
                                    "", "x1", 0.11275983698247, "x3", 0.0491315890359854, 1.5859095154309,
                                    0.00202079114888187, 0.0593563869517884, 0.0306885890503352,
-                                   "", "x1", 0.0358943948473431, "y1", 0.0146266962697178, 2.09812171418852), 
+                                   "", "x1", 0.0358943948473431, "y1", 0.0146266962697178, 2.09812171418852),
                       "Regressions parameter table")
   expect_equal_tables(parvar, list(0.0662130613800487, 0.12854864460463, "x1", 0.0973808529923395,
                                    "", "x1", 9.14129882900738e-10, 0.0159022267032141, 6.12372435695795,
                                    2.25167664969695, 2.25167664969695, "x2", 2.25167664969695,
                                    "", "x2", "", 0, "", 1.94967853807201, 1.94967853807201, "x3",
                                    1.94967853807201, "", "x3", "", 0, "", 6.78685155555555, 6.78685155555555,
-                                   "y1", 6.78685155555555, "", "y1", "", 0, ""), 
+                                   "y1", 6.78685155555555, "", "y1", "", 0, ""),
                       "(Residual) variances parameter table")
 })
 
 test_that("Multigroup, multimodel SEM works", {
   options <- jaspTools::analysisOptions("SEM")
   options$emulation                   = "lavaan"
-  options$estimator                   = "default" 
+  options$estimator                   = "default"
   options$groupingVariable            = "group"
   options$information                 = "expected"
   options$meanstructure               = TRUE
@@ -82,8 +82,8 @@ test_that("Multigroup, multimodel SEM works", {
   modelConstrained <- list(model = "
   # latent variable definitions
     ind60 =~ x1 + x2 + x3
-    dem60 =~ a*y1 + b*y2 + c*y3 + d*y4
-    dem65 =~ a*y5 + b*y6 + c*y7 + d*y8
+    dem60 =~ c(a1,a2)*y1 + c(b1,b2)*y2 + c(c1,c2)*y3 + c(d1,d2)*y4
+    dem65 =~ c(a1,a3)*y5 + c(b1,b3)*y6 + c(c1,c3)*y7 + c(d1,d3)*y8
   # regressions
     dem60 ~ ind60
     dem65 ~ ind60 + dem60
@@ -115,9 +115,9 @@ test_that("Multigroup, multimodel SEM works", {
     list(modelName = "constrained",      syntax = modelConstrained),
     list(modelName = "more constrained", syntax = modelMoreConstrained)
   )
-  
+
   results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
-  
+
   fittab   <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   expect_equal_tables(fittab, list(3189.26691715402, 3383.93591869107, 82.2032643259552, 70, "default",
                                    75, 0.150923770163707, "", "", "", 3184.34803034567, 3372.06456754211,
@@ -125,7 +125,7 @@ test_that("Multigroup, multimodel SEM works", {
                                    1.65156784895969, 3, 3181.07183366569, 3361.83590652152, 86.0081808376312,
                                    76, "more constrained", 75, 0.202652084622712, 0.110596895607335,
                                    6.02091896557529, 3), "Model fit table")
-  
+
   # additional fit indices
   incrits  <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_incrits"]][["data"]]
   indices  <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_indices"]][["data"]]
@@ -156,7 +156,7 @@ test_that("Multigroup, multimodel SEM works", {
                                    0.992832229107073, 0.992813542035197, 0.992577984650649, "McDonald fit index (MFI)",
                                    0.921866282742895, 0.933735084164156, 0.935455964884606, "Expected cross validation index (ECVI)",
                                    "", "", ""), "Other fit indices table")
-  
+
   rsquared <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_rsquared"]][["data"]]
   expect_equal_tables(rsquared, list(1, "x1", 0.883076871616545, 0.88344099961725, 0.883440941017356,
                                      1, "x2", 0.993698159869737, 0.993307380054294, 0.993308312239008,
@@ -184,22 +184,22 @@ test_that("Multigroup, multimodel SEM works", {
                                      2, "y8", 0.842442637402788, 0.842449295416932, 0.821972120799197,
                                      2, "dem60", 0.0753599955960172, 0.0753581296999281, 0.0905522598180797,
                                      2, "dem65", 0.956917027167473, 0.956910675588687, 0.977886505597527), "R-squared table")
-  
+
   mardia   <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_mardiasTable"]][["data"]]
   expect_equal_tables(mardia, list(330.8978096739, 26.471824773912, 286, "Skewness", 0.0347860345067638,
                                    "", "", 134.567190822067, "", "Kurtosis", 0.0308358026617131,
                                    -2.15918518879414), "Mardia's coefficient table")
-  
+
   # parameter tables (use only the most constrained one, model 3)
   parcont <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][[3]][["collection"]]
-  
+
   parcov  <- parcont[["modelContainer_params_more constrained_cov"]][["data"]]
   parind  <- parcont[["modelContainer_params_more constrained_ind"]][["data"]]
   parlvar <- parcont[["modelContainer_params_more constrained_lvar"]][["data"]]
   parmu   <- parcont[["modelContainer_params_more constrained_mu"]][["data"]]
   parreg  <- parcont[["modelContainer_params_more constrained_reg"]][["data"]]
   parvar  <- parcont[["modelContainer_params_more constrained_var"]][["data"]]
-  
+
   expect_equal_tables(parcov, list(-0.6954531542207, 1.13004177555805, 0.217294310668675, 1, "",
                                    "y1 - y5", 0.640785259230165, 0.465696039360422, 0.122229400273098,
                                    0.217294310668675, 0.122229400273098, 0.466601156769773, 0.433556460847837,
@@ -435,14 +435,14 @@ test_that("Multigroup, multimodel SEM works", {
                                    3.15605228468781, "y8", 1.75150148570014, 2, "", "y8", 0.0145209073086436,
                                    0.716620718577785, 0.178027879200803, 1.75150148570014, 0.178027879200803,
                                    2.44411226230828), "(Residual) variances parameter table")
-  
+
   # covariance tables. Use only constrained model (model 2)
   covcont  <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_covars"]][["collection"]][[2]][["collection"]]
   covimp <- covcont[["modelContainer_covars_default_implied"]][["collection"]][["modelContainer_covars_default_implied_1"]][["data"]]
   covobs <- covcont[["modelContainer_covars_default_observed"]][["collection"]][["modelContainer_covars_default_observed_1"]][["data"]]
   covres <- covcont[["modelContainer_covars_default_residual"]][["collection"]][["modelContainer_covars_default_residual_1"]][["data"]]
   covstd <- covcont[["modelContainer_covars_default_stdres"]][["collection"]][["modelContainer_covars_default_stdres_1"]][["data"]]
-  
+
   expect_equal_tables(covimp, list(0.49008300563634, "", "", "", "", "", "", "", "", "", "", 0.974061924820936,
                                    2.20622852804642, "", "", "", "", "", "", "", "", "", 0.788491080043323,
                                    1.77466015582184, 1.95570584174645, "", "", "", "", "", "",
@@ -464,7 +464,7 @@ test_that("Multigroup, multimodel SEM works", {
                                    2.10489039267504, 5.58480055205702, 6.39049819021453, 5.27101657115423,
                                    5.85298682041024, 6.03837521104465, 7.68811256412372, 6.65291356937697,
                                    10.6193105678442), "Model-implied covariance table")
-  
+
   expect_equal_tables(covobs, list(0.490082575997078, "", "", "", "", "", "", "", "", "", "", 0.973932449184952,
                                    2.20622591129467, "", "", "", "", "", "", "", "", "", 0.78518275394412,
                                    1.77565205254938, 1.95570361423433, "", "", "", "", "", "",
@@ -486,7 +486,7 @@ test_that("Multigroup, multimodel SEM works", {
                                    1.72765599854139, 5.4174694403214, 7.39753077439182, 4.59181056574472,
                                    6.45111697395995, 5.63862367744565, 7.7210072538895, 6.57011319209561,
                                    10.545706988345), "Observed covariance table")
-  
+
   expect_equal_tables(covres, list(-4.29639262000681e-07, "", "", "", "", "", "", "", "", "", "",
                                    -0.000129475635983867, -2.61675175305953e-06, "", "", "", "",
                                    "", "", "", "", "", -0.00330832609920362, 0.000991896727542851,
@@ -510,7 +510,7 @@ test_that("Multigroup, multimodel SEM works", {
                                    -0.167331111735621, 1.00703258417729, -0.679206005409508, 0.598130153549711,
                                    -0.399751533598995, 0.0328946897657785, -0.0828003772813588,
                                    -0.073603579499208), "Residual covariance table")
-  
+
   expect_equal_tables(covstd, list(-4.29639262000681e-07, "", "", "", "", "", "", "", "", "", "",
                                    -0.656501234914186, -2.61675175305953e-06, "", "", "", "", "",
                                    "", "", "", "", -0.214382032841467, 0.628428509733918, -2.22751211431671e-06,
