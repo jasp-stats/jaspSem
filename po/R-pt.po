@@ -3,24 +3,25 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-03-06 15:52\n"
-"PO-Revision-Date: 2020-12-02 21:29+0000\n"
-"Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
+"PO-Revision-Date: 2021-05-03 19:31+0000\n"
+"Last-Translator: Alex França <alex.tonante@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
-"jaspSem/pt/>\n"
+"jaspsem-r/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.7-dev\n"
 "X-Language: en_US\n"
 "X-Source-Language: American English\n"
 "X-Qt-Contexts: true\n"
 
 msgid "The model could not be estimated due to nonconvergence."
-msgstr ""
+msgstr "O modelo não pode ser estimado devido a não convergência."
 
 msgid "The model could not be estimated: No degrees of freedom left."
-msgstr ""
+msgstr "O modelo não pode ser estimado: sem graus de liberdade restantes."
 
 msgid "Chi-square Test"
 msgstr ""
@@ -32,20 +33,17 @@ msgid "Growth curve model"
 msgstr ""
 
 msgid "The model is not admissible: %s"
-msgstr ""
+msgstr "O modelo não é admitido. %s"
 
 msgid "Warning."
 msgstr ""
 
-#, fuzzy
 msgid "Parameter estimates"
 msgstr "Parâmetros"
 
-#, fuzzy
 msgid "Component"
 msgstr "Componentes"
 
-#, fuzzy
 msgid "Parameter"
 msgstr "Parâmetros"
 
@@ -53,7 +51,6 @@ msgstr "Parâmetros"
 msgid "Estimate"
 msgstr "Estimativas"
 
-#, fuzzy
 msgid "Std. Error"
 msgstr "Erro padrão"
 
@@ -61,11 +58,13 @@ msgstr "Erro padrão"
 msgid "z-value"
 msgstr "Valor"
 
+#, fuzzy
 msgid "p"
-msgstr ""
+msgstr "p"
 
+#, fuzzy
 msgid "Lower"
-msgstr ""
+msgstr "Inferior"
 
 #, fuzzy
 msgid "95% Confidence Interval"
@@ -94,7 +93,7 @@ msgstr ""
 
 #, fuzzy
 msgid "Variable"
-msgstr "Variáveis"
+msgstr "Variável"
 
 #, fuzzy
 msgid "Intercept"
@@ -111,11 +110,11 @@ msgstr ""
 
 #, fuzzy
 msgid "Mean"
-msgstr "Médias"
+msgstr "Média"
 
 #, fuzzy
 msgid "Variance"
-msgstr "Variáveis"
+msgstr "Variância"
 
 msgid ""
 "Residual variance is negative. This may indicate model misspecification."
@@ -125,7 +124,6 @@ msgstr ""
 msgid "Additional Fit measures"
 msgstr "Medidas Adicionais de Ajuste"
 
-#, fuzzy
 msgid "Fit indices"
 msgstr "Ocultar índices baixos"
 
@@ -137,51 +135,50 @@ msgid "Value"
 msgstr "Valor"
 
 msgid "Information criteria"
-msgstr ""
+msgstr "Critério de informação"
 
-#, fuzzy
 msgid "Other fit measures"
 msgstr "Medidas adicionais de ajuste"
 
-#, fuzzy
 msgid "Metric"
 msgstr "Métrica"
 
 msgid "Comparative Fit Index (CFI)"
-msgstr ""
+msgstr "Índice de Ajuste Comparativo"
 
 msgid "Tucker-Lewis Index (TLI)"
-msgstr ""
+msgstr "Índice de Tucker-Lewis"
 
 msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
-msgstr ""
+msgstr "Índice de ajuste não normalizado de Bentler-Bonett"
 
 msgid "Bentler-Bonett Normed Fit Index (NFI)"
-msgstr ""
+msgstr "Índice de ajuste normalizado de Bentler-Bonett"
 
+#, fuzzy
 msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr ""
+msgstr "Índice de ajuste de"
 
 msgid "Bollen's Relative Fit Index (RFI)"
-msgstr ""
+msgstr "Índice de ajuste relativo de Bollen"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
 msgstr ""
 
 msgid "Relative Noncentrality Index (RNI)"
-msgstr ""
+msgstr "Índice relativo de não-centralidade"
 
 msgid "Log-likelihood"
 msgstr ""
 
 msgid "Number of free parameters"
-msgstr ""
+msgstr "Número de parâmetros livres"
 
 msgid "Akaike (AIC)"
 msgstr ""
 
 msgid "Bayesian (BIC)"
-msgstr ""
+msgstr "Bayesiano"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
 msgstr ""
@@ -200,8 +197,9 @@ msgstr "limite superior:"
 msgid "RMSEA p-value"
 msgstr ""
 
+#, fuzzy
 msgid "Standardized root mean square residual (SRMR)"
-msgstr ""
+msgstr "Raiz quadrada média residual padronizada"
 
 msgid "Hoelter's critical N (%s = .05)"
 msgstr ""
@@ -213,7 +211,7 @@ msgid "Goodness of fit index (GFI)"
 msgstr ""
 
 msgid "McDonald fit index (MFI)"
-msgstr ""
+msgstr "Índice de ajuste de McDonald"
 
 msgid "Expected cross validation index (ECVI)"
 msgstr ""
@@ -221,11 +219,9 @@ msgstr ""
 msgid "R-Squared"
 msgstr ""
 
-#, fuzzy
 msgid "Implied covariance matrix"
 msgstr "Matriz de covariância implícita"
 
-#, fuzzy
 msgid "Residual covariance matrix"
 msgstr "Matriz de covariância residual"
 
@@ -233,7 +229,6 @@ msgstr "Matriz de covariância residual"
 msgid "Curve plot"
 msgstr "Diagrama de barra"
 
-#, fuzzy
 msgid "Model plot"
 msgstr "Gráfico do modelo"
 
@@ -277,12 +272,12 @@ msgstr ""
 msgid "Direct effects"
 msgstr ""
 
-#, fuzzy
 msgid "%s%% Confidence Interval"
 msgstr "Intervalo de Confiança"
 
+#, fuzzy
 msgid "Upper"
-msgstr ""
+msgstr "Superior"
 
 msgid "Indirect effects"
 msgstr ""
@@ -291,9 +286,8 @@ msgstr ""
 msgid "Total indirect effects"
 msgstr "Tamanho de efeito padronizado"
 
-#, fuzzy
 msgid "Residual covariances"
-msgstr "Covariâncias residual"
+msgstr "Covariâncias residuais"
 
 msgid "Delta method"
 msgstr ""
@@ -342,16 +336,14 @@ msgstr ""
 
 #, fuzzy
 msgid "df"
-msgstr "gl:"
+msgstr "gl"
 
 msgid "&#967;&sup2;"
 msgstr ""
 
-#, fuzzy
 msgid "Factor model"
 msgstr "Fatores"
 
-#, fuzzy
 msgid "Additional fit measures"
 msgstr "Medidas adicionais de ajuste"
 
@@ -377,7 +369,7 @@ msgid "Indicator coefficients"
 msgstr "Coeficiente de Mardia"
 
 msgid "Indicator"
-msgstr ""
+msgstr "Indicador"
 
 #, fuzzy
 msgid "Latent"
@@ -408,7 +400,6 @@ msgid ""
 "matrix?"
 msgstr ""
 
-#, fuzzy
 msgid "Model fit"
 msgstr "Gráfico do modelo"
 
@@ -416,7 +407,6 @@ msgstr "Gráfico do modelo"
 msgid "AIC"
 msgstr "AIC"
 
-#, fuzzy
 msgid "BIC"
 msgstr "BIC"
 
@@ -470,7 +460,6 @@ msgstr "Coeficiente de Mardia"
 msgid "Outcome"
 msgstr ""
 
-#, fuzzy
 msgid "Factor variances"
 msgstr "Variâncias latentes"
 
@@ -482,9 +471,8 @@ msgstr "Covariâncias latentes"
 msgid "Variables"
 msgstr "Variáveis"
 
-#, fuzzy
 msgid "Residual variances"
-msgstr "Variâncias residual"
+msgstr "Variâncias residuais"
 
 #, fuzzy
 msgid "Means"
@@ -518,10 +506,10 @@ msgid ""
 msgstr ""
 
 msgid "Skewness"
-msgstr ""
+msgstr "Assimetria"
 
 msgid "Kurtosis"
-msgstr ""
+msgstr "Curtose"
 
 #, fuzzy
 msgid "Covariance tables"
@@ -531,7 +519,6 @@ msgstr "Covariáveis"
 msgid "Modification indices"
 msgstr "Índices de modificação"
 
-#, fuzzy
 msgid "Modification Indices"
 msgstr "Índices de modificação"
 
@@ -555,4 +542,3 @@ msgstr ""
 
 msgid "Path diagram"
 msgstr ""
-

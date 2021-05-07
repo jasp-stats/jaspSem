@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-01-05 09:38\n"
-"PO-Revision-Date: 2021-02-01 08:41+0000\n"
+"PO-Revision-Date: 2021-04-25 09:31+0000\n"
 "Last-Translator: Johannes Keyser <johanneskeyser@posteo.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 4.5-dev\n"
+"X-Generator: Weblate 4.7-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "Das Modell konnte nicht geschätzt werden durch fehlende Konvergenz."
@@ -170,13 +170,11 @@ msgstr ""
 msgid "Root mean square error of approximation (RMSEA)"
 msgstr ""
 
-#, fuzzy
 msgid "RMSEA 90% CI lower bound"
-msgstr "%s untere Grenze"
+msgstr "RMSEA 90% KI untere Grenze"
 
-#, fuzzy
 msgid "RMSEA 90% CI upper bound"
-msgstr "%s obere Grenze"
+msgstr "RMSEA 90% KI obere Grenze"
 
 msgid "RMSEA p-value"
 msgstr "RMSEA p-Wert"
@@ -221,12 +219,11 @@ msgstr ""
 msgid "Curve + variance + uncertainty"
 msgstr ""
 
-#, fuzzy
 msgid "Curve + variance"
-msgstr "Faktorvarianzen"
+msgstr "Kurve + Varianz"
 
 msgid "Curve + parameter uncertainty"
-msgstr ""
+msgstr "Kurve + Parameterunsicherheit"
 
 msgid "FIML only available with ML-type estimators."
 msgstr "FIML nur mit ML-Schätzern verfügbar."
@@ -289,13 +286,13 @@ msgid "percentile bootstrap"
 msgstr "Perzentil-Bootstrap"
 
 msgid "normal theory bootstrap"
-msgstr ""
+msgstr "Normaltheorie-Bootstrap"
 
 msgid "bias-corrected percentile bootstrap"
-msgstr ""
+msgstr "Bias-korrigierter Perzentil-Bootstrap"
 
 msgid "normal theory"
-msgstr ""
+msgstr "Normal-Theorie"
 
 msgid "robust"
 msgstr "robust"
@@ -320,7 +317,6 @@ msgstr "Pfaddiagramm"
 msgid "Model syntax"
 msgstr "Modellsyntax"
 
-#, fuzzy
 msgid "Chi Square test"
 msgstr "Chi-Quadrat-Test"
 
@@ -337,14 +333,13 @@ msgid "Additional fit measures"
 msgstr "Weitere Anpassungsmetriken"
 
 msgid "RMSEA 90%% CI lower bound"
-msgstr ""
+msgstr "RMSEA 90% KI untere Grenze"
 
 msgid "RMSEA 90%% CI upper bound"
-msgstr ""
+msgstr "RMSEA 90% KI obere Grenze"
 
-#, fuzzy
 msgid "Predictor coefficients"
-msgstr "Mardias Koeffizienten"
+msgstr "Prädiktor-Koeffizienten"
 
 msgid "Standardized"
 msgstr "Standardisiert"
@@ -352,15 +347,14 @@ msgstr "Standardisiert"
 msgid "Endo"
 msgstr ""
 
-#, fuzzy
 msgid "Indicator coefficients"
-msgstr "Mardias Koeffizienten"
+msgstr "Indikator-Koeffizienten"
 
 msgid "Indicator"
 msgstr "Indikator"
 
 msgid "Latent"
-msgstr ""
+msgstr "Latent"
 
 msgid "Model plot not available with ordinal variables"
 msgstr "Modelldiagramm nicht verfügbar mit Ordinalvariablen"
@@ -369,7 +363,7 @@ msgid "FIML missing data handling only available with ML-type estimators"
 msgstr "FIML-Verarbeitung fehlender Daten nur mit ML-Schätzern verfügbar"
 
 msgid "Grouping variable has fewer than 3 observations in group %s"
-msgstr ""
+msgstr "Gruppierungsvariable hat weniger als 3 Beobachtungen in Gruppe %s"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
@@ -380,12 +374,11 @@ msgstr ""
 msgid "Please set the sample size!"
 msgstr "Bitte setze den Stichprobenumfang!"
 
-#, fuzzy
 msgid ""
 "Multiple group analysis not supported when data is variance-covariance matrix"
 msgstr ""
-"Mehrfachgruppenanalyse wird (noch) nicht unterstützt, wenn es sich bei den "
-"Daten um eine Varianz-Kovarianz-Matrix handelt"
+"Mehrfachgruppenanalyse noch nicht unterstützt, wenn Daten eine Varianz-"
+"Kovarianz-Matrix sind"
 
 msgid ""
 "Not more cases than number of variables. Is your data a variance-covariance "
@@ -406,42 +399,38 @@ msgstr "BIC"
 msgid "n"
 msgstr "n"
 
-#, fuzzy
 msgid "Baseline test"
-msgstr "Baseline-Modell"
+msgstr "Baseline-Test"
 
-#, fuzzy
 msgid "&#916;&#967;&sup2;"
-msgstr "&#967;&sup2;"
+msgstr "&#916;&#967;&sup2;"
 
-#, fuzzy
 msgid "Difference test"
-msgstr "Differenzschätzer"
+msgstr "Differenz-Test"
 
 msgid "&#916;df"
-msgstr ""
+msgstr "&#916;df"
 
 msgid "Satorra-Bentler scaled test-statistic"
-msgstr ""
+msgstr "Satorra-Bentler skalierte Test-Statistik"
 
 msgid "Yuan-Bentler scaled test-statistic"
-msgstr ""
+msgstr "Yuan-Bentler skalierte Test-Statistik"
 
 msgid "Yuan-Bentler (Mplus) scaled test-statistic"
-msgstr ""
+msgstr "Yuan-Bentler (Mplus) skalierte Test-Statistik"
 
 msgid "mean and variance adjusted test-statistic"
-msgstr ""
+msgstr "Mittelwert- und Varianz-angepasste Test-Statistik"
 
 msgid "scaled and shifted test-statistic"
-msgstr ""
+msgstr "skalierte und verschobene Test-Statistik"
 
 msgid "bootstrap (Bollen-Stine) probability value"
-msgstr ""
+msgstr "Bootstrap (Bollen-Stine)-Wahrscheinlichkeitswert"
 
-#, fuzzy
 msgid "Model tests based on %s."
-msgstr "Modellterme getestet mit %s-Methode."
+msgstr "Modelltests basierend auf %s."
 
 msgid "Factor Loadings"
 msgstr "Faktorladungen"
@@ -449,18 +438,15 @@ msgstr "Faktorladungen"
 msgid "Group"
 msgstr "Gruppe"
 
-#, fuzzy
 msgid "Regression coefficients"
-msgstr "Regression-Koeffizienten"
+msgstr "Regressionskoeffizienten"
 
-#, fuzzy
 msgid "Outcome"
-msgstr "Beobachtetes Ergebnis"
+msgstr "Ergebnis"
 
 msgid "Factor variances"
 msgstr "Faktorvarianzen"
 
-#, fuzzy
 msgid "Factor covariances"
 msgstr "Faktorkovarianzen"
 
@@ -470,16 +456,14 @@ msgstr "Variablen"
 msgid "Residual variances"
 msgstr "Residualvarianzen"
 
-#, fuzzy
 msgid "Means"
-msgstr "Mittelwert"
+msgstr "Mittelwerte"
 
-#, fuzzy
 msgid "Defined parameters"
-msgstr "Geschätzte Parameter"
+msgstr "Definierte Parameter"
 
 msgid "Name"
-msgstr ""
+msgstr "Name"
 
 msgid "Mardia's coefficients"
 msgstr "Mardias Koeffizienten"
@@ -494,6 +478,8 @@ msgid ""
 "Multivariate skewness and kurtosis calculated for observed variables from "
 "all models."
 msgstr ""
+"Multivariate Schiefe und Kurtosis für beobachtete Variablen aus allen "
+"Modellen berechnet."
 
 msgid ""
 "Not all used variables are numeric. Mardia's coefficients not available."
@@ -506,16 +492,14 @@ msgstr "Schiefe"
 msgid "Kurtosis"
 msgstr "Wölbung / Kurtosis"
 
-#, fuzzy
 msgid "Covariance tables"
-msgstr "Kovariate"
+msgstr "Kovarianztabellen"
 
-#, fuzzy
 msgid "Modification indices"
-msgstr "Weitere Anpassungsindizes"
+msgstr "Modifikations-Indizes"
 
 msgid "Modification Indices"
-msgstr ""
+msgstr "Modifikations-Indizes"
 
 msgid "group"
 msgstr "Gruppe"
@@ -535,6 +519,5 @@ msgstr "sepc (all)"
 msgid "sepc (nox)"
 msgstr "sepc (all)"
 
-#, fuzzy
 msgid "Path diagram"
 msgstr "Pfaddiagramm"
