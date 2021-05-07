@@ -1,15 +1,9 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-04-25 14:32+0000\n"
-"Last-Translator: Pedro Afonso Cortez <cor.afonso@gmail.com>\n"
-"Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
-"jaspsem-qml/pt/>\n"
-"Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.7-dev\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Language: en_US\n"
 "X-Source-Language: American English\n"
 "X-Qt-Contexts: true\n"
@@ -192,10 +186,6 @@ msgstr ""
 
 msgctxt "Description|"
 msgid "SEM"
-msgstr ""
-
-msgctxt "Description|"
-msgid "The SEM module for JASP."
 msgstr ""
 
 msgctxt "Description|"
@@ -391,9 +381,10 @@ msgctxt "LatentGrowthCurve|"
 msgid "CI width"
 msgstr ""
 
+#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Method"
-msgstr ""
+msgstr "Método"
 
 #, fuzzy
 msgctxt "LatentGrowthCurve|"
@@ -528,13 +519,15 @@ msgctxt "Mimic|"
 msgid "Additional fit measures"
 msgstr "Medidas adicionais de ajuste"
 
+#, fuzzy
 msgctxt "Mimic|"
 msgid "Confidence intervals"
-msgstr ""
+msgstr "Intervalos de confiança"
 
+#, fuzzy
 msgctxt "Mimic|"
 msgid "Method"
-msgstr ""
+msgstr "Método"
 
 #, fuzzy
 msgctxt "Mimic|"
@@ -885,9 +878,10 @@ msgctxt "SEM|"
 msgid "Normal theory"
 msgstr ""
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Confidence intervals"
-msgstr ""
+msgstr "Intervalos de confiança"
 
 msgctxt "SEM|"
 msgid "Standardize variables before estimation"
@@ -1049,4 +1043,8 @@ msgstr "Covariâncias latentes"
 
 msgctxt "SEM|"
 msgid "Release constraints (one per line)"
+msgstr ""
+
+msgctxt "Description|"
+msgid "Evaluate latent data structures with Yves Rosseel’s lavaan program"
 msgstr ""

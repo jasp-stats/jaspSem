@@ -12,11 +12,6 @@ msgctxt "Description|"
 msgid "SEM"
 msgstr "SEM"
 
-#, fuzzy
-msgctxt "Description|"
-msgid "The SEM module for JASP."
-msgstr "SEM module."
-
 msgctxt "Description|"
 msgid "Structural Equation Modeling"
 msgstr "Structural Equation Modeling"
@@ -1124,4 +1119,8 @@ msgstr "Latente covarianties"
 
 msgctxt "SEM|"
 msgid "Release constraints (one per line)"
+msgstr ""
+
+msgctxt "Description|"
+msgid "Evaluate latent data structures with Yves Rosseel’s lavaan program"
 msgstr ""
