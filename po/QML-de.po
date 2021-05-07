@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-03-10 10:02+0000\n"
+"PO-Revision-Date: 2021-04-10 16:26+0000\n"
 "Last-Translator: Johannes Keyser <johanneskeyser@posteo.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "de/>\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.5.2-dev\n"
+"X-Generator: Weblate 4.6-dev\n"
 "X-Language: en_US\n"
 "X-Source-Language: American English\n"
 "X-Qt-Contexts: true\n"
@@ -276,17 +276,14 @@ msgctxt "LatentGrowthCurve|"
 msgid "Residual variances"
 msgstr "Residualvarianzen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Correlate exogenous latents"
 msgstr "Exogene latente Variablen korrelieren"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Add thresholdds"
 msgstr "Schwellenwerte hinzufügen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Add scalings parameters"
 msgstr "Skalenparameter hinzufügen"
@@ -465,7 +462,7 @@ msgstr "DWLS"
 
 msgctxt "Mimic|"
 msgid "Indicators"
-msgstr ""
+msgstr "Indikatoren"
 
 msgctxt "Mimic|"
 msgid "Predictors"
@@ -556,7 +553,6 @@ msgctxt "Mimic|"
 msgid "Missing value handling"
 msgstr "Behandlung fehlender Werte"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Full Information Maximum Likelihood"
 msgstr "Volle-Information-Maximum-Likelihood"
