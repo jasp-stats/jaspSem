@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-01-05 09:38\n"
-"PO-Revision-Date: 2021-04-25 09:31+0000\n"
+"PO-Revision-Date: 2021-05-12 09:32+0000\n"
 "Last-Translator: Johannes Keyser <johanneskeyser@posteo.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
@@ -206,9 +206,8 @@ msgstr "Implizierte Kovarianzmatrix"
 msgid "Residual covariance matrix"
 msgstr "Residualkovarianzmatrix"
 
-#, fuzzy
 msgid "Curve plot"
-msgstr "ROC-Kurven-Grafik"
+msgstr "Kurvendiagramm"
 
 msgid "Model plot"
 msgstr "Modelabbildung"
@@ -217,7 +216,7 @@ msgid "Misfit plot"
 msgstr ""
 
 msgid "Curve + variance + uncertainty"
-msgstr ""
+msgstr "Kurve + Varianz + Unsicherheit"
 
 msgid "Curve + variance"
 msgstr "Kurve + Varianz"
