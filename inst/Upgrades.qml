@@ -7,7 +7,44 @@ Upgrades
 	{
 		functionName: 		"SEMSimple"
 		newFunctionName:	"SEM"
-		fromVersion:		"0.14.2"
+		fromVersion:		"0.14.3"
 		toVersion:			"0.15"
+
+		ChangeJS
+		{
+			name:		"factorStandardisation"
+			jsFunction:	function(options)
+			{
+				switch(options["factorStandardisation"])
+				{
+					case "factorLoadings":		return "auto.fix.first";
+					case "residualVariance":	return "std.lv";
+				}
+			}
+		}
+
+		ChangeJS
+		{
+			name:		"estimator"
+			jsFunction:	function(options)
+			{
+				switch(options["estimator"])
+				{
+					case "automatic":		return "default";
+				}
+			}
+		}
+
+		ChangeJS
+		{
+			name:		"emulation"
+			jsFunction:	function(options)
+			{
+				switch(options["emulation"])
+				{
+					case "none":		return "lavaan";
+				}
+			}
+		}
 	}
 }
