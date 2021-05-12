@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
 "POT-Creation-Date: 2021-01-05 09:38\n"
-"PO-Revision-Date: 2021-04-23 19:32+0000\n"
+"PO-Revision-Date: 2021-05-13 22:32+0000\n"
 "Last-Translator: Paulina Elizabeth Robalino <paulina.e.robalino@gmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "es/>\n"
@@ -35,7 +35,7 @@ msgid "Warning."
 msgstr ""
 
 msgid "Parameter estimates"
-msgstr ""
+msgstr "Estimaciones de parámetros"
 
 msgid "Component"
 msgstr ""
@@ -47,10 +47,10 @@ msgid "Estimate"
 msgstr "Estimar"
 
 msgid "Std. Error"
-msgstr ""
+msgstr "Error Std."
 
 msgid "z-value"
-msgstr ""
+msgstr "Valor-Z"
 
 msgid "p"
 msgstr "p"
@@ -186,28 +186,28 @@ msgid "Hoelter's critical N (%s = .01)"
 msgstr ""
 
 msgid "Goodness of fit index (GFI)"
-msgstr ""
+msgstr "Índice de bondad de ajuste (GFI)"
 
 msgid "McDonald fit index (MFI)"
 msgstr ""
 
 msgid "Expected cross validation index (ECVI)"
-msgstr ""
+msgstr "Índice de validación cruzada esperado (ECVI)"
 
 msgid "R-Squared"
 msgstr ""
 
 msgid "Implied covariance matrix"
-msgstr ""
+msgstr "Matriz de covarianza implícita"
 
 msgid "Residual covariance matrix"
-msgstr ""
+msgstr "Matriz de covarianza residual"
 
 msgid "Curve plot"
 msgstr ""
 
 msgid "Model plot"
-msgstr ""
+msgstr "Gráfico modelo"
 
 msgid "Misfit plot"
 msgstr ""
@@ -249,7 +249,7 @@ msgid "Direct effects"
 msgstr ""
 
 msgid "%s%% Confidence Interval"
-msgstr ""
+msgstr "%s%% Intervalo de Confianza"
 
 msgid "Upper"
 msgstr "Superior"
@@ -261,7 +261,7 @@ msgid "Total indirect effects"
 msgstr ""
 
 msgid "Residual covariances"
-msgstr ""
+msgstr "Covarianzas residuales"
 
 msgid "Delta method"
 msgstr ""
@@ -299,7 +299,7 @@ msgid "Path plot"
 msgstr ""
 
 msgid "Model syntax"
-msgstr ""
+msgstr "Sintaxis del modelo"
 
 msgid "Chi Square test"
 msgstr ""
@@ -335,7 +335,7 @@ msgid "Indicator coefficients"
 msgstr ""
 
 msgid "Indicator"
-msgstr ""
+msgstr "Indicador"
 
 msgid "Latent"
 msgstr ""
@@ -423,7 +423,7 @@ msgid "Outcome"
 msgstr ""
 
 msgid "Factor variances"
-msgstr ""
+msgstr "Variaciones de factores"
 
 msgid "Factor covariances"
 msgstr ""
@@ -432,7 +432,7 @@ msgid "Variables"
 msgstr ""
 
 msgid "Residual variances"
-msgstr ""
+msgstr "Varianzas residuales"
 
 msgid "Means"
 msgstr ""
@@ -474,7 +474,7 @@ msgid "Modification indices"
 msgstr ""
 
 msgid "Modification Indices"
-msgstr ""
+msgstr "Índices de Modificación"
 
 msgid "group"
 msgstr ""
