@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-03-06 15:52\n"
-"PO-Revision-Date: 2021-05-03 19:31+0000\n"
+"PO-Revision-Date: 2021-05-15 20:51+0000\n"
 "Last-Translator: Alex França <alex.tonante@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
 "jaspsem-r/pt/>\n"
@@ -47,7 +47,6 @@ msgstr "Componentes"
 msgid "Parameter"
 msgstr "Parâmetros"
 
-#, fuzzy
 msgid "Estimate"
 msgstr "Estimativas"
 
@@ -58,11 +57,9 @@ msgstr "Erro padrão"
 msgid "z-value"
 msgstr "Valor"
 
-#, fuzzy
 msgid "p"
 msgstr "p"
 
-#, fuzzy
 msgid "Lower"
 msgstr "Inferior"
 
@@ -91,7 +88,6 @@ msgstr "Sem X"
 msgid "Predictor"
 msgstr ""
 
-#, fuzzy
 msgid "Variable"
 msgstr "Variável"
 
@@ -108,7 +104,6 @@ msgstr ""
 msgid "Cubic slope"
 msgstr ""
 
-#, fuzzy
 msgid "Mean"
 msgstr "Média"
 
@@ -275,7 +270,6 @@ msgstr ""
 msgid "%s%% Confidence Interval"
 msgstr "Intervalo de Confiança"
 
-#, fuzzy
 msgid "Upper"
 msgstr "Superior"
 
@@ -334,7 +328,6 @@ msgstr "Gráfico do modelo"
 msgid "Chi Square test"
 msgstr ""
 
-#, fuzzy
 msgid "df"
 msgstr "gl"
 
