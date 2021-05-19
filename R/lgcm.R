@@ -234,7 +234,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
 
   # display warnings in footnote
 
-  admissible <- JASP:::.withWarnings(lavaan:::lav_object_post_check(lgcmResult))
+  admissible <- .withWarnings(lavaan:::lav_object_post_check(lgcmResult))
 
   if (!admissible$value) {
     maintab$addFootnote(

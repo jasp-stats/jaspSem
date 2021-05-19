@@ -439,7 +439,7 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
 }
 
 .mimicFootMessage <- function(fit) {
-  check <- jaspBase:::.withWarnings(lavaan:::lav_object_post_check(fit))
+  check <- .withWarnings(lavaan:::lav_object_post_check(fit))
   if (check$value) return("")
   wrn <- lapply(check$warnings, function(w) w$message)
   return(paste(wrn, collapse = "\n- "))
