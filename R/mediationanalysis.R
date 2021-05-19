@@ -586,7 +586,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     nodeNames      = po@Vars$name,
     nCharNodes     = 3
   ))
-  
+
   # post-process plot
   pp <- .medPlotPostProcess(pp, options)
 
@@ -602,7 +602,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   # Create semplot model and unv the names of the manifest variables
   # Sorry, this code is really ugly but all it does is replace names for plot.
   semPlotMod <- semPlot::semPlotModel(list(lavResult), list(mplusStd = "std"))[[1]]
-  
+
   manifests <- semPlotMod@Vars$name[semPlotMod@Vars$manifest]
   semPlotMod@Vars$name[semPlotMod@Vars$manifest] <- decodeColNames(manifests)
   semPlotMod@Pars$lhs <- ifelse(nchar(semPlotMod@Pars$lhs) > 0 , decodeColNames(semPlotMod@Pars$lhs), "")

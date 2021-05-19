@@ -22,12 +22,12 @@ lavBootstrap <- function(fit, samples = 1000) {
   # Notes: faulty runs are simply ignored
   # recommended: add a warning if not all boot samples are successful
   # fit <- lavBootstrap(fit, samples = 1000)
-  # if (nrow(fit@boot$coef) < 1000) 
-  #  tab$addFootnote(gettextf("Not all bootstrap samples were successful: CI based on %.0f samples.", nrow(fit@boot$coef)), 
+  # if (nrow(fit@boot$coef) < 1000)
+  #  tab$addFootnote(gettextf("Not all bootstrap samples were successful: CI based on %.0f samples.", nrow(fit@boot$coef)),
   #                  "<em>Note.</em>")
   # using internal bootstrap in lavaan to perform callbacks
-  
-  
+
+
   coef_with_callback <- function(lav_object) {
     # Progress bar is ticked every time coef() is evaluated, which happens once on the main object:
     # https://github.com/yrosseel/lavaan/blob/77a568a574e4113245e2f6aff1d7c3120a26dd90/R/lav_bootstrap.R#L107
@@ -39,11 +39,11 @@ lavBootstrap <- function(fit, samples = 1000) {
   }
   startProgressbar(samples + 1)
   bootres <- lavaan:::bootstrap.internal(object = fit, R = samples, FUN = coef_with_callback)
-  
+
   # Add the bootstrap samples to the fit object
   fit@boot       <- list(coef = bootres)
   fit@Options$se <- "bootstrap"
-  
+
   return(fit)
 }
 
@@ -53,10 +53,10 @@ lavBootstrap <- function(fit, samples = 1000) {
   ggmisfit <- reshape2::melt(abs(t(rescor)))
   ggmisfit$labels <- substr(round(ggmisfit$value, 2), 2, 4)
   ggmisfit$labels[ggmisfit$labels == ""] <- "0"
-  
+
   levels(ggmisfit$Var1) <- .unv(levels(ggmisfit$Var1))
   levels(ggmisfit$Var2) <- .unv(levels(ggmisfit$Var2))
-  
+
   misfitplot <-
     ggplot2::ggplot(ggmisfit, ggplot2::aes(x = Var1, y = Var2, fill = value,
                                            label = labels)) +
@@ -75,7 +75,7 @@ lavBootstrap <- function(fit, samples = 1000) {
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 90,
                                                        hjust = 0)) +
     jaspGraphs::themeJaspRaw()
-  
+
   return(misfitplot)
 }
 
@@ -92,7 +92,7 @@ lavBootstrap <- function(fit, samples = 1000) {
 .decodeVarsInMessage <- function(encodedVars, message) {
   if (length(encodedVars) == 0 || !is.character(encodedVars) || !is.character(message))
     return(message)
-  
+
   decodedVars <- .unv(encodedVars)
   names(decodedVars) <- encodedVars
   stringr::str_replace_all(message, decodedVars)
@@ -103,18 +103,18 @@ lavBootstrap <- function(fit, samples = 1000) {
   # Create semplot model and decode the names of the manifest variables
   # Sorry, this code is really ugly but all it does is replace names for plot.
   semPlotMod <- semPlot::semPlotModel(list(lavResult), list(mplusStd = "std"))[[1]]
-  
+
   manifests <- semPlotMod@Vars$name[semPlotMod@Vars$manifest]
   semPlotMod@Vars$name[semPlotMod@Vars$manifest] <- decodeColNames(manifests)
-  
+
   lhsAreManifest <- semPlotMod@Pars$lhs %in% manifests
-  if (any(lhsAreManifest)) 
+  if (any(lhsAreManifest))
     semPlotMod@Pars$lhs[lhsAreManifest] <- decodeColNames(semPlotMod@Pars$lhs[lhsAreManifest])
-  
+
   rhsAreManifest <- semPlotMod@Pars$rhs %in% manifests
-  if (any(rhsAreManifest)) 
+  if (any(rhsAreManifest))
     semPlotMod@Pars$rhs[rhsAreManifest] <- decodeColNames(semPlotMod@Pars$rhs[rhsAreManifest])
-  
+
   return(semPlotMod)
 }
 
