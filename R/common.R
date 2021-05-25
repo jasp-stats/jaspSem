@@ -38,7 +38,7 @@ lavBootstrap <- function(fit, samples = 1000) {
     return(lavaan::coef(lav_object))
   }
   startProgressbar(samples + 1)
-  bootres <- lavaan:::bootstrap.internal(object = fit, R = samples, FUN = coef_with_callback)
+  bootres <- lavaan:::lav_bootstrap_internal(object = fit, R = samples, FUN = coef_with_callback)
 
   # Add the bootstrap samples to the fit object
   fit@boot       <- list(coef = bootres)
