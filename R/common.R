@@ -25,7 +25,6 @@ lavBootstrap <- function(fit, samples = 1000) {
   # if (nrow(fit@boot$coef) < 1000)
   #  tab$addFootnote(gettextf("Not all bootstrap samples were successful: CI based on %.0f samples.", nrow(fit@boot$coef)),
   #                  "<em>Note.</em>")
-  # using internal bootstrap in lavaan to perform callbacks
 
 
   coef_with_callback <- function(lav_object) {
@@ -38,7 +37,8 @@ lavBootstrap <- function(fit, samples = 1000) {
     return(lavaan::coef(lav_object))
   }
   startProgressbar(samples + 1)
-  bootres <- lavaan:::bootstrap.internal(object = fit, R = samples, FUN = coef_with_callback)
+
+  bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coef_with_callback)
 
   # Add the bootstrap samples to the fit object
   fit@boot       <- list(coef = bootres)

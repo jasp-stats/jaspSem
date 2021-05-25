@@ -534,3 +534,62 @@ test_that("Multigroup, multimodel SEM works", {
                                    1.62394404220375, -1.18787243368823, 0.201587985936387, -0.192381097445062,
                                    -1.73906392430061), "Standardized residual covariance table")
 })
+
+
+test_that("Bootstrapping works", {
+  options <- jaspTools::analysisOptions("SEM")
+  options$models <- list(list(modelName = "Model1", syntax = list(model = "x1 ~ x2 + x3 + y1", columns = c("x1", "x2", "x3", "y1"))))
+  options$emulation        <- "lavaan"
+  options$estimator        <- "default"
+  options$groupingVariable <- ""
+  options$sampling.weights <- ""
+  options$information      <- "expected"
+  options$missing          <- "ML"
+  options$test             <- "standard"
+  options$se               <- "bootstrap"
+  options$bootCItype       <- "perc"
+  options$errorCalculationBootstrapSamples <- 100
+
+  set.seed(1)
+  results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
+
+  test_that("Model fit table results match", {
+    table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
+    jaspTools::expect_equal_tables(table,
+                                   list(48.1563554263444, 59.7437959940259, 0, 0, "Model1", 75, 1, "",
+                                        0, 0))
+  })
+
+  test_that("Residual covariances table results match", {
+    table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_cov"]][["data"]]
+    jaspTools::expect_equal_tables(table,
+                                   list(1.782009228184, 1.782009228184, 1.782009228184, "", "x2 - x3",
+                                        "", 0, "", 1.2564136096, 1.2564136096, 1.2564136096, "", "x2 - y1",
+                                        "", 0, "", 0.899301179999998, 0.899301179999998, 0.899301179999998,
+                                        "", "x3 - y1", "", 0, ""))
+  })
+
+  test_that("Regression coefficients table results match", {
+    table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_reg"]][["data"]]
+    jaspTools::expect_equal_tables(table,
+                                   list(0.268681438601061, 0.452255904547886, 0.355178163031198, "", "x1",
+                                        3.13082892944294e-14, "x2", 0.0467810927627533, 7.59234430098623,
+                                        -0.0227477328700399, 0.150803623251047, 0.0779182545603887,
+                                        "", "x1", 0.112759836982545, "x3", 0.0491315890359824, 1.58590951543057,
+                                        -0.000464737724491137, 0.0538034630405118, 0.0306885890503354,
+                                        "", "x1", 0.0358943948473298, "y1", 0.0146266962697169, 2.09812171418867
+                                   ))
+  })
+
+  test_that("Residual variances table results match", {
+    table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_var"]][["data"]]
+    jaspTools::expect_equal_tables(table,
+                                   list(0.0692094430059861, 0.123114076435843, "x1", 0.097380852992327,
+                                        "", "x1", 9.14129882900738e-10, 0.0159022267032121, 6.12372435695794,
+                                        2.25167664969695, 2.25167664969695, "x2", 2.25167664969695,
+                                        "", "x2", "", 0, "", 1.94967853807201, 1.94967853807201, "x3",
+                                        1.94967853807201, "", "x3", "", 0, "", 6.78685155555555, 6.78685155555555,
+                                        "y1", 6.78685155555555, "", "y1", "", 0, ""))
+  })
+
+})
