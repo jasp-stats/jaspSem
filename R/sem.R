@@ -457,8 +457,8 @@ checkLavaanModel <- function(model, availableVars) {
   # add missing value removal footnote
   if(nrow(dataset) > lavaan::lavInspect(semResults[[1]], "ntotal")){
     nrm <- nrow(dataset) - lavaan::lavInspect(semResults[[1]], "ntotal")
-    # adj to sprintf()
-    missing_footnote <- paste("a total of", n_rm, "cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options.")
+    missingFootnote <- gettextf("A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options.",
+                                nrm)
     fittab$addFootnote(message = missingFootnote)
   }
 
