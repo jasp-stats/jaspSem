@@ -454,13 +454,13 @@ checkLavaanModel <- function(model, availableVars) {
     fittab$addFootnote(gsub("lavaan WARNING: ", "", lrt$warnings[[1]]$message))
   }
 
-  # add missing value removal footnote
-  if(nrow(dataset) > lavaan::lavInspect(semResults[[1]], "ntotal")){
-    nrm <- nrow(dataset) - lavaan::lavInspect(semResults[[1]], "ntotal")
-    missingFootnote <- gettextf("A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options.",
-                                nrm)
-    fittab$addFootnote(message = missingFootnote)
-  }
+ # add missing value removal footnote
+ if(options$missing == "listwise"){
+   nrm <- nrow(dataset) - lavaan::lavInspect(semResults[[1]], "ntotal")
+   missingFootnote <- gettextf("A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options.",
+                               nrm)
+   fittab$addFootnote(message = missingFootnote)
+ }
 
   # add test statistic correction footnote
   test <- lavaan::lavInspect(semResults[[1]], "options")[["test"]]
