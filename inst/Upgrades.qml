@@ -28,14 +28,14 @@ Upgrades
 		{
 			name:		"estimator"
 			condition:	function(options) { return options["estimator"] === "automatic"; }
-			value:		"default"
+			jsonValue:	"default"
 		}
 
 		ChangeSetValue
 		{
 			name:		"emulation"
 			condition:	function(options) { return options["emulation"] === "none"; }
-			value:		"lavaan"
+			jsonValue:	"lavaan"
 		}
 
 		ChangeRename { from: "model"; to: "models" }
