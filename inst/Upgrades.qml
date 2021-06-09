@@ -46,5 +46,25 @@ Upgrades
 				}
 			}
 		}
+
+		ChangeRename { from: "model"; to: "models" }
+
+		ChangeJS
+		{
+			name:		"models"
+			jsFunction:	function(options)
+			{
+				return [
+							{
+								modelName:	"Model 1",
+								syntax:
+								{
+									modelOriginal:	options["models"]
+								}
+							}
+
+						];
+			}
+		}
 	}
 }
