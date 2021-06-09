@@ -19,32 +19,23 @@ Upgrades
 				{
 					case "factorLoadings":		return "auto.fix.first";
 					case "residualVariance":	return "std.lv";
+					default:					return options["factorStandardisation"]
 				}
 			}
 		}
 
-		ChangeJS
+		ChangeSetValue
 		{
 			name:		"estimator"
-			jsFunction:	function(options)
-			{
-				switch(options["estimator"])
-				{
-					case "automatic":		return "default";
-				}
-			}
+			condition:	function(options) { return options["estimator"] === "automatic"; }
+			value:		"default"
 		}
 
-		ChangeJS
+		ChangeSetValue
 		{
 			name:		"emulation"
-			jsFunction:	function(options)
-			{
-				switch(options["emulation"])
-				{
-					case "none":		return "lavaan";
-				}
-			}
+			condition:	function(options) { return options["emulation"] === "none"; }
+			value:		"lavaan"
 		}
 
 		ChangeRename { from: "model"; to: "models" }
