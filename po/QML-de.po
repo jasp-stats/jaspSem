@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-05-12 09:32+0000\n"
+"PO-Revision-Date: 2021-06-12 09:33+0000\n"
 "Last-Translator: Johannes Keyser <johanneskeyser@posteo.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "de/>\n"
@@ -174,7 +174,6 @@ msgctxt "LatentGrowthCurve|"
 msgid "Mplus"
 msgstr "Mplus"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "EQS"
 msgstr "EQS"
@@ -231,22 +230,18 @@ msgctxt "LatentGrowthCurve|"
 msgid "ML"
 msgstr "ML"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "GLS"
 msgstr "GLS"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "WLS"
 msgstr "WLS"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "ULS"
 msgstr "ULS"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "DWLS"
 msgstr "DWLS"
@@ -289,7 +284,7 @@ msgstr "Abhängige Variablen korrelieren"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Multigroup LGCM"
-msgstr ""
+msgstr "Multigruppen-LGCM"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Grouping variable"
@@ -519,7 +514,6 @@ msgctxt "Mimic|"
 msgid "Percentile"
 msgstr "Perzentil"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Normal theory"
 msgstr "Normal-Theorie"
@@ -568,7 +562,6 @@ msgctxt "Mimic|"
 msgid "Mplus"
 msgstr "Mplus"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "EQS"
 msgstr "EQS"
@@ -585,22 +578,18 @@ msgctxt "Mimic|"
 msgid "ML"
 msgstr "ML"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "GLS"
 msgstr "GLS"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "WLS"
 msgstr "WLS"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "ULS"
 msgstr "ULS"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "DWLS"
 msgstr "DWLS"
@@ -627,7 +616,7 @@ msgstr "Stichprobenumfang"
 
 msgctxt "SEM|"
 msgid "Sampling weights"
-msgstr ""
+msgstr "Stichprobengewichtung"
 
 msgctxt "SEM|"
 msgid "Output options"
@@ -733,7 +722,6 @@ msgctxt "SEM|"
 msgid "Fix exogenous covariates"
 msgstr "Exogene Kovariaten fixieren"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Omit residual single indicator"
 msgstr "Residuellen Einzel-Indikator weglassen"
@@ -754,7 +742,6 @@ msgctxt "SEM|"
 msgid "Add thresholds"
 msgstr "Schwellenwerte hinzufügen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Add scaling parameters"
 msgstr "Skalenparameter hinzufügen"
@@ -811,7 +798,6 @@ msgctxt "SEM|"
 msgid "Percentile"
 msgstr "Perzentil"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Normal theory"
 msgstr "Normal-Theorie"
@@ -836,22 +822,18 @@ msgctxt "SEM|"
 msgid "ML"
 msgstr "ML"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "GLS"
 msgstr "GLS"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "WLS"
 msgstr "WLS"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "ULS"
 msgstr "ULS"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "DWLS"
 msgstr "DWLS"
@@ -890,7 +872,7 @@ msgstr "Umgang mit fehlenden Werten"
 
 msgctxt "SEM|"
 msgid "FIML"
-msgstr ""
+msgstr "FIML"
 
 msgctxt "SEM|"
 msgid "Listwise deletion"
@@ -920,14 +902,13 @@ msgctxt "SEM|"
 msgid "Mplus"
 msgstr "Mplus"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "EQS"
 msgstr "EQS"
 
 msgctxt "SEM|"
 msgid "Multigroup SEM"
-msgstr ""
+msgstr "Multigruppen-SGM"
 
 msgctxt "SEM|"
 msgid "Grouping Variable"
