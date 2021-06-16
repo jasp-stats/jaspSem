@@ -256,6 +256,20 @@ checkLavaanModel <- function(model, availableVars) {
       break
     }
 
+    if(isFALSE(slot(fit, "optim")$converged)) {
+      errormsg <- gettextf("Estimation failed! Message: Model %s did not converge!", options[["models"]][[i]][["modelName"]])
+      modelContainer$setError(errormsg)
+      modelContainer$dependOn("models")
+      break
+    }
+
+    if(lavaan::fitMeasures(fit, "df") < 0 ) {
+      errormsg <- gettextf("Estimation failed! Message: Model %s has negative degrees of freedom.", options[["models"]][[i]][["modelName"]])
+      modelContainer$setError(errormsg)
+      modelContainer$dependOn("models")
+      break
+    }
+
     if (options[["se"]] == "bootstrap") {
       fit <- lavBootstrap(fit, options[["errorCalculationBootstrapSamples"]])
     }
@@ -414,7 +428,6 @@ checkLavaanModel <- function(model, availableVars) {
                        overtitle = gettext("Difference test"))
   fittab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
                        overtitle = gettext("Difference test"))
-
 
   modelContainer[["fittab"]] <- fittab
 
