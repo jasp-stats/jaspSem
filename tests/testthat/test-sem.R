@@ -557,7 +557,8 @@ test_that("Bootstrapping works", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(48.1563554263444, 59.7437959940259, 0, 0, "Model1", 75, 1, "",
-                                      0, 0))
+                                      0, 0),
+                                 label = "Model fit table results match")
 
   # Residual covariances table results match
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_cov"]][["data"]]
@@ -565,7 +566,8 @@ test_that("Bootstrapping works", {
                                  list(1.782009228184, 1.782009228184, 1.782009228184, "", "x2 - x3",
                                       "", 0, "", 1.2564136096, 1.2564136096, 1.2564136096, "", "x2 - y1",
                                       "", 0, "", 0.899301179999998, 0.899301179999998, 0.899301179999998,
-                                      "", "x3 - y1", "", 0, ""))
+                                      "", "x3 - y1", "", 0, ""),
+                                 label = "Residual covariances table results match")
 
   # Regression coefficients table results match
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_reg"]][["data"]]
@@ -576,7 +578,8 @@ test_that("Bootstrapping works", {
                                       "", "x1", 0.112759836982545, "x3", 0.0491315890359824, 1.58590951543057,
                                       -0.000464737724491137, 0.0538034630405118, 0.0306885890503354,
                                       "", "x1", 0.0358943948473298, "y1", 0.0146266962697169, 2.09812171418867
-                                 ))
+                                 ),
+                                 label = "Regression coefficients table results match")
 
   # Residual variances table results match
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_var"]][["data"]]
@@ -586,6 +589,7 @@ test_that("Bootstrapping works", {
                                       2.25167664969695, 2.25167664969695, "x2", 2.25167664969695,
                                       "", "x2", "", 0, "", 1.94967853807201, 1.94967853807201, "x3",
                                       1.94967853807201, "", "x3", "", 0, "", 6.78685155555555, 6.78685155555555,
-                                      "y1", 6.78685155555555, "", "y1", "", 0, ""))
+                                      "y1", 6.78685155555555, "", "y1", "", 0, ""),
+                                 label = "Residual variances table results match")
 
 })
