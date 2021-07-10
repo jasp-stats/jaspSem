@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2021-06-30 13:30\n"
-"PO-Revision-Date: 2021-07-08 20:32+0000\n"
+"PO-Revision-Date: 2021-07-10 23:33+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "gl/>\n"
@@ -195,9 +195,8 @@ msgstr ""
 msgid "RMSEA 90% CI lower bound"
 msgstr "límite inferior:"
 
-#, fuzzy
 msgid "RMSEA 90% CI upper bound"
-msgstr "límite superior:"
+msgstr "Límite superior do IC do 90%% de RMSEA"
 
 #, fuzzy
 msgid "RMSEA p-value"
@@ -364,7 +363,7 @@ msgid "RMSEA 90%% CI lower bound"
 msgstr ""
 
 msgid "RMSEA 90%% CI upper bound"
-msgstr ""
+msgstr "Límite superior do IC do 90%% de RMSEA"
 
 #, fuzzy
 msgid "Predictor coefficients"
@@ -514,12 +513,11 @@ msgstr "Nome:"
 msgid "Mardia's coefficients"
 msgstr "Coeficiente de Mardia"
 
-#, fuzzy
 msgid "Coefficient"
-msgstr "Coeficientes"
+msgstr "Coeficiente"
 
 msgid "z"
-msgstr ""
+msgstr "z"
 
 msgid ""
 "Multivariate skewness and kurtosis calculated for observed variables from "
