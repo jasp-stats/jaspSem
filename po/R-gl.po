@@ -7,17 +7,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2021-06-30 13:30\n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: gl_ES\n"
+"PO-Revision-Date: 2021-07-08 20:32+0000\n"
+"Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
+"Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
+"gl/>\n"
+"Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.8-dev\n"
 "X-Virgin-Header: remove this line if you change anything in the header.\n"
 "X-Language: gl_ES\n"
 "X-Source-Language: C\n"
-"X-Generator: Poedit 2.3\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr ""
@@ -54,13 +56,11 @@ msgstr "Compoñentes"
 msgid "Parameter"
 msgstr "Parámetro"
 
-#, fuzzy
 msgid "Estimate"
-msgstr "Estimado"
+msgstr "Estimar"
 
-#, fuzzy
 msgid "Std. Error"
-msgstr "Desviación padrón"
+msgstr "Erro padrón"
 
 #, fuzzy
 msgid "z-value"
@@ -72,9 +72,8 @@ msgstr "p"
 msgid "Lower"
 msgstr "Inferior"
 
-#, fuzzy
 msgid "95% Confidence Interval"
-msgstr "Intervalo de confianza"
+msgstr "Intervalo co 95% de Confianza"
 
 msgid "Latent covariances"
 msgstr "Covarianzas latentes"
@@ -83,7 +82,7 @@ msgid "LV"
 msgstr ""
 
 msgid "Std. Est."
-msgstr ""
+msgstr "Est. Típ."
 
 msgid "All"
 msgstr "Todo"
@@ -204,9 +203,8 @@ msgstr "límite superior:"
 msgid "RMSEA p-value"
 msgstr "Amosar os valores p"
 
-#, fuzzy
 msgid "Standardized root mean square residual (SRMR)"
-msgstr "Erros tipificados"
+msgstr "Raíz do erro cadrado medio tipificado (RECMT)"
 
 msgid "Hoelter's critical N (%s = .05)"
 msgstr ""
@@ -281,9 +279,8 @@ msgstr ""
 msgid "Direct effects"
 msgstr "Efectos fixos"
 
-#, fuzzy
 msgid "%s%% Confidence Interval"
-msgstr "Intervalo de confianza"
+msgstr "Intervalo co %s%% de Confianza"
 
 msgid "Upper"
 msgstr "Superior"
@@ -326,15 +323,17 @@ msgid "robust"
 msgstr "Robusto"
 
 msgid "%1$s standard errors, %2$s confidence intervals."
-msgstr ""
+msgstr "%1$s erros padrón, %2$s intervalos de confianza."
 
 msgid ""
 "%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all "
 "bootstrap samples were successful: CI based on %4$.0f samples."
 msgstr ""
+"%1$s erros padrón, %2$s intervalos de confianza, %3$s estimador. NB: Non "
+"foron acertadas todas as mostras do bootstrap: IC baseado en %4$.0f mostras."
 
 msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
-msgstr ""
+msgstr "%1$s erros padrón, %2$s intervalos de confianza, %3$s estimador."
 
 #, fuzzy
 msgid "Path plot"
