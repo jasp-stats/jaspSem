@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-06-30 13:30\n"
-"PO-Revision-Date: 2021-05-12 09:32+0000\n"
+"PO-Revision-Date: 2021-07-10 23:33+0000\n"
 "Last-Translator: Johannes Keyser <johanneskeyser@posteo.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 4.7-dev\n"
+"X-Generator: Weblate 4.8-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "Das Modell konnte nicht geschätzt werden durch fehlende Konvergenz."
@@ -129,28 +129,28 @@ msgid "Metric"
 msgstr "Metrisch"
 
 msgid "Comparative Fit Index (CFI)"
-msgstr ""
+msgstr "Comparative Fit Index (CFI)"
 
 msgid "Tucker-Lewis Index (TLI)"
 msgstr "Tucker-Lewis-Index (TLI)"
 
 msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
-msgstr ""
+msgstr "Bentler-Bonett Non-normed Fit Index (NNFI)"
 
 msgid "Bentler-Bonett Normed Fit Index (NFI)"
-msgstr ""
+msgstr "Bentler-Bonett Normed Fit Index (NFI)"
 
 msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr ""
+msgstr "Parsimony Normed Fit Index (PNFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
-msgstr ""
+msgstr "Bollen's Relative Fit Index (RFI)"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
-msgstr ""
+msgstr "Bollen's Incremental Fit Index (IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
-msgstr ""
+msgstr "Relative Noncentrality Index (RNI)"
 
 msgid "Log-likelihood"
 msgstr "Log-Likelihood"
@@ -165,10 +165,10 @@ msgid "Bayesian (BIC)"
 msgstr "Bayesianisch (BIC)"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr ""
+msgstr "Sample-size adjusted Bayesian (SSABIC)"
 
 msgid "Root mean square error of approximation (RMSEA)"
-msgstr ""
+msgstr "Root mean square error of approximation (RMSEA)"
 
 msgid "RMSEA 90% CI lower bound"
 msgstr "RMSEA 90% KI untere Grenze"
@@ -180,7 +180,7 @@ msgid "RMSEA p-value"
 msgstr "RMSEA p-Wert"
 
 msgid "Standardized root mean square residual (SRMR)"
-msgstr ""
+msgstr "Standardized root mean square residual (SRMR)"
 
 msgid "Hoelter's critical N (%s = .05)"
 msgstr "Hoelters kritisches N (%s = .05)"
@@ -189,13 +189,13 @@ msgid "Hoelter's critical N (%s = .01)"
 msgstr "Hoelters kritisches N (%s = .01)"
 
 msgid "Goodness of fit index (GFI)"
-msgstr ""
+msgstr "Goodness of fit index (GFI)"
 
 msgid "McDonald fit index (MFI)"
 msgstr "McDonald-Fit-Index (MFI)"
 
 msgid "Expected cross validation index (ECVI)"
-msgstr ""
+msgstr "Expected cross validation index (ECVI)"
 
 msgid "R-Squared"
 msgstr "R-Quadrat"
@@ -359,7 +359,7 @@ msgid "Model plot not available with ordinal variables"
 msgstr "Modelldiagramm nicht verfügbar mit Ordinalvariablen"
 
 msgid "FIML missing data handling only available with ML-type estimators"
-msgstr "FIML-Verarbeitung fehlender Daten nur mit ML-Schätzern verfügbar"
+msgstr "FIML-Verarbeitung fehlender Werte nur mit ML-Schätzern verfügbar"
 
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "Gruppierungsvariable hat weniger als 3 Beobachtungen in Gruppe %s"
@@ -386,15 +386,12 @@ msgstr ""
 "Nicht mehr Fälle als die Anzahl der Variablen. Sind deine Daten eine Varianz-"
 "Kovarianz-Matrix?"
 
-#, fuzzy
 msgid "Estimation failed! Message: Model %s did not converge!"
-msgstr ""
-"Schätzung fehlgeschlagen\n"
-"Meldung:\n"
-"%s"
+msgstr "Schätzung fehlgeschlagen! Meldung: Modell %s ist nicht konvergiert!"
 
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr ""
+"Schätzung fehlgeschlagen! Meldung: Modell %s hat negative Freiheitsgrade."
 
 msgid "Model fit"
 msgstr "Modell-Anpassung"
@@ -424,6 +421,9 @@ msgid ""
 "A total of %g cases were removed due to missing values. You can avoid this "
 "by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
 msgstr ""
+"Insgesamt wurden %g Fälle aufgrund fehlender Werte entfernt. Dies kann "
+"vermieden werden, indem Du in den Schätzoptionen unter 'Behandlung fehlender "
+"Werte' die Option 'FIML' auswählst."
 
 msgid "Satorra-Bentler scaled test-statistic"
 msgstr "Satorra-Bentler skalierte Test-Statistik"
