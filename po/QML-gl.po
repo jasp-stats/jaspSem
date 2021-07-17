@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2021-07-16 01:56+0000\n"
+"Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
+"Language-Team: Galician <https://hosted.weblate.org/projects/jasp/"
+"jaspsem-qml/gl/>\n"
+"Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.7.2-dev\n"
 "X-Language: gl_ES\n"
 "X-Source-Language: C\n"
 "X-Qt-Contexts: true\n"
@@ -196,10 +202,9 @@ msgctxt "LatentGrowthCurve|"
 msgid "Colorblind Alt."
 msgstr "Alternativa a daltonismo"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Viridis"
-msgstr "Viridis"
+msgstr "Verde"
 
 #, fuzzy
 msgctxt "LatentGrowthCurve|"
@@ -270,10 +275,9 @@ msgctxt "LatentGrowthCurve|"
 msgid "Full Information Maximum Likelihood"
 msgstr "Máxima-Verosimilitude con Información Completa"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Exclude cases listwise"
-msgstr "Excluír casos por lista"
+msgstr "Excluír casos segundo a lista"
 
 #, fuzzy
 msgctxt "LatentGrowthCurve|"
@@ -377,7 +381,7 @@ msgstr "Correlacionar variables latentes esóxenas"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Add thresholdds"
-msgstr ""
+msgstr "Engadir limiares"
 
 #, fuzzy
 msgctxt "LatentGrowthCurve|"
@@ -468,10 +472,9 @@ msgctxt "MediationAnalysis|"
 msgid "Advanced"
 msgstr "Avanzado"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Exclude cases listwise"
-msgstr "Excluír casos por lista"
+msgstr "Excluír casos segundo a lista"
 
 #, fuzzy
 msgctxt "MediationAnalysis|"
@@ -647,10 +650,9 @@ msgctxt "Mimic|"
 msgid "Full Information Maximum Likelihood"
 msgstr "Máxima-Verosimilitude con Información Completa"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Exclude cases listwise"
-msgstr "Excluír casos por lista"
+msgstr "Excluír casos segundo a lista"
 
 #, fuzzy
 msgctxt "Mimic|"
@@ -755,7 +757,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Implied covariances"
-msgstr ""
+msgstr "Covarianzas implícitas"
 
 #, fuzzy
 msgctxt "SEM|"
@@ -796,15 +798,13 @@ msgctxt "SEM|"
 msgid "Modification indices"
 msgstr "Índices de modificación"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Hide low indices"
-msgstr "Ocultar os índices menores"
+msgstr "Agochar os índices menores"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Threshold"
-msgstr "Valor límite"
+msgstr "Limiar"
 
 #, fuzzy
 msgctxt "SEM|"
@@ -879,10 +879,9 @@ msgctxt "SEM|"
 msgid "Correlate dependent variables"
 msgstr "Correlacionar variables dependentes"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Add thresholds"
-msgstr "Engadir valores límite"
+msgstr "Engadir limiares"
 
 msgctxt "SEM|"
 msgid "Add scaling parameters"
@@ -1021,7 +1020,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Scaled and shifted"
-msgstr ""
+msgstr "Escalada e desprazada"
 
 msgctxt "SEM|"
 msgid "Bootstrap (Bollen-Stine)"
