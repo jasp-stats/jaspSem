@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2021-06-30 13:30\n"
-"PO-Revision-Date: 2021-07-16 01:56+0000\n"
+"PO-Revision-Date: 2021-07-19 17:57+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "gl/>\n"
@@ -22,25 +22,24 @@ msgstr ""
 "X-Source-Language: C\n"
 
 msgid "The model could not be estimated due to nonconvergence."
-msgstr ""
+msgstr "Non se puido estimar o modelo debido á non converxencia."
 
 msgid "The model could not be estimated: No degrees of freedom left."
-msgstr ""
+msgstr "Non se puido estimar o modelo: Non quedan graos de liberdade."
 
 #, fuzzy
 msgid "Chi-square Test"
 msgstr "Khi-cadrado"
 
-#, fuzzy
 msgid "Baseline model"
-msgstr "Modelo único"
+msgstr "Modelo de referencia"
 
 #, fuzzy
 msgid "Growth curve model"
 msgstr "O modelo máis complexo"
 
 msgid "The model is not admissible: %s"
-msgstr ""
+msgstr "O modelo non é admisible: %s"
 
 #, fuzzy
 msgid "Warning."
@@ -49,9 +48,8 @@ msgstr "Planificación"
 msgid "Parameter estimates"
 msgstr "Estimacións dos parámetros"
 
-#, fuzzy
 msgid "Component"
-msgstr "Compoñentes"
+msgstr "Compoñente"
 
 msgid "Parameter"
 msgstr "Parámetro"
@@ -62,9 +60,8 @@ msgstr "Estimar"
 msgid "Std. Error"
 msgstr "Erro padrón"
 
-#, fuzzy
 msgid "z-value"
-msgstr "Valores p"
+msgstr "valor z"
 
 msgid "p"
 msgstr "p"
@@ -125,100 +122,92 @@ msgstr ""
 msgid "Additional Fit measures"
 msgstr "Medidas adicionais de axuste"
 
-#, fuzzy
 msgid "Fit indices"
 msgstr "Índices de axuste"
 
 msgid "Index"
-msgstr ""
+msgstr "Índice"
 
 msgid "Value"
 msgstr "Valor"
 
-#, fuzzy
 msgid "Information criteria"
-msgstr "Termos de interacción"
+msgstr "Criterios de información"
 
-#, fuzzy
 msgid "Other fit measures"
-msgstr "Medidas de axuste"
+msgstr "Outras medidas de axuste"
 
 msgid "Metric"
-msgstr "Métrico"
+msgstr "Métrica"
 
 msgid "Comparative Fit Index (CFI)"
-msgstr ""
+msgstr "Índice de Axuste Comparativo (IAC, CFI)"
 
 msgid "Tucker-Lewis Index (TLI)"
-msgstr ""
+msgstr "Índice de Tucker-Lewis (TLI)"
 
 msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
-msgstr ""
+msgstr "Índice de Axuste Non Normalizado de Bentler-Bonett (NNFI)"
 
 msgid "Bentler-Bonett Normed Fit Index (NFI)"
-msgstr ""
+msgstr "Índice de Axuste Normalizado de Bentler-Bonett (NFI)"
 
 msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr ""
+msgstr "Índice de Axuste Normalizado de Parquedade (PNFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
-msgstr ""
+msgstr "Índice de Axuste Relativo de Bollen (RFI)"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
-msgstr ""
+msgstr "Índice de Axuste Gradual de Bollen (IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
-msgstr ""
+msgstr "Índice de Non Centralidade Relativa (RNI)"
 
-#, fuzzy
 msgid "Log-likelihood"
-msgstr "Verosimilitude"
+msgstr "Log-Verosimilitude"
 
-#, fuzzy
 msgid "Number of free parameters"
-msgstr "Número de factores"
+msgstr "Número de parámetros libres"
 
 msgid "Akaike (AIC)"
-msgstr ""
+msgstr "Criterio de Información de Akaike (AIC)"
 
-#, fuzzy
 msgid "Bayesian (BIC)"
-msgstr "Baiesiano"
+msgstr "Criterio de Información Baiesiano (BIC)"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr ""
+msgstr "BIC axustado ao tamaño da mostra (SSABIC)"
 
 msgid "Root mean square error of approximation (RMSEA)"
-msgstr ""
+msgstr "Raíz do erro de aproximación cadrado medio (REACM, RMSEA)"
 
-#, fuzzy
 msgid "RMSEA 90% CI lower bound"
-msgstr "límite inferior:"
+msgstr "Límite inferior do IC do 90% da REACM"
 
 msgid "RMSEA 90% CI upper bound"
-msgstr "Límite superior do IC do 90%% de RMSEA"
+msgstr "Límite superior do IC do 90%% de REACM"
 
-#, fuzzy
 msgid "RMSEA p-value"
-msgstr "Amosar os valores p"
+msgstr "valor p da REACM"
 
 msgid "Standardized root mean square residual (SRMR)"
 msgstr "Raíz do erro cadrado medio tipificado (RECMT)"
 
 msgid "Hoelter's critical N (%s = .05)"
-msgstr ""
+msgstr "N crítico de Hoelter (%s = .05)"
 
 msgid "Hoelter's critical N (%s = .01)"
-msgstr ""
+msgstr "N crítico de Hoelter (%s = .01)"
 
 msgid "Goodness of fit index (GFI)"
-msgstr ""
+msgstr "Índice da bondade do axuste (IBA, GFI)"
 
 msgid "McDonald fit index (MFI)"
-msgstr ""
+msgstr "Índice do axuste de McDonald (MFI)"
 
 msgid "Expected cross validation index (ECVI)"
-msgstr ""
+msgstr "Índice de validación cruzada agardada (IVCA, ECVI)"
 
 msgid "R-Squared"
 msgstr "R-cadrado"
@@ -338,9 +327,8 @@ msgstr "%1$s erros padrón, %2$s intervalos de confianza, %3$s estimador."
 msgid "Path plot"
 msgstr "Gráfica PR"
 
-#, fuzzy
 msgid "Model syntax"
-msgstr "Espazo do modelo"
+msgstr "Sintaxe do modelo"
 
 #, fuzzy
 msgid "Chi Square test"
@@ -352,18 +340,17 @@ msgstr "gl"
 msgid "&#967;&sup2;"
 msgstr ""
 
-#, fuzzy
 msgid "Factor model"
-msgstr "Cargas dos factores"
+msgstr "Modelo de factores"
 
 msgid "Additional fit measures"
 msgstr "Medidas adicionais de axuste"
 
 msgid "RMSEA 90%% CI lower bound"
-msgstr ""
+msgstr "Límite inferior do IC do 90%% da REACM"
 
 msgid "RMSEA 90%% CI upper bound"
-msgstr "Límite superior do IC do 90%% de RMSEA"
+msgstr "Límite superior do IC do 90%% de REACM"
 
 #, fuzzy
 msgid "Predictor coefficients"
@@ -379,9 +366,8 @@ msgstr ""
 msgid "Indicator coefficients"
 msgstr "Coeficientes tipificados"
 
-#, fuzzy
 msgid "Indicator"
-msgstr "Mediadores"
+msgstr "Indicador"
 
 #, fuzzy
 msgid "Latent"
@@ -432,9 +418,8 @@ msgstr "BIC"
 msgid "n"
 msgstr "n"
 
-#, fuzzy
 msgid "Baseline test"
-msgstr "Proba de Bartlett"
+msgstr "Proba de referencia"
 
 msgid "&#916;&#967;&sup2;"
 msgstr ""
@@ -472,9 +457,8 @@ msgstr ""
 msgid "Model tests based on %s."
 msgstr ""
 
-#, fuzzy
 msgid "Factor Loadings"
-msgstr "Cargas dos factores"
+msgstr "Cargas dos Factores"
 
 msgid "Group"
 msgstr "Grupo"
@@ -541,9 +525,8 @@ msgstr "Covariantes"
 msgid "Modification indices"
 msgstr "Índices de modificación"
 
-#, fuzzy
 msgid "Modification Indices"
-msgstr "Índices de modificación"
+msgstr "Índices de Modificación"
 
 #, fuzzy
 msgid "group"
