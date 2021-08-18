@@ -38,13 +38,6 @@ Upgrades
 			jsonValue:	"lavaan"
 		}
 
-		ChangeSetValue
-		{
-			name:		"showWarnTextInQml"
-			condition:	true // function(options) { return options["groupingVariable"] !== null; }
-			jsonValue:	true
-		}
-
 		ChangeRename { from: "model"; to: "models" }
 
 		ChangeJS

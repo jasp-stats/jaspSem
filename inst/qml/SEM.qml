@@ -26,22 +26,13 @@ Form
 	
 	columns: 1
 
-	// The following part is used for spawning upgrade notifications
-	CheckBox
-	{
-		id:			showWarnTextInQml
-		name:		"showWarnTextInQml"
-		visible:	false
-		checked:	false
-	}
-
+	// The following part is used for spawning upgrade notifications about multigroup analysis
 	Rectangle
 	{
-		visible:		myAnalysis !== null && showWarnTextInQml.checked && myAnalysis.needsRefresh
+		visible:		myAnalysis !== null && myAnalysis.needsRefresh && grpvar.currentIndex !== 0 // if groupvar index is 0, there is no grouping variable -> no multigroup analysis
 		color:			jaspTheme.controlWarningBackgroundColor
 		width:			form.implicitWidth
-		height:			visible ? warningMessageUpdate.height : 0
-		//anchors.top:	parent.top
+		height:			warningMessageUpdate.height
 		radius:			jaspTheme.borderRadius
 
 		Text
@@ -49,7 +40,7 @@ Form
 			id:					warningMessageUpdate
 			text:				qsTr("This analysis was created with an older version of JASP (or a dynamic module). Since then, there were changes in the lavaan package that runs the analysis. Specifically, the lavaan syntax for equality constraints in multigroup analysis is now interpreted differently. Proceed with caution! More details about the update can be found at https://groups.google.com/g/lavaan/c/HSavF8oaW5M")
 			color:				jaspTheme.controlWarningTextColor
-			anchors.centerIn:	parent
+			anchors.top:		parent.top
 			padding:			5 * jaspTheme.uiScale
 			wrapMode:			Text.Wrap
 			width:				parent.width - 10 * jaspTheme.uiScale
