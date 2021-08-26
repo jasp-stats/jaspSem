@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-06-30 13:30\n"
-"PO-Revision-Date: 2021-08-24 18:33+0000\n"
-"Last-Translator: Alex França <alex.tonante@gmail.com>\n"
+"PO-Revision-Date: 2021-08-27 20:21+0000\n"
+"Last-Translator: Laura Durans <lauraadurans@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
 "jaspsem-r/pt/>\n"
 "Language: pt\n"
@@ -27,7 +27,7 @@ msgid "Chi-square Test"
 msgstr ""
 
 msgid "Baseline model"
-msgstr ""
+msgstr "Modelo de linha de base"
 
 msgid "Growth curve model"
 msgstr ""
@@ -39,13 +39,13 @@ msgid "Warning."
 msgstr ""
 
 msgid "Parameter estimates"
-msgstr "Parâmetros"
+msgstr "Estimativas de parâmetros"
 
 msgid "Component"
 msgstr "Componentes"
 
 msgid "Parameter"
-msgstr "Parâmetros"
+msgstr "Parâmetro"
 
 msgid "Estimate"
 msgstr "Estimativa"
@@ -53,7 +53,6 @@ msgstr "Estimativa"
 msgid "Std. Error"
 msgstr "Erro padrão"
 
-#, fuzzy
 msgid "z-value"
 msgstr "Valor"
 
@@ -118,12 +117,11 @@ msgid "Additional Fit measures"
 msgstr "Medidas Adicionais de Ajuste"
 
 msgid "Fit indices"
-msgstr "Ocultar índices baixos"
+msgstr "Índices de ajuste"
 
 msgid "Index"
-msgstr ""
+msgstr "Índice"
 
-#, fuzzy
 msgid "Value"
 msgstr "Valor"
 
@@ -148,9 +146,8 @@ msgstr "Índice de ajuste não normalizado de Bentler-Bonett"
 msgid "Bentler-Bonett Normed Fit Index (NFI)"
 msgstr "Índice de ajuste normalizado de Bentler-Bonett"
 
-#, fuzzy
 msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr "Índice de ajuste de"
+msgstr "Índice de ajuste normatizado de parcimônia (PNFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
 msgstr "Índice de ajuste relativo de Bollen"
@@ -177,22 +174,19 @@ msgid "Sample-size adjusted Bayesian (SSABIC)"
 msgstr ""
 
 msgid "Root mean square error of approximation (RMSEA)"
+msgstr "RMSEA"
+
+msgid "RMSEA 90% CI lower bound"
 msgstr ""
 
-#, fuzzy
-msgid "RMSEA 90% CI lower bound"
-msgstr "limite inferior:"
-
-#, fuzzy
 msgid "RMSEA 90% CI upper bound"
-msgstr "limite superior:"
+msgstr ""
 
 msgid "RMSEA p-value"
-msgstr ""
+msgstr "p-valor RMSEA"
 
-#, fuzzy
 msgid "Standardized root mean square residual (SRMR)"
-msgstr "Raiz quadrada média residual padronizada"
+msgstr "Raiz quadrada média residual padronizada (SRMR)"
 
 msgid "Hoelter's critical N (%s = .05)"
 msgstr ""
@@ -266,7 +260,7 @@ msgid "Direct effects"
 msgstr ""
 
 msgid "%s%% Confidence Interval"
-msgstr "Intervalo de Confiança"
+msgstr "%s%% Intervalo de Confiança"
 
 msgid "Upper"
 msgstr "Superior"
@@ -319,9 +313,8 @@ msgstr ""
 msgid "Path plot"
 msgstr "Diagrama de barra"
 
-#, fuzzy
 msgid "Model syntax"
-msgstr "Gráfico do modelo"
+msgstr "Sintaxe do modelo"
 
 msgid "Chi Square test"
 msgstr ""
@@ -398,7 +391,7 @@ msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr ""
 
 msgid "Model fit"
-msgstr "Gráfico do modelo"
+msgstr "Ajuste do modelo"
 
 msgid "AIC"
 msgstr "AIC"
@@ -447,12 +440,11 @@ msgstr ""
 msgid "Model tests based on %s."
 msgstr ""
 
-#, fuzzy
 msgid "Factor Loadings"
-msgstr "Cargas"
+msgstr "Cargas do fator"
 
 msgid "Group"
-msgstr ""
+msgstr "Grupo"
 
 #, fuzzy
 msgid "Regression coefficients"
@@ -468,7 +460,6 @@ msgstr "Variâncias latentes"
 msgid "Factor covariances"
 msgstr "Covariâncias latentes"
 
-#, fuzzy
 msgid "Variables"
 msgstr "Variáveis"
 
@@ -490,9 +481,8 @@ msgstr ""
 msgid "Mardia's coefficients"
 msgstr "Coeficiente de Mardia"
 
-#, fuzzy
 msgid "Coefficient"
-msgstr "Coeficiente de Mardia"
+msgstr "Coeficiente"
 
 msgid "z"
 msgstr "z"
