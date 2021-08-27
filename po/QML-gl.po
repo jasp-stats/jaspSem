@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-08-25 23:35+0000\n"
+"PO-Revision-Date: 2021-08-27 20:21+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/"
 "jaspsem-qml/gl/>\n"
@@ -189,7 +189,7 @@ msgstr "Daltónica Alternativa"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Viridis"
-msgstr "Verde"
+msgstr "Violeta"
 
 msgctxt "LatentGrowthCurve|"
 msgid "ggplot2"
