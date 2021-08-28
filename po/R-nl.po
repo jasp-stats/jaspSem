@@ -3,16 +3,16 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-06-30 13:30\n"
-"PO-Revision-Date: 2020-12-02 21:29+0000\n"
-"Last-Translator: JASP Stats <F.A.M.Meerhoff@uva.nl>\n"
-"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jasp-engine/"
-"nl/>\n"
+"PO-Revision-Date: 2021-08-23 14:35+0000\n"
+"Last-Translator: D.J. Dekker <dj_dekker@hotmail.com>\n"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/>"
+"\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 4.4-dev\n"
+"X-Generator: Weblate 4.8.1-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "Het model kon niet worden geschat door niet-convergentie."
@@ -28,7 +28,7 @@ msgid "Baseline model"
 msgstr "Baseline model"
 
 msgid "Growth curve model"
-msgstr ""
+msgstr "Groeicurvemodel"
 
 msgid "The model is not admissible: %s"
 msgstr "Het model is niet geoorloofd: %s"
@@ -78,10 +78,10 @@ msgid "Std. Est."
 msgstr "Std. Schatting (%s)"
 
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
 msgid "No X"
-msgstr ""
+msgstr "Geen X"
 
 #, fuzzy
 msgid "Predictor"
@@ -94,13 +94,15 @@ msgid "Intercept"
 msgstr "Intercept"
 
 msgid "Linear slope"
-msgstr ""
+msgstr "Lineaire helling"
 
+#, fuzzy
 msgid "Quadratic slope"
-msgstr ""
+msgstr "Kwadratische helling"
 
+#, fuzzy
 msgid "Cubic slope"
-msgstr ""
+msgstr "Kubieke helling"
 
 msgid "Mean"
 msgstr "Gemiddelde"
@@ -108,9 +110,12 @@ msgstr "Gemiddelde"
 msgid "Variance"
 msgstr "Variantie"
 
+#, fuzzy
 msgid ""
 "Residual variance is negative. This may indicate model misspecification."
 msgstr ""
+"De residuele variantie is negatief. Dit kan wijzen op een verkeerde "
+"specificatie van het model."
 
 #, fuzzy
 msgid "Additional Fit measures"
@@ -225,15 +230,16 @@ msgstr "Modelgrafiek"
 msgid "Misfit plot"
 msgstr "Misfit grafiek"
 
+#, fuzzy
 msgid "Curve + variance + uncertainty"
-msgstr ""
+msgstr "Curve + variantie + onzekerheid"
 
 #, fuzzy
 msgid "Curve + variance"
 msgstr "Factorvarianties"
 
 msgid "Curve + parameter uncertainty"
-msgstr ""
+msgstr "Curve + parameteronzekerheid"
 
 msgid "FIML only available with ML-type estimators."
 msgstr "FIML alleen beschikbaar met ML-type schatters."
@@ -358,7 +364,7 @@ msgid "Standardized"
 msgstr "Gestandaardiseerd"
 
 msgid "Endo"
-msgstr ""
+msgstr "Endo"
 
 #, fuzzy
 msgid "Indicator coefficients"
@@ -367,21 +373,20 @@ msgstr "Mardia's coëfficiënten"
 msgid "Indicator"
 msgstr "Indicator"
 
+#, fuzzy
 msgid "Latent"
-msgstr ""
+msgstr "Latent"
 
-#, fuzzy
 msgid "Model plot not available with ordinal variables"
-msgstr ""
-"Screeplot niet beschikbaar. \n"
-"Interne foutmelding: %s"
+msgstr "Modelplot niet beschikbaar met ordinale variabelen"
 
-#, fuzzy
 msgid "FIML missing data handling only available with ML-type estimators"
-msgstr "FIML alleen beschikbaar met ML-type schatters."
+msgstr ""
+"FIML-verwerking van ontbrekende gegevens alleen beschikbaar met ML-type "
+"schatters."
 
 msgid "Grouping variable has fewer than 3 observations in group %s"
-msgstr ""
+msgstr "Groeperingsvariabele heeft minder dan 3 waarnemingen in groep %s"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
@@ -406,15 +411,11 @@ msgstr ""
 "Niet meer waarnemingen dan het aantal variabelen. Is uw data een variantie-"
 "covariantiematrix?"
 
-#, fuzzy
 msgid "Estimation failed! Message: Model %s did not converge!"
-msgstr ""
-"Schatting mislukt\n"
-"Melding:\n"
-"%s"
+msgstr "Schatting mislukt! Bericht: Model %s convergeert niet!"
 
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
-msgstr ""
+msgstr "Schatting mislukt! Bericht: Model %s heeft negatieve vrijheidsgraden."
 
 msgid "Model fit"
 msgstr "Model passing"
@@ -441,30 +442,38 @@ msgid "Difference test"
 msgstr "Verschilschatter"
 
 msgid "&#916;df"
-msgstr ""
+msgstr "&#916;df"
 
 msgid ""
 "A total of %g cases were removed due to missing values. You can avoid this "
 "by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
 msgstr ""
+"In totaal werden %g gevallen verwijderd wegens ontbrekende waarden. U kunt "
+"dit vermijden door \"FIML\" te kiezen onder \"Missing Data Handling\" in de "
+"Schattingsopties."
 
+#, fuzzy
 msgid "Satorra-Bentler scaled test-statistic"
-msgstr ""
+msgstr "Satorra-Bentler scaled test-statistic"
 
+#, fuzzy
 msgid "Yuan-Bentler scaled test-statistic"
-msgstr ""
+msgstr "Yuan-Bentler scaled test-statistic"
 
+#, fuzzy
 msgid "Yuan-Bentler (Mplus) scaled test-statistic"
-msgstr ""
+msgstr "Yuan-Bentler (Mplus) scaled test-statistic"
 
 msgid "mean and variance adjusted test-statistic"
-msgstr ""
+msgstr "gemiddelde- en variantie-aangepaste teststatistiek"
 
+#, fuzzy
 msgid "scaled and shifted test-statistic"
-msgstr ""
+msgstr "geschaalde en verschoven teststatistiek"
 
+#, fuzzy
 msgid "bootstrap (Bollen-Stine) probability value"
-msgstr ""
+msgstr "bootstrap (Bollen-Stine) waarschijnlijkheidswaarde"
 
 #, fuzzy
 msgid "Model tests based on %s."
@@ -482,7 +491,7 @@ msgstr "Regressie Coëfficiënten"
 
 #, fuzzy
 msgid "Outcome"
-msgstr "Geobserveerde Uitkomst"
+msgstr "Uitkomst"
 
 msgid "Factor variances"
 msgstr "Factorvarianties"
@@ -506,7 +515,7 @@ msgid "Defined parameters"
 msgstr "Geschatte Parameters"
 
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
 msgid "Mardia's coefficients"
 msgstr "Mardia's coëfficiënten"
@@ -521,6 +530,8 @@ msgid ""
 "Multivariate skewness and kurtosis calculated for observed variables from "
 "all models."
 msgstr ""
+"Multivariate scheefheid en gepiektheid berekend voor waargenomen variabelen "
+"uit alle modellen."
 
 msgid ""
 "Not all used variables are numeric. Mardia's coefficients not available."
