@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-06-30 13:30\n"
-"PO-Revision-Date: 2021-08-27 20:21+0000\n"
-"Last-Translator: Alex França <alex.tonante@gmail.com>\n"
+"PO-Revision-Date: 2021-09-04 02:43+0000\n"
+"Last-Translator: Laura Durans <lauraadurans@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
 "jaspsem-r/pt/>\n"
 "Language: pt\n"
@@ -165,7 +165,7 @@ msgid "Number of free parameters"
 msgstr "Número de parâmetros livres"
 
 msgid "Akaike (AIC)"
-msgstr ""
+msgstr "Akaike (AIC)"
 
 msgid "Bayesian (BIC)"
 msgstr "Bayesiano"
@@ -177,7 +177,7 @@ msgid "Root mean square error of approximation (RMSEA)"
 msgstr "RMSEA"
 
 msgid "RMSEA 90% CI lower bound"
-msgstr ""
+msgstr "RMSEA limite inferior 90% IC"
 
 msgid "RMSEA 90% CI upper bound"
 msgstr ""
@@ -220,7 +220,7 @@ msgid "Model plot"
 msgstr "Gráfico do modelo"
 
 msgid "Misfit plot"
-msgstr ""
+msgstr "Gráfico de desajuste"
 
 msgid "Curve + variance + uncertainty"
 msgstr ""
@@ -332,10 +332,10 @@ msgid "Additional fit measures"
 msgstr "Medidas adicionais de ajuste"
 
 msgid "RMSEA 90%% CI lower bound"
-msgstr ""
+msgstr "RMSEA limite inferior 90%% IC"
 
 msgid "RMSEA 90%% CI upper bound"
-msgstr ""
+msgstr "RMSEA limite superior 90%% IC"
 
 #, fuzzy
 msgid "Predictor coefficients"
