@@ -248,8 +248,12 @@ checkLavaanModel <- function(model, availableVars) {
     # fit the model
     fit <- try(do.call(lavaan::lavaan, lav_args))
 
-    if (inherits(fit, "try-error")) {
-      errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(fit, "condition")$message)
+    if (isTryError(fit)) {
+      err <- .extractErrorMessage(fit)
+      if(err == "..constant.."){
+        err <- gettext("Invalid model specification. Did you pass a variable name as a string?")
+      }
+      errmsg <- gettextf("Estimation failed Message: %s", err)
       modelContainer$setError(paste0("Error in model \"", options[["models"]][[i]][["modelName"]], "\" - ",
                                     .decodeVarsInMessage(names(dataset), errmsg)))
       modelContainer$dependOn("models") # add dependency so everything gets updated upon model change
