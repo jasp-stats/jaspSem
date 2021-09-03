@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-09-03 08:36+0000\n"
+"PO-Revision-Date: 2021-09-04 02:43+0000\n"
 "Last-Translator: Jill de Ron <jillderon93@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "nl/>\n"
@@ -32,47 +32,40 @@ msgstr "MIMIC Model (beta)"
 
 msgctxt "Description|"
 msgid "Latent Growth (beta)"
-msgstr ""
+msgstr "Latente Groei (beta)"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Variables"
 msgstr "Variabelen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Regressions"
 msgstr "Regressies"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Factor"
 msgstr "Factor"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Time-varying covariates"
-msgstr "Aantal covariaten"
+msgstr "Tijdsafhankelijke covariaten"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Timings"
-msgstr ""
+msgstr "Tijdstippen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Model Options"
 msgstr "Modelopties"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Growth curve shape"
-msgstr ""
+msgstr "Vorm van de groeicurve"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Intercept"
-msgstr "Intercepten"
+msgstr "Intercept"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Linear"
 msgstr "Lineair"
@@ -83,268 +76,216 @@ msgstr "Kwadratisch"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Cubic"
-msgstr ""
+msgstr "Kubiek"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Covarying latent curve"
-msgstr ""
+msgstr "Covariërende latente curve"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Additional Output"
-msgstr "Aanvullende uitvoer"
+msgstr "Aanvullende Output"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Additional Fit Measures"
-msgstr "Extra Pasmaten"
+msgstr "Extra fitmaten"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "R-Squared"
 msgstr "R-kwadraat"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Standardized estimates"
 msgstr "Gestandaardiseerde schattingen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Implied covariance matrix"
 msgstr "Geïmpliceerde covariantiematrix"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Residual covariance matrix"
 msgstr "Residuele covariantiematrix"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Show lavaan syntax"
 msgstr "Toon lavaan syntax"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Plots"
 msgstr "Grafieken"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Color palette"
 msgstr "Kleurenpalet"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Colorblind"
 msgstr "Kleurenblind"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Colorblind Alt."
-msgstr "Kleurenblind alt."
+msgstr "Kleurenblind Alt."
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Viridis"
 msgstr "Viridis"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "ggplot2"
 msgstr "ggplot2"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Gray"
 msgstr "Grijs"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Curve plot"
 msgstr "Screeplot"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Misfit plot"
-msgstr "Niet-passings grafiek"
+msgstr "Niet-passende grafiek"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Model plot"
 msgstr "Modelgrafiek"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Show parameters"
 msgstr "Toon parameters"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Show means"
 msgstr "Toon gemiddelden"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Advanced"
 msgstr "Geavanceerd"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Emulation"
 msgstr "Emulatie"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "None"
 msgstr "Geen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Mplus"
 msgstr "Mplus"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "EQS"
 msgstr "EQS"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Missing value handling"
-msgstr "Behandeling ontbrekende waarden"
+msgstr "Behandeling van ontbrekende waarden"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Full Information Maximum Likelihood"
 msgstr "Complete informatie meest aannemelijke schatter"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Exclude cases listwise"
-msgstr "Sluit waarnemingen uit per rij"
+msgstr "Excludeer waarnemingen per rij"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Error calculation"
 msgstr "Foutberekening"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "CI width"
-msgstr "CI wijdte"
+msgstr "BI wijdte"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Method"
 msgstr "Methode"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Standard"
 msgstr "Standaard"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Robust"
 msgstr "Robuust"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Bootstrap CI"
 msgstr "Bootstrap BI"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Bootstrap samples"
 msgstr "Bootstrap steekproeven"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Estimator"
 msgstr "Schatter"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Auto"
 msgstr "Auto"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "ML"
 msgstr "ML"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "GLS"
 msgstr "GLS"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "WLS"
 msgstr "WLS"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "ULS"
 msgstr "ULS"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "DWLS"
 msgstr "DWLS"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Options"
 msgstr "Opties"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Fix manifest intercepts to zero"
 msgstr "Zet manifeste intercepten vast op 0"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Fix latent intercepts to zero"
 msgstr "Zet latente intercepten vast op 0"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Omit residual single indicator"
 msgstr "Laat residuele enkele indicator weg"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Residual variances"
 msgstr "Resterende varianties"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Correlate exogenous latents"
-msgstr "Gecorreleerde exogene latenten"
+msgstr "Correleer exogene latente variabelen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Add thresholdds"
 msgstr "Voeg drempelwaarden toe"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Add scalings parameters"
 msgstr "Voeg schaalparameters toe"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Correlate dependent variables"
 msgstr "Correleer afhankelijke variabelen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Multigroup LGCM"
-msgstr "Meer groepen CFA"
+msgstr "Meer groepen LGCM"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Grouping variable"
 msgstr "Groepeer variabele"
@@ -509,627 +450,509 @@ msgctxt "MediationAnalysis|"
 msgid "DWLS"
 msgstr "DWLS"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Indicators"
-msgstr "Mediatoren"
+msgstr "Indicatoren"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Predictors"
 msgstr "Voorspellers"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Options"
 msgstr "Opties"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Standardized estimates"
 msgstr "Gestandaardiseerde schattingen"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Lavaan syntax"
 msgstr "Lavaan syntax"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "R-squared"
 msgstr "R-kwadraat"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Additional fit measures"
-msgstr "Extra pasmaten"
+msgstr "Extra fitmaten"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Confidence intervals"
 msgstr "Betrouwbaarheidsintervallen"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Method"
 msgstr "Methode"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Standard"
 msgstr "Standaard"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Robust"
 msgstr "Robuust"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Replications"
 msgstr "Replicaties"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Type"
 msgstr "Type"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Bias-corrected percentile"
 msgstr "Bias-gecorrigeerd percentiel"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Percentile"
 msgstr "Percentiel"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Normal theory"
 msgstr "Normaal theorie"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Plots"
 msgstr "Grafieken"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Model plot"
 msgstr "Modelgrafiek"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Parameter estimates"
 msgstr "Parameterschattingen"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Legend"
 msgstr "Legenda"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Advanced"
 msgstr "Geavanceerd"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Missing value handling"
 msgstr "Behandeling ontbrekende waarden"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Full Information Maximum Likelihood"
 msgstr "Complete informatie meest aannemelijke schatter"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Exclude cases listwise"
-msgstr "Sluit waarnemingen uit per rij"
+msgstr "Excludeer waarnemingen per rij"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Emulation"
 msgstr "Emulatie"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "None"
 msgstr "Geen"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Mplus"
 msgstr "Mplus"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "EQS"
 msgstr "EQS"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Estimator"
 msgstr "Schatter"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Auto"
 msgstr "Auto"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "ML"
 msgstr "ML"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "GLS"
 msgstr "GLS"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "WLS"
 msgstr "WLS"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "ULS"
 msgstr "ULS"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "DWLS"
 msgstr "DWLS"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Model 1"
-msgstr "Model "
+msgstr "Model 1"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Data"
 msgstr "Data"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Raw"
 msgstr "Ruw"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Variance-covariance matrix"
 msgstr "Variantie-covariantie matrix"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Sample size"
 msgstr "Steekproefgrootte"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Sampling weights"
-msgstr "Steekproefeenheden"
+msgstr "Steekproef gewichten"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Output options"
 msgstr "Uitvoeropties"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Additional fit measures"
-msgstr "Extra pasmaten"
+msgstr "Extra fitmaten"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "R-squared"
 msgstr "R-kwadraat"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Observed covariances"
-msgstr "Geobserveerde covariaties / correlaties"
+msgstr "Geobserveerde covariaties"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Implied covariances"
-msgstr "Geïmpliceerde covariantiematrix"
+msgstr "Geïmpliceerde covarianties"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Residual covariances"
-msgstr "Resterende covarianties"
+msgstr "Residuele covarianties"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Standardized residuals"
 msgstr "Gestandaardiseerde residuen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Mardia's coefficient"
 msgstr "Mardia's coëfficiënt"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Standardized estimates"
 msgstr "Gestandaardiseerde schattingen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Path diagram"
 msgstr "Paddiagram"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Show parameter estimates"
 msgstr "Toon parameterschattingen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Show legend"
 msgstr "Toon legenda"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Modification indices"
 msgstr "Modificatie-indices"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Hide low indices"
 msgstr "Verberg lage indices"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Threshold"
 msgstr "Drempelwaarde"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Model Options"
 msgstr "Modelopties"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Factor scaling"
 msgstr "Factorschaling"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Factor loadings"
 msgstr "Factorladingen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Factor variance"
-msgstr "Factorvarianties"
+msgstr "Factor varianties"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Effects coding"
 msgstr "Effecten coderen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "None"
 msgstr "Geen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Include mean structure"
 msgstr "Neem gemiddelde structuur mee"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Fix manifest intercepts to zero"
 msgstr "Zet manifeste intercepten vast op 0"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Fix latent intercepts to zero"
 msgstr "Zet latente intercepten vast op 0"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Assume factors uncorrelated"
 msgstr "Neem aan dat factoren niet gecorreleerd zijn"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Fix exogenous covariates"
-msgstr "Fix exogene covariaten"
+msgstr "Zet exogene covariaten vast"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Omit residual single indicator"
 msgstr "Laat residuele enkele indicator weg"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Include residual variances"
-msgstr "Resterende varianties"
+msgstr "Residuele varianties"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Correlate exogenous latents"
-msgstr "Gecorreleerde exogene latenten"
+msgstr "Correleer exogene latenten"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Correlate dependent variables"
 msgstr "Correleer afhankelijke variabelen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Add thresholds"
 msgstr "Voeg drempelwaarden toe"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Add scaling parameters"
 msgstr "Voeg schaalparameters toe"
 
 msgctxt "SEM|"
 msgid "Constrain EFA blocks"
-msgstr ""
+msgstr "Beperk EFA blokken"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Estimation options"
 msgstr "Schattingsinformatie"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Information matrix"
-msgstr "Correlatiematrix"
+msgstr "Informatie matrix"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Expected"
 msgstr "Verwachte"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Observed"
 msgstr "Waargenomen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Error calculation"
 msgstr "Foutberekening"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Standard"
 msgstr "Standaard"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Robust"
 msgstr "Robuust"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Bootstrap samples"
 msgstr "Bootstrap steekproeven"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Type"
 msgstr "Type"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Bias-corrected percentile"
 msgstr "Bias-gecorrigeerd percentiel"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Percentile"
 msgstr "Percentiel"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Normal theory"
 msgstr "Normaal theorie"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Confidence intervals"
 msgstr "Betrouwbaarheidsintervallen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Standardize variables before estimation"
-msgstr "Gestandaardiseerde schattingen"
+msgstr "Gestandaardiseerde variabelen voor schatting"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Estimator"
 msgstr "Schatter"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Auto"
 msgstr "Auto"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "ML"
 msgstr "ML"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "GLS"
 msgstr "GLS"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "WLS"
 msgstr "WLS"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "ULS"
 msgstr "ULS"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "DWLS"
 msgstr "DWLS"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "PML"
-msgstr "ML"
+msgstr "PML"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Model test"
-msgstr "Modeltermen"
+msgstr "Model test"
 
 msgctxt "SEM|"
 msgid "Satorra-Bentler"
-msgstr ""
+msgstr "Satorra-Bentler"
 
 msgctxt "SEM|"
 msgid "Yuan-Bentler"
-msgstr ""
+msgstr "Yuan-Bentler"
 
 msgctxt "SEM|"
 msgid "Mean and Variance adjusted"
-msgstr ""
+msgstr "Gemiddelde en variantie aangepast"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Scaled and shifted"
 msgstr "Schaal labelgrootte mee"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Bootstrap (Bollen-Stine)"
-msgstr "Bootstrap opties"
+msgstr "Bootstrap (Bollen-Stine)"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Missing data handling"
 msgstr "Ontbrekende Gegevensbehandeling"
 
 msgctxt "SEM|"
 msgid "FIML"
-msgstr ""
+msgstr "FIML"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Listwise deletion"
-msgstr "Twee-zijdige selectie"
+msgstr "Lijstsgewijs verwijderen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Pairwise"
 msgstr "Paren"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Two-stage"
 msgstr "Twee-zijdig"
 
 msgctxt "SEM|"
 msgid "Robust two-stage"
-msgstr ""
+msgstr "Robuust tweezijdig"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Doubly robust"
 msgstr "MAD robuust"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Emulation"
 msgstr "Emulatie"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Mplus"
 msgstr "Mplus"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "EQS"
 msgstr "EQS"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Multigroup SEM"
-msgstr "Meer groepen CFA"
+msgstr "Meer groepen SEM"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Grouping Variable"
-msgstr "Groepen"
+msgstr "Groepsvariabele"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Equality Constraints"
 msgstr "Gelijkheidsbeperkingen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Loadings"
 msgstr "Ladingen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Intercepts"
 msgstr "Intercepten"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Residuals"
 msgstr "Residuen"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Means"
 msgstr "Gemiddelden"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Regressions"
 msgstr "Regressies"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Latent variances"
 msgstr "Latente varianties"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Latent covariances"
 msgstr "Latente covarianties"
 
 msgctxt "SEM|"
 msgid "Release constraints (one per line)"
-msgstr ""
+msgstr "Vrijgave van beperkingen (één per regel)"
 
 msgctxt "Description|"
 msgid "Evaluate latent data structures with Yves Rosseel’s lavaan program"
-msgstr ""
+msgstr "Evalueer latente data structuren met Yves Rosseel’s lavaan programma"
 
 msgctxt "SEM|"
 msgid ""
@@ -1140,3 +963,9 @@ msgid ""
 "More details about the update can be found at https://groups.google.com/g/"
 "lavaan/c/HSavF8oaW5M"
 msgstr ""
+"Deze analyse is gemaakt met een oudere versie van JASP (of een dynamische "
+"module). Sindsdien zijn er wijzigingen geweest in het lavaan-pakket dat de "
+"analyse uitvoert. In het bijzonder wordt de lavaan-syntax voor "
+"gelijkheidsbeperkingen in multigroepanalyse nu anders geïnterpreteerd. Ga "
+"voorzichtig verder! Meer details over de update zijn te vinden op "
+"https://groups.google.com/g/lavaan/c/HSavF8oaW5M"
