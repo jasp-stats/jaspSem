@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2021-06-30 13:30\n"
-"PO-Revision-Date: 2021-08-23 14:35+0000\n"
-"Last-Translator: D.J. Dekker <dj_dekker@hotmail.com>\n"
+"PO-Revision-Date: 2021-09-04 02:43+0000\n"
+"Last-Translator: Jill de Ron <jillderon93@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/>"
 "\n"
 "Language: nl\n"
@@ -20,7 +20,6 @@ msgstr "Het model kon niet worden geschat door niet-convergentie."
 msgid "The model could not be estimated: No degrees of freedom left."
 msgstr "Het model kon niet worden geschat: Geen vrijheidsgraden over."
 
-#, fuzzy
 msgid "Chi-square Test"
 msgstr "Chikwadraattoets"
 
@@ -28,14 +27,13 @@ msgid "Baseline model"
 msgstr "Baseline model"
 
 msgid "Growth curve model"
-msgstr "Groeicurvemodel"
+msgstr "Groei curve model"
 
 msgid "The model is not admissible: %s"
 msgstr "Het model is niet geoorloofd: %s"
 
-#, fuzzy
 msgid "Warning."
-msgstr "Waarschuwing:"
+msgstr "Waarschuwing."
 
 msgid "Parameter estimates"
 msgstr "Parameterschattingen"
@@ -61,21 +59,17 @@ msgstr "p"
 msgid "Lower"
 msgstr "Onder"
 
-#, fuzzy
 msgid "95% Confidence Interval"
-msgstr "95%% Betrouwbaarheidsintervallen"
+msgstr "95% Betrouwbaarheidsinterval"
 
-#, fuzzy
 msgid "Latent covariances"
-msgstr "Factorcovarianties"
+msgstr "Latente covarianties"
 
-#, fuzzy
 msgid "LV"
-msgstr "V"
+msgstr "LV"
 
-#, fuzzy
 msgid "Std. Est."
-msgstr "Std. Schatting (%s)"
+msgstr "Std. Schat."
 
 msgid "All"
 msgstr "Alle"
@@ -83,9 +77,8 @@ msgstr "Alle"
 msgid "No X"
 msgstr "Geen X"
 
-#, fuzzy
 msgid "Predictor"
-msgstr "Voorspeld"
+msgstr "Voorspeller"
 
 msgid "Variable"
 msgstr "Variabele"
@@ -96,11 +89,9 @@ msgstr "Intercept"
 msgid "Linear slope"
 msgstr "Lineaire helling"
 
-#, fuzzy
 msgid "Quadratic slope"
 msgstr "Kwadratische helling"
 
-#, fuzzy
 msgid "Cubic slope"
 msgstr "Kubieke helling"
 
@@ -110,16 +101,14 @@ msgstr "Gemiddelde"
 msgid "Variance"
 msgstr "Variantie"
 
-#, fuzzy
 msgid ""
 "Residual variance is negative. This may indicate model misspecification."
 msgstr ""
 "De residuele variantie is negatief. Dit kan wijzen op een verkeerde "
 "specificatie van het model."
 
-#, fuzzy
 msgid "Additional Fit measures"
-msgstr "Extra pasmaten"
+msgstr "Extra fitmaten"
 
 msgid "Fit indices"
 msgstr "Pas indices"
@@ -181,13 +170,11 @@ msgstr "Op Steekproef-grootte bijgestelde Bayesiaanse (SSABIC)"
 msgid "Root mean square error of approximation (RMSEA)"
 msgstr "Wortel van de gemiddelde fout kwadraat van benadering (RMSEA)"
 
-#, fuzzy
 msgid "RMSEA 90% CI lower bound"
-msgstr "RMSEA 90%% BI ondergrens"
+msgstr "RMSEA 90% BI ondergrens"
 
-#, fuzzy
 msgid "RMSEA 90% CI upper bound"
-msgstr "RMSEA 90%% BI bovengrens"
+msgstr "RMSEA 90% BI bovengrens"
 
 msgid "RMSEA p-value"
 msgstr "RMSEA P-waarde"
@@ -220,9 +207,8 @@ msgstr "Geïmpliceerde covariantie matrices"
 msgid "Residual covariance matrix"
 msgstr "Residu covariantie matrices"
 
-#, fuzzy
 msgid "Curve plot"
-msgstr "ROC Kurven Grafiek"
+msgstr "Kurven Grafiek"
 
 msgid "Model plot"
 msgstr "Modelgrafiek"
@@ -230,13 +216,11 @@ msgstr "Modelgrafiek"
 msgid "Misfit plot"
 msgstr "Misfit grafiek"
 
-#, fuzzy
 msgid "Curve + variance + uncertainty"
 msgstr "Curve + variantie + onzekerheid"
 
-#, fuzzy
 msgid "Curve + variance"
-msgstr "Factorvarianties"
+msgstr "Curve + variantie"
 
 msgid "Curve + parameter uncertainty"
 msgstr "Curve + parameteronzekerheid"
@@ -334,7 +318,6 @@ msgstr "Paddiagram"
 msgid "Model syntax"
 msgstr "Model syntax"
 
-#, fuzzy
 msgid "Chi Square test"
 msgstr "Chikwadraattoets"
 
@@ -356,9 +339,8 @@ msgstr "RMSEA 90%% BI ondergrens"
 msgid "RMSEA 90%% CI upper bound"
 msgstr "RMSEA 90%% BI bovengrens"
 
-#, fuzzy
 msgid "Predictor coefficients"
-msgstr "Mardia's coëfficiënten"
+msgstr "Voorspeller coëfficiënten"
 
 msgid "Standardized"
 msgstr "Gestandaardiseerd"
@@ -366,14 +348,12 @@ msgstr "Gestandaardiseerd"
 msgid "Endo"
 msgstr "Endo"
 
-#, fuzzy
 msgid "Indicator coefficients"
-msgstr "Mardia's coëfficiënten"
+msgstr "Indicator coëfficiënten"
 
 msgid "Indicator"
 msgstr "Indicator"
 
-#, fuzzy
 msgid "Latent"
 msgstr "Latent"
 
@@ -382,8 +362,8 @@ msgstr "Modelplot niet beschikbaar met ordinale variabelen"
 
 msgid "FIML missing data handling only available with ML-type estimators"
 msgstr ""
-"FIML-verwerking van ontbrekende gegevens alleen beschikbaar met ML-type "
-"schatters."
+"FIML verwerking van ontbrekende gegevens alleen beschikbaar met ML-type "
+"schatters"
 
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "Groeperingsvariabele heeft minder dan 3 waarnemingen in groep %s"
@@ -397,11 +377,10 @@ msgstr ""
 msgid "Please set the sample size!"
 msgstr "Selecteer a.u.b een steekproefgrootte!"
 
-#, fuzzy
 msgid ""
 "Multiple group analysis not supported when data is variance-covariance matrix"
 msgstr ""
-"Meerdere groepen analyse (nog) niet ondersteund als data een variantie-"
+"Meerdere groepen analyse is niet ondersteund als data een variantie-"
 "covariantie matrix is"
 
 msgid ""
@@ -429,17 +408,14 @@ msgstr "BIC"
 msgid "n"
 msgstr "n"
 
-#, fuzzy
 msgid "Baseline test"
-msgstr "Baseline model"
+msgstr "Baseline test"
 
-#, fuzzy
 msgid "&#916;&#967;&sup2;"
-msgstr "&#967;&sup2;"
+msgstr "&#916;2&#967;3&sup2;"
 
-#, fuzzy
 msgid "Difference test"
-msgstr "Verschilschatter"
+msgstr "Verschillen test"
 
 msgid "&#916;df"
 msgstr "&#916;df"
@@ -452,30 +428,24 @@ msgstr ""
 "dit vermijden door \"FIML\" te kiezen onder \"Missing Data Handling\" in de "
 "Schattingsopties."
 
-#, fuzzy
 msgid "Satorra-Bentler scaled test-statistic"
-msgstr "Satorra-Bentler scaled test-statistic"
+msgstr "Satorra-Bentler geschaalde test-statistiek"
 
-#, fuzzy
 msgid "Yuan-Bentler scaled test-statistic"
-msgstr "Yuan-Bentler scaled test-statistic"
+msgstr "Yuan-Bentler geschaalde test-statistiek"
 
-#, fuzzy
 msgid "Yuan-Bentler (Mplus) scaled test-statistic"
-msgstr "Yuan-Bentler (Mplus) scaled test-statistic"
+msgstr "Yuan-Bentler (Mplus) geschaalde test-statistiek"
 
 msgid "mean and variance adjusted test-statistic"
-msgstr "gemiddelde- en variantie-aangepaste teststatistiek"
+msgstr "gemiddelde en variantie aangepaste teststatistiek"
 
-#, fuzzy
 msgid "scaled and shifted test-statistic"
 msgstr "geschaalde en verschoven teststatistiek"
 
-#, fuzzy
 msgid "bootstrap (Bollen-Stine) probability value"
 msgstr "bootstrap (Bollen-Stine) waarschijnlijkheidswaarde"
 
-#, fuzzy
 msgid "Model tests based on %s."
 msgstr "Model termen getest met %s methode."
 
@@ -485,20 +455,17 @@ msgstr "Factorladingen"
 msgid "Group"
 msgstr "Groep"
 
-#, fuzzy
 msgid "Regression coefficients"
 msgstr "Regressie Coëfficiënten"
 
-#, fuzzy
 msgid "Outcome"
 msgstr "Uitkomst"
 
 msgid "Factor variances"
 msgstr "Factorvarianties"
 
-#, fuzzy
 msgid "Factor covariances"
-msgstr "Factorcovarianties"
+msgstr "Factor covarianties"
 
 msgid "Variables"
 msgstr "Variabelen"
@@ -506,13 +473,11 @@ msgstr "Variabelen"
 msgid "Residual variances"
 msgstr "Residu varianties"
 
-#, fuzzy
 msgid "Means"
-msgstr "Gemiddelde"
+msgstr "Gemiddelden"
 
-#, fuzzy
 msgid "Defined parameters"
-msgstr "Geschatte Parameters"
+msgstr "Gedefineerde Parameters"
 
 msgid "Name"
 msgstr "Naam"
@@ -544,11 +509,9 @@ msgstr "Scheefheid"
 msgid "Kurtosis"
 msgstr "Gepiektheid"
 
-#, fuzzy
 msgid "Covariance tables"
-msgstr "Covariaat"
+msgstr "Covariantie tabellen"
 
-#, fuzzy
 msgid "Modification indices"
 msgstr "Modificatie Indices"
 
@@ -573,6 +536,5 @@ msgstr "sepc (all)"
 msgid "sepc (nox)"
 msgstr "sepc (nox)"
 
-#, fuzzy
 msgid "Path diagram"
 msgstr "Paddiagram"
