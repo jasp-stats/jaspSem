@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2021-06-30 13:30\n"
+"POT-Creation-Date: 2021-09-04 02:44\n"
 "PO-Revision-Date: 2021-08-27 20:21+0000\n"
 "Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -377,6 +377,16 @@ msgid ""
 msgstr ""
 "変数の数よりもケースの数が少ないです。このデータは分散共分散行列ですか?"
 
+msgid "Invalid model specification. Did you pass a variable name as a string?"
+msgstr ""
+
+#, fuzzy
+msgid "Estimation failed Message: %s"
+msgstr ""
+"推定失敗\n"
+"メッセージ :\n"
+"%s"
+
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr "推定に失敗しました! メッセージ: モデル %s が収束しませんでした!"
 
@@ -411,8 +421,8 @@ msgid ""
 "A total of %g cases were removed due to missing values. You can avoid this "
 "by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
 msgstr ""
-"欠損値のために合計 %g のケースが削除されました. "
-"推定オプションの「欠損データの取り扱い」で「FIML」を選択することで、これを回避することができます."
+"欠損値のために合計 %g のケースが削除されました. 推定オプションの「欠損データ"
+"の取り扱い」で「FIML」を選択することで、これを回避することができます."
 
 msgid "Satorra-Bentler scaled test-statistic"
 msgstr "Satorra-Bentlerのスケーリングされた検定統計量"

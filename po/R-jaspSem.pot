@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2021-06-30 13:30\n"
+"POT-Creation-Date: 2021-09-04 02:44\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -344,6 +344,12 @@ msgid "Multiple group analysis not supported when data is variance-covariance ma
 msgstr ""
 
 msgid "Not more cases than number of variables. Is your data a variance-covariance matrix?"
+msgstr ""
+
+msgid "Invalid model specification. Did you pass a variable name as a string?"
+msgstr ""
+
+msgid "Estimation failed Message: %s"
 msgstr ""
 
 msgid "Estimation failed! Message: Model %s did not converge!"
