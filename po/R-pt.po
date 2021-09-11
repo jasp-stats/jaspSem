@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2021-09-04 02:44\n"
+"POT-Creation-Date: 2021-09-11 02:45\n"
 "PO-Revision-Date: 2021-09-04 02:43+0000\n"
 "Last-Translator: Laura Durans <lauraadurans@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/jaspsem-"
@@ -63,7 +63,7 @@ msgid "Lower"
 msgstr "Inferior"
 
 #, fuzzy
-msgid "95% Confidence Interval"
+msgid "95%% Confidence Interval"
 msgstr "Intervalo de Confiança"
 
 #, fuzzy
@@ -176,11 +176,11 @@ msgstr ""
 msgid "Root mean square error of approximation (RMSEA)"
 msgstr "RMSEA"
 
-msgid "RMSEA 90% CI lower bound"
-msgstr "RMSEA limite inferior 90% IC"
+msgid "RMSEA 90%% CI lower bound"
+msgstr "RMSEA limite inferior 90%% IC"
 
-msgid "RMSEA 90% CI upper bound"
-msgstr ""
+msgid "RMSEA 90%% CI upper bound"
+msgstr "RMSEA limite superior 90%% IC"
 
 msgid "RMSEA p-value"
 msgstr "p-valor RMSEA"
@@ -330,12 +330,6 @@ msgstr "Fatores"
 
 msgid "Additional fit measures"
 msgstr "Medidas adicionais de ajuste"
-
-msgid "RMSEA 90%% CI lower bound"
-msgstr "RMSEA limite inferior 90%% IC"
-
-msgid "RMSEA 90%% CI upper bound"
-msgstr "RMSEA limite superior 90%% IC"
 
 #, fuzzy
 msgid "Predictor coefficients"
@@ -538,3 +532,6 @@ msgstr ""
 
 msgid "Path diagram"
 msgstr ""
+
+#~ msgid "RMSEA 90% CI lower bound"
+#~ msgstr "RMSEA limite inferior 90% IC"

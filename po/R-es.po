@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
-"POT-Creation-Date: 2021-09-04 02:44\n"
+"POT-Creation-Date: 2021-09-11 02:45\n"
 "PO-Revision-Date: 2021-08-08 22:33+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -58,8 +58,9 @@ msgstr "p"
 msgid "Lower"
 msgstr "Inferior"
 
-msgid "95% Confidence Interval"
-msgstr ""
+#, fuzzy
+msgid "95%% Confidence Interval"
+msgstr "%s%% Intervalo de Confianza"
 
 msgid "Latent covariances"
 msgstr ""
@@ -167,11 +168,11 @@ msgstr "Bayesiano ajustado por tamaño de muestra (SSABIC)"
 msgid "Root mean square error of approximation (RMSEA)"
 msgstr "Error cuadrático medio de aproximación (RMSEA)"
 
-msgid "RMSEA 90% CI lower bound"
-msgstr ""
+msgid "RMSEA 90%% CI lower bound"
+msgstr "RMSEA 90 %% IC límite inferior"
 
-msgid "RMSEA 90% CI upper bound"
-msgstr ""
+msgid "RMSEA 90%% CI upper bound"
+msgstr "RMSEA 90 %% IC límite superior"
 
 msgid "RMSEA p-value"
 msgstr "Valor p de RMSEA"
@@ -315,12 +316,6 @@ msgstr "Modelo factorial"
 
 msgid "Additional fit measures"
 msgstr "Medidas de ajuste adicionales"
-
-msgid "RMSEA 90%% CI lower bound"
-msgstr "RMSEA 90 %% IC límite inferior"
-
-msgid "RMSEA 90%% CI upper bound"
-msgstr "RMSEA 90 %% IC límite superior"
 
 msgid "Predictor coefficients"
 msgstr ""

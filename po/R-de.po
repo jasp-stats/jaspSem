@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2021-09-04 02:44\n"
+"POT-Creation-Date: 2021-09-11 02:45\n"
 "PO-Revision-Date: 2021-09-05 10:33+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
@@ -59,7 +59,8 @@ msgstr "p"
 msgid "Lower"
 msgstr "Untere"
 
-msgid "95% Confidence Interval"
+#, fuzzy
+msgid "95%% Confidence Interval"
 msgstr "95% Konfidenzintervall"
 
 msgid "Latent covariances"
@@ -170,11 +171,11 @@ msgstr "Sample-size adjusted Bayesian (SSABIC)"
 msgid "Root mean square error of approximation (RMSEA)"
 msgstr "Root mean square error of approximation (RMSEA)"
 
-msgid "RMSEA 90% CI lower bound"
-msgstr "RMSEA 90% KI untere Grenze"
+msgid "RMSEA 90%% CI lower bound"
+msgstr "RMSEA 90%% KI untere Grenze"
 
-msgid "RMSEA 90% CI upper bound"
-msgstr "RMSEA 90% KI obere Grenze"
+msgid "RMSEA 90%% CI upper bound"
+msgstr "RMSEA 90%% KI obere Grenze"
 
 msgid "RMSEA p-value"
 msgstr "RMSEA p-Wert"
@@ -330,12 +331,6 @@ msgstr "Faktormmodell"
 
 msgid "Additional fit measures"
 msgstr "Weitere Anpassungsmetriken"
-
-msgid "RMSEA 90%% CI lower bound"
-msgstr "RMSEA 90%% KI untere Grenze"
-
-msgid "RMSEA 90%% CI upper bound"
-msgstr "RMSEA 90%% KI obere Grenze"
 
 msgid "Predictor coefficients"
 msgstr "Prädiktor-Koeffizienten"
@@ -543,3 +538,9 @@ msgstr "sepc (all)"
 
 msgid "Path diagram"
 msgstr "Pfaddiagramm"
+
+#~ msgid "RMSEA 90% CI lower bound"
+#~ msgstr "RMSEA 90% KI untere Grenze"
+
+#~ msgid "RMSEA 90% CI upper bound"
+#~ msgstr "RMSEA 90% KI obere Grenze"

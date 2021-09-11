@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2021-09-04 02:44\n"
+"POT-Creation-Date: 2021-09-11 02:45\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Lower"
 msgstr ""
 
-msgid "95% Confidence Interval"
+msgid "95%% Confidence Interval"
 msgstr ""
 
 msgid "Latent covariances"
@@ -163,10 +163,10 @@ msgstr ""
 msgid "Root mean square error of approximation (RMSEA)"
 msgstr ""
 
-msgid "RMSEA 90% CI lower bound"
+msgid "RMSEA 90%% CI lower bound"
 msgstr ""
 
-msgid "RMSEA 90% CI upper bound"
+msgid "RMSEA 90%% CI upper bound"
 msgstr ""
 
 msgid "RMSEA p-value"
@@ -299,12 +299,6 @@ msgid "Factor model"
 msgstr ""
 
 msgid "Additional fit measures"
-msgstr ""
-
-msgid "RMSEA 90%% CI lower bound"
-msgstr ""
-
-msgid "RMSEA 90%% CI upper bound"
 msgstr ""
 
 msgid "Predictor coefficients"

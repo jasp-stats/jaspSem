@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2021-09-04 02:44\n"
+"POT-Creation-Date: 2021-09-11 02:45\n"
 "PO-Revision-Date: 2021-09-08 12:11+0000\n"
 "Last-Translator: Koji Kosugi <kosugitti@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -58,7 +58,8 @@ msgstr "p"
 msgid "Lower"
 msgstr "下"
 
-msgid "95% Confidence Interval"
+#, fuzzy
+msgid "95%% Confidence Interval"
 msgstr "95% 信頼区間"
 
 msgid "Latent covariances"
@@ -167,11 +168,11 @@ msgstr "サンプルサイズ調整済みベイジアン情報量規準(SSABIC)"
 msgid "Root mean square error of approximation (RMSEA)"
 msgstr "二乗平均平方根誤差(RMSEA)"
 
-msgid "RMSEA 90% CI lower bound"
-msgstr "RMSEA 90% CI 下限"
+msgid "RMSEA 90%% CI lower bound"
+msgstr "RMSEA 90%% CI 下限"
 
-msgid "RMSEA 90% CI upper bound"
-msgstr "RMSEA 90% CI上限"
+msgid "RMSEA 90%% CI upper bound"
+msgstr "RMSEA 90%% CI 上限"
 
 msgid "RMSEA p-value"
 msgstr "RMSEA のp 値"
@@ -326,12 +327,6 @@ msgstr "因子モデル"
 
 msgid "Additional fit measures"
 msgstr "追加の適合度指標"
-
-msgid "RMSEA 90%% CI lower bound"
-msgstr "RMSEA 90%% CI 下限"
-
-msgid "RMSEA 90%% CI upper bound"
-msgstr "RMSEA 90%% CI 上限"
 
 msgid "Predictor coefficients"
 msgstr "予測係数"
@@ -529,3 +524,9 @@ msgstr "sept(nox)"
 
 msgid "Path diagram"
 msgstr "パス図"
+
+#~ msgid "RMSEA 90% CI lower bound"
+#~ msgstr "RMSEA 90% CI 下限"
+
+#~ msgid "RMSEA 90% CI upper bound"
+#~ msgstr "RMSEA 90% CI上限"
