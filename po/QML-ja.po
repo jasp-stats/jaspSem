@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2021-09-15 17:37+0000\n"
+"Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
+"Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/"
+"jaspsem-qml/ja/>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.9-dev\n"
 "X-Language: ja\n"
 "X-Qt-Contexts: true\n"
 
@@ -245,7 +251,7 @@ msgstr "オプション"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Fix manifest intercepts to zero"
-msgstr "明白な切片をゼロに修正"
+msgstr "顕在切片をゼロに修正"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Fix latent intercepts to zero"
@@ -253,7 +259,7 @@ msgstr "潜在変数の切片をゼロに修正"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Omit residual single indicator"
-msgstr "残りの単一インジケーターを省略します"
+msgstr "単一インジケーターの残差を除外する"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Residual variances"
@@ -349,7 +355,7 @@ msgstr "ブートストラップ"
 
 msgctxt "MediationAnalysis|"
 msgid "Replications"
-msgstr "複写"
+msgstr "反復回数"
 
 msgctxt "MediationAnalysis|"
 msgid "Type"
@@ -493,7 +499,7 @@ msgstr "ブートストラップ"
 
 msgctxt "Mimic|"
 msgid "Replications"
-msgstr "複写"
+msgstr "反復回数"
 
 msgctxt "Mimic|"
 msgid "Type"
@@ -597,7 +603,7 @@ msgstr "データ"
 
 msgctxt "SEM|"
 msgid "Raw"
-msgstr "ロウ"
+msgstr "生(Raw)"
 
 msgctxt "SEM|"
 msgid "Variance-covariance matrix"
@@ -701,7 +707,7 @@ msgstr "平均構造を含める"
 
 msgctxt "SEM|"
 msgid "Fix manifest intercepts to zero"
-msgstr "明白な切片をゼロに修正"
+msgstr "顕在切片をゼロに修正"
 
 msgctxt "SEM|"
 msgid "Fix latent intercepts to zero"
@@ -717,7 +723,7 @@ msgstr "外生変数の共分散を固定"
 
 msgctxt "SEM|"
 msgid "Omit residual single indicator"
-msgstr "残りの単一インジケーターを省略します"
+msgstr "単一インジケーターの残差を除外する"
 
 msgctxt "SEM|"
 msgid "Include residual variances"
@@ -757,7 +763,7 @@ msgstr "期待値"
 
 msgctxt "SEM|"
 msgid "Observed"
-msgstr "観測"
+msgstr "観測値"
 
 msgctxt "SEM|"
 msgid "Error calculation"
