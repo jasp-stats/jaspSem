@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "PO-Revision-Date: 2021-09-24 01:34+0000\n"
-"Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
+"Last-Translator: Koji Kosugi <kosugitti@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/"
 "jaspsem-qml/ja/>\n"
 "Language: ja\n"
@@ -99,7 +99,7 @@ msgstr "標準化推定値"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Implied covariance matrix"
-msgstr "暗黙の共分散行列"
+msgstr "モデル共分散行列"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Residual covariance matrix"
@@ -315,7 +315,7 @@ msgstr "標準化推定値"
 
 msgctxt "MediationAnalysis|"
 msgid "Lavaan syntax"
-msgstr "Lavaanの構文"
+msgstr "lavaanの構文"
 
 msgctxt "MediationAnalysis|"
 msgid "R-squared"
@@ -635,7 +635,7 @@ msgstr "観測された共分散"
 
 msgctxt "SEM|"
 msgid "Implied covariances"
-msgstr "暗黙の共分散"
+msgstr "モデル共分散"
 
 msgctxt "SEM|"
 msgid "Residual covariances"
