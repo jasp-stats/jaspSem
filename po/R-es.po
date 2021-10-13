@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
 "POT-Creation-Date: 2021-09-11 02:45\n"
-"PO-Revision-Date: 2021-10-13 21:43+0000\n"
+"PO-Revision-Date: 2021-10-14 01:51+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "es/>\n"
@@ -47,10 +47,10 @@ msgid "Estimate"
 msgstr "Estimar"
 
 msgid "Std. Error"
-msgstr "Error Std."
+msgstr "Error Típico"
 
 msgid "z-value"
-msgstr "Valor-Z"
+msgstr "valor Z"
 
 msgid "p"
 msgstr "p"
@@ -58,9 +58,8 @@ msgstr "p"
 msgid "Lower"
 msgstr "Inferior"
 
-#, fuzzy
 msgid "95%% Confidence Interval"
-msgstr "%s%% Intervalo de Confianza"
+msgstr "Intervalo de Confianza del %s%%"
 
 msgid "Latent covariances"
 msgstr "Covarianzas latentes"
@@ -157,7 +156,7 @@ msgid "Number of free parameters"
 msgstr "Número de parámetros libres"
 
 msgid "Akaike (AIC)"
-msgstr "Akaike (AIC)"
+msgstr "Criterio de Información de Akaike (AIC)"
 
 msgid "Bayesian (BIC)"
 msgstr "Bayesiano (BIC)"
@@ -196,22 +195,22 @@ msgid "Expected cross validation index (ECVI)"
 msgstr "Índice de validación cruzada esperado (ECVI)"
 
 msgid "R-Squared"
-msgstr ""
+msgstr "R-cuadrado"
 
 msgid "Implied covariance matrix"
-msgstr "Matriz de covarianza implícita"
+msgstr "Matriz de covarianzas implícitas"
 
 msgid "Residual covariance matrix"
-msgstr "Matriz de covarianza residual"
+msgstr "Matriz de covarianzas de los residuos"
 
 msgid "Curve plot"
-msgstr ""
+msgstr "Gráfico de la curva"
 
 msgid "Model plot"
 msgstr "Gráfico del modelo"
 
 msgid "Misfit plot"
-msgstr "Gráfico de desajuste"
+msgstr "Gráfico desajustado"
 
 msgid "Curve + variance + uncertainty"
 msgstr ""
@@ -259,16 +258,16 @@ msgid "Indirect effects"
 msgstr ""
 
 msgid "Total indirect effects"
-msgstr ""
+msgstr "Efectos indirectos totales"
 
 msgid "Residual covariances"
-msgstr "Covarianzas residuales"
+msgstr "Covarianzas de los residuos"
 
 msgid "Delta method"
-msgstr ""
+msgstr "Método Delta"
 
 msgid "Robust"
-msgstr ""
+msgstr "Robusto"
 
 msgid "percentile bootstrap"
 msgstr ""
@@ -432,31 +431,31 @@ msgid "Regression coefficients"
 msgstr ""
 
 msgid "Outcome"
-msgstr ""
+msgstr "Resultado"
 
 msgid "Factor variances"
-msgstr "Variaciones de factores"
+msgstr "Varianzas de factores"
 
 msgid "Factor covariances"
-msgstr ""
+msgstr "Covarianzas de factores"
 
 msgid "Variables"
-msgstr ""
+msgstr "Variables"
 
 msgid "Residual variances"
-msgstr "Varianzas residuales"
+msgstr "Varianzas de los residuos"
 
 msgid "Means"
-msgstr ""
+msgstr "Medias"
 
 msgid "Defined parameters"
-msgstr ""
+msgstr "Parámetros definidos"
 
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 msgid "Mardia's coefficients"
-msgstr ""
+msgstr "Coeficientes de Mardia"
 
 msgid "Coefficient"
 msgstr "Coeficiente"
@@ -474,7 +473,7 @@ msgid ""
 msgstr ""
 
 msgid "Skewness"
-msgstr "Oblicuidad"
+msgstr "Asimetría"
 
 msgid "Kurtosis"
 msgstr "Curtosis"
@@ -483,13 +482,13 @@ msgid "Covariance tables"
 msgstr ""
 
 msgid "Modification indices"
-msgstr ""
+msgstr "Índices de modificación"
 
 msgid "Modification Indices"
 msgstr "Índices de Modificación"
 
 msgid "group"
-msgstr ""
+msgstr "grupo"
 
 msgid "mi"
 msgstr ""
@@ -507,4 +506,4 @@ msgid "sepc (nox)"
 msgstr ""
 
 msgid "Path diagram"
-msgstr ""
+msgstr "Diagrama de ruta"
