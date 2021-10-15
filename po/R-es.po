@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
 "POT-Creation-Date: 2021-09-11 02:45\n"
-"PO-Revision-Date: 2021-10-14 20:07+0000\n"
+"PO-Revision-Date: 2021-10-15 11:32+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "es/>\n"
@@ -375,7 +375,7 @@ msgid "Model fit"
 msgstr "Ajuste del modelo"
 
 msgid "AIC"
-msgstr ""
+msgstr "AIC"
 
 msgid "BIC"
 msgstr "BIC"
@@ -384,16 +384,16 @@ msgid "n"
 msgstr "n"
 
 msgid "Baseline test"
-msgstr ""
+msgstr "Contraste de referencia"
 
 msgid "&#916;&#967;&sup2;"
-msgstr ""
+msgstr "&#916;&#967;&sup2;"
 
 msgid "Difference test"
-msgstr ""
+msgstr "Contraste de diferencias"
 
 msgid "&#916;df"
-msgstr ""
+msgstr "&#916;gl"
 
 msgid ""
 "A total of %g cases were removed due to missing values. You can avoid this "
