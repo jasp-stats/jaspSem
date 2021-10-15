@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2021-10-14 01:51+0000\n"
+"PO-Revision-Date: 2021-10-15 19:45+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "es/>\n"
@@ -36,7 +36,7 @@ msgstr "Modelado visual (Beta)"
 
 msgctxt "Description|"
 msgid "Latent Growth (beta)"
-msgstr ""
+msgstr "Crecimiento Latente (beta)"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Variables"
@@ -64,7 +64,7 @@ msgstr "Opciones del Modelo"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Growth curve shape"
-msgstr ""
+msgstr "Forma de la curva de crecimiento"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Intercept"
@@ -76,15 +76,15 @@ msgstr "Lineal"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Quadratic"
-msgstr ""
+msgstr "Cadrática"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Cubic"
-msgstr ""
+msgstr "Cúbica"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Covarying latent curve"
-msgstr ""
+msgstr "Curva latente covariante"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Additional Output"
@@ -136,7 +136,7 @@ msgstr "Violeta"
 
 msgctxt "LatentGrowthCurve|"
 msgid "ggplot2"
-msgstr "ggplot2"
+msgstr "GGplot2"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Gray"
@@ -175,7 +175,6 @@ msgctxt "LatentGrowthCurve|"
 msgid "None"
 msgstr "Ninguna"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Mplus"
 msgstr "Mplus"
@@ -185,10 +184,9 @@ msgctxt "LatentGrowthCurve|"
 msgid "EQS"
 msgstr "EQS"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Missing value handling"
-msgstr "Manejo de valor faltante"
+msgstr "Manejo de valores ausentes"
 
 #, fuzzy
 msgctxt "LatentGrowthCurve|"
@@ -197,11 +195,11 @@ msgstr "Máxima probabilidad de información completa"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Exclude cases listwise"
-msgstr "Excluir casos según la lista"
+msgstr "Excluir casos según lista"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Error calculation"
-msgstr "Cálculo de error"
+msgstr "Cálculo del error"
 
 msgctxt "LatentGrowthCurve|"
 msgid "CI width"
@@ -408,10 +406,9 @@ msgctxt "MediationAnalysis|"
 msgid "Advanced"
 msgstr "Avanzado"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Missing value handling"
-msgstr "Manejo de valor faltante"
+msgstr "Manejo de valores ausentes"
 
 #, fuzzy
 msgctxt "MediationAnalysis|"
@@ -431,7 +428,6 @@ msgctxt "MediationAnalysis|"
 msgid "None"
 msgstr "Ninguna"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Mplus"
 msgstr "Mplus"
@@ -561,10 +557,9 @@ msgctxt "Mimic|"
 msgid "Advanced"
 msgstr "Avanzado"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Missing value handling"
-msgstr "Manejo de valor faltante"
+msgstr "Manejo de valores ausentes"
 
 #, fuzzy
 msgctxt "Mimic|"
@@ -584,7 +579,6 @@ msgctxt "Mimic|"
 msgid "None"
 msgstr "Ninguna"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Mplus"
 msgstr "Mplus"
@@ -784,7 +778,7 @@ msgstr "Agregar parámetros de escala"
 
 msgctxt "SEM|"
 msgid "Constrain EFA blocks"
-msgstr ""
+msgstr "Restringir los bloques EFA"
 
 #, fuzzy
 msgctxt "SEM|"
@@ -807,7 +801,7 @@ msgstr "Observado"
 
 msgctxt "SEM|"
 msgid "Error calculation"
-msgstr "Cálculo de error"
+msgstr "Cálculo del error"
 
 msgctxt "SEM|"
 msgid "Standard"
@@ -997,6 +991,7 @@ msgstr "Liberar restricciones (una por linea)"
 msgctxt "Description|"
 msgid "Evaluate latent data structures with Yves Rosseel’s lavaan program"
 msgstr ""
+"Evaluar estructuras de datos latentes con el programa Lavaan de Yves Rosseel"
 
 msgctxt "SEM|"
 msgid ""
@@ -1007,3 +1002,9 @@ msgid ""
 "More details about the update can be found at https://groups.google.com/g/"
 "lavaan/c/HSavF8oaW5M"
 msgstr ""
+"Este análisis se creó con una versión más antigua de JASP (o con un módulo "
+"dinámico). Desde entonces, hubo cambios en el paquete Lavaan que ejecuta el "
+"análisis. En concreto, la sintaxis Lavaan para las restricciones de igualdad "
+"en análisis multigrupo, ahora se interpretan de forma diferente. ¡Continúa "
+"con precaución! Puedes obtener más detalles sobre la actualización en "
+"https://groups.google.com/g/lavaan/c/HSavF8oaW5M"
