@@ -1,0 +1,956 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Qt-Contexts: true\n"
+
+msgctxt "Description|"
+msgid "SEM"
+msgstr ""
+
+msgctxt "Description|"
+msgid "Evaluate latent data structures with Yves Rosseel’s lavaan program"
+msgstr ""
+
+msgctxt "Description|"
+msgid "Structural Equation Modeling"
+msgstr ""
+
+msgctxt "Description|"
+msgid "Mediation Analysis"
+msgstr ""
+
+msgctxt "Description|"
+msgid "MIMIC Model (beta)"
+msgstr ""
+
+msgctxt "Description|"
+msgid "Latent Growth (beta)"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Variables"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Regressions"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Factor"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Time-varying covariates"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Timings"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Model Options"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Growth curve shape"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Intercept"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Linear"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Quadratic"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Cubic"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Covarying latent curve"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Additional Output"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Additional Fit Measures"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "R-Squared"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Standardized estimates"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Implied covariance matrix"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Residual covariance matrix"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Show lavaan syntax"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Plots"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Color palette"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Colorblind"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Colorblind Alt."
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Viridis"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "ggplot2"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Gray"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Curve plot"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Misfit plot"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Model plot"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Show parameters"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Show means"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Advanced"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Emulation"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "None"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Mplus"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "EQS"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Missing value handling"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Full Information Maximum Likelihood"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Exclude cases listwise"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Error calculation"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "CI width"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Method"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Standard"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Robust"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Bootstrap CI"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Bootstrap samples"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Estimator"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Auto"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "ML"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "GLS"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "WLS"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "ULS"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "DWLS"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Options"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Fix manifest intercepts to zero"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Fix latent intercepts to zero"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Omit residual single indicator"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Residual variances"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Correlate exogenous latents"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Add thresholdds"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Add scalings parameters"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Correlate dependent variables"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Multigroup LGCM"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Grouping variable"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Predictors"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Mediators"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Outcome"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Background confounders"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Options"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Standardized estimates"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Lavaan syntax"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "R-squared"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Additional parameter estimates"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Total indirect effects"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Residual covariances"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Confidence intervals"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Method"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Standard"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Robust"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Bootstrap"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Replications"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Type"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Bias-corrected percentile"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Percentile"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Normal theory"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Plots"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Model plot"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Parameter estimates"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Legend"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Advanced"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Missing value handling"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Full Information Maximum Likelihood"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Exclude cases listwise"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Emulation"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "None"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Mplus"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "EQS"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Estimator"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Auto"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "ML"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "GLS"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "WLS"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "ULS"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "DWLS"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Indicators"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Predictors"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Options"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Standardized estimates"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Lavaan syntax"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "R-squared"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Additional fit measures"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Confidence intervals"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Method"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Standard"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Robust"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Bootstrap"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Replications"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Type"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Bias-corrected percentile"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Percentile"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Normal theory"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Plots"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Model plot"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Parameter estimates"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Legend"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Advanced"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Missing value handling"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Full Information Maximum Likelihood"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Exclude cases listwise"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Emulation"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "None"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Mplus"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "EQS"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Estimator"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Auto"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "ML"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "GLS"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "WLS"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "ULS"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "DWLS"
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"This analysis was created with an older version of JASP (or a dynamic "
+"module). Since then, there were changes in the lavaan package that runs the "
+"analysis. Specifically, the lavaan syntax for equality constraints in "
+"multigroup analysis is now interpreted differently. Proceed with caution! "
+"More details about the update can be found at https://groups.google.com/g/"
+"lavaan/c/HSavF8oaW5M"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Model 1"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Data"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Raw"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Variance-covariance matrix"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Sample size"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Sampling weights"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Output options"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Additional fit measures"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "R-squared"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Observed covariances"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Implied covariances"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Residual covariances"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Standardized residuals"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Mardia's coefficient"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Standardized estimates"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Path diagram"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Show parameter estimates"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Show legend"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Modification indices"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Hide low indices"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Threshold"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Model Options"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Factor scaling"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Factor loadings"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Factor variance"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Effects coding"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "None"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Include mean structure"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Fix manifest intercepts to zero"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Fix latent intercepts to zero"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Assume factors uncorrelated"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Fix exogenous covariates"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Omit residual single indicator"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Include residual variances"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Correlate exogenous latents"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Correlate dependent variables"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Add thresholds"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Add scaling parameters"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Constrain EFA blocks"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Estimation options"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Information matrix"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Expected"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Observed"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Error calculation"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Standard"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Robust"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Bootstrap"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Bootstrap samples"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Type"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Bias-corrected percentile"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Percentile"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Normal theory"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Confidence intervals"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Standardize variables before estimation"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Estimator"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Auto"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "ML"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "GLS"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "WLS"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "ULS"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "DWLS"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "PML"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Model test"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Satorra-Bentler"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Yuan-Bentler"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Mean and Variance adjusted"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Scaled and shifted"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Bootstrap (Bollen-Stine)"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Missing data handling"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "FIML"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Listwise deletion"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Pairwise"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Two-stage"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Robust two-stage"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Doubly robust"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Emulation"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Mplus"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "EQS"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Multigroup SEM"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Grouping Variable"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Equality Constraints"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Loadings"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Intercepts"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Residuals"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Means"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Regressions"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Latent variances"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Latent covariances"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Release constraints (one per line)"
+msgstr ""
