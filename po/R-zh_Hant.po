@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
 "POT-Creation-Date: 2021-09-11 02:45\n"
-"PO-Revision-Date: 2021-10-31 14:37+0000\n"
+"PO-Revision-Date: 2021-11-01 00:47+0000\n"
 "Last-Translator: Changya Hu <changyahu@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
 "jasp/jaspsem-r/zh_Hant/>\n"
@@ -278,19 +278,20 @@ msgid "robust"
 msgstr "穩健"
 
 msgid "%1$s standard errors, %2$s confidence intervals."
-msgstr ""
+msgstr "%1$s 標準誤, %2$s 信賴區間"
 
 msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all bootstrap samples were successful: CI based on %4$.0f samples."
 msgstr ""
+"%2$s 標準誤, %2$s 信賴區間, %3$s 估計法. NB: 並非所有拔靴法樣本模式估計都成功: 信賴區間是根據%4$. 的樣本分析結果所得"
 
 msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
-msgstr ""
+msgstr "%1$s 標準誤, %2$s 信賴區間, %3$s 估計法"
 
 msgid "Path plot"
-msgstr ""
+msgstr "路徑圖"
 
 msgid "Model syntax"
-msgstr ""
+msgstr "模式語法"
 
 msgid "Chi Square test"
 msgstr ""
