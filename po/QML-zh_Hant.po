@@ -1,0 +1,966 @@
+msgid ""
+msgstr ""
+"PO-Revision-Date: 2021-10-31 14:35+0000\n"
+"Last-Translator: Changya Hu <changyahu@gmail.com>\n"
+"Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
+"jasp/jaspsem-qml/zh_Hant/>\n"
+"Language: zh_Hant\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.9-dev\n"
+"X-Qt-Contexts: true\n"
+
+msgctxt "Description|"
+msgid "SEM"
+msgstr "結構方程模型"
+
+msgctxt "Description|"
+msgid "Structural Equation Modeling"
+msgstr "結構方程模型"
+
+msgctxt "Description|"
+msgid "Mediation Analysis"
+msgstr "中介分析"
+
+msgctxt "Description|"
+msgid "MIMIC Model (beta)"
+msgstr "MIMIC 模型 (beta)"
+
+msgctxt "Description|"
+msgid "Latent Growth (beta)"
+msgstr "潛在成長模型 (beta)"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Variables"
+msgstr "變項"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Regressions"
+msgstr "迴歸分析"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Factor"
+msgstr "因素"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Time-varying covariates"
+msgstr "隨時間變動之共變數"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Timings"
+msgstr "時期"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Model Options"
+msgstr "模式設定"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Growth curve shape"
+msgstr "成長曲線型態"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Intercept"
+msgstr "截距"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Linear"
+msgstr "線性"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Quadratic"
+msgstr "二次曲線"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Cubic"
+msgstr "球形"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Covarying latent curve"
+msgstr "共變之前在曲線"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Additional Output"
+msgstr "其他設定"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Additional Fit Measures"
+msgstr "其他適配指標"
+
+msgctxt "LatentGrowthCurve|"
+msgid "R-Squared"
+msgstr "R平方"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Standardized estimates"
+msgstr "標準化估計值"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Implied covariance matrix"
+msgstr "模式隱含之共變數矩陣"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Residual covariance matrix"
+msgstr "殘差共變數矩陣"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Show lavaan syntax"
+msgstr "顯示 lavaan 語法"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Plots"
+msgstr "圖"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Color palette"
+msgstr "條色盤"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Colorblind"
+msgstr "色盲友善調色一"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Colorblind Alt."
+msgstr "色盲友善調色二"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Viridis"
+msgstr "色盲友善調色三"
+
+msgctxt "LatentGrowthCurve|"
+msgid "ggplot2"
+msgstr "ggplot2 調色"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Gray"
+msgstr "灰階"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Curve plot"
+msgstr "曲線圖"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Misfit plot"
+msgstr "不適配圖"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Model plot"
+msgstr "配適圖"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Show parameters"
+msgstr "顯示參數"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Show means"
+msgstr "顯示平均數"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Advanced"
+msgstr "進階"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Emulation"
+msgstr "仿照"
+
+msgctxt "LatentGrowthCurve|"
+msgid "None"
+msgstr "無"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Mplus"
+msgstr "Mplus 程式"
+
+msgctxt "LatentGrowthCurve|"
+msgid "EQS"
+msgstr "EQS 程式"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Missing value handling"
+msgstr "遺漏值處理設定"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Full Information Maximum Likelihood"
+msgstr "完全訊息最大概似法 (FIML)"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Exclude cases listwise"
+msgstr "完全排除法"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Error calculation"
+msgstr "誤差計算方式"
+
+msgctxt "LatentGrowthCurve|"
+msgid "CI width"
+msgstr "信賴區間範圍"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Method"
+msgstr "方法"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Standard"
+msgstr "標準"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Robust"
+msgstr "穩健"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Bootstrap CI"
+msgstr "拔靴法信賴區間"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Bootstrap samples"
+msgstr "拔靴法樣本"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Estimator"
+msgstr "估計法"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Auto"
+msgstr "自動"
+
+msgctxt "LatentGrowthCurve|"
+msgid "ML"
+msgstr "最大概似法 (ML)"
+
+msgctxt "LatentGrowthCurve|"
+msgid "GLS"
+msgstr "廣義最小平方法 (GLS)"
+
+msgctxt "LatentGrowthCurve|"
+msgid "WLS"
+msgstr "加權最小平方法 (WLS)"
+
+msgctxt "LatentGrowthCurve|"
+msgid "ULS"
+msgstr "未加權最小平方法 (ULS)"
+
+msgctxt "LatentGrowthCurve|"
+msgid "DWLS"
+msgstr "對角線加權最小平方法 (DWLS)"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Options"
+msgstr "選項"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Fix manifest intercepts to zero"
+msgstr "將觀察變項截距設為0"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Fix latent intercepts to zero"
+msgstr "將潛在變項截距設為0"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Omit residual single indicator"
+msgstr "忽略單一題項測量因素之殘差"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Residual variances"
+msgstr "殘差變異量"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Correlate exogenous latents"
+msgstr "設定外衍變項彼此相關"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Add thresholdds"
+msgstr "加入閾限"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Add scalings parameters"
+msgstr "加入尺規設定參數"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Correlate dependent variables"
+msgstr "相依變項設為相關"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Multigroup LGCM"
+msgstr "多群 LGCM"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Grouping variable"
+msgstr "分群變項"
+
+msgctxt "MediationAnalysis|"
+msgid "Predictors"
+msgstr "預測變項"
+
+msgctxt "MediationAnalysis|"
+msgid "Mediators"
+msgstr "中介變項"
+
+msgctxt "MediationAnalysis|"
+msgid "Outcome"
+msgstr "結果變項"
+
+msgctxt "MediationAnalysis|"
+msgid "Background confounders"
+msgstr "控制變項(此設定會將預測變項以視為內衍變項)"
+
+msgctxt "MediationAnalysis|"
+msgid "Options"
+msgstr "設定"
+
+msgctxt "MediationAnalysis|"
+msgid "Standardized estimates"
+msgstr "標準化估計值"
+
+msgctxt "MediationAnalysis|"
+msgid "Lavaan syntax"
+msgstr "Lavaan 語法"
+
+msgctxt "MediationAnalysis|"
+msgid "R-squared"
+msgstr "R平方"
+
+msgctxt "MediationAnalysis|"
+msgid "Additional parameter estimates"
+msgstr "其他參數估計值"
+
+msgctxt "MediationAnalysis|"
+msgid "Total indirect effects"
+msgstr "總效果"
+
+msgctxt "MediationAnalysis|"
+msgid "Residual covariances"
+msgstr "殘差共變數"
+
+msgctxt "MediationAnalysis|"
+msgid "Confidence intervals"
+msgstr "信賴區間"
+
+msgctxt "MediationAnalysis|"
+msgid "Method"
+msgstr "方法"
+
+msgctxt "MediationAnalysis|"
+msgid "Standard"
+msgstr "標準"
+
+msgctxt "MediationAnalysis|"
+msgid "Robust"
+msgstr "穩健"
+
+msgctxt "MediationAnalysis|"
+msgid "Bootstrap"
+msgstr "拔靴法"
+
+msgctxt "MediationAnalysis|"
+msgid "Replications"
+msgstr "複製"
+
+msgctxt "MediationAnalysis|"
+msgid "Type"
+msgstr "類型"
+
+msgctxt "MediationAnalysis|"
+msgid "Bias-corrected percentile"
+msgstr "誤差修正百分位"
+
+msgctxt "MediationAnalysis|"
+msgid "Percentile"
+msgstr "百分位"
+
+msgctxt "MediationAnalysis|"
+msgid "Normal theory"
+msgstr "常態理論"
+
+msgctxt "MediationAnalysis|"
+msgid "Plots"
+msgstr "圖"
+
+msgctxt "MediationAnalysis|"
+msgid "Model plot"
+msgstr "模式圖"
+
+msgctxt "MediationAnalysis|"
+msgid "Parameter estimates"
+msgstr "參數估計值"
+
+msgctxt "MediationAnalysis|"
+msgid "Legend"
+msgstr "圖例"
+
+msgctxt "MediationAnalysis|"
+msgid "Advanced"
+msgstr "進階"
+
+msgctxt "MediationAnalysis|"
+msgid "Missing value handling"
+msgstr "遺漏值處理設定"
+
+msgctxt "MediationAnalysis|"
+msgid "Full Information Maximum Likelihood"
+msgstr "完全訊息最大概似法 (FIML)"
+
+msgctxt "MediationAnalysis|"
+msgid "Exclude cases listwise"
+msgstr "完全排除法"
+
+msgctxt "MediationAnalysis|"
+msgid "Emulation"
+msgstr "仿照"
+
+msgctxt "MediationAnalysis|"
+msgid "None"
+msgstr "無"
+
+msgctxt "MediationAnalysis|"
+msgid "Mplus"
+msgstr "Mplus 程式"
+
+msgctxt "MediationAnalysis|"
+msgid "EQS"
+msgstr "EQS 程式"
+
+msgctxt "MediationAnalysis|"
+msgid "Estimator"
+msgstr "估計法"
+
+msgctxt "MediationAnalysis|"
+msgid "Auto"
+msgstr "自動"
+
+msgctxt "MediationAnalysis|"
+msgid "ML"
+msgstr "最大概似法 (ML)"
+
+msgctxt "MediationAnalysis|"
+msgid "GLS"
+msgstr "廣義最小平方法 (GLS)"
+
+msgctxt "MediationAnalysis|"
+msgid "WLS"
+msgstr "加權最小平方法 (WLS)"
+
+msgctxt "MediationAnalysis|"
+msgid "ULS"
+msgstr "未加權最小平方法 (ULS)"
+
+msgctxt "MediationAnalysis|"
+msgid "DWLS"
+msgstr "對角線加權最小平方法 (DWLS)"
+
+msgctxt "Mimic|"
+msgid "Indicators"
+msgstr "題項"
+
+msgctxt "Mimic|"
+msgid "Predictors"
+msgstr "預測變項"
+
+msgctxt "Mimic|"
+msgid "Options"
+msgstr "設定"
+
+msgctxt "Mimic|"
+msgid "Standardized estimates"
+msgstr "標準化預測值"
+
+msgctxt "Mimic|"
+msgid "Lavaan syntax"
+msgstr "Lavaan 語法"
+
+msgctxt "Mimic|"
+msgid "R-squared"
+msgstr "R平方"
+
+msgctxt "Mimic|"
+msgid "Additional fit measures"
+msgstr "其他適配指標"
+
+msgctxt "Mimic|"
+msgid "Confidence intervals"
+msgstr "信賴區間"
+
+msgctxt "Mimic|"
+msgid "Method"
+msgstr "方法"
+
+msgctxt "Mimic|"
+msgid "Standard"
+msgstr "標準"
+
+msgctxt "Mimic|"
+msgid "Robust"
+msgstr "穩健"
+
+msgctxt "Mimic|"
+msgid "Bootstrap"
+msgstr "拔靴法"
+
+msgctxt "Mimic|"
+msgid "Replications"
+msgstr "複製"
+
+msgctxt "Mimic|"
+msgid "Type"
+msgstr "類型"
+
+msgctxt "Mimic|"
+msgid "Bias-corrected percentile"
+msgstr "誤差修正百分比"
+
+msgctxt "Mimic|"
+msgid "Percentile"
+msgstr "百分位"
+
+msgctxt "Mimic|"
+msgid "Normal theory"
+msgstr "常態理論"
+
+msgctxt "Mimic|"
+msgid "Plots"
+msgstr "圖"
+
+msgctxt "Mimic|"
+msgid "Model plot"
+msgstr "模式圖"
+
+msgctxt "Mimic|"
+msgid "Parameter estimates"
+msgstr "參數估計值"
+
+msgctxt "Mimic|"
+msgid "Legend"
+msgstr "圖例"
+
+msgctxt "Mimic|"
+msgid "Advanced"
+msgstr "進階"
+
+msgctxt "Mimic|"
+msgid "Missing value handling"
+msgstr "遺漏值處理設定"
+
+msgctxt "Mimic|"
+msgid "Full Information Maximum Likelihood"
+msgstr "完全訊息最大概似法 (FIML)"
+
+msgctxt "Mimic|"
+msgid "Exclude cases listwise"
+msgstr "完全排除法"
+
+msgctxt "Mimic|"
+msgid "Emulation"
+msgstr "仿照"
+
+msgctxt "Mimic|"
+msgid "None"
+msgstr "無"
+
+msgctxt "Mimic|"
+msgid "Mplus"
+msgstr "Mplus 程式"
+
+msgctxt "Mimic|"
+msgid "EQS"
+msgstr "EQS 程式"
+
+msgctxt "Mimic|"
+msgid "Estimator"
+msgstr "估計法"
+
+msgctxt "Mimic|"
+msgid "Auto"
+msgstr "自動"
+
+msgctxt "Mimic|"
+msgid "ML"
+msgstr "最大概似法 (ML)"
+
+msgctxt "Mimic|"
+msgid "GLS"
+msgstr "廣義最小平方法 (GLS)"
+
+msgctxt "Mimic|"
+msgid "WLS"
+msgstr "加權最小平方法 (WLS)"
+
+msgctxt "Mimic|"
+msgid "ULS"
+msgstr "未加權最小平方法 (ULS)"
+
+msgctxt "Mimic|"
+msgid "DWLS"
+msgstr "對角線加權最小平方法 (DWLS)"
+
+msgctxt "SEM|"
+msgid "Model 1"
+msgstr "模式1"
+
+msgctxt "SEM|"
+msgid "Data"
+msgstr "資料"
+
+msgctxt "SEM|"
+msgid "Raw"
+msgstr "原始資料"
+
+msgctxt "SEM|"
+msgid "Variance-covariance matrix"
+msgstr "變異數-共變數矩陣"
+
+msgctxt "SEM|"
+msgid "Sample size"
+msgstr "樣本數"
+
+msgctxt "SEM|"
+msgid "Sampling weights"
+msgstr "樣本加權"
+
+msgctxt "SEM|"
+msgid "Output options"
+msgstr "報表設定"
+
+msgctxt "SEM|"
+msgid "Additional fit measures"
+msgstr "其他適配指標"
+
+msgctxt "SEM|"
+msgid "R-squared"
+msgstr "R平方"
+
+msgctxt "SEM|"
+msgid "Observed covariances"
+msgstr "觀察共變數"
+
+msgctxt "SEM|"
+msgid "Implied covariances"
+msgstr "模式隱含之共變數"
+
+msgctxt "SEM|"
+msgid "Residual covariances"
+msgstr "殘差共變數"
+
+msgctxt "SEM|"
+msgid "Standardized residuals"
+msgstr "標準化殘差"
+
+msgctxt "SEM|"
+msgid "Mardia's coefficient"
+msgstr "Mardia 係數"
+
+msgctxt "SEM|"
+msgid "Standardized estimates"
+msgstr "標準化估計值"
+
+msgctxt "SEM|"
+msgid "Path diagram"
+msgstr "路徑圖"
+
+msgctxt "SEM|"
+msgid "Show parameter estimates"
+msgstr "顯示參數估計值"
+
+msgctxt "SEM|"
+msgid "Show legend"
+msgstr "顯示圖例"
+
+msgctxt "SEM|"
+msgid "Modification indices"
+msgstr "修正指標"
+
+msgctxt "SEM|"
+msgid "Hide low indices"
+msgstr "隱藏低修正指標值"
+
+msgctxt "SEM|"
+msgid "Threshold"
+msgstr "閾限"
+
+msgctxt "SEM|"
+msgid "Model Options"
+msgstr "模式設定"
+
+msgctxt "SEM|"
+msgid "Factor scaling"
+msgstr "因素尺規設定"
+
+msgctxt "SEM|"
+msgid "Factor loadings"
+msgstr "因素負荷量"
+
+msgctxt "SEM|"
+msgid "Factor variance"
+msgstr "因素變異數"
+
+msgctxt "SEM|"
+msgid "Effects coding"
+msgstr "效果編碼"
+
+msgctxt "SEM|"
+msgid "None"
+msgstr "無"
+
+msgctxt "SEM|"
+msgid "Include mean structure"
+msgstr "包含平均數結構"
+
+msgctxt "SEM|"
+msgid "Fix manifest intercepts to zero"
+msgstr "將觀察變項截距設為0"
+
+msgctxt "SEM|"
+msgid "Fix latent intercepts to zero"
+msgstr "將潛在變項截距設為0"
+
+msgctxt "SEM|"
+msgid "Assume factors uncorrelated"
+msgstr "假設因素間無相關"
+
+msgctxt "SEM|"
+msgid "Fix exogenous covariates"
+msgstr "固定外衍共變數"
+
+msgctxt "SEM|"
+msgid "Omit residual single indicator"
+msgstr "忽略單一題項測量因素之殘差"
+
+msgctxt "SEM|"
+msgid "Include residual variances"
+msgstr "包含殘差變異數"
+
+msgctxt "SEM|"
+msgid "Correlate exogenous latents"
+msgstr "設定外衍潛在變項相關"
+
+msgctxt "SEM|"
+msgid "Correlate dependent variables"
+msgstr "設定依變項相關"
+
+msgctxt "SEM|"
+msgid "Add thresholds"
+msgstr "加入閾限"
+
+msgctxt "SEM|"
+msgid "Add scaling parameters"
+msgstr "加入尺規設定參數"
+
+msgctxt "SEM|"
+msgid "Constrain EFA blocks"
+msgstr "限制 EFA 區塊"
+
+msgctxt "SEM|"
+msgid "Estimation options"
+msgstr "估計設定"
+
+msgctxt "SEM|"
+msgid "Information matrix"
+msgstr "資訊矩陣"
+
+msgctxt "SEM|"
+msgid "Expected"
+msgstr "期望"
+
+msgctxt "SEM|"
+msgid "Observed"
+msgstr "觀察"
+
+msgctxt "SEM|"
+msgid "Error calculation"
+msgstr "誤差計算"
+
+msgctxt "SEM|"
+msgid "Standard"
+msgstr "標準"
+
+msgctxt "SEM|"
+msgid "Robust"
+msgstr "穩健"
+
+msgctxt "SEM|"
+msgid "Bootstrap"
+msgstr "拔靴法"
+
+msgctxt "SEM|"
+msgid "Bootstrap samples"
+msgstr "拔靴樣本"
+
+msgctxt "SEM|"
+msgid "Type"
+msgstr "類型"
+
+msgctxt "SEM|"
+msgid "Bias-corrected percentile"
+msgstr "誤差修正百分比"
+
+msgctxt "SEM|"
+msgid "Percentile"
+msgstr "百分位"
+
+msgctxt "SEM|"
+msgid "Normal theory"
+msgstr "常態理論"
+
+msgctxt "SEM|"
+msgid "Confidence intervals"
+msgstr "信賴區間"
+
+msgctxt "SEM|"
+msgid "Standardize variables before estimation"
+msgstr "估計前將變項標準化"
+
+msgctxt "SEM|"
+msgid "Estimator"
+msgstr "估計式"
+
+msgctxt "SEM|"
+msgid "Auto"
+msgstr "自動"
+
+msgctxt "SEM|"
+msgid "ML"
+msgstr "最大概似法 (ML)"
+
+msgctxt "SEM|"
+msgid "GLS"
+msgstr "廣義最小平方法 (GLS)"
+
+msgctxt "SEM|"
+msgid "WLS"
+msgstr "加權最小平方法 (WLS)"
+
+msgctxt "SEM|"
+msgid "ULS"
+msgstr "未加權最小平方法 (ULS)"
+
+msgctxt "SEM|"
+msgid "DWLS"
+msgstr "對角線加權最小平方法 (DWLS)"
+
+msgctxt "SEM|"
+msgid "PML"
+msgstr "部分最大概似法 (PML)"
+
+msgctxt "SEM|"
+msgid "Model test"
+msgstr "模式考驗"
+
+msgctxt "SEM|"
+msgid "Satorra-Bentler"
+msgstr "Satorra-Bentler 卡方"
+
+msgctxt "SEM|"
+msgid "Yuan-Bentler"
+msgstr "Yuan-Bentler 考驗"
+
+msgctxt "SEM|"
+msgid "Mean and Variance adjusted"
+msgstr "Mean and Variance adjusted 考驗"
+
+msgctxt "SEM|"
+msgid "Scaled and shifted"
+msgstr "Scaled and shifted 考驗"
+
+msgctxt "SEM|"
+msgid "Bootstrap (Bollen-Stine)"
+msgstr "(Bollen-Stine) 拔靴法"
+
+msgctxt "SEM|"
+msgid "Missing data handling"
+msgstr "遺漏值資料處理設定"
+
+msgctxt "SEM|"
+msgid "FIML"
+msgstr "完全訊息最大概似法 (FIML)"
+
+msgctxt "SEM|"
+msgid "Listwise deletion"
+msgstr "完全排除法"
+
+msgctxt "SEM|"
+msgid "Pairwise"
+msgstr "成對排除法"
+
+msgctxt "SEM|"
+msgid "Two-stage"
+msgstr "兩階段"
+
+msgctxt "SEM|"
+msgid "Robust two-stage"
+msgstr "穩健兩階段法"
+
+msgctxt "SEM|"
+msgid "Doubly robust"
+msgstr "雙重穩健法"
+
+msgctxt "SEM|"
+msgid "Emulation"
+msgstr "仿照"
+
+msgctxt "SEM|"
+msgid "Mplus"
+msgstr "Mplus 程式"
+
+msgctxt "SEM|"
+msgid "EQS"
+msgstr "EQS 程式"
+
+msgctxt "SEM|"
+msgid "Multigroup SEM"
+msgstr "多群體 SEM"
+
+msgctxt "SEM|"
+msgid "Grouping Variable"
+msgstr "分群變項"
+
+msgctxt "SEM|"
+msgid "Equality Constraints"
+msgstr "等同限制"
+
+msgctxt "SEM|"
+msgid "Loadings"
+msgstr "因素負荷量"
+
+msgctxt "SEM|"
+msgid "Intercepts"
+msgstr "截距"
+
+msgctxt "SEM|"
+msgid "Residuals"
+msgstr "殘差"
+
+msgctxt "SEM|"
+msgid "Means"
+msgstr "平均數"
+
+msgctxt "SEM|"
+msgid "Regressions"
+msgstr "迴歸分析"
+
+msgctxt "SEM|"
+msgid "Latent variances"
+msgstr "潛在變異數"
+
+msgctxt "SEM|"
+msgid "Latent covariances"
+msgstr "潛在共變數"
+
+msgctxt "SEM|"
+msgid "Release constraints (one per line)"
+msgstr "取消參數設限(每行取消一個參數限制)"
+
+msgctxt "Description|"
+msgid "Evaluate latent data structures with Yves Rosseel’s lavaan program"
+msgstr "以 Yves Rosseel 的 lavaan 程式評估潛在資料模式"
+
+msgctxt "SEM|"
+msgid ""
+"This analysis was created with an older version of JASP (or a dynamic "
+"module). Since then, there were changes in the lavaan package that runs the "
+"analysis. Specifically, the lavaan syntax for equality constraints in "
+"multigroup analysis is now interpreted differently. Proceed with caution! "
+"More details about the update can be found at https://groups.google.com/g/"
+"lavaan/c/HSavF8oaW5M"
+msgstr ""
+"此分析是以舊版JASP (或動態模組)完成。目前lavaan已有更新，新版 "
+"lavaan程式對多群體分析中的恆等限制有不同的解釋。請使用者注意。詳情請參考以下網址。https://groups.google.com/g/"
+"lavaan/c/HSavF8oaW5M"
