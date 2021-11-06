@@ -1,335 +1,327 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: JASP 0.9.2\n"
+"Project-Id-Version: jaspSem 0.15.0\n"
 "POT-Creation-Date: 2021-09-11 02:45\n"
-"PO-Revision-Date: 2021-10-30 20:58+0000\n"
-"Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
-"Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
-"es/>\n"
-"Language: es\n"
+"PO-Revision-Date: 2021-11-01 00:47+0000\n"
+"Last-Translator: Changya Hu <changyahu@gmail.com>\n"
+"Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
+"jasp/jaspsem-r/zh_Hant/>\n"
+"Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 4.9-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
-msgstr "El modelo no se pudo estimar debido a la no-convergencia."
+msgstr "此模式無法估計: 迭代結果無法聚合"
 
 msgid "The model could not be estimated: No degrees of freedom left."
-msgstr "No se pudo estimar el modelo: No quedan grados de libertad."
+msgstr "此模式無法估計: 自由度不足"
 
 msgid "Chi-square Test"
-msgstr ""
+msgstr "卡方考驗"
 
 msgid "Baseline model"
-msgstr "Modelo base"
+msgstr "基底模式"
 
 msgid "Growth curve model"
-msgstr ""
+msgstr "成長曲線模式"
 
 msgid "The model is not admissible: %s"
-msgstr "El modelo no es admisible: %s"
+msgstr "此模式無法執行: %s"
 
 msgid "Warning."
-msgstr ""
+msgstr "警告"
 
 msgid "Parameter estimates"
-msgstr "Estimaciones de parámetros"
+msgstr "參數估計值"
 
 msgid "Component"
-msgstr "Componente"
+msgstr "成分"
 
 msgid "Parameter"
-msgstr "Parámetro"
+msgstr "參數"
 
 msgid "Estimate"
-msgstr "Estimar"
+msgstr "估計值"
 
 msgid "Std. Error"
-msgstr "Error Típico"
+msgstr "標準誤"
 
 msgid "z-value"
-msgstr "valor Z"
+msgstr "z 值"
 
 msgid "p"
-msgstr "p"
+msgstr "p 值"
 
 msgid "Lower"
-msgstr "Inferior"
+msgstr "下界"
 
 msgid "95%% Confidence Interval"
-msgstr "Intervalo de Confianza del 95%%"
+msgstr "95%% 信賴區間"
 
 msgid "Latent covariances"
-msgstr "Covarianzas latentes"
+msgstr "潛在共變數"
 
 msgid "LV"
-msgstr "LV"
+msgstr "潛在變數"
 
 msgid "Std. Est."
-msgstr ""
+msgstr "標準化估計值"
 
 msgid "All"
-msgstr "Todo"
+msgstr "所有"
 
 msgid "No X"
-msgstr "Sin X"
+msgstr "X 不標準化"
 
 msgid "Predictor"
-msgstr "Predictor"
+msgstr "預測變項"
 
 msgid "Variable"
-msgstr "Variable"
+msgstr "變項"
 
 msgid "Intercept"
-msgstr "Constante"
+msgstr "截距"
 
 msgid "Linear slope"
-msgstr "Pendiente lineal"
+msgstr "線性斜率"
 
 msgid "Quadratic slope"
-msgstr "Pendiente cuadrada"
+msgstr "二次斜率"
 
 msgid "Cubic slope"
-msgstr "Pendiente cúbica"
+msgstr "三次斜率"
 
 msgid "Mean"
-msgstr "Media"
+msgstr "平均數"
 
 msgid "Variance"
-msgstr "Varianza"
+msgstr "變異數"
 
-msgid ""
-"Residual variance is negative. This may indicate model misspecification."
-msgstr ""
+msgid "Residual variance is negative. This may indicate model misspecification."
+msgstr "殘差變異數為負值,此模式可能設定有誤."
 
 msgid "Additional Fit measures"
-msgstr ""
+msgstr "其他適配指標"
 
 msgid "Fit indices"
-msgstr "Índices de ajuste"
+msgstr "適配指標"
 
 msgid "Index"
-msgstr "Índice"
+msgstr "指標"
 
 msgid "Value"
-msgstr "Valor"
+msgstr "值"
 
 msgid "Information criteria"
-msgstr "Criterios de información"
+msgstr "資訊準則"
 
 msgid "Other fit measures"
-msgstr "Otras medidas de ajuste"
+msgstr "其他適配指標"
 
 msgid "Metric"
-msgstr "Métrica"
+msgstr "量尺"
 
 msgid "Comparative Fit Index (CFI)"
-msgstr "Índice de Ajuste Comparativo (CFI)"
+msgstr "比較適配指標 (CFI)"
 
 msgid "Tucker-Lewis Index (TLI)"
-msgstr "Índice de Tucker-Lewis (TLI)"
+msgstr "Tucker-Lewis Index (TLI)"
 
 msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
-msgstr "Índice de ajuste no normalizado de Bentler-Bonett (NNFI)"
+msgstr "非常態適配指標 (NNFI)"
 
 msgid "Bentler-Bonett Normed Fit Index (NFI)"
-msgstr "Índice de ajuste normalizado de Bentler-Bonett (NFI)"
+msgstr "常態適配指標 (NFI)"
 
 msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr "Índice de ajuste normalizado de parsimonia (PNFI)"
+msgstr "簡約常態適配指標 (PFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
-msgstr "Índice de ajuste relativo de Bollen (RFI)"
+msgstr "相對適配指標 (RFI)"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
-msgstr "Índice de ajuste incremental de Bollen (IFI)"
+msgstr "增加適配指標 (IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
-msgstr "Índice de no centralidad relativa (RNI)"
+msgstr "相對非中心配適指標  (RNI)"
 
 msgid "Log-likelihood"
-msgstr "Log-verosimilitud"
+msgstr "對數概似函數"
 
 msgid "Number of free parameters"
-msgstr "Número de parámetros libres"
+msgstr "自由估計參數個數"
 
 msgid "Akaike (AIC)"
-msgstr "Criterio de Información de Akaike (AIC)"
+msgstr "赤池資訊量準則"
 
 msgid "Bayesian (BIC)"
-msgstr "Bayesiano (BIC)"
+msgstr "貝氏資訊量準則 (BIC)"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr "Bayesiano ajustado por tamaño de muestra (SSABIC)"
+msgstr "依照樣本大小校正之貝氏資訊量準則 (SSABIC)"
 
 msgid "Root mean square error of approximation (RMSEA)"
-msgstr "Error cuadrático medio de aproximación (RMSEA)"
+msgstr "標準化均方根殘差值"
 
 msgid "RMSEA 90%% CI lower bound"
-msgstr "RMSEA 90 %% IC límite inferior"
+msgstr "RMSEA 90%% 信賴區間下界"
 
 msgid "RMSEA 90%% CI upper bound"
-msgstr "RMSEA 90 %% IC límite superior"
+msgstr "RMSEA 90%% 信賴區間上界"
 
 msgid "RMSEA p-value"
-msgstr "Valor p de RMSEA"
+msgstr "RMSEA p值"
 
 msgid "Standardized root mean square residual (SRMR)"
-msgstr "Raíz estandarizada residual cuadrada media (SRMR)"
+msgstr "標準化均方根殘差 (SRMR)"
 
 msgid "Hoelter's critical N (%s = .05)"
-msgstr "N crítico de Hoelter (%s = .05)"
+msgstr "Hoelter 關鍵N (%s = .05)"
 
 msgid "Hoelter's critical N (%s = .01)"
-msgstr "N crítico de Hoelter (%s = .01)"
+msgstr "Hoelter 關鍵N (%s = .01)"
 
 msgid "Goodness of fit index (GFI)"
-msgstr "Índice de bondad de ajuste (GFI)"
+msgstr "適合度適配指標 (GFI)"
 
 msgid "McDonald fit index (MFI)"
-msgstr "Índice de ajuste de McDonald (IMF)"
+msgstr "McDonald 適配指標 (IFI)"
 
 msgid "Expected cross validation index (ECVI)"
-msgstr "Índice de validación cruzada esperado (ECVI)"
+msgstr "Expected cross validation index  (EVCI)"
 
 msgid "R-Squared"
-msgstr "R-cuadrado"
+msgstr "R平方"
 
 msgid "Implied covariance matrix"
-msgstr "Matriz de covarianzas implícitas"
+msgstr "模式隱含之共變數矩陣"
 
 msgid "Residual covariance matrix"
-msgstr "Matriz de covarianzas de los residuos"
+msgstr "殘差共變數矩陣"
 
 msgid "Curve plot"
-msgstr "Gráfico de la curva"
+msgstr "曲線圖"
 
 msgid "Model plot"
-msgstr "Gráfico del modelo"
+msgstr "模式圖"
 
 msgid "Misfit plot"
-msgstr "Gráfico desajustado"
+msgstr "不適配 (misfit) 圖"
 
 msgid "Curve + variance + uncertainty"
-msgstr ""
+msgstr "曲線 + 變異數 + 不確定性"
 
 msgid "Curve + variance"
-msgstr ""
+msgstr "曲線 + 變異數"
 
 msgid "Curve + parameter uncertainty"
-msgstr ""
+msgstr "曲線 + 參數不確定性"
 
 msgid "FIML only available with ML-type estimators."
+msgstr "完全訊息最大概似法: 只限於最大概似法 (ML)類的估計法"
+
+msgid "Not all exogenous variables are admissible. Inadmissible exogenous variables: %s. Only binary or continuous exogenous variables allowed."
 msgstr ""
 
-msgid ""
-"Not all exogenous variables are admissible. Inadmissible exogenous "
-"variables: %s. Only binary or continuous exogenous variables allowed."
+msgid "Not all endogenous variables are admissible. Inadmissible endogenous variables: %s. Only scale or ordinal endogenous variables allowed."
 msgstr ""
 
-msgid ""
-"Not all endogenous variables are admissible. Inadmissible endogenous "
-"variables: %s. Only scale or ordinal endogenous variables allowed."
+msgid "FIML missing value handling only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s"
 msgstr ""
 
-msgid ""
-"FIML missing value handling only available when all endogenous variables are "
-"of scale type. Ordinal endogenous variables in the model: %s"
+msgid "Estimation failed\nMessage:\n%s"
 msgstr ""
-
-msgid ""
-"Estimation failed\n"
-"Message:\n"
+"無法估計\n"
+"訊息:\n"
 "%s"
-msgstr ""
 
 msgid "Direct effects"
-msgstr ""
+msgstr "直接效果"
 
 msgid "%s%% Confidence Interval"
-msgstr "%s%% Intervalo de Confianza"
+msgstr "%s%% 信賴區間"
 
 msgid "Upper"
-msgstr "Superior"
+msgstr "上界"
 
 msgid "Indirect effects"
-msgstr ""
+msgstr "間接效果"
 
 msgid "Total indirect effects"
-msgstr "Efectos indirectos totales"
+msgstr "所有間接效果"
 
 msgid "Residual covariances"
-msgstr "Covarianzas de los residuos"
+msgstr "殘差共變數"
 
 msgid "Delta method"
-msgstr "Método Delta"
+msgstr "Delta 法"
 
 msgid "Robust"
-msgstr "Robusto"
+msgstr "穩健"
 
 msgid "percentile bootstrap"
-msgstr ""
+msgstr "百分位拔靴法"
 
 msgid "normal theory bootstrap"
-msgstr ""
+msgstr "常態理論拔靴法"
 
 msgid "bias-corrected percentile bootstrap"
-msgstr ""
+msgstr "誤差修正百分位拔靴法"
 
 msgid "normal theory"
-msgstr ""
+msgstr "常態理論"
 
 msgid "robust"
-msgstr ""
+msgstr "穩健"
 
 msgid "%1$s standard errors, %2$s confidence intervals."
-msgstr ""
+msgstr "%1$s 標準誤, %2$s 信賴區間"
 
-msgid ""
-"%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all "
-"bootstrap samples were successful: CI based on %4$.0f samples."
+msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all bootstrap samples were successful: CI based on %4$.0f samples."
 msgstr ""
+"%2$s 標準誤, %2$s 信賴區間, %3$s 估計法. NB: 並非所有拔靴法樣本模式估計都成功: 信賴區間是根據%4$. 的樣本分析結果所得"
 
 msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
-msgstr ""
+msgstr "%1$s 標準誤, %2$s 信賴區間, %3$s 估計法"
 
 msgid "Path plot"
-msgstr ""
+msgstr "路徑圖"
 
 msgid "Model syntax"
-msgstr "Sintaxis del modelo"
+msgstr "模式語法"
 
 msgid "Chi Square test"
 msgstr ""
 
 msgid "df"
-msgstr "gl"
+msgstr ""
 
 msgid "&#967;&sup2;"
 msgstr ""
 
 msgid "Factor model"
-msgstr "Modelo factorial"
+msgstr ""
 
 msgid "Additional fit measures"
-msgstr "Medidas de ajuste adicionales"
+msgstr "其他適配指標"
 
 msgid "Predictor coefficients"
 msgstr ""
 
 msgid "Standardized"
-msgstr "Tipificado"
+msgstr ""
 
 msgid "Endo"
-msgstr "Endo"
+msgstr ""
 
 msgid "Indicator coefficients"
 msgstr ""
 
 msgid "Indicator"
-msgstr "Indicador"
+msgstr ""
 
 msgid "Latent"
 msgstr ""
@@ -343,20 +335,16 @@ msgstr ""
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr ""
 
-msgid ""
-"Mean structure can not be included when data is variance-covariance matrix"
+msgid "Mean structure can not be included when data is variance-covariance matrix"
 msgstr ""
 
 msgid "Please set the sample size!"
 msgstr ""
 
-msgid ""
-"Multiple group analysis not supported when data is variance-covariance matrix"
+msgid "Multiple group analysis not supported when data is variance-covariance matrix"
 msgstr ""
 
-msgid ""
-"Not more cases than number of variables. Is your data a variance-covariance "
-"matrix?"
+msgid "Not more cases than number of variables. Is your data a variance-covariance matrix?"
 msgstr ""
 
 msgid "Invalid model specification. Did you pass a variable name as a string?"
@@ -372,32 +360,30 @@ msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr ""
 
 msgid "Model fit"
-msgstr "Ajuste del modelo"
+msgstr "模型適配度"
 
 msgid "AIC"
-msgstr "AIC"
+msgstr ""
 
 msgid "BIC"
-msgstr "BIC"
+msgstr ""
 
 msgid "n"
-msgstr "n"
+msgstr ""
 
 msgid "Baseline test"
-msgstr "Contraste de referencia"
+msgstr ""
 
 msgid "&#916;&#967;&sup2;"
-msgstr "&#916;&#967;&sup2;"
+msgstr ""
 
 msgid "Difference test"
-msgstr "Contraste de diferencias"
+msgstr ""
 
 msgid "&#916;df"
-msgstr "&#916;gl"
+msgstr ""
 
-msgid ""
-"A total of %g cases were removed due to missing values. You can avoid this "
-"by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
+msgid "A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
 msgstr ""
 
 msgid "Satorra-Bentler scaled test-statistic"
@@ -422,73 +408,70 @@ msgid "Model tests based on %s."
 msgstr ""
 
 msgid "Factor Loadings"
-msgstr "Cargas de los Factores"
+msgstr ""
 
 msgid "Group"
-msgstr "Grupo"
+msgstr ""
 
 msgid "Regression coefficients"
 msgstr ""
 
 msgid "Outcome"
-msgstr "Resultado"
-
-msgid "Factor variances"
-msgstr "Varianzas de factores"
-
-msgid "Factor covariances"
-msgstr "Covarianzas de factores"
-
-msgid "Variables"
-msgstr "Variables"
-
-msgid "Residual variances"
-msgstr "Varianzas de los residuos"
-
-msgid "Means"
-msgstr "Medias"
-
-msgid "Defined parameters"
-msgstr "Parámetros definidos"
-
-msgid "Name"
-msgstr "Nombre"
-
-msgid "Mardia's coefficients"
-msgstr "Coeficientes de Mardia"
-
-msgid "Coefficient"
-msgstr "Coeficiente"
-
-msgid "z"
-msgstr "z"
-
-msgid ""
-"Multivariate skewness and kurtosis calculated for observed variables from "
-"all models."
 msgstr ""
 
-msgid ""
-"Not all used variables are numeric. Mardia's coefficients not available."
+msgid "Factor variances"
+msgstr ""
+
+msgid "Factor covariances"
+msgstr ""
+
+msgid "Variables"
+msgstr ""
+
+msgid "Residual variances"
+msgstr ""
+
+msgid "Means"
+msgstr ""
+
+msgid "Defined parameters"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Mardia's coefficients"
+msgstr ""
+
+msgid "Coefficient"
+msgstr ""
+
+msgid "z"
+msgstr ""
+
+msgid "Multivariate skewness and kurtosis calculated for observed variables from all models."
+msgstr ""
+
+msgid "Not all used variables are numeric. Mardia's coefficients not available."
 msgstr ""
 
 msgid "Skewness"
-msgstr "Asimetría"
+msgstr ""
 
 msgid "Kurtosis"
-msgstr "Curtosis"
+msgstr ""
 
 msgid "Covariance tables"
 msgstr ""
 
 msgid "Modification indices"
-msgstr "Índices de modificación"
+msgstr ""
 
 msgid "Modification Indices"
-msgstr "Índices de Modificación"
+msgstr ""
 
 msgid "group"
-msgstr "grupo"
+msgstr ""
 
 msgid "mi"
 msgstr ""
@@ -506,4 +489,4 @@ msgid "sepc (nox)"
 msgstr ""
 
 msgid "Path diagram"
-msgstr "Diagrama de ruta"
+msgstr ""
