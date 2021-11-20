@@ -1,32 +1,34 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2021-11-14 11:51+0000\n"
+"Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
+"Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
+"es/>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.9.1-dev\n"
 "X-Language: es\n"
 "X-Source-Language: American English\n"
 "X-Qt-Contexts: true\n"
 
-#, fuzzy
 msgctxt "Description|"
 msgid "SEM"
-msgstr "SEM"
+msgstr "M.E.S."
 
-#, fuzzy
 msgctxt "Description|"
 msgid "Structural Equation Modeling"
-msgstr "Modelos de ecuaciones estructurales"
+msgstr "Modelado de ecuaciones estructurales"
 
-#, fuzzy
 msgctxt "Description|"
 msgid "Mediation Analysis"
-msgstr "Análisis de mediación"
+msgstr "Análisis de Mediación"
 
-#, fuzzy
 msgctxt "Description|"
 msgid "MIMIC Model (beta)"
-msgstr "Modelado visual (Beta)"
+msgstr "Modelo MIMIC (beta)"
 
 msgctxt "Description|"
 msgid "Latent Growth (beta)"
@@ -164,7 +166,6 @@ msgctxt "LatentGrowthCurve|"
 msgid "Emulation"
 msgstr "Emulación"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "None"
 msgstr "Ninguna"
@@ -173,7 +174,6 @@ msgctxt "LatentGrowthCurve|"
 msgid "Mplus"
 msgstr "Mplus"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "EQS"
 msgstr "EQS"
@@ -182,10 +182,9 @@ msgctxt "LatentGrowthCurve|"
 msgid "Missing value handling"
 msgstr "Manejo de valores ausentes"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Full Information Maximum Likelihood"
-msgstr "Máxima probabilidad de información completa"
+msgstr "Máxima-Verosimilitud con Información Completa"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Exclude cases listwise"
@@ -303,10 +302,9 @@ msgctxt "MediationAnalysis|"
 msgid "Outcome"
 msgstr "Resultado"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Background confounders"
-msgstr "Confusores de fondo"
+msgstr "Factores perturbadores de fondo"
 
 msgctxt "MediationAnalysis|"
 msgid "Options"
@@ -364,20 +362,17 @@ msgctxt "MediationAnalysis|"
 msgid "Type"
 msgstr "Tipo"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Bias-corrected percentile"
-msgstr "Percentil corregido por sesgo"
+msgstr "Percentil con sesgo corregido"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Percentile"
 msgstr "Percentil"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Normal theory"
-msgstr "Teoría normal"
+msgstr "Teoría Normal"
 
 msgctxt "MediationAnalysis|"
 msgid "Plots"
@@ -403,10 +398,9 @@ msgctxt "MediationAnalysis|"
 msgid "Missing value handling"
 msgstr "Manejo de valores ausentes"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Full Information Maximum Likelihood"
-msgstr "Máxima probabilidad de información completa"
+msgstr "Máxima-Verosimilitud con Información Completa"
 
 msgctxt "MediationAnalysis|"
 msgid "Exclude cases listwise"
@@ -416,7 +410,6 @@ msgctxt "MediationAnalysis|"
 msgid "Emulation"
 msgstr "Emulación"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "None"
 msgstr "Ninguna"
@@ -425,7 +418,6 @@ msgctxt "MediationAnalysis|"
 msgid "Mplus"
 msgstr "Mplus"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "EQS"
 msgstr "EQS"
@@ -514,22 +506,18 @@ msgctxt "Mimic|"
 msgid "Type"
 msgstr "Tipo"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Bias-corrected percentile"
-msgstr "Percentil corregido por sesgo"
+msgstr "Percentil con sesgo corregido"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Percentile"
 msgstr "Percentil"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Normal theory"
-msgstr "Teoría normal"
+msgstr "Teoría Normal"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Plots"
 msgstr "Gráficos"
@@ -554,10 +542,9 @@ msgctxt "Mimic|"
 msgid "Missing value handling"
 msgstr "Manejo de valores ausentes"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Full Information Maximum Likelihood"
-msgstr "Máxima probabilidad de información completa"
+msgstr "Máxima-Verosimilitud con Información Completa"
 
 msgctxt "Mimic|"
 msgid "Exclude cases listwise"
@@ -567,7 +554,6 @@ msgctxt "Mimic|"
 msgid "Emulation"
 msgstr "Emulación"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "None"
 msgstr "Ninguna"
@@ -576,7 +562,6 @@ msgctxt "Mimic|"
 msgid "Mplus"
 msgstr "Mplus"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "EQS"
 msgstr "EQS"
@@ -713,20 +698,17 @@ msgctxt "SEM|"
 msgid "Effects coding"
 msgstr "Codificación de efectos"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "None"
 msgstr "Ninguna"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Include mean structure"
-msgstr "Incluir estructura media"
+msgstr "Incluir la estructura media"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Fix manifest intercepts to zero"
-msgstr "Corregir intercepciones de manifiesto a cero"
+msgstr "Fijar en 0, las ordenadas en el origen declaradas"
 
 msgctxt "SEM|"
 msgid "Fix latent intercepts to zero"
@@ -768,17 +750,14 @@ msgctxt "SEM|"
 msgid "Constrain EFA blocks"
 msgstr "Restringir los bloques EFA"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Estimation options"
-msgstr "Información de estimación"
+msgstr "Opciones de estimación"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Information matrix"
-msgstr "Matriz de correlación"
+msgstr "Matriz de información"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Expected"
 msgstr "Esperado"
@@ -811,30 +790,25 @@ msgctxt "SEM|"
 msgid "Type"
 msgstr "Tipo"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Bias-corrected percentile"
-msgstr "Percentil corregido por sesgo"
+msgstr "Percentil con sesgo corregido"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Percentile"
 msgstr "Percentil"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Normal theory"
-msgstr "Teoría normal"
+msgstr "Teoría Normal"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Confidence intervals"
 msgstr "Intervalos de confianza"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Standardize variables before estimation"
-msgstr "Estimaciones estandarizadas"
+msgstr "Tipificar las variables antes de la estimación"
 
 msgctxt "SEM|"
 msgid "Estimator"
