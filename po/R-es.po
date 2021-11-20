@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
 "POT-Creation-Date: 2021-09-11 02:45\n"
-"PO-Revision-Date: 2021-11-12 17:07+0000\n"
+"PO-Revision-Date: 2021-11-14 11:51+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "es/>\n"
@@ -20,19 +20,19 @@ msgid "The model could not be estimated: No degrees of freedom left."
 msgstr "No se pudo estimar el modelo: No quedan grados de libertad."
 
 msgid "Chi-square Test"
-msgstr ""
+msgstr "Contraste Chi-cuadrado"
 
 msgid "Baseline model"
 msgstr "Modelo base"
 
 msgid "Growth curve model"
-msgstr ""
+msgstr "Modelo de crecimiento curvo"
 
 msgid "The model is not admissible: %s"
 msgstr "El modelo no es admisible: %s"
 
 msgid "Warning."
-msgstr ""
+msgstr "Advertencia."
 
 msgid "Parameter estimates"
 msgstr "Estimaciones de parámetros"
@@ -68,7 +68,7 @@ msgid "LV"
 msgstr "LV"
 
 msgid "Std. Est."
-msgstr ""
+msgstr "Est. Típ."
 
 msgid "All"
 msgstr "Todo"
@@ -103,9 +103,11 @@ msgstr "Varianza"
 msgid ""
 "Residual variance is negative. This may indicate model misspecification."
 msgstr ""
+"La varianza de los errores es negativa. Esto puede indicar una mala "
+"especificación del modelo."
 
 msgid "Additional Fit measures"
-msgstr ""
+msgstr "Medidas Adicionales de Ajuste"
 
 msgid "Fit indices"
 msgstr "Índices de ajuste"
@@ -213,40 +215,50 @@ msgid "Misfit plot"
 msgstr "Gráfico desajustado"
 
 msgid "Curve + variance + uncertainty"
-msgstr ""
+msgstr "Curva + varianza + incertidumbre"
 
 msgid "Curve + variance"
-msgstr ""
+msgstr "Curva + varianza"
 
 msgid "Curve + parameter uncertainty"
-msgstr ""
+msgstr "Curva + incertidumbre de parámetros"
 
 msgid "FIML only available with ML-type estimators."
-msgstr ""
+msgstr "MVIC solo está disponible con estimadores de tipo MV."
 
 msgid ""
 "Not all exogenous variables are admissible. Inadmissible exogenous "
 "variables: %s. Only binary or continuous exogenous variables allowed."
 msgstr ""
+"No todas las variables exógenas son aceptables. Variables exógenas no "
+"aceptables: %s. Solo se admiten variables exógenas binarias o continuas."
 
 msgid ""
 "Not all endogenous variables are admissible. Inadmissible endogenous "
 "variables: %s. Only scale or ordinal endogenous variables allowed."
 msgstr ""
+"No todas las variables endógenas son aceptables. Variables endógenas no "
+"aceptables: %s. Solo se admiten variables endógenas de escala u ordinales."
 
 msgid ""
 "FIML missing value handling only available when all endogenous variables are "
 "of scale type. Ordinal endogenous variables in the model: %s"
 msgstr ""
+"El manejo de valores ausentes de MVIC solo está disponible cuando todas las "
+"variables endógenas son de tipo escala. Variables endógenas ordinales en el "
+"modelo: %s"
 
 msgid ""
 "Estimation failed\n"
 "Message:\n"
 "%s"
 msgstr ""
+"Falló la estimación\n"
+"Mensaje:\n"
+"%s"
 
 msgid "Direct effects"
-msgstr ""
+msgstr "Efectos directos"
 
 msgid "%s%% Confidence Interval"
 msgstr "%s%% Intervalo de Confianza"
@@ -255,7 +267,7 @@ msgid "Upper"
 msgstr "Superior"
 
 msgid "Indirect effects"
-msgstr ""
+msgstr "Efectos indirectos"
 
 msgid "Total indirect effects"
 msgstr "Efectos indirectos totales"
@@ -270,45 +282,48 @@ msgid "Robust"
 msgstr "Robusto"
 
 msgid "percentile bootstrap"
-msgstr ""
+msgstr "percentil de Bootstrap"
 
 msgid "normal theory bootstrap"
-msgstr ""
+msgstr "bootstrap de teoría Normal"
 
 msgid "bias-corrected percentile bootstrap"
-msgstr ""
+msgstr "percentil de Bootstrap con sesgo corregido"
 
 msgid "normal theory"
-msgstr ""
+msgstr "teoría Normal"
 
 msgid "robust"
-msgstr ""
+msgstr "robusto"
 
 msgid "%1$s standard errors, %2$s confidence intervals."
-msgstr ""
+msgstr "%1$s errores típicos, %2$s intervalos de confianza."
 
 msgid ""
 "%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all "
 "bootstrap samples were successful: CI based on %4$.0f samples."
 msgstr ""
+"%1$s errores típicos, %2$s intervalos de confianza, %3$s estimador. NB: No "
+"ha sido válidas todas las muestras del Bootstrap: IC basado en %4$.0f "
+"muestras."
 
 msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
-msgstr ""
+msgstr "%1$s errores típicos, %2$s intervalos de confianza, %3$s estimador."
 
 msgid "Path plot"
-msgstr ""
+msgstr "Gráfico de rutas"
 
 msgid "Model syntax"
 msgstr "Sintaxis del modelo"
 
 msgid "Chi Square test"
-msgstr ""
+msgstr "Contraste Chi-cuadrado"
 
 msgid "df"
 msgstr "gl"
 
 msgid "&#967;&sup2;"
-msgstr ""
+msgstr "&#967;&sup2;"
 
 msgid "Factor model"
 msgstr "Modelo factorial"
@@ -317,7 +332,7 @@ msgid "Additional fit measures"
 msgstr "Medidas de ajuste adicionales"
 
 msgid "Predictor coefficients"
-msgstr ""
+msgstr "Coeficientes del predictor"
 
 msgid "Standardized"
 msgstr "Tipificado"
@@ -326,50 +341,63 @@ msgid "Endo"
 msgstr "Endo"
 
 msgid "Indicator coefficients"
-msgstr ""
+msgstr "Coeficientes del indicador"
 
 msgid "Indicator"
 msgstr "Indicador"
 
 msgid "Latent"
-msgstr ""
+msgstr "Latente"
 
 msgid "Model plot not available with ordinal variables"
-msgstr ""
+msgstr "El gráfico del modelo no está disponible con variables ordinales"
 
 msgid "FIML missing data handling only available with ML-type estimators"
 msgstr ""
+"El manejo de datos ausentes de MVIC solo está disponible con estimadores de "
+"tipo MV"
 
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr ""
+"La variable de agrupamiento tiene menos de 3 observaciones en el grupo %s"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
 msgstr ""
+"La estructura media no se puede incluir cuando los datos son de una matriz "
+"de varianzas-covarianzas"
 
 msgid "Please set the sample size!"
-msgstr ""
+msgstr "¡Por favor, establece el tamaño de la muestra!"
 
 msgid ""
 "Multiple group analysis not supported when data is variance-covariance matrix"
 msgstr ""
+"El análisis de múltiples grupos no se admite cuando los datos son de una "
+"matriz de varianzas-covarianzas"
 
 msgid ""
 "Not more cases than number of variables. Is your data a variance-covariance "
 "matrix?"
 msgstr ""
+"No hay más casos que el número de variables. ¿Tus datos son de una matriz de "
+"varianzas-covarianzas?"
 
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr ""
+"Especificación incorrecta de modelo. ¿Has indicado un nombre de variable "
+"como cadena de texto?"
 
 msgid "Estimation failed Message: %s"
-msgstr ""
+msgstr "Mensaje de fallo de la estimación: %s"
 
 msgid "Estimation failed! Message: Model %s did not converge!"
-msgstr ""
+msgstr "¡Falló la estimación! Mensaje: ¡El modelo %s no convergió!"
 
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr ""
+"¡Falló la estimación! Mensaje: El modelo %s tiene un número de grados de "
+"libertad negativo."
 
 msgid "Model fit"
 msgstr "Ajuste del modelo"
@@ -399,27 +427,30 @@ msgid ""
 "A total of %g cases were removed due to missing values. You can avoid this "
 "by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
 msgstr ""
+"Se eliminó un total de %g casos debido a valores ausentes. Puedes evitar "
+"esto seleccionando 'MVIC (FIML)' en 'Manejo de Datos Ausentes' en las "
+"opciones de Estimación."
 
 msgid "Satorra-Bentler scaled test-statistic"
-msgstr ""
+msgstr "Estadístico de prueba escalado de Satorra-Bentler"
 
 msgid "Yuan-Bentler scaled test-statistic"
-msgstr ""
+msgstr "Estadístico de prueba escalado de Yuan-Bentler"
 
 msgid "Yuan-Bentler (Mplus) scaled test-statistic"
-msgstr ""
+msgstr "Estadístico de prueba escalado (Mplus) de Yuan-Bentler"
 
 msgid "mean and variance adjusted test-statistic"
-msgstr ""
+msgstr "estadístico de prueba ajustado en media y varianza"
 
 msgid "scaled and shifted test-statistic"
-msgstr ""
+msgstr "estadístico de prueba escalado y desplazado"
 
 msgid "bootstrap (Bollen-Stine) probability value"
-msgstr ""
+msgstr "valor de la probabilidad de Bootstrap (Bollen-Stine)"
 
 msgid "Model tests based on %s."
-msgstr ""
+msgstr "Contrastes del modelo basadas en %s."
 
 msgid "Factor Loadings"
 msgstr "Cargas de los Factores"
@@ -467,10 +498,14 @@ msgid ""
 "Multivariate skewness and kurtosis calculated for observed variables from "
 "all models."
 msgstr ""
+"Asimetría y curtosis multivariantes calculadas para las variables observadas "
+"de todos los modelos."
 
 msgid ""
 "Not all used variables are numeric. Mardia's coefficients not available."
 msgstr ""
+"No todas las variables utilizadas son numéricas. El coeficiente de Mardia no "
+"está disponible."
 
 msgid "Skewness"
 msgstr "Asimetría"
@@ -479,7 +514,7 @@ msgid "Kurtosis"
 msgstr "Curtosis"
 
 msgid "Covariance tables"
-msgstr ""
+msgstr "Tablas de covarianzas"
 
 msgid "Modification indices"
 msgstr "Índices de modificación"
@@ -491,19 +526,19 @@ msgid "group"
 msgstr "grupo"
 
 msgid "mi"
-msgstr ""
+msgstr "mi"
 
 msgid "epc"
-msgstr ""
+msgstr "epc"
 
 msgid "sepc (lv)"
-msgstr ""
+msgstr "sepc (lv)"
 
 msgid "sepc (all)"
-msgstr ""
+msgstr "sepc (all)"
 
 msgid "sepc (nox)"
-msgstr ""
+msgstr "sepc (nox)"
 
 msgid "Path diagram"
 msgstr "Diagrama de ruta"
