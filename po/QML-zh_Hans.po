@@ -1,15 +1,9 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-03-14 08:31+0000\n"
-"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
-"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
-"jasp/jaspsem-qml/zh_Hans/>\n"
-"Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.12-dev\n"
 "X-Language: zh_Hans\n"
 "X-Qt-Contexts: true\n"
 
@@ -313,9 +307,10 @@ msgctxt "MediationAnalysis|"
 msgid "Options"
 msgstr ""
 
+#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Standardized estimates"
-msgstr ""
+msgstr "标准化估计"
 
 msgctxt "MediationAnalysis|"
 msgid "Lavaan syntax"
@@ -465,9 +460,10 @@ msgctxt "Mimic|"
 msgid "Options"
 msgstr ""
 
+#, fuzzy
 msgctxt "Mimic|"
 msgid "Standardized estimates"
-msgstr ""
+msgstr "标准化估计"
 
 msgctxt "Mimic|"
 msgid "Lavaan syntax"
@@ -653,9 +649,10 @@ msgctxt "SEM|"
 msgid "Mardia's coefficient"
 msgstr ""
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Standardized estimates"
-msgstr ""
+msgstr "标准化估计"
 
 msgctxt "SEM|"
 msgid "Path diagram"
@@ -681,9 +678,10 @@ msgctxt "SEM|"
 msgid "Threshold"
 msgstr ""
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Model Options"
-msgstr ""
+msgstr "模型选项"
 
 msgctxt "SEM|"
 msgid "Factor scaling"
