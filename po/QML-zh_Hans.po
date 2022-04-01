@@ -215,7 +215,7 @@ msgstr "稳健性"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Bootstrap CI"
-msgstr "Bootstrap CI"
+msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Bootstrap samples"
