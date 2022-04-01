@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-04-01 12:08+0000\n"
+"PO-Revision-Date: 2022-04-01 12:19+0000\n"
 "Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "jasp/jaspsem-qml/zh_Hans/>\n"
@@ -211,7 +211,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Robust"
-msgstr ""
+msgstr "稳健性"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Bootstrap CI"
