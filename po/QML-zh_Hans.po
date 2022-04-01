@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-03-26 15:06+0000\n"
-"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
+"PO-Revision-Date: 2022-04-01 12:08+0000\n"
+"Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "jasp/jaspsem-qml/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -215,7 +215,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Bootstrap CI"
-msgstr ""
+msgstr "Bootstrap CI"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Bootstrap samples"
