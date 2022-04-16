@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-04-01 12:19+0000\n"
-"Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
+"PO-Revision-Date: 2022-04-10 06:09+0000\n"
+"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "jasp/jaspsem-qml/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -107,107 +107,107 @@ msgstr "模型隐含协方差矩阵"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Residual covariance matrix"
-msgstr ""
+msgstr "残差协方差矩阵"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Show lavaan syntax"
-msgstr ""
+msgstr "显示 lavaan 语法"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Plots"
-msgstr ""
+msgstr "绘图"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Color palette"
-msgstr ""
+msgstr "调色板"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Colorblind"
-msgstr ""
+msgstr "色盲"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Colorblind Alt."
-msgstr ""
+msgstr "色盲Alt."
 
 msgctxt "LatentGrowthCurve|"
 msgid "Viridis"
-msgstr ""
+msgstr "Viridis"
 
 msgctxt "LatentGrowthCurve|"
 msgid "ggplot2"
-msgstr ""
+msgstr "ggplot2"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Gray"
-msgstr ""
+msgstr "灰阶"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Curve plot"
-msgstr ""
+msgstr "曲线图"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Misfit plot"
-msgstr ""
+msgstr "不适配(Misfit)图"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Model plot"
-msgstr ""
+msgstr "模型适配图"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Show parameters"
-msgstr ""
+msgstr "显示参数"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Show means"
-msgstr ""
+msgstr "显示均值"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Advanced"
-msgstr ""
+msgstr "高级"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Emulation"
-msgstr ""
+msgstr "模拟"
 
 msgctxt "LatentGrowthCurve|"
 msgid "None"
-msgstr ""
+msgstr "无"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Mplus"
-msgstr ""
+msgstr "Mplus 式"
 
 msgctxt "LatentGrowthCurve|"
 msgid "EQS"
-msgstr ""
+msgstr "EQS 式"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Missing value handling"
-msgstr ""
+msgstr "缺失值处理方式"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Full Information Maximum Likelihood"
-msgstr ""
+msgstr "完全信息最大似然法"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Exclude cases listwise"
-msgstr ""
+msgstr "按列表排除个案"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Error calculation"
-msgstr ""
+msgstr "误差计算方式"
 
 msgctxt "LatentGrowthCurve|"
 msgid "CI width"
-msgstr ""
+msgstr "置信区间宽度"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Method"
-msgstr ""
+msgstr "方法"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Standard"
-msgstr ""
+msgstr "标准"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Robust"
@@ -215,124 +215,123 @@ msgstr "稳健性"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Bootstrap CI"
-msgstr ""
+msgstr "Bootstrap CI"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Bootstrap samples"
-msgstr ""
+msgstr "Bootstrap 抽样次数"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Estimator"
-msgstr ""
+msgstr "估计器"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Auto"
-msgstr ""
+msgstr "自动"
 
 msgctxt "LatentGrowthCurve|"
 msgid "ML"
-msgstr ""
+msgstr "极大似然法(ML)"
 
 msgctxt "LatentGrowthCurve|"
 msgid "GLS"
-msgstr ""
+msgstr "广义最小二乘法(GLS)"
 
 msgctxt "LatentGrowthCurve|"
 msgid "WLS"
-msgstr ""
+msgstr "加权最小二乘法(WLS)"
 
 msgctxt "LatentGrowthCurve|"
 msgid "ULS"
-msgstr ""
+msgstr "未加权最小二乘法 (ULS)"
 
 msgctxt "LatentGrowthCurve|"
 msgid "DWLS"
-msgstr ""
+msgstr "对角加权最小二乘法(DWLS)"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Options"
-msgstr ""
+msgstr "选项"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Fix manifest intercepts to zero"
-msgstr ""
+msgstr "将显变量截距固定为0"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Fix latent intercepts to zero"
-msgstr ""
+msgstr "将潜变量的截距固定为0"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Omit residual single indicator"
-msgstr ""
+msgstr "省略残差单一指标"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Residual variances"
-msgstr ""
+msgstr "残余方差"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Correlate exogenous latents"
-msgstr ""
+msgstr "相关的外生性潜变量"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Add thresholdds"
-msgstr ""
+msgstr "添加阈限"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Add scalings parameters"
-msgstr ""
+msgstr "添加尺度设定参数"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Correlate dependent variables"
-msgstr ""
+msgstr "相关因变量"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Multigroup LGCM"
-msgstr ""
+msgstr "多组 LGCM"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Grouping variable"
-msgstr ""
+msgstr "分组变量"
 
 msgctxt "MediationAnalysis|"
 msgid "Predictors"
-msgstr ""
+msgstr "预测变量"
 
 msgctxt "MediationAnalysis|"
 msgid "Mediators"
-msgstr ""
+msgstr "中介变量"
 
 msgctxt "MediationAnalysis|"
 msgid "Outcome"
-msgstr ""
+msgstr "结果变量"
 
 msgctxt "MediationAnalysis|"
 msgid "Background confounders"
-msgstr ""
+msgstr "控制变量(此项将预测变量视为内生潜变量)"
 
 msgctxt "MediationAnalysis|"
 msgid "Options"
-msgstr ""
+msgstr "选项"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Standardized estimates"
 msgstr "标准化估计"
 
 msgctxt "MediationAnalysis|"
 msgid "Lavaan syntax"
-msgstr ""
+msgstr "Lavaan 语法"
 
 msgctxt "MediationAnalysis|"
 msgid "R-squared"
-msgstr ""
+msgstr "R 平方"
 
 msgctxt "MediationAnalysis|"
 msgid "Additional parameter estimates"
-msgstr ""
+msgstr "其他参数估计"
 
 msgctxt "MediationAnalysis|"
 msgid "Total indirect effects"
-msgstr ""
+msgstr "总间接效应"
 
 msgctxt "MediationAnalysis|"
 msgid "Residual covariances"
