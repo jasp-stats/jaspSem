@@ -29,14 +29,14 @@ Description
 
 	Analysis
 	{
-		title:	qsTr("MIMIC Model (beta)")
+		title:	qsTr("MIMIC Model")
 		qml:	"Mimic.qml"
 		func:	"MIMIC"
 	}
 	
 	Analysis
 	{
-		title:	qsTr("Latent Growth (beta)")
+		title:	qsTr("Latent Growth")
 		qml:	"LatentGrowthCurve.qml"
 		func:	"LatentGrowthCurve"
 		//enabled: false
