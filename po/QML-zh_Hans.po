@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-04-10 06:09+0000\n"
+"PO-Revision-Date: 2022-04-18 14:10+0000\n"
 "Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "jasp/jaspsem-qml/zh_Hans/>\n"
@@ -335,398 +335,395 @@ msgstr "总间接效应"
 
 msgctxt "MediationAnalysis|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "残差协方差"
 
 msgctxt "MediationAnalysis|"
 msgid "Confidence intervals"
-msgstr ""
+msgstr "置信区间"
 
 msgctxt "MediationAnalysis|"
 msgid "Method"
-msgstr ""
+msgstr "方法"
 
 msgctxt "MediationAnalysis|"
 msgid "Standard"
-msgstr ""
+msgstr "标准化"
 
 msgctxt "MediationAnalysis|"
 msgid "Robust"
-msgstr ""
+msgstr "稳健性"
 
 msgctxt "MediationAnalysis|"
 msgid "Bootstrap"
-msgstr ""
+msgstr "Bootstrap 自助抽样"
 
 msgctxt "MediationAnalysis|"
 msgid "Replications"
-msgstr ""
+msgstr "重复次数"
 
 msgctxt "MediationAnalysis|"
 msgid "Type"
-msgstr ""
+msgstr "类型"
 
 msgctxt "MediationAnalysis|"
 msgid "Bias-corrected percentile"
-msgstr ""
+msgstr "偏差校正百分位数"
 
 msgctxt "MediationAnalysis|"
 msgid "Percentile"
-msgstr ""
+msgstr "百分位"
 
 msgctxt "MediationAnalysis|"
 msgid "Normal theory"
-msgstr ""
+msgstr "正态理论"
 
 msgctxt "MediationAnalysis|"
 msgid "Plots"
-msgstr ""
+msgstr "绘图"
 
 msgctxt "MediationAnalysis|"
 msgid "Model plot"
-msgstr ""
+msgstr "模型适配绘图"
 
 msgctxt "MediationAnalysis|"
 msgid "Parameter estimates"
-msgstr ""
+msgstr "参数估计值"
 
 msgctxt "MediationAnalysis|"
 msgid "Legend"
-msgstr ""
+msgstr "图例"
 
 msgctxt "MediationAnalysis|"
 msgid "Advanced"
-msgstr ""
+msgstr "高级"
 
 msgctxt "MediationAnalysis|"
 msgid "Missing value handling"
-msgstr ""
+msgstr "缺失值处理方式"
 
 msgctxt "MediationAnalysis|"
 msgid "Full Information Maximum Likelihood"
-msgstr ""
+msgstr "完全信息最大似然法"
 
 msgctxt "MediationAnalysis|"
 msgid "Exclude cases listwise"
-msgstr ""
+msgstr "按列表排除个案"
 
 msgctxt "MediationAnalysis|"
 msgid "Emulation"
-msgstr ""
+msgstr "模拟"
 
 msgctxt "MediationAnalysis|"
 msgid "None"
-msgstr ""
+msgstr "无"
 
 msgctxt "MediationAnalysis|"
 msgid "Mplus"
-msgstr ""
+msgstr "Mplus 方式"
 
 msgctxt "MediationAnalysis|"
 msgid "EQS"
-msgstr ""
+msgstr "EQS 方式"
 
 msgctxt "MediationAnalysis|"
 msgid "Estimator"
-msgstr ""
+msgstr "估计器"
 
 msgctxt "MediationAnalysis|"
 msgid "Auto"
-msgstr ""
+msgstr "自动"
 
 msgctxt "MediationAnalysis|"
 msgid "ML"
-msgstr ""
+msgstr "极大似然法(ML)"
 
 msgctxt "MediationAnalysis|"
 msgid "GLS"
-msgstr ""
+msgstr "广义最小二乘法(GLS)"
 
 msgctxt "MediationAnalysis|"
 msgid "WLS"
-msgstr ""
+msgstr "加权最小二乘法(WLS)"
 
 msgctxt "MediationAnalysis|"
 msgid "ULS"
-msgstr ""
+msgstr "未加权最小二乘法 (ULS)"
 
 msgctxt "MediationAnalysis|"
 msgid "DWLS"
-msgstr ""
+msgstr "对角加权最小二乘法(DWLS)"
 
 msgctxt "Mimic|"
 msgid "Indicators"
-msgstr ""
+msgstr "指标"
 
 msgctxt "Mimic|"
 msgid "Predictors"
-msgstr ""
+msgstr "预测变量"
 
 msgctxt "Mimic|"
 msgid "Options"
-msgstr ""
+msgstr "选项"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Standardized estimates"
 msgstr "标准化估计"
 
 msgctxt "Mimic|"
 msgid "Lavaan syntax"
-msgstr ""
+msgstr "显示 Lavaan 语法"
 
 msgctxt "Mimic|"
 msgid "R-squared"
-msgstr ""
+msgstr "R 平方"
 
 msgctxt "Mimic|"
 msgid "Additional fit measures"
-msgstr ""
+msgstr "附加拟合测度"
 
 msgctxt "Mimic|"
 msgid "Confidence intervals"
-msgstr ""
+msgstr "置信区间"
 
 msgctxt "Mimic|"
 msgid "Method"
-msgstr ""
+msgstr "方法"
 
 msgctxt "Mimic|"
 msgid "Standard"
-msgstr ""
+msgstr "标准化"
 
 msgctxt "Mimic|"
 msgid "Robust"
-msgstr ""
+msgstr "稳健性"
 
 msgctxt "Mimic|"
 msgid "Bootstrap"
-msgstr ""
+msgstr "Bootstrap 自助抽样"
 
 msgctxt "Mimic|"
 msgid "Replications"
-msgstr ""
+msgstr "重复次数"
 
 msgctxt "Mimic|"
 msgid "Type"
-msgstr ""
+msgstr "类型"
 
 msgctxt "Mimic|"
 msgid "Bias-corrected percentile"
-msgstr ""
+msgstr "偏差校正百分位数"
 
 msgctxt "Mimic|"
 msgid "Percentile"
-msgstr ""
+msgstr "百分位"
 
 msgctxt "Mimic|"
 msgid "Normal theory"
-msgstr ""
+msgstr "正态理论"
 
 msgctxt "Mimic|"
 msgid "Plots"
-msgstr ""
+msgstr "绘图"
 
 msgctxt "Mimic|"
 msgid "Model plot"
-msgstr ""
+msgstr "模型适配图"
 
 msgctxt "Mimic|"
 msgid "Parameter estimates"
-msgstr ""
+msgstr "参数估计值"
 
 msgctxt "Mimic|"
 msgid "Legend"
-msgstr ""
+msgstr "图例"
 
 msgctxt "Mimic|"
 msgid "Advanced"
-msgstr ""
+msgstr "高级"
 
 msgctxt "Mimic|"
 msgid "Missing value handling"
-msgstr ""
+msgstr "缺失值处理方式"
 
 msgctxt "Mimic|"
 msgid "Full Information Maximum Likelihood"
-msgstr ""
+msgstr "完全信息最大似然法"
 
 msgctxt "Mimic|"
 msgid "Exclude cases listwise"
-msgstr ""
+msgstr "按列表排除个案"
 
 msgctxt "Mimic|"
 msgid "Emulation"
-msgstr ""
+msgstr "模拟"
 
 msgctxt "Mimic|"
 msgid "None"
-msgstr ""
+msgstr "无"
 
 msgctxt "Mimic|"
 msgid "Mplus"
-msgstr ""
+msgstr "Mplus 方式"
 
 msgctxt "Mimic|"
 msgid "EQS"
-msgstr ""
+msgstr "EQS 方式"
 
 msgctxt "Mimic|"
 msgid "Estimator"
-msgstr ""
+msgstr "估计器"
 
 msgctxt "Mimic|"
 msgid "Auto"
-msgstr ""
+msgstr "自动"
 
 msgctxt "Mimic|"
 msgid "ML"
-msgstr ""
+msgstr "极大似然法(ML)"
 
 msgctxt "Mimic|"
 msgid "GLS"
-msgstr ""
+msgstr "广义最小二乘法(GLS)"
 
 msgctxt "Mimic|"
 msgid "WLS"
-msgstr ""
+msgstr "加权最小二乘法(WLS)"
 
 msgctxt "Mimic|"
 msgid "ULS"
-msgstr ""
+msgstr "未加权最小二乘法 (ULS)"
 
 msgctxt "Mimic|"
 msgid "DWLS"
-msgstr ""
+msgstr "对角加权最小二乘法(DWLS)"
 
 msgctxt "SEM|"
 msgid "Model 1"
-msgstr ""
+msgstr "模型 1"
 
 msgctxt "SEM|"
 msgid "Data"
-msgstr ""
+msgstr "数据格式"
 
 msgctxt "SEM|"
 msgid "Raw"
-msgstr ""
+msgstr "原始数据"
 
 msgctxt "SEM|"
 msgid "Variance-covariance matrix"
-msgstr ""
+msgstr "方差-协方差矩阵"
 
 msgctxt "SEM|"
 msgid "Sample size"
-msgstr ""
+msgstr "样本量"
 
 msgctxt "SEM|"
 msgid "Sampling weights"
-msgstr ""
+msgstr "样本加权"
 
 msgctxt "SEM|"
 msgid "Output options"
-msgstr ""
+msgstr "输出选项"
 
 msgctxt "SEM|"
 msgid "Additional fit measures"
-msgstr ""
+msgstr "附加拟合测度"
 
 msgctxt "SEM|"
 msgid "R-squared"
-msgstr ""
+msgstr "R 平方"
 
 msgctxt "SEM|"
 msgid "Observed covariances"
-msgstr ""
+msgstr "观察到的协方差"
 
 msgctxt "SEM|"
 msgid "Implied covariances"
-msgstr ""
+msgstr "隐含的协方差"
 
 msgctxt "SEM|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "残差协方差"
 
 msgctxt "SEM|"
 msgid "Standardized residuals"
-msgstr ""
+msgstr "标准化的残差"
 
 msgctxt "SEM|"
 msgid "Mardia's coefficient"
-msgstr ""
+msgstr "Mardia's 系数"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Standardized estimates"
 msgstr "标准化估计"
 
 msgctxt "SEM|"
 msgid "Path diagram"
-msgstr ""
+msgstr "路径图"
 
 msgctxt "SEM|"
 msgid "Show parameter estimates"
-msgstr ""
+msgstr "显示参数估计"
 
 msgctxt "SEM|"
 msgid "Show legend"
-msgstr ""
+msgstr "显示图例"
 
 msgctxt "SEM|"
 msgid "Modification indices"
-msgstr ""
+msgstr "修正指数"
 
 msgctxt "SEM|"
 msgid "Hide low indices"
-msgstr ""
+msgstr "隐藏较低的指数"
 
 msgctxt "SEM|"
 msgid "Threshold"
-msgstr ""
+msgstr "阈值"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Model Options"
 msgstr "模型选项"
 
 msgctxt "SEM|"
 msgid "Factor scaling"
-msgstr ""
+msgstr "因子测量"
 
 msgctxt "SEM|"
 msgid "Factor loadings"
-msgstr ""
+msgstr "因子载荷"
 
 msgctxt "SEM|"
 msgid "Factor variance"
-msgstr ""
+msgstr "因子方差"
 
 msgctxt "SEM|"
 msgid "Effects coding"
-msgstr ""
+msgstr "效应编码"
 
 msgctxt "SEM|"
 msgid "None"
-msgstr ""
+msgstr "无"
 
 msgctxt "SEM|"
 msgid "Include mean structure"
-msgstr ""
+msgstr "包含均值结构"
 
 msgctxt "SEM|"
 msgid "Fix manifest intercepts to zero"
-msgstr ""
+msgstr "将显变量截距固定为0"
 
 msgctxt "SEM|"
 msgid "Fix latent intercepts to zero"
-msgstr ""
+msgstr "将潜变量的截距固定为 0"
 
 msgctxt "SEM|"
 msgid "Assume factors uncorrelated"
-msgstr ""
+msgstr "假定因子不相关"
 
 msgctxt "SEM|"
 msgid "Fix exogenous covariates"
-msgstr ""
+msgstr "固定外生协变量"
 
 msgctxt "SEM|"
 msgid "Omit residual single indicator"
