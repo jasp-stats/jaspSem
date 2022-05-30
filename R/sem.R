@@ -253,7 +253,7 @@ checkLavaanModel <- function(model, availableVars) {
       if(err == "..constant.."){
         err <- gettext("Invalid model specification. Did you pass a variable name as a string?")
       }
-      if(grepl("categorical", err)){
+      if(grepl(c("missing", "categorical"), err)){
         if(grepl("ml", err))
           errMissingMethod <- "FIML"
         if(grepl("two.stage", err))
@@ -371,10 +371,10 @@ checkLavaanModel <- function(model, availableVars) {
   }
 
   # group.partial options
-  # split params
+  if (options[["group.partial"]] != ""){
   splitted <- strsplit(options[["group.partial"]][["model"]], "[\\n,;]+", perl = TRUE)[[1]]
   lavopts[["group.partial"]] <-  splitted
-
+  }
 
   # group variable
   if (options[["groupingVariable"]] != "") {
