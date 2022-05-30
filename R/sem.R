@@ -44,7 +44,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
 # helper functions
 .semPrepOpts <- function(options) {
 
-  # backwards compatability after changes to bouncontrollavaantextarea.cpp
+  # backwards compatibility after changes to bouncontrollavaantextarea.cpp
   fixModel <- function(model) {
     newModel <- c(model[1], model[[2]])
     names(newModel)[names(newModel) == "model"] <- "syntax"
@@ -253,6 +253,8 @@ checkLavaanModel <- function(model, availableVars) {
       if(err == "..constant.."){
         err <- gettext("Invalid model specification. Did you pass a variable name as a string?")
       }
+      if(grepl("not available in the categorical setting", err))
+        err <- gettext("Missing data handling 'FIML' is not supported for ordinal data, please select another missing data handling method within the Estimation options tab")
       errmsg <- gettextf("Estimation failed Message: %s", err)
       modelContainer$setError(paste0("Error in model \"", options[["models"]][[i]][["modelName"]], "\" - ",
                                     .decodeVarsInMessage(names(dataset), errmsg)))
@@ -359,8 +361,8 @@ checkLavaanModel <- function(model, availableVars) {
 
   # group.partial options
   # split params
-  splitted <- strsplit(options[["group.partial"]], "[\\n,;]+", perl = TRUE)[[1]]
-  lavopts[["group.partial"]] <-  vapply(splitted, .semTranslateModel, dataset = dataset, "")
+  splitted <- strsplit(options[["group.partial"]][["model"]], "[\\n,;]+", perl = TRUE)[[1]]
+  lavopts[["group.partial"]] <-  splitted
 
 
   # group variable
