@@ -23,7 +23,7 @@ import JASP				1.0
 
 Form
 {
-	
+
 	columns: 1
 
 	// The following part is used for spawning upgrade notifications about multigroup analysis
@@ -80,13 +80,13 @@ Form
 		showVariableTypeIcon: true
 		addEmptyValue: true
 	}
-  
+
 	Section
 	{
 		title: qsTr("Output options")
 
 		Group
-		{	
+		{
 			CheckBox { name: "outputAdditionalFitMeasures";	label: qsTr("Additional fit measures")	}
 			CheckBox { name: "outputRSquared";				label: qsTr("R-squared")				}
 			CheckBox { name: "outputObservedCovariances";	label: qsTr("Observed covariances")		}
@@ -98,7 +98,7 @@ Form
 		Group
 		{
 			CheckBox{name: "std"; label: qsTr("Standardized estimates"); checked: false}
-			CheckBox 
+			CheckBox
 			{
 				name: "outputPathPlot";
 				text: qsTr("Path diagram");
@@ -122,18 +122,18 @@ Form
 				{
 					name: "miHideLow"
 					label: qsTr("Hide low indices")
-					DoubleField 
-					{ 
+					DoubleField
+					{
 						name: "miThreshold"
 						label: qsTr("Threshold")
 						negativeValues: false
 						decimals: 2
-						defaultValue: 10 
+						defaultValue: 10
 					}
 				}
 			}
 		}
-		
+
 	}
 
 	Section
@@ -149,7 +149,7 @@ Form
 				[
 					{ label: qsTr("Factor loadings")	, value: "auto.fix.first"	},
 					{ label: qsTr("Factor variance")	, value: "std.lv"			},
-					{ label: qsTr("Effects coding")		, value: "effect.coding"	}, 
+					{ label: qsTr("Effects coding")		, value: "effect.coding"	},
 					{ label: qsTr("None")				, value: "none"				}
 				]
 			}
@@ -158,10 +158,10 @@ Form
 			CheckBox { name: "int.lv.fixed";	label: qsTr("Fix latent intercepts to zero");	checked: true	}
 			CheckBox { name: "orthogonal";		label: qsTr("Assume factors uncorrelated")						}
 		}
-		
+
 		Group
 		{
-			
+
 			CheckBox { name: "fixed.x";				label: qsTr("Fix exogenous covariates"); 		checked: true	}
 			CheckBox { name: "auto.fix.single";		label: qsTr("Omit residual single indicator");	checked: true	}
 			CheckBox { name: "auto.var";			label: qsTr("Include residual variances");		checked: true	}
@@ -176,10 +176,10 @@ Form
 	Section
 	{
 		title: qsTr("Estimation options")
-		
+
 		Group
 		{
-			
+
 			DropDown
 			{
 				label: qsTr("Information matrix")
@@ -187,7 +187,7 @@ Form
 				values: [
 					{ value: "expected", label: qsTr("Expected") },
 					{ value: "observed", label: qsTr("Observed") }
-				] 
+				]
 			}
 
 			RadioButtonGroup
@@ -218,16 +218,16 @@ Form
                     }
 				}
 			}
-			
+
 			CIField {
 				text: qsTr("Confidence intervals")
 				name: "ciWidth"
 			}
 
-			
+
 		}
-		
-		Group 
+
+		Group
 		{
 			CheckBox{name: "std.ov"; label: qsTr("Standardize variables before estimation"); checked: false}
 			DropDown
@@ -269,7 +269,7 @@ Form
 					{ label: qsTr("FIML")				, value: "ml"				},
 					{ label: qsTr("Listwise deletion")	, value: "listwise"			},
 					{ label: qsTr("Pairwise")			, value: "pairwise"			},
-					{ label: qsTr("Two-stage")			, value: "two.stage"		}, 
+					{ label: qsTr("Two-stage")			, value: "two.stage"		},
 					{ label: qsTr("Robust two-stage")	, value: "robust.two.stage"	},
 					{ label: qsTr("Doubly robust")		, value: "doubly.robust"	},
 				]
@@ -283,20 +283,20 @@ Form
 					{ value: "lavaan",	label: qsTr("None") 	},
 					{ value: "Mplus",	label: qsTr("Mplus") 	},
 					{ value: "EQS",		label: qsTr("EQS") 		}
-				] 
+				]
 			}
 
 		}
 	}
-	
+
 	Section
 	{
 		title: qsTr("Multigroup SEM")
 		id: multigroup
-		Group 
+		Group
 		{
-			DropDown 
-			{ 
+			DropDown
+			{
 				id: grpvar
 				name: "groupingVariable"
 				label: qsTr("Grouping Variable")
@@ -317,7 +317,7 @@ Form
 				CheckBox { id: eq_variances; 			name: "eq_variances";			label: qsTr("Latent variances")		}
 				CheckBox { id: eq_lvcovariances; 		name: "eq_lvcovariances";		label: qsTr("Latent covariances")	}
 			}
-			
+
 		}
 		TextArea
 		{
@@ -325,9 +325,8 @@ Form
 			title: qsTr("Release constraints (one per line)")
 			width: multigroup.width / 2
 			height: constraints.height + grpvar.height
-			textType: JASP.TextTypeSource
-			separator: [";", "\n", ","]
+			textType: JASP.TextTypeLavaan
 			visible: eq_loadings.checked || eq_intercepts.checked || eq_residuals.checked || eq_residualcovariances.checked || eq_means.checked || eq_thresholds.checked || eq_regressions.checked || eq_variances.checked || eq_lvcovariances.checked
-		}			
+		}
 	}
 }

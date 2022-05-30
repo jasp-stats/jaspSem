@@ -33,7 +33,7 @@ Description
 		qml:	"Mimic.qml"
 		func:	"MIMIC"
 	}
-	
+
 	Analysis
 	{
 		title:	qsTr("Latent Growth")
