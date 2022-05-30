@@ -253,9 +253,20 @@ checkLavaanModel <- function(model, availableVars) {
       if(err == "..constant.."){
         err <- gettext("Invalid model specification. Did you pass a variable name as a string?")
       }
-      if(grepl("not available in the categorical setting", err))
-        err <- gettext("Missing data handling 'FIML' is not supported for ordinal data, please select another missing data handling method within the Estimation options tab")
+      if(grepl("categorical", err)){
+        if(grepl("ml", err))
+          errMissingMethod <- "FIML"
+        if(grepl("two.stage", err))
+          errMissingMethod <- "Two-stage"
+        if(grepl("robust.two.stage", err))
+          errMissingMethod <- "Robust two-stage"
+        err <- gettextf("Missing data handling '%s' is not supported for categorical data,
+                        please select another method under 'Missing data handling'
+                        within the 'Estimation options' tab", errMissingMethod)
+      }
+
       errmsg <- gettextf("Estimation failed Message: %s", err)
+
       modelContainer$setError(paste0("Error in model \"", options[["models"]][[i]][["modelName"]], "\" - ",
                                     .decodeVarsInMessage(names(dataset), errmsg)))
       modelContainer$dependOn("models") # add dependency so everything gets updated upon model change
