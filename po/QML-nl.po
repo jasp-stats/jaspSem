@@ -20,14 +20,6 @@ msgctxt "Description|"
 msgid "Mediation Analysis"
 msgstr "Mediatie Analyse"
 
-msgctxt "Description|"
-msgid "MIMIC Model (beta)"
-msgstr "MIMIC Model (beta)"
-
-msgctxt "Description|"
-msgid "Latent Growth (beta)"
-msgstr "Latente Groei (beta)"
-
 msgctxt "LatentGrowthCurve|"
 msgid "Variables"
 msgstr "Variabelen"
@@ -963,3 +955,11 @@ msgstr ""
 "gelijkheidsbeperkingen in multigroepanalyse nu anders geïnterpreteerd. Ga "
 "voorzichtig verder! Meer details over de update zijn te vinden op https://"
 "groups.google.com/g/lavaan/c/HSavF8oaW5M"
+
+msgctxt "Description|"
+msgid "MIMIC Model"
+msgstr ""
+
+msgctxt "Description|"
+msgid "Latent Growth"
+msgstr ""

@@ -19,14 +19,6 @@ msgctxt "Description|"
 msgid "Mediation Analysis"
 msgstr "媒介分析"
 
-msgctxt "Description|"
-msgid "MIMIC Model (beta)"
-msgstr "MIMICモデル(ベータ版)"
-
-msgctxt "Description|"
-msgid "Latent Growth (beta)"
-msgstr "潜在成長曲線モデル (ベータ)"
-
 msgctxt "LatentGrowthCurve|"
 msgid "Variables"
 msgstr "変数"
@@ -961,3 +953,11 @@ msgstr ""
 "グループ分析における等式制約のためのlavaan構文は、現在、異なって解釈されてい"
 "ます。ご注意ください。アップデートの詳細については、https://groups.google."
 "com/g/lavaan/c/HSavF8oaW5M をご覧ください"
+
+msgctxt "Description|"
+msgid "MIMIC Model"
+msgstr ""
+
+msgctxt "Description|"
+msgid "Latent Growth"
+msgstr ""
