@@ -213,9 +213,9 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   cSemOpts[[".PLS_weight_scheme_inner"]]     <- options[["innerWeightingScheme"]]
   cSemOpts[[".resample_method"]]             <- options[["resamplingMethod"]]
   cSemOpts[[".R"]]                           <- options[["nBootstraps"]]
-  cSemOpts[[".handle_inadmissibles"]]        <- "replace"
 
-
+  if (options[["setSeed"]])
+    cSemOpts[[".seed"]] <- options[["seed"]]
 
   if (options[["groupingVariable"]] != "")
     cSemOpts[[".id"]] <- options[["groupingVariable"]]

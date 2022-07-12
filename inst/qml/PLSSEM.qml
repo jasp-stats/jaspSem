@@ -19,6 +19,7 @@ import QtQuick			2.8
 import QtQuick.Layouts	1.3
 import QtQuick.Controls 2.12
 import JASP.Controls	1.0
+import JASP.Widgets 1.0
 import JASP				1.0
 
 Form
@@ -101,9 +102,9 @@ Form
 
 			RadioButtonGroup
 			{
-				title: qsTr("Resampling method")
+				title: qsTr("Error calculation")
 				name: "resamplingMethod"
-				RadioButton { value: "none";	label: qsTr("None"); checked: true		}
+				RadioButton { value: "none";	label: qsTr("Standard"); checked: true		}
 				RadioButton { value: "jackknife";		label: qsTr("Robust")						}
 				RadioButton
 				{
@@ -124,6 +125,8 @@ Form
 				text: qsTr("Confidence intervals")
 				name: "ciWidth"
 			}
+			SetSeed {}
+
 		}
 
 		Group
