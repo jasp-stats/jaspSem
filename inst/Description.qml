@@ -22,6 +22,13 @@ Description
 
 	Analysis
 	{
+		title:	qsTr("Partial Least Squares SEM")
+		qml:	"PLSSEM.qml"
+		func:	"PLSSEM"
+	}
+
+	Analysis
+	{
 		title:	qsTr("Mediation Analysis")
 		qml:	"MediationAnalysis.qml"
 		func:	"MediationAnalysis"
