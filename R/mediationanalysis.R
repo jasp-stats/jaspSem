@@ -28,6 +28,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   .medParTable(   modelContainer, dataset, options, ready)
   .medTotIndTable(modelContainer, options, ready)
   .medResTable(   modelContainer, options, ready)
+  .medPathTable(  modelContainer, options, ready)
   .medRsquared(   modelContainer, options, ready)
   .medPathPlot(   modelContainer, options, ready)
   .medSyntax(     modelContainer, options, ready)
@@ -476,6 +477,47 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   restab[["ci.lower"]] <- pe_res$ci.lower
   restab[["ci.upper"]] <- pe_res$ci.upper
   restab$addFootnote(foot_message)
+}
+
+.medPathTable <- function(modelContainer, options, ready) {
+  if (!options[["showPathCoefficients"]]) return()
+
+  pathtab <- createJaspTable(title = gettext("Path coefficients"))
+  pathtab$dependOn("showPathCoefficients")
+
+  pathtab$addColumnInfo(name = "lhs",      title = "",                    type = "string")
+  pathtab$addColumnInfo(name = "op",       title = "",                    type = "string")
+  pathtab$addColumnInfo(name = "rhs",      title = "",                    type = "string")
+  pathtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
+  pathtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  pathtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+  pathtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+  pathtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  pathtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+
+  modelContainer[["parest"]][["path"]] <- pathtab
+
+  if (!ready || modelContainer$getError()) return()
+
+  foot_message <- .medFootMessage(modelContainer, options)
+
+  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]], boot.ci.type = options$bootCItype,
+                                   level = options$ciWidth)
+
+  pe_path <- pe[pe$op == "~",]
+
+  pathtab[["lhs"]]      <- pe_path$rhs
+  pathtab[["op"]]       <- rep("\u2192", nrow(pe_path))
+  pathtab[["rhs"]]      <- pe_path$lhs
+  pathtab[["est"]]      <- pe_path$est
+  pathtab[["se"]]       <- pe_path$se
+  pathtab[["z"]]        <- pe_path$z
+  pathtab[["pvalue"]]   <- pe_path$pvalue
+  pathtab[["ci.lower"]] <- pe_path$ci.lower
+  pathtab[["ci.upper"]] <- pe_path$ci.upper
+  pathtab$addFootnote(foot_message)
 }
 
 .medFootMessage <- function(modelContainer, options) {
