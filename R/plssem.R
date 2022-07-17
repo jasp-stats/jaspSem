@@ -33,12 +33,12 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   .plsSemCheckErrors(dataset, options, ready, modelContainer)
 
   # Output functions
-  msc <- .plsSemFitTab(jaspResults, modelContainer, dataset, options, ready)
+  .plsSemFitTab(modelContainer, dataset, options, ready)
   .plsSemParameters(modelContainer, dataset, options, ready)
-  .plsSemRsquared(modelContainer, msc, dataset, options, ready)
-  .plsSemAdditionalFits(modelContainer, msc, dataset, options, ready)
+  .plsSemRsquared(modelContainer, dataset, options, ready)
+  .plsSemAdditionalFits(modelContainer, dataset, options, ready)
   .plsSemMardiasCoefficient(modelContainer, dataset, options, ready)
-  .plsSemReliabilities(modelContainer, msc, dataset, options, ready)
+  .plsSemReliabilities(modelContainer, dataset, options, ready)
   .plsSemCor(modelContainer, dataset, options, ready)
 }
 
@@ -122,7 +122,8 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c("approachSecondOrder", "approachWeights", "approachCorRobust", "approachNonLinear", "convergenceCriterion",
                               "estimateStructural", "groupingVariable", "assumeNormality", "approachCorrectionFactors",
-                              "ignoreStructuralModel", "innerWeightingScheme", "resamplingMethod", "nBootstraps", "ciWidth", "Data"))
+                              "ignoreStructuralModel", "innerWeightingScheme", "resamplingMethod", "nBootstraps", "ciWidth",
+                              "setSeed", "seed", "Data"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -158,6 +159,8 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
     cSemArgs[[".data"]]  <- dataset
 
     # fit the model
+    if(options$setSeed)
+      set.seed(options$seed)
 
     fit <- try(do.call(cSEM::csem, cSemArgs))
 
@@ -217,6 +220,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   if (options[["setSeed"]])
     cSemOpts[[".seed"]] <- options[["seed"]]
 
+
   if (options[["groupingVariable"]] != "")
     cSemOpts[[".id"]] <- options[["groupingVariable"]]
 
@@ -259,9 +263,13 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 
 # output functions
 
-.plsSemFitTab <- function(jaspResults, modelContainer, dataset, options, ready) {
+.plsSemFitTab <- function(modelContainer, dataset, options, ready) {
 
   if (!is.null(modelContainer[["fittab"]])) return()
+
+  modSelCriteria <- createJaspState()
+  modelContainer[["modSelCriteria"]] <- modSelCriteria
+  modSelCriteria$dependOn(optionsFromObject = modelContainer)
 
   fittab <- createJaspTable(title = gettext("Model fit"))
   fittab$dependOn(c("models"))
@@ -294,6 +302,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   if (!ready) return()
 
   # add data to the table!
+
   plsSemResults <- .plsSemComputeResults(modelContainer, dataset, options)
 
   if (modelContainer$getError()) return()
@@ -406,7 +415,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   if (!is.null(msc$warnings))
     fittab$addFootnote(msc$warnings[[1]]$message)
 
-  return(msc)
+  modSelCriteria$object <- msc
 }
 
 # To work around a bug in the cSEM package when .id is specified:
@@ -715,7 +724,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   return(list(rhs=rhs, lhs=lhs, est=est, se=se, zVal=zVal, pVal=pVal, ciLower=ciLower, ciUpper=ciUpper))
 }
 
-.plsSemAdditionalFits <- function(modelContainer, msc, dataset, options, ready) {
+.plsSemAdditionalFits <- function(modelContainer, dataset, options, ready) {
   if (!options[["outputAdditionalFitMeasures"]] || !is.null(modelContainer[["addfit"]])) return()
 
   # Fit indices
@@ -725,7 +734,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
     if(options[["groupingVariable"]] == "")
       fitin$addColumnInfo(name = "value", title = gettext("Value"), type = "number", format = "sf:4;dp:3")
     else {
-      for (j in names(msc$value$mfm["CFI",])) {
+      for (j in names(modelContainer[["modSelCriteria"]]$object$value$mfm["CFI",])) {
         fitin$addColumnInfo(name = paste0("value_", j), title = gettext(j), overtitle = options[["models"]][[1]][["modelName"]],
                             type = "number", format = "sf:4;dp:3")
       }
@@ -738,7 +747,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
       }
     } else {
       for (i in seq_along(options[["models"]])) {
-        for (j in names(msc$value[[i]]$mfm["CFI",])) {
+        for (j in names(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["CFI",])) {
           fitin$addColumnInfo(name = paste0("value_",i,"_", j), title = gettext(j), overtitle = options[["models"]][[i]][["modelName"]],
                               type = "number", format = "sf:4;dp:3")
         }
@@ -778,34 +787,34 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 
     if (options[["groupingVariable"]] == "") {
 
-      fitin[["value"]] <- list(msc$value$mfm$CFI, msc$value$mfm$GFI, msc$value$mfm$CN, msc$value$mfm$IFI, msc$value$mfm$NNFI,
-                               msc$value$mfm$NFI, msc$value$mfm$RMSEA, msc$value$mfm$RMS_theta, msc$value$mfm$SRMR,
-                               msc$value$mfm$GoF, msc$value$mfm$DG, msc$value$mfm$DL, msc$value$mfm$DML)
+      fitin[["value"]] <- list(modelContainer[["modSelCriteria"]]$object$value$mfm$CFI, modelContainer[["modSelCriteria"]]$object$value$mfm$GFI, modelContainer[["modSelCriteria"]]$object$value$mfm$CN, modelContainer[["modSelCriteria"]]$object$value$mfm$IFI, modelContainer[["modSelCriteria"]]$object$value$mfm$NNFI,
+                               modelContainer[["modSelCriteria"]]$object$value$mfm$NFI, modelContainer[["modSelCriteria"]]$object$value$mfm$RMSEA, modelContainer[["modSelCriteria"]]$object$value$mfm$RMS_theta, modelContainer[["modSelCriteria"]]$object$value$mfm$SRMR,
+                               modelContainer[["modSelCriteria"]]$object$value$mfm$GoF, modelContainer[["modSelCriteria"]]$object$value$mfm$DG, modelContainer[["modSelCriteria"]]$object$value$mfm$DL, modelContainer[["modSelCriteria"]]$object$value$mfm$DML)
 
     } else {
-      for (j in names(msc$value$mfm["CFI",])) {
-        fitin[[paste0("value_", j)]] <- list(msc$value$mfm["CFI",j], msc$value$mfm["GFI", j], msc$value$mfm["CN", j], msc$value$mfm["IFI", j], msc$value$mfm["NNFI", j],
-                                             msc$value$mfm["NFI", j], msc$value$mfm["RMSEA", j], msc$value$mfm["RMS_theta", j], msc$value$mfm["SRMR", j],
-                                             msc$value$mfm["GoF", j], msc$value$mfm["DG", j], msc$value$mfm["DL", j], msc$value$mfm["DML", j])
+      for (j in names(modelContainer[["modSelCriteria"]]$object$value$mfm["CFI",])) {
+        fitin[[paste0("value_", j)]] <- list(modelContainer[["modSelCriteria"]]$object$value$mfm["CFI",j], modelContainer[["modSelCriteria"]]$object$value$mfm["GFI", j], modelContainer[["modSelCriteria"]]$object$value$mfm["CN", j], modelContainer[["modSelCriteria"]]$object$value$mfm["IFI", j], modelContainer[["modSelCriteria"]]$object$value$mfm["NNFI", j],
+                                             modelContainer[["modSelCriteria"]]$object$value$mfm["NFI", j], modelContainer[["modSelCriteria"]]$object$value$mfm["RMSEA", j], modelContainer[["modSelCriteria"]]$object$value$mfm["RMS_theta", j], modelContainer[["modSelCriteria"]]$object$value$mfm["SRMR", j],
+                                             modelContainer[["modSelCriteria"]]$object$value$mfm["GoF", j], modelContainer[["modSelCriteria"]]$object$value$mfm["DG", j], modelContainer[["modSelCriteria"]]$object$value$mfm["DL", j], modelContainer[["modSelCriteria"]]$object$value$mfm["DML", j])
 
       }
     }
   } else {
     if (options[["groupingVariable"]] == "") {
       for (i in seq_along(options[["models"]])) {
-        fitin[[paste0("value_", i)]] <- list(msc$value[[i]]$mfm$CFI, msc$value[[i]]$mfm$GFI, msc$value[[i]]$mfm$CN, msc$value[[i]]$mfm$IFI, msc$value[[i]]$mfm$NNFI,
-                                             msc$value[[i]]$mfm$NFI, msc$value[[i]]$mfm$RMSEA, msc$value[[i]]$mfm$RMS_theta, msc$value[[i]]$mfm$SRMR,
-                                             msc$value[[i]]$mfm$GoF, msc$value[[i]]$mfm$DG, msc$value[[i]]$mfm$DL, msc$value[[i]]$mfm$DML)
+        fitin[[paste0("value_", i)]] <- list(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$CFI, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$GFI, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$CN, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$IFI, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$NNFI,
+                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$NFI, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$RMSEA, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$RMS_theta, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$SRMR,
+                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$GoF, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$DG, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$DL, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$DML)
       }
 
 
 
     } else {
       for (i in seq_along(options[["models"]])) {
-        for (j in names(msc$value[[i]]$mfm["CFI",])) {
-          fitin[[paste0("value_",i,"_", j)]] <- list(msc$value[[i]]$mfm["CFI",j], msc$value[[i]]$mfm["GFI", j], msc$value[[i]]$mfm["CN", j], msc$value[[i]]$mfm["IFI", j], msc$value[[i]]$mfm["NNFI", j],
-                                                     msc$value[[i]]$mfm["NFI", j], msc$value[[i]]$mfm["RMSEA", j], msc$value[[i]]$mfm["RMS_theta", j], msc$value[[i]]$mfm["SRMR", j],
-                                                     msc$value[[i]]$mfm["GoF", j], msc$value[[i]]$mfm["DG", j], msc$value[[i]]$mfm["DL", j], msc$value[[i]]$mfm["DML", j])
+        for (j in names(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["CFI",])) {
+          fitin[[paste0("value_",i,"_", j)]] <- list(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["CFI",j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["GFI", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["CN", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["IFI", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["NNFI", j],
+                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["NFI", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["RMSEA", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["RMS_theta", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["SRMR", j],
+                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["GoF", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["DG", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["DL", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["DML", j])
 
         }
       }
@@ -813,7 +822,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   }
 }
 
-.plsSemRsquared <- function(modelContainer, msc, dataset, options, ready) {
+.plsSemRsquared <- function(modelContainer, dataset, options, ready) {
   if (!options[["outputRSquared"]] || !is.null(modelContainer[["tabrsquared"]])) return()
 
   # init table
@@ -847,10 +856,10 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 
     if (length(options[["models"]]) < 2) {
 
-      r2                     <- msc$value$mfm$R2
+      r2                     <- modelContainer[["modSelCriteria"]]$object$value$mfm$R2
       tabr2[["__var__"]]     <- as.list(names(r2))
       tabr2[["rsq"]]         <- as.list(r2)
-      tabr2[["adjustedRsq"]] <- as.list(msc$value$mfm$R2_adj)
+      tabr2[["adjustedRsq"]] <- as.list(modelContainer[["modSelCriteria"]]$object$value$mfm$R2_adj)
     } else {
 
       # determine variable names
@@ -858,8 +867,8 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
       r2li <- list()
       adjR2li <- list()
       for (i in seq_along(options[["models"]])) {
-        r2li    <- c(r2li, list(msc$value[[i]]$mfm$R2))
-        adjR2li <- c(adjR2li, list(msc$value[[i]]$mfm$R2_adj))
+        r2li    <- c(r2li, list(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$R2))
+        adjR2li <- c(adjR2li, list(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$R2_adj))
       }
 
 
@@ -882,8 +891,8 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   } else {
     if (length(options[["models"]]) < 2) {
 
-      r2res                  <- msc$value$mfm["R2",]
-      adjR2res               <- msc$value$mfm["R2_adj",]
+      r2res                  <- modelContainer[["modSelCriteria"]]$object$value$mfm["R2",]
+      adjR2res               <- modelContainer[["modSelCriteria"]]$object$value$mfm["R2_adj",]
       tabr2[["__grp__"]]     <- as.list(names(r2res))
       tabr2[["__var__"]]     <- unlist(lapply(r2res, names))
       tabr2[["rsq"]]         <- unlist(r2res)
@@ -896,8 +905,8 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
       r2li <- list()
       adjR2li <- list()
       for (i in seq_along(options[["models"]])) {
-        r2li <- c(r2li, list(msc$value[[i]]$mfm["R2",]))
-        adjR2li <- c(adjR2li, list(msc$value[[i]]$mfm["R2_adj",]))
+        r2li <- c(r2li, list(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["R2",]))
+        adjR2li <- c(adjR2li, list(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["R2_adj",]))
       }
 
       # now comes the difficult part: determine unique variable names in each group
@@ -1005,7 +1014,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   return()
 }
 
-.plsSemReliabilities <- function(modelContainer, msc, dataset, options, ready) {
+.plsSemReliabilities <- function(modelContainer, dataset, options, ready) {
   if (!options[["outputReliabilityMeasures"]] || !is.null(modelContainer[["tabReliability"]])) return()
 
   # init table
@@ -1044,10 +1053,10 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 
     if (length(options[["models"]]) < 2) {
 
-      tabrho[["__var__"]]        <- names(msc$value$mfm$Reliability[["Cronbachs_alpha"]])
-      tabrho[["rhoT"]]           <- msc$value$mfm$Reliability[["Cronbachs_alpha"]]
-      tabrho[["rhoCmm"]]         <- msc$value$mfm$Reliability[["Joereskogs_rho"]]
-      tabrho[["rhoCWeightedmm"]] <- msc$value$mfm$Reliability[["Dijkstra-Henselers_rho_A"]]
+      tabrho[["__var__"]]        <- names(modelContainer[["modSelCriteria"]]$object$value$mfm$Reliability[["Cronbachs_alpha"]])
+      tabrho[["rhoT"]]           <- modelContainer[["modSelCriteria"]]$object$value$mfm$Reliability[["Cronbachs_alpha"]]
+      tabrho[["rhoCmm"]]         <- modelContainer[["modSelCriteria"]]$object$value$mfm$Reliability[["Joereskogs_rho"]]
+      tabrho[["rhoCWeightedmm"]] <- modelContainer[["modSelCriteria"]]$object$value$mfm$Reliability[["Dijkstra-Henselers_rho_A"]]
 
     } else {
 
@@ -1058,9 +1067,9 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
       rhoCWeightedmmli <- list()
 
       for (i in seq_along(options[["models"]])) {
-        rhoTli    <- c(rhoTli, list(msc$value[[i]]$mfm$Reliability[["Cronbachs_alpha"]]))
-        rhoCmmli <- c(rhoCmmli, list(msc$value[[i]]$mfm$Reliability[["Joereskogs_rho"]]))
-        rhoCWeightedmmli <- c(rhoCWeightedmmli, list(msc$value[[i]]$mfm$Reliability[["Dijkstra-Henselers_rho_A"]]))
+        rhoTli    <- c(rhoTli, list(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$Reliability[["Cronbachs_alpha"]]))
+        rhoCmmli <- c(rhoCmmli, list(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$Reliability[["Joereskogs_rho"]]))
+        rhoCWeightedmmli <- c(rhoCWeightedmmli, list(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$Reliability[["Dijkstra-Henselers_rho_A"]]))
       }
 
 
@@ -1088,7 +1097,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   } else {
     if (length(options[["models"]]) < 2) {
 
-      reliability                  <- msc$value$mfm["Reliability",]
+      reliability                  <- modelContainer[["modSelCriteria"]]$object$value$mfm["Reliability",]
       tabrho[["__grp__"]]          <- rep(names(reliability), vapply(lapply(reliability, function(x) x[["Cronbachs_alpha"]]), length, 0))
       tabrho[["__var__"]]          <- unlist(lapply(lapply(reliability, function(x) x[["Cronbachs_alpha"]]), names))
       tabrho[["rhoT"]]             <- unlist(lapply(reliability, function(x) x[["Cronbachs_alpha"]]))
@@ -1103,7 +1112,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
       rhoCWeightedmmli <- list()
 
       for (i in seq_along(options[["models"]])) {
-        reliability      <- msc$value[[i]]$mfm["Reliability",]
+        reliability      <- modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["Reliability",]
         rhoTli <- c(rhoTli, list(lapply(reliability, function(x) x[["Cronbachs_alpha"]])))
         rhoCmmli <- c(rhoCmmli, list(lapply(reliability, function(x) x[["Joereskogs_rho"]])))
         rhoCWeightedmmli <- c(rhoCWeightedmmli, list(lapply(reliability, function(x) x[["Dijkstra-Henselers_rho_A"]])))
