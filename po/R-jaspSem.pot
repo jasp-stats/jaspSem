@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2021-09-11 02:45\n"
+"POT-Creation-Date: 2022-07-23 03:18\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -341,6 +341,9 @@ msgid "Not more cases than number of variables. Is your data a variance-covarian
 msgstr ""
 
 msgid "Invalid model specification. Did you pass a variable name as a string?"
+msgstr ""
+
+msgid "Missing data handling '%s' is not supported for categorical data,\n                        please select another method under 'Missing data handling'\n                        within the 'Estimation options' tab"
 msgstr ""
 
 msgid "Estimation failed Message: %s"
