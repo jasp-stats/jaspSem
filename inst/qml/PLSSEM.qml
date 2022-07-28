@@ -102,9 +102,9 @@ Form
 
 			RadioButtonGroup
 			{
-				title: qsTr("Error calculation")
+				title: qsTr("Error calculation method")
 				name: "resamplingMethod"
-				RadioButton { value: "none";	label: qsTr("Standard"); checked: true		}
+				RadioButton { value: "none";	label: qsTr("None"); checked: true		}
 				RadioButton { value: "jackknife";		label: qsTr("Robust")						}
 				RadioButton
 				{
@@ -114,7 +114,7 @@ Form
 						name: "nBootstraps"
 						label: qsTr("Bootstrap samples")
 						fieldWidth: 60
-						defaultValue: 500
+						defaultValue: 200
 						min: 1
 					}
 
@@ -166,6 +166,14 @@ Form
 						{ value: "geo_of_harmonic", label: qsTr("Geometric-harmonic mean")}
 					]
 				}
+			}
+			RadioButtonGroup
+			{
+				title: qsTr("Handle inadmissibles")
+				name: "handleInadmissibles"
+				RadioButton { value: "replace" ; label: qsTr("Replace")	; checked: true	}
+				RadioButton { value: "ignore" ; label: qsTr("Ignore")	}
+				RadioButton { value: "drop"		; label: qsTr("Drop")	}
 			}
 		}
 	}

@@ -18,9 +18,7 @@
 PLSSEM <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
-  startProgressbar(1, gettext("Computing model fit"))
-  # Convert JASP options to cSEM options
-  options <- .plsSemPrepOpts(options)
+  # options <- .plsSemPrepOpts(options)
 
   # Read data, check if ready
   dataset <- .plsSemReadData(dataset, options)
@@ -39,24 +37,25 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   .plsSemAdditionalFits(modelContainer, dataset, options, ready)
   .plsSemMardiasCoefficient(modelContainer, dataset, options, ready)
   .plsSemReliabilities(modelContainer, dataset, options, ready)
-  .plsSemCor(modelContainer, dataset, options, ready)
+  .plsSemCor(modelContainer, options, ready)
 }
 
-.plsSemPrepOpts <- function(options) {
+# .plsSemPrepOpts <- function(options) {
+
 
   # backwards compatability after changes to bouncontrollavaantextarea.cpp
-  fixModel <- function(model) {
-    newModel <- c(model[1], model[[2]])
-    names(newModel)[names(newModel) == "model"] <- "syntax"
-    return(newModel)
-  }
-
-  options[["models"]] <- lapply(options[["models"]], fixModel)
-
-  emptymod <- vapply(options[["models"]], function(x) x[["syntax"]] == "", TRUE)
-  options[["models"]] <- options[["models"]][!emptymod]
-  return(options)
-}
+#   fixModel <- function(model) {
+#     newModel <- c(model[1], model[[2]])
+#     names(newModel)[names(newModel) == "model"] <- "syntax"
+#     return(newModel)
+#   }
+#
+#   options[["models"]] <- lapply(options[["models"]], fixModel)
+#
+#   emptymod <- vapply(options[["models"]], function(x) x[["syntax"]] == "", TRUE)
+#   options[["models"]] <- options[["models"]][!emptymod]
+#   return(options)
+# }
 
 .plsSemReadData <- function(dataset, options) {
   if (!is.null(dataset)) return(dataset)
@@ -104,6 +103,49 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   }
 }
 
+checkcSemModel <- function(model, availableVars) {
+
+  # function returns informative printable string if there is an error, else ""
+  if (model == "") return("Enter a model")
+
+  # translate to base64 - function from semsimple.R
+  vvars    <- availableVars
+  usedvars <- vvars #.semGetUsedVars(model, vvars)
+  vmodel   <- model # .semTranslateModel(model, usedvars)
+
+  unvvars <- availableVars
+  names(unvvars) <- vvars
+
+  # Check model syntax
+  parsed <- try(cSem::parseModel(vmodel), silent = TRUE)
+  if (inherits(parsed, "try-error")) {
+
+    msg <- attr(parsed, "condition")$message
+    if (msg == "NA/NaN argument") {
+      return("Enter a model")
+    }
+    return(stringr::str_replace_all(msg, unvvars))
+  }
+
+  # Check variable names
+  if (!missing(availableVars)) {
+    latents <- unique(rownames(parsed$measurement))
+    modelVars <- setdiff(unique(c(rownames(parsed$measurement), colnames(parsed$measurement))), latents)
+    modelVars <- modelVars[modelVars != ""]
+
+    modelVarsInAvailableVars <- (modelVars %in% vvars)
+    if (!all(modelVarsInAvailableVars)) {
+      notRecognized <- modelVars[!modelVarsInAvailableVars]
+      return(paste("Variable(s) in model syntax not recogzed:",
+                   paste(stringr::str_replace_all(notRecognized, unvvars),
+                         collapse = ", ")))
+    }
+  }
+
+  # if checks pass, return empty string
+  return("")
+}
+
 .plsSemGetUsedVars <- function(syntax, availablevars) {
   vv <- availablevars
   findpattern <- paste0("(?<=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|^)\\Q",
@@ -121,9 +163,9 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   } else {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c("approachSecondOrder", "approachWeights", "approachCorRobust", "approachNonLinear", "convergenceCriterion",
-                              "estimateStructural", "groupingVariable", "assumeNormality", "approachCorrectionFactors",
+                              "estimateStructural", "groupingVariable", "assumeNormality", "approachCorrectionFactors", "disattenuate",
                               "ignoreStructuralModel", "innerWeightingScheme", "resamplingMethod", "nBootstraps", "ciWidth",
-                              "setSeed", "seed", "Data"))
+                              "setSeed", "seed", "handleInadmissibles", "Data"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -131,7 +173,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 }
 
 .plsSemComputeResults <- function(modelContainer, dataset, options) {
-  #' create result list from options
+  # create result list from options
 
   # find reusable results
   oldmodels  <- modelContainer[["models"]][["object"]]
@@ -153,17 +195,52 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
     if (!is.null(results[[i]])) next # existing model is reused
 
     # create options
-    cSemArgs <- cSemOpts
+
     syntax   <- .plsSemTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
-    cSemArgs[[".model"]] <- syntax
-    cSemArgs[[".data"]]  <- dataset
+    cSemOpts[[".model"]] <- syntax
+    cSemOpts[[".data"]]  <- dataset
 
     # fit the model
     if(options$setSeed)
       set.seed(options$seed)
 
-    fit <- try(do.call(cSEM::csem, cSemArgs))
+    fit <- try(do.call(cSEM::csem, cSemOpts))
 
+    if (options[["resamplingMethod"]] != "none") {
+
+      if(options[["resamplingMethod"]] == "bootstrap") {
+        startProgressbar(options[["nBootstraps"]], "Resampling")
+      } else {
+        startProgressbar(nrow(dataset), "Resampling")
+      }
+
+      tickFunction <- function(.object)
+      {
+        progressbarTick()
+        return(c(0,0))
+      }
+
+      # create resampling argument list
+
+      cSemArgs <- list()
+      if (options[["resamplingMethod"]] == "bootstrap")
+        cSemArgs[[".R"]] <- options[["nBootstraps"]]
+      cSemArgs[[".user_funs"]] <- tickFunction
+      cSemArgs[[".object"]] <- fit
+      cSemArgs[[".resample_method"]] <- options[["resamplingMethod"]]
+      cSemArgs[[".handle_inadmissibles"]] <- options[["handleInadmissibles"]]
+
+      if (options[["setSeed"]]) {
+        cSemArgs[[".seed"]] <- options[["seed"]]
+        set.seed(options$seed)
+      }
+
+      # resample
+      fit <- try(do.call(cSEM::resamplecSEMResults, cSemArgs))
+
+    }
+
+    # error messages
     if (isTryError(fit)) {
       err <- .extractErrorMessage(fit)
       if(err == "..constant.."){
@@ -187,7 +264,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 
   }
 
-  # store in model container
+  # store results in model container
   if (!modelContainer$getError()) {
     modelContainer[["results"]] <- createJaspState(results)
     modelContainer[["results"]]$dependOn(optionsFromObject = modelContainer)
@@ -211,21 +288,17 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   cSemOpts[[".conv_criterion"]]              <- options[["convergenceCriterion"]]
   cSemOpts[[".estimate_structural"]]         <- options[["estimateStructural"]]
   cSemOpts[[".normality"]]                   <- options[["assumeNormality"]]
-  cSemOpts[[".PLS_approach_cf"]]             <- options[["approachCorrectionFactors"]]
   cSemOpts[[".PLS_ignore_structural_model"]] <- options[["ignoreStructuralModel"]]
   cSemOpts[[".PLS_weight_scheme_inner"]]     <- options[["innerWeightingScheme"]]
-  cSemOpts[[".resample_method"]]             <- options[["resamplingMethod"]]
-  cSemOpts[[".R"]]                           <- options[["nBootstraps"]]
 
-  if (options[["setSeed"]])
-    cSemOpts[[".seed"]] <- options[["seed"]]
+  if (options[["disattenuate"]])
+    cSemOpts[".PLS_approach_cf"] <- options[["approachCorrectionFactors"]]
 
+  if (options[["groupingVariable"]] != "" || length(options[["models"]]) > 1)
+    cSemOpts[[".eval_plan"]] <- "multiprocess"
 
   if (options[["groupingVariable"]] != "")
     cSemOpts[[".id"]] <- options[["groupingVariable"]]
-
-  if(options[["groupingVariable"]] != "" || length(options[["models"]]) > 1)
-    cSemOpts[[".eval_plan"]] <- "multiprocess"
 
   return(cSemOpts)
 }
@@ -261,15 +334,13 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 }
 
 
-# output functions
+### output functions ###
 
+# Model Fit Table
 .plsSemFitTab <- function(modelContainer, dataset, options, ready) {
-
+  # create model fit table
   if (!is.null(modelContainer[["fittab"]])) return()
 
-  modSelCriteria <- createJaspState()
-  modelContainer[["modSelCriteria"]] <- modSelCriteria
-  modSelCriteria$dependOn(optionsFromObject = modelContainer)
 
   fittab <- createJaspTable(title = gettext("Model fit"))
   fittab$dependOn(c("models"))
@@ -301,8 +372,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 
   if (!ready) return()
 
-  # add data to the table!
-
+  # fill model fit table
   plsSemResults <- .plsSemComputeResults(modelContainer, dataset, options)
 
   if (modelContainer$getError()) return()
@@ -415,10 +485,14 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   if (!is.null(msc$warnings))
     fittab$addFootnote(msc$warnings[[1]]$message)
 
+  #create jasp state and store msc for additional output tables
+  modSelCriteria <- createJaspState()
+  modelContainer[["modSelCriteria"]] <- modSelCriteria
+  modSelCriteria$dependOn(optionsFromObject = modelContainer)
   modSelCriteria$object <- msc
 }
 
-# To work around a bug in the cSEM package when .id is specified:
+# compute model selection criteria/ fit measures
 .computeMSC <- function(plsSemResults, dataset, options) {
   resultsCopy <- plsSemResults
   if (options[["groupingVariable"]] == "") {
@@ -442,7 +516,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 .plsSemParameters <- function(modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["params"]])) return()
 
-
+  # create container for parameter estimates
   params <- createJaspContainer(gettext("Parameter estimates"))
   params$position <- 1
   params$dependOn(c("models", "ciWidth"))
@@ -461,6 +535,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   }
 }
 
+# Parameter Estimates Tables
 .plsSemParameterTables <- function(fit, modelname, parentContainer, options, ready) {
   if (is.null(modelname)) {
     pecont <- parentContainer
@@ -470,8 +545,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 
   # Measurement model
 
-  # Weights
-
+  # create weights table
   weightTab <- createJaspTable(title = gettext("Weigths"))
 
   if (options[["groupingVariable"]] != "")
@@ -479,19 +553,22 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 
   weightTab$addColumnInfo(name = "lhs",      title = gettext("Latent"),   type = "string", combine = TRUE)
   weightTab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
-  weightTab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
-  weightTab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
-  weightTab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
-  weightTab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
-  weightTab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
-                          overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
-  weightTab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
-                          overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  weightTab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+
+  if (options[["resamplingMethod"]] != "none") {
+    weightTab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
+    weightTab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
+    weightTab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+    weightTab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                            overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+    weightTab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                            overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  }
 
 
   pecont[["weight"]] <- weightTab
 
-  # Loadings
+  # create loadings table
   loadingTab <- createJaspTable(title = gettext("Factor Loadings"))
 
   if (options[["groupingVariable"]] != "")
@@ -499,18 +576,23 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 
   loadingTab$addColumnInfo(name = "lhs",      title = gettext("Latent"),     type = "string", combine = TRUE)
   loadingTab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
-  loadingTab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
-  loadingTab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
-  loadingTab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
-  loadingTab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
-  loadingTab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
-                           overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
-  loadingTab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
-                           overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  loadingTab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+
+  if (options[["resamplingMethod"]] != "none") {
+    loadingTab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
+    loadingTab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
+    loadingTab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+    loadingTab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                             overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+    loadingTab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                             overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  }
 
   pecont[["loading"]] <- loadingTab
 
   # Structural Model
+
+  #create paths table
   pathTab <- createJaspTable(title = gettext("Regression Coefficients"))
 
   if (options[["groupingVariable"]] != "")
@@ -518,53 +600,101 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 
   pathTab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string", combine = TRUE)
   pathTab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),    type = "string")
-  pathTab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
-  pathTab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
-  pathTab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
-  pathTab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
-  pathTab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
-  pathTab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  pathTab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+
+  if (options[["resamplingMethod"]] != "none") {
+    pathTab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
+    pathTab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
+    pathTab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+    pathTab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                          overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+    pathTab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                          overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  }
 
   pecont[["path"]] <- pathTab
 
-  totalTab <- createJaspTable(title = gettext("Total effect"))
+  # create total effects table
+  totalTab <- createJaspTable(title = gettext("Total effects"))
 
   if (options[["groupingVariable"]] != "")
     totalTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
-  totalTab$addColumnInfo(name = "lhs",      title = gettext("Predictor"),     type = "string", combine = TRUE)
-  totalTab$addColumnInfo(name = "rhs",      title = gettext("Outcome"),  type = "string")
-  totalTab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
-  totalTab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
-  totalTab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
-  totalTab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
-  totalTab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
-                         overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
-  totalTab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
-                         overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  totalTab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),     type = "string", combine = TRUE)
+  totalTab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),  type = "string")
+  totalTab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+  if (options[["resamplingMethod"]] != "none") {
+    totalTab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
+    totalTab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
+    totalTab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+    totalTab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                           overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+    totalTab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                           overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  }
 
   pecont[["total"]] <- totalTab
 
 
   if (!is.null(modelname)) parentContainer[[modelname]] <- pecont
 
-  if (!ready || !inherits(fit, "cSEMResults")) return()
+  if (!ready) return()
 
-  # fill tables with values
-  startProgressbar(1, gettext("Computing parameter estimates"))
-  pe <- cSEM::infer(fit, .alpha = 1 - options[["ciWidth"]])
+  # compute parameter estimates
+  if (options[["resamplingMethod"]] == "none") {
+    summ <- cSEM::summarize(fit)
+    pe <- list()
+    if (options$groupingVariable == "") {
+      summ <- summ$Estimates
 
-  # Weight estimates
+      pe[["Weight_estimates"]] <- list()
+      pe[["Weight_estimates"]][["mean"]] <- summ$Weight_estimates$Estimate
+      names(pe[["Weight_estimates"]][["mean"]]) <- summ$Weight_estimates$Name
+
+      pe[["Loading_estimates"]] <- list()
+      pe[["Loading_estimates"]][["mean"]] <- summ$Loading_estimates$Estimate
+      names(pe[["Loading_estimates"]][["mean"]]) <- summ$Loading_estimates$Name
+
+      pe[["Path_estimates"]] <- list()
+      pe[["Path_estimates"]][["mean"]] <- summ$Path_estimates$Estimate
+      names(pe[["Path_estimates"]][["mean"]]) <- summ$Path_estimates$Name
+
+      pe[["Total_effect"]] <- list()
+      pe[["Total_effect"]][["mean"]] <- summ$Effect_estimates$Total_effect$Estimate
+      names(pe[["Total_effect"]][["mean"]]) <- summ$Effect_estimates$Total_effect$Name
+    } else{
+      for (i in names(summ)) {
+        pe[[i]] <- list()
+        pe[[i]][["Weight_estimates"]] <- list()
+        pe[[i]][["Weight_estimates"]][["mean"]] <- summ[[i]]$Estimates$Weight_estimates$Estimate
+        names(pe[[i]][["Weight_estimates"]][["mean"]]) <- summ[[i]]$Estimates$Weight_estimates$Name
+
+        pe[[i]][["Loading_estimates"]] <- list()
+        pe[[i]][["Loading_estimates"]][["mean"]] <- summ[[i]]$Estimates$Loading_estimates$Estimate
+        names(pe[[i]][["Loading_estimates"]][["mean"]]) <- summ[[i]]$Estimates$Loading_estimates$Name
+
+        pe[[i]][["Path_estimates"]] <- list()
+        pe[[i]][["Path_estimates"]][["mean"]] <- summ[[i]]$Estimates$Path_estimates$Estimate
+        names(pe[[i]][["Path_estimates"]][["mean"]]) <- summ[[i]]$Estimates$Path_estimates$Name
+
+        pe[[i]][["Total_effect"]] <- list()
+        pe[[i]][["Total_effect"]][["mean"]] <- summ[[i]]$Estimates$Effect_estimates$Total_effect$Estimate
+        names(pe[[i]][["Total_effect"]][["mean"]]) <- summ[[i]]$Estimates$Effect_estimates$Total_effect$Name
+      }
+    }
+  } else {
+    pe <- cSEM::infer(fit, .alpha = 1 - options[["ciWidth"]])
+  }
+
+  # fill Weights table
 
   if (options[["groupingVariable"]] == "") {
-    weightEstimates <- try(.prepareEstimates(pe, estimateType = "Weight_estimates"))
+    weightEstimates <- try(.prepareEstimates(pe, estimateType = "Weight_estimates", options = options))
     if (isTryError(weightEstimates)) {
       pecont[["weight"]] <- NULL
     }
   } else {
-    weightEstimates <- try(lapply(pe, .prepareEstimates, estimateType = "Weight_estimates"))
+    weightEstimates <- try(lapply(pe, .prepareEstimates, estimateType = "Weight_estimates", options = options))
     if (isTryError(weightEstimates)) {
       pecont[["weight"]] <- NULL
     } else {
@@ -584,23 +714,26 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
     weightTab[["rhs"]]      <- weightEstimates[["rhs"]]
     weightTab[["lhs"]]      <- weightEstimates[["lhs"]]
     weightTab[["est"]]      <- weightEstimates[["est"]]
-    weightTab[["se"]]       <- weightEstimates[["se"]]
-    weightTab[["z"]]        <- weightEstimates[["zVal"]]
-    weightTab[["pvalue"]]   <- weightEstimates[["pVal"]]
-    weightTab[["ci.lower"]] <- weightEstimates[["ciLower"]]
-    weightTab[["ci.upper"]] <- weightEstimates[["ciUpper"]]
+
+    if (options[["resamplingMethod"]] != "none") {
+      weightTab[["se"]]       <- weightEstimates[["se"]]
+      weightTab[["z"]]        <- weightEstimates[["zVal"]]
+      weightTab[["pvalue"]]   <- weightEstimates[["pVal"]]
+      weightTab[["ci.lower"]] <- weightEstimates[["ciLower"]]
+      weightTab[["ci.upper"]] <- weightEstimates[["ciUpper"]]
+    }
   }
 
 
-  # Loading estimates
+  # fill Loadings table
 
   if (options[["groupingVariable"]] == "") {
-    loadingEstimates <- try(.prepareEstimates(pe, estimateType = "Loading_estimates"))
+    loadingEstimates <- try(.prepareEstimates(pe, estimateType = "Loading_estimates", options = options))
     if (isTryError(loadingEstimates)) {
       pecont[["loading"]] <- NULL
     }
   } else {
-    loadingEstimates <- try(lapply(pe, .prepareEstimates, estimateType = "Loading_estimates"))
+    loadingEstimates <- try(lapply(pe, .prepareEstimates, estimateType = "Loading_estimates", options = options))
     if (isTryError(loadingEstimates)) {
       pecont[["loading"]] <- NULL
     } else {
@@ -620,23 +753,26 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
     loadingTab[["rhs"]]      <- loadingEstimates[["rhs"]]
     loadingTab[["lhs"]]      <- loadingEstimates[["lhs"]]
     loadingTab[["est"]]      <- loadingEstimates[["est"]]
-    loadingTab[["se"]]       <- loadingEstimates[["se"]]
-    loadingTab[["z"]]        <- loadingEstimates[["zVal"]]
-    loadingTab[["pvalue"]]   <- loadingEstimates[["pVal"]]
-    loadingTab[["ci.lower"]] <- loadingEstimates[["ciLower"]]
-    loadingTab[["ci.upper"]] <- loadingEstimates[["ciUpper"]]
+
+    if (options[["resamplingMethod"]] != "none") {
+      loadingTab[["se"]]       <- loadingEstimates[["se"]]
+      loadingTab[["z"]]        <- loadingEstimates[["zVal"]]
+      loadingTab[["pvalue"]]   <- loadingEstimates[["pVal"]]
+      loadingTab[["ci.lower"]] <- loadingEstimates[["ciLower"]]
+      loadingTab[["ci.upper"]] <- loadingEstimates[["ciUpper"]]
+    }
   }
 
 
-  # Path estimates
+  # fill Paths table
 
   if (options[["groupingVariable"]] == "") {
-    pathEstimates <- try(.prepareEstimates(pe, estimateType = "Path_estimates"))
+    pathEstimates <- try(.prepareEstimates(pe, estimateType = "Path_estimates", options = options))
     if (isTryError(pathEstimates)) {
       pecont[["path"]] <- NULL
     }
   } else {
-    pathEstimates <- try(lapply(pe, .prepareEstimates, estimateType = "Path_estimates"))
+    pathEstimates <- try(lapply(pe, .prepareEstimates, estimateType = "Path_estimates", options = options))
     if (isTryError(pathEstimates)) {
       pecont[["path"]] <- NULL
     } else {
@@ -657,24 +793,27 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
     pathTab[["rhs"]]      <- pathEstimates[["rhs"]]
     pathTab[["lhs"]]      <- pathEstimates[["lhs"]]
     pathTab[["est"]]      <- pathEstimates[["est"]]
-    pathTab[["se"]]       <- pathEstimates[["se"]]
-    pathTab[["z"]]        <- pathEstimates[["zVal"]]
-    pathTab[["pvalue"]]   <- pathEstimates[["pVal"]]
-    pathTab[["ci.lower"]] <- pathEstimates[["ciLower"]]
-    pathTab[["ci.upper"]] <- pathEstimates[["ciUpper"]]
+
+    if (options[["resamplingMethod"]] != "none") {
+      pathTab[["se"]]       <- pathEstimates[["se"]]
+      pathTab[["z"]]        <- pathEstimates[["zVal"]]
+      pathTab[["pvalue"]]   <- pathEstimates[["pVal"]]
+      pathTab[["ci.lower"]] <- pathEstimates[["ciLower"]]
+      pathTab[["ci.upper"]] <- pathEstimates[["ciUpper"]]
+    }
   }
 
 
-  # Total effect estimates
+  # fill Total effects table
 
 
   if (options[["groupingVariable"]] == "") {
-    totalEstimates <- try(.prepareEstimates(pe, estimateType = "Total_effect"))
+    totalEstimates <- try(.prepareEstimates(pe, estimateType = "Total_effect", options = options))
     if (isTryError(totalEstimates)) {
       pecont[["total"]] <- NULL
     }
   } else {
-    totalEstimates <- try(lapply(pe, .prepareEstimates, estimateType = "Total_effect"))
+    totalEstimates <- try(lapply(pe, .prepareEstimates, estimateType = "Total_effect", options = options))
     if (isTryError(totalEstimates)) {
       pecont[["total"]] <- NULL
     } else {
@@ -694,40 +833,50 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
     totalTab[["rhs"]]      <- totalEstimates[["rhs"]]
     totalTab[["lhs"]]      <- totalEstimates[["lhs"]]
     totalTab[["est"]]      <- totalEstimates[["est"]]
-    totalTab[["se"]]       <- totalEstimates[["se"]]
-    totalTab[["z"]]        <- totalEstimates[["zVal"]]
-    totalTab[["pvalue"]]   <- totalEstimates[["pVal"]]
-    totalTab[["ci.lower"]] <- totalEstimates[["ciLower"]]
-    totalTab[["ci.upper"]] <- totalEstimates[["ciUpper"]]
+
+    if (options[["resamplingMethod"]] != "none") {
+      totalTab[["se"]]       <- totalEstimates[["se"]]
+      totalTab[["z"]]        <- totalEstimates[["zVal"]]
+      totalTab[["pvalue"]]   <- totalEstimates[["pVal"]]
+      totalTab[["ci.lower"]] <- totalEstimates[["ciLower"]]
+      totalTab[["ci.upper"]] <- totalEstimates[["ciUpper"]]
+    }
   }
 }
 
-
-.prepareEstimates <- function(pe, estimateType) {
+# help function to extract data for parameter tables
+.prepareEstimates <- function(pe, estimateType, options) {
 
   operator <- ifelse(estimateType == "Weight_estimates",
                      " <~ ",
                      ifelse(estimateType == "Loading_estimates",
                             " =~ ",
                             " ~ "))
+
   varNamesDf <- t(data.frame(sapply(names(pe[[estimateType]]$mean), strsplit, split = operator, fixed = TRUE)))
 
   rhs      <- varNamesDf[,2]
   lhs      <- varNamesDf[,1]
   est      <- pe[[estimateType]]$mean
-  se       <- pe[[estimateType]]$sd
-  zVal     <- pe[[estimateType]]$mean / pe[[estimateType]]$sd
-  pVal     <- pnorm(abs(pe[[estimateType]]$mean / pe[[estimateType]]$sd), lower.tail = FALSE)
-  ciLower  <- pe[[estimateType]]$CI_percentile[1,]
-  ciUpper  <- pe[[estimateType]]$CI_percentile[2,]
 
-  return(list(rhs=rhs, lhs=lhs, est=est, se=se, zVal=zVal, pVal=pVal, ciLower=ciLower, ciUpper=ciUpper))
+  if (options[["resamplingMethod"]] == "none") {
+    return(list(rhs=rhs, lhs=lhs, est=est))
+  } else {
+    se       <- pe[[estimateType]]$sd
+    zVal     <- pe[[estimateType]]$mean / pe[[estimateType]]$sd
+    pVal     <- pnorm(abs(pe[[estimateType]]$mean / pe[[estimateType]]$sd), lower.tail = FALSE)
+    ciLower  <- pe[[estimateType]]$CI_percentile[1,]
+    ciUpper  <- pe[[estimateType]]$CI_percentile[2,]
+
+    return(list(rhs=rhs, lhs=lhs, est=est, se=se, zVal=zVal, pVal=pVal, ciLower=ciLower, ciUpper=ciUpper))
+  }
 }
 
+# Additional Fit Measures Table
 .plsSemAdditionalFits <- function(modelContainer, dataset, options, ready) {
   if (!options[["outputAdditionalFitMeasures"]] || !is.null(modelContainer[["addfit"]])) return()
 
-  # Fit indices
+  # create additional fits table
   fitin <- createJaspTable(gettext("Additional Fit Measures"))
   fitin$addColumnInfo(name = "index", title = gettext("Index"), type = "string")
   if (length(options[["models"]]) < 2) {
@@ -781,30 +930,59 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 
   )
 
-  # fill table
-  startProgressbar(1, gettext("Computing additional output data"))
+  # fill additional fits table
   if (length(options[["models"]]) < 2) {
 
     if (options[["groupingVariable"]] == "") {
 
-      fitin[["value"]] <- list(modelContainer[["modSelCriteria"]]$object$value$mfm$CFI, modelContainer[["modSelCriteria"]]$object$value$mfm$GFI, modelContainer[["modSelCriteria"]]$object$value$mfm$CN, modelContainer[["modSelCriteria"]]$object$value$mfm$IFI, modelContainer[["modSelCriteria"]]$object$value$mfm$NNFI,
-                               modelContainer[["modSelCriteria"]]$object$value$mfm$NFI, modelContainer[["modSelCriteria"]]$object$value$mfm$RMSEA, modelContainer[["modSelCriteria"]]$object$value$mfm$RMS_theta, modelContainer[["modSelCriteria"]]$object$value$mfm$SRMR,
-                               modelContainer[["modSelCriteria"]]$object$value$mfm$GoF, modelContainer[["modSelCriteria"]]$object$value$mfm$DG, modelContainer[["modSelCriteria"]]$object$value$mfm$DL, modelContainer[["modSelCriteria"]]$object$value$mfm$DML)
+      fitin[["value"]] <- list(modelContainer[["modSelCriteria"]]$object$value$mfm$CFI,
+                               modelContainer[["modSelCriteria"]]$object$value$mfm$GFI,
+                               modelContainer[["modSelCriteria"]]$object$value$mfm$CN,
+                               modelContainer[["modSelCriteria"]]$object$value$mfm$IFI,
+                               modelContainer[["modSelCriteria"]]$object$value$mfm$NNFI,
+                               modelContainer[["modSelCriteria"]]$object$value$mfm$NFI,
+                               modelContainer[["modSelCriteria"]]$object$value$mfm$RMSEA,
+                               modelContainer[["modSelCriteria"]]$object$value$mfm$RMS_theta,
+                               modelContainer[["modSelCriteria"]]$object$value$mfm$SRMR,
+                               modelContainer[["modSelCriteria"]]$object$value$mfm$GoF,
+                               modelContainer[["modSelCriteria"]]$object$value$mfm$DG,
+                               modelContainer[["modSelCriteria"]]$object$value$mfm$DL,
+                               modelContainer[["modSelCriteria"]]$object$value$mfm$DML)
 
     } else {
       for (j in names(modelContainer[["modSelCriteria"]]$object$value$mfm["CFI",])) {
-        fitin[[paste0("value_", j)]] <- list(modelContainer[["modSelCriteria"]]$object$value$mfm["CFI",j], modelContainer[["modSelCriteria"]]$object$value$mfm["GFI", j], modelContainer[["modSelCriteria"]]$object$value$mfm["CN", j], modelContainer[["modSelCriteria"]]$object$value$mfm["IFI", j], modelContainer[["modSelCriteria"]]$object$value$mfm["NNFI", j],
-                                             modelContainer[["modSelCriteria"]]$object$value$mfm["NFI", j], modelContainer[["modSelCriteria"]]$object$value$mfm["RMSEA", j], modelContainer[["modSelCriteria"]]$object$value$mfm["RMS_theta", j], modelContainer[["modSelCriteria"]]$object$value$mfm["SRMR", j],
-                                             modelContainer[["modSelCriteria"]]$object$value$mfm["GoF", j], modelContainer[["modSelCriteria"]]$object$value$mfm["DG", j], modelContainer[["modSelCriteria"]]$object$value$mfm["DL", j], modelContainer[["modSelCriteria"]]$object$value$mfm["DML", j])
+        fitin[[paste0("value_", j)]] <- list(modelContainer[["modSelCriteria"]]$object$value$mfm["CFI",j],
+                                             modelContainer[["modSelCriteria"]]$object$value$mfm["GFI", j],
+                                             modelContainer[["modSelCriteria"]]$object$value$mfm["CN", j],
+                                             modelContainer[["modSelCriteria"]]$object$value$mfm["IFI", j],
+                                             modelContainer[["modSelCriteria"]]$object$value$mfm["NNFI", j],
+                                             modelContainer[["modSelCriteria"]]$object$value$mfm["NFI", j],
+                                             modelContainer[["modSelCriteria"]]$object$value$mfm["RMSEA", j],
+                                             modelContainer[["modSelCriteria"]]$object$value$mfm["RMS_theta", j],
+                                             modelContainer[["modSelCriteria"]]$object$value$mfm["SRMR", j],
+                                             modelContainer[["modSelCriteria"]]$object$value$mfm["GoF", j],
+                                             modelContainer[["modSelCriteria"]]$object$value$mfm["DG", j],
+                                             modelContainer[["modSelCriteria"]]$object$value$mfm["DL", j],
+                                             modelContainer[["modSelCriteria"]]$object$value$mfm["DML", j])
 
       }
     }
   } else {
     if (options[["groupingVariable"]] == "") {
       for (i in seq_along(options[["models"]])) {
-        fitin[[paste0("value_", i)]] <- list(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$CFI, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$GFI, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$CN, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$IFI, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$NNFI,
-                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$NFI, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$RMSEA, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$RMS_theta, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$SRMR,
-                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$GoF, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$DG, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$DL, modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$DML)
+        fitin[[paste0("value_", i)]] <- list(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$CFI,
+                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$GFI,
+                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$CN,
+                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$IFI,
+                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$NNFI,
+                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$NFI,
+                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$RMSEA,
+                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$RMS_theta,
+                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$SRMR,
+                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$GoF,
+                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$DG,
+                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$DL,
+                                             modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm$DML)
       }
 
 
@@ -812,9 +990,19 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
     } else {
       for (i in seq_along(options[["models"]])) {
         for (j in names(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["CFI",])) {
-          fitin[[paste0("value_",i,"_", j)]] <- list(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["CFI",j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["GFI", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["CN", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["IFI", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["NNFI", j],
-                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["NFI", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["RMSEA", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["RMS_theta", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["SRMR", j],
-                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["GoF", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["DG", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["DL", j], modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["DML", j])
+          fitin[[paste0("value_",i,"_", j)]] <- list(modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["CFI",j],
+                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["GFI", j],
+                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["CN", j],
+                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["IFI", j],
+                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["NNFI", j],
+                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["NFI", j],
+                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["RMSEA", j],
+                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["RMS_theta", j],
+                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["SRMR", j],
+                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["GoF", j],
+                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["DG", j],
+                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["DL", j],
+                                                     modelContainer[["modSelCriteria"]]$object$value[[i]]$mfm["DML", j])
 
         }
       }
@@ -822,10 +1010,11 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   }
 }
 
+# Rsquared table
 .plsSemRsquared <- function(modelContainer, dataset, options, ready) {
   if (!options[["outputRSquared"]] || !is.null(modelContainer[["tabrsquared"]])) return()
 
-  # init table
+  # create rsquared table
   tabr2 <- createJaspTable(gettext("R-Squared"))
   if (options[["groupingVariable"]] != "")
     tabr2$addColumnInfo(name = "__grp__", title = "Group", type = "string", combine = TRUE)
@@ -851,7 +1040,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 
   if (!ready || modelContainer$getError()) return()
 
-  # compute data and fill table
+  # compute data and fill rsquared table
   if (options[["groupingVariable"]] == "") {
 
     if (length(options[["models"]]) < 2) {
@@ -893,8 +1082,15 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
 
       r2res                  <- modelContainer[["modSelCriteria"]]$object$value$mfm["R2",]
       adjR2res               <- modelContainer[["modSelCriteria"]]$object$value$mfm["R2_adj",]
-      tabr2[["__grp__"]]     <- as.list(names(r2res))
-      tabr2[["__var__"]]     <- unlist(lapply(r2res, names))
+      groups                 <- as.list(names(r2res))
+      vars                   <- unlist(lapply(r2res, names))
+      groupli                <- list()
+      for (i in 1:length(vars)) {
+        groupli <- unlist(c(groupli, rep(groups[i], length(unique(vars)))))
+      }
+
+      tabr2[["__grp__"]]     <- groupli
+      tabr2[["__var__"]]     <- vars
       tabr2[["rsq"]]         <- unlist(r2res)
       tabr2[["adjustedRsq"]] <- unlist(adjR2res)
 
@@ -958,9 +1154,11 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   }
 }
 
+# Mardias Coefficients table
 .plsSemMardiasCoefficient <- function(modelContainer, dataset, options, ready) {
   if (!options[["outputMardiasCoefficients"]] || !is.null(modelContainer[["semMardiasTable"]])) return()
 
+  # create mardias coefficients table
   mardiatab <- createJaspTable(title = gettext("Mardia's coefficients"))
   mardiatab$position <- .2
 
@@ -975,6 +1173,8 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   modelContainer[["mardiasTable"]] <- mardiatab
 
   if (!ready || modelContainer$getError()) return()
+
+  # fill mardias coefficients table
   if (options[["groupingVariable"]] == "") {
     varNames <- unique(unlist(lapply(modelContainer[["results"]][["object"]], function(x) colnames(x$Information$Model$measurement))))
   } else {
@@ -1175,7 +1375,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   }
 }
 
-.plsSemCor <- function(modelContainer, dataset, options, ready) {
+.plsSemCor <- function(modelContainer, options, ready) {
   if (!(options[["outputObservedIndicatorCorrelations"]] || options[["outputImpliedIndicatorCorrelations"]] ||
         options[["outputObservedConstructCorrelations"]] || options[["outputImpliedConstructCorrelations"]]) ||
       !is.null(modelContainer[["cors"]])) return()
