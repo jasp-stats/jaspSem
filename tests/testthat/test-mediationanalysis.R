@@ -14,6 +14,7 @@ test_that("Simple mediation analysis works", {
   dir_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
   ind_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_ind"]][["data"]]
   tot_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_tot"]][["data"]]
+  path_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_path"]][["data"]]
 
   expect_equal_tables(dir_tab, list(
     -0.00931725107194831, 0.524832903921214, 0.257757826424633, "contcor1",
@@ -31,6 +32,15 @@ test_that("Simple mediation analysis works", {
     -0.0338982391107447, 0.37078669333591, 0.168444227112582, "contcor1",
     "<unicode><unicode><unicode>", 0.10276101683937, "contNormal",
     0.103237849174464, 1.63161309984214
+  ))
+  expect_equal_tables(path_tab, list(
+    -0.406100650114518, 0.132139773510376, -0.136980438302071, "contcor2",
+    "<unicode><unicode><unicode>", 0.318469030743472, "contNormal", 0.137308753597124,
+    -0.997608926696571, -0.00931723177310873, 0.524832919891481,
+    0.257757844059186, "contcor1", "<unicode><unicode><unicode>", 0.0585458547695155,
+    "contNormal", 0.136265297698809, 1.89158830907129, 0.505381961413432,
+    0.798652473013195, 0.652017217213314, "contcor1", "<unicode><unicode><unicode>",
+    0, "contcor2", 0.0748152807686884, 8.71502733818777
   ))
 })
 
@@ -128,6 +138,35 @@ test_that("Multiple mediation with missing values works", {
                                     "<unicode>", 0.389062316295845, "debMiss30", 0.25662375259526,
                                     0.861319104801817)
                       )
+  path_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_path"]][["data"]]
+  expect_equal_tables(path_tab, list(-0.426273684109866, 0.104926133352088, -0.160673775378889, "contcor2",
+                                  "<unicode>", 0.235751204710817, "contNormal", 0.135512647592504,
+                                  -1.18567364916407, 0.00268153242569464, 0.0176588947741062,
+                                  0.0101702135999004, "debMiss1", "<unicode>", 0.00777277196528736,
+                                  "contNormal", 0.00382082590969811, 2.66178408549998, 0.0479536588500194,
+                                  0.579284075594744, 0.313618867222382, "contcor1", "<unicode>",
+                                  0.0206816855880658, "contNormal", 0.135545964348272, 2.31374551599758,
+                                  -0.0588294152956745, 0.0807923976231493, 0.0109814911637374,
+                                  "contOutlier", "<unicode>", 0.757847257421674, "contNormal",
+                                  0.0356184639157002, 0.308308948688181, -4.78911489181894, 11.4449939950166,
+                                  3.32793955159883, "contcor2", "<unicode>", 0.421643915240879,
+                                  "debMiss30", 4.1414304076218, 0.803572491638193, -0.156467976004744,
+                                  0.261992740626946, 0.0527623823111013, "debMiss1", "<unicode>",
+                                  0.621128739432468, "debMiss30", 0.106752144409911, 0.494251264016787,
+                                  -12.5813600726521, 3.62536886168353, -4.4779956054843, "contcor1",
+                                  "<unicode>", 0.278766445822989, "debMiss30", 4.13444559751411,
+                                  -1.0830945769795, -1.87453263568675, 1.66705093655934, -0.103740849563705,
+                                  "contOutlier", "<unicode>", 0.90858510331437, "debMiss30", 0.90348179869162,
+                                  -0.114823397343408, 0.523868679737975, 0.812273535879114, 0.668071107808544,
+                                  "contcor1", "<unicode>", 0, "contcor2", 0.073574019322814, 9.08025841129203,
+                                  0.00417845094299354, 0.104702729340293, 0.0544405901416431,
+                                  "contOutlier", "<unicode>", 0.0337620645933085, "contcor2",
+                                  0.0256444197929712, 2.12290200289751, -8.58710035891241, 1.72223533004461,
+                                  -3.4324325144339, "contcor1", "<unicode>", 0.191853045593741,
+                                  "debMiss1", 2.62998090022974, -1.30511689804822, -1.03358284479171,
+                                  2.54450425574759, 0.755460705477943, "contOutlier", "<unicode>",
+                                  0.407877013901804, "debMiss1", 0.912794094371833, 0.82763540007107)
+                      )
 })
 
 
@@ -169,4 +208,15 @@ test_that("Bootstrapping works", {
                                       "<unicode>", 0.102761018524938, "contNormal", 0.103237851474511,
                                       1.63161309184588),
                                  label = "Total effects table results match")
+  # Path coefficients table results match
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_path"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-0.411615880219859, 0.112629248781708, -0.136980438302071, "contcor2",
+                                      "<unicode>", 0.318469030743472, "contNormal", 0.137308753597124,
+                                      -0.997608926696571, 0.0425663855373095, 0.792177915779836, 0.257757844059186,
+                                      "contcor1", "<unicode>", 0.0585458547695155, "contNormal", 0.136265297698809,
+                                      1.89158830907129, 0.538092671935867, 0.807562678367665, 0.652017217213314,
+                                      "contcor1", "<unicode>", 0, "contcor2", 0.0748152807686884,
+                                      8.71502733818777),
+                                 label = "Path coefficients table results match")
 })

@@ -28,6 +28,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   .medParTable(   modelContainer, dataset, options, ready)
   .medTotIndTable(modelContainer, options, ready)
   .medResTable(   modelContainer, options, ready)
+  .medPathTable(  modelContainer, options, ready)
   .medRsquared(   modelContainer, options, ready)
   .medPathPlot(   modelContainer, options, ready)
   .medSyntax(     modelContainer, options, ready)
@@ -57,7 +58,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   customChecks <- list(
     checkExogenous = function() {
       admissible <- vapply(exo, function(exo_var) {
-        var <- na.omit(dataset[[.v(exo_var)]])
+        var <- na.omit(dataset[[exo_var]])
         if (is.ordered(var)) return(FALSE)
         if ((is.character(var) || is.factor(var)) && length(unique(var)) != 2) return(FALSE)
         return(TRUE)
@@ -69,7 +70,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     checkEndogenous = function() {
       if (length(options$confounds) > 0) endo <- c(endo, options$predictor)
       admissible <- vapply(endo, function(endo_var) {
-        var <- na.omit(dataset[[.v(endo_var)]])
+        var <- na.omit(dataset[[endo_var]])
         if (!(is.ordered(var) || is.numeric(var))) {
           return(FALSE)
         }
@@ -83,7 +84,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
       if (length(options$confounds) > 0) endo <- c(endo, options$predictor)
 
       admissible <- vapply(endo, function(endo_var) {
-        var <- na.omit(dataset[[.v(endo_var)]])
+        var <- na.omit(dataset[[endo_var]])
         if (is.ordered(var) && options$missing == "fiml") {
           return(FALSE)
         }
@@ -145,14 +146,14 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   "
   dep_part <- "# dependent regression"
   for (d in 1:n_deps) {
-    dep_part <- paste0(dep_part, "\n", .v(options$dependent[d]), " ~")
+    dep_part <- paste0(dep_part, "\n", options$dependent[d], " ~")
     for (m in 1:n_medi) {
       par_name <- paste0(" b", d, m)
-      dep_part <- paste0(dep_part, par_name, "*", .v(options$mediators[m]), " +")
+      dep_part <- paste0(dep_part, par_name, "*", options$mediators[m], " +")
     }
     for (p in 1:n_pred) {
       par_name <- paste0(" c", d, p)
-      dep_part <- paste0(dep_part, par_name, "*", .v(options$predictor[p]))
+      dep_part <- paste0(dep_part, par_name, "*", options$predictor[p])
       if (p != n_pred)
         dep_part <- paste0(dep_part, " +")
     }
@@ -161,10 +162,10 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 
   med_part <- "# mediator regression"
   for (m in 1:n_medi) {
-    med_part <- paste0(med_part, "\n", .v(options$mediators[m]), " ~")
+    med_part <- paste0(med_part, "\n", options$mediators[m], " ~")
     for (p in 1:n_pred) {
       par_name <- paste0(" a", m, p)
-      med_part <- paste0(med_part, par_name, "*", .v(options$predictor[p]))
+      med_part <- paste0(med_part, par_name, "*", options$predictor[p])
       if (p != n_pred)
         med_part <- paste0(med_part, " +")
     }
@@ -176,15 +177,15 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   if (n_conf > 0) {
     conf_part <- "# confounder adjustment"
     for (var in c(options$predictor, options$mediators, options$dependent)) {
-      conf_part <- paste0(conf_part, "\n", .v(var), " ~ ", paste(.v(options$confounds), collapse = " + "))
+      conf_part <- paste0(conf_part, "\n", var, " ~ ", paste(options$confounds, collapse = " + "))
     }
     conf_part <- paste0(conf_part, "\n\n")
     if (n_pred > 1) {
       pred_res_part <- "# predictor residual covariance"
       idx_mat  <- which(upper.tri(diag(n_pred)), arr.ind = TRUE)
       for (i in 1:nrow(idx_mat)) {
-        v1 <- .v(options$predictor[idx_mat[i,1]])
-        v2 <- .v(options$predictor[idx_mat[i,2]])
+        v1 <- options$predictor[idx_mat[i,1]]
+        v2 <- options$predictor[idx_mat[i,2]]
         pred_res_part <- paste0(pred_res_part, "\n", v1, " ~~ ", v2)
       }
       pred_res_part <- paste0(pred_res_part, "\n\n")
@@ -196,8 +197,8 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     med_res_part <- "# mediator residual covariance"
     idx_mat  <- which(upper.tri(diag(n_medi)), arr.ind = TRUE)
     for (i in 1:nrow(idx_mat)) {
-      v1 <- .v(options$mediators[idx_mat[i,1]])
-      v2 <- .v(options$mediators[idx_mat[i,2]])
+      v1 <- options$mediators[idx_mat[i,1]]
+      v2 <- options$mediators[idx_mat[i,2]]
       med_res_part <- paste0(med_res_part, "\n", v1, " ~~ ", v2)
     }
     med_res_part <- paste0(med_res_part, "\n\n")
@@ -208,8 +209,8 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     res_part <- "# dependent residual covariance"
     idx_mat  <- which(upper.tri(diag(n_deps)), arr.ind = TRUE)
     for (i in 1:nrow(idx_mat)) {
-      v1 <- .v(options$dependent[idx_mat[i,1]])
-      v2 <- .v(options$dependent[idx_mat[i,2]])
+      v1 <- options$dependent[idx_mat[i,1]]
+      v2 <- options$dependent[idx_mat[i,2]]
       res_part <- paste0(res_part, "\n", v1, " ~~ ", v2)
     }
     res_part <- paste0(res_part, "\n\n")
@@ -331,9 +332,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 
   # Fill direct effects
   pe_dir <- pe[substr(pe$label, 1, 1) == "c", ]
-  dirtab[["lhs"]]      <- .unv(pe_dir$rhs)
+  dirtab[["lhs"]]      <- pe_dir$rhs
   dirtab[["op"]]       <- rep("\u2192", nrow(pe_dir))
-  dirtab[["rhs"]]      <- .unv(pe_dir$lhs)
+  dirtab[["rhs"]]      <- pe_dir$lhs
   dirtab[["est"]]      <- pe_dir$est
   dirtab[["se"]]       <- pe_dir$se
   dirtab[["z"]]        <- pe_dir$z
@@ -463,12 +464,12 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 
   pe_res <- pe[pe$op == "~~" &
                  pe$lhs != pe$rhs &
-                 !.unv(pe$lhs) %in% options$predictor &
-                 !.unv(pe$lhs) %in% options$confounds,]
+                 !pe$lhs %in% options$predictor &
+                 !pe$lhs %in% options$confounds,]
 
-  restab[["lhs"]]      <- .unv(pe_res$lhs)
+  restab[["lhs"]]      <- pe_res$lhs
   restab[["op"]]       <- rep("\u2194", nrow(pe_res))
-  restab[["rhs"]]      <- .unv(pe_res$rhs)
+  restab[["rhs"]]      <- pe_res$rhs
   restab[["est"]]      <- pe_res$est
   restab[["se"]]       <- pe_res$se
   restab[["z"]]        <- pe_res$z
@@ -476,6 +477,47 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   restab[["ci.lower"]] <- pe_res$ci.lower
   restab[["ci.upper"]] <- pe_res$ci.upper
   restab$addFootnote(foot_message)
+}
+
+.medPathTable <- function(modelContainer, options, ready) {
+  if (!options[["showPathCoefficients"]]) return()
+
+  pathtab <- createJaspTable(title = gettext("Path coefficients"))
+  pathtab$dependOn("showPathCoefficients")
+
+  pathtab$addColumnInfo(name = "lhs",      title = "",                    type = "string")
+  pathtab$addColumnInfo(name = "op",       title = "",                    type = "string")
+  pathtab$addColumnInfo(name = "rhs",      title = "",                    type = "string")
+  pathtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
+  pathtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  pathtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+  pathtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+  pathtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+  pathtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+
+  modelContainer[["parest"]][["path"]] <- pathtab
+
+  if (!ready || modelContainer$getError()) return()
+
+  foot_message <- .medFootMessage(modelContainer, options)
+
+  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]], boot.ci.type = options$bootCItype,
+                                   level = options$ciWidth)
+
+  pe_path <- pe[pe$op == "~",]
+
+  pathtab[["lhs"]]      <- pe_path$rhs
+  pathtab[["op"]]       <- rep("\u2192", nrow(pe_path))
+  pathtab[["rhs"]]      <- pe_path$lhs
+  pathtab[["est"]]      <- pe_path$est
+  pathtab[["se"]]       <- pe_path$se
+  pathtab[["z"]]        <- pe_path$z
+  pathtab[["pvalue"]]   <- pe_path$pvalue
+  pathtab[["ci.lower"]] <- pe_path$ci.lower
+  pathtab[["ci.upper"]] <- pe_path$ci.upper
+  pathtab$addFootnote(foot_message)
 }
 
 .medFootMessage <- function(modelContainer, options) {
@@ -529,7 +571,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   if (!ready || modelContainer$getError()) return()
 
   r2res              <- lavaan::inspect(modelContainer[["model"]][["object"]], "r2")
-  tabr2[["__var__"]] <- .unv(names(r2res))
+  tabr2[["__var__"]] <- names(r2res)
   tabr2[["rsq"]]     <- r2res
 }
 

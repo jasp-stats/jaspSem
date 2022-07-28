@@ -70,6 +70,7 @@ Form
                 title: qsTr("Additional parameter estimates")
                 CheckBox { label: qsTr("Total indirect effects");  name: "showtotind"; checked: true }
                 CheckBox { label: qsTr("Residual covariances");    name: "showres";    checked: true }
+                CheckBox { label: qsTr("Path coefficients");    name: "showPathCoefficients";    checked: true }
             }
         }
         GroupBox
@@ -109,15 +110,15 @@ Form
 
 	Section {
         text: qsTr("Plots")
-        CheckBox { 
+        CheckBox {
             text:   qsTr("Model plot")
             name:   "pathplot"
-            id:     pathPlot 
+            id:     pathPlot
             CheckBox { text: qsTr("Parameter estimates") ; name: "plotpars" }
             CheckBox { text: qsTr("Legend") ; name: "plotlegend" }
         }
     }
-    
+
 	Section {
         text: qsTr("Advanced")
         GroupBox {
@@ -150,7 +151,7 @@ Form
             }
         }
     }
-    
+
 }
 
 
