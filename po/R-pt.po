@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2022-07-23 03:18\n"
+"POT-Creation-Date: 2022-07-30 03:23\n"
 "PO-Revision-Date: 2021-09-04 02:43+0000\n"
 "Last-Translator: Laura Durans <lauraadurans@gmail.com>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/jaspsem-"
@@ -274,6 +274,10 @@ msgstr "Tamanho de efeito padronizado"
 
 msgid "Residual covariances"
 msgstr "Covariâncias residuais"
+
+#, fuzzy
+msgid "Path coefficients"
+msgstr "Coeficiente de Mardia"
 
 msgid "Delta method"
 msgstr ""

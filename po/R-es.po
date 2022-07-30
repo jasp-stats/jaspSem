@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
-"POT-Creation-Date: 2022-07-23 03:18\n"
+"POT-Creation-Date: 2022-07-30 03:23\n"
 "PO-Revision-Date: 2022-07-26 11:16+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -274,6 +274,10 @@ msgstr "Efectos indirectos totales"
 
 msgid "Residual covariances"
 msgstr "Covarianzas de los residuos"
+
+#, fuzzy
+msgid "Path coefficients"
+msgstr "Coeficientes del predictor"
 
 msgid "Delta method"
 msgstr "Método Delta"

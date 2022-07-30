@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2022-07-23 03:18\n"
+"POT-Creation-Date: 2022-07-30 03:23\n"
 "PO-Revision-Date: 2022-06-03 15:16+0000\n"
 "Last-Translator: Johnny van Doorn <johnnydoorn@gmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/"
@@ -276,6 +276,10 @@ msgstr "Totale indirecte effecten"
 
 msgid "Residual covariances"
 msgstr "Residu covarianties"
+
+#, fuzzy
+msgid "Path coefficients"
+msgstr "Voorspeller coëfficiënten"
 
 msgid "Delta method"
 msgstr "Deltamethode"

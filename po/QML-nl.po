@@ -963,3 +963,7 @@ msgstr ""
 msgctxt "Description|"
 msgid "Latent Growth"
 msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Path coefficients"
+msgstr ""

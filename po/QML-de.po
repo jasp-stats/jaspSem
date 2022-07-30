@@ -965,3 +965,7 @@ msgstr "MIMIC-Modell"
 msgctxt "Description|"
 msgid "Latent Growth"
 msgstr "Latentes Wachstum"
+
+msgctxt "MediationAnalysis|"
+msgid "Path coefficients"
+msgstr ""

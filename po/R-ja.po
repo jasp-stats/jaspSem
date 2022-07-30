@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2022-07-23 03:18\n"
+"POT-Creation-Date: 2022-07-30 03:23\n"
 "PO-Revision-Date: 2022-02-05 02:39+0000\n"
 "Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -271,6 +271,10 @@ msgstr "総間接効果"
 
 msgid "Residual covariances"
 msgstr "残差共分散"
+
+#, fuzzy
+msgid "Path coefficients"
+msgstr "予測係数"
 
 msgid "Delta method"
 msgstr "デルタ法"
