@@ -63,19 +63,19 @@ Form
 	RadioButtonGroup
 	{
 		title: qsTr("Data")
-		name: "Data"
+		name: "dataType"
 		columns: 2
 		RadioButton { value: "raw"; label: qsTr("Raw"); checked: true }
 		RadioButton
 		{
-			value: "varcov"; label: qsTr("Variance-covariance matrix")
-			IntegerField { name: "SampleSize"; label: qsTr("Sample size"); defaultValue: 0 }
+			value: "varianceCovariance"; label: qsTr("Variance-covariance matrix")
+			IntegerField { name: "sampleSize"; label: qsTr("Sample size"); defaultValue: 0 }
 		}
 	}
 
 	DropDown
 	{
-		name: "sampling.weights"
+		name: "samplingWeights"
 		label: qsTr("Sampling weights")
 		showVariableTypeIcon: true
 		addEmptyValue: true
@@ -87,24 +87,24 @@ Form
 
 		Group
 		{
-			CheckBox { name: "outputAdditionalFitMeasures";	label: qsTr("Additional fit measures")	}
-			CheckBox { name: "outputRSquared";				label: qsTr("R-squared")				}
-			CheckBox { name: "outputObservedCovariances";	label: qsTr("Observed covariances")		}
-			CheckBox { name: "outputImpliedCovariances";	label: qsTr("Implied covariances")		}
-			CheckBox { name: "outputResidualCovariances";	label: qsTr("Residual covariances")		}
-			CheckBox { name: "outputStandardizedResiduals"; label: qsTr("Standardized residuals")	}
-			CheckBox { name: "outputMardiasCoefficients";	label: qsTr("Mardia's coefficient")		}
+			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures")	}
+			CheckBox { name: "rSquared";				label: qsTr("R-squared")				}
+			CheckBox { name: "observedCovariance";	label: qsTr("Observed covariances")		}
+			CheckBox { name: "impliedCovariance";	label: qsTr("Implied covariances")		}
+			CheckBox { name: "residualCovariance";	label: qsTr("Residual covariances")		}
+			CheckBox { name: "standardizedResidual"; label: qsTr("Standardized residuals")	}
+			CheckBox { name: "mardiasCoefficient";	label: qsTr("Mardia's coefficient")		}
 		}
 		Group
 		{
-			CheckBox{name: "std"; label: qsTr("Standardized estimates"); checked: false}
+			CheckBox{name: "standardizedEstimate"; label: qsTr("Standardized estimates"); checked: false}
 			CheckBox
 			{
-				name: "outputPathPlot";
+				name: "pathPlot";
 				text: qsTr("Path diagram");
 				checked: false
 				CheckBox {
-					name: "pathPlotPar"
+					name: "pathPlotParameter"
 					text: qsTr("Show parameter estimates")
 					checked: false
 				}
@@ -116,15 +116,15 @@ Form
 			}
 			CheckBox
 			{
-				name: "outputModificationIndices"
+				name: "modificationIndex"
 				label: qsTr("Modification indices")
 				CheckBox
 				{
-					name: "miHideLow"
+					name: "modificationIndexHiddenLow"
 					label: qsTr("Hide low indices")
 					DoubleField
 					{
-						name: "miThreshold"
+						name: "modificationIndexThreshold"
 						label: qsTr("Threshold")
 						negativeValues: false
 						decimals: 2
@@ -143,33 +143,33 @@ Form
 		{
 			DropDown
 			{
-				name: "factorStandardisation"
+				name: "factorScaling"
 				label: qsTr("Factor scaling")
 				values:
 				[
-					{ label: qsTr("Factor loadings")	, value: "auto.fix.first"	},
-					{ label: qsTr("Factor variance")	, value: "std.lv"			},
-					{ label: qsTr("Effects coding")		, value: "effect.coding"	},
+					{ label: qsTr("Factor loadings")	, value: "factorLoading"	},
+					{ label: qsTr("Factor variance")	, value: "factorVariance"			},
+					{ label: qsTr("Effects coding")		, value: "effectCoding"	},
 					{ label: qsTr("None")				, value: "none"				}
 				]
 			}
 			CheckBox { name: "meanstructure";	label: qsTr("Include mean structure")							}
-			CheckBox { name: "int.ov.fixed";	label: qsTr("Fix manifest intercepts to zero")					}
-			CheckBox { name: "int.lv.fixed";	label: qsTr("Fix latent intercepts to zero");	checked: true	}
+			CheckBox { name: "manifestInterceptZeroFix";	label: qsTr("Fix manifest intercepts to zero")					}
+			CheckBox { name: "latentInterceptZeroFix";	label: qsTr("Fix latent intercepts to zero");	checked: true	}
 			CheckBox { name: "orthogonal";		label: qsTr("Assume factors uncorrelated")						}
 		}
 
 		Group
 		{
 
-			CheckBox { name: "fixed.x";				label: qsTr("Fix exogenous covariates"); 		checked: true	}
-			CheckBox { name: "auto.fix.single";		label: qsTr("Omit residual single indicator");	checked: true	}
-			CheckBox { name: "auto.var";			label: qsTr("Include residual variances");		checked: true	}
-			CheckBox { name: "auto.cov.lv.x";		label: qsTr("Correlate exogenous latents");		checked: true	}
-			CheckBox { name: "auto.cov.y";			label: qsTr("Correlate dependent variables");	checked: true	}
-			CheckBox { name: "auto.th";				label: qsTr("Add thresholds");					checked: true	}
-			CheckBox { name: "auto.delta";			label: qsTr("Add scaling parameters");			checked: true	}
-			CheckBox { name: "auto.efa";			label: qsTr("Constrain EFA blocks");			checked: true	}
+			CheckBox { name: "exogenousCovariateFix";			label: qsTr("Fix exogenous covariates"); 		checked: true	}
+			CheckBox { name: "residualSingleIndicatorOmission";	label: qsTr("Omit residual single indicator");	checked: true	}
+			CheckBox { name: "residualVariance";				label: qsTr("Include residual variances");		checked: true	}
+			CheckBox { name: "exogenousLatentCorrelation";		label: qsTr("Correlate exogenous latents");		checked: true	}
+			CheckBox { name: "dependentCorrelation";			label: qsTr("Correlate dependent variables");	checked: true	}
+			CheckBox { name: "threshold";						label: qsTr("Add thresholds");					checked: true	}
+			CheckBox { name: "scalingParameter";				label: qsTr("Add scaling parameters");			checked: true	}
+			CheckBox { name: "efaConstrained";					label: qsTr("Constrain EFA blocks");			checked: true	}
 		}
 	}
 
@@ -183,7 +183,7 @@ Form
 			DropDown
 			{
 				label: qsTr("Information matrix")
-				name: "information"
+				name: "informationMatrix"
 				values: [
 					{ value: "expected", label: qsTr("Expected") },
 					{ value: "observed", label: qsTr("Observed") }
@@ -193,7 +193,7 @@ Form
 			RadioButtonGroup
 			{
 				title: qsTr("Error calculation")
-				name: "se"
+				name: "samplingMethod"
 				RadioButton { value: "standard";	label: qsTr("Standard"); checked: true		}
 				RadioButton { value: "robust";		label: qsTr("Robust")						}
 				RadioButton
@@ -201,7 +201,7 @@ Form
 					value: "bootstrap";	label: qsTr("Bootstrap")
 					IntegerField
 					{
-						name: "errorCalculationBootstrapSamples"
+						name: "bootstrapSamples"
 						label: qsTr("Bootstrap samples")
 						fieldWidth: 60
 						defaultValue: 1000
@@ -209,11 +209,11 @@ Form
 					}
 					DropDown {
                         label: qsTr("Type")
-                        name: "bootCItype"
+                        name: "bootstrapCiType"
                         values: [
-                            { label: qsTr("Bias-corrected percentile"), value: "bca.simple"   },
-                            { label: qsTr("Percentile"),                value: "perc"         },
-                            { label: qsTr("Normal theory"),             value: "norm"         }
+                            { label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"   },
+                            { label: qsTr("Percentile"),                value: "percentile"         },
+                            { label: qsTr("Normal theory"),             value: "normalTheory"         }
                         ]
                     }
 				}
@@ -221,7 +221,7 @@ Form
 
 			CIField {
 				text: qsTr("Confidence intervals")
-				name: "ciWidth"
+				name: "ciLevel"
 			}
 
 
@@ -229,49 +229,49 @@ Form
 
 		Group
 		{
-			CheckBox{name: "std.ov"; label: qsTr("Standardize variables before estimation"); checked: false}
+			CheckBox{name: "standardizedVariable"; label: qsTr("Standardize variables before estimation"); checked: false}
 			DropDown
 			{
 				name: "estimator"
 				label: qsTr("Estimator")
 				values: [
 					{ value: "default",	label: qsTr("Auto") },
-					{ value: "ML",		label: qsTr("ML")	},
-					{ value: "GLS",		label: qsTr("GLS")	},
-					{ value: "WLS",		label: qsTr("WLS")	},
-					{ value: "ULS",		label: qsTr("ULS")	},
-					{ value: "DWLS",	label: qsTr("DWLS")	},
-					{ value: "PML",		label: qsTr("PML")	}
+					{ value: "ml",		label: qsTr("ML")	},
+					{ value: "gls",		label: qsTr("GLS")	},
+					{ value: "wls",		label: qsTr("WLS")	},
+					{ value: "uls",		label: qsTr("ULS")	},
+					{ value: "dwls",	label: qsTr("DWLS")	},
+					{ value: "pml",		label: qsTr("PML")	}
 				]
 			}
 
 			DropDown
 			{
-				name: "test"
+				name: "modelTest"
 				label: qsTr("Model test")
 				values: [
-					{ value: "default",				label: qsTr("Auto") 						},
-					{ value: "standard",			label: qsTr("Standard")						},
-					{ value: "Satorra.Bentler",		label: qsTr("Satorra-Bentler")				},
-					{ value: "Yuan.Bentler",		label: qsTr("Yuan-Bentler")					},
-					{ value: "mean.var.adjusted",	label: qsTr("Mean and Variance adjusted")	},
-					{ value: "scaled.shifted",		label: qsTr("Scaled and shifted")			},
-					{ value: "Bollen.Stine",		label: qsTr("Bootstrap (Bollen-Stine)")		}
+					{ value: "default",					label: qsTr("Auto") 						},
+					{ value: "standard",				label: qsTr("Standard")						},
+					{ value: "satorraBentler",			label: qsTr("Satorra-Bentler")				},
+					{ value: "yuanBentler",				label: qsTr("Yuan-Bentler")					},
+					{ value: "meanAndVarianceAdjusted",	label: qsTr("Mean and Variance adjusted")	},
+					{ value: "scaledAndShifted",		label: qsTr("Scaled and shifted")			},
+					{ value: "bollenStine",				label: qsTr("Bootstrap (Bollen-Stine)")		}
 				]
 			}
 
 			DropDown
 			{
-				name: "missing"
+				name: "naAction"
 				label: qsTr("Missing data handling")
 				values:
 				[
-					{ label: qsTr("FIML")				, value: "ml"				},
+					{ label: qsTr("FIML")				, value: "fiml"				},
 					{ label: qsTr("Listwise deletion")	, value: "listwise"			},
 					{ label: qsTr("Pairwise")			, value: "pairwise"			},
-					{ label: qsTr("Two-stage")			, value: "two.stage"		},
-					{ label: qsTr("Robust two-stage")	, value: "robust.two.stage"	},
-					{ label: qsTr("Doubly robust")		, value: "doubly.robust"	},
+					{ label: qsTr("Two-stage")			, value: "twoStage"		},
+					{ label: qsTr("Robust two-stage")	, value: "twoStageRobust"	},
+					{ label: qsTr("Doubly robust")		, value: "doublyRobust"	},
 				]
 			}
 
@@ -281,8 +281,8 @@ Form
 				label: qsTr("Emulation")
 				values: [
 					{ value: "lavaan",	label: qsTr("None") 	},
-					{ value: "Mplus",	label: qsTr("Mplus") 	},
-					{ value: "EQS",		label: qsTr("EQS") 		}
+					{ value: "mplus",	label: qsTr("Mplus") 	},
+					{ value: "eqs",		label: qsTr("EQS") 		}
 				]
 			}
 
@@ -298,7 +298,7 @@ Form
 			DropDown
 			{
 				id: grpvar
-				name: "groupingVariable"
+				name: "group"
 				label: qsTr("Grouping Variable")
 				showVariableTypeIcon: true
 				addEmptyValue: true
@@ -307,21 +307,21 @@ Form
 			{
 				id: constraints
 				title: qsTr("Equality Constraints")
-				CheckBox { id: eq_loadings; 			name: "eq_loadings";			label: qsTr("Loadings")				}
-				CheckBox { id: eq_intercepts; 			name: "eq_intercepts";			label: qsTr("Intercepts")			}
-				CheckBox { id: eq_residuals; 			name: "eq_residuals";			label: qsTr("Residuals")			}
-				CheckBox { id: eq_residualcovariances; 	name: "eq_residualcovariances";	label: qsTr("Residual covariances")	}
-				CheckBox { id: eq_means; 				name: "eq_means";				label: qsTr("Means")				}
-				CheckBox { id: eq_thresholds; 			name: "eq_thresholds";			label: qsTr("Threshold")			}
-				CheckBox { id: eq_regressions; 			name: "eq_regressions";			label: qsTr("Regressions")			}
-				CheckBox { id: eq_variances; 			name: "eq_variances";			label: qsTr("Latent variances")		}
-				CheckBox { id: eq_lvcovariances; 		name: "eq_lvcovariances";		label: qsTr("Latent covariances")	}
+				CheckBox { id: eq_loadings; 			name: "equalLoading";				label: qsTr("Loadings")				}
+				CheckBox { id: eq_intercepts; 			name: "equalIntercept";				label: qsTr("Intercepts")			}
+				CheckBox { id: eq_residuals; 			name: "equalResidual";				label: qsTr("Residuals")			}
+				CheckBox { id: eq_residualcovariances; 	name: "equalResidualCovariance";	label: qsTr("Residual covariances")	}
+				CheckBox { id: eq_means; 				name: "equalMean";					label: qsTr("Means")				}
+				CheckBox { id: eq_thresholds; 			name: "equalThreshold";				label: qsTr("Threshold")			}
+				CheckBox { id: eq_regressions; 			name: "equalRegression";			label: qsTr("Regressions")			}
+				CheckBox { id: eq_variances; 			name: "equalLatentVariance";				label: qsTr("Latent variances")		}
+				CheckBox { id: eq_lvcovariances; 		name: "equalLatentCovariance";		label: qsTr("Latent covariances")	}
 			}
 
 		}
 		TextArea
 		{
-			name: "group.partial"
+			name: "freeParameters"
 			title: qsTr("Release constraints (one per line)")
 			width: multigroup.width / 2
 			height: constraints.height + grpvar.height

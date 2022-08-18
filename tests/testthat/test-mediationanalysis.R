@@ -2,13 +2,13 @@ context("Mediation Analysis")
 
 test_that("Simple mediation analysis works", {
   options <- jaspTools::analysisOptions("MediationAnalysis")
-  options$predictor <- "contcor1"
-  options$mediators <- "contcor2"
-  options$dependent <- "contNormal"
-  options$mimic     <- "lavaan"
-  options$estimator <- "ML"
-  options$se        <- "standard"
-  options$missing   <- "FIML"
+  options$predictors     <- "contcor1"
+  options$mediators      <- "contcor2"
+  options$dependents     <- "contNormal"
+  options$emulation      <- "lavaan"
+  options$estimator      <- "ml"
+  options$samplingMethod <- "standard"
+  options$naAction       <- "fiml"
   results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
 
   dir_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
@@ -46,14 +46,14 @@ test_that("Simple mediation analysis works", {
 
 test_that("Categorical confounders work", {
   options <- jaspTools::analysisOptions("MediationAnalysis")
-  options$predictor <- "contcor1"
-  options$mediators <- "contcor2"
-  options$dependent <- "contNormal"
-  options$confounds <- c("facGender", "facExperim")
-  options$mimic     <- "lavaan"
-  options$estimator <- "ML"
-  options$se        <- "standard"
-  options$missing   <- "FIML"
+  options$predictors     <- "contcor1"
+  options$mediators      <- "contcor2"
+  options$dependents     <- "contNormal"
+  options$confounds      <- c("facGender", "facExperim")
+  options$emulation      <- "lavaan"
+  options$estimator      <- "ml"
+  options$samplingMethod <- "standard"
+  options$naAction       <- "fiml"
   results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
 
   ind_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_ind"]][["data"]]
@@ -68,13 +68,13 @@ test_that("Categorical confounders work", {
 
 test_that("Multiple mediation with missing values works", {
   options <- jaspTools::analysisOptions("MediationAnalysis")
-  options$predictor <- c("contcor1", "contOutlier")
-  options$mediators <- c("contcor2", "debMiss1")
-  options$dependent <- c("contNormal", "debMiss30")
-  options$mimic     <- "lavaan"
-  options$estimator <- "ML"
-  options$se        <- "standard"
-  options$missing   <- "FIML"
+  options$predictors     <- c("contcor1", "contOutlier")
+  options$mediators      <- c("contcor2", "debMiss1")
+  options$dependents     <- c("contNormal", "debMiss30")
+  options$emulation      <- "lavaan"
+  options$estimator      <- "ml"
+  options$samplingMethod <- "standard"
+  options$naAction       <- "fiml"
   results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
 
   dir_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
@@ -171,16 +171,16 @@ test_that("Multiple mediation with missing values works", {
 
 
 test_that("Bootstrapping works", {
-  options                 <- jaspTools::analysisOptions("MediationAnalysis")
-  options$predictor       <- "contcor1"
-  options$mediators       <- "contcor2"
-  options$dependent       <- "contNormal"
-  options$mimic           <- "lavaan"
-  options$estimator       <- "ML"
-  options$se              <- "bootstrap"
-  options$bootstrapNumber <- 100
-  options$bootCItype      <- "bca.simple"
-  options$missing         <- "FIML"
+  options                  <- jaspTools::analysisOptions("MediationAnalysis")
+  options$predictors       <- "contcor1"
+  options$mediators        <- "contcor2"
+  options$dependents       <- "contNormal"
+  options$emulation        <- "lavaan"
+  options$estimator        <- "ml"
+  options$samplingMethod   <- "bootstrap"
+  options$bootstrapSamples <- 100
+  options$bootstrapCiType  <- "percentileBiasCorrected"
+  options$naAction         <- "fiml"
 
   set.seed(1)
   results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options)

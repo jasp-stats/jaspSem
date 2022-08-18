@@ -49,21 +49,21 @@ Form
 
         GroupBox
         {
-            CheckBox { label: qsTr("Standardized estimates")    ; name: "std" }
-            CheckBox { label: qsTr("Lavaan syntax")             ; name: "showSyntax" }
-            CheckBox { label: qsTr("R-squared")                 ; name: "rsquared" }
-            CheckBox { label: qsTr("Additional fit measures")   ; name: "additionalfits" }
+            CheckBox { label: qsTr("Standardized estimates")    ; name: "standardizedEstimate" }
+            CheckBox { label: qsTr("Lavaan syntax")             ; name: "syntax" }
+            CheckBox { label: qsTr("R-squared")                 ; name: "rSquared" }
+            CheckBox { label: qsTr("Additional fit measures")   ; name: "additionalFitMeasures" }
         }
 
         GroupBox
         {
             CIField {
                 text: qsTr("Confidence intervals")
-                name: "ciWidth"
+                name: "ciLevel"
             }
             RadioButtonGroup {
                 title: qsTr("Method")
-                name: "se"
+                name: "samplingMethod"
                 RadioButton { text: qsTr("Standard")  ; name: "standard" ; checked: true }
                 RadioButton { text: qsTr("Robust")    ; name: "robust" }
                 RadioButton {
@@ -71,18 +71,18 @@ Form
                     name: "bootstrap"
                     IntegerField {
                         text: qsTr("Replications")
-                        name: "bootstrapNumber"
+                        name: "bootstrapSamples"
                         defaultValue: 1000
                         min: 500
                         max: 100000
                     }
                     DropDown {
                         label: qsTr("Type")
-                        name: "bootCItype"
+                        name: "bootstrapCiType"
                         values: [
-                            { label: qsTr("Bias-corrected percentile"), value: "bca.simple"   },
-                            { label: qsTr("Percentile"),                value: "perc"         },
-                            { label: qsTr("Normal theory"),             value: "norm"         }
+                            { label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"   },
+                            { label: qsTr("Percentile"),                value: "percentile"         },
+                            { label: qsTr("Normal theory"),             value: "normalTheory"         }
                         ]
                     }
                 }
@@ -94,10 +94,10 @@ Form
         text: qsTr("Plots")
         CheckBox { 
             text:   qsTr("Model plot")
-            name:   "pathplot"
+            name:   "pathPlot"
             id:     pathPlot 
-            CheckBox { text: qsTr("Parameter estimates") ; name: "plotpars" }
-            CheckBox { text: qsTr("Legend") ; name: "plotlegend" }
+            CheckBox { text: qsTr("Parameter estimates") ; name: "pathPlotParameter" }
+            CheckBox { text: qsTr("Legend") ; name: "pathPlotLegend" }
         }
     }
     
@@ -107,16 +107,16 @@ Form
             Layout.fillWidth: true
             RadioButtonGroup {
                 title: qsTr("Missing value handling")
-                name: "missing"
+                name: "naAction"
                 RadioButton { text: qsTr("Full Information Maximum Likelihood") ; name: "fiml" ; checked: true }
                 RadioButton { text: qsTr("Exclude cases listwise")              ; name: "listwise"             }
             }
             RadioButtonGroup {
                 title: qsTr("Emulation")
-                name: "mimic"
+                name: "emulation"
                 RadioButton { text: qsTr("None")  ; name: "lavaan"  ; checked: true }
-                RadioButton { text: qsTr("Mplus") ; name: "Mplus" }
-                RadioButton { text: qsTr("EQS")   ; name: "EQS"   }
+                RadioButton { text: qsTr("Mplus") ; name: "mplus" }
+                RadioButton { text: qsTr("EQS")   ; name: "eqs"   }
             }
         }
         GroupBox {
@@ -125,11 +125,11 @@ Form
                 title: qsTr("Estimator")
                 name: "estimator"
                 RadioButton { text: qsTr("Auto") ; name: "default"; checked: true }
-                RadioButton { text: qsTr("ML")   ; name: "ML"       }
-                RadioButton { text: qsTr("GLS")  ; name: "GLS"      }
-                RadioButton { text: qsTr("WLS")  ; name: "WLS"      }
-                RadioButton { text: qsTr("ULS")  ; name: "ULS"      }
-                RadioButton { text: qsTr("DWLS") ; name: "DWLS"     }
+                RadioButton { text: qsTr("ML")   ; name: "ml"       }
+                RadioButton { text: qsTr("GLS")  ; name: "gls"      }
+                RadioButton { text: qsTr("WLS")  ; name: "wls"      }
+                RadioButton { text: qsTr("ULS")  ; name: "uls"      }
+                RadioButton { text: qsTr("DWLS") ; name: "dwls"     }
             }
         }
     }

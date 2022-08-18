@@ -61,7 +61,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
 .semReadData <- function(dataset, options) {
   if (!is.null(dataset)) return(dataset)
 
-  variablesToRead <- if (options[["groupingVariable"]] == "") character() else options[["groupingVariable"]]
+  variablesToRead <- if (options[["group"]] == "") character() else options[["group"]]
   for (model in options[["models"]])
     variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
 
@@ -82,7 +82,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
 .semCheckErrors <- function(dataset, options, ready, modelContainer) {
   if (!ready) return()
 
-  if (options$Data == "varcov") {
+  if (options$dataType == "varianceCovariance") {
     # Check if dataset is variance covariance matrix:
     .hasErrors(dataset, type = c("varCovMatrix", "infinity"),
                message='default', exitAnalysisIfErrors = TRUE)
@@ -96,13 +96,13 @@ SEM <- function(jaspResults, dataset, options, ...) {
   }
 
   # check FIML
-  if (!options[["estimator"]] %in% c("default", "ML") && options[["missing"]] == "ml") {
+  if (!options[["estimator"]] %in% c("default", "ml") && options[["naAction"]] == "fiml") {
     modelContainer$setError(gettext("FIML missing data handling only available with ML-type estimators"))
   }
 
   # Check whether grouping variable is a grouping variable
-  if (options[["groupingVariable"]] != "") {
-    groupfac <- factor(dataset[[.v(options[["groupingVariable"]])]])
+  if (options[["group"]] != "") {
+    groupfac <- factor(dataset[[.v(options[["group"]])]])
     factab <- table(groupfac)
     if (any(factab < 3)) {
       violations <- names(table(groupfac))[table(groupfac) < 3]
@@ -114,7 +114,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
 
 
   # Check mean structure:
-  if (options[["Data"]] == "varcov") {
+  if (options[["dataType"]] == "varianceCovariance") {
     if (options[["meanstructure"]]) {
       modelContainer$setError(gettext("Mean structure can not be included when data is variance-covariance matrix"))
       return()
@@ -122,13 +122,13 @@ SEM <- function(jaspResults, dataset, options, ...) {
 
     options$meanstructure <- FALSE
 
-    if (options[["SampleSize"]] == 0) {
+    if (options[["sampleSize"]] == 0) {
       modelContainer$setError(gettext("Please set the sample size!"))
       return()
     }
 
     # Check for multiple groups:
-    if (options[["groupingVariable"]] != "") {
+    if (options[["group"]] != "") {
       modelContainer$setError(gettext("Multiple group analysis not supported when data is variance-covariance matrix"))
       return()
     }
@@ -200,12 +200,12 @@ checkLavaanModel <- function(model, availableVars) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("sampling.weights", "meanstructure", "int.ov.free", "int.lv.free", "fixed.x", "orthogonal",
-                              "factorStandardisation", "auto.fix.single", "auto.var", "auto.cov.lv.x",
-                              "auto.cov.y", "auto.th", "auto.delta", "auto.efa", "std.ov", "missing", "estimator", "test",
-                              "se", "information", "emulation", "groupingVariable", "eq_loadings", "eq_intercepts",
-                              "eq_residuals", "eq_residualcovariances", "eq_means", "eq_thresholds", "eq_regressions",
-                              "eq_variances", "eq_lvcovariances", "Data", "SampleSize", "group.partial"))
+    modelContainer$dependOn(c("samplingWeights", "meanstructure", "manifestInterceptZeroFix", "latentInterceptZeroFix", "exogenousCovariateFix", "orthogonal",
+                              "factorScaling", "residualSingleIndicatorOmission", "residualVariance", "exogenousLatentCorrelation",
+                              "dependentCorrelation", "threshold", "scalingParameter", "efaConstrained", "standardizedVariable", "naAction", "estimator", "test",
+                              "samplingMethod", "informationMatrix", "emulation", "group", "equalLoading", "equalIntercept",
+                              "equalResidual", "equalResidualCovariance", "equalMean", "equalThreshold", "equalRegression",
+                              "equalVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -239,11 +239,11 @@ checkLavaanModel <- function(model, availableVars) {
     lav_args <- lavopts
     syntax   <- .semTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
     lav_args[["model"]] <- syntax
-    if (options[["Data"]] == "raw") {
+    if (options[["dataType"]] == "raw") {
       lav_args[["data"]]  <- dataset
     } else {
       lav_args[["sample.cov"]] <- .semDataCovariance(dataset, options[["models"]][[i]][["syntax"]])
-      lav_args[["sample.nobs"]] <- options[["SampleSize"]]
+      lav_args[["sample.nobs"]] <- options[["sampleSize"]]
     }
 
     # fit the model
@@ -291,8 +291,8 @@ checkLavaanModel <- function(model, availableVars) {
       break
     }
 
-    if (options[["se"]] == "bootstrap") {
-      fit <- lavBootstrap(fit, options[["errorCalculationBootstrapSamples"]])
+    if (options[["samplingMethod"]] == "bootstrap") {
+      fit <- lavBootstrap(fit, options[["bootstrapSamples"]])
     }
     results[[i]] <- fit
 
@@ -331,42 +331,51 @@ checkLavaanModel <- function(model, availableVars) {
 
   # model features
   lavopts[["meanstructure"]]   <- options[["meanstructure"]]
-  lavopts[["int.ov.free"]]     <- !options[["int.ov.fixed"]]
-  lavopts[["int.lv.free"]]     <- !options[["int.lv.fixed"]]
-  lavopts[["fixed.x"]]         <- options[["fixed.x"]]
+  lavopts[["int.ov.free"]]     <- !options[["manifestInterceptZeroFix"]]
+  lavopts[["int.lv.free"]]     <- !options[["latentInterceptZeroFix"]]
+  lavopts[["fixed.x"]]         <- options[["exogenousCovariateFix"]]
   lavopts[["orthogonal"]]      <- options[["orthogonal"]]
-  lavopts[["std.lv"]]          <- options[["factorStandardisation"]] == "std.lv"
-  lavopts[["effect.coding"]]   <- options[["factorStandardisation"]] == "effect.coding"
-  lavopts[["auto.fix.first"]]  <- options[["factorStandardisation"]] == "auto.fix.first"
-  lavopts[["auto.fix.single"]] <- options[["auto.fix.single"]]
-  lavopts[["auto.var"]]        <- options[["auto.var"]]
-  lavopts[["auto.cov.lv.x"]]   <- options[["auto.cov.lv.x"]]
-  lavopts[["auto.cov.y"]]      <- options[["auto.cov.y"]]
-  lavopts[["auto.th"]]         <- options[["auto.th"]]
-  lavopts[["auto.delta"]]      <- options[["auto.delta"]]
-  lavopts[["auto.efa"]]        <- options[["auto.efa"]]
+  lavopts[["std.lv"]]          <- options[["factorScaling"]] == "factorVariance"
+  lavopts[["effect.coding"]]   <- options[["factorScaling"]] == "effectCoding"
+  lavopts[["auto.fix.first"]]  <- options[["factorScaling"]] == "factorLoading"
+  lavopts[["auto.fix.single"]] <- options[["residualSingleIndicatorOmission"]]
+  lavopts[["auto.var"]]        <- options[["residualVariance"]]
+  lavopts[["auto.cov.lv.x"]]   <- options[["exogenousLatentCorrelation"]]
+  lavopts[["auto.cov.y"]]      <- options[["dependentCorrelation"]]
+  lavopts[["auto.th"]]         <- options[["threshold"]]
+  lavopts[["auto.delta"]]      <- options[["scalingParameter"]]
+  lavopts[["auto.efa"]]        <- options[["efaConstrained"]]
 
   # data options
-  lavopts[["std.ov"]]  <- options[["std.ov"]]
-  lavopts[["missing"]] <- options[["missing"]]
+  lavopts[["std.ov"]]  <- options[["standardizedVariable"]]
+  lavopts[["missing"]] <- ifelse(options[["naAction"]] == "fiml", "ml",
+                                 ifelse(options[["naAction"]] == "twoStage", "two.stage",
+                                        ifelse(options[["naAction"]] == "twoStageRobust", "robust.two.stage",
+                                               ifelse(options[["naAction"]] == "doublyRobust", "doubly.robust",
+                                                      options[["naAction"]]))))
 
   # estimation options
   lavopts[["estimator"]]   <- options[["estimator"]]
-  lavopts[["se"]]          <- ifelse(options[["se"]] == "bootstrap", "standard", options[["se"]])
-  lavopts[["information"]] <- options[["information"]]
-  lavopts[["test"]]        <- options[["test"]]
+  lavopts[["se"]]          <- ifelse(options[["samplingMethod"]] == "bootstrap", "standard", options[["samplingMethod"]])
+  lavopts[["information"]] <- options[["informationMatrix"]]
+  lavopts[["test"]]        <- ifelse(options[["modelTest"]] == "satorraBentler", "Satorra.Bentler",
+                                     ifelse(options[["modelTest"]] == "yuanBentler", "Yuan.Bentler",
+                                            ifelse(options[["modelTest"]] == "meanAndVarianceAdjusted", "mean.var.adjusted",
+                                                   ifelse(options[["modelTest"]] == "scaledAndShifted", "scaled.shifted",
+                                                          ifelse(options[["modelTest"]] == "bollenStine", "Bollen.Stine",
+                                                                 options[["modelTest"]])))))
 
   # group.equal options
   equality_constraints <- c(
-    options[["eq_loadings"]],
-    options[["eq_intercepts"]],
-    options[["eq_means"]],
-    options[["eq_thresholds"]],
-    options[["eq_regressions"]],
-    options[["eq_residuals"]],
-    options[["eq_residualcovariances"]],
-    options[["eq_variances"]],
-    options[["eq_lvcovariances"]]
+    options[["equalLoading"]],
+    options[["equalIntercept"]],
+    options[["equalMean"]],
+    options[["equalThreshold"]],
+    options[["equalRegression"]],
+    options[["equalResidual"]],
+    options[["equalResidualCovariance"]],
+    options[["equalVariance"]],
+    options[["equalLatentCovariance"]]
   )
 
   if (any(equality_constraints)) {
@@ -374,22 +383,19 @@ checkLavaanModel <- function(model, availableVars) {
                                   "residual.covariances", "lv.variances", "lv.covariances")[equality_constraints]
   }
 
-  # group.partial options
-
-
-  if (options[["group.partial"]][1] != "") {
-    splitted <- strsplit(.semTranslateModel(options[["group.partial"]][["model"]], dataset), "[\\n,;]+", perl = TRUE)[[1]]
+  if (options[["freeParameters"]] != ""){
+    splitted <- strsplit(options[["freeParameters"]][["model"]], "[\\n,;]+", perl = TRUE)[[1]]
     lavopts[["group.partial"]] <-  splitted
   }
 
   # group variable
-  if (options[["groupingVariable"]] != "") {
-    lavopts[["group"]] <- .v(options[["groupingVariable"]])
+  if (options[["group"]] != "") {
+    lavopts[["group"]] <- .v(options[["group"]])
   }
 
   # sampling weights
-  if (options[["sampling.weights"]] != "") {
-    lavopts[["sampling.weights"]] <- .v(options[["sampling.weights"]])
+  if (options[["samplingWeights"]] != "") {
+    lavopts[["sampling.weights"]] <- .v(options[["samplingWeights"]])
   }
 
 
@@ -490,16 +496,14 @@ checkLavaanModel <- function(model, availableVars) {
     fittab$addFootnote(gsub("lavaan WARNING: ", "", lrt$warnings[[1]]$message))
   }
 
- # add missing value removal footnote
-  if(options$missing == "listwise") {
+  if(options$naAction == "listwise"){
     nrm <- nrow(dataset) - lavaan::lavInspect(semResults[[1]], "ntotal")
     if (nrm != 0) {
-      missingFootnote <- gettextf("A total of %s cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options.",
+      missingFootnote <- gettextf("A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options.",
                                   nrm)
       fittab$addFootnote(message = missingFootnote)
     }
   }
-
 
   # add test statistic correction footnote
   test <- lavaan::lavInspect(semResults[[1]], "options")[["test"]]
@@ -533,7 +537,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   params <- createJaspContainer(gettext("Parameter estimates"))
   params$position <- 1
-  params$dependOn(c("ciWidth", "bootCItype", "std", "models"))
+  params$dependOn(c("ciLevel", "bootstrapCiType", "standardizedEstimate", "models"))
 
   modelContainer[["params"]] <- params
 
@@ -560,7 +564,7 @@ checkLavaanModel <- function(model, availableVars) {
   # Measurement model
   indtab <- createJaspTable(title = gettext("Factor Loadings"))
 
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     indtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
   indtab$addColumnInfo(name = "lhs",      title = gettext("Latent"),     type = "string", combine = TRUE)
@@ -571,11 +575,11 @@ checkLavaanModel <- function(model, availableVars) {
   indtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   indtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   indtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   indtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     indtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
                          overtitle = gettext("Standardized"))
     indtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
@@ -589,7 +593,7 @@ checkLavaanModel <- function(model, availableVars) {
   # Structural Model
   regtab <- createJaspTable(title = gettext("Regression coefficients"))
 
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     regtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
   regtab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string", combine = TRUE)
@@ -600,11 +604,11 @@ checkLavaanModel <- function(model, availableVars) {
   regtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   regtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   regtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   regtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     regtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
                          overtitle = gettext("Standardized"))
     regtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
@@ -618,7 +622,7 @@ checkLavaanModel <- function(model, availableVars) {
   # Latent variances
   lvartab <- createJaspTable(title = gettext("Factor variances"))
 
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     lvartab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
   lvartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
@@ -628,11 +632,11 @@ checkLavaanModel <- function(model, availableVars) {
   lvartab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   lvartab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   lvartab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   lvartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     lvartab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
                           overtitle = gettext("Standardized"))
     lvartab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
@@ -646,7 +650,7 @@ checkLavaanModel <- function(model, availableVars) {
   # Latent covariances
   lcovtab <- createJaspTable(title = gettext("Factor covariances"))
 
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     lcovtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
   lcovtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
@@ -656,11 +660,11 @@ checkLavaanModel <- function(model, availableVars) {
   lcovtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   lcovtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   lcovtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   lcovtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     lcovtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
                           overtitle = gettext("Standardized"))
     lcovtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
@@ -674,7 +678,7 @@ checkLavaanModel <- function(model, availableVars) {
   # Residual variances
   vartab <- createJaspTable(title = gettext("Residual variances"))
 
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     vartab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
   vartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
@@ -684,11 +688,11 @@ checkLavaanModel <- function(model, availableVars) {
   vartab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   vartab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   vartab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   vartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     vartab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
                          overtitle = gettext("Standardized"))
     vartab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
@@ -702,7 +706,7 @@ checkLavaanModel <- function(model, availableVars) {
   # Residual covariances
   covtab <- createJaspTable(title = gettext("Residual covariances"))
 
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     covtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
   covtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
@@ -712,11 +716,11 @@ checkLavaanModel <- function(model, availableVars) {
   covtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   covtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   covtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   covtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     covtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
                          overtitle = gettext("Standardized"))
     covtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
@@ -731,7 +735,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["meanstructure"]]) {
     mutab <- createJaspTable(title = gettext("Means"))
 
-    if (options[["groupingVariable"]] != "")
+    if (options[["group"]] != "")
       mutab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
     mutab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
@@ -741,11 +745,11 @@ checkLavaanModel <- function(model, availableVars) {
     mutab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     mutab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
     mutab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
     mutab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-    if (options[["std"]]) {
+    if (options[["standardizedEstimate"]]) {
       mutab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
                           overtitle = gettext("Standardized"))
       mutab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
@@ -765,17 +769,17 @@ checkLavaanModel <- function(model, availableVars) {
   deftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   deftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   deftab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                      overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                      overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   deftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                      overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                      overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     deftab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                        overtitle = gettext("Standardized"))
+                         overtitle = gettext("Standardized"))
     deftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                        overtitle = gettext("Standardized"))
+                         overtitle = gettext("Standardized"))
     deftab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
-                        overtitle = gettext("Standardized"))
+                         overtitle = gettext("Standardized"))
   }
 
   pecont[["def"]] <- deftab
@@ -787,11 +791,16 @@ checkLavaanModel <- function(model, availableVars) {
   # fill tables with values
   lvnames <- lavaan::lavNames(fit, "lv")
   ovnames <- lavaan::lavNames(fit, "ov")
-  pe <- lavaan::parameterestimates(fit, standardized = TRUE, level = options[["ciWidth"]],
-                                   boot.ci.type = options[["bootCItype"]])
+
+  bootstrapCiType <- ifelse(options[["bootstrapCiType"]] == "percentileBiasCorrected", "bca.simple",
+                            ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
+                                   "norm"))
+
+  pe <- lavaan::parameterestimates(fit, standardized = TRUE, level = options[["ciLevel"]],
+                                   boot.ci.type = bootstrapCiType)
   pe <- lavaan::lavMatrixRepresentation(lavaan::lav_partable_complete(pe))
 
-  if (options[["groupingVariable"]] != "")  {
+  if (options[["group"]] != "")  {
     pe[pe[["op"]] != ":=", "groupname"] <- lavaan::lavInspect(fit, "group.label")[pe[["group"]]]
   } else {
     pe[["group"]] <- 0
@@ -802,7 +811,7 @@ checkLavaanModel <- function(model, availableVars) {
   pe_ind <- pe_ind[order(pe_ind[["group"]], pe_ind[["lhs"]]),]
   if (nrow(pe_ind) == 0) pecont[["ind"]] <- NULL # remove if no estimates
 
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     indtab[["group"]] <- pe_ind[["groupname"]]
 
   indtab[["rhs"]]      <- .unv(pe_ind[["rhs"]])
@@ -815,7 +824,7 @@ checkLavaanModel <- function(model, availableVars) {
   indtab[["ci.lower"]] <- pe_ind[["ci.lower"]]
   indtab[["ci.upper"]] <- pe_ind[["ci.upper"]]
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     indtab[["std.all"]] <- pe_ind[["std.all"]]
     indtab[["std.lv"]]  <- pe_ind[["std.lv"]]
     indtab[["std.nox"]] <- pe_ind[["std.nox"]]
@@ -826,7 +835,7 @@ checkLavaanModel <- function(model, availableVars) {
   pe_reg <- pe_reg[order(pe_reg[["group"]], pe_reg[["lhs"]]),]
   if (nrow(pe_reg) == 0) pecont[["reg"]] <- NULL # remove if no estimates
 
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     regtab[["group"]] <- pe_reg[["groupname"]]
 
   regtab[["rhs"]]      <- .unv(pe_reg[["rhs"]])
@@ -839,7 +848,7 @@ checkLavaanModel <- function(model, availableVars) {
   regtab[["ci.lower"]] <- pe_reg[["ci.lower"]]
   regtab[["ci.upper"]] <- pe_reg[["ci.upper"]]
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     regtab[["std.all"]] <- pe_reg[["std.all"]]
     regtab[["std.lv"]]  <- pe_reg[["std.lv"]]
     regtab[["std.nox"]] <- pe_reg[["std.nox"]]
@@ -849,7 +858,7 @@ checkLavaanModel <- function(model, availableVars) {
   pe_lvar <- pe[pe$op == "~~" & pe$lhs %in% lvnames & pe$lhs == pe$rhs,]
   if (nrow(pe_lvar) == 0) pecont[["lvar"]] <- NULL # remove if no estimates
 
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     lvartab[["group"]] <- pe_lvar[["groupname"]]
 
   lvartab[["rhs"]]      <- .unv(pe_lvar[["rhs"]])
@@ -862,7 +871,7 @@ checkLavaanModel <- function(model, availableVars) {
   lvartab[["ci.lower"]] <- pe_lvar[["ci.lower"]]
   lvartab[["ci.upper"]] <- pe_lvar[["ci.upper"]]
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     lvartab[["std.all"]] <- pe_lvar[["std.all"]]
     lvartab[["std.lv"]]  <- pe_lvar[["std.lv"]]
     lvartab[["std.nox"]] <- pe_lvar[["std.nox"]]
@@ -872,7 +881,7 @@ checkLavaanModel <- function(model, availableVars) {
   pe_lcov <- pe[pe$op == "~~" & pe$lhs %in% lvnames & pe$rhs %in% lvnames & pe$lhs != pe$rhs,]
   if (nrow(pe_lcov) == 0) pecont[["lcov"]] <- NULL # remove if no estimates
 
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     lcovtab[["group"]] <- pe_lcov[["groupname"]]
 
   lcovtab[["lhs"]]      <- paste(.unv(pe_lcov[["lhs"]]), "-", .unv(pe_lcov[["rhs"]]))
@@ -884,7 +893,7 @@ checkLavaanModel <- function(model, availableVars) {
   lcovtab[["ci.lower"]] <- pe_lcov[["ci.lower"]]
   lcovtab[["ci.upper"]] <- pe_lcov[["ci.upper"]]
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     lcovtab[["std.all"]] <- pe_lcov[["std.all"]]
     lcovtab[["std.lv"]]  <- pe_lcov[["std.lv"]]
     lcovtab[["std.nox"]] <- pe_lcov[["std.nox"]]
@@ -894,7 +903,7 @@ checkLavaanModel <- function(model, availableVars) {
   pe_var <- pe[pe$op == "~~" & pe$lhs %in% ovnames & pe$lhs == pe$rhs,]
   if (nrow(pe_var) == 0) pecont[["var"]] <- NULL # remove if no estimates
 
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     vartab[["group"]] <- pe_var[["groupname"]]
 
   vartab[["rhs"]]      <- .unv(pe_var[["rhs"]])
@@ -907,7 +916,7 @@ checkLavaanModel <- function(model, availableVars) {
   vartab[["ci.lower"]] <- pe_var[["ci.lower"]]
   vartab[["ci.upper"]] <- pe_var[["ci.upper"]]
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     vartab[["std.all"]] <- pe_var[["std.all"]]
     vartab[["std.lv"]]  <- pe_var[["std.lv"]]
     vartab[["std.nox"]] <- pe_var[["std.nox"]]
@@ -917,7 +926,7 @@ checkLavaanModel <- function(model, availableVars) {
   pe_cov <- pe[pe$op == "~~" & pe$lhs %in% ovnames & pe$rhs %in% ovnames & pe$lhs != pe$rhs,]
   if (nrow(pe_cov) == 0) pecont[["cov"]] <- NULL # remove if no estimates
 
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     covtab[["group"]] <- pe_cov[["groupname"]]
 
   covtab[["lhs"]]      <- paste(.unv(pe_cov[["lhs"]]), "-", .unv(pe_cov[["rhs"]]))
@@ -929,7 +938,7 @@ checkLavaanModel <- function(model, availableVars) {
   covtab[["ci.lower"]] <- pe_cov[["ci.lower"]]
   covtab[["ci.upper"]] <- pe_cov[["ci.upper"]]
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     covtab[["std.all"]] <- pe_cov[["std.all"]]
     covtab[["std.lv"]]  <- pe_cov[["std.lv"]]
     covtab[["std.nox"]] <- pe_cov[["std.nox"]]
@@ -940,7 +949,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["meanstructure"]]) {
     pe_mu <- pe[pe$op == "~1",]
 
-    if (options[["groupingVariable"]] != "")
+    if (options[["group"]] != "")
       mutab[["group"]] <- pe_mu[["groupname"]]
 
     mutab[["lhs"]] <- .unv(pe_mu[["lhs"]])
@@ -952,7 +961,7 @@ checkLavaanModel <- function(model, availableVars) {
     mutab[["ci.lower"]] <- pe_mu[["ci.lower"]]
     mutab[["ci.upper"]] <- pe_mu[["ci.upper"]]
 
-    if (options[["std"]]) {
+    if (options[["standardizedEstimate"]]) {
       mutab[["std.all"]] <- pe_mu[["std.all"]]
       mutab[["std.lv"]]  <- pe_mu[["std.lv"]]
       mutab[["std.nox"]] <- pe_mu[["std.nox"]]
@@ -971,7 +980,7 @@ checkLavaanModel <- function(model, availableVars) {
   deftab[["ci.lower"]] <- pe_def[["ci.lower"]]
   deftab[["ci.upper"]] <- pe_def[["ci.upper"]]
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     deftab[["std.all"]] <- pe_def[["std.all"]]
     deftab[["std.lv"]]  <- pe_def[["std.lv"]]
     deftab[["std.nox"]] <- pe_def[["std.nox"]]
@@ -980,10 +989,10 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 .semAdditionalFits <- function(modelContainer, dataset, options, ready) {
-  if (!options[["outputAdditionalFitMeasures"]] || !is.null(modelContainer[["addfit"]])) return()
+  if (!options[["additionalFitMeasures"]] || !is.null(modelContainer[["addfit"]])) return()
 
   fitms <- createJaspContainer(gettext("Additional fit measures"))
-  fitms$dependOn(c("outputAdditionalFitMeasures", "models"))
+  fitms$dependOn(c("additionalFitMeasures", "models"))
   fitms$position <- 0.5
 
   # Fit indices
@@ -1097,11 +1106,11 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 .semRsquared <- function(modelContainer, dataset, options, ready) {
-  if (!options[["outputRSquared"]] || !is.null(modelContainer[["rsquared"]])) return()
+  if (!options[["rSquared"]] || !is.null(modelContainer[["rsquared"]])) return()
 
   # init table
   tabr2 <- createJaspTable(gettext("R-Squared"))
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     tabr2$addColumnInfo(name = "__grp__", title = "", type = "string", combine = TRUE)
   tabr2$addColumnInfo(name = "__var__", title = "", type = "string")
   if (length(options[["models"]]) < 2) {
@@ -1113,7 +1122,7 @@ checkLavaanModel <- function(model, availableVars) {
     }
   }
 
-  tabr2$dependOn(c("outputRSquared", "models"))
+  tabr2$dependOn(c("rSquared", "models"))
   tabr2$position <- .75
 
   modelContainer[["rsquared"]] <- tabr2
@@ -1121,7 +1130,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (!ready || modelContainer$getError()) return()
 
   # compute data and fill table
-  if (options[["groupingVariable"]] == "") {
+  if (options[["group"]] == "") {
 
     if (length(options[["models"]]) < 2) {
 
@@ -1206,7 +1215,7 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 .semMardiasCoefficient <- function(modelContainer, dataset, options, ready) {
-  if (!options[["outputMardiasCoefficients"]] || !is.null(modelContainer[["semMardiasTable"]])) return()
+  if (!options[["mardiasCoefficient"]] || !is.null(modelContainer[["semMardiasTable"]])) return()
 
   mardiatab <- createJaspTable(title = gettext("Mardia's coefficients"))
   mardiatab$position <- .2
@@ -1218,7 +1227,7 @@ checkLavaanModel <- function(model, availableVars) {
   mardiatab$addColumnInfo(name = "DF",          title = gettext("df"),           type = "integer")
   mardiatab$addColumnInfo(name = "pvalue",      title = gettext("p"),            type = "pvalue")
 
-  mardiatab$dependOn(c("outputMardiasCoefficients", "models"))
+  mardiatab$dependOn(c("mardiasCoefficient", "models"))
   modelContainer[["mardiasTable"]] <- mardiatab
 
   if (!ready || modelContainer$getError()) return()
@@ -1258,13 +1267,13 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 .semCov <- function(modelContainer, dataset, options, ready) {
-  if (!(options[["outputObservedCovariances"]] || options[["outputImpliedCovariances"]] ||
-        options[["outputResidualCovariances"]] || options[["outputStandardizedResiduals"]]) || !is.null(modelContainer[["covars"]])) return()
+  if (!(options[["observedCovariance"]] || options[["impliedCovariance"]] ||
+        options[["residualCovariance"]]) || options[["standardizedResidual"]] || !is.null(modelContainer[["covars"]])) return()
 
   covars <- createJaspContainer(gettext("Covariance tables"))
   covars$position <- 3
-  covars$dependOn(c("outputObservedCovariances", "outputImpliedCovariances", "outputResidualCovariances",
-                    "outputStandardizedResiduals", "models"))
+  covars$dependOn(c("observedCovariance", "impliedCovariance", "residualCovariance",
+                    "standardizedResidual", "models"))
 
   modelContainer[["covars"]] <- covars
 
@@ -1287,34 +1296,34 @@ checkLavaanModel <- function(model, availableVars) {
     cocont <- createJaspContainer(modelname, initCollapsed = TRUE)
   }
 
-  if (options[["groupingVariable"]] == "") {
+  if (options[["group"]] == "") {
 
     # without groups, these are tables
 
-    if (options[["outputObservedCovariances"]]) {
+    if (options[["observedCovariance"]]) {
       octab <- createJaspTable("Observed covariance matrix")
-      octab$dependOn("outputObservedCovariances")
+      octab$dependOn("observedCovariance")
       octab$position <- 1
       cocont[["observed"]] <- octab
     }
 
-    if (options[["outputImpliedCovariances"]]) {
+    if (options[["impliedCovariance"]]) {
       ictab <- createJaspTable("Implied covariance matrix")
-      ictab$dependOn("outputImpliedCovariances")
+      ictab$dependOn("impliedCovariance")
       ictab$position <- 2
       cocont[["implied"]] <- ictab
     }
 
-    if (options[["outputResidualCovariances"]]) {
+    if (options[["residualCovariance"]]) {
       rctab <- createJaspTable("Residual covariance matrix")
-      rctab$dependOn("outputResidualCovariances")
+      rctab$dependOn("residualCovariance")
       rctab$position <- 3
       cocont[["residual"]] <- rctab
     }
 
-    if (options[["outputStandardizedResiduals"]]) {
+    if (options[["standardizedResidual"]]) {
       srtab <- createJaspTable("Standardized residuals matrix")
-      srtab$dependOn("outputStandardizedResiduals")
+      srtab$dependOn("standardizedResidual")
       srtab$position <- 4
       cocont[["stdres"]] <- srtab
     }
@@ -1323,30 +1332,30 @@ checkLavaanModel <- function(model, availableVars) {
 
     # with multiple groups these become containers
 
-    if (options[["outputObservedCovariances"]]) {
+    if (options[["observedCovariance"]]) {
       occont <- createJaspContainer("Observed covariance matrix", initCollapsed = TRUE)
-      occont$dependOn("outputObservedCovariances")
+      occont$dependOn("observedCovariance")
       occont$position <- 1
       cocont[["observed"]] <- occont
     }
 
-    if (options[["outputImpliedCovariances"]]) {
+    if (options[["impliedCovariance"]]) {
       iccont <- createJaspContainer("Implied covariance matrix", initCollapsed = TRUE)
-      iccont$dependOn("outputImpliedCovariances")
+      iccont$dependOn("impliedCovariance")
       iccont$position <- 2
       cocont[["implied"]] <- iccont
     }
 
-    if (options[["outputResidualCovariances"]]) {
+    if (options[["residualCovariance"]]) {
       rccont <- createJaspContainer("Residual covariance matrix", initCollapsed = TRUE)
-      rccont$dependOn("outputResidualCovariances")
+      rccont$dependOn("residualCovariance")
       rccont$position <- 3
       cocont[["residual"]] <- rccont
     }
 
-    if (options[["outputStandardizedResiduals"]]) {
+    if (options[["standardizedResidual"]]) {
       srcont <- createJaspContainer("Standardized residuals matrix", initCollapsed = TRUE)
-      srcont$dependOn("outputStandardizedResiduals")
+      srcont$dependOn("standardizedResidual")
       srcont$position <- 4
       cocont[["stdres"]] <- srcont
     }
@@ -1356,11 +1365,11 @@ checkLavaanModel <- function(model, availableVars) {
   if (!ready || !inherits(fit, "lavaan")) return()
 
 
-  if (options[["groupingVariable"]] == "") {
+  if (options[["group"]] == "") {
 
     # without groups, just fill the tables
 
-    if (options[["outputObservedCovariances"]]) {
+    if (options[["observedCovariance"]]) {
       # actually compute the observed covariance
       ov <- lavaan::inspect(fit, "sampstat")
       oc <- ov$cov
@@ -1373,7 +1382,7 @@ checkLavaanModel <- function(model, availableVars) {
       octab$addRows(oc, rowNames = colnames(oc))
     }
 
-    if (options[["outputImpliedCovariances"]]) {
+    if (options[["impliedCovariance"]]) {
       # actually compute the implied covariance
       fv <- lavaan::fitted.values(fit)
       ic <- fv$cov
@@ -1386,7 +1395,7 @@ checkLavaanModel <- function(model, availableVars) {
       ictab$addRows(ic, rowNames = colnames(ic))
     }
 
-    if (options[["outputResidualCovariances"]]) {
+    if (options[["residualCovariance"]]) {
       # actually compute the implied covariance
       rv <- lavaan::residuals(fit)
       rc <- rv$cov
@@ -1399,7 +1408,7 @@ checkLavaanModel <- function(model, availableVars) {
       rctab$addRows(rc, rowNames = colnames(rc))
     }
 
-    if (options[["outputStandardizedResiduals"]]) {
+    if (options[["standardizedResidual"]]) {
       # actually compute the implied covariance
       if (options[["se"]] == "bootstrap") {
         srtab$setError(gettext("The standardized residual covariance table is currently unavailable when the error calculation method is 'Bootstrap'"))
@@ -1424,7 +1433,7 @@ checkLavaanModel <- function(model, availableVars) {
 
     # with groups, create tables and fill them
 
-    if (options[["outputObservedCovariances"]]) {
+    if (options[["observedCovariance"]]) {
       # actually compute the observed covariance
       ov <- lavaan::inspect(fit, "sampstat")
       level_names <- names(ov)
@@ -1443,7 +1452,7 @@ checkLavaanModel <- function(model, availableVars) {
       }
     }
 
-    if (options[["outputImpliedCovariances"]]) {
+    if (options[["impliedCovariance"]]) {
       # actually compute the observed covariance
       fv <- lavaan::fitted.values(fit)
       level_names <- names(fv)
@@ -1462,7 +1471,7 @@ checkLavaanModel <- function(model, availableVars) {
       }
     }
 
-    if (options[["outputResidualCovariances"]]) {
+    if (options[["residualCovariance"]]) {
       # actually compute the observed covariance
       rv <- lavaan::residuals(fit)
       level_names <- names(rv)
@@ -1481,7 +1490,7 @@ checkLavaanModel <- function(model, availableVars) {
       }
     }
 
-    if (options[["outputStandardizedResiduals"]]) {
+    if (options[["standardizedResidual"]]) {
       # actually compute the observed covariance
       if (options[["se"]] == "bootstrap") {
         stdResError <- createJaspTable()
@@ -1521,11 +1530,11 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 .semMI <- function(modelContainer, dataset, options, ready) {
-  if (!options[["outputModificationIndices"]] || !is.null(modelContainer[["modindices"]])) return()
+  if (!options[["modificationIndex"]] || !is.null(modelContainer[["modindices"]])) return()
 
   modindices <- createJaspContainer(gettext("Modification indices"))
   modindices$position <- 4
-  modindices$dependOn(c("outputModificationIndices", "miHideLow", "miThreshold", "models"))
+  modindices$dependOn(c("modificationIndex", "modificationIndexHiddenLow", "modificationIndexThreshold", "models"))
 
   modelContainer[["modindices"]] <- modindices
 
@@ -1553,7 +1562,7 @@ checkLavaanModel <- function(model, availableVars) {
   semModIndicesTable$addColumnInfo(name = "lhs",       title = "",                    type = "string")
   semModIndicesTable$addColumnInfo(name = "op",        title = "",                    type = "string")
   semModIndicesTable$addColumnInfo(name = "rhs",       title = "",                    type = "string")
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     semModIndicesTable$addColumnInfo(name = "group",   title = gettext("group"),      type = "string")
   semModIndicesTable$addColumnInfo(name = "mi",        title = gettext("mi"),         type = "number")
   semModIndicesTable$addColumnInfo(name = "epc",       title = gettext("epc"),        type = "number")
@@ -1577,11 +1586,11 @@ checkLavaanModel <- function(model, availableVars) {
   semModIndResult <- semModIndResult[order(semModIndResult$mi, decreasing = TRUE), , drop=FALSE]
 
   ### Remove low indices:
-  if (isTRUE(options$miHideLow)) {
-    semModIndResult <- semModIndResult[semModIndResult$mi > options$miThreshold, , drop=FALSE]
+  if (isTRUE(options$modificationIndexHiddenLow)) {
+    semModIndResult <- semModIndResult[semModIndResult$mi > options$modificationIndexThreshold, , drop=FALSE]
   }
 
-  if (options[["groupingVariable"]] != "")
+  if (options[["group"]] != "")
     semModIndResult[["group"]] <- lavaan::lavInspect(fit, "group.label")[semModIndResult[["group"]]]
 
   semModIndicesTable$setData(lapply(semModIndResult, .unv))
@@ -1595,11 +1604,11 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 .semPathPlot <- function(modelContainer, dataset, options, ready) {
-  if (!options[["outputPathPlot"]] || !ready || !is.null(modelContainer[["plot"]])) return()
+  if (!options[["pathPlot"]] || !ready || !is.null(modelContainer[["plot"]])) return()
 
   pcont <- createJaspContainer(gettext("Path diagram"))
   pcont$position <- 7
-  pcont$dependOn(c("outputPathPlot", "pathPlotPar", "pathPlotLegend", "models"))
+  pcont$dependOn(c("pathPlot", "pathPlotParameter", "pathPlotLegend", "models"))
 
   modelContainer[["plot"]] <- pcont
 
@@ -1620,13 +1629,13 @@ checkLavaanModel <- function(model, availableVars) {
     modelname <- gettext("Path diagram")
   }
 
-  if (options[["groupingVariable"]] == "") {
+  if (options[["group"]] == "") {
     plt <- createJaspPlot(title = modelname, width = 600, height = 400)
   } else {
     plt <- createJaspContainer(title = modelname, initCollapsed = TRUE)
   }
 
-  plt$dependOn(c("outputPathPlot", "pathPlotPar", "pathPlotLegend"))
+  plt$dependOn(c("pathPlot", "pathPlotParameter", "pathPlotLegend"))
   parentContainer[[modelname]] <- plt
 
   if (!ready || !inherits(fit, "lavaan")) return()
@@ -1643,7 +1652,7 @@ checkLavaanModel <- function(model, availableVars) {
     layout         = "tree2",
     intercepts     = FALSE,
     reorder        = FALSE,
-    whatLabels     = ifelse(options[["pathPlotPar"]], "par", "name"),
+    whatLabels     = ifelse(options[["pathPlotParameter"]], "par", "name"),
     edge.color     = "black",
     color          = list(lat = "#EAEAEA", man = "#EAEAEA", int = "#FFFFFF"),
     title          = FALSE,
@@ -1658,7 +1667,7 @@ checkLavaanModel <- function(model, availableVars) {
     ask            = FALSE
   ))
 
-  if (options[["groupingVariable"]] == "") {
+  if (options[["group"]] == "") {
     plt$plotObject <- pp
   } else {
     level_names <- lavaan::lavInspect(fit, "group.label")

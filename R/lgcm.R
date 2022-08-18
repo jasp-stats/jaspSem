@@ -94,10 +94,10 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   lgcmResult <- try(lavaan::growth(
     model     = .lgcmOptionsToMod(options),
     data      = dataset,
-    se        = ifelse(options[["se"]] == "bootstrap", "standard", options[["se"]]),
-    mimic     = options[["mimic"]],
+    se        = ifelse(options[["samplingMethod"]] == "bootstrap", "standard", options[["samplingMethod"]]),
+    mimic     = options[["emulation"]],
     estimator = options[["estimator"]],
-    missing   = options[["missing"]]
+    missing   = options[["naAction"]]
   ))
   if (inherits(lgcmResult, "try-error")) {
     modelContainer$setError(paste(
@@ -118,13 +118,13 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   }
 
   # Bootstrapping with interruptible progress bar
-  if (options[["se"]] == "bootstrap") {
-    startProgressbar(options[["bootstrapNumber"]])
+  if (options[["samplingMethod"]] == "bootstrap") {
+    startProgressbar(options[["bootstrapSamples"]])
 
     boot_1      <- lavaan::bootstrapLavaan(lgcmResult, R = 1)
-    bootres     <- matrix(0, options[["bootstrapNumber"]], length(boot_1))
+    bootres     <- matrix(0, options[["bootstrapSamples"]], length(boot_1))
     bootres[1,] <- boot_1
-    for (i in 2:options[["bootstrapNumber"]]) {
+    for (i in 2:options[["bootstrapSamples"]]) {
       bootres[i,] <- lavaan::bootstrapLavaan(lgcmResult, 1)
       progressbarTick()
     }
@@ -167,7 +167,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   curve <- c("I", "L", "Q", "C")[with(options, c(intercept, linear, quadratic, cubic))]
 
   # Covarying latents
-  if (!options[["covar"]]) {
+  if (!options[["covaryingLatentCurve"]]) {
     Cov <- "\n\n# Suppress latent covariance"
     for (i in seq_along(curve))
       for (j in seq_along(curve))
@@ -202,8 +202,8 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c(
       "variables", "regressions", "covariates", "categorical", "timings",
-      "intercept", "linear", "quadratic", "cubic", "covar",
-      "se", "bootstrapNumber"
+      "intercept", "linear", "quadratic", "cubic", "covaryingLatentCurve",
+      "samplingMethod", "bootstrapSamples"
     ))
     jaspResults[["modelContainer"]] <- modelContainer
   }
@@ -256,7 +256,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   } else {
     modelContainer[["partabs"]] <- createJaspContainer(gettext("Parameter estimates"))
   }
-  partabs$dependOn("std")
+  partabs$dependOn("standardizedEstimate")
   partabs$position <- 2
 
   # create tables
@@ -274,7 +274,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   latcur$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
                        overtitle = gettext("95%% Confidence Interval"))
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     latcur$addColumnInfo("std.lv",  title = "LV",   type = "number", format = "dp:3", overtitle = "Std. Est.")
     latcur$addColumnInfo("std.all", title = "All",  type = "number", format = "dp:3", overtitle = "Std. Est.")
     latcur$addColumnInfo("std.nox", title = "No X", type = "number", format = "dp:3", overtitle = "Std. Est.")
@@ -283,7 +283,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   modelContainer[["partabs"]][["latcur"]] <- latcur
 
   # covariance
-  if (options[["covar"]]) {
+  if (options[["covaryingLatentCurve"]]) {
     latcov <- createJaspTable(gettext("Latent covariances"))
     latcov$addColumnInfo("lhs",  title = "", type = "string")
     latcov$addColumnInfo("sep",  title = "", type = "separator")
@@ -297,7 +297,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
     latcov$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
                          overtitle = gettext("95%% Confidence Interval"))
 
-    if (options[["std"]]) {
+    if (options[["standardizedEstimate"]]) {
       latcov$addColumnInfo("std.lv",  title = gettext("LV"),   type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
       latcov$addColumnInfo("std.all", title = gettext("All"),  type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
       latcov$addColumnInfo("std.nox", title = gettext("No X"), type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
@@ -321,7 +321,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
     latreg$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
                          overtitle = gettext("95%% Confidence Interval"))
 
-    if (options[["std"]]) {
+    if (options[["standardizedEstimate"]]) {
       latreg$addColumnInfo("std.lv",  title = gettext("LV"),   type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
       latreg$addColumnInfo("std.all", title = gettext("All"),  type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
       latreg$addColumnInfo("std.nox", title = gettext("No X"), type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
@@ -342,7 +342,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   resvar$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
                        overtitle = gettext("95%% Confidence Interval"))
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     resvar$addColumnInfo("std.lv",  title = gettext("LV"),   type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
     resvar$addColumnInfo("std.all", title = gettext("All"),  type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
     resvar$addColumnInfo("std.nox", title = gettext("No X"), type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
@@ -353,8 +353,8 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   if (!ready || modelContainer$getError()) return()
 
   lgcmResult <- modelContainer[["model"]][["object"]]
-  pe <- lavaan::parameterestimates(lgcmResult, level = options[["ciWidth"]],
-                                   standardized = options[["std"]])
+  pe <- lavaan::parameterestimates(lgcmResult, level = options[["ciLevel"]],
+                                   standardized = options[["standardizedEstimate"]])
   slope_names <- c(
     "^I$" = gettext("Intercept"),
     "^L$" = gettext("Linear slope"),
@@ -377,14 +377,14 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   latcur[["cilo"]]      <- pecur[["ci.lower"]]
   latcur[["ciup"]]      <- pecur[["ci.upper"]]
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     latcur[["std.lv"]]  <- pecur[["std.lv"]]
     latcur[["std.all"]] <- pecur[["std.all"]]
     latcur[["std.nox"]] <- pecur[["std.nox"]]
   }
 
   # covariance
-  if (options[["covar"]]) {
+  if (options[["covaryingLatentCurve"]]) {
     pecov <- pe[pe$lhs %in% slope_names & pe$op == "~~" & pe$lhs != pe$rhs,]
     latcov[["lhs"]]  <- pecov[["lhs"]]
     latcov[["sep"]]  <- rep("\u2B64\u00A0", nrow(pecov))
@@ -395,7 +395,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
     latcov[["pval"]] <- pecov[["pvalue"]]
     latcov[["cilo"]] <- pecov[["ci.lower"]]
     latcov[["ciup"]] <- pecov[["ci.upper"]]
-    if (options[["std"]]) {
+    if (options[["standardizedEstimate"]]) {
       latcov[["std.lv"]]  <- pecov[["std.lv"]]
       latcov[["std.all"]] <- pecov[["std.all"]]
       latcov[["std.nox"]] <- pecov[["std.nox"]]
@@ -414,7 +414,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
     latreg[["pval"]]      <- pereg[["pvalue"]]
     latreg[["cilo"]]      <- pereg[["ci.lower"]]
     latreg[["ciup"]]      <- pereg[["ci.upper"]]
-    if (options[["std"]]) {
+    if (options[["standardizedEstimate"]]) {
       latreg[["std.lv"]]  <- pereg[["std.lv"]]
       latreg[["std.all"]] <- pereg[["std.all"]]
       latreg[["std.nox"]] <- pereg[["std.nox"]]
@@ -431,7 +431,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   resvar[["cilo"]] <- perev[["ci.lower"]]
   resvar[["ciup"]] <- perev[["ci.upper"]]
 
-  if (options[["std"]]) {
+  if (options[["standardizedEstimate"]]) {
     resvar[["std.lv"]]  <- perev[["std.lv"]]
     resvar[["std.all"]] <- perev[["std.all"]]
     resvar[["std.nox"]] <- perev[["std.nox"]]
@@ -445,10 +445,10 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
 }
 
 .lcgmAdditionalFitTables <- function(modelContainer, dataset, options, ready) {
-  if (!options[["outputAdditionalFitMeasures"]]) return()
+  if (!options[["additionalFitMeasures"]]) return()
 
   fitms <- createJaspContainer(gettext("Additional Fit measures"))
-  fitms$dependOn("outputAdditionalFitMeasures")
+  fitms$dependOn("additionalFitMeasures")
   fitms$position <- 3
   modelContainer[["fitMeasures"]] <- fitms
 
@@ -518,13 +518,13 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
 }
 
 .lcgmRSquaredTable <- function(modelContainer, dataset, options, ready) {
-  if (!options[["rsquared"]] || !is.null(modelContainer[["rsquared"]])) return()
+  if (!options[["rSquared"]] || !is.null(modelContainer[["rsquared"]])) return()
 
   tabr2 <- createJaspTable(gettext("R-Squared"))
   tabr2$position <- 3.5
   tabr2$addColumnInfo(name = "__var__", title = "Variable", type = "string")
   tabr2$addColumnInfo(name = "rsq",     title = "R\u00B2",  type = "number", format = "sf:4;dp:3")
-  tabr2$dependOn("rsquared")
+  tabr2$dependOn("rSquared")
   modelContainer[["rsquared"]] <- tabr2
 
   if (!ready || modelContainer$getError()) return()
@@ -538,9 +538,9 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
 }
 
 .lgcmImpliedCovTable <- function(modelContainer, dataset, options, ready) {
-  if (!options[["impliedCov"]]) return()
+  if (!options[["impliedCovarianceMatrix"]]) return()
   tab <- createJaspTable(gettext("Implied covariance matrix"))
-  tab$dependOn("impliedCov")
+  tab$dependOn("impliedCovarianceMatrix")
   tab$position <- 4
   modelContainer[["impliedCovTab"]] <- tab
 
@@ -561,9 +561,9 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
 }
 
 .lgcmResidualCovTable <- function(modelContainer, dataset, options, ready) {
-  if (!options[["residCov"]]) return()
+  if (!options[["residualCovarianceMatrix"]]) return()
   tab <- createJaspTable(gettext("Residual covariance matrix"))
-  tab$dependOn("residCov")
+  tab$dependOn("residualCovarianceMatrix")
   tab$position <- 5
   modelContainer[["rescov"]] <- tab
 
@@ -584,9 +584,9 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
 }
 
 .lgcmCurvePlot <- function(modelContainer, dataset, options, ready) {
-  if (!options[["curveplot"]] || !is.null(modelContainer[["curveplot"]])) return()
+  if (!options[["curvePlot"]] || !is.null(modelContainer[["curveplot"]])) return()
   curveplot <- createJaspPlot(title = gettext("Curve plot"), width = 480, height = 320)
-  curveplot$dependOn(c("curveplot", "plot_categorical", "plot_max_n", "colorPalette"))
+  curveplot$dependOn(c("curvePlot", "curvePlotCategorical", "curvePlotMaxLines", "colorPalette"))
   curveplot$position <- 8
   modelContainer[["curveplot"]] <- curveplot
   if (!ready || modelContainer$getError()) return()
@@ -600,11 +600,11 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   N   <- lgcmResult@Data@nobs[[1]]
   P   <- length(options[["variables"]])
   idx <- 1:N
-  if (N > options[["plot_max_n"]]) {
-    idx <- 1:options[["plot_max_n"]]
-    N   <- options[["plot_max_n"]]
+  if (N > options[["curvePlotMaxLines"]]) {
+    idx <- 1:options[["curvePlotMaxLines"]]
+    N   <- options[["curvePlotMaxLines"]]
   }
-  ctgcl <- options[["plot_categorical"]] != ""
+  ctgcl <- options[["curvePlotCategorical"]] != ""
 
   # plot the individual-level growth curves
   preds   <- lavaan::lavPredict(lgcmResult)[idx, , drop = FALSE]
@@ -616,7 +616,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   df_long <- tidyr::gather(df_wide, key = "Participant", value = "Val", -"xx")
 
   if (ctgcl)
-    df_long[[options[["plot_categorical"]]]] <- rep(dataset[[.v(options[["plot_categorical"]])]][idx], each = 1000)
+    df_long[[options[["curvePlotCategorical"]]]] <- rep(dataset[[.v(options[["curvePlotCategorical"]])]][idx], each = 1000)
 
   # create raw data points data frame
   points <- data.frame(lgcmResult@Data@X[[1]])[idx, lgcmResult@Data@ov.names[[1]] %in% .v(options[["variables"]])]
@@ -626,7 +626,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   points_long[["xx"]] <- as.numeric(points_long[["xx"]])
 
   if (ctgcl)
-    points_long[[options[["plot_categorical"]]]] <- rep(dataset[[.v(options[["plot_categorical"]])]][idx],
+    points_long[[options[["curvePlotCategorical"]]]] <- rep(dataset[[.v(options[["curvePlotCategorical"]])]][idx],
                                                         length(timings))
 
   # points may need to be jittered
@@ -634,7 +634,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   pos <- ggplot2::position_jitter(width = jitwidth)
 
   # lines may need to be transparent
-  cc <- if (ctgcl) length(unique(points_long[[options[["plot_categorical"]]]])) else 1
+  cc <- if (ctgcl) length(unique(points_long[[options[["curvePlotCategorical"]]]])) else 1
   transparency <- min(1, (log(cc) + 1) / log(N))
 
   # create the plot
@@ -650,8 +650,8 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   if (ctgcl)
     return(
       p +
-        ggplot2::aes_(colour = as.name(options[["plot_categorical"]]),
-                      shape  = as.name(options[["plot_categorical"]])) +
+        ggplot2::aes_(colour = as.name(options[["curvePlotCategorical"]]),
+                      shape  = as.name(options[["curvePlotCategorical"]])) +
         jaspGraphs::scale_JASPcolor_discrete(options[["colorPalette"]])
     )
 
@@ -659,10 +659,10 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
 }
 
 .lgcmPathPlot <- function(modelContainer, dataset, options, ready) {
-  if (!options$pathplot || !is.null(modelContainer[["pathplot"]])) return()
+  if (!options$pathPlot || !is.null(modelContainer[["pathplot"]])) return()
 
   modelContainer[["pathplot"]] <- createJaspPlot(title = gettext("Model plot"), height = 500, width = 640)
-  modelContainer[["pathplot"]]$dependOn(c("pathplot", "plotmeans", "plotpars"))
+  modelContainer[["pathplot"]]$dependOn(c("pathPlot", "pathPlotMean", "pathPlotParameter"))
   modelContainer[["pathplot"]]$position <- 9
 
   if (!ready || modelContainer$getError()) return()
@@ -674,8 +674,8 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
     DoNotPlot      = TRUE,
     ask            = FALSE,
     layout         = "tree2",
-    intercepts     = options$plotmeans,
-    whatLabels     = ifelse(options$plotpars, "par", "name"),
+    intercepts     = options$pathPlotMean,
+    whatLabels     = ifelse(options$pathPlotParameter, "par", "name"),
     edge.color     = "black",
     color          = list(lat = "#EAEAEA", man = "#EAEAEA", int = "#FFFFFF"),
     border.width   = 1.5,
@@ -689,23 +689,23 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
 }
 
 .lgcmSyntax <- function(modelContainer, dataset, options, ready) {
-  if (!ready || !options[["showSyntax"]]) return()
+  if (!ready || !options[["syntax"]]) return()
 
   modelContainer[["model_syntax"]] <- createJaspHtml(
     text         = .lgcmOptionsToMod(options, FALSE),
     class        = "jasp-code",
     position     = 10,
     title        = "Model Syntax",
-    dependencies = "showSyntax"
+    dependencies = "syntax"
   )
 }
 
 # Unused functions ----
 .lgcmMisfitPlot <- function(modelContainer, dataset, options, ready) {
-  if (!options[["misfitplot"]] || !is.null(modelContainer[["misfitplot"]])) return()
+  if (!options[["misfitPlot"]] || !is.null(modelContainer[["misfitplot"]])) return()
   wh <- 50 + 50*length(options[["variables"]])
   misplot <- createJaspPlot(title = gettext("Misfit plot"), width = wh, height = wh)
-  misplot$dependOn("misfitplot")
+  misplot$dependOn("misfitPlot")
   misplot$position <- 9
   modelContainer[["misfitplot"]] <- misplot
   if (!ready || modelContainer$getError()) return()

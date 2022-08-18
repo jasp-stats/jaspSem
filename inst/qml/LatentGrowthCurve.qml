@@ -125,7 +125,7 @@ Form
 			CheckBox
 			{
 				label: qsTr("Covarying latent curve")
-				name: "covar"
+				name: "covaryingLatentCurve"
 				enabled: linear.checked
 				checked: true
 			}
@@ -137,15 +137,15 @@ Form
 		title: qsTr("Additional Output")
 		GroupBox
 		{
-			CheckBox { label: qsTr("Additional Fit Measures")   ; name: "outputAdditionalFitMeasures"   }
-			CheckBox { label: qsTr("R-Squared")                 ; name: "rsquared"                      }
-			CheckBox { label: qsTr("Standardized estimates")    ; name: "std"                           }
+			CheckBox { label: qsTr("Additional Fit Measures")   ; name: "additionalFitMeasures"   }
+			CheckBox { label: qsTr("R-Squared")                 ; name: "rSquared"                      }
+			CheckBox { label: qsTr("Standardized estimates")    ; name: "standardizedEstimate"                           }
 		}
 		GroupBox
 		{
-			CheckBox { label: qsTr("Implied covariance matrix")  ; name: "impliedCov" }
-			CheckBox { label: qsTr("Residual covariance matrix") ; name: "residCov"   }
-			CheckBox { label: qsTr("Show lavaan syntax")         ; name: "showSyntax" }
+			CheckBox { label: qsTr("Implied covariance matrix")  ; name: "impliedCovarianceMatrix" }
+			CheckBox { label: qsTr("Residual covariance matrix") ; name: "residualCovarianceMatrix"   }
+			CheckBox { label: qsTr("Show lavaan syntax")         ; name: "syntax" }
 		}
 	}
 
@@ -171,9 +171,9 @@ Form
 			}
 			CheckBox {
 				text: qsTr("Curve plot")
-				name: "curveplot"
+				name: "curvePlot"
 				DropDown {
-					name: "plot_categorical"
+					name: "curvePlotCategorical"
 					label: "Colour lines by"
 					source: "categorical"
 					addEmptyValue: true
@@ -181,19 +181,19 @@ Form
 				}
 
 				IntegerField {
-					name: "plot_max_n"
+					name: "curvePlotMaxLines"
 					text: "Maximum number of lines"
 					defaultValue: 150
 					negativeValues: false
 				}
 			}
-			CheckBox { text: qsTr("Misfit plot")    ; name: "misfitplot"   ; debug: true }
+			CheckBox { text: qsTr("Misfit plot")    ; name: "misfitPlot"   ; debug: true }
 			CheckBox
 			{
 				text: qsTr("Model plot")
-				name: "pathplot"
-				CheckBox { text: qsTr("Show parameters") ; name: "plotpars"  }
-				CheckBox { text: qsTr("Show means")      ; name: "plotmeans" }
+				name: "pathPlot"
+				CheckBox { text: qsTr("Show parameters") ; name: "pathPlotParameter"  }
+				CheckBox { text: qsTr("Show means")      ; name: "pathPlotMean" }
 			}
 		}
 	}
@@ -204,15 +204,15 @@ Form
 		RadioButtonGroup
 		{
 			title: qsTr("Emulation")
-			name: "mimic"
+			name: "emulation"
 			RadioButton { text: qsTr("None")  ; name: "lavaan"  ; checked: true }
-			RadioButton { text: qsTr("Mplus") ; name: "Mplus" }
-			RadioButton { text: qsTr("EQS")   ; name: "EQS"   }
+			RadioButton { text: qsTr("Mplus") ; name: "mplus" }
+			RadioButton { text: qsTr("EQS")   ; name: "eqs"   }
 		}
 
 		RadioButtonGroup {
 			title: qsTr("Missing value handling")
-			name: "missing"
+			name: "naAction"
 			RadioButton { text: qsTr("Full Information Maximum Likelihood") ; name: "fiml" ; checked: true }
 			RadioButton { text: qsTr("Exclude cases listwise")              ; name: "listwise"             }
 		}
@@ -220,11 +220,11 @@ Form
 		GroupBox
 		{
 			title: qsTr("Error calculation")
-			CIField { text: qsTr("CI width"); name: "ciWidth" }
+			CIField { text: qsTr("CI width"); name: "ciLevel" }
 			RadioButtonGroup
 			{
 				title: qsTr("Method")
-				name: "se"
+				name: "samplingMethod"
 				RadioButton { text: qsTr("Standard")  ; name: "standard" ; checked: true }
 				RadioButton { text: qsTr("Robust")    ; name: "robust" }
 				RadioButton {
@@ -232,7 +232,7 @@ Form
 					name: "bootstrap"
 					IntegerField {
 						text: qsTr("Bootstrap samples")
-						name: "bootstrapNumber"
+						name: "bootstrapSamples"
 						defaultValue: 1000
 						min: 100
 						max: 1000000
@@ -246,25 +246,25 @@ Form
 			title: qsTr("Estimator")
 			name: "estimator"
 			RadioButton { text: qsTr("Auto") ; name: "default"; checked: true }
-			RadioButton { text: qsTr("ML")   ; name: "ML"       }
-			RadioButton { text: qsTr("GLS")  ; name: "GLS"      }
-			RadioButton { text: qsTr("WLS")  ; name: "WLS"      }
-			RadioButton { text: qsTr("ULS")  ; name: "ULS"      }
-			RadioButton { text: qsTr("DWLS") ; name: "DWLS"     }
+			RadioButton { text: qsTr("ML")   ; name: "ml"       }
+			RadioButton { text: qsTr("GLS")  ; name: "gls"      }
+			RadioButton { text: qsTr("WLS")  ; name: "wls"      }
+			RadioButton { text: qsTr("ULS")  ; name: "uls"      }
+			RadioButton { text: qsTr("DWLS") ; name: "dwls"     }
 		}
 
 		GroupBox
 		{
 			title: qsTr("Options")
 			debug: true
-			CheckBox { text: qsTr("Fix manifest intercepts to zero") ; name: "fixManifestInterceptsToZero" }
-			CheckBox { text: qsTr("Fix latent intercepts to zero")   ; name: "fixLatentInterceptsToZero"   ; checked: true }
-			CheckBox { text: qsTr("Omit residual single indicator")  ; name: "omitResidualSingleIndicator" ; checked: true }
-			CheckBox { text: qsTr("Residual variances")              ; name: "residualVariances"           ; checked: true }
-			CheckBox { text: qsTr("Correlate exogenous latents")     ; name: "correlateExogenousLatents"   ; checked: true }
-			CheckBox { text: qsTr("Add thresholdds")                 ; name: "addThresholds"               ; checked: true }
-			CheckBox { text: qsTr("Add scalings parameters")         ; name: "addScalingParameters"        ; checked: true }
-			CheckBox { text: qsTr("Correlate dependent variables")   ; name: "correlateDependentVariables" ; checked: true }
+			CheckBox { text: qsTr("Fix manifest intercepts to zero") ; name: "manifestInterceptZeroFix" }
+			CheckBox { text: qsTr("Fix latent intercepts to zero")   ; name: "latentInterceptsZeroFix"   ; checked: true }
+			CheckBox { text: qsTr("Omit residual single indicator")  ; name: "residualSingleIndicatorOmission" ; checked: true }
+			CheckBox { text: qsTr("Residual variances")              ; name: "residualVariance"           ; checked: true }
+			CheckBox { text: qsTr("Correlate exogenous latents")     ; name: "exogenousLatentCorrelation"   ; checked: true }
+			CheckBox { text: qsTr("Add thresholdds")                 ; name: "threshold"               ; checked: true }
+			CheckBox { text: qsTr("Add scalings parameters")         ; name: "scalingParameter"        ; checked: true }
+			CheckBox { text: qsTr("Correlate dependent variables")   ; name: "dependentCorrelation" ; checked: true }
 		}
 	}
 
@@ -275,7 +275,7 @@ Form
 		DropDown
 		{
 			label: qsTr("Grouping variable") ;
-			name: "groupvar";
+			name: "group";
 			showVariableTypeIcon: true;
 			addEmptyValue: true;
 		} // No model or syncModels: it takes all variables per default
