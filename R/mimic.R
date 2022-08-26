@@ -109,7 +109,7 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
   mimicResult <- try(lavaan::sem(
     model           = .mimicToLavMod(options),
     data            = dataset,
-    se              = ifelse(options$samplingMethod == "bootstrap", "standard", options$samplingMethod),
+    se              = ifelse(options$errorCalculationMethod == "bootstrap", "standard", options$errorCalculationMethod),
     mimic           = options$emulation,
     estimator       = options$estimator,
     missing         = options$naAction,
@@ -128,7 +128,7 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
     return()
   }
 
-  if (options$samplingMethod == "bootstrap") {
+  if (options$errorCalculationMethod == "bootstrap") {
     mimicResult <- lavBootstrap(mimicResult, options$bootstrapSamples)
   }
 
@@ -174,7 +174,7 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c(
       "predictors", "indicators", "includemeanstructure",
-      "bootstrapSamples", "fixManifestInterceptsToZero", "emulation", "samplingMethod", "estimator",
+      "bootstrapSamples", "emulation", "errorCalculationMethod", "estimator",
       "naAction")
     )
     jaspResults[["modelContainer"]] <- modelContainer

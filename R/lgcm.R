@@ -94,7 +94,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   lgcmResult <- try(lavaan::growth(
     model     = .lgcmOptionsToMod(options),
     data      = dataset,
-    se        = ifelse(options[["samplingMethod"]] == "bootstrap", "standard", options[["samplingMethod"]]),
+    se        = ifelse(options[["errorCalculationMethod"]] == "bootstrap", "standard", options[["errorCalculationMethod"]]),
     mimic     = options[["emulation"]],
     estimator = options[["estimator"]],
     missing   = options[["naAction"]]
@@ -118,7 +118,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
   }
 
   # Bootstrapping with interruptible progress bar
-  if (options[["samplingMethod"]] == "bootstrap") {
+  if (options[["errorCalculationMethod"]] == "bootstrap") {
     startProgressbar(options[["bootstrapSamples"]])
 
     boot_1      <- lavaan::bootstrapLavaan(lgcmResult, R = 1)
@@ -203,7 +203,7 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
     modelContainer$dependOn(c(
       "variables", "regressions", "covariates", "categorical", "timings",
       "intercept", "linear", "quadratic", "cubic", "covaryingLatentCurve",
-      "samplingMethod", "bootstrapSamples"
+      "errorCalculationMethod", "bootstrapSamples"
     ))
     jaspResults[["modelContainer"]] <- modelContainer
   }
@@ -538,9 +538,9 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
 }
 
 .lgcmImpliedCovTable <- function(modelContainer, dataset, options, ready) {
-  if (!options[["impliedCovarianceMatrix"]]) return()
+  if (!options[["impliedCovariance"]]) return()
   tab <- createJaspTable(gettext("Implied covariance matrix"))
-  tab$dependOn("impliedCovarianceMatrix")
+  tab$dependOn("impliedCovariance")
   tab$position <- 4
   modelContainer[["impliedCovTab"]] <- tab
 
@@ -561,9 +561,9 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
 }
 
 .lgcmResidualCovTable <- function(modelContainer, dataset, options, ready) {
-  if (!options[["residualCovarianceMatrix"]]) return()
+  if (!options[["residualCovariance"]]) return()
   tab <- createJaspTable(gettext("Residual covariance matrix"))
-  tab$dependOn("residualCovarianceMatrix")
+  tab$dependOn("residualCovariance")
   tab$position <- 5
   modelContainer[["rescov"]] <- tab
 

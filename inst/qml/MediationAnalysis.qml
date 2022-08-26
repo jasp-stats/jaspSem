@@ -44,7 +44,7 @@ Form
         AssignedVariablesList
         {
 			title: qsTr("Outcome")
-            name:  "dependents"
+            name:  "outcomes"
             allowedColumns: ["scale", "ordinal"]
         }
         AssignedVariablesList
@@ -81,7 +81,7 @@ Form
             }
             RadioButtonGroup {
                 title: qsTr("Method")
-                name: "samplingMethod"
+                name: "errorCalculationMethod"
                 RadioButton { text: qsTr("Standard")  ; name: "standard" ; checked: true }
                 RadioButton { text: qsTr("Robust")    ; name: "robust" }
                 RadioButton {

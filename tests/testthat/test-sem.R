@@ -2,7 +2,7 @@ context("Structural Equation Modeling")
 
 test_that("Basic SEM works", {
   options <- jaspTools::analysisOptions("SEM")
-  options$models <- list(list(modelName = "Model1", syntax = list(model = "x1 ~ x2 + x3 + y1", columns = c("x1", "x2", "x3", "y1"))))
+  options$models <- list(list(name = "Model1", syntax = list(model = "x1 ~ x2 + x3 + y1", columns = c("x1", "x2", "x3", "y1"))))
   options$emulation         <- "lavaan"
   options$estimator         <- "default"
   options$group             <- ""
@@ -47,7 +47,7 @@ test_that("Multigroup, multimodel SEM works", {
   options$estimator                   = "default"
   options$group                       = "group"
   options$informationMatrix           = "expected"
-  options$meanstructure               = TRUE
+  options$meanStructure               = TRUE
   options$modificationIndexLowHidden  = TRUE
   options$naAction                    = "listwise"
   options$additionalFitMeasures       = TRUE
@@ -111,9 +111,9 @@ test_that("Multigroup, multimodel SEM works", {
   ", columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))
 
   options$models = list(
-    list(modelName = "default",          syntax = modelDefault),
-    list(modelName = "constrained",      syntax = modelConstrained),
-    list(modelName = "more constrained", syntax = modelMoreConstrained)
+    list(name = "default",          syntax = modelDefault),
+    list(name = "constrained",      syntax = modelConstrained),
+    list(name = "more constrained", syntax = modelMoreConstrained)
   )
 
   results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
@@ -538,7 +538,7 @@ test_that("Multigroup, multimodel SEM works", {
 
 test_that("Bootstrapping works", {
   options <- jaspTools::analysisOptions("SEM")
-  options$models <- list(list(modelName = "Model1", syntax = list(model = "x1 ~ x2 + x3 + y1", columns = c("x1", "x2", "x3", "y1"))))
+  options$models <- list(list(name = "Model1", syntax = list(model = "x1 ~ x2 + x3 + y1", columns = c("x1", "x2", "x3", "y1"))))
   options$emulation         <- "lavaan"
   options$estimator         <- "default"
   options$group             <- ""
@@ -546,7 +546,7 @@ test_that("Bootstrapping works", {
   options$informationMatrix <- "expected"
   options$naAction          <- "fiml"
   options$modelTest         <- "standard"
-  options$samplingMethod    <- "bootstrap"
+  options$errorCalculationMethod    <- "bootstrap"
   options$bootstrapCiType   <- "percentile"
   options$bootstrapSamples  <- 100
 

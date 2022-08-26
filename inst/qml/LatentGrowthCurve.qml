@@ -137,15 +137,15 @@ Form
 		title: qsTr("Additional Output")
 		GroupBox
 		{
-			CheckBox { label: qsTr("Additional Fit Measures")   ; name: "additionalFitMeasures"   }
-			CheckBox { label: qsTr("R-Squared")                 ; name: "rSquared"                      }
-			CheckBox { label: qsTr("Standardized estimates")    ; name: "standardizedEstimate"                           }
+			CheckBox { label: qsTr("Additional Fit Measures")   ; name: "additionalFitMeasures"	}
+			CheckBox { label: qsTr("R-Squared")                 ; name: "rSquared"				}
+			CheckBox { label: qsTr("Standardized estimates")    ; name: "standardizedEstimate"	}
 		}
 		GroupBox
 		{
-			CheckBox { label: qsTr("Implied covariance matrix")  ; name: "impliedCovarianceMatrix" }
-			CheckBox { label: qsTr("Residual covariance matrix") ; name: "residualCovarianceMatrix"   }
-			CheckBox { label: qsTr("Show lavaan syntax")         ; name: "syntax" }
+			CheckBox { label: qsTr("Implied covariance matrix")  ; name: "impliedCovariance" 	}
+			CheckBox { label: qsTr("Residual covariance matrix") ; name: "residualCovariance"	}
+			CheckBox { label: qsTr("Show lavaan syntax")         ; name: "syntax" 				}
 		}
 	}
 
@@ -192,8 +192,8 @@ Form
 			{
 				text: qsTr("Model plot")
 				name: "pathPlot"
-				CheckBox { text: qsTr("Show parameters") ; name: "pathPlotParameter"  }
-				CheckBox { text: qsTr("Show means")      ; name: "pathPlotMean" }
+				CheckBox { text: qsTr("Show parameters") ; name: "pathPlotParameter"	}
+				CheckBox { text: qsTr("Show means")      ; name: "pathPlotMean"			}
 			}
 		}
 	}
@@ -214,7 +214,7 @@ Form
 			title: qsTr("Missing value handling")
 			name: "naAction"
 			RadioButton { text: qsTr("Full Information Maximum Likelihood") ; name: "fiml" ; checked: true }
-			RadioButton { text: qsTr("Exclude cases listwise")              ; name: "listwise"             }
+			RadioButton { text: qsTr("Exclude cases listwise")              ; name: "listwise"	}
 		}
 
 		GroupBox
@@ -224,7 +224,7 @@ Form
 			RadioButtonGroup
 			{
 				title: qsTr("Method")
-				name: "samplingMethod"
+				name: "errorCalculationMethod"
 				RadioButton { text: qsTr("Standard")  ; name: "standard" ; checked: true }
 				RadioButton { text: qsTr("Robust")    ; name: "robust" }
 				RadioButton {
@@ -257,14 +257,14 @@ Form
 		{
 			title: qsTr("Options")
 			debug: true
-			CheckBox { text: qsTr("Fix manifest intercepts to zero") ; name: "manifestInterceptZeroFix" }
-			CheckBox { text: qsTr("Fix latent intercepts to zero")   ; name: "latentInterceptsZeroFix"   ; checked: true }
-			CheckBox { text: qsTr("Omit residual single indicator")  ; name: "residualSingleIndicatorOmission" ; checked: true }
-			CheckBox { text: qsTr("Residual variances")              ; name: "residualVariance"           ; checked: true }
-			CheckBox { text: qsTr("Correlate exogenous latents")     ; name: "exogenousLatentCorrelation"   ; checked: true }
-			CheckBox { text: qsTr("Add thresholdds")                 ; name: "threshold"               ; checked: true }
-			CheckBox { text: qsTr("Add scalings parameters")         ; name: "scalingParameter"        ; checked: true }
-			CheckBox { text: qsTr("Correlate dependent variables")   ; name: "dependentCorrelation" ; checked: true }
+			CheckBox { text: qsTr("Fix manifest intercepts to zero") ; name: "manifestInterceptFixedToZero" 	}
+			CheckBox { text: qsTr("Fix latent intercepts to zero")   ; name: "latentInterceptFixedToZero"		; checked: true }
+			CheckBox { text: qsTr("Omit residual single indicator")  ; name: "residualSingleIndicatorOmitted"	; checked: true }
+			CheckBox { text: qsTr("Residual variances")              ; name: "residualVariance"           		; checked: true }
+			CheckBox { text: qsTr("Correlate exogenous latents")     ; name: "exogenousLatentCorrelation"   	; checked: true }
+			CheckBox { text: qsTr("Add thresholdds")                 ; name: "threshold"               			; checked: true }
+			CheckBox { text: qsTr("Add scalings parameters")         ; name: "scalingParameter"        			; checked: true }
+			CheckBox { text: qsTr("Correlate dependent variables")   ; name: "dependentCorrelation" 			; checked: true }
 		}
 	}
 

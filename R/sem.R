@@ -115,12 +115,12 @@ SEM <- function(jaspResults, dataset, options, ...) {
 
   # Check mean structure:
   if (options[["dataType"]] == "varianceCovariance") {
-    if (options[["meanstructure"]]) {
+    if (options[["meanStructure"]]) {
       modelContainer$setError(gettext("Mean structure can not be included when data is variance-covariance matrix"))
       return()
     }
 
-    options$meanstructure <- FALSE
+    options$meanStructure <- FALSE
 
     if (options[["sampleSize"]] == 0) {
       modelContainer$setError(gettext("Please set the sample size!"))
@@ -200,10 +200,10 @@ checkLavaanModel <- function(model, availableVars) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("samplingWeights", "meanstructure", "manifestInterceptZeroFix", "latentInterceptZeroFix", "exogenousCovariateFix", "orthogonal",
-                              "factorScaling", "residualSingleIndicatorOmission", "residualVariance", "exogenousLatentCorrelation",
+    modelContainer$dependOn(c("samplingWeights", "meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero", "exogenousCovariateFixed", "orthogonal",
+                              "factorScaling", "residualSingleIndicatorOmitted", "residualVariance", "exogenousLatentCorrelation",
                               "dependentCorrelation", "threshold", "scalingParameter", "efaConstrained", "standardizedVariable", "naAction", "estimator", "test",
-                              "samplingMethod", "informationMatrix", "emulation", "group", "equalLoading", "equalIntercept",
+                              "errorCalculationMethod", "informationMatrix", "emulation", "group", "equalLoading", "equalIntercept",
                               "equalResidual", "equalResidualCovariance", "equalMean", "equalThreshold", "equalRegression",
                               "equalVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters"))
     jaspResults[["modelContainer"]] <- modelContainer
@@ -271,27 +271,27 @@ checkLavaanModel <- function(model, availableVars) {
 
       errmsg <- gettextf("Estimation failed Message: %s", err)
 
-      modelContainer$setError(paste0("Error in model \"", options[["models"]][[i]][["modelName"]], "\" - ",
+      modelContainer$setError(paste0("Error in model \"", options[["models"]][[i]][["name"]], "\" - ",
                                     .decodeVarsInMessage(names(dataset), errmsg)))
       modelContainer$dependOn("models") # add dependency so everything gets updated upon model change
       break
     }
 
     if(isFALSE(slot(fit, "optim")$converged)) {
-      errormsg <- gettextf("Estimation failed! Message: Model %s did not converge!", options[["models"]][[i]][["modelName"]])
+      errormsg <- gettextf("Estimation failed! Message: Model %s did not converge!", options[["models"]][[i]][["name"]])
       modelContainer$setError(errormsg)
       modelContainer$dependOn("models")
       break
     }
 
     if(lavaan::fitMeasures(fit, "df") < 0 ) {
-      errormsg <- gettextf("Estimation failed! Message: Model %s has negative degrees of freedom.", options[["models"]][[i]][["modelName"]])
+      errormsg <- gettextf("Estimation failed! Message: Model %s has negative degrees of freedom.", options[["models"]][[i]][["name"]])
       modelContainer$setError(errormsg)
       modelContainer$dependOn("models")
       break
     }
 
-    if (options[["samplingMethod"]] == "bootstrap") {
+    if (options[["errorCalculationMethod"]] == "bootstrap") {
       fit <- lavBootstrap(fit, options[["bootstrapSamples"]])
     }
     results[[i]] <- fit
@@ -330,15 +330,15 @@ checkLavaanModel <- function(model, availableVars) {
 
 
   # model features
-  lavopts[["meanstructure"]]   <- options[["meanstructure"]]
-  lavopts[["int.ov.free"]]     <- !options[["manifestInterceptZeroFix"]]
-  lavopts[["int.lv.free"]]     <- !options[["latentInterceptZeroFix"]]
-  lavopts[["fixed.x"]]         <- options[["exogenousCovariateFix"]]
+  lavopts[["meanstructure"]]   <- options[["meanStructure"]]
+  lavopts[["int.ov.free"]]     <- !options[["manifestInterceptFixedToZero"]]
+  lavopts[["int.lv.free"]]     <- !options[["latentInterceptFixedToZero"]]
+  lavopts[["fixed.x"]]         <- options[["exogenousCovariateFixed"]]
   lavopts[["orthogonal"]]      <- options[["orthogonal"]]
   lavopts[["std.lv"]]          <- options[["factorScaling"]] == "factorVariance"
   lavopts[["effect.coding"]]   <- options[["factorScaling"]] == "effectCoding"
   lavopts[["auto.fix.first"]]  <- options[["factorScaling"]] == "factorLoading"
-  lavopts[["auto.fix.single"]] <- options[["residualSingleIndicatorOmission"]]
+  lavopts[["auto.fix.single"]] <- options[["residualSingleIndicatorOmitted"]]
   lavopts[["auto.var"]]        <- options[["residualVariance"]]
   lavopts[["auto.cov.lv.x"]]   <- options[["exogenousLatentCorrelation"]]
   lavopts[["auto.cov.y"]]      <- options[["dependentCorrelation"]]
@@ -356,7 +356,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   # estimation options
   lavopts[["estimator"]]   <- options[["estimator"]]
-  lavopts[["se"]]          <- ifelse(options[["samplingMethod"]] == "bootstrap", "standard", options[["samplingMethod"]])
+  lavopts[["se"]]          <- ifelse(options[["errorCalculationMethod"]] == "bootstrap", "standard", options[["errorCalculationMethod"]])
   lavopts[["information"]] <- options[["informationMatrix"]]
   lavopts[["test"]]        <- ifelse(options[["modelTest"]] == "satorraBentler", "Satorra.Bentler",
                                      ifelse(options[["modelTest"]] == "yuanBentler", "Yuan.Bentler",
@@ -469,13 +469,13 @@ checkLavaanModel <- function(model, availableVars) {
 
   if (length(semResults) == 1) {
     lrt <- .withWarnings(lavaan::lavTestLRT(semResults[[1]])[-1, ])
-    rownames(lrt$value) <- options[["models"]][[1]][["modelName"]]
+    rownames(lrt$value) <- options[["models"]][[1]][["name"]]
     Ns <- lavaan::lavInspect(semResults[[1]], "ntotal")
   } else {
     Ns <- vapply(semResults, lavaan::lavInspect, 0, what = "ntotal")
     lrt_args <- semResults
     names(lrt_args) <- "object" # (the first result is object, the others ...)
-    lrt_args[["model.names"]] <- vapply(options[["models"]], getElement, name = "modelName", "")
+    lrt_args[["model.names"]] <- vapply(options[["models"]], getElement, name = "name", "")
     lrt <- .withWarnings(do.call(lavaan::lavTestLRT, lrt_args))
     lrt$value[1,5:7] <- NA
   }
@@ -547,7 +547,7 @@ checkLavaanModel <- function(model, availableVars) {
 
     for (i in seq_along(options[["models"]])) {
       fit <- modelContainer[["results"]][["object"]][[i]]
-      modelname <- options[["models"]][[i]][["modelName"]]
+      modelname <- options[["models"]][[i]][["name"]]
       .semParameterTables(fit, modelname, params, options, ready)
     }
   }
@@ -732,7 +732,7 @@ checkLavaanModel <- function(model, availableVars) {
   pecont[["cov"]] <- covtab
 
   # Means
-  if (options[["meanstructure"]]) {
+  if (options[["meanStructure"]]) {
     mutab <- createJaspTable(title = gettext("Means"))
 
     if (options[["group"]] != "")
@@ -946,7 +946,7 @@ checkLavaanModel <- function(model, availableVars) {
 
 
   # Means
-  if (options[["meanstructure"]]) {
+  if (options[["meanStructure"]]) {
     pe_mu <- pe[pe$op == "~1",]
 
     if (options[["group"]] != "")
@@ -1002,7 +1002,7 @@ checkLavaanModel <- function(model, availableVars) {
     fitin$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
   } else {
     for (i in seq_along(options[["models"]])) {
-      fitin$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["modelName"]], type = "number")
+      fitin$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["name"]], type = "number")
     }
   }
   fitin$setExpectedSize(rows = 1, cols = 2)
@@ -1010,12 +1010,12 @@ checkLavaanModel <- function(model, availableVars) {
   # information criteria
   if (!options$estimator %in% c("DWLS", "GLS", "WLS", "ULS")) {
     fitms[["incrits"]] <- fitic <- createJaspTable(gettext("Information criteria"))
-    fitic$addColumnInfo(name = "index", title = "",               type = "string")
+    fitic$addColumnInfo(name = "index", title = "", type = "string")
     if (length(options[["models"]]) < 2) {
       fitic$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
     } else {
       for (i in seq_along(options[["models"]])) {
-        fitic$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["modelName"]], type = "number")
+        fitic$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["name"]], type = "number")
       }
     }
     fitic$setExpectedSize(rows = 1, cols = 2)
@@ -1030,7 +1030,7 @@ checkLavaanModel <- function(model, availableVars) {
     fitot$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
   } else {
     for (i in seq_along(options[["models"]])) {
-      fitot$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["modelName"]], type = "number")
+      fitot$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["name"]], type = "number")
     }
   }
   fitot$setExpectedSize(rows = 1, cols = 2)
@@ -1117,7 +1117,7 @@ checkLavaanModel <- function(model, availableVars) {
     tabr2$addColumnInfo(name = "rsq", title = "R\u00B2", type = "number")
   } else {
     for (i in seq_along(options[["models"]])) {
-      tabr2$addColumnInfo(name = paste0("rsq_", i), title = options[["models"]][[i]][["modelName"]],
+      tabr2$addColumnInfo(name = paste0("rsq_", i), title = options[["models"]][[i]][["name"]],
                           overtitle = "R\u00B2", type = "number")
     }
   }
@@ -1283,7 +1283,7 @@ checkLavaanModel <- function(model, availableVars) {
 
     for (i in seq_along(options[["models"]])) {
       fit <- modelContainer[["results"]][["object"]][[i]]
-      modelname <- options[["models"]][[i]][["modelName"]]
+      modelname <- options[["models"]][[i]][["name"]]
       .semCovTables(fit, modelname, covars, options, ready)
     }
   }
@@ -1544,7 +1544,7 @@ checkLavaanModel <- function(model, availableVars) {
 
     for (i in seq_along(options[["models"]])) {
       fit <- modelContainer[["results"]][["object"]][[i]]
-      modelname <- options[["models"]][[i]][["modelName"]]
+      modelname <- options[["models"]][[i]][["name"]]
       .semMITable(fit, modelname, modindices, options, ready)
     }
   }
@@ -1618,7 +1618,7 @@ checkLavaanModel <- function(model, availableVars) {
 
     for (i in seq_along(options[["models"]])) {
       fit <- modelContainer[["results"]][["object"]][[i]]
-      modelname <- options[["models"]][[i]][["modelName"]]
+      modelname <- options[["models"]][[i]][["name"]]
       .semCreatePathPlot(fit, modelname, pcont, options, ready)
     }
   }

@@ -55,7 +55,7 @@ Form
 		name: "models"
 		maximumItems: 9
 		newItemName: qsTr("Model 1")
-		optionKey: "modelName"
+		optionKey: "name"
 
 		content: TextArea { name: "syntax"; width: models.width; textType: JASP.TextTypeLavaan }
 	}
@@ -89,11 +89,11 @@ Form
 		{
 			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures")	}
 			CheckBox { name: "rSquared";				label: qsTr("R-squared")				}
-			CheckBox { name: "observedCovariance";	label: qsTr("Observed covariances")		}
-			CheckBox { name: "impliedCovariance";	label: qsTr("Implied covariances")		}
-			CheckBox { name: "residualCovariance";	label: qsTr("Residual covariances")		}
-			CheckBox { name: "standardizedResidual"; label: qsTr("Standardized residuals")	}
-			CheckBox { name: "mardiasCoefficient";	label: qsTr("Mardia's coefficient")		}
+			CheckBox { name: "observedCovariance";		label: qsTr("Observed covariances")		}
+			CheckBox { name: "impliedCovariance";		label: qsTr("Implied covariances")		}
+			CheckBox { name: "residualCovariance";		label: qsTr("Residual covariances")		}
+			CheckBox { name: "standardizedResidual"; 	label: qsTr("Standardized residuals")	}
+			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient")		}
 		}
 		Group
 		{
@@ -153,17 +153,17 @@ Form
 					{ label: qsTr("None")				, value: "none"				}
 				]
 			}
-			CheckBox { name: "meanstructure";	label: qsTr("Include mean structure")							}
-			CheckBox { name: "manifestInterceptZeroFix";	label: qsTr("Fix manifest intercepts to zero")					}
-			CheckBox { name: "latentInterceptZeroFix";	label: qsTr("Fix latent intercepts to zero");	checked: true	}
-			CheckBox { name: "orthogonal";		label: qsTr("Assume factors uncorrelated")						}
+			CheckBox { name: "meanStructure";					label: qsTr("Include mean structure")							}
+			CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Fix manifest intercepts to zero")					}
+			CheckBox { name: "latentInterceptFixedToZero";		label: qsTr("Fix latent intercepts to zero");	checked: true	}
+			CheckBox { name: "orthogonal";						label: qsTr("Assume factors uncorrelated")						}
 		}
 
 		Group
 		{
 
-			CheckBox { name: "exogenousCovariateFix";			label: qsTr("Fix exogenous covariates"); 		checked: true	}
-			CheckBox { name: "residualSingleIndicatorOmission";	label: qsTr("Omit residual single indicator");	checked: true	}
+			CheckBox { name: "exogenousCovariateFixed";			label: qsTr("Fix exogenous covariates"); 		checked: true	}
+			CheckBox { name: "residualSingleIndicatorOmitted";	label: qsTr("Omit residual single indicator");	checked: true	}
 			CheckBox { name: "residualVariance";				label: qsTr("Include residual variances");		checked: true	}
 			CheckBox { name: "exogenousLatentCorrelation";		label: qsTr("Correlate exogenous latents");		checked: true	}
 			CheckBox { name: "dependentCorrelation";			label: qsTr("Correlate dependent variables");	checked: true	}
@@ -193,7 +193,7 @@ Form
 			RadioButtonGroup
 			{
 				title: qsTr("Error calculation")
-				name: "samplingMethod"
+				name: "errorCalculationMethod"
 				RadioButton { value: "standard";	label: qsTr("Standard"); checked: true		}
 				RadioButton { value: "robust";		label: qsTr("Robust")						}
 				RadioButton
@@ -211,9 +211,9 @@ Form
                         label: qsTr("Type")
                         name: "bootstrapCiType"
                         values: [
-                            { label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"   },
-                            { label: qsTr("Percentile"),                value: "percentile"         },
-                            { label: qsTr("Normal theory"),             value: "normalTheory"         }
+                            { label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"	},
+                            { label: qsTr("Percentile"),                value: "percentile"         		},
+                            { label: qsTr("Normal theory"),             value: "normalTheory"         		}
                         ]
                     }
 				}
@@ -269,9 +269,9 @@ Form
 					{ label: qsTr("FIML")				, value: "fiml"				},
 					{ label: qsTr("Listwise deletion")	, value: "listwise"			},
 					{ label: qsTr("Pairwise")			, value: "pairwise"			},
-					{ label: qsTr("Two-stage")			, value: "twoStage"		},
+					{ label: qsTr("Two-stage")			, value: "twoStage"			},
 					{ label: qsTr("Robust two-stage")	, value: "twoStageRobust"	},
-					{ label: qsTr("Doubly robust")		, value: "doublyRobust"	},
+					{ label: qsTr("Doubly robust")		, value: "doublyRobust"		},
 				]
 			}
 
@@ -314,7 +314,7 @@ Form
 				CheckBox { id: eq_means; 				name: "equalMean";					label: qsTr("Means")				}
 				CheckBox { id: eq_thresholds; 			name: "equalThreshold";				label: qsTr("Threshold")			}
 				CheckBox { id: eq_regressions; 			name: "equalRegression";			label: qsTr("Regressions")			}
-				CheckBox { id: eq_variances; 			name: "equalLatentVariance";				label: qsTr("Latent variances")		}
+				CheckBox { id: eq_variances; 			name: "equalLatentVariance";		label: qsTr("Latent variances")		}
 				CheckBox { id: eq_lvcovariances; 		name: "equalLatentCovariance";		label: qsTr("Latent covariances")	}
 			}
 

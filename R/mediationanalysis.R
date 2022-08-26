@@ -39,12 +39,12 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 .medReadData <- function(dataset, options) {
   if (!is.null(dataset)) return(dataset)
 
-  vars <- c(options$predictors, options$mediators, options$dependents, options$confounds)
+  vars <- c(options$predictors, options$mediators, options$outcomes, options$confounds)
   return(.readDataSetToEnd(columns = vars))
 }
 
 .medCheckErrors <- function(dataset, options) {
-  if (length(options$dependents) == 0 || length(options$mediators) == 0 || length(options$predictors) == 0) return(FALSE)
+  if (length(options$outcomes) == 0 || length(options$mediators) == 0 || length(options$predictors) == 0) return(FALSE)
 
   # Check for missing value handling
   if (options$estimator %in% c("gls", "wls", "uls", "dwls") && options$naAction == "fiml")
@@ -53,7 +53,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   # Exogenous variables can be binary or continuous
   exo <- ifelse(length(options$confounds) > 0, options$confounds, options$predictors)
   # Endogenous variables need to be scale or ordinal
-  endo <- c(options$mediators, options$dependents)
+  endo <- c(options$mediators, options$outcomes)
 
   customChecks <- list(
     checkExogenous = function() {
@@ -110,7 +110,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   medResult <- try(lavaan::sem(
     model           = .medToLavMod(options),
     data            = dataset,
-    se              = ifelse(options$samplingMethod == "bootstrap", "standard", options$samplingMethod),
+    se              = ifelse(options$errorCalculationMethod == "bootstrap", "standard", options$errorCalculationMethod),
     mimic           = options$emulation,
     estimator       = options$estimator,
     std.ov          = options$standardizedEstimate,
@@ -122,7 +122,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     modelContainer$setError(.decodeVarsInMessage(names(dataset), errmsg))
   }
 
-  if (options$samplingMethod == "bootstrap") {
+  if (options$errorCalculationMethod == "bootstrap") {
     medResult <- lavBootstrap(medResult, options$bootstrapSamples)
   }
 
@@ -136,7 +136,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 
   n_pred <- length(options$predictors)
   n_medi <- length(options$mediators)
-  n_deps <- length(options$dependents)
+  n_deps <- length(options$outcomes)
   n_conf <- length(options$confounds)
 
   title    <- "
@@ -146,7 +146,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   "
   dep_part <- "# dependent regression"
   for (d in 1:n_deps) {
-    dep_part <- paste0(dep_part, "\n", options$dependents[d], " ~")
+    dep_part <- paste0(dep_part, "\n", options$outcomes[d], " ~")
     for (m in 1:n_medi) {
       par_name <- paste0(" b", d, m)
       dep_part <- paste0(dep_part, par_name, "*", options$mediators[m], " +")
@@ -176,7 +176,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   pred_res_part <- NULL
   if (n_conf > 0) {
     conf_part <- "# confounder adjustment"
-    for (var in c(options$predictors, options$mediators, options$dependents)) {
+    for (var in c(options$predictors, options$mediators, options$outcomes)) {
       conf_part <- paste0(conf_part, "\n", var, " ~ ", paste(options$confounds, collapse = " + "))
     }
     conf_part <- paste0(conf_part, "\n\n")
@@ -209,8 +209,8 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     res_part <- "# dependent residual covariance"
     idx_mat  <- which(upper.tri(diag(n_deps)), arr.ind = TRUE)
     for (i in 1:nrow(idx_mat)) {
-      v1 <- options$dependents[idx_mat[i,1]]
-      v2 <- options$dependents[idx_mat[i,2]]
+      v1 <- options$outcomes[idx_mat[i,1]]
+      v2 <- options$outcomes[idx_mat[i,2]]
       res_part <- paste0(res_part, "\n", v1, " ~~ ", v2)
     }
     res_part <- paste0(res_part, "\n\n")
@@ -247,8 +247,8 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   } else {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c(
-      "predictors", "mediators", "dependents", "confounds", "includemeanstructure",
-      "bootstrapSamples", "fixManifestInterceptsToZero", "emulation", "samplingMethod", "estimator",
+      "predictors", "mediators", "outcomes", "confounds", "includemeanstructure",
+      "bootstrapSamples", "fixManifestInterceptsToZero", "emulation", "errorCalculationMethod", "estimator",
       "standardizedEstimate", "naAction")
     )
     jaspResults[["modelContainer"]] <- modelContainer
@@ -361,7 +361,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   indtab[["op1"]]      <- rep("\u2192", nrow(pe_ind))
   indtab[["m"]]        <- options[["mediators"]][termsCombinations[["m"]]]
   indtab[["op2"]]      <- rep("\u2192", nrow(pe_ind))
-  indtab[["y"]]        <- options[["dependents"]][termsCombinations[["y"]]]
+  indtab[["y"]]        <- options[["outcomes"]][termsCombinations[["y"]]]
   indtab[["est"]]      <- pe_ind$est
   indtab[["se"]]       <- pe_ind$se
   indtab[["z"]]        <- pe_ind$z
@@ -383,7 +383,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 
   tottab[["lhs"]]      <- options[["predictors"]][termsCombinations[["x"]]]
   tottab[["op"]]       <- rep("\u2192", nrow(pe_tot))
-  tottab[["rhs"]]      <- options[["dependents"]][termsCombinations[["y"]]]
+  tottab[["rhs"]]      <- options[["outcomes"]][termsCombinations[["y"]]]
   tottab[["est"]]      <- pe_tot$est
   tottab[["se"]]       <- pe_tot$se
   tottab[["z"]]        <- pe_tot$z
@@ -433,7 +433,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   )
   ttitab[["lhs"]]      <- options[["predictors"]][termsCombinations[["x"]]]
   ttitab[["op"]]       <- rep("\u2192", nrow(pe_tti))
-  ttitab[["rhs"]]      <- options[["dependents"]][termsCombinations[["y"]]]
+  ttitab[["rhs"]]      <- options[["outcomes"]][termsCombinations[["y"]]]
   ttitab[["est"]]      <- pe_tti$est
   ttitab[["se"]]       <- pe_tti$se
   ttitab[["z"]]        <- pe_tti$z
@@ -444,7 +444,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 }
 
 .medResTable <- function(modelContainer, options, ready) {
-  if (!options[["residualCovariance"]] || !length(c(options$mediators, options$dependents)) > 2) return()
+  if (!options[["residualCovariance"]] || !length(c(options$mediators, options$outcomes)) > 2) return()
 
   restab <- createJaspTable(title = gettext("Residual covariances"))
   restab$dependOn("residualCovariance")
@@ -538,13 +538,13 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 
 .medFootMessage <- function(modelContainer, options) {
   # Create the footnote message
-  se_type <- switch(options$samplingMethod,
+  se_type <- switch(options$errorCalculationMethod,
     "bootstrap" = gettext("Delta method"),
     "standard"  = gettext("Delta method"),
     "default"   = gettext("Delta method"),
     "robust"    = gettext("Robust")
   )
-  ci_type <- switch(options$samplingMethod,
+  ci_type <- switch(options$errorCalculationMethod,
     "bootstrap" = switch(options$bootstrapCiType,
       "percentile"              = gettext("percentile bootstrap"),
       "normalTheory"            = gettext("normal theory bootstrap"),
@@ -559,7 +559,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     return(gettextf("%1$s standard errors, %2$s confidence intervals.", se_type, ci_type))
   } else {
     fit <- modelContainer[["model"]][["object"]]
-    if (options$samplingMethod == "bootstrap" && nrow(fit@boot[["coef"]]) < options$bootstrapSamples) {
+    if (options$errorCalculationMethod == "bootstrap" && nrow(fit@boot[["coef"]]) < options$bootstrapSamples) {
       return(gettextf(
         "%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all bootstrap samples were successful: CI based on %4$.0f samples.",
         se_type, ci_type, fit@Options$estimator, nrow(fit@boot[["coef"]])
@@ -605,7 +605,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   # compute the layout from the options
   n_pred <- length(options$predictors)
   n_medi <- length(options$mediators)
-  n_deps <- length(options$dependents)
+  n_deps <- length(options$outcomes)
   n_conf <- length(options$confounds)
 
   n_totl <- n_pred + n_medi + n_deps + n_conf
@@ -675,7 +675,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   node_names    <- plt$graphAttributes$Nodes$names
   confounds_idx <- which(node_names %in% options$confounds)
   predictor_idx <- which(node_names %in% options$predictors)
-  dependent_idx <- which(node_names %in% options$dependents)
+  dependent_idx <- which(node_names %in% options$outcomes)
 
   if (options$pathPlotParameter) {
     # change big numbers to scientific notation
