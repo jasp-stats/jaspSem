@@ -185,7 +185,7 @@ checkLavaanModel <- function(model, availableVars) {
 
 
 .semGetUsedVars <- function(syntax, availablevars) {
-  vv <- .unv(availablevars)
+  vv <- availablevars
   findpattern <- paste0("(?<=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|^)\\Q",
                         vv,
                         "\\E(?=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|$)")
@@ -371,9 +371,10 @@ checkLavaanModel <- function(model, availableVars) {
   }
 
   # group.partial options
-  if (options[["group.partial"]] != ""){
-  splitted <- strsplit(options[["group.partial"]][["model"]], "[\\n,;]+", perl = TRUE)[[1]]
-  lavopts[["group.partial"]] <-  splitted
+
+  if (options[["freeParameters"]][["model"]] != ""){
+    splitted <- strsplit(.semTranslateModel(options[["freeParameters"]][["model"]], dataset), "[\\n,;]+", perl = TRUE)[[1]]
+    lavopts[["group.partial"]] <-  splitted
   }
 
   # group variable
@@ -402,7 +403,7 @@ checkLavaanModel <- function(model, availableVars) {
   with.s.quotes <- paste("\\b'", usedvars, "'\\b", sep="")
   with.d.quotes <- paste('\\b"', usedvars, '"\\b', sep="")
 
-  new.names <- .v(usedvars)
+  new.names <- usedvars
 
   for (i in 1:length(usedvars)) {
     syntax <- gsub(with.d.quotes[i], new.names[i], syntax)
