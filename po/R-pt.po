@@ -3,16 +3,16 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2022-07-30 03:23\n"
-"PO-Revision-Date: 2021-09-04 02:43+0000\n"
+"PO-Revision-Date: 2022-08-29 00:20+0000\n"
 "Last-Translator: Laura Durans <lauraadurans@gmail.com>\n"
-"Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/jaspsem-"
-"r/pt/>\n"
+"Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
+"jaspsem-r/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.8.1-dev\n"
+"X-Generator: Weblate 4.14.1-dev\n"
 "X-Language: en_US\n"
 "X-Source-Language: American English\n"
 "X-Qt-Contexts: true\n"
@@ -24,19 +24,19 @@ msgid "The model could not be estimated: No degrees of freedom left."
 msgstr "O modelo não pode ser estimado: sem graus de liberdade restantes."
 
 msgid "Chi-square Test"
-msgstr ""
+msgstr "Teste Qui-Quadrado"
 
 msgid "Baseline model"
 msgstr "Modelo de linha de base"
 
 msgid "Growth curve model"
-msgstr ""
+msgstr "Modelo de Curva de Crescimento"
 
 msgid "The model is not admissible: %s"
 msgstr "O modelo não é admitido. %s"
 
 msgid "Warning."
-msgstr ""
+msgstr "Aviso."
 
 msgid "Parameter estimates"
 msgstr "Estimativas de parâmetros"
@@ -54,7 +54,7 @@ msgid "Std. Error"
 msgstr "Erro padrão"
 
 msgid "z-value"
-msgstr "Valor"
+msgstr "Escore Z"
 
 msgid "p"
 msgstr "p"
@@ -62,11 +62,9 @@ msgstr "p"
 msgid "Lower"
 msgstr "Inferior"
 
-#, fuzzy
 msgid "95%% Confidence Interval"
-msgstr "Intervalo de Confiança"
+msgstr "Intervalo de Confiança 95%%"
 
-#, fuzzy
 msgid "Latent covariances"
 msgstr "Covariâncias latentes"
 
@@ -74,24 +72,22 @@ msgid "LV"
 msgstr ""
 
 msgid "Std. Est."
-msgstr ""
+msgstr "Estimativas padr."
 
-#, fuzzy
 msgid "All"
 msgstr "Todas"
 
-#, fuzzy
 msgid "No X"
 msgstr "Sem X"
 
 msgid "Predictor"
-msgstr ""
+msgstr "Preditor"
 
 msgid "Variable"
 msgstr "Variável"
 
 msgid "Intercept"
-msgstr "Interceptar"
+msgstr "Intercepto"
 
 msgid "Linear slope"
 msgstr ""
@@ -111,8 +107,9 @@ msgstr "Variância"
 msgid ""
 "Residual variance is negative. This may indicate model misspecification."
 msgstr ""
+"A variância residual é negativa. Isso pode indicar especificação incorreta "
+"do modelo."
 
-#, fuzzy
 msgid "Additional Fit measures"
 msgstr "Medidas Adicionais de Ajuste"
 
@@ -135,28 +132,28 @@ msgid "Metric"
 msgstr "Métrica"
 
 msgid "Comparative Fit Index (CFI)"
-msgstr "Índice de Ajuste Comparativo"
+msgstr "Índice de Ajuste Comparativo (CFI)"
 
 msgid "Tucker-Lewis Index (TLI)"
 msgstr "Índice de Tucker-Lewis"
 
 msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
-msgstr "Índice de ajuste não normalizado de Bentler-Bonett"
+msgstr "Índice de ajuste não normalizado de Bentler-Bonett (NNFI)"
 
 msgid "Bentler-Bonett Normed Fit Index (NFI)"
-msgstr "Índice de ajuste normalizado de Bentler-Bonett"
+msgstr "Índice de ajuste normalizado de Bentler-Bonett (NFI)"
 
 msgid "Parsimony Normed Fit Index (PNFI)"
 msgstr "Índice de ajuste normatizado de parcimônia (PNFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
-msgstr "Índice de ajuste relativo de Bollen"
+msgstr "Índice de ajuste relativo de Bollen (RFI)"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
 msgstr ""
 
 msgid "Relative Noncentrality Index (RNI)"
-msgstr "Índice relativo de não-centralidade"
+msgstr "Índice relativo de não-centralidade (RNI)"
 
 msgid "Log-likelihood"
 msgstr ""
@@ -168,7 +165,7 @@ msgid "Akaike (AIC)"
 msgstr "Akaike (AIC)"
 
 msgid "Bayesian (BIC)"
-msgstr "Bayesiano"
+msgstr "Bayesiano (BIC)"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
 msgstr ""
@@ -183,28 +180,28 @@ msgid "RMSEA 90%% CI upper bound"
 msgstr "RMSEA limite superior 90%% IC"
 
 msgid "RMSEA p-value"
-msgstr "p-valor RMSEA"
+msgstr "p-valor do RMSEA"
 
 msgid "Standardized root mean square residual (SRMR)"
 msgstr "Raiz quadrada média residual padronizada (SRMR)"
 
 msgid "Hoelter's critical N (%s = .05)"
-msgstr ""
+msgstr "N crítico de Hoelter (%s = .05)"
 
 msgid "Hoelter's critical N (%s = .01)"
-msgstr ""
+msgstr "N crítico de Hoelter (%s = .01)"
 
 msgid "Goodness of fit index (GFI)"
 msgstr ""
 
 msgid "McDonald fit index (MFI)"
-msgstr "Índice de ajuste de McDonald"
+msgstr "Índice de ajuste de McDonald (MFI)"
 
 msgid "Expected cross validation index (ECVI)"
 msgstr ""
 
 msgid "R-Squared"
-msgstr ""
+msgstr "R²"
 
 msgid "Implied covariance matrix"
 msgstr "Matriz de covariância implícita"
@@ -212,9 +209,8 @@ msgstr "Matriz de covariância implícita"
 msgid "Residual covariance matrix"
 msgstr "Matriz de covariância residual"
 
-#, fuzzy
 msgid "Curve plot"
-msgstr "Diagrama de barra"
+msgstr ""
 
 msgid "Model plot"
 msgstr "Gráfico do modelo"
@@ -225,9 +221,8 @@ msgstr "Gráfico de desajuste"
 msgid "Curve + variance + uncertainty"
 msgstr ""
 
-#, fuzzy
 msgid "Curve + variance"
-msgstr "Variâncias latentes"
+msgstr "Curva + variância"
 
 msgid "Curve + parameter uncertainty"
 msgstr ""
@@ -266,23 +261,20 @@ msgid "Upper"
 msgstr "Superior"
 
 msgid "Indirect effects"
-msgstr ""
+msgstr "Efeitos Indiretos"
 
-#, fuzzy
 msgid "Total indirect effects"
-msgstr "Tamanho de efeito padronizado"
+msgstr ""
 
 msgid "Residual covariances"
 msgstr "Covariâncias residuais"
 
-#, fuzzy
 msgid "Path coefficients"
-msgstr "Coeficiente de Mardia"
+msgstr ""
 
 msgid "Delta method"
 msgstr ""
 
-#, fuzzy
 msgid "Robust"
 msgstr "Robusto"
 
@@ -298,9 +290,8 @@ msgstr ""
 msgid "normal theory"
 msgstr ""
 
-#, fuzzy
 msgid "robust"
-msgstr "Robusto"
+msgstr "robusto"
 
 msgid "%1$s standard errors, %2$s confidence intervals."
 msgstr ""
@@ -313,15 +304,14 @@ msgstr ""
 msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
 msgstr ""
 
-#, fuzzy
 msgid "Path plot"
-msgstr "Diagrama de barra"
+msgstr "Diagrama de caminhos"
 
 msgid "Model syntax"
 msgstr "Sintaxe do modelo"
 
 msgid "Chi Square test"
-msgstr ""
+msgstr "Teste Qui-Quadrado"
 
 msgid "df"
 msgstr "gl"
@@ -335,9 +325,8 @@ msgstr "Fatores"
 msgid "Additional fit measures"
 msgstr "Medidas adicionais de ajuste"
 
-#, fuzzy
 msgid "Predictor coefficients"
-msgstr "Coeficiente de Mardia"
+msgstr ""
 
 msgid "Standardized"
 msgstr "Padronizado"
@@ -345,14 +334,12 @@ msgstr "Padronizado"
 msgid "Endo"
 msgstr ""
 
-#, fuzzy
 msgid "Indicator coefficients"
-msgstr "Coeficiente de Mardia"
+msgstr ""
 
 msgid "Indicator"
 msgstr "Indicador"
 
-#, fuzzy
 msgid "Latent"
 msgstr "Latentes"
 
@@ -370,19 +357,25 @@ msgid ""
 msgstr ""
 
 msgid "Please set the sample size!"
-msgstr ""
+msgstr "Por favor, defina o tamanho da amostra!"
 
 msgid ""
 "Multiple group analysis not supported when data is variance-covariance matrix"
 msgstr ""
+"Não é possível realizar análise multigrupo quando os dados são uma matriz de "
+"variância-covariância"
 
 msgid ""
 "Not more cases than number of variables. Is your data a variance-covariance "
 "matrix?"
 msgstr ""
+"Não mais casos do que número de variáveis. Seus dados são uma matriz de "
+"variância-covariância?"
 
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr ""
+"Especificação de modelo inválida. Você passou um nome de variável como uma "
+"string?"
 
 msgid ""
 "Missing data handling '%s' is not supported for categorical data,\n"
@@ -390,6 +383,11 @@ msgid ""
 "handling'\n"
 "                        within the 'Estimation options' tab"
 msgstr ""
+"A manipulação de valores ausentes '%s' não pode ser utilizada com dados "
+"categóricos,\n"
+"                        por favor selecione outro método no item "
+"'Manipulação de valores ausentes'\n"
+"                        na aba 'Opções'"
 
 msgid "Estimation failed Message: %s"
 msgstr ""
@@ -451,22 +449,20 @@ msgid "Model tests based on %s."
 msgstr ""
 
 msgid "Factor Loadings"
-msgstr "Cargas do fator"
+msgstr "Cargas Fatoriais"
 
 msgid "Group"
 msgstr "Grupo"
 
-#, fuzzy
 msgid "Regression coefficients"
-msgstr "Coeficiente de Mardia"
+msgstr "Coeficientes de Regressão"
 
 msgid "Outcome"
-msgstr ""
+msgstr "Resultado"
 
 msgid "Factor variances"
 msgstr "Variâncias latentes"
 
-#, fuzzy
 msgid "Factor covariances"
 msgstr "Covariâncias latentes"
 
@@ -476,18 +472,15 @@ msgstr "Variáveis"
 msgid "Residual variances"
 msgstr "Variâncias residuais"
 
-#, fuzzy
 msgid "Means"
 msgstr "Médias"
 
-#, fuzzy
 msgid "Defined parameters"
-msgstr "Exibir parâmetros"
+msgstr "Parâmetros definidos"
 
 msgid "Name"
-msgstr ""
+msgstr "Nome"
 
-#, fuzzy
 msgid "Mardia's coefficients"
 msgstr "Coeficiente de Mardia"
 
@@ -501,10 +494,14 @@ msgid ""
 "Multivariate skewness and kurtosis calculated for observed variables from "
 "all models."
 msgstr ""
+"Assimetria e curtose multivariadas calculadas para as variáveis observadas "
+"de todos os modelos."
 
 msgid ""
 "Not all used variables are numeric. Mardia's coefficients not available."
 msgstr ""
+"Nem todas as variáveis usadas são numéricas. Coeficientes de Mardia não "
+"disponíveis."
 
 msgid "Skewness"
 msgstr "Assimetria"
@@ -512,11 +509,9 @@ msgstr "Assimetria"
 msgid "Kurtosis"
 msgstr "Curtose"
 
-#, fuzzy
 msgid "Covariance tables"
-msgstr "Covariáveis"
+msgstr "Tabelas de Covariância"
 
-#, fuzzy
 msgid "Modification indices"
 msgstr "Índices de modificação"
 
@@ -524,7 +519,7 @@ msgid "Modification Indices"
 msgstr "Índices de modificação"
 
 msgid "group"
-msgstr ""
+msgstr "grupo"
 
 msgid "mi"
 msgstr ""
@@ -542,7 +537,7 @@ msgid "sepc (nox)"
 msgstr ""
 
 msgid "Path diagram"
-msgstr ""
+msgstr "Diagrama de caminhos"
 
 #~ msgid "RMSEA 90% CI lower bound"
 #~ msgstr "RMSEA limite inferior 90% IC"
