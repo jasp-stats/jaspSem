@@ -160,10 +160,10 @@ checkCSemModel <- function(model, availableVars) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("approachSecondOrder", "approachWeights", "approachCorRobust", "approachNonLinear", "convergenceCriterion",
-                              "estimateStructural", "groupingVariable", "assumeNormality", "approachCorrectionFactors", "disattenuate",
+    modelContainer$dependOn(c("approachSecondOrder", "approachWeights", "approachCorRobust", "convergenceCriterion",
+                              "estimateStructural", "groupingVariable", "approachCorrectionFactors", "disattenuate",
                               "ignoreStructuralModel", "innerWeightingScheme", "resamplingMethod", "nBootstraps", "ciWidth",
-                              "setSeed", "seed", "handleInadmissibles", "Data"))
+                              "setSeed", "seed", "handleInadmissibles", "Data", "signFlippingHandling"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -199,45 +199,8 @@ checkCSemModel <- function(model, availableVars) {
     cSemOpts[[".data"]]  <- dataset
 
     # fit the model
-    if(options$setSeed)
-      set.seed(options$seed)
 
     fit <- try(do.call(cSEM::csem, cSemOpts))
-
-    if (options[["resamplingMethod"]] != "none") {
-
-      if(options[["resamplingMethod"]] == "bootstrap") {
-        startProgressbar(options[["nBootstraps"]], "Resampling")
-      } else {
-        startProgressbar(nrow(dataset), "Resampling")
-      }
-
-      tickFunction <- function(.object)
-      {
-        progressbarTick()
-        return(c(0,0))
-      }
-
-      # create resampling argument list
-
-      cSemArgs <- list()
-      if (options[["resamplingMethod"]] == "bootstrap")
-        cSemArgs[[".R"]] <- options[["nBootstraps"]]
-      cSemArgs[[".user_funs"]]            <- tickFunction
-      cSemArgs[[".object"]]               <- fit
-      cSemArgs[[".resample_method"]]      <- options[["resamplingMethod"]]
-      cSemArgs[[".handle_inadmissibles"]] <- options[["handleInadmissibles"]]
-      cSemArgs[[".sign_change_option"]]   <- options[["signFlippingHandling"]]
-
-      if (options[["setSeed"]]) {
-        cSemArgs[[".seed"]] <- options[["seed"]]
-        set.seed(options$seed)
-      }
-
-      # resample
-      fit <- try(do.call(cSEM::resamplecSEMResults, cSemArgs))
-
-    }
 
     # error messages
     if (isTryError(fit)) {
@@ -257,6 +220,39 @@ checkCSemModel <- function(model, availableVars) {
       modelContainer$setError(errormsg)
       modelContainer$dependOn("models")
       break
+    }
+
+    if (options[["resamplingMethod"]] != "none") {
+
+      if(options[["resamplingMethod"]] == "bootstrap") {
+        startProgressbar(options[["nBootstraps"]], "Resampling")
+      } else {
+        startProgressbar(nrow(dataset), "Resampling")
+      }
+
+      tickFunction <- function(.object)
+      {
+        progressbarTick()
+        return(c(0,0))
+      }
+
+      # resample
+      fit <- try(cSEM::resamplecSEMResults(.object = fit,
+                                                 .R = options[["nBootstraps"]],
+                                                 .user_funs = tickFunction,
+                                                 .resample_method = options[["resamplingMethod"]],
+                                                 .handle_inadmissibles = options[["handleInadmissibles"]],
+                                                 .sign_change_option = options[["signFlippingHandling"]],
+                                                 .seed = if (options[["setSeed"]]) options[["seed"]]))
+      if (isTryError(fit)) {
+        err <- .extractErrorMessage(fit)
+
+        errmsg <- gettextf("Estimation failed Message: %s", err)
+        modelContainer$setError(paste0("Error in model \"", options[["models"]][[i]][["modelName"]], "\" - ",
+                                       .decodeVarsInMessage(names(dataset), errmsg)))
+        modelContainer$dependOn("models")
+        break
+      }
     }
 
     results[[i]] <- fit
