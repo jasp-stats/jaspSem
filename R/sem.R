@@ -373,8 +373,8 @@ checkLavaanModel <- function(model, availableVars) {
   # group.partial options
 
 
-  if (options[["freeParameters"]][1] != "") {
-    splitted <- strsplit(.semTranslateModel(options[["freeParameters"]][["model"]], dataset), "[\\n,;]+", perl = TRUE)[[1]]
+  if (options[["group.partial"]][1] != "") {
+    splitted <- strsplit(.semTranslateModel(options[["group.partial"]][["model"]], dataset), "[\\n,;]+", perl = TRUE)[[1]]
     lavopts[["group.partial"]] <-  splitted
   }
 
