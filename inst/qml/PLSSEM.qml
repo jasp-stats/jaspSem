@@ -35,12 +35,12 @@ Form
 		newItemName: qsTr("Model 1")
 		optionKey: "modelName"
 
-		content: TextArea { name: "syntax"; width: models.width; textType: JASP.TextTypeLavaan }
+		content: TextArea { name: "syntax"; width: models.width; textType: JASP.TextTypeCSem }
 	}
 
 	Section
 	{
-		title: qsTr("Options")
+		title: qsTr("Model")
 
 		Group
 		{
@@ -59,35 +59,15 @@ Form
 						name: "innerWeightingScheme"
 						label: qsTr("Inner weighting scheme")
 						values: [
-							{ value: "path", label: qsTr("Path")},
-							{ value: "centroid", label: qsTr("Centroid")},
-							{ value: "factorial", label: qsTr("Factorial")}
+							{ value: "path", 		label: qsTr("Path")			},
+							{ value: "centroid", 	label: qsTr("Centroid")		},
+							{ value: "factorial", 	label: qsTr("Factorial")	}
 						]
 					}
-					CheckBox { name: "ignoreStructuralModel";		label: qsTr("Ignore structural model")		}
+					CheckBox { name: "ignoreStructuralModel";	label: qsTr("Ignore structural model")	}
 				}
-				RadioButton { value: "GSCA";		label: qsTr("GSCA")						}
+				RadioButton { value: "GSCA";	label: qsTr("GSCA")	}
 			}
-			DropDown
-			{
-				visible: false
-				name: "approachWeights2"
-				label: qsTr("Weighting approach")
-				values: [
-						{ value: "PLS-PM", label: qsTr("PLS-PM")},
-						{ value: "SUMCORR", label: qsTr("SUMCORR")},
-						{ value: "MAXVAR", label: qsTr("MAXVAR") },
-						{ value: "SSQCORR", label: qsTr("SSQCORR")},
-						{ value: "MINVAR", label: qsTr("MINVAR")},
-						{ value: "GENVAR", label: qsTr("GENVAR")},
-						{ value: "GSCA", label: qsTr("GSCA")},
-						{ value: "PCA", label: qsTr("PCA")},
-						{ value: "unit", label: qsTr("FSR-unit")},
-						{ value: "barlett", label: qsTr("FSR-barlett")},
-						{ value: "regression", label: qsTr("FSR-regression")}
-					]
-			}
-
 
 			DropDown
 			{
@@ -99,13 +79,60 @@ Form
 					{ value: "diff_relative",	label: qsTr("Relative difference")	}
 				]
 			}
+		}
 
+		Group
+		{
+			RadioButtonGroup
+			{
+				title: qsTr("Correlation matrix")
+				name: "approachCorRobust"
+				RadioButton { value: "none"		; label: qsTr("Pearson"); checked: true	}
+				RadioButton { value: "spearman" ; label: qsTr("Spearman")				}
+			}
+
+			CheckBox
+			{
+				name: "disattenuate";		label: qsTr("Disattenuate composite correlations");	checked: true
+				DropDown
+				{
+					name: "approachCorrectionFactors"
+					label: qsTr("Approach correction factors")
+					values: [
+						{ value: "dist_squared_euclid", 	label: qsTr("Squared Euclidean distance")	},
+						{ value: "dist_euclid_weighted", 	label: qsTr("Weighted Euclidean distance")	},
+						{ value: "fisher_transformed", 		label: qsTr("Fisher transformed") 			},
+						{ value: "mean_arithmetic", 		label: qsTr("Arithmetic mean")				},
+						{ value: "mean_geometric", 			label: qsTr("Geometric mean")				},
+						{ value: "mean_harmonic", 			label: qsTr("Harmonic mean")				},
+						{ value: "geo_of_harmonic", 		label: qsTr("Geometric-harmonic mean")		}
+					]
+				}
+			}
+
+			DropDown
+			{
+				id: grpvar
+				name: "groupingVariable"
+				label: qsTr("Grouping Variable")
+				showVariableTypeIcon: true
+				addEmptyValue: true
+			}
+		}
+	}
+
+	Section
+	{
+		title: qsTr("Resampling")
+
+		Group
+		{
 			RadioButtonGroup
 			{
 				title: qsTr("Error calculation method")
 				name: "resamplingMethod"
-				RadioButton { value: "none";	label: qsTr("None"); checked: true		}
-				RadioButton { value: "jackknife";		label: qsTr("Robust")						}
+				RadioButton { value: "none";		label: qsTr("None"); checked: true	}
+				RadioButton { value: "jackknife";	label: qsTr("Robust")				}
 				RadioButton
 				{
 					value: "bootstrap";	label: qsTr("Bootstrap")
@@ -126,80 +153,36 @@ Form
 				name: "ciWidth"
 			}
 			SetSeed {}
-
 		}
 
 		Group
 		{
-			DropDown
-			{
-				id: grpvar
-				name: "groupingVariable"
-				label: qsTr("Grouping Variable")
-				showVariableTypeIcon: true
-				addEmptyValue: true
-			}
-
 			RadioButtonGroup
 			{
-				title: qsTr("Correlation matrix")
-				name: "approachCorRobust"
-				RadioButton { value: "none"		; label: qsTr("Pearson"); checked: true	}
-				RadioButton { value: "spearman" ; label: qsTr("Spearman")	}
+				title: qsTr("Inadmissibles handling")
+				name: "handleInadmissibles"
+				RadioButton { value: "replace"; label: qsTr("Replace")	; checked: true	}
+				RadioButton { value: "ignore"; 	label: qsTr("Ignore")					}
+				RadioButton { value: "drop"; 	label: qsTr("Drop")						}
 			}
 
-
-			CheckBox
-			{
-				name: "disattenuate";		label: qsTr("Disattenuate composite correlations");	checked: true
-				DropDown
+			DropDown
 				{
-					name: "approachCorrectionFactors"
-					label: qsTr("Approach correction factors")
+					name: "signFlippingHandling"
+					label: qsTr("Sign flipping handling")
 					values: [
-						{ value: "dist_squared_euclid", label: qsTr("Squared Euclidean distance")},
-						{ value: "dist_euclid_weighted", label: qsTr("Weighted Euclidean distance")},
-						{ value: "fisher_transformed", label: qsTr("Fisher transformed") },
-						{ value: "mean_arithmetic", label: qsTr("Arithmetic mean")},
-						{ value: "mean_geometric", label: qsTr("Geometric mean")},
-						{ value: "mean_harmonic", label: qsTr("Harmonic mean")},
-						{ value: "geo_of_harmonic", label: qsTr("Geometric-harmonic mean")}
+						{ value: "none", 					label: qsTr("None")						},
+						{ value: "individual", 				label: qsTr("Indiviual")				},
+						{ value: "individual_reestimate", 	label: qsTr("Individual re-estimate")	},
+						{ value: "construct_reestimate", 	label: qsTr("Construct re-estimate") 	}
 					]
 				}
-			}
-			RadioButtonGroup
-			{
-				title: qsTr("Handle inadmissibles")
-				name: "handleInadmissibles"
-				RadioButton { value: "replace" ; label: qsTr("Replace")	; checked: true	}
-				RadioButton { value: "ignore" ; label: qsTr("Ignore")	}
-				RadioButton { value: "drop"		; label: qsTr("Drop")	}
-			}
 		}
 	}
 
 	Section
 	{
-		title: qsTr("Non-linear model options")
-
-		Group
-			{
-				CheckBox { name: "assumeNormality";		label: qsTr("Assume joint normality")	}
-				DropDown
-				{
-					name: "approachNonLinear"
-					label: qsTr("Approach structural relationship estimation")
-					values: [
-						{ value: "sequential", label: qsTr("Sequential")},
-						{ value: "replace", label: qsTr("Replace")}
-					]
-				}
-			}
-	}
-
-	Section
-	{
-		title: qsTr("Output options")
+		title: qsTr("Output")
 
 		Group
 		{
@@ -211,10 +194,10 @@ Form
 
 		Group
 		{
-		  CheckBox { name: "outputObservedIndicatorCorrelations";	label: qsTr("Observed indicator correlations")		}
-			CheckBox { name: "outputImpliedIndicatorCorrelations";	label: qsTr("Implied indicator correlations")		}
+		  CheckBox { name: "outputObservedIndicatorCorrelations";	label: qsTr("Observed indicator correlations")	}
+			CheckBox { name: "outputImpliedIndicatorCorrelations";	label: qsTr("Implied indicator correlations")	}
 			CheckBox { name: "outputObservedConstructCorrelations"; label: qsTr("Observed construct correlations")	}
-			CheckBox { name: "outputImpliedConstructCorrelations"; label: qsTr("Implied construct correlations")	}
+			CheckBox { name: "outputImpliedConstructCorrelations"; 	label: qsTr("Implied construct correlations")	}
 		}
 	}
 }

@@ -18,7 +18,7 @@
 PLSSEM <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
-  # options <- .plsSemPrepOpts(options)
+  options <- .plsSemPrepOpts(options)
 
   # Read data, check if ready
   dataset <- .plsSemReadData(dataset, options)
@@ -40,22 +40,20 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   .plsSemCor(modelContainer, options, ready)
 }
 
-# .plsSemPrepOpts <- function(options) {
+.plsSemPrepOpts <- function(options) {
+  #backwards compatability after changes to bouncontrollavaantextarea.cpp
+  fixModel <- function(model) {
+    newModel <- c(model[1], model[[2]])
+    names(newModel)[names(newModel) == "model"] <- "syntax"
+    return(newModel)
+    }
 
+  options[["models"]] <- lapply(options[["models"]], fixModel)
 
-  # backwards compatability after changes to bouncontrollavaantextarea.cpp
-#   fixModel <- function(model) {
-#     newModel <- c(model[1], model[[2]])
-#     names(newModel)[names(newModel) == "model"] <- "syntax"
-#     return(newModel)
-#   }
-#
-#   options[["models"]] <- lapply(options[["models"]], fixModel)
-#
-#   emptymod <- vapply(options[["models"]], function(x) x[["syntax"]] == "", TRUE)
-#   options[["models"]] <- options[["models"]][!emptymod]
-#   return(options)
-# }
+  emptymod <- vapply(options[["models"]], function(x) x[["syntax"]] == "", TRUE)
+  options[["models"]] <- options[["models"]][!emptymod]
+  return(options)
+}
 
 .plsSemReadData <- function(dataset, options) {
   if (!is.null(dataset)) return(dataset)
@@ -103,7 +101,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   }
 }
 
-checkcSemModel <- function(model, availableVars) {
+checkCSemModel <- function(model, availableVars) {
 
   # function returns informative printable string if there is an error, else ""
   if (model == "") return("Enter a model")
@@ -117,7 +115,7 @@ checkcSemModel <- function(model, availableVars) {
   names(unvvars) <- vvars
 
   # Check model syntax
-  parsed <- try(cSem::parseModel(vmodel), silent = TRUE)
+  parsed <- try(cSEM::parseModel(vmodel), silent = TRUE)
   if (inherits(parsed, "try-error")) {
 
     msg <- attr(parsed, "condition")$message
@@ -225,10 +223,11 @@ checkcSemModel <- function(model, availableVars) {
       cSemArgs <- list()
       if (options[["resamplingMethod"]] == "bootstrap")
         cSemArgs[[".R"]] <- options[["nBootstraps"]]
-      cSemArgs[[".user_funs"]] <- tickFunction
-      cSemArgs[[".object"]] <- fit
-      cSemArgs[[".resample_method"]] <- options[["resamplingMethod"]]
+      cSemArgs[[".user_funs"]]            <- tickFunction
+      cSemArgs[[".object"]]               <- fit
+      cSemArgs[[".resample_method"]]      <- options[["resamplingMethod"]]
       cSemArgs[[".handle_inadmissibles"]] <- options[["handleInadmissibles"]]
+      cSemArgs[[".sign_change_option"]]   <- options[["signFlippingHandling"]]
 
       if (options[["setSeed"]]) {
         cSemArgs[[".seed"]] <- options[["seed"]]
