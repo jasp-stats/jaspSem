@@ -215,6 +215,7 @@ checkCSemModel <- function(model, availableVars) {
       break
     }
 
+
     if(isFALSE(fit$Information$Weight_info$Convergence_status)) {
       errormsg <- gettextf("Estimation failed! Message: Model %s did not converge!", options[["models"]][[i]][["modelName"]])
       modelContainer$setError(errormsg)
@@ -480,6 +481,38 @@ checkCSemModel <- function(model, availableVars) {
   if (!is.null(msc$warnings))
     fittab$addFootnote(msc$warnings[[1]]$message)
 
+  # check if there are any problems with the results and give warnings
+  warningmsgs <- c("Absolute standardized loading estimates are NOT all <= 1",
+                   "Construct VCV is NOT positive semi-definite",
+                   "Reliability estimates are NOT all <= 1",
+                   "Model-implied indicator VCV is NOT positive semi-definite")
+
+  if (options[["groupingVariable"]] == "") {
+    for (i in seq_along(options[["models"]])) {
+      warnings <- cSEM::verify(plsSemResults[[i]])[2:5]
+      msgs <- warningmsgs[warnings]
+
+      for (j in seq_along(msgs)) {
+        warningFootnote <- paste0(gettextf("WARNING: model %s) ", options[["models"]][[i]][["modelName"]]), gettextf("%s, therefore, results may be unreliable!", msgs[j]))
+        fittab$addFootnote(warningFootnote)
+      }
+    }
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      for (j in seq_along(plsSemResults[i])) {
+        warnings <- cSEM::verify(plsSemResults[[i]][[j]])[2:5]
+        msgs <- warningmsgs[warnings]
+
+        for (k in seq_along(msgs)) {
+          warningFootnote <- paste0(paste0(gettextf("WARNING: model %s, group ", options[["models"]][[i]][["modelName"]]),
+                                   gettextf("%s) ", names(plsSemResults[[i]])[[j]])),
+                            gettextf("%s, therefore, results may be unreliable!", msgs[k]))
+          fittab$addFootnote(warningFootnote)
+        }
+      }
+    }
+  }
+
   #create jasp state and store msc for additional output tables
   modSelCriteria <- createJaspState()
   modelContainer[["modSelCriteria"]] <- modSelCriteria
@@ -593,9 +626,10 @@ checkCSemModel <- function(model, availableVars) {
   if (options[["groupingVariable"]] != "")
     pathTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
-  pathTab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string", combine = TRUE)
-  pathTab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),    type = "string")
+  pathTab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),  type = "string", combine = TRUE)
+  pathTab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),    type = "string")
   pathTab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+  pathTab$addColumnInfo(name = "f2",       title = gettext("f&sup2"),   type = "number")
 
   if (options[["resamplingMethod"]] != "none") {
     pathTab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
@@ -615,8 +649,8 @@ checkCSemModel <- function(model, availableVars) {
   if (options[["groupingVariable"]] != "")
     totalTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
-  totalTab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),     type = "string", combine = TRUE)
-  totalTab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),  type = "string")
+  totalTab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),     type = "string", combine = TRUE)
+  totalTab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string")
   totalTab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
   if (options[["resamplingMethod"]] != "none") {
     totalTab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
@@ -760,12 +794,20 @@ checkCSemModel <- function(model, availableVars) {
 
 
   # fill Paths table
-
+  f2 <- cSEM::calculatef2(fit)
   if (options[["groupingVariable"]] == "") {
     pathEstimates <- try(.prepareEstimates(pe, estimateType = "Path_estimates", options = options))
+
     if (isTryError(pathEstimates)) {
       pecont[["path"]] <- NULL
+    } else {
+      f2_list <- list()
+      for (i in 1:nrow(f2)) {
+        f2_list <- c(f2_list, f2[i,])
+      }
+      pathEstimates[["f2"]] <- unlist(f2_list[f2_list != 0])
     }
+
   } else {
     pathEstimates <- try(lapply(pe, .prepareEstimates, estimateType = "Path_estimates", options = options))
     if (isTryError(pathEstimates)) {
@@ -773,9 +815,15 @@ checkCSemModel <- function(model, availableVars) {
     } else {
       for (i in names(pathEstimates)) {
         pathEstimates[[i]][["group"]] <- rep(i, length(pathEstimates[[i]][["rhs"]]))
+        f2_list <- list()
+        for (j in 1:nrow(f2[[i]])) {
+          f2_list <- c(f2_list, f2[[i]][j,])
+        }
+        pathEstimates[[i]][["f2"]] <- unlist(f2_list[f2_list != 0])
       }
+
       pathEstimates <- as.data.frame(Reduce(function(...) merge(..., all=T), pathEstimates))
-      pathEstimates <- pathEstimates[order(pathEstimates[["group"]], pathEstimates[["lhs"]]),]
+      pathEstimates <- pathEstimates[order(pathEstimates[["group"]], pathEstimates[["lhs"]], pathEstimates[["rhs"]]),]
     }
   }
 
@@ -788,6 +836,7 @@ checkCSemModel <- function(model, availableVars) {
     pathTab[["rhs"]]      <- pathEstimates[["rhs"]]
     pathTab[["lhs"]]      <- pathEstimates[["lhs"]]
     pathTab[["est"]]      <- pathEstimates[["est"]]
+    pathTab[["f2"]]       <- pathEstimates[["f2"]]
 
     if (options[["resamplingMethod"]] != "none") {
       pathTab[["se"]]       <- pathEstimates[["se"]]
@@ -1478,7 +1527,7 @@ checkCSemModel <- function(model, availableVars) {
     # without groups, just fill the tables
 
     if (options[["outputObservedIndicatorCorrelations"]]) {
-      # actually compute the observed covariance
+      # actually compute the observed indicator correlations
 
       oic <- fit$Estimates$Indicator_VCV
       oic[upper.tri(oic)] <- NA
@@ -1491,7 +1540,7 @@ checkCSemModel <- function(model, availableVars) {
     }
 
     if (options[["outputImpliedIndicatorCorrelations"]]) {
-      # actually compute the implied covariance
+      # actually compute the implied indicator correlations
       iic <- cSEM::fit(fit, .type_vcv = "indicator")
       iic[upper.tri(iic)] <- NA
 
@@ -1503,7 +1552,7 @@ checkCSemModel <- function(model, availableVars) {
     }
 
     if (options[["outputObservedConstructCorrelations"]]) {
-      # actually compute the implied covariance
+      # actually compute the observed construct correlations
       occ <- fit$Estimates$Construct_VCV
       occ[upper.tri(occ)] <- NA
 
@@ -1515,7 +1564,7 @@ checkCSemModel <- function(model, availableVars) {
     }
 
     if (options[["outputImpliedConstructCorrelations"]]) {
-      # actually compute the implied covariance
+      # actually compute the implied construct correlations
       icc <- cSEM::fit(fit, .type_vcv = "construct")
       icc[upper.tri(icc)] <- NA
 
@@ -1529,6 +1578,8 @@ checkCSemModel <- function(model, availableVars) {
   } else {
 
     # with groups, create tables and fill them
+
+    # actually compute the observed indicator correlations
 
     if (options[["outputObservedIndicatorCorrelations"]]) {
 
@@ -1547,8 +1598,10 @@ checkCSemModel <- function(model, availableVars) {
       }
     }
 
+    # actually compute the implied indicator correlations
+
     if (options[["outputImpliedIndicatorCorrelations"]]) {
-      # actually compute the observed covariance
+
       iicli <- cSEM::fit(fit, .type_vcv = "indicator")
       groupNames <- names(iicli)
 
@@ -1566,8 +1619,10 @@ checkCSemModel <- function(model, availableVars) {
       }
     }
 
+    # actually compute the observed construct correlations
+
     if (options[["outputObservedConstructCorrelations"]]) {
-      # actually compute the observed covariance
+
       groupNames <- names(fit)
       for (i in 1:length(fit)) {
         occ <- fit[[i]]$Estimates$Construct_VCV
@@ -1583,8 +1638,10 @@ checkCSemModel <- function(model, availableVars) {
       }
     }
 
+    # actually compute the implied construct correlations
+
     if (options[["outputImpliedConstructCorrelations"]]) {
-      # actually compute the observed covariance
+
       iccli <- cSEM::fit(fit, .type_vcv = "construct")
       groupNames <- names(iccli)
 
