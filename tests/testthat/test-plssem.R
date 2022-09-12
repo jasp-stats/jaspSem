@@ -18,6 +18,7 @@ test_that("Basic PLSSEM works", {
   options$approachCorrectionFactors <- "dist_squared_euclid"
   options$signFlippingHandling      <- "none"
 
+
   results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
 
 
@@ -40,8 +41,9 @@ test_that("Basic PLSSEM works", {
 
   pathTab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_path"]][["data"]]
   jaspTools::expect_equal_tables(pathTab,
-                                 list(0.438843974833827, "dem60", "ind60", 0.158644372913763, "dem65",
-                                      "ind60", 0.908670674402449, "dem65", "dem60"))
+                                 list(0.438843974833827, 0.238518982057254, "dem60", "ind60", 0.158644372913763,
+                                      0.898128069469413, "dem65", "ind60", 0.908670674402449, 29.4646949739788,
+                                      "dem65", "dem60"))
 
   totalTab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_total"]][["data"]]
   jaspTools::expect_equal_tables(totalTab,
@@ -195,9 +197,10 @@ test_that("Multigroup, multimodel PLSSEM works", {
 
   pathtab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_Model1"]][["collection"]][["modelContainer_params_Model1_path"]][["data"]]
   jaspTools::expect_equal_tables(pathtab,
-                                 list(0.521623484887408, 1, "dem60", "ind60", 0.946324373734241, 1,
-                                      "dem65", "dem60", 0.319599163621636, 2, "dem60", "ind60", 0.996650485797297,
-                                      2, "dem65", "dem60"))
+                                 list(0.521623484887408, 0.373798211601691, 1, "dem60", "ind60", 0.946324373734241,
+                                      8.57210950624007, 1, "dem65", "dem60", 0.319599163621636, 0.113763880589197,
+                                      2, "dem60", "ind60", 0.996650485797297, 148.525797772344, 2,
+                                      "dem65", "dem60"))
 
   totaltab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_Model1"]][["collection"]][["modelContainer_params_Model1_total"]][["data"]]
   jaspTools::expect_equal_tables(totaltab,
@@ -324,13 +327,13 @@ test_that("Bootstrapping works", {
 
   pathtab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_path"]][["data"]]
   jaspTools::expect_equal_tables(pathtab,
-                                 list(0.195578770108024, 0.650933570068278, 0.441527782000547, "dem60",
-                                      4.56521605079441e-05, "ind60", 0.112847408750808, 3.91260895476599,
-                                      0.05635700832898, 0.279303336761904, 0.159965138784183, "dem65",
-                                      0.00392150286783224, "ind60", 0.0601654384980987, 2.65875464016169,
-                                      0.825300443007273, 0.994277227844753, 0.909788542478385, "dem65",
-                                      1.15907171206722e-82, "dem60", 0.0473249624281238, 19.2242845170803
-                                 ))
+                                 list(0.195578770108024, 0.650933570068278, 0.441527782000547, 0.238518982057254,
+                                      "dem60", 4.56521605079441e-05, "ind60", 0.112847408750808, 3.91260895476599,
+                                      0.05635700832898, 0.279303336761904, 0.159965138784183, 0.898128069469413,
+                                      "dem65", 0.00392150286783224, "ind60", 0.0601654384980987, 2.65875464016169,
+                                      0.825300443007273, 0.994277227844753, 0.909788542478385, 29.4646949739788,
+                                      "dem65", 1.15907171206722e-82, "dem60", 0.0473249624281238,
+                                      19.2242845170803))
 
   totaltab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_total"]][["data"]]
   jaspTools::expect_equal_tables(totaltab,
