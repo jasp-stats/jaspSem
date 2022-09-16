@@ -144,8 +144,6 @@ Form
 						defaultValue: 200
 						min: 1
 					}
-
-
 				}
 			}
 			CIField {
@@ -182,11 +180,61 @@ Form
 
 	Section
 	{
+		title: "Prediction"
+
+		Group
+		{
+			CheckBox
+			{	name: "endogenousIndicatorPrediction"
+				label: qsTr("Predict endogenous constructs' indicator scores")
+				id: prediction
+			}
+
+			IntegerField
+			{
+				name: "kFolds"
+				label: qsTr("Cross-validation k-folds")
+				fieldWidth: 60
+				defaultValue: 10
+				min: 2
+				enabled: prediction.checked
+			}
+
+			IntegerField
+			{
+				name: "repetitions"
+				label: qsTr("Repetitions of the procedure")
+				fieldWidth: 60
+				defaultValue: 10
+				min: 1
+				enabled: prediction.checked
+			}
+
+			RadioButtonGroup
+			{
+				title: qsTr("Benchmark(s)")
+				name: "benchmark"
+				enabled: prediction.checked
+				RadioButton { value: "none"; 	label: qsTr("None")	; checked: true	}
+				RadioButton { value: "lm"; 		label: qsTr("Linear model")		}
+				RadioButton { value: "PLS-PM"; 	label: qsTr("PLS-PM")			}
+				RadioButton { value: "GSCA"; 	label: qsTr("GSCA")				}
+				RadioButton { value: "PCA";		label: qsTr("PCA")				}
+				RadioButton { value: "MAXVAR";	label: qsTr("MAXVAR")			}
+				RadioButton { value: "all";		label: qsTr("All")					}
+			}
+
+			CheckBox { name: "predictedScore";	label: qsTr("Show predicted endogenous indicator scores"); enabled: prediction.checked}
+		}
+	}
+
+	Section
+	{
 		title: qsTr("Output")
 
 		Group
 		{
-		  CheckBox { name: "outputRSquared";				label: qsTr("R-squared")				}
+		  	CheckBox { name: "outputRSquared";				label: qsTr("R-squared")				}
 			CheckBox { name: "outputAdditionalFitMeasures";	label: qsTr("Additional fit measures")	}
 			CheckBox { name: "outputMardiasCoefficients";	label: qsTr("Mardia's coefficient")		}
 			CheckBox { name: "outputReliabilityMeasures";	label: qsTr("Reliability measures")		}
@@ -194,7 +242,7 @@ Form
 
 		Group
 		{
-		  CheckBox { name: "outputObservedIndicatorCorrelations";	label: qsTr("Observed indicator correlations")	}
+		  	CheckBox { name: "outputObservedIndicatorCorrelations";	label: qsTr("Observed indicator correlations")	}
 			CheckBox { name: "outputImpliedIndicatorCorrelations";	label: qsTr("Implied indicator correlations")	}
 			CheckBox { name: "outputObservedConstructCorrelations"; label: qsTr("Observed construct correlations")	}
 			CheckBox { name: "outputImpliedConstructCorrelations"; 	label: qsTr("Implied construct correlations")	}

@@ -1,4 +1,4 @@
-#
+#Metrics### <- func
 # Copyright (C) 2013-2020 University of Amsterdam
 #
 # This program is free software: you can redistribute it and/or modify
@@ -34,6 +34,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   .plsSemFitTab(modelContainer, dataset, options, ready)
   .plsSemParameters(modelContainer, dataset, options, ready)
   .plsSemRsquared(modelContainer, dataset, options, ready)
+  .plsSemPrediction(modelContainer, options, ready)
   .plsSemAdditionalFits(modelContainer, dataset, options, ready)
   .plsSemMardiasCoefficient(modelContainer, dataset, options, ready)
   .plsSemReliabilities(modelContainer, dataset, options, ready)
@@ -163,7 +164,8 @@ checkCSemModel <- function(model, availableVars) {
     modelContainer$dependOn(c("approachSecondOrder", "approachWeights", "approachCorRobust", "convergenceCriterion",
                               "estimateStructural", "groupingVariable", "approachCorrectionFactors", "disattenuate",
                               "ignoreStructuralModel", "innerWeightingScheme", "resamplingMethod", "nBootstraps", "ciWidth",
-                              "setSeed", "seed", "handleInadmissibles", "Data", "signFlippingHandling"))
+                              "setSeed", "seed", "handleInadmissibles", "Data", "signFlippingHandling", "endogenousIndicatorPrediction",
+                              "kFolds", "repetitions", "benchmark", "predictedScore"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -205,9 +207,6 @@ checkCSemModel <- function(model, availableVars) {
     # error messages
     if (isTryError(fit)) {
       err <- .extractErrorMessage(fit)
-      if(err == "..constant.."){
-        err <- gettext("Invalid model specification. Did you pass a variable name as a string?")
-      }
       errmsg <- gettextf("Estimation failed Message: %s", err)
       modelContainer$setError(paste0("Error in model \"", options[["models"]][[i]][["modelName"]], "\" - ",
                                      .decodeVarsInMessage(names(dataset), errmsg)))
@@ -913,6 +912,248 @@ checkCSemModel <- function(model, availableVars) {
     ciUpper  <- pe[[estimateType]]$CI_percentile[2,]
 
     return(list(rhs=rhs, lhs=lhs, est=est, se=se, zVal=zVal, pVal=pVal, ciLower=ciLower, ciUpper=ciUpper))
+  }
+}
+
+.plsSemPrediction <- function(modelContainer, options, ready) {
+  if (!options[["endogenousIndicatorPrediction"]] || !is.null(modelContainer[["predict"]])) return()
+
+  predict <- createJaspContainer(gettext("Endogenous Indicator Prediction"))
+  predict$position <- 2
+  predict$dependOn(c("endogenousIndicatorPrediction", "models", "kFolds", "repetitions", "benchmark", "predictedScore"))
+  modelContainer[["predict"]] <- predict
+
+  if (length(options[["models"]]) < 2) {
+    .plsSemPredictionTables(modelContainer[["results"]][["object"]][[1]], NULL, predict, modelContainer, options, ready)
+  } else {
+    for (i in seq_along(modelContainer[["results"]][["object"]])) {
+      fit <- modelContainer[["results"]][["object"]][[i]]
+      modelname <- options[["models"]][[i]][["modelName"]]
+      .plsSemPredictionTables(fit, modelname, predict, modelContainer, options, ready)
+    }
+  }
+}
+
+.plsSemPredictionTables <- function(fit, modelname, parent, modelContainer, options, ready) {
+
+
+  if (is.null(modelname)) {
+    predictcont <- parent
+  } else {
+    predictcont <- createJaspContainer(modelname, initCollapsed = TRUE)
+  }
+
+  #Error messages
+
+  if (options[["benchmark"]] != "none" && options[["benchmark"]] != "all") {
+    benchmarks <- options[["benchmark"]]
+  }
+  else if (options[["benchmark"]] == "all") {
+    benchmarks <- c("lm", "PLS-PM", "GSCA", "PCA", "MAXVAR")
+    benchmarks <- benchmarks[benchmarks != options[["approachWeights"]]]
+  } else {
+    benchmarks <- NULL
+  }
+
+  if (options[["benchmark"]] != "none" && options[["benchmark"]] != "all" && benchmarks == options[["approachWeights"]]) {
+    errormsg <- gettextf("The target model uses the same weighting approach as the benchmark model, please choose another benchmark.")
+    modelContainer$setError(errormsg)
+    modelContainer$dependOn("benchmark")
+    return()
+  }
+  if (options[["benchmark"]] == "all" && options[["predictedScore"]]) {
+    errormsg <- gettextf("For the predicted indicator scores table(s), please select a single benchmark or 'none'.")
+    modelContainer$setError(errormsg)
+    modelContainer$dependOn("benchmark")
+    return()
+  }
+
+  #Create metrics table
+  metricstab <- createJaspTable(gettext("Prediction Metrics"))
+
+  if (options[["groupingVariable"]] != "")
+    metricstab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+
+  metricstab$addColumnInfo(name = "indicator", title = gettext("Indicator"),type = "string")
+
+  metricstab$addColumnInfo(name = "mae", title = gettext("Target MAE"), type = "number")
+
+  if("lm" %in% benchmarks)
+    metricstab$addColumnInfo(name = "maelm",     title = gettext("Linear model MAE"), type = "number")
+  if("PLS-PM" %in% benchmarks)
+    metricstab$addColumnInfo(name = "maePLS-PM", title = gettext("PLS-PM MAE"),       type = "number")
+  if("GSCA" %in% benchmarks)
+    metricstab$addColumnInfo(name = "maeGSCA",   title = gettext("GSCA MAE"),         type = "number")
+  if("PCA" %in% benchmarks)
+    metricstab$addColumnInfo(name = "maePCA",    title = gettext("PCA MAE"),          type = "number")
+  if("MAXVAR" %in% benchmarks)
+    metricstab$addColumnInfo(name = "maeMAXVAR", title = gettext("MAXVAR MAE"),       type = "number")
+
+  metricstab$addColumnInfo(name = "rmse", title = gettext(" Target RMSE"), type = "number")
+
+  if("lm" %in% benchmarks)
+    metricstab$addColumnInfo(name = "rmselm",     title = gettext("Linear model RMSE"), type = "number")
+  if("PLS-PM" %in% benchmarks)
+    metricstab$addColumnInfo(name = "rmsePLS-PM", title = gettext("PLS-PM RMSE"),       type = "number")
+  if("GSCA" %in% benchmarks)
+    metricstab$addColumnInfo(name = "rmseGSCA",   title = gettext("GSCA RMSE"),         type = "number")
+  if("PCA" %in% benchmarks)
+    metricstab$addColumnInfo(name = "rmsePCA",    title = gettext("PCA RMSE"),          type = "number")
+  if("MAXVAR" %in% benchmarks)
+    metricstab$addColumnInfo(name = "rmseMAXVAR", title = gettext("MAXVAR RMSE"),       type = "number")
+
+  metricstab$addColumnInfo(name = "q2", title = gettext("Target Q2 prediction"), type = "number")
+
+  predictcont[["metrics"]] <- metricstab
+
+  if(!ready) return()
+
+  # Predict indicator scores and compute metrics
+  if (options[["benchmark"]] == "all") {
+    startProgressbar(length(benchmarks), "Predicting")
+
+    prediction_list <- list()
+    for (i in seq_along(benchmarks)) {
+      prediction <- try(cSEM::predict(fit, .handle_inadmissibles = "ignore", .benchmark = benchmarks[[i]], .cv_folds = options[["kFolds"]], .r = options[["repetitions"]]))
+      if (isTryError(prediction)) {
+        err <- .extractErrorMessage(prediction)
+        if(grepl("attempt to set 'colnames'", err))
+          err <- "There are not enough observations for each k-fold, try setting 'cross-validation k-folds' to a lower number"
+        if(grepl("the condition has length > 1", err))
+          err <- "Are all indicator variables set to 'scale'?"
+        errmsg <- gettextf("Prediction failed Message: %s", err)
+        modelContainer$setError(gettext(paste0(paste0("Error in model ", modelname), paste0(" - ", errmsg))))
+        modelContainer$dependOn(optionsFromObject = modelContainer)
+        modelContainer$dependOn("models")
+        return()
+      }
+      progressbarTick()
+      prediction_list[i] <- prediction
+    }
+  }
+  else if (options[["benchmark"]] == "none") {
+    prediction <- try(cSEM::predict(fit, .handle_inadmissibles = "ignore", .cv_folds = options[["kFolds"]], .r = options[["repetitions"]]))
+  } else {
+    prediction <- try(cSEM::predict(fit, .handle_inadmissibles = "ignore", .benchmark = benchmarks, .cv_folds = options[["kFolds"]], .r = options[["repetitions"]]))
+  }
+  if (isTryError(prediction)) {
+    err <- .extractErrorMessage(prediction)
+    if(grepl("attempt to set 'colnames'", err))
+      err <- "There are not enough observations for each k-fold, try setting 'cross-validation k-folds' to a lower number"
+    if(grepl("the condition has length > 1", err))
+      err <- "Are all indicator variables set to 'scale'?"
+    errmsg <- gettextf("Prediction failed Message: %s", err)
+    modelContainer$setError(gettext(paste0(paste0("Error in model ", modelname), paste0(" - ", errmsg))))
+    modelContainer$dependOn(optionsFromObject = modelContainer)
+    modelContainer$dependOn("models")
+    return()
+  }
+
+  # Fill Endogenous indicator prediction metrics table
+  if (options[["groupingVariable"]] == "") {
+    if (options[["benchmark"]] == "all")
+      prediction <- prediction_list[[benchmarks[1]]]
+    metrics <- prediction$Prediction_metrics
+
+    metricstab[["indicator"]]     <- metrics$Name
+    metricstab[["mae"]]           <- metrics$MAE_target
+    metricstab[["rmse"]]          <- metrics$RMSE_target
+    metricstab[["q2"]]            <- metrics$Q2_predict
+
+    if(options[["benchmark"]] != "none" && options[["benchmark"]] != "all") {
+      metricstab[[paste0("mae", benchmarks)]] <- metrics$MAE_benchmark
+      metricstab[[paste0("rmse", benchmarks)]] <- metrics$RMSE_benchmark
+    }
+    if (options[["benchmark"]] == "all") {
+      for (i in seq_along(benchmarks)) {
+        metricstab[[paste0("mae", benchmarks[[i]])]]  <- prediction_list[[benchmarks[[i]]]][["Prediction_metrics"]][["MAE_benchmark"]]
+        metricstab[[paste0("rmse", benchmarks[[i]])]] <- prediction_list[[benchmarks[[i]]]][["Prediction_metrics"]][["RMSE_benchmark"]]
+      }
+    }
+  } else {
+    if (options[["benchmark"]] == "all")
+      prediction <- prediction_list[[benchmarks[[1]]]]
+    group_list <- list()
+    for (i in names(prediction)) {
+      group_i <- rep(i, length(prediction[[i]][["Prediction_metrics"]][["Name"]]))
+      group_list <- c(group_list, group_i)
+    }
+
+    metricstab[["group"]]         <- group_list
+    metricstab[["indicator"]]     <- unlist(lapply(prediction, function(x) x[["Prediction_metrics"]][["Name"]]))
+    metricstab[["mae"]]           <- unlist(lapply(prediction, function(x) x[["Prediction_metrics"]][["MAE_target"]]))
+    metricstab[["rmse"]]          <- unlist(lapply(prediction, function(x) x[["Prediction_metrics"]][["RMSE_target"]]))
+    metricstab[["q2"]]            <- unlist(lapply(prediction, function(x) x[["Prediction_metrics"]][["Q2_predict"]]))
+
+    if(options[["benchmark"]] != "none" && options[["benchmark"]] != "all") {
+      metricstab[[paste0("mae", benchmarks)]] <- unlist(lapply(prediction, function(x) x[["Prediction_metrics"]][["MAE_benchmark"]]))
+      metricstab[[paste0("rmse", benchmarks)]] <- unlist(lapply(prediction, function(x) x[["Prediction_metrics"]][["RMSE_benchmark"]]))
+    }
+
+    if(options[["benchmark"]] == "all") {
+      for (i in seq_along(benchmarks)) {
+        prediction <- prediction_list[[benchmarks[[i]]]]
+        metricstab[[paste0("mae", benchmarks[[i]])]]  <- unlist(lapply(prediction, function(x) x[["Prediction_metrics"]][["MAE_benchmark"]]))
+        metricstab[[paste0("rmse", benchmarks[[i]])]] <- unlist(lapply(prediction, function(x) x[["Prediction_metrics"]][["RMSE_benchmark"]]))
+      }
+    }
+  }
+
+  #create scores table
+  if (options[["predictedScore"]]) {
+
+    scorestab <- createJaspTable(gettext("Indicator Scores"))
+
+    if (options[["groupingVariable"]] != "") {
+      scorestab$addColumnInfo(name = "group",  title = gettext("Group"),  type = "string", combine = TRUE)
+      group_names <- names(prediction)
+      indicator_names <- names(prediction[[group_names[1]]][["Actual"]])
+    } else {
+      indicator_names <- names(prediction[["Actual"]])
+    }
+    for (j in indicator_names) {
+      scorestab$addColumnInfo(name = paste0("actual", j),           title = gettext("Actual scores"),                          type = "number", overtitle = gettext(j))
+      scorestab$addColumnInfo(name = paste0("prediction", j),       title = gettext("Predicted scores"),                       type = "number", overtitle = gettext(j))
+      scorestab$addColumnInfo(name = paste0("target_residuals", j), title = gettext("Target residuals"),                       type = "number", overtitle = gettext(j))
+      if (options[["benchmark"]] != "none") {
+        scorestab$addColumnInfo(name = paste0("benchmark_residuals", j), title = gettext(paste0(ifelse(options[["benchmark"]] == "lm", "Linear model", options[["benchmark"]]) , " residuals")), type = "number", overtitle = gettext(j))
+      }
+    }
+
+    predictcont[["scores"]] <- scorestab
+  }
+
+  if (!is.null(modelname)) parent[[modelname]] <- predictcont
+
+  # Fill indicator scores table
+  if (options[["predictedScore"]]) {
+    if (options[["groupingVariable"]] != "") {
+      group_list <- list()
+      for (i in group_names) {
+        group_i <- rep(i, length(prediction[[i]][["Actual"]][[indicator_names[1]]]))
+        group_list <- c(group_list, group_i)
+      }
+      scorestab[["group"]]          <- group_list
+      for (j in indicator_names) {
+        scorestab[[paste0("actual",j)]]               <- unlist(lapply(prediction, function(x) x[["Actual"]][[j]]))
+        scorestab[[paste0("prediction",j)]]           <- unlist(lapply(prediction, function(x) x[["Predictions_target"]][, j]))
+        scorestab[[paste0("target_residuals",j)]]     <- unlist(lapply(prediction, function(x) x[["Residuals_target"]][, j]))
+
+        if(options[["benchmark"]] != "none") {
+          scorestab[[paste0("benchmark_residuals",j)]]  <- unlist(lapply(prediction, function(x) x[["Residuals_benchmark"]][, j]))
+        }
+      }
+    } else {
+      for (j in indicator_names) {
+        scorestab[[paste0("actual",j)]]               <- prediction[["Actual"]][[j]]
+        scorestab[[paste0("prediction",j)]]           <- prediction[["Predictions_target"]][, j]
+        scorestab[[paste0("target_residuals",j)]]     <- prediction[["Residuals_target"]][, j]
+
+        if(options[["benchmark"]] != "none" && options[["benchmark"]] != "all") {
+          scorestab[[paste0("benchmark_residuals",j)]]  <- prediction[["Residuals_benchmark"]][, j]
+        }
+      }
+    }
   }
 }
 
@@ -1666,7 +1907,3 @@ checkCSemModel <- function(model, availableVars) {
 
   return()
 }
-
-
-
-
