@@ -119,6 +119,13 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
   if (inherits(mimicResult, "try-error")) {
     errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(mimicResult, "condition")$message)
     modelContainer$setError(.decodeVarsInMessage(names(dataset), errmsg))
+    return()
+  }
+
+  if(isFALSE(slot(mimicResult, "optim")$converged)) {
+    errormsg <- gettext("Estimation failed! Message: The model did not converge. Try using a different estimator or specify an other MIMIC model.")
+    modelContainer$setError(errormsg)
+    return()
   }
 
   if (options$se == "bootstrap") {
