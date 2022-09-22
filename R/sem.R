@@ -1487,11 +1487,15 @@ checkLavaanModel <- function(model, availableVars) {
     if (options[["outputStandardizedResiduals"]]) {
       # actually compute the observed covariance
       if (options[["se"]] == "bootstrap") {
-        srcont$setError(gettext("The standardized residual covariance tables are currently unavailable when the error calculation method is 'Bootstrap'"))
+        stdResError <- createJaspTable()
+        stdResError$setError(gettext("The standardized residual covariance tables are currently unavailable when the error calculation method is 'Bootstrap'"))
+        srcont[["stdResError"]] <- stdResError
       } else {
         sv <- try(lavaan::residuals(fit, type = "standardized"))
         if  (isTryError(sv)) {
-          srcont$setError(gettext("The standardized residual covariance matrices could not be computed"))
+          stdResError <- createJaspTable()
+          stdResError$setError(gettext("The standardized residual covariance matrices could not be computed"))
+          srcont[["stdResError"]] <- stdResError
         } else {
           level_names <- names(sv)
 
