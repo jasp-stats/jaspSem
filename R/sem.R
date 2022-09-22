@@ -214,8 +214,9 @@ checkLavaanModel <- function(model, availableVars) {
 
 .semComputeResults <- function(modelContainer, dataset, options) {
   #' create result list from options
-
   # find reusable results
+  if (!options[["estimator"]] %in% c("default", "ML") && options[["missing"]] == "ml") return()
+
   oldmodels  <- modelContainer[["models"]][["object"]]
   oldresults <- modelContainer[["results"]][["object"]]
   reuse <- match(options[["models"]], oldmodels)
@@ -253,7 +254,10 @@ checkLavaanModel <- function(model, availableVars) {
       if(err == "..constant.."){
         err <- gettext("Invalid model specification. Did you pass a variable name as a string?")
       }
-      if(grepl(c("missing", "categorical"), err)){
+      if(grepl(c("no variance"), err))
+        err <- gettext("One or more variables are constants or contain only missing values ")
+
+      if(grepl(c("categorical"), err)){
         if(grepl("ml", err))
           errMissingMethod <- "FIML"
         if(grepl("two.stage", err))
@@ -487,12 +491,15 @@ checkLavaanModel <- function(model, availableVars) {
   }
 
  # add missing value removal footnote
- if(options$missing == "listwise"){
-   nrm <- nrow(dataset) - lavaan::lavInspect(semResults[[1]], "ntotal")
-   missingFootnote <- gettextf("A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options.",
-                               nrm)
-   fittab$addFootnote(message = missingFootnote)
- }
+  if(options$missing == "listwise") {
+    nrm <- nrow(dataset) - lavaan::lavInspect(semResults[[1]], "ntotal")
+    if (nrm != 0) {
+      missingFootnote <- gettextf("A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options.",
+                                  nrm)
+      fittab$addFootnote(message = missingFootnote)
+    }
+  }
+
 
   # add test statistic correction footnote
   test <- lavaan::lavInspect(semResults[[1]], "options")[["test"]]
@@ -513,6 +520,10 @@ checkLavaanModel <- function(model, availableVars) {
     testname <- LUT[test == tolower(LUT$option), "name"][[1]]
     ftext <- gettextf("Model tests based on %s.", testname)
     fittab$addFootnote(message = ftext)
+  }
+
+  if (options$estimator %in% c("DWLS", "GLS", "WLS", "ULS")) {
+    fittab$addFootnote(message = gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators"))
   }
 }
 
@@ -989,17 +1000,21 @@ checkLavaanModel <- function(model, availableVars) {
   fitin$setExpectedSize(rows = 1, cols = 2)
 
   # information criteria
-  fitms[["incrits"]] <- fitic <- createJaspTable(gettext("Information criteria"))
-  fitic$addColumnInfo(name = "index", title = "",               type = "string")
-  if (length(options[["models"]]) < 2) {
-    fitic$addColumnInfo(name = "value", title = gettext("Value"), type = "number", format = "sf:4;dp:3")
-  } else {
-    for (i in seq_along(options[["models"]])) {
-      fitic$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["modelName"]], type = "number",
-                          format = "sf:4;dp:3")
+  if (!options$estimator %in% c("DWLS", "GLS", "WLS", "ULS")) {
+    fitms[["incrits"]] <- fitic <- createJaspTable(gettext("Information criteria"))
+    fitic$addColumnInfo(name = "index", title = "",               type = "string")
+    if (length(options[["models"]]) < 2) {
+      fitic$addColumnInfo(name = "value", title = gettext("Value"), type = "number", format = "sf:4;dp:3")
+    } else {
+      for (i in seq_along(options[["models"]])) {
+        fitic$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["modelName"]], type = "number",
+                            format = "sf:4;dp:3")
+      }
     }
+    fitic$setExpectedSize(rows = 1, cols = 2)
   }
-  fitic$setExpectedSize(rows = 1, cols = 2)
+
+
 
   # other fit measures
   fitms[["others"]] <- fitot <- createJaspTable(gettext("Other fit measures"))
@@ -1041,21 +1056,24 @@ checkLavaanModel <- function(model, availableVars) {
   }
 
   # information criteria
-  fitic[["index"]] <- c(
-    gettext("Log-likelihood"),
-    gettext("Number of free parameters"),
-    gettext("Akaike (AIC)"),
-    gettext("Bayesian (BIC)"),
-    gettext("Sample-size adjusted Bayesian (SSABIC)")
-  )
+  if (!options$estimator %in% c("DWLS", "GLS", "WLS", "ULS")) {
+    fitic[["index"]] <- c(
+      gettext("Log-likelihood"),
+      gettext("Number of free parameters"),
+      gettext("Akaike (AIC)"),
+      gettext("Bayesian (BIC)"),
+      gettext("Sample-size adjusted Bayesian (SSABIC)")
+    )
 
-  if (length(options[["models"]]) == 1) {
-    fitic[["value"]] <- fmli[[1]][c("logl", "npar", "aic", "bic", "bic2")]
-  } else {
-    for (i in seq_along(options[["models"]])) {
-      fitic[[paste0("value_", i)]] <- fmli[[i]][c("logl", "npar", "aic", "bic", "bic2")]
+    if (length(options[["models"]]) == 1) {
+      fitic[["value"]] <- fmli[[1]][c("logl", "npar", "aic", "bic", "bic2")]
+    } else {
+      for (i in seq_along(options[["models"]])) {
+        fitic[[paste0("value_", i)]] <- fmli[[i]][c("logl", "npar", "aic", "bic", "bic2")]
+      }
     }
   }
+
 
   # other fitmeasures
   fitot[["index"]] <- c(
@@ -1244,7 +1262,7 @@ checkLavaanModel <- function(model, availableVars) {
 
 .semCov <- function(modelContainer, dataset, options, ready) {
   if (!(options[["outputObservedCovariances"]] || options[["outputImpliedCovariances"]] ||
-        options[["outputResidualCovariances"]]) || !is.null(modelContainer[["covars"]])) return()
+        options[["outputResidualCovariances"]] || options[["outputStandardizedResiduals"]]) || !is.null(modelContainer[["covars"]])) return()
 
   covars <- createJaspContainer(gettext("Covariance tables"))
   covars$position <- 3
@@ -1386,15 +1404,23 @@ checkLavaanModel <- function(model, availableVars) {
 
     if (options[["outputStandardizedResiduals"]]) {
       # actually compute the implied covariance
-      sv <- lavaan::residuals(fit, type = "standardized")
-      sr <- sv$cov
-      sr[upper.tri(sr)] <- NA
+      if (options[["se"]] == "bootstrap") {
+        srtab$setError(gettext("The standardized residual covariance table is currently unavailable when the error calculation method is 'Bootstrap'"))
+      } else {
+        sv <- try(lavaan::residuals(fit, type = "standardized"))
+        if (isTryError(sv)) {
+          srtab$setError(gettext("The standardized residual covariance matrix could not be computed"))
+        } else {
+          sr <- sv$cov
+          sr[upper.tri(sr)] <- NA
 
-      for (i in 1:ncol(sr)) {
-        nm <- colnames(sr)[i]
-        srtab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3;p:.001")
+          for (i in 1:ncol(sr)) {
+            nm <- colnames(sr)[i]
+            srtab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3;p:.001")
+          }
+          srtab$addRows(sr, rowNames = colnames(sr))
+        }
       }
-      srtab$addRows(sr, rowNames = colnames(sr))
     }
 
   } else {
@@ -1460,20 +1486,28 @@ checkLavaanModel <- function(model, availableVars) {
 
     if (options[["outputStandardizedResiduals"]]) {
       # actually compute the observed covariance
-      sv <- lavaan::residuals(fit, type = "standardized")
-      level_names <- names(sv)
+      if (options[["se"]] == "bootstrap") {
+        srcont$setError(gettext("The standardized residual covariance tables are currently unavailable when the error calculation method is 'Bootstrap'"))
+      } else {
+        sv <- try(lavaan::residuals(fit, type = "standardized"))
+        if  (isTryError(sv)) {
+          srcont$setError(gettext("The standardized residual covariance matrices could not be computed"))
+        } else {
+          level_names <- names(sv)
 
-      for (i in 1:length(sv)) {
-        sr <- sv[[i]]$cov
-        sr[upper.tri(sr)] <- NA
+          for (i in 1:length(sv)) {
+            sr <- sv[[i]]$cov
+            sr[upper.tri(sr)] <- NA
 
-        srcont[[level_names[i]]] <- createJaspTable(level_names[i])
+            srcont[[level_names[i]]] <- createJaspTable(level_names[i])
 
-        for (j in 1:ncol(sr)) {
-          nm <- colnames(sr)[j]
-          srcont[[level_names[i]]]$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3;p:.001")
+            for (j in 1:ncol(sr)) {
+              nm <- colnames(sr)[j]
+              srcont[[level_names[i]]]$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3;p:.001")
+            }
+            srcont[[level_names[i]]]$addRows(sr, rowNames = colnames(sr))
+          }
         }
-        srcont[[level_names[i]]]$addRows(sr, rowNames = colnames(sr))
       }
     }
   }
