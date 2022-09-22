@@ -109,10 +109,12 @@ LatentGrowthCurve <- function(jaspResults, dataset, options, ...) {
 
   if (!lgcmResult@optim$converged) {
     modelContainer$setError(gettext("The model could not be estimated due to nonconvergence."))
+    return()
   }
 
   if (lgcmResult@test[[1]]$df < 0) {
     modelContainer$setError(gettext("The model could not be estimated: No degrees of freedom left."))
+    return()
   }
 
   # Bootstrapping with interruptible progress bar
