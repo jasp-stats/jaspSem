@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2022-07-30 03:23\n"
+"POT-Creation-Date: 2022-09-24 03:35\n"
 "PO-Revision-Date: 2022-04-02 02:55+0000\n"
 "Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
@@ -308,6 +308,11 @@ msgstr "路徑圖"
 
 msgid "Model syntax"
 msgstr "模式語法"
+
+msgid ""
+"Estimation failed! Message: The model did not converge. Try using a "
+"different estimator or specify an other MIMIC model."
+msgstr ""
 
 msgid "Chi Square test"
 msgstr ""

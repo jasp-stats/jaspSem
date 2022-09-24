@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.16.4\n"
-"POT-Creation-Date: 2022-09-17 03:28\n"
+"POT-Creation-Date: 2022-09-24 03:35\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -287,6 +287,9 @@ msgid "Path plot"
 msgstr ""
 
 msgid "Model syntax"
+msgstr ""
+
+msgid "Estimation failed! Message: The model did not converge. Try using a different estimator or specify an other MIMIC model."
 msgstr ""
 
 msgid "Chi Square test"

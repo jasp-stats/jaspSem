@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-07-30 03:23\n"
+"POT-Creation-Date: 2022-09-24 03:35\n"
 "PO-Revision-Date: 2022-08-03 17:27+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -325,6 +325,11 @@ msgstr "Gráfica de rutas"
 
 msgid "Model syntax"
 msgstr "Sintaxe do modelo"
+
+msgid ""
+"Estimation failed! Message: The model did not converge. Try using a "
+"different estimator or specify an other MIMIC model."
+msgstr ""
 
 msgid "Chi Square test"
 msgstr "Proba Khi-cadrado"
