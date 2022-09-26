@@ -42,31 +42,46 @@ Form
 	{
 		title: qsTr("Model")
 
+
 		Group
 		{
-
-			RadioButtonGroup
+			DropDown
 			{
-				title: qsTr("Weighting approach")
 				name: "approachWeights"
-				RadioButton
-				{
-					value: "PLS-PM"
-					label: qsTr("PLS-PM")
-					checked: true
-					DropDown
-					{
-						name: "innerWeightingScheme"
-						label: qsTr("Inner weighting scheme")
-						values: [
-							{ value: "path", 		label: qsTr("Path")			},
-							{ value: "centroid", 	label: qsTr("Centroid")		},
-							{ value: "factorial", 	label: qsTr("Factorial")	}
-						]
-					}
-					CheckBox { name: "ignoreStructuralModel";	label: qsTr("Ignore structural model")	}
-				}
-				RadioButton { value: "GSCA";	label: qsTr("GSCA")	}
+				label: qsTr("Weighting approach")
+				id: approachWeigths 
+				values: 
+				[
+					{ label: qsTr("PLS-PM"), 		value: "PLS-PM" 		},
+					{ label: qsTr("GSCA"), 			value: "GSCA"			},
+					{ label: qsTr("SUMCORR"), 		value: "SUMCORR"	 	},
+					{ label: qsTr("MAXVAR"), 		value: "MAXVAR" 		},
+					{ label: qsTr("SSQCORR"), 		value: "SSQCORR" 		},
+					{ label: qsTr("MINVAR"), 		value: "MINVAR" 		},
+					{ label: qsTr("GENVAR"), 		value: "GENVAR" 		},
+					{ label: qsTr("PCA"), 			value: "PCA"			},
+					{ label: qsTr("Unit"), 			value: "unit"			},
+					{ label: qsTr("Bartlett"), 		value: "bartlett"		},
+					{ label: qsTr("Regression"), 	value: "regression"		}
+				] 
+			}
+			
+			DropDown
+			{
+				enabled: approachWeigths.currentValue == "PLS-PM"
+				name: "innerWeightingScheme"
+				label: qsTr("Inner weighting scheme")
+				values: [
+					{ value: "path", 		label: qsTr("Path")			},
+					{ value: "centroid", 	label: qsTr("Centroid")		},
+					{ value: "factorial", 	label: qsTr("Factorial")	}
+				]
+			}
+			CheckBox
+			{
+				enabled: approachWeigths.currentValue == "PLS-PM"
+				name: "ignoreStructuralModel"
+				label: qsTr("Ignore structural model")
 			}
 
 			DropDown
@@ -186,7 +201,7 @@ Form
 		{
 			CheckBox
 			{	name: "endogenousIndicatorPrediction"
-				label: qsTr("Predict endogenous constructs' indicator scores")
+				label: qsTr("Predict endogenous indicator scores")
 				id: prediction
 			}
 
@@ -203,7 +218,7 @@ Form
 			IntegerField
 			{
 				name: "repetitions"
-				label: qsTr("Repetitions of the procedure")
+				label: qsTr("Repetitions")
 				fieldWidth: 60
 				defaultValue: 10
 				min: 1
@@ -224,7 +239,7 @@ Form
 				RadioButton { value: "all";		label: qsTr("All")					}
 			}
 
-			CheckBox { name: "predictedScore";	label: qsTr("Show predicted endogenous indicator scores"); enabled: prediction.checked}
+			CheckBox { name: "predictedScore";	label: qsTr("Show predicted scores"); enabled: prediction.checked}
 		}
 	}
 
