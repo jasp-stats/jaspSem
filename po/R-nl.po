@@ -2,11 +2,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2022-09-24 03:35\n"
+"POT-Creation-Date: 2022-09-28 10:00\n"
 "PO-Revision-Date: 2022-09-27 18:23+0000\n"
 "Last-Translator: Alexander Ly <a.ly@uva.nl>\n"
-"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/>"
-"\n"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/"
+">\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -399,6 +399,9 @@ msgstr ""
 "Ongeldige modelspecificatie. Hebt u de naam van een variabele als tekenreeks "
 "ingevoerd?"
 
+msgid "One or more variables are constants or contain only missing values"
+msgstr ""
+
 msgid ""
 "Missing data handling '%s' is not supported for categorical data,\n"
 "                        please select another method under 'Missing data "
@@ -444,8 +447,9 @@ msgstr "Verschillen test"
 msgid "&#916;df"
 msgstr "&#916;df"
 
+#, fuzzy
 msgid ""
-"A total of %g cases were removed due to missing values. You can avoid this "
+"A total of %s cases were removed due to missing values. You can avoid this "
 "by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
 msgstr ""
 "In totaal werden %g gevallen verwijderd wegens ontbrekende waarden. U kunt "
@@ -472,6 +476,14 @@ msgstr "bootstrap (Bollen-Stine) waarschijnlijkheidswaarde"
 
 msgid "Model tests based on %s."
 msgstr "Model termen getest met %s methode."
+
+#, fuzzy
+msgid ""
+"The AIC, BIC and additional information criteria are only available with ML-"
+"type estimators"
+msgstr ""
+"FIML verwerking van ontbrekende gegevens alleen beschikbaar met ML-type "
+"schatters"
 
 msgid "Factor Loadings"
 msgstr "Factorladingen"
@@ -535,6 +547,22 @@ msgstr "Gepiektheid"
 
 msgid "Covariance tables"
 msgstr "Covariantie tabellen"
+
+msgid ""
+"The standardized residual covariance table is currently unavailable when the "
+"error calculation method is 'Bootstrap'"
+msgstr ""
+
+msgid "The standardized residual covariance matrix could not be computed"
+msgstr ""
+
+msgid ""
+"The standardized residual covariance tables are currently unavailable when "
+"the error calculation method is 'Bootstrap'"
+msgstr ""
+
+msgid "The standardized residual covariance matrices could not be computed"
+msgstr ""
 
 msgid "Modification indices"
 msgstr "Modificatie Indices"

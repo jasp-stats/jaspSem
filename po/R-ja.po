@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2022-09-24 03:35\n"
+"POT-Creation-Date: 2022-09-28 10:00\n"
 "PO-Revision-Date: 2022-02-05 02:39+0000\n"
 "Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -383,6 +383,9 @@ msgstr ""
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr "モデル指定が無効です。変数名を文字列で渡していませんか？"
 
+msgid "One or more variables are constants or contain only missing values"
+msgstr ""
+
 msgid ""
 "Missing data handling '%s' is not supported for categorical data,\n"
 "                        please select another method under 'Missing data "
@@ -423,8 +426,9 @@ msgstr "差異の検定"
 msgid "&#916;df"
 msgstr "&#916;自由度"
 
+#, fuzzy
 msgid ""
-"A total of %g cases were removed due to missing values. You can avoid this "
+"A total of %s cases were removed due to missing values. You can avoid this "
 "by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
 msgstr ""
 "欠損値のために合計 %g のケースが削除されました. 推定オプションの「欠損データ"
@@ -450,6 +454,12 @@ msgstr "ブートストラップ (ボレン・スティン) 確率値"
 
 msgid "Model tests based on %s."
 msgstr "%s に基づくモデルテスト"
+
+#, fuzzy
+msgid ""
+"The AIC, BIC and additional information criteria are only available with ML-"
+"type estimators"
+msgstr "FIML の欠損値処理は，ML タイプの推定法でのみ使用可能です"
 
 msgid "Factor Loadings"
 msgstr "因子負荷量"
@@ -512,6 +522,22 @@ msgstr "尖度"
 
 msgid "Covariance tables"
 msgstr "共分散表"
+
+msgid ""
+"The standardized residual covariance table is currently unavailable when the "
+"error calculation method is 'Bootstrap'"
+msgstr ""
+
+msgid "The standardized residual covariance matrix could not be computed"
+msgstr ""
+
+msgid ""
+"The standardized residual covariance tables are currently unavailable when "
+"the error calculation method is 'Bootstrap'"
+msgstr ""
+
+msgid "The standardized residual covariance matrices could not be computed"
+msgstr ""
 
 msgid "Modification indices"
 msgstr "修正指数"

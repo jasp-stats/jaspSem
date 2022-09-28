@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
-"POT-Creation-Date: 2022-09-24 03:35\n"
+"POT-Creation-Date: 2022-09-28 10:00\n"
 "PO-Revision-Date: 2022-09-25 11:29+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -398,6 +398,9 @@ msgstr ""
 "Especificación incorrecta de modelo. ¿Has indicado un nombre de variable "
 "como cadena de texto?"
 
+msgid "One or more variables are constants or contain only missing values"
+msgstr ""
+
 msgid ""
 "Missing data handling '%s' is not supported for categorical data,\n"
 "                        please select another method under 'Missing data "
@@ -444,8 +447,9 @@ msgstr "Contraste de diferencias"
 msgid "&#916;df"
 msgstr "&#916;gl"
 
+#, fuzzy
 msgid ""
-"A total of %g cases were removed due to missing values. You can avoid this "
+"A total of %s cases were removed due to missing values. You can avoid this "
 "by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
 msgstr ""
 "Se eliminó un total de %g casos debido a valores ausentes. Puedes evitar "
@@ -472,6 +476,14 @@ msgstr "valor de la probabilidad de Bootstrap (Bollen-Stine)"
 
 msgid "Model tests based on %s."
 msgstr "Contrastes del modelo basadas en %s."
+
+#, fuzzy
+msgid ""
+"The AIC, BIC and additional information criteria are only available with ML-"
+"type estimators"
+msgstr ""
+"El manejo de datos ausentes de MVIC solo está disponible con estimadores de "
+"tipo MV"
 
 msgid "Factor Loadings"
 msgstr "Cargas de los Factores"
@@ -536,6 +548,22 @@ msgstr "Curtosis"
 
 msgid "Covariance tables"
 msgstr "Tablas de covarianzas"
+
+msgid ""
+"The standardized residual covariance table is currently unavailable when the "
+"error calculation method is 'Bootstrap'"
+msgstr ""
+
+msgid "The standardized residual covariance matrix could not be computed"
+msgstr ""
+
+msgid ""
+"The standardized residual covariance tables are currently unavailable when "
+"the error calculation method is 'Bootstrap'"
+msgstr ""
+
+msgid "The standardized residual covariance matrices could not be computed"
+msgstr ""
 
 msgid "Modification indices"
 msgstr "Índices de modificación"

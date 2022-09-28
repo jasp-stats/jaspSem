@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.16.4\n"
-"POT-Creation-Date: 2022-09-24 03:35\n"
+"POT-Creation-Date: 2022-09-28 10:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -349,6 +349,9 @@ msgstr ""
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr ""
 
+msgid "One or more variables are constants or contain only missing values"
+msgstr ""
+
 msgid "Missing data handling '%s' is not supported for categorical data,\n                        please select another method under 'Missing data handling'\n                        within the 'Estimation options' tab"
 msgstr ""
 
@@ -385,7 +388,7 @@ msgstr ""
 msgid "&#916;df"
 msgstr ""
 
-msgid "A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
+msgid "A total of %s cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
 msgstr ""
 
 msgid "Satorra-Bentler scaled test-statistic"
@@ -407,6 +410,9 @@ msgid "bootstrap (Bollen-Stine) probability value"
 msgstr ""
 
 msgid "Model tests based on %s."
+msgstr ""
+
+msgid "The AIC, BIC and additional information criteria are only available with ML-type estimators"
 msgstr ""
 
 msgid "Factor Loadings"
@@ -464,6 +470,18 @@ msgid "Kurtosis"
 msgstr ""
 
 msgid "Covariance tables"
+msgstr ""
+
+msgid "The standardized residual covariance table is currently unavailable when the error calculation method is 'Bootstrap'"
+msgstr ""
+
+msgid "The standardized residual covariance matrix could not be computed"
+msgstr ""
+
+msgid "The standardized residual covariance tables are currently unavailable when the error calculation method is 'Bootstrap'"
+msgstr ""
+
+msgid "The standardized residual covariance matrices could not be computed"
 msgstr ""
 
 msgid "Modification indices"
