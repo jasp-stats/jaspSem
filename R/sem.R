@@ -1042,9 +1042,54 @@ checkLavaanModel <- function(model, availableVars) {
   # actually compute the fit measures
   fmli <- lapply(modelContainer[["results"]][["object"]], lavaan::fitmeasures)
 
+  .addTSizeFitMeasures <- function(fm, alpha = 0.05, dataset) {
+
+    ncp_chi2 <- function(alpha, chisqModel, df){
+      z <- qnorm(1-alpha)
+      z2 <- z*z
+      z3 <- z2*z
+      z4 <- z3*z
+      z5 <- z4*z
+      sig2 <- 2*(2*chisqModel-df+2)
+      sig <- sqrt(sig2)
+      sig3 <- sig*sig2
+      sig4 <- sig2*sig2
+      sig5 <- sig4*sig
+      sig6 <- sig2*sig4
+
+      delta <- chisqModel-df+2+sig*(z+(z2-1)/sig-z/sig2 + 2*(df-1)*(z2-1)/(3*sig3)
+                              +( -(df-1)*(4*z3-z)/6+(df-2)*z/2 )/sig4
+                              +4*(df-1)*(3*z4+2*z2-11)/(15*sig5)
+                              +(-(df-1)*(96*z5+164*z3-767*z)/90-4*(df-1)*(df-2)*(2*z3-5*z)/9+(df-2)*z/2)/sig6
+                              )
+      delta <- max(delta,0)
+      return(delta)
+    }
+    chisqModel <- fm[["chisq"]]
+    chisqBaseline <- fm[["baseline.chisq"]]
+    df <- fm[["df"]]
+    dfBaseline <- fm[["baseline.df"]]
+    n <- nrow(dataset)
+
+    delta_t <- ncp_chi2(alpha, chisqModel, df)
+    rmsea_t <- sqrt(delta_t / (df*(n-1)))
+
+    delta_t <- ncp_chi2(alpha/2, chisqModel, df)
+    delta_bt <- ncp_chi2(1-alpha/2, chisqBaseline, dfBaseline)
+    cfi_t <- 1 - max(delta_t, 0) / max(delta_t, delta_bt, 0)
+
+    fm <- c(fm, rmsea.t = rmsea_t, cfi.t = cfi_t)
+
+    return(fm)
+  }
+
+
+  fmli <- lapply(fmli, .addTSizeFitMeasures, dataset=dataset)
+
   # Fit indices
   fitin[["index"]] <- c(
     gettext("Comparative Fit Index (CFI)"),
+    gettextf("T-size CFI (CFI%s)", "\U209C"),
     gettext("Tucker-Lewis Index (TLI)"),
     gettext("Bentler-Bonett Non-normed Fit Index (NNFI)"),
     gettext("Bentler-Bonett Normed Fit Index (NFI)"),
@@ -1054,10 +1099,10 @@ checkLavaanModel <- function(model, availableVars) {
     gettext("Relative Noncentrality Index (RNI)")
   )
   if (length(options[["models"]]) == 1) {
-    fitin[["value"]] <- fmli[[1]][c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
+    fitin[["value"]] <- fmli[[1]][c("cfi", "cfi.t", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
   } else {
     for (i in seq_along(options[["models"]])) {
-      fitin[[paste0("value_", i)]] <- fmli[[i]][c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
+      fitin[[paste0("value_", i)]] <- fmli[[i]][c("cfi", "cfi.t", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
     }
   }
 
@@ -1087,6 +1132,7 @@ checkLavaanModel <- function(model, availableVars) {
     gettextf("RMSEA 90%% CI lower bound"),
     gettextf("RMSEA 90%% CI upper bound"),
     gettext("RMSEA p-value"),
+    gettextf("T-size RMSEA (RMSEA%s)", "\U209C"),
     gettext("Standardized root mean square residual (SRMR)"),
     gettextf("Hoelter's critical N (%s = .05)","\u03B1"),
     gettextf("Hoelter's critical N (%s = .01)","\u03B1"),
@@ -1095,11 +1141,11 @@ checkLavaanModel <- function(model, availableVars) {
     gettext("Expected cross validation index (ECVI)")
   )
   if (length(options[["models"]]) == 1) {
-    fitot[["value"]] <- fmli[[1]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
+    fitot[["value"]] <- fmli[[1]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue", "rmsea.t",
                                     "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
   } else {
     for (i in seq_along(options[["models"]])) {
-      fitot[[paste0("value_", i)]] <- fmli[[i]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
+      fitot[[paste0("value_", i)]] <- fmli[[i]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue", "rmsea.t",
                                                   "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
     }
   }
