@@ -62,8 +62,8 @@ Upgrades
 	Upgrade
 	{
 		functionName: "LatentGrowthCurve"
-		fromVersion: "0.16.3"
-		toVersion: "0.16.4"
+		fromVersion: "0.16.4"
+		toVersion: "0.17.0"
 
 		ChangeRename {	from:	"covar";						to:		"covaryingLatentCurve"				}
 		ChangeRename {	from:	"outputAdditionalFitMeasures";	to:		"additionalFitMeasures"				}
@@ -131,8 +131,8 @@ Upgrades
 	Upgrade
 	{
 		functionName: "MediationAnalysis"
-		fromVersion: "0.16.3"
-		toVersion: "0.16.4"
+		fromVersion: "0.16.4"
+		toVersion: "0.17.0"
 
 		ChangeRename {	from:	"predictor";					to:		"predictors"						}
 		ChangeRename {	from:	"dependent";					to:		"outcomes"							}
@@ -202,8 +202,8 @@ Upgrades
 	Upgrade
 	{
 		functionName: "MIMIC"
-		fromVersion: "0.16.3"
-		toVersion: "0.16.4"
+		fromVersion: "0.16.4"
+		toVersion: "0.17.0"
 
 		ChangeRename {	from:	"std";							to:		"standardizedEstimate"				}
 		ChangeRename {	from:	"showSyntax";					to:		"syntax"							}
@@ -269,8 +269,8 @@ Upgrades
 	Upgrade
 	{
 		functionName: "SEM"
-		fromVersion: "0.16.3"
-		toVersion: "0.16.4"
+		fromVersion: "0.16.4"
+		toVersion: "0.17.0"
 
 		ChangeJS
 		{
@@ -284,7 +284,7 @@ Upgrades
 					newModel.syntaxOriginal = model.syntaxOriginal;
 					return newModel ;
 				});
-		
+
 				return newModels;
 			}
 		}
