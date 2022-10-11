@@ -281,16 +281,19 @@ Upgrades
 					let newModel = {};
 					newModel.name			= model.modelName;
 					newModel.syntax			= model.syntax;
-					newModel.syntaxOriginal = model.syntaxOriginal;
-					return newModel ;
+					return newModel;
 				});
-
 				return newModels;
 			}
 		}
 
 		ChangeRename {	from:	"Data";							to:		"dataType"							}
-		ChangeRename {	from:	"varcov";						to:		"varianceCovariance"				}
+		ChangeSetValue
+		{	
+			name:		"dataType"
+			jsonValue:	"varianceCovariance"	
+			condition:	function(options) return options["dataType"] === "varcov";	
+		}
 		ChangeRename {	from:	"SampleSize";					to:		"sampleSize"						}
 		ChangeRename {	from:	"sampling.weights";				to:		"samplingWeights"					}
 		ChangeRename {	from:	"outputAdditionalFitMeasures";	to:		"additionalFitMeasures"				}
