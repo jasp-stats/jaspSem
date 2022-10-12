@@ -271,7 +271,6 @@ Upgrades
 		functionName: "SEM"
 		fromVersion: "0.16.4"
 		toVersion: "0.17.0"
-
 		ChangeJS
 		{
 			name: "models"
@@ -288,11 +287,17 @@ Upgrades
 		}
 
 		ChangeRename {	from:	"Data";							to:		"dataType"							}
-		ChangeSetValue
-		{	
+		ChangeJS
+		{
 			name:		"dataType"
-			jsonValue:	"varianceCovariance"	
-			condition:	function(options) return options["dataType"] === "varcov";	
+			jsFunction:	function(options) 
+			{
+				switch(options["dataType"])
+				{
+					case "varcov":	return "varianceCovariance";
+					default:		return options["dataType"];
+				}
+			}
 		}
 		ChangeRename {	from:	"SampleSize";					to:		"sampleSize"						}
 		ChangeRename {	from:	"sampling.weights";				to:		"samplingWeights"					}
@@ -326,21 +331,21 @@ Upgrades
 			}
 		}
 
-		ChangeRename {	from:	"meanstructure";				to:		"meanStructure"						}
-		ChangeRename {	from:	"int.ov.fixed";					to:		"manifestInterceptFixedToZero"		}
-		ChangeRename {	from:	"int.lv.fixed";					to:		"latentInterceptFixedToZero"		}
-		ChangeRename {	from:	"fixed.x";						to:		"exogenousCovariateFixed"			}
-		ChangeRename {	from:	"auto.fix.single";				to:		"residualSingleIndicatorOmitted"	}
-		ChangeRename {	from:	"auto.var";						to:		"residualVariance"					}
-		ChangeRename {	from:	"auto.cov.lv.x";				to:		"exogenousLatentCorrelation"		}
-		ChangeRename {	from:	"auto.cov.y";					to:		"dependentCorrelation"				}
-		ChangeRename {	from:	"auto.th";						to:		"threshold"							}
-		ChangeRename {	from:	"auto.delta";					to:		"scalingParameter"					}
-		ChangeRename {	from:	"auto.efa";						to:		"efaConstrained"					}
-		ChangeRename {	from:	"information";					to:		"informationMatrix"					}
-		ChangeRename {	from:	"se";							to:		"errorCalculationMethod"			}
-		ChangeRename {	from:	"bootstrapNumber";				to:		"bootstrapSamples"					}
-		ChangeRename {	from:	"bootCItype";					to:		"bootstrapCiType"					}
+		ChangeRename {	from:	"meanstructure";						to:		"meanStructure"						}
+		ChangeRename {	from:	"int.ov.fixed";							to:		"manifestInterceptFixedToZero"		}
+		ChangeRename {	from:	"int.lv.fixed";							to:		"latentInterceptFixedToZero"		}
+		ChangeRename {	from:	"fixed.x";								to:		"exogenousCovariateFixed"			}
+		ChangeRename {	from:	"auto.fix.single";						to:		"residualSingleIndicatorOmitted"	}
+		ChangeRename {	from:	"auto.var";								to:		"residualVariance"					}
+		ChangeRename {	from:	"auto.cov.lv.x";						to:		"exogenousLatentCorrelation"		}
+		ChangeRename {	from:	"auto.cov.y";							to:		"dependentCorrelation"				}
+		ChangeRename {	from:	"auto.th";								to:		"threshold"							}
+		ChangeRename {	from:	"auto.delta";							to:		"scalingParameter"					}
+		ChangeRename {	from:	"auto.efa";								to:		"efaConstrained"					}
+		ChangeRename {	from:	"information";							to:		"informationMatrix"					}
+		ChangeRename {	from:	"se";									to:		"errorCalculationMethod"			}
+		ChangeRename {	from:	"errorCalculationBootstrapSamples";		to:		"bootstrapSamples"					}
+		ChangeRename {	from:	"bootCItype";							to:		"bootstrapCiType"					}
 
 		ChangeJS
 		{
