@@ -215,7 +215,7 @@ checkLavaanModel <- function(model, availableVars) {
 .semComputeResults <- function(modelContainer, dataset, options) {
   #' create result list from options
   # find reusable results
-  if (!options[["estimator"]] %in% c("default", "ML") && options[["missing"]] == "ml") return()
+  if (!options[["estimator"]] %in% c("default", "ml") && options[["naAction"]] == "fiml") return()
 
   oldmodels  <- modelContainer[["models"]][["object"]]
   oldresults <- modelContainer[["results"]][["object"]]
@@ -383,7 +383,7 @@ checkLavaanModel <- function(model, availableVars) {
                                   "residual.covariances", "lv.variances", "lv.covariances")[equality_constraints]
   }
 
-  if (options[["freeParameters"]] != ""){
+  if (options[["freeParameters"]][1] != ""){
     splitted <- strsplit(options[["freeParameters"]][["model"]], "[\\n,;]+", perl = TRUE)[[1]]
     lavopts[["group.partial"]] <-  splitted
   }
@@ -526,7 +526,7 @@ checkLavaanModel <- function(model, availableVars) {
     fittab$addFootnote(message = ftext)
   }
 
-  if (options$estimator %in% c("DWLS", "GLS", "WLS", "ULS")) {
+  if (options$estimator %in% c("dwls", "gls", "wls", "uls")) {
     fittab$addFootnote(message = gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators"))
   }
 }
@@ -1008,7 +1008,7 @@ checkLavaanModel <- function(model, availableVars) {
   fitin$setExpectedSize(rows = 1, cols = 2)
 
   # information criteria
-  if (!options$estimator %in% c("DWLS", "GLS", "WLS", "ULS")) {
+  if (!options$estimator %in% c("dwls", "gls", "wls", "uls")) {
     fitms[["incrits"]] <- fitic <- createJaspTable(gettext("Information criteria"))
     fitic$addColumnInfo(name = "index", title = "", type = "string")
     if (length(options[["models"]]) < 2) {
@@ -1062,7 +1062,7 @@ checkLavaanModel <- function(model, availableVars) {
   }
 
   # information criteria
-  if (!options$estimator %in% c("DWLS", "GLS", "WLS", "ULS")) {
+  if (!options$estimator %in% c("dwls", "gls", "wls", "uls")) {
     fitic[["index"]] <- c(
       gettext("Log-likelihood"),
       gettext("Number of free parameters"),
