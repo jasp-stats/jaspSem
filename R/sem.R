@@ -1268,7 +1268,7 @@ checkLavaanModel <- function(model, availableVars) {
 
 .semCov <- function(modelContainer, dataset, options, ready) {
   if (!(options[["observedCovariance"]] || options[["impliedCovariance"]] ||
-        options[["residualCovariance"]]) || options[["standardizedResidual"]] || !is.null(modelContainer[["covars"]])) return()
+        options[["residualCovariance"]] || options[["standardizedResidual"]]) || !is.null(modelContainer[["covars"]])) return()
 
   covars <- createJaspContainer(gettext("Covariance tables"))
   covars$position <- 3
@@ -1410,7 +1410,7 @@ checkLavaanModel <- function(model, availableVars) {
 
     if (options[["standardizedResidual"]]) {
       # actually compute the implied covariance
-      if (options[["se"]] == "bootstrap") {
+      if (options[["errorCalculationMethod"]] == "bootstrap") {
         srtab$setError(gettext("The standardized residual covariance table is currently unavailable when the error calculation method is 'Bootstrap'"))
       } else {
         sv <- try(lavaan::residuals(fit, type = "standardized"))
@@ -1492,7 +1492,7 @@ checkLavaanModel <- function(model, availableVars) {
 
     if (options[["standardizedResidual"]]) {
       # actually compute the observed covariance
-      if (options[["se"]] == "bootstrap") {
+      if (options[["errorCalculationMethod"]] == "bootstrap") {
         stdResError <- createJaspTable()
         stdResError$setError(gettext("The standardized residual covariance tables are currently unavailable when the error calculation method is 'Bootstrap'"))
         srcont[["stdResError"]] <- stdResError
