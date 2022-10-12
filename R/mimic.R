@@ -46,7 +46,7 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
   if (length(options$indicators) < 3 || length(options$predictors) == 0) return(FALSE)
 
   # Check for missing value handling
-  if (options$estimator %in% c("GLS", "WLS", "ULS", "DWLS") && options$missing == "fiml")
+  if (options$estimator %in% c("gls", "wls", "uls", "dwls") && options$naAction == "fiml")
     jaspBase:::.quitAnalysis(gettext("FIML only available with ML-type estimators."))
 
   # Exogenous variables can be binary or continuous
@@ -84,7 +84,7 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
 
       admissible <- vapply(endo, function(endo_var) {
         var <- na.omit(dataset[[.v(endo_var)]])
-        if (is.ordered(var) && options$missing == "fiml") {
+        if (is.ordered(var) && options$naAction == "fiml") {
           return(FALSE)
         }
         return(TRUE)
@@ -109,10 +109,10 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
   mimicResult <- try(lavaan::sem(
     model           = .mimicToLavMod(options),
     data            = dataset,
-    se              = ifelse(options$se == "bootstrap", "standard", options$se),
-    mimic           = options$mimic,
+    se              = ifelse(options$errorCalculationMethod == "bootstrap", "standard", options$errorCalculationMethod),
+    mimic           = options$emulation,
     estimator       = options$estimator,
-    missing         = options$missing,
+    missing         = options$naAction,
     std.lv          = TRUE
   ))
 
@@ -128,8 +128,8 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
     return()
   }
 
-  if (options$se == "bootstrap") {
-    mimicResult <- lavBootstrap(mimicResult, options$bootstrapNumber)
+  if (options$errorCalculationMethod == "bootstrap") {
+    mimicResult <- lavBootstrap(mimicResult, options$bootstrapSamples)
   }
 
   modelContainer[["model"]] <- createJaspState(mimicResult)
@@ -174,8 +174,8 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c(
       "predictors", "indicators", "includemeanstructure",
-      "bootstrapNumber", "fixManifestInterceptsToZero", "mimic", "se", "estimator",
-      "missing")
+      "bootstrapSamples", "emulation", "errorCalculationMethod", "estimator",
+      "naAction")
     )
     jaspResults[["modelContainer"]] <- modelContainer
   }
@@ -216,9 +216,9 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
 }
 
 .mimicAdditionalFit <- function(modelContainer, options, ready) {
-  if (!options$additionalfits || !is.null(modelContainer[["addfit"]])) return()
+  if (!options$additionalFitMeasures || !is.null(modelContainer[["addfit"]])) return()
   fitms <- createJaspContainer(gettext("Additional fit measures"))
-  fitms$dependOn("additionalfits")
+  fitms$dependOn("additionalFitMeasures")
   fitms$position <- 0.75
 
   # Fit indices
@@ -291,7 +291,7 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
 .mimicParTable <- function(modelContainer, options, ready) {
   if (!is.null(modelContainer[["parest"]])) return()
   modelContainer[["parest"]] <- pecont <- createJaspContainer(gettext("Parameter estimates"))
-  pecont$dependOn(options = c("ciWidth", "bootCItype", "std"))
+  pecont$dependOn(options = c("ciLevel", "bootstrapCiType", "standardizedEstimate"))
   pecont$position <- 0.5
 
   ## betas
@@ -303,11 +303,11 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
   bettab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   bettab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   bettab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   bettab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  if (options$std) {
+  if (options$standardizedEstimate) {
     bettab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number", format = "sf:4;dp:3",
                          overtitle = gettext("Standardized"))
     bettab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number", format = "sf:4;dp:3",
@@ -327,11 +327,11 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
   lamtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   lamtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   lamtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   lamtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  if (options$std) {
+  if (options$standardizedEstimate) {
     lamtab$addColumnInfo(name = "std.all", title = gettext("All"),    type = "number", format = "sf:4;dp:3",
                          overtitle = gettext("Standardized"))
     lamtab$addColumnInfo(name = "std.lv",  title = gettext("Latent"), type = "number", format = "sf:4;dp:3",
@@ -344,9 +344,13 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
 
   if (!ready || modelContainer$getError()) return()
 
+  bootstrapCiType <- ifelse(options[["bootstrapCiType"]] == "percentileBiasCorrected", "bca.simple",
+                            ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
+                                   "norm"))
+
   pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]],
-                                   boot.ci.type = options$bootCItype,
-                                   level = options$ciWidth,
+                                   boot.ci.type = bootstrapCiType,
+                                   level = options$ciLevel,
                                    standardized = TRUE)
 
   pe_bet <- pe[substr(pe$label, 1, 1) == "b", ]
@@ -358,7 +362,7 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
   bettab[["ci.lower"]] <- pe_bet$ci.lower
   bettab[["ci.upper"]] <- pe_bet$ci.upper
 
-  if (options$std) {
+  if (options$standardizedEstimate) {
     bettab[["std.all"]] <- pe_bet$std.all
     bettab[["std.lv"]]  <- pe_bet$std.lv
     bettab[["std.nox"]] <- pe_bet$std.nox
@@ -373,7 +377,7 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
   lamtab[["ci.lower"]] <- pe_lam$ci.lower
   lamtab[["ci.upper"]] <- pe_lam$ci.upper
 
-  if (options$std) {
+  if (options$standardizedEstimate) {
     lamtab[["std.all"]] <- pe_lam$std.all
     lamtab[["std.lv"]]  <- pe_lam$std.lv
     lamtab[["std.nox"]] <- pe_lam$std.nox
@@ -381,12 +385,12 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
 }
 
 .mimicRsquared <- function(modelContainer, options, ready) {
-  if (!options$rsquared || !is.null(modelContainer[["rsquared"]])) return()
+  if (!options$rSquared || !is.null(modelContainer[["rsquared"]])) return()
 
   tabr2 <- createJaspTable(gettext("R-Squared"))
   tabr2$addColumnInfo(name = "__var__", title = "", type = "string")
   tabr2$addColumnInfo(name = "rsq", title = "R\u00B2", type = "number", format = "sf:4;dp:3")
-  tabr2$dependOn(options = "rsquared")
+  tabr2$dependOn(options = "rSquared")
   tabr2$position <- 1
 
   modelContainer[["rsquared"]] <- tabr2
@@ -399,10 +403,10 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
 }
 
 .mimicPathPlot <- function(modelContainer, dataset, options, ready) {
-  if (!options$pathplot || !ready || !is.null(modelContainer[["plot"]])) return()
+  if (!options$pathPlot || !ready || !is.null(modelContainer[["plot"]])) return()
 
   plt <- createJaspPlot(title = gettext("Path plot"), width = 600, height = 400)
-  plt$dependOn(options = c("pathplot", "plotpars", "plotlegend"))
+  plt$dependOn(options = c("pathPlot", "pathPlotParameter", "pathPlotLegend"))
   plt$position <- 2
 
   modelContainer[["plot"]] <- plt
@@ -421,11 +425,11 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
     layout         = "tree2",
     intercepts     = FALSE,
     reorder        = FALSE,
-    whatLabels     = ifelse(options$plotpars, "par", "name"),
+    whatLabels     = ifelse(options$pathPlotParameter, "par", "name"),
     edge.color     = "black",
     color          = list(lat = "#EAEAEA", man = "#EAEAEA", int = "#FFFFFF"),
     title          = FALSE,
-    legend         = options$plotlegend,
+    legend         = options$pathPlotLegend,
     legend.mode    = "names",
     legend.cex     = 0.6,
     label.cex      = 1.3,
@@ -439,9 +443,9 @@ MIMIC <- function(jaspResults, dataset, options, ...) {
 }
 
 .mimicSyntax <- function(modelContainer, options, ready) {
-  if (!options$showSyntax || !ready) return()
+  if (!options$syntax || !ready) return()
   modelContainer[["syntax"]] <- createJaspHtml(.mimicToLavMod(options, FALSE), class = "jasp-code", title = gettext("Model syntax"))
-  modelContainer[["syntax"]]$dependOn("showSyntax")
+  modelContainer[["syntax"]]$dependOn("syntax")
   modelContainer[["syntax"]]$position <- 3
 }
 

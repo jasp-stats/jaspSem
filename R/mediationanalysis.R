@@ -39,21 +39,21 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 .medReadData <- function(dataset, options) {
   if (!is.null(dataset)) return(dataset)
 
-  vars <- c(options$predictor, options$mediators, options$dependent, options$confounds)
+  vars <- c(options$predictors, options$mediators, options$outcomes, options$confounds)
   return(.readDataSetToEnd(columns = vars))
 }
 
 .medCheckErrors <- function(dataset, options) {
-  if (length(options$dependent) == 0 || length(options$mediators) == 0 || length(options$predictor) == 0) return(FALSE)
+  if (length(options$outcomes) == 0 || length(options$mediators) == 0 || length(options$predictors) == 0) return(FALSE)
 
   # Check for missing value handling
-  if (options$estimator %in% c("GLS", "WLS", "ULS", "DWLS") && options$missing == "fiml")
+  if (options$estimator %in% c("gls", "wls", "uls", "dwls") && options$naAction == "fiml")
     jaspBase:::.quitAnalysis(gettext("FIML only available with ML-type estimators."))
 
   # Exogenous variables can be binary or continuous
-  exo <- ifelse(length(options$confounds) > 0, options$confounds, options$predictor)
+  exo <- ifelse(length(options$confounds) > 0, options$confounds, options$predictors)
   # Endogenous variables need to be scale or ordinal
-  endo <- c(options$mediators, options$dependent)
+  endo <- c(options$mediators, options$outcomes)
 
   customChecks <- list(
     checkExogenous = function() {
@@ -68,7 +68,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     },
 
     checkEndogenous = function() {
-      if (length(options$confounds) > 0) endo <- c(endo, options$predictor)
+      if (length(options$confounds) > 0) endo <- c(endo, options$predictors)
       admissible <- vapply(endo, function(endo_var) {
         var <- na.omit(dataset[[endo_var]])
         if (!(is.ordered(var) || is.numeric(var))) {
@@ -81,11 +81,11 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     },
 
     checkCategoricalEndo = function() {
-      if (length(options$confounds) > 0) endo <- c(endo, options$predictor)
+      if (length(options$confounds) > 0) endo <- c(endo, options$predictors)
 
       admissible <- vapply(endo, function(endo_var) {
         var <- na.omit(dataset[[endo_var]])
-        if (is.ordered(var) && options$missing == "fiml") {
+        if (is.ordered(var) && options$naAction == "fiml") {
           return(FALSE)
         }
         return(TRUE)
@@ -110,11 +110,11 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   medResult <- try(lavaan::sem(
     model           = .medToLavMod(options),
     data            = dataset,
-    se              = ifelse(options$se == "bootstrap", "standard", options$se),
-    mimic           = options$mimic,
+    se              = ifelse(options$errorCalculationMethod == "bootstrap", "standard", options$errorCalculationMethod),
+    mimic           = options$emulation,
     estimator       = options$estimator,
-    std.ov          = options$std,
-    missing         = options$missing
+    std.ov          = options$standardizedEstimate,
+    missing         = options$naAction
   ))
 
   if (inherits(medResult, "try-error")) {
@@ -122,8 +122,8 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     modelContainer$setError(.decodeVarsInMessage(names(dataset), errmsg))
   }
 
-  if (options$se == "bootstrap") {
-    medResult <- lavBootstrap(medResult, options$bootstrapNumber)
+  if (options$errorCalculationMethod == "bootstrap") {
+    medResult <- lavBootstrap(medResult, options$bootstrapSamples)
   }
 
   modelContainer[["model"]] <- createJaspState(medResult)
@@ -134,9 +134,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 
   if (!base64) .v <- I
 
-  n_pred <- length(options$predictor)
+  n_pred <- length(options$predictors)
   n_medi <- length(options$mediators)
-  n_deps <- length(options$dependent)
+  n_deps <- length(options$outcomes)
   n_conf <- length(options$confounds)
 
   title    <- "
@@ -146,14 +146,14 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   "
   dep_part <- "# dependent regression"
   for (d in 1:n_deps) {
-    dep_part <- paste0(dep_part, "\n", options$dependent[d], " ~")
+    dep_part <- paste0(dep_part, "\n", options$outcomes[d], " ~")
     for (m in 1:n_medi) {
       par_name <- paste0(" b", d, m)
       dep_part <- paste0(dep_part, par_name, "*", options$mediators[m], " +")
     }
     for (p in 1:n_pred) {
       par_name <- paste0(" c", d, p)
-      dep_part <- paste0(dep_part, par_name, "*", options$predictor[p])
+      dep_part <- paste0(dep_part, par_name, "*", options$predictors[p])
       if (p != n_pred)
         dep_part <- paste0(dep_part, " +")
     }
@@ -165,7 +165,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     med_part <- paste0(med_part, "\n", options$mediators[m], " ~")
     for (p in 1:n_pred) {
       par_name <- paste0(" a", m, p)
-      med_part <- paste0(med_part, par_name, "*", options$predictor[p])
+      med_part <- paste0(med_part, par_name, "*", options$predictors[p])
       if (p != n_pred)
         med_part <- paste0(med_part, " +")
     }
@@ -176,7 +176,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   pred_res_part <- NULL
   if (n_conf > 0) {
     conf_part <- "# confounder adjustment"
-    for (var in c(options$predictor, options$mediators, options$dependent)) {
+    for (var in c(options$predictors, options$mediators, options$outcomes)) {
       conf_part <- paste0(conf_part, "\n", var, " ~ ", paste(options$confounds, collapse = " + "))
     }
     conf_part <- paste0(conf_part, "\n\n")
@@ -184,8 +184,8 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
       pred_res_part <- "# predictor residual covariance"
       idx_mat  <- which(upper.tri(diag(n_pred)), arr.ind = TRUE)
       for (i in 1:nrow(idx_mat)) {
-        v1 <- options$predictor[idx_mat[i,1]]
-        v2 <- options$predictor[idx_mat[i,2]]
+        v1 <- options$predictors[idx_mat[i,1]]
+        v2 <- options$predictors[idx_mat[i,2]]
         pred_res_part <- paste0(pred_res_part, "\n", v1, " ~~ ", v2)
       }
       pred_res_part <- paste0(pred_res_part, "\n\n")
@@ -209,8 +209,8 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     res_part <- "# dependent residual covariance"
     idx_mat  <- which(upper.tri(diag(n_deps)), arr.ind = TRUE)
     for (i in 1:nrow(idx_mat)) {
-      v1 <- options$dependent[idx_mat[i,1]]
-      v2 <- options$dependent[idx_mat[i,2]]
+      v1 <- options$outcomes[idx_mat[i,1]]
+      v2 <- options$outcomes[idx_mat[i,2]]
       res_part <- paste0(res_part, "\n", v1, " ~~ ", v2)
     }
     res_part <- paste0(res_part, "\n\n")
@@ -247,9 +247,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   } else {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c(
-      "predictor", "mediators", "dependent", "confounds", "includemeanstructure",
-      "bootstrapNumber", "fixManifestInterceptsToZero", "mimic", "se", "estimator",
-      "std", "missing")
+      "predictors", "mediators", "outcomes", "confounds", "includemeanstructure",
+      "bootstrapSamples", "fixManifestInterceptsToZero", "emulation", "errorCalculationMethod", "estimator",
+      "standardizedEstimate", "naAction")
     )
     jaspResults[["modelContainer"]] <- modelContainer
   }
@@ -260,7 +260,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 .medParTable <- function(modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["parest"]])) return()
   modelContainer[["parest"]] <- pecont <- createJaspContainer(gettext("Parameter estimates"))
-  pecont$dependOn(options = c("ciWidth", "bootCItype"))
+  pecont$dependOn(options = c("ciLevel", "bootstrapCiType"))
   pecont$position <- 0
 
   ## direct effects
@@ -274,9 +274,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   dirtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   dirtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   dirtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   dirtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
 
   pecont[["dir"]] <- dirtab
@@ -294,9 +294,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   indtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   indtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   indtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   indtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
   pecont[["ind"]] <- indtab
 
@@ -311,9 +311,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   tottab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   tottab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   tottab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   tottab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
   pecont[["tot"]] <- tottab
 
@@ -327,8 +327,12 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 
   foot_message <- .medFootMessage(modelContainer, options)
 
-  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]], boot.ci.type = options$bootCItype,
-                                   level = options$ciWidth)
+  bootstrapCiType <- ifelse(options[["bootstrapCiType"]] == "percentileBiasCorrected", "bca.simple",
+                            ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
+                                   "norm"))
+
+  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]], boot.ci.type = bootstrapCiType,
+                                   level = options$ciLevel)
 
   # Fill direct effects
   pe_dir <- pe[substr(pe$label, 1, 1) == "c", ]
@@ -353,11 +357,11 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     y = .medGetTermsFromLavaanTable(terms, 4, "y")
   )
 
-  indtab[["x"]]        <- options[["predictor"]][termsCombinations[["x"]]]
+  indtab[["x"]]        <- options[["predictors"]][termsCombinations[["x"]]]
   indtab[["op1"]]      <- rep("\u2192", nrow(pe_ind))
   indtab[["m"]]        <- options[["mediators"]][termsCombinations[["m"]]]
   indtab[["op2"]]      <- rep("\u2192", nrow(pe_ind))
-  indtab[["y"]]        <- options[["dependent"]][termsCombinations[["y"]]]
+  indtab[["y"]]        <- options[["outcomes"]][termsCombinations[["y"]]]
   indtab[["est"]]      <- pe_ind$est
   indtab[["se"]]       <- pe_ind$se
   indtab[["z"]]        <- pe_ind$z
@@ -377,9 +381,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     y = .medGetTermsFromLavaanTable(terms, 3, "y")
   )
 
-  tottab[["lhs"]]      <- options[["predictor"]][termsCombinations[["x"]]]
+  tottab[["lhs"]]      <- options[["predictors"]][termsCombinations[["x"]]]
   tottab[["op"]]       <- rep("\u2192", nrow(pe_tot))
-  tottab[["rhs"]]      <- options[["dependent"]][termsCombinations[["y"]]]
+  tottab[["rhs"]]      <- options[["outcomes"]][termsCombinations[["y"]]]
   tottab[["est"]]      <- pe_tot$est
   tottab[["se"]]       <- pe_tot$se
   tottab[["z"]]        <- pe_tot$z
@@ -390,10 +394,10 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 }
 
 .medTotIndTable <- function(modelContainer, options, ready) {
-  if (!options[["showtotind"]] || !length(options$mediators) > 1) return()
+  if (!options[["totalIndirectEffect"]] || !length(options$mediators) > 1) return()
 
   ttitab <- createJaspTable(title = gettext("Total indirect effects"))
-  ttitab$dependOn("showtotind")
+  ttitab$dependOn("totalIndirectEffect")
 
   ttitab$addColumnInfo(name = "lhs",      title = "",                    type = "string")
   ttitab$addColumnInfo(name = "op",       title = "",                    type = "string")
@@ -403,9 +407,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   ttitab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   ttitab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   ttitab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   ttitab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
   modelContainer[["parest"]][["tti"]] <- ttitab
 
@@ -413,8 +417,12 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 
   foot_message <- .medFootMessage(modelContainer, options)
 
-  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]], boot.ci.type = options$bootCItype,
-                                   level = options$ciWidth)
+  bootstrapCiType <- ifelse(options[["bootstrapCiType"]] == "percentileBiasCorrected", "bca.simple",
+                            ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
+                                   "norm"))
+
+  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]], boot.ci.type = bootstrapCiType,
+                                   level = options$ciLevel)
 
   pe_tti <- pe[pe$op == ":=" & substr(pe$lhs, 1, 3) == "ind" & vapply(gregexpr("_", pe$lhs), length, 1) == 2,]
   # get predictors, outcome combinations
@@ -423,9 +431,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     x = .medGetTermsFromLavaanTable(terms, 2, "x"),
     y = .medGetTermsFromLavaanTable(terms, 3, "y")
   )
-  ttitab[["lhs"]]      <- options[["predictor"]][termsCombinations[["x"]]]
+  ttitab[["lhs"]]      <- options[["predictors"]][termsCombinations[["x"]]]
   ttitab[["op"]]       <- rep("\u2192", nrow(pe_tti))
-  ttitab[["rhs"]]      <- options[["dependent"]][termsCombinations[["y"]]]
+  ttitab[["rhs"]]      <- options[["outcomes"]][termsCombinations[["y"]]]
   ttitab[["est"]]      <- pe_tti$est
   ttitab[["se"]]       <- pe_tti$se
   ttitab[["z"]]        <- pe_tti$z
@@ -436,10 +444,10 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 }
 
 .medResTable <- function(modelContainer, options, ready) {
-  if (!options[["showres"]] || !length(c(options$mediators, options$dependent)) > 2) return()
+  if (!options[["residualCovariance"]] || !length(c(options$mediators, options$outcomes)) > 2) return()
 
   restab <- createJaspTable(title = gettext("Residual covariances"))
-  restab$dependOn("showres")
+  restab$dependOn("residualCovariance")
 
   restab$addColumnInfo(name = "lhs",      title = "",                    type = "string")
   restab$addColumnInfo(name = "op",       title = "",                    type = "string")
@@ -449,9 +457,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   restab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   restab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   restab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   restab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
   modelContainer[["parest"]][["res"]] <- restab
 
@@ -459,12 +467,16 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 
   foot_message <- .medFootMessage(modelContainer, options)
 
-  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]], boot.ci.type = options$bootCItype,
-                                   level = options$ciWidth)
+  bootstrapCiType <- ifelse(options[["bootstrapCiType"]] == "percentileBiasCorrected", "bca.simple",
+                            ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
+                                   "norm"))
+
+  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]], boot.ci.type = bootstrapCiType,
+                                   level = options$ciLevel)
 
   pe_res <- pe[pe$op == "~~" &
                  pe$lhs != pe$rhs &
-                 !pe$lhs %in% options$predictor &
+                 !pe$lhs %in% options$predictors &
                  !pe$lhs %in% options$confounds,]
 
   restab[["lhs"]]      <- pe_res$lhs
@@ -480,10 +492,10 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 }
 
 .medPathTable <- function(modelContainer, options, ready) {
-  if (!options[["showPathCoefficients"]]) return()
+  if (!options[["pathCoefficient"]]) return()
 
   pathtab <- createJaspTable(title = gettext("Path coefficients"))
-  pathtab$dependOn("showPathCoefficients")
+  pathtab$dependOn("pathCoefficient")
 
   pathtab$addColumnInfo(name = "lhs",      title = "",                    type = "string")
   pathtab$addColumnInfo(name = "op",       title = "",                    type = "string")
@@ -493,9 +505,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   pathtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   pathtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   pathtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   pathtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciWidth * 100))
+                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
   modelContainer[["parest"]][["path"]] <- pathtab
 
@@ -503,8 +515,12 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 
   foot_message <- .medFootMessage(modelContainer, options)
 
-  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]], boot.ci.type = options$bootCItype,
-                                   level = options$ciWidth)
+  bootstrapCiType <- ifelse(options[["bootstrapCiType"]] == "percentileBiasCorrected", "bca.simple",
+                            ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
+                                   "norm"))
+
+  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]], boot.ci.type = bootstrapCiType,
+                                   level = options$ciLevel)
 
   pe_path <- pe[pe$op == "~",]
 
@@ -522,17 +538,17 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 
 .medFootMessage <- function(modelContainer, options) {
   # Create the footnote message
-  se_type <- switch(options$se,
+  se_type <- switch(options$errorCalculationMethod,
     "bootstrap" = gettext("Delta method"),
     "standard"  = gettext("Delta method"),
     "default"   = gettext("Delta method"),
     "robust"    = gettext("Robust")
   )
-  ci_type <- switch(options$se,
-    "bootstrap" = switch(options$bootCItype,
-      "perc"       = gettext("percentile bootstrap"),
-      "norm"       = gettext("normal theory bootstrap"),
-      "bca.simple" = gettext("bias-corrected percentile bootstrap")
+  ci_type <- switch(options$errorCalculationMethod,
+    "bootstrap" = switch(options$bootstrapCiType,
+      "percentile"              = gettext("percentile bootstrap"),
+      "normalTheory"            = gettext("normal theory bootstrap"),
+      "percentileBiasCorrected" = gettext("bias-corrected percentile bootstrap")
     ),
     "standard"  = gettext("normal theory"),
     "default"   = gettext("normal theory"),
@@ -543,7 +559,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     return(gettextf("%1$s standard errors, %2$s confidence intervals.", se_type, ci_type))
   } else {
     fit <- modelContainer[["model"]][["object"]]
-    if (options$se == "bootstrap" && nrow(fit@boot[["coef"]]) < options$bootstrapNumber) {
+    if (options$errorCalculationMethod == "bootstrap" && nrow(fit@boot[["coef"]]) < options$bootstrapSamples) {
       return(gettextf(
         "%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all bootstrap samples were successful: CI based on %4$.0f samples.",
         se_type, ci_type, fit@Options$estimator, nrow(fit@boot[["coef"]])
@@ -558,12 +574,12 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 }
 
 .medRsquared <- function(modelContainer, options, ready) {
-  if (!options$rsquared || !is.null(modelContainer[["rsquared"]])) return()
+  if (!options$rSquared || !is.null(modelContainer[["rsquared"]])) return()
 
   tabr2 <- createJaspTable(gettext("R-Squared"))
   tabr2$addColumnInfo(name = "__var__", title = "", type = "string")
   tabr2$addColumnInfo(name = "rsq", title = "R\u00B2", type = "number", format = "sf:4;dp:3")
-  tabr2$dependOn(options = "rsquared")
+  tabr2$dependOn(options = "rSquared")
   tabr2$position <- 1
 
   modelContainer[["rsquared"]] <- tabr2
@@ -576,10 +592,10 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 }
 
 .medPathPlot <- function(modelContainer, options, ready) {
-  if (!options$pathplot || !ready || !is.null(modelContainer[["plot"]])) return()
+  if (!options$pathPlot || !ready || !is.null(modelContainer[["plot"]])) return()
 
   plt <- createJaspPlot(title = gettext("Path plot"), width = 600, height = 400)
-  plt$dependOn(options = c("pathplot", "plotpars", "plotlegend"))
+  plt$dependOn(options = c("pathPlot", "pathPlotParameter", "pathPlotLegend"))
   plt$position <- 2
 
   modelContainer[["plot"]] <- plt
@@ -587,9 +603,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
   if (modelContainer$getError()) return()
 
   # compute the layout from the options
-  n_pred <- length(options$predictor)
+  n_pred <- length(options$predictors)
   n_medi <- length(options$mediators)
-  n_deps <- length(options$dependent)
+  n_deps <- length(options$outcomes)
   n_conf <- length(options$confounds)
 
   n_totl <- n_pred + n_medi + n_deps + n_conf
@@ -614,7 +630,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     layout         = rbind(deps_l, medi_l, pred_l, conf_l),
     intercepts     = FALSE,
     reorder        = FALSE,
-    whatLabels     = ifelse(options$plotpars, "par", "name"),
+    whatLabels     = ifelse(options$pathPlotParameter, "par", "name"),
     edge.color     = "black",
     color          = list(lat = "#EAEAEA", man = "#EAEAEA", int = "#FFFFFF"),
     border.width   = 1.5,
@@ -622,7 +638,7 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
     lty            = 2,
     title          = FALSE,
     sizeMan        = round(8*exp(-n_totl/80)+1),
-    legend         = options$plotlegend,
+    legend         = options$pathPlotLegend,
     legend.mode    = "names",
     legend.cex     = 0.6,
     nodeNames      = po@Vars$name,
@@ -658,10 +674,10 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 .medPlotPostProcess <- function(plt, options) {
   node_names    <- plt$graphAttributes$Nodes$names
   confounds_idx <- which(node_names %in% options$confounds)
-  predictor_idx <- which(node_names %in% options$predictor)
-  dependent_idx <- which(node_names %in% options$dependent)
+  predictor_idx <- which(node_names %in% options$predictors)
+  dependent_idx <- which(node_names %in% options$outcomes)
 
-  if (options$plotpars) {
+  if (options$pathPlotParameter) {
     # change big numbers to scientific notation
     labs <- vapply(plt$graphAttributes$Edges$labels, function(lab) format(as.numeric(lab), digits = 2), "")
     plt$graphAttributes$Edges$labels <- labs
@@ -682,9 +698,9 @@ MediationAnalysis <- function(jaspResults, dataset, options, ...) {
 }
 
 .medSyntax <- function(modelContainer, options, ready) {
-  if (!options$showSyntax || !ready) return()
+  if (!options$syntax || !ready) return()
   modelContainer[["syntax"]] <- createJaspHtml(.medToLavMod(options, FALSE), class = "jasp-code", title = gettext("Model syntax"))
-  modelContainer[["syntax"]]$dependOn("showSyntax")
+  modelContainer[["syntax"]]$dependOn("syntax")
   modelContainer[["syntax"]]$position <- 3
 }
 
