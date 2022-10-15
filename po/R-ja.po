@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2022-09-28 10:00\n"
+"POT-Creation-Date: 2022-10-15 03:30\n"
 "PO-Revision-Date: 2022-02-05 02:39+0000\n"
 "Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -428,7 +428,7 @@ msgstr "&#916;自由度"
 
 #, fuzzy
 msgid ""
-"A total of %s cases were removed due to missing values. You can avoid this "
+"A total of %g cases were removed due to missing values. You can avoid this "
 "by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
 msgstr ""
 "欠損値のために合計 %g のケースが削除されました. 推定オプションの「欠損データ"
