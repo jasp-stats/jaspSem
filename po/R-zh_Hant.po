@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
 "POT-Creation-Date: 2022-10-15 03:30\n"
-"PO-Revision-Date: 2022-04-02 02:55+0000\n"
-"Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
+"PO-Revision-Date: 2022-10-16 10:38+0000\n"
+"Last-Translator: Changya Hu <changyahu@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
 "jasp/jaspsem-r/zh_Hant/>\n"
 "Language: zh_Hant\n"
@@ -11,28 +11,28 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.12-dev\n"
+"X-Generator: Weblate 4.15-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
-msgstr "此模式無法估計: 迭代結果無法聚合"
+msgstr "此模型無法估計: 迭代結果無法聚合"
 
 msgid "The model could not be estimated: No degrees of freedom left."
-msgstr "此模式無法估計: 自由度不足"
+msgstr "此模型無法估計: 自由度不足"
 
 msgid "Chi-square Test"
 msgstr "卡方考驗"
 
 msgid "Baseline model"
-msgstr "基底模式"
+msgstr "基準模型"
 
 msgid "Growth curve model"
-msgstr "成長曲線模式"
+msgstr "成長曲線模型"
 
 msgid "The model is not admissible: %s"
-msgstr "此模式無法執行: %s"
+msgstr "此模型無法執行: %s"
 
 msgid "Warning."
-msgstr "警告"
+msgstr "警告."
 
 msgid "Parameter estimates"
 msgstr "參數估計值"
@@ -102,7 +102,7 @@ msgstr "變異數"
 
 msgid ""
 "Residual variance is negative. This may indicate model misspecification."
-msgstr "殘差變異數為負值,此模式可能設定有誤."
+msgstr "殘差變異數為負值,此模型可能設定有誤."
 
 msgid "Additional Fit measures"
 msgstr "其他適配指標"
@@ -207,7 +207,7 @@ msgid "Curve plot"
 msgstr "曲線圖"
 
 msgid "Model plot"
-msgstr "模式圖"
+msgstr "模型圖"
 
 msgid "Misfit plot"
 msgstr "不適配 (misfit) 圖"
@@ -227,17 +227,18 @@ msgstr "完全訊息最大概似法: 只限於最大概似法 (ML)類的估計�
 msgid ""
 "Not all exogenous variables are admissible. Inadmissible exogenous "
 "variables: %s. Only binary or continuous exogenous variables allowed."
-msgstr ""
+msgstr "並非所有外生變數都有合理解，如：%s。只能使用二元或連續外生變數。"
 
 msgid ""
 "Not all endogenous variables are admissible. Inadmissible endogenous "
 "variables: %s. Only scale or ordinal endogenous variables allowed."
-msgstr ""
+msgstr "並非所有內生變數都有合理解，如：%s。只能使用連續或次序內生變數。"
 
 msgid ""
 "FIML missing value handling only available when all endogenous variables are "
 "of scale type. Ordinal endogenous variables in the model: %s"
-msgstr ""
+msgstr "只能在所有內生變數皆為連續變數時，才能使用完全訊息最大概似法遺漏值處理設定。"
+"模型中有以下次序內生變數：%s。"
 
 msgid ""
 "Estimation failed\n"
@@ -267,7 +268,7 @@ msgid "Residual covariances"
 msgstr "殘差共變數"
 
 msgid "Path coefficients"
-msgstr ""
+msgstr "路徑係數"
 
 msgid "Delta method"
 msgstr "Delta 法"
@@ -307,76 +308,76 @@ msgid "Path plot"
 msgstr "路徑圖"
 
 msgid "Model syntax"
-msgstr "模式語法"
+msgstr "模型語法"
 
 msgid ""
 "Estimation failed! Message: The model did not converge. Try using a "
 "different estimator or specify an other MIMIC model."
-msgstr ""
+msgstr "估計失敗！訊息：模型無法收斂。試使用其他估計法，或改用MIMIC模型。"
 
 msgid "Chi Square test"
-msgstr ""
+msgstr "卡方檢定"
 
 msgid "df"
-msgstr ""
+msgstr "自由度"
 
 msgid "&#967;&sup2;"
-msgstr ""
+msgstr "&#967;&sup2;"
 
 msgid "Factor model"
-msgstr ""
+msgstr "因素模型"
 
 msgid "Additional fit measures"
 msgstr "其他適配指標"
 
 msgid "Predictor coefficients"
-msgstr ""
+msgstr "預測變數係數"
 
 msgid "Standardized"
-msgstr ""
+msgstr "標準化"
 
 msgid "Endo"
-msgstr ""
+msgstr "內生"
 
 msgid "Indicator coefficients"
-msgstr ""
+msgstr "指標係數"
 
 msgid "Indicator"
-msgstr ""
+msgstr "指標"
 
 msgid "Latent"
-msgstr ""
+msgstr "潛在"
 
 msgid "Model plot not available with ordinal variables"
-msgstr ""
+msgstr "使用次序變數分析時，無法提供模型圖"
 
 msgid "FIML missing data handling only available with ML-type estimators"
-msgstr ""
+msgstr "只有在使用最大概似法 (ML)類型的估計數時，才提供以完全訊息最大概似法處理遺漏值"
 
 msgid "Grouping variable has fewer than 3 observations in group %s"
-msgstr ""
+msgstr "分組變數在%s組中的觀察值小於3"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
-msgstr ""
+msgstr "當以變異數-共變數矩陣為資料進行分析時，無法提供平均數結構"
 
 msgid "Please set the sample size!"
-msgstr ""
+msgstr "請設定樣本數!"
 
 msgid ""
 "Multiple group analysis not supported when data is variance-covariance matrix"
-msgstr ""
+msgstr "當以變異數-共變數矩陣為資料進行分析時，無法進行多群分析"
 
 msgid ""
 "Not more cases than number of variables. Is your data a variance-covariance "
 "matrix?"
-msgstr ""
+msgstr "資料個數少於變數個數，是以變異數-共變數矩陣為資料進行分析嗎？"
 
 msgid "Invalid model specification. Did you pass a variable name as a string?"
-msgstr ""
+msgstr "模型設定無效。是否將某變數名稱誤設為字串資料？"
 
 msgid "One or more variables are constants or contain only missing values"
-msgstr ""
+msgstr "一或多個變數為常數或只有遺漏值"
 
 msgid ""
 "Missing data handling '%s' is not supported for categorical data,\n"
@@ -384,170 +385,175 @@ msgid ""
 "handling'\n"
 "                        within the 'Estimation options' tab"
 msgstr ""
+"類別資料無法使用遺漏值處理方式'%s'。,\n"
+"                        請在「估計選項」選單中的\n"
+"                        「遺漏值處理」選單中選擇其他方式。"
 
 msgid "Estimation failed Message: %s"
-msgstr ""
+msgstr "估計失敗。訊息:%s"
 
 msgid "Estimation failed! Message: Model %s did not converge!"
-msgstr ""
+msgstr "估計失敗。訊息:模型%s無法收斂!"
 
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
-msgstr ""
+msgstr "估計失敗!訊息:模型%s的自由度為負值"
 
 msgid "Model fit"
 msgstr "模型適配度"
 
 msgid "AIC"
-msgstr ""
+msgstr "AIC"
 
 msgid "BIC"
-msgstr ""
+msgstr "BIC"
 
+#, fuzzy
 msgid "n"
-msgstr ""
+msgstr "樣本數"
 
 msgid "Baseline test"
-msgstr ""
+msgstr "基底模式檢定"
 
 msgid "&#916;&#967;&sup2;"
-msgstr ""
+msgstr "&#916;&#967;&sup2;"
 
 msgid "Difference test"
-msgstr ""
+msgstr "差異檢定"
 
 msgid "&#916;df"
-msgstr ""
+msgstr "&#916;自由度"
 
 msgid ""
 "A total of %g cases were removed due to missing values. You can avoid this "
 "by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
-msgstr ""
+msgstr "基於遺漏值的原因，共移除%g筆資料。可在估計設定中的「遺漏值處理」，選擇「完全"
+"訊息最大概似法」來避免此問題。"
 
 msgid "Satorra-Bentler scaled test-statistic"
-msgstr ""
+msgstr "Satorra-Bentler量尺化檢定統計數"
 
 msgid "Yuan-Bentler scaled test-statistic"
-msgstr ""
+msgstr "Yuan-Bentler量尺化檢定統計數"
 
 msgid "Yuan-Bentler (Mplus) scaled test-statistic"
-msgstr ""
+msgstr "Yuan-Bentler (Mplus) 量尺化檢定統計數"
 
 msgid "mean and variance adjusted test-statistic"
-msgstr ""
+msgstr "平均數與變異數調整檢定統計數"
 
 msgid "scaled and shifted test-statistic"
-msgstr ""
+msgstr "量尺與轉變(shifted)檢定統計數"
 
 msgid "bootstrap (Bollen-Stine) probability value"
-msgstr ""
+msgstr "拔靴法(Bollen-Stine) 機率值"
 
 msgid "Model tests based on %s."
-msgstr ""
+msgstr "模型檢定基於%s."
 
 msgid ""
 "The AIC, BIC and additional information criteria are only available with ML-"
 "type estimators"
-msgstr ""
+msgstr "只有在使用最大概似法 (ML)類的估計法時，才提供AIC, BIC與其他訊息準則指標"
 
 msgid "Factor Loadings"
-msgstr ""
+msgstr "因素負荷量"
 
 msgid "Group"
-msgstr ""
+msgstr "組別"
 
 msgid "Regression coefficients"
-msgstr ""
+msgstr "迴歸係數"
 
 msgid "Outcome"
-msgstr ""
+msgstr "結果"
 
 msgid "Factor variances"
-msgstr ""
+msgstr "因素變異數"
 
 msgid "Factor covariances"
-msgstr ""
+msgstr "因素共變數"
 
 msgid "Variables"
-msgstr ""
+msgstr "變數"
 
 msgid "Residual variances"
-msgstr ""
+msgstr "殘差變異數"
 
 msgid "Means"
-msgstr ""
+msgstr "平均數"
 
 msgid "Defined parameters"
-msgstr ""
+msgstr "變數定義"
 
 msgid "Name"
-msgstr ""
+msgstr "命名"
 
 msgid "Mardia's coefficients"
-msgstr ""
+msgstr "Mardia係數"
 
 msgid "Coefficient"
-msgstr ""
+msgstr "係數"
 
 msgid "z"
-msgstr ""
+msgstr "z"
 
 msgid ""
 "Multivariate skewness and kurtosis calculated for observed variables from "
 "all models."
-msgstr ""
+msgstr "根據所有模型的觀察變數來計算多變數偏度與峰度"
 
 msgid ""
 "Not all used variables are numeric. Mardia's coefficients not available."
-msgstr ""
+msgstr "因有非數值的變數而無法計算Mardia係數。"
 
 msgid "Skewness"
-msgstr ""
+msgstr "偏度"
 
 msgid "Kurtosis"
-msgstr ""
+msgstr "峰度"
 
 msgid "Covariance tables"
-msgstr ""
+msgstr "共變數表"
 
 msgid ""
 "The standardized residual covariance table is currently unavailable when the "
 "error calculation method is 'Bootstrap'"
-msgstr ""
+msgstr "以拔靴法計算誤差時，無法提供標準化殘差共變數表"
 
 msgid "The standardized residual covariance matrix could not be computed"
-msgstr ""
+msgstr "無法計算標準化殘差共變數矩陣"
 
 msgid ""
 "The standardized residual covariance tables are currently unavailable when "
 "the error calculation method is 'Bootstrap'"
-msgstr ""
+msgstr "以拔靴法計算誤差時，無法提供標準化殘差共變數表"
 
 msgid "The standardized residual covariance matrices could not be computed"
-msgstr ""
+msgstr "無法計算標準化殘差共變數矩陣"
 
 msgid "Modification indices"
-msgstr ""
+msgstr "修正指標"
 
 msgid "Modification Indices"
-msgstr ""
+msgstr "修正指標"
 
 msgid "group"
-msgstr ""
+msgstr "組"
 
 msgid "mi"
-msgstr ""
+msgstr "修正指標"
 
 msgid "epc"
-msgstr ""
+msgstr "epc"
 
 msgid "sepc (lv)"
-msgstr ""
+msgstr "sepc (潛在變項)"
 
 msgid "sepc (all)"
-msgstr ""
+msgstr "sepc(所有變項）"
 
 msgid "sepc (nox)"
-msgstr ""
+msgstr "sepc (非內生變數)"
 
 msgid "Path diagram"
-msgstr ""
+msgstr "路徑圖"
