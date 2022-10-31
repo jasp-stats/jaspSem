@@ -1,0 +1,512 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: jaspSem 0.17.0\n"
+"POT-Creation-Date: 2022-10-15 03:30\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: zh_Hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "The model could not be estimated due to nonconvergence."
+msgstr ""
+
+msgid "The model could not be estimated: No degrees of freedom left."
+msgstr ""
+
+msgid "Chi-square Test"
+msgstr ""
+
+msgid "Baseline model"
+msgstr ""
+
+msgid "Growth curve model"
+msgstr ""
+
+msgid "The model is not admissible: %s"
+msgstr ""
+
+msgid "Warning."
+msgstr ""
+
+msgid "Parameter estimates"
+msgstr ""
+
+msgid "Component"
+msgstr ""
+
+msgid "Parameter"
+msgstr ""
+
+msgid "Estimate"
+msgstr ""
+
+msgid "Std. Error"
+msgstr ""
+
+msgid "z-value"
+msgstr ""
+
+msgid "p"
+msgstr ""
+
+msgid "Lower"
+msgstr ""
+
+msgid "95%% Confidence Interval"
+msgstr ""
+
+msgid "Latent covariances"
+msgstr ""
+
+msgid "LV"
+msgstr ""
+
+msgid "Std. Est."
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "No X"
+msgstr ""
+
+msgid "Predictor"
+msgstr ""
+
+msgid "Variable"
+msgstr ""
+
+msgid "Intercept"
+msgstr ""
+
+msgid "Linear slope"
+msgstr ""
+
+msgid "Quadratic slope"
+msgstr ""
+
+msgid "Cubic slope"
+msgstr ""
+
+msgid "Mean"
+msgstr ""
+
+msgid "Variance"
+msgstr ""
+
+msgid "Residual variance is negative. This may indicate model misspecification."
+msgstr ""
+
+msgid "Additional Fit measures"
+msgstr ""
+
+msgid "Fit indices"
+msgstr ""
+
+msgid "Index"
+msgstr ""
+
+msgid "Value"
+msgstr ""
+
+msgid "Information criteria"
+msgstr ""
+
+msgid "Other fit measures"
+msgstr ""
+
+msgid "Metric"
+msgstr ""
+
+msgid "Comparative Fit Index (CFI)"
+msgstr ""
+
+msgid "Tucker-Lewis Index (TLI)"
+msgstr ""
+
+msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
+msgstr ""
+
+msgid "Bentler-Bonett Normed Fit Index (NFI)"
+msgstr ""
+
+msgid "Parsimony Normed Fit Index (PNFI)"
+msgstr ""
+
+msgid "Bollen's Relative Fit Index (RFI)"
+msgstr ""
+
+msgid "Bollen's Incremental Fit Index (IFI)"
+msgstr ""
+
+msgid "Relative Noncentrality Index (RNI)"
+msgstr ""
+
+msgid "Log-likelihood"
+msgstr ""
+
+msgid "Number of free parameters"
+msgstr ""
+
+msgid "Akaike (AIC)"
+msgstr ""
+
+msgid "Bayesian (BIC)"
+msgstr ""
+
+msgid "Sample-size adjusted Bayesian (SSABIC)"
+msgstr ""
+
+msgid "Root mean square error of approximation (RMSEA)"
+msgstr ""
+
+msgid "RMSEA 90%% CI lower bound"
+msgstr ""
+
+msgid "RMSEA 90%% CI upper bound"
+msgstr ""
+
+msgid "RMSEA p-value"
+msgstr ""
+
+msgid "Standardized root mean square residual (SRMR)"
+msgstr ""
+
+msgid "Hoelter's critical N (%s = .05)"
+msgstr ""
+
+msgid "Hoelter's critical N (%s = .01)"
+msgstr ""
+
+msgid "Goodness of fit index (GFI)"
+msgstr ""
+
+msgid "McDonald fit index (MFI)"
+msgstr ""
+
+msgid "Expected cross validation index (ECVI)"
+msgstr ""
+
+msgid "R-Squared"
+msgstr ""
+
+msgid "Implied covariance matrix"
+msgstr ""
+
+msgid "Residual covariance matrix"
+msgstr ""
+
+msgid "Curve plot"
+msgstr ""
+
+msgid "Model plot"
+msgstr ""
+
+msgid "Misfit plot"
+msgstr ""
+
+msgid "Curve + variance + uncertainty"
+msgstr ""
+
+msgid "Curve + variance"
+msgstr ""
+
+msgid "Curve + parameter uncertainty"
+msgstr ""
+
+msgid "FIML only available with ML-type estimators."
+msgstr ""
+
+msgid "Not all exogenous variables are admissible. Inadmissible exogenous variables: %s. Only binary or continuous exogenous variables allowed."
+msgstr ""
+
+msgid "Not all endogenous variables are admissible. Inadmissible endogenous variables: %s. Only scale or ordinal endogenous variables allowed."
+msgstr ""
+
+msgid "FIML missing value handling only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s"
+msgstr ""
+
+msgid "Estimation failed\nMessage:\n%s"
+msgstr ""
+
+msgid "Direct effects"
+msgstr ""
+
+msgid "%s%% Confidence Interval"
+msgstr ""
+
+msgid "Upper"
+msgstr ""
+
+msgid "Indirect effects"
+msgstr ""
+
+msgid "Total indirect effects"
+msgstr ""
+
+msgid "Residual covariances"
+msgstr ""
+
+msgid "Path coefficients"
+msgstr ""
+
+msgid "Delta method"
+msgstr ""
+
+msgid "Robust"
+msgstr ""
+
+msgid "percentile bootstrap"
+msgstr ""
+
+msgid "normal theory bootstrap"
+msgstr ""
+
+msgid "bias-corrected percentile bootstrap"
+msgstr ""
+
+msgid "normal theory"
+msgstr ""
+
+msgid "robust"
+msgstr ""
+
+msgid "%1$s standard errors, %2$s confidence intervals."
+msgstr ""
+
+msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all bootstrap samples were successful: CI based on %4$.0f samples."
+msgstr ""
+
+msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
+msgstr ""
+
+msgid "Path plot"
+msgstr ""
+
+msgid "Model syntax"
+msgstr ""
+
+msgid "Estimation failed! Message: The model did not converge. Try using a different estimator or specify an other MIMIC model."
+msgstr ""
+
+msgid "Chi Square test"
+msgstr ""
+
+msgid "df"
+msgstr ""
+
+msgid "&#967;&sup2;"
+msgstr ""
+
+msgid "Factor model"
+msgstr ""
+
+msgid "Additional fit measures"
+msgstr ""
+
+msgid "Predictor coefficients"
+msgstr ""
+
+msgid "Standardized"
+msgstr ""
+
+msgid "Endo"
+msgstr ""
+
+msgid "Indicator coefficients"
+msgstr ""
+
+msgid "Indicator"
+msgstr ""
+
+msgid "Latent"
+msgstr ""
+
+msgid "Model plot not available with ordinal variables"
+msgstr ""
+
+msgid "FIML missing data handling only available with ML-type estimators"
+msgstr ""
+
+msgid "Grouping variable has fewer than 3 observations in group %s"
+msgstr ""
+
+msgid "Mean structure can not be included when data is variance-covariance matrix"
+msgstr ""
+
+msgid "Please set the sample size!"
+msgstr ""
+
+msgid "Multiple group analysis not supported when data is variance-covariance matrix"
+msgstr ""
+
+msgid "Not more cases than number of variables. Is your data a variance-covariance matrix?"
+msgstr ""
+
+msgid "Invalid model specification. Did you pass a variable name as a string?"
+msgstr ""
+
+msgid "One or more variables are constants or contain only missing values"
+msgstr ""
+
+msgid "Missing data handling '%s' is not supported for categorical data,\n                        please select another method under 'Missing data handling'\n                        within the 'Estimation options' tab"
+msgstr ""
+
+msgid "Estimation failed Message: %s"
+msgstr ""
+
+msgid "Estimation failed! Message: Model %s did not converge!"
+msgstr ""
+
+msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
+msgstr ""
+
+msgid "Model fit"
+msgstr ""
+
+msgid "AIC"
+msgstr ""
+
+msgid "BIC"
+msgstr ""
+
+msgid "n"
+msgstr ""
+
+msgid "Baseline test"
+msgstr ""
+
+msgid "&#916;&#967;&sup2;"
+msgstr ""
+
+msgid "Difference test"
+msgstr ""
+
+msgid "&#916;df"
+msgstr ""
+
+msgid "A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
+msgstr ""
+
+msgid "Satorra-Bentler scaled test-statistic"
+msgstr ""
+
+msgid "Yuan-Bentler scaled test-statistic"
+msgstr ""
+
+msgid "Yuan-Bentler (Mplus) scaled test-statistic"
+msgstr ""
+
+msgid "mean and variance adjusted test-statistic"
+msgstr ""
+
+msgid "scaled and shifted test-statistic"
+msgstr ""
+
+msgid "bootstrap (Bollen-Stine) probability value"
+msgstr ""
+
+msgid "Model tests based on %s."
+msgstr ""
+
+msgid "The AIC, BIC and additional information criteria are only available with ML-type estimators"
+msgstr ""
+
+msgid "Factor Loadings"
+msgstr ""
+
+msgid "Group"
+msgstr ""
+
+msgid "Regression coefficients"
+msgstr ""
+
+msgid "Outcome"
+msgstr ""
+
+msgid "Factor variances"
+msgstr ""
+
+msgid "Factor covariances"
+msgstr ""
+
+msgid "Variables"
+msgstr ""
+
+msgid "Residual variances"
+msgstr ""
+
+msgid "Means"
+msgstr ""
+
+msgid "Defined parameters"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Mardia's coefficients"
+msgstr ""
+
+msgid "Coefficient"
+msgstr ""
+
+msgid "z"
+msgstr ""
+
+msgid "Multivariate skewness and kurtosis calculated for observed variables from all models."
+msgstr ""
+
+msgid "Not all used variables are numeric. Mardia's coefficients not available."
+msgstr ""
+
+msgid "Skewness"
+msgstr ""
+
+msgid "Kurtosis"
+msgstr ""
+
+msgid "Covariance tables"
+msgstr ""
+
+msgid "The standardized residual covariance table is currently unavailable when the error calculation method is 'Bootstrap'"
+msgstr ""
+
+msgid "The standardized residual covariance matrix could not be computed"
+msgstr ""
+
+msgid "The standardized residual covariance tables are currently unavailable when the error calculation method is 'Bootstrap'"
+msgstr ""
+
+msgid "The standardized residual covariance matrices could not be computed"
+msgstr ""
+
+msgid "Modification indices"
+msgstr ""
+
+msgid "Modification Indices"
+msgstr ""
+
+msgid "group"
+msgstr ""
+
+msgid "mi"
+msgstr ""
+
+msgid "epc"
+msgstr ""
+
+msgid "sepc (lv)"
+msgstr ""
+
+msgid "sepc (all)"
+msgstr ""
+
+msgid "sepc (nox)"
+msgstr ""
+
+msgid "Path diagram"
+msgstr ""
