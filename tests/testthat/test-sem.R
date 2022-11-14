@@ -595,3 +595,56 @@ test_that("Bootstrapping works", {
                                  label = "Residual variances table results match")
 
 })
+
+test_that("t-size RMSEA and CFI match values of original article (Katerina M. Marcoulides & Ke-Hai Yuan (2017))", {
+  options <- jaspTools::analysisOptions("SEM")
+  options$SampleSize <- 600
+  options$sampling.weights <- ""
+  options$outputAdditionalFitMeasures <- TRUE
+  options$information <- "expected"
+  options$estimator <- "default"
+  options$test <- "standard"
+  options$missing <- "ML"
+  options$emulation <- "mplus"
+  options$groupingVariable <- ""
+  options$Data <- "varcov"
+  options$models <- list(list(modelName = "Model1", syntax = list(model = "factor1 =~ V1 + V2 + V3 + V4 + V5 + V6 + V7\n factor2 =~ V8 + V9 + V10 + V11 + V12",
+                                                                  columns = c("V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12"))))
+  set.seed(1)
+  dataset <- structure(list(V1 = c(1.321, 0.443, 0.283, 0.379, 0.462, 0.316, 0.392, 0.404, 0.398, 0.313, 0.374, 0.381),
+                            V2 = c(0.443, 1.41, 0.507, 0.526, 0.466, 0.392, 0.404, 0.342, 0.493, 0.423, 0.448, 0.486),
+                            V3 = c(0.283, 0.507, 1.485, 0.542, 0.411, 0.37, 0.352, 0.389, 0.437, 0.372, 0.359, 0.387),
+                            V4 = c(0.379, 0.526, 0.542, 1.547, 0.527, 0.418, 0.481, 0.449, 0.45, 0.379, 0.368, 0.359),
+                            V5 = c(0.462, 0.466, 0.411, 0.527, 1.524, 0.496, 0.478, 0.426, 0.447, 0.398, 0.348, 0.37),
+                            V6 = c(0.316, 0.392, 0.37, 0.418, 0.496, 1.441, 0.387, 0.391, 0.48, 0.3, 0.404, 0.438),
+                            V7 = c(0.392, 0.404, 0.352, 0.481, 0.478, 0.387, 1.422, 0.405, 0.412, 0.351, 0.335, 0.371),
+                            V8 = c(0.404, 0.342, 0.389, 0.449, 0.426, 0.391, 0.405, 1.566, 0.657, 0.538, 0.591, 0.556),
+                            V9 = c(0.398,0.493, 0.437, 0.45, 0.447, 0.48, 0.412, 0.657, 1.646, 0.599, 0.608, 0.69),
+                            V10 = c(0.313, 0.423, 0.372, 0.379, 0.398, 0.3, 0.351, 0.538, 0.599, 1.675, 0.659, 0.529),
+                            V11 = c(0.374, 0.448, 0.359, 0.368, 0.348, 0.404, 0.335, 0.591, 0.608, 0.659, 1.63, 0.64),
+                            V12 = c(0.381, 0.486, 0.387, 0.359, 0.37, 0.438, 0.371, 0.556, 0.69, 0.529, 0.64, 1.673)),
+                       class = "data.frame", row.names = c("V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12"))
+  results <- jaspTools::runAnalysis("SEM", dataset, options)
+
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_indices"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("Comparative Fit Index (CFI)", 0.996320596799055, "T-size CFI",
+                                      0.974924004613834, "Tucker-Lewis Index (TLI)", 0.995418101674295,
+                                      "Bentler-Bonett Non-normed Fit Index (NNFI)", 0.995418101674295,
+                                      "Bentler-Bonett Normed Fit Index (NFI)", 0.961983689254605,
+                                      "Parsimony Normed Fit Index (PNFI)", 0.772502053492334, "Bollen's Relative Fit Index (RFI)",
+                                      0.952658933788753, "Bollen's Incremental Fit Index (IFI)", 0.996352840580171,
+                                      "Relative Noncentrality Index (RNI)", 0.996320596799055))
+
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_others"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("Root mean square error of approximation (RMSEA)", 0.0130437119173581,
+                                      "RMSEA 90% CI lower bound", 0, "RMSEA 90% CI upper bound", 0.0297980428058939,
+                                      "RMSEA p-value", 0.999994986450328, "T-size RMSEA", 0.029823208611982,
+                                      "Standardized root mean square residual (SRMR)", 0.0236005293827133,
+                                      "Hoelter's critical N (<unicode> = .05)", 730.254899918116,
+                                      "Hoelter's critical N (<unicode> = .01)", 821.162187177968,
+                                      "Goodness of fit index (GFI)", 0.984016681585093, "McDonald fit index (MFI)",
+                                      0.995501480640541, "Expected cross validation index (ECVI)",
+                                      0.220684002957567))
+})
