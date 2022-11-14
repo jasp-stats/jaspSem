@@ -1071,7 +1071,7 @@ checkLavaanModel <- function(model, availableVars) {
     chisqBaseline <- fm[["baseline.chisq"]]
     df <- fm[["df"]]
     dfBaseline <- fm[["baseline.df"]]
-    n <- ifelse(options$Data == "varcov", options$SampleSize, fm[["ntotal"]])
+    n <- ifelse(options$dataType == "varianceCovariance", options$sampleSize, fm[["ntotal"]])
 
     delta_t <- ncp_chi2(alpha, chisqModel, df)
     rmsea_t <- sqrt(delta_t / (df*(n-1)))
@@ -1108,18 +1108,18 @@ checkLavaanModel <- function(model, availableVars) {
   )
   if (length(options[["models"]]) == 1) {
     fitin[["value"]] <- fmli[[1]][c("cfi", "cfi.t", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
-    cfi_t_footnote <- paste0(gettextf("The t-size equivalents of the conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are: <b>poor < %s < fair < %s < close</b> for ",
+    cfi_t_footnote <- paste0(gettextf("The t-size equivalents of the conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are <b>poor < %s < fair < %s < close</b> for model: ",
                                       round(fmli[[1]]["cfi.t.e90"], 3),
                                       round(fmli[[1]]["cfi.t.e95"], 3)),
-                             options[["models"]][[1]][["modelName"]])
+                             options[["models"]][[1]][["name"]])
     fitin$addFootnote(cfi_t_footnote)
   } else {
     for (i in seq_along(options[["models"]])) {
       fitin[[paste0("value_", i)]] <- fmli[[i]][c("cfi", "cfi.t", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
-      cfi_t_footnote <- paste0(gettextf("The t-size equivalents of the conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are: <b>poor < %s < fair < %s < close</b> for ",
+      cfi_t_footnote <- paste0(gettextf("The t-size equivalents of the conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are <b>poor < %s < fair < %s < close</b> for model: ",
                                         round(fmli[[i]]["cfi.t.e90"], 3),
                                         round(fmli[[i]]["cfi.t.e95"], 3)),
-                               options[["models"]][[i]][["modelName"]])
+                               options[["models"]][[i]][["name"]])
       fitin$addFootnote(cfi_t_footnote)
     }
   }
@@ -1161,19 +1161,19 @@ checkLavaanModel <- function(model, availableVars) {
   if (length(options[["models"]]) == 1) {
     fitot[["value"]] <- fmli[[1]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue", "rmsea.t",
                                     "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
-    rmsea_t_footnote <- paste0(gettextf("The t-size equivalents of the conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are: <b>close < %s < fair < %s < poor</b> for ",
+    rmsea_t_footnote <- paste0(gettextf("The t-size equivalents of the conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are <b>close < %s < fair < %s < poor</b> for model: ",
                                       round(fmli[[1]]["rmsea.t.e05"], 3),
                                       round(fmli[[1]]["rmsea.t.e08"], 3)),
-                             options[["models"]][[1]][["modelName"]])
+                             options[["models"]][[1]][["name"]])
     fitot$addFootnote(rmsea_t_footnote)
   } else {
     for (i in seq_along(options[["models"]])) {
       fitot[[paste0("value_", i)]] <- fmli[[i]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue", "rmsea.t",
                                                   "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
-      rmsea_t_footnote <- paste0(gettextf("The t-size equivalents of the conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are: <b>close < %s < fair < %s < poor</b> for ",
+      rmsea_t_footnote <- paste0(gettextf("The t-size equivalents of the conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are <b>close < %s < fair < %s < poor</b> for model: ",
                                           round(fmli[[i]]["rmsea.t.e05"], 3),
                                           round(fmli[[i]]["rmsea.t.e08"], 3)),
-                                 options[["models"]][[i]][["modelName"]])
+                                 options[["models"]][[i]][["name"]])
       fitot$addFootnote(rmsea_t_footnote)
     }
   }

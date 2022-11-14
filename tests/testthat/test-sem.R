@@ -50,7 +50,6 @@ test_that("Multigroup, multimodel SEM works", {
   options$meanStructure               = TRUE
   options$modificationIndexLowHidden  = TRUE
   options$naAction                    = "listwise"
-  options$additionalFitMeasures       = TRUE
   options$impliedCovariance           = TRUE
   options$mardiasCoefficient          = TRUE
   options$modificationIndex           = TRUE
@@ -126,38 +125,6 @@ test_that("Multigroup, multimodel SEM works", {
                                    76, "more constrained", 75, 0.202652084622712, 0.110596895607335,
                                    6.02091896557529, 3), "Model fit table")
 
-  # additional fit indices
-  incrits  <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_incrits"]][["data"]]
-  indices  <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_indices"]][["data"]]
-  others   <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_others"]][["data"]]
-  expect_equal_tables(incrits, list("Log-likelihood", -1510.63345857701, -1511.17401517284, -1512.53591683285,
-                                    "Number of free parameters", 84, 81, 78, "Akaike (AIC)", 3189.26691715402,
-                                    3184.34803034567, 3181.07183366569, "Bayesian (BIC)", 3383.93591869107,
-                                    3372.06456754211, 3361.83590652152, "Sample-size adjusted Bayesian (SSABIC)",
-                                    3119.1900508405, 3116.77390925764, 3116.00045780314), "Information criteria table")
-  expect_equal_tables(indices, list("Comparative Fit Index (CFI)", 0.982526110332491, 0.985273769932234,
-                                    0.9856692567613, "T-size CFI", 0.924962756454655, 0.928335875530459,
-                                    0.928200402411451, "Tucker-Lewis Index (TLI)", 0.972541030522486,
-                                    0.977809790308846, 0.979258134786093, "Bentler-Bonett Non-normed Fit Index (NNFI)",
-                                    0.972541030522486, 0.977809790308846, 0.979258134786093, "Bentler-Bonett Normed Fit Index (NFI)",
-                                    0.898310025528307, 0.896972628847505, 0.8936031338238, "Parsimony Normed Fit Index (PNFI)",
-                                    0.571651834427105, 0.595263653689708, 0.617398528823716, "Bollen's Relative Fit Index (RFI)",
-                                    0.84020146868734, 0.844753276345556, 0.846004535797605, "Bollen's Incremental Fit Index (IFI)",
-                                    0.983472728270115, 0.986014715979643, 0.9863345548434, "Relative Noncentrality Index (RNI)",
-                                    0.982526110332491, 0.985273769932234, 0.9856692567613), "Fit indices table")
-  expect_equal_tables(others, list("Root mean square error of approximation (RMSEA)", 0.0681825681561195,
-                                   0.0612931499822315, 0.0592591123724348, "RMSEA 90% CI lower bound",
-                                   0, 0, 0, "RMSEA 90% CI upper bound", 0.121878659760645, 0.11624673429988,
-                                   0.113961735243936, "RMSEA p-value", 0.314656604443737, 0.377475324343953,
-                                   0.39527626858524, "T-size RMSEA", 0.0867620686730192, 0.0827529691159521,
-                                   0.0811263768098223, "Standardized root mean square residual (SRMR)",
-                                   0.0609501512016992, 0.0684934777008558, 0.0721782106237235,
-                                   "Hoelter's critical N (<unicode> = .05)", 83.598202921635, 85.6005058823833,
-                                   85.8910267293192, "Hoelter's critical N (<unicode> = .01)",
-                                   92.6251791084007, 94.6638753707555, 94.8130626640997, "Goodness of fit index (GFI)",
-                                   0.992832229107073, 0.992813542035197, 0.992577984650649, "McDonald fit index (MFI)",
-                                   0.921866282742895, 0.933735084164156, 0.935455964884606, "Expected cross validation index (ECVI)",
-                                   "", "", ""), "Other fit indices table")
 
   rsquared <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_rsquared"]][["data"]]
   expect_equal_tables(rsquared, list(1, "x1", 0.883076871616545, 0.88344099961725, 0.883440941017356,
@@ -598,17 +565,17 @@ test_that("Bootstrapping works", {
 
 test_that("t-size RMSEA and CFI match values of original article (Katerina M. Marcoulides & Ke-Hai Yuan (2017))", {
   options <- jaspTools::analysisOptions("SEM")
-  options$SampleSize <- 600
-  options$sampling.weights <- ""
-  options$outputAdditionalFitMeasures <- TRUE
-  options$information <- "expected"
+  options$sampleSize <- 600
+  options$samplingWeights <- ""
+  options$additionalFitMeasures <- TRUE
+  options$informationMatrix <- "expected"
   options$estimator <- "default"
-  options$test <- "standard"
-  options$missing <- "ML"
+  options$modelTest <- "standard"
+  options$naAction <- "ml"
   options$emulation <- "mplus"
-  options$groupingVariable <- ""
-  options$Data <- "varcov"
-  options$models <- list(list(modelName = "Model1", syntax = list(model = "factor1 =~ V1 + V2 + V3 + V4 + V5 + V6 + V7\n factor2 =~ V8 + V9 + V10 + V11 + V12",
+  options$group <- ""
+  options$dataType <- "varianceCovariance"
+  options$models <- list(list(name = "Model1", syntax = list(model = "factor1 =~ V1 + V2 + V3 + V4 + V5 + V6 + V7\n factor2 =~ V8 + V9 + V10 + V11 + V12",
                                                                   columns = c("V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12"))))
   set.seed(1)
   dataset <- structure(list(V1 = c(1.321, 0.443, 0.283, 0.379, 0.462, 0.316, 0.392, 0.404, 0.398, 0.313, 0.374, 0.381),
@@ -625,6 +592,12 @@ test_that("t-size RMSEA and CFI match values of original article (Katerina M. Ma
                             V12 = c(0.381, 0.486, 0.387, 0.359, 0.37, 0.438, 0.371, 0.556, 0.69, 0.529, 0.64, 1.673)),
                        class = "data.frame", row.names = c("V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12"))
   results <- jaspTools::runAnalysis("SEM", dataset, options)
+
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_incrits"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("Log-likelihood", -10988.8301074082, "Number of free parameters",
+                                      37, "Akaike (AIC)", 22051.6602148164, "Bayesian (BIC)", 22214.3466120594,
+                                      "Sample-size adjusted Bayesian (SSABIC)", 22096.88174857))
 
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_indices"]][["data"]]
   jaspTools::expect_equal_tables(table,
