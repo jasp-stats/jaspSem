@@ -1006,6 +1006,7 @@ checkLavaanModel <- function(model, availableVars) {
     }
   }
   fitin$setExpectedSize(rows = 1, cols = 2)
+  fitin$addCitation("Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural Equation Models, Structural Equation Modeling: A Multidisciplinary Journal, 24:1, 148-153, DOI: 10.1080/10705511.2016.1225260")
 
   # information criteria
   if (!options$estimator %in% c("dwls", "gls", "wls", "uls")) {
@@ -1034,17 +1035,70 @@ checkLavaanModel <- function(model, availableVars) {
     }
   }
   fitot$setExpectedSize(rows = 1, cols = 2)
+  fitot$addCitation("Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural Equation Models, Structural Equation Modeling: A Multidisciplinary Journal, 24:1, 148-153, DOI: 10.1080/10705511.2016.1225260")
 
   modelContainer[["addfit"]] <- fitms
 
   if (!ready || modelContainer$getError()) return()
 
   # actually compute the fit measures
-  fmli <- lapply(modelContainer[["results"]][["object"]], lavaan::fitmeasures)
+
+  .fitMeasures <- function(fit, alpha = 0.05) {
+    fm <- lavaan::fitMeasures(fit, fit.measures = "all")
+
+    ncp_chi2 <- function(alpha, chisqModel, df){
+      z <- qnorm(1-alpha)
+      z2 <- z*z
+      z3 <- z2*z
+      z4 <- z3*z
+      z5 <- z4*z
+      sig2 <- 2*(2*chisqModel-df+2)
+      sig <- sqrt(sig2)
+      sig3 <- sig*sig2
+      sig4 <- sig2*sig2
+      sig5 <- sig4*sig
+      sig6 <- sig2*sig4
+
+      delta <- chisqModel-df+2+sig*(z+(z2-1)/sig-z/sig2 + 2*(df-1)*(z2-1)/(3*sig3)
+                              +( -(df-1)*(4*z3-z)/6+(df-2)*z/2 )/sig4
+                              +4*(df-1)*(3*z4+2*z2-11)/(15*sig5)
+                              +(-(df-1)*(96*z5+164*z3-767*z)/90-4*(df-1)*(df-2)*(2*z3-5*z)/9+(df-2)*z/2)/sig6
+                              )
+      delta <- max(delta,0)
+      return(delta)
+    }
+
+    chisqModel <- c(fm["chisq"], use.names = FALSE)
+    chisqBaseline <- c(fm["baseline.chisq"], use.names = FALSE)
+    df <- c(fm["df"], use.names = FALSE)
+    dfBaseline <- c(fm["baseline.df"], use.names = FALSE)
+    n <- lavaan::lavInspect(fit, what = "ntotal")
+
+    delta_t <- ncp_chi2(alpha, chisqModel, df)
+    rmsea_t <- sqrt(delta_t / (df*(n-1)))
+
+    delta_t <- ncp_chi2(alpha/2, chisqModel, df)
+    delta_bt <- ncp_chi2(1-alpha/2, chisqBaseline, dfBaseline)
+    cfi_t <- 1 - max(delta_t, 0) / max(delta_t, delta_bt, 0)
+
+    rmsea_e05 <- exp(2.06034 - 0.62974*log(df) + 0.02512*log(df)*log(df) - 0.98388*log(n-1) + 0.05442*log(n-1)*log(n-1) - 0.00005188*(n-1) + 0.05260*log(df)*log(n-1))
+    rmsea_e08 <- exp(2.84129 - 0.54809*log(df) + 0.02296*log(df)*log(df) - 0.76005*log(n-1) + 0.10229*log(n-1)*log(n-1) - 1.11167*((n-1)^.2) + 0.04845*log(df)*log(n-1))
+
+    cfi_e90 <- 1 - exp(5.96633 - .40425*log(df) + .01384*((log(df))^2) - .00411*((log(dfBaseline))^2) - 1.20242*log(n-1) + .18763*((log(n-1))^2) - 2.06704*((n-1)^(1/5)) + .05245*log(df)*log(n-1) - .01533*log(dfBaseline)*log(n-1))
+    cfi_e95 <- 1 - exp(4.12132 - .46285*log(df) + .52478*(df^(1/5)) - .31832*((dfBaseline)^(1/5)) - 1.74422*log(n-1) + .13042*((log(n-1))^2) - .02360*((n-1)^(1/2)) + .04215*log(df)*log(n-1))
+
+
+    fm <- c(fm, rmsea.t = rmsea_t, cfi.t = cfi_t, rmsea.t.e05 = rmsea_e05, rmsea.t.e08 = rmsea_e08, cfi.t.e90 = cfi_e90, cfi.t.e95 = cfi_e95)
+
+    return(fm)
+  }
+
+  fmli <- lapply(modelContainer[["results"]][["object"]], .fitMeasures)
 
   # Fit indices
   fitin[["index"]] <- c(
     gettext("Comparative Fit Index (CFI)"),
+    gettext("T-size CFI"),
     gettext("Tucker-Lewis Index (TLI)"),
     gettext("Bentler-Bonett Non-normed Fit Index (NNFI)"),
     gettext("Bentler-Bonett Normed Fit Index (NFI)"),
@@ -1054,12 +1108,23 @@ checkLavaanModel <- function(model, availableVars) {
     gettext("Relative Noncentrality Index (RNI)")
   )
   if (length(options[["models"]]) == 1) {
-    fitin[["value"]] <- fmli[[1]][c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
+    fitin[["value"]] <- fmli[[1]][c("cfi", "cfi.t", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
+    cfi_t_footnote <- gettextf("The T-size equivalents of the conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are <b>poor < %1$s < fair < %2$s < close</b> for model: %3$s",
+                               round(fmli[[1]]["cfi.t.e90"], 3),
+                               round(fmli[[1]]["cfi.t.e95"], 3),
+                               options[["models"]][[1]][["name"]])
+    fitin$addFootnote(cfi_t_footnote)
   } else {
     for (i in seq_along(options[["models"]])) {
-      fitin[[paste0("value_", i)]] <- fmli[[i]][c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
+      fitin[[paste0("value_", i)]] <- fmli[[i]][c("cfi", "cfi.t", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
+      cfi_t_footnote <- gettextf("The T-size equivalents of the conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are <b>poor < %1$s < fair < %2$s < close</b> for model: %3$s",
+                                 round(fmli[[i]]["cfi.t.e90"], 3),
+                                 round(fmli[[i]]["cfi.t.e95"], 3),
+                                 options[["models"]][[i]][["name"]])
+      fitin$addFootnote(cfi_t_footnote)
     }
   }
+  fitin$addFootnote(gettextf("T-size CFI is computed for <i>%s = 0.05</i>", "\u03B1"))
 
   # information criteria
   if (!options$estimator %in% c("dwls", "gls", "wls", "uls")) {
@@ -1087,6 +1152,7 @@ checkLavaanModel <- function(model, availableVars) {
     gettextf("RMSEA 90%% CI lower bound"),
     gettextf("RMSEA 90%% CI upper bound"),
     gettext("RMSEA p-value"),
+    gettext("T-size RMSEA"),
     gettext("Standardized root mean square residual (SRMR)"),
     gettextf("Hoelter's critical N (%s = .05)","\u03B1"),
     gettextf("Hoelter's critical N (%s = .01)","\u03B1"),
@@ -1095,14 +1161,25 @@ checkLavaanModel <- function(model, availableVars) {
     gettext("Expected cross validation index (ECVI)")
   )
   if (length(options[["models"]]) == 1) {
-    fitot[["value"]] <- fmli[[1]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
+    fitot[["value"]] <- fmli[[1]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue", "rmsea.t",
                                     "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
+    rmsea_t_footnote <- gettextf("The T-size equivalents of the conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are <b>close < %1$s < fair < %2$s < poor</b> for model: %3$s",
+                                 round(fmli[[1]]["rmsea.t.e05"], 3),
+                                 round(fmli[[1]]["rmsea.t.e08"], 3),
+                                 options[["models"]][[1]][["name"]])
+    fitot$addFootnote(rmsea_t_footnote)
   } else {
     for (i in seq_along(options[["models"]])) {
-      fitot[[paste0("value_", i)]] <- fmli[[i]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
+      fitot[[paste0("value_", i)]] <- fmli[[i]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue", "rmsea.t",
                                                   "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
+      rmsea_t_footnote <- gettextf("The T-size equivalents of the conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are <b>close < %1$s < fair < %2$s < poor</b> for model: %3$s",
+                                   round(fmli[[i]]["rmsea.t.e05"], 3),
+                                   round(fmli[[i]]["rmsea.t.e08"], 3),
+                                   options[["models"]][[i]][["name"]])
+      fitot$addFootnote(rmsea_t_footnote)
     }
   }
+  fitot$addFootnote(gettextf("T-size RMSEA is computed for <i>%s = 0.05</i>", "\u03B1"))
 }
 
 .semRsquared <- function(modelContainer, dataset, options, ready) {
