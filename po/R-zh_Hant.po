@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
 "POT-Creation-Date: 2022-10-15 03:30\n"
-"PO-Revision-Date: 2022-11-14 06:44+0000\n"
+"PO-Revision-Date: 2022-11-25 07:48+0000\n"
 "Last-Translator: Changya Hu <changyahu@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
 "jasp/jaspsem-r/zh_Hant/>\n"
@@ -150,7 +150,7 @@ msgid "Relative Noncentrality Index (RNI)"
 msgstr "相對非中心配適指標  (RNI)"
 
 msgid "Log-likelihood"
-msgstr "對數概似函數"
+msgstr "對數概度"
 
 msgid "Number of free parameters"
 msgstr "自由估計參數個數"
@@ -491,6 +491,7 @@ msgstr "命名"
 msgid "Mardia's coefficients"
 msgstr "Mardia係數"
 
+#, fuzzy
 msgid "Coefficient"
 msgstr "係數"
 
