@@ -121,6 +121,9 @@ lavBootstrap <- function(fit, samples = 1000) {
   if (any(rhsAreManifest))
     semPlotMod@Pars$rhs[rhsAreManifest] <- decodeColNames(semPlotMod@Pars$rhs[rhsAreManifest])
 
+  if(.hasSlot(semPlotMod, "Thresholds"))
+    semPlotMod@Thresholds$lhs <- ifelse(nchar(semPlotMod@Thresholds$lhs) > 0, decodeColNames(semPlotMod@Thresholds$lhs), "")
+
   return(semPlotMod)
 }
 
