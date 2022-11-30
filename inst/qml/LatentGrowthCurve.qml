@@ -197,12 +197,20 @@ Form
 			RadioButton { text: qsTr("EQS")   ; name: "eqs"   }
 		}
 
-		RadioButtonGroup {
-			title: qsTr("Missing value handling")
-			name: "naAction"
-			RadioButton { text: qsTr("Full Information Maximum Likelihood") ; name: "fiml" ; checked: true }
-			RadioButton { text: qsTr("Exclude cases listwise")              ; name: "listwise"	}
-		}
+		DropDown
+			{
+				name: "naAction"
+				label: qsTr("Missing data handling")
+				values:
+				[
+					{ label: qsTr("FIML")				, value: "fiml"				},
+					{ label: qsTr("Listwise deletion")	, value: "listwise"			},
+					{ label: qsTr("Pairwise")			, value: "pairwise"			},
+					{ label: qsTr("Two-stage")			, value: "twoStage"			},
+					{ label: qsTr("Robust two-stage")	, value: "twoStageRobust"	},
+					{ label: qsTr("Doubly robust")		, value: "doublyRobust"		},
+				]
+			}
 
 		GroupBox
 		{
@@ -228,17 +236,33 @@ Form
 			}
 		}
 
-		RadioButtonGroup
-		{
-			title: qsTr("Estimator")
-			name: "estimator"
-			RadioButton { text: qsTr("Auto") ; name: "default"; checked: true }
-			RadioButton { text: qsTr("ML")   ; name: "ml"       }
-			RadioButton { text: qsTr("GLS")  ; name: "gls"      }
-			RadioButton { text: qsTr("WLS")  ; name: "wls"      }
-			RadioButton { text: qsTr("ULS")  ; name: "uls"      }
-			RadioButton { text: qsTr("DWLS") ; name: "dwls"     }
-		}
+		DropDown
+			{
+				name: "estimator"
+				id: estimator
+				label: qsTr("Estimator")
+				values: [
+                    { value: "default", label: qsTr("Auto")     },
+                    { value: "ml",      label: qsTr("ML")       },
+                    { value: "gls",     label: qsTr("GLS")      },
+                    { value: "wls",     label: qsTr("WLS")      },
+                    { value: "uls",     label: qsTr("ULS")      },
+                    { value: "dwls",    label: qsTr("DWLS")     },
+                    { value: "pml",     label: qsTr("PML")      },
+                    { value: "mlm",     label: qsTr("MLM")      },
+                    { value: "mlmvs",   label: qsTr("MLMVS")    },
+                    { value: "mlf",     label: qsTr("MLF")      },
+                    { value: "mlr",     label: qsTr("MLR")      },
+                    { value: "wlsm",    label: qsTr("WLSM")     },
+                    { value: "wlsmvs",  label: qsTr("WLSMVS")   },
+                    { value: "wlsmv",   label: qsTr("WLSMV")    },
+                    { value: "ulsm",    label: qsTr("ULSM")     },
+                    { value: "ulsmvs",  label: qsTr("ULSMVS")   },
+                    { value: "ulsmv",   label: qsTr("ULSMV")    }
+
+                ]
+
+			}
 
 		GroupBox
 		{

@@ -97,7 +97,21 @@ Form
 		}
 		Group
 		{
-			CheckBox{name: "standardizedEstimate"; label: qsTr("Standardized estimates"); checked: false}
+			CheckBox
+			{
+				name: "standardizedEstimate"
+				label: qsTr("Standardized estimates")
+				checked: false
+				RadioButtonGroup
+				{
+					name: "standardizedEstimateType"
+					RadioButton { value: "all"; 	label: qsTr("All"); checked: true	}
+					RadioButton { value: "latents"; label: qsTr("Latents")	}
+					RadioButton { value: "noX"; 	label: qsTr("no X")		}
+				
+				}
+			}
+			
 			CheckBox
 			{
 				name: "pathPlot";
@@ -195,6 +209,7 @@ Form
 			{
 				title: qsTr("Error calculation")
 				name: "errorCalculationMethod"
+				enabled: estimator.currentValue == "default" || estimator.currentValue == "ml" || estimator.currentValue == "gls" || estimator.currentValue == "wls" || estimator.currentValue == "uls" || estimator.currentValue == "dwls" || estimator.currentValue == "pml"
 				RadioButton { value: "standard";	label: qsTr("Standard"); checked: true		}
 				RadioButton { value: "robust";		label: qsTr("Robust")						}
 				RadioButton
@@ -234,16 +249,29 @@ Form
 			DropDown
 			{
 				name: "estimator"
+				id: estimator
 				label: qsTr("Estimator")
 				values: [
-					{ value: "default",	label: qsTr("Auto") },
-					{ value: "ml",		label: qsTr("ML")	},
-					{ value: "gls",		label: qsTr("GLS")	},
-					{ value: "wls",		label: qsTr("WLS")	},
-					{ value: "uls",		label: qsTr("ULS")	},
-					{ value: "dwls",	label: qsTr("DWLS")	},
-					{ value: "pml",		label: qsTr("PML")	}
-				]
+                    { value: "default", label: qsTr("Auto")     },
+                    { value: "ml",      label: qsTr("ML")       },
+                    { value: "gls",     label: qsTr("GLS")      },
+                    { value: "wls",     label: qsTr("WLS")      },
+                    { value: "uls",     label: qsTr("ULS")      },
+                    { value: "dwls",    label: qsTr("DWLS")     },
+                    { value: "pml",     label: qsTr("PML")      },
+                    { value: "mlm",     label: qsTr("MLM")      },
+                    { value: "mlmvs",   label: qsTr("MLMVS")    },
+                    { value: "mlf",     label: qsTr("MLF")      },
+                    { value: "mlr",     label: qsTr("MLR")      },
+                    { value: "wlsm",    label: qsTr("WLSM")     },
+                    { value: "wlsmvs",  label: qsTr("WLSMVS")   },
+                    { value: "wlsmv",   label: qsTr("WLSMV")    },
+                    { value: "ulsm",    label: qsTr("ULSM")     },
+                    { value: "ulsmvs",  label: qsTr("ULSMVS")   },
+                    { value: "ulsmv",   label: qsTr("ULSMV")    }
+
+                ]
+
 			}
 
 			DropDown
@@ -259,6 +287,7 @@ Form
 					{ value: "scaledAndShifted",		label: qsTr("Scaled and shifted")			},
 					{ value: "bollenStine",				label: qsTr("Bootstrap (Bollen-Stine)")		}
 				]
+				enabled: estimator.currentValue == "default" || estimator.currentValue == "ml" || estimator.currentValue == "gls" || estimator.currentValue == "wls" || estimator.currentValue == "uls" || estimator.currentValue == "dwls" || estimator.currentValue == "pml"
 			}
 
 			DropDown

@@ -82,6 +82,7 @@ Form
             RadioButtonGroup {
                 title: qsTr("Method")
                 name: "errorCalculationMethod"
+                enabled: estimator.currentValue == "default" || estimator.currentValue == "ml" || estimator.currentValue == "gls" || estimator.currentValue == "wls" || estimator.currentValue == "uls" || estimator.currentValue == "dwls" || estimator.currentValue == "pml"
                 RadioButton { text: qsTr("Standard")  ; name: "standard" ; checked: true }
                 RadioButton { text: qsTr("Robust")    ; name: "robust" }
                 RadioButton {
@@ -123,12 +124,17 @@ Form
         text: qsTr("Advanced")
         GroupBox {
             Layout.fillWidth: true
-            RadioButtonGroup {
-                title: qsTr("Missing value handling")
-                name: "naAction"
-                RadioButton { text: qsTr("Full Information Maximum Likelihood") ; name: "fiml" ; checked: true }
-                RadioButton { text: qsTr("Exclude cases listwise")              ; name: "listwise"             }
-            }
+            DropDown
+			{
+				name: "naAction"
+				label: qsTr("Missing data handling")
+				values:
+				[
+					{ label: qsTr("FIML")				, value: "fiml"				},
+					{ label: qsTr("Listwise deletion")	, value: "listwise"			},
+					{ label: qsTr("Pairwise")			, value: "pairwise"			}
+				]
+			}
             RadioButtonGroup {
                 title: qsTr("Emulation")
                 name: "emulation"
@@ -139,16 +145,28 @@ Form
         }
         GroupBox {
             Layout.fillWidth: true
-            RadioButtonGroup {
-                title: qsTr("Estimator")
-                name: "estimator"
-                RadioButton { text: qsTr("Auto") ; name: "default"; checked: true }
-                RadioButton { text: qsTr("ML")   ; name: "ml"       }
-                RadioButton { text: qsTr("GLS")  ; name: "gls"      }
-                RadioButton { text: qsTr("WLS")  ; name: "wls"      }
-                RadioButton { text: qsTr("ULS")  ; name: "uls"      }
-                RadioButton { text: qsTr("DWLS") ; name: "dwls"     }
-            }
+            DropDown
+			{
+				name: "estimator"
+				id: estimator
+				label: qsTr("Estimator")
+				values: [
+                    { value: "default", label: qsTr("Auto")         },
+                    { value: "ml",      label: qsTr("ML")           },
+                    { value: "gls",     label: qsTr("GLS")          },
+                    { value: "wls",     label: qsTr("WLS")          },
+                    { value: "uls",     label: qsTr("ULS")          },
+                    { value: "dwls",    label: qsTr("DWLS")         },
+                    { value: "pml",     label: qsTr("PML")          },
+                    { value: "mlm",     label: qsTr("Robust ML")    },
+                    { value: "mlf",     label: qsTr("MLF")          },
+                    { value: "mlr",     label: qsTr("MLR")          },
+                    { value: "wlsm",    label: qsTr("Robust WLS")   },
+                    { value: "ulsm",    label: qsTr("Robust ULS")   }
+
+                ]
+
+			}
         }
     }
 

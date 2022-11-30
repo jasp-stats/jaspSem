@@ -107,15 +107,28 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 # Results functions ----
 
 .medComputeResults <- function(modelContainer, dataset, options, ready) {
-  medResult <- try(lavaan::sem(
-    model           = .medToLavMod(options),
-    data            = dataset,
-    se              = ifelse(options$errorCalculationMethod == "bootstrap", "standard", options$errorCalculationMethod),
-    mimic           = options$emulation,
-    estimator       = options$estimator,
-    std.ov          = options$standardizedEstimate,
-    missing         = options$naAction
-  ))
+  if(options[["estimator"]] %in% c("default", "ml", "gls", "wls", "uls", "dwls", "pml")) {
+    medResult <- try(lavaan::sem(
+      model           = .medToLavMod(options),
+      data            = dataset,
+      se              = ifelse(options$errorCalculationMethod == "bootstrap", "standard", options$errorCalculationMethod),
+      mimic           = options$emulation,
+      estimator       = options$estimator,
+      std.ov          = options$standardizedEstimate,
+      missing         = options$naAction
+    ))
+  } else {
+    medResult <- try(lavaan::sem(
+      model           = .medToLavMod(options),
+      data            = dataset,
+      mimic           = options$emulation,
+      estimator       = options$estimator,
+      std.ov          = options$standardizedEstimate,
+      missing         = options$naAction
+    ))
+  }
+
+
 
   if (inherits(medResult, "try-error")) {
     errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(medResult, "condition")$message)
@@ -537,28 +550,39 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 }
 
 .medFootMessage <- function(modelContainer, options) {
-  # Create the footnote message
-  se_type <- switch(options$errorCalculationMethod,
-    "bootstrap" = gettext("Delta method"),
-    "standard"  = gettext("Delta method"),
-    "default"   = gettext("Delta method"),
-    "robust"    = gettext("Robust")
-  )
-  ci_type <- switch(options$errorCalculationMethod,
-    "bootstrap" = switch(options$bootstrapCiType,
-      "percentile"              = gettext("percentile bootstrap"),
-      "normalTheory"            = gettext("normal theory bootstrap"),
-      "percentileBiasCorrected" = gettext("bias-corrected percentile bootstrap")
-    ),
-    "standard"  = gettext("normal theory"),
-    "default"   = gettext("normal theory"),
-    "robust"    = gettext("robust")
-  )
+  if (is.null(modelContainer[["model"]][["object"]])) return()
 
-  if (is.null(modelContainer[["model"]][["object"]])) {
-    return(gettextf("%1$s standard errors, %2$s confidence intervals.", se_type, ci_type))
+  fit <- modelContainer[["model"]][["object"]]
+  # Create the footnote message
+  if (options[["estimator"]] %in% c("default", "ml", "gls", "wls", "uls", "dwls", "pml")) {
+    se_type <- switch(options$errorCalculationMethod,
+                      "bootstrap" = gettext("Delta method"),
+                      "standard"  = gettext("Delta method"),
+                      "default"   = gettext("Delta method"),
+                      "robust"    = gettext("Robust")
+    )
+    ci_type <- switch(options$errorCalculationMethod,
+                      "bootstrap" = switch(options$bootstrapCiType,
+                                           "percentile"              = gettext("percentile bootstrap"),
+                                           "normalTheory"            = gettext("normal theory bootstrap"),
+                                           "percentileBiasCorrected" = gettext("bias-corrected percentile bootstrap")
+                      ),
+                      "standard"  = gettext("normal theory"),
+                      "default"   = gettext("normal theory"),
+                      "robust"    = gettext("robust")
+    )
   } else {
-    fit <- modelContainer[["model"]][["object"]]
+    modelOptions <- lavaan::lavInspect(fit, what = "options")
+    if(options[["estimator"]] == "mlf") {
+      se_type <- gettext("First-order derivatives based")
+    } else {
+      se_type <- modelOptions$se
+      se_type <- gsub('.sem', '', se_type)
+      se_type <- gettext(stringr::str_to_title(gsub('\\.', ' ', se_type)))
+    }
+    ci_type <- gettext("robust")
+  }
+
     if (options$errorCalculationMethod == "bootstrap" && nrow(fit@boot[["coef"]]) < options$bootstrapSamples) {
       return(gettextf(
         "%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all bootstrap samples were successful: CI based on %4$.0f samples.",
@@ -570,8 +594,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
         se_type, ci_type, fit@Options$estimator
       ))
     }
-  }
-}
+    }
 
 .medRsquared <- function(modelContainer, options, ready) {
   if (!options$rSquared || !is.null(modelContainer[["rsquared"]])) return()

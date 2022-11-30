@@ -202,8 +202,8 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c(
       "variables", "regressions", "covariates", "categorical", "timings",
-      "intercept", "linear", "quadratic", "cubic", "covaryingLatentCurve",
-      "errorCalculationMethod", "bootstrapSamples"
+      "intercept", "linear", "quadratic", "cubic", "covaryingLatentCurve", "emulation",
+      "naAction", "estimator", "errorCalculationMethod", "bootstrapSamples"
     ))
     jaspResults[["modelContainer"]] <- modelContainer
   }
