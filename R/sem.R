@@ -588,6 +588,37 @@ checkLavaanModel <- function(model, availableVars) {
     pecont <- createJaspContainer(modelname, initCollapsed = TRUE)
   }
 
+  #Estimator, SE, CI footnote
+  modelOptions <- lavaan::lavInspect(fit, what = "options")
+  if(options[["estimator"]] == "mlf") {
+    se_type <- gettext("first-order derivatives based")
+    ci_type <- gettext("robust")
+  } else {
+    se_type <- modelOptions$se
+    se_type <- gsub('.sem', '', se_type)
+    se_type <- gettext(stringr::str_to_title(gsub('\\.', ' ', se_type)))
+    se_type <- paste0(tolower(substr(se_type, 1, 1)), substr(se_type, 2, nchar(se_type)))
+    if(se_type == "standard") {
+      se_type <- gettext("delta method")
+      ci_type <- gettext("normal theory")
+    } else if (se_type == "Bootstrap") {
+      se_type <- gettext("Delta method")
+      ci_type <- switch(options$bootstrapCiType,
+                        "percentile"              = gettext("percentile bootstrap"),
+                        "normalTheory"            = gettext("normal theory bootstrap"),
+                        "percentileBiasCorrected" = gettext("bias-corrected percentile bootstrap")
+      )
+    } else {
+      ci_type <- gettext("robust")
+    }
+
+  }
+  est_type <- gettext(modelOptions$estimator)
+
+  est_se_ci_footnote <- gettextf("<i>%1$s</i> estimation with <i>%2$s</i> standard errors and <i>%3$s</i> confidence intervals", est_type, se_type, ci_type)
+
+  est_title <- ifelse(options[["standardizedEstimate"]], gettext("Standardized Estimate"), gettext("Estimate"))
+
 
   # Measurement model
   indtab <- createJaspTable(title = gettext("Factor Loadings"))
@@ -598,9 +629,6 @@ checkLavaanModel <- function(model, availableVars) {
   indtab$addColumnInfo(name = "lhs",      title = gettext("Latent"),     type = "string", combine = TRUE)
   indtab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
   indtab$addColumnInfo(name = "label",    title = "",                    type = "string")
-
-  est_title <- ifelse(options[["standardizedEstimate"]], gettext("Standardized Estimate"), gettext("Estimate"))
-
   indtab$addColumnInfo(name = "est",      title = est_title,             type = "number")
   indtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
   indtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
@@ -611,32 +639,7 @@ checkLavaanModel <- function(model, availableVars) {
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
 
-  modelOptions <- lavaan::lavInspect(fit, what = "options")
-  if(options[["estimator"]] == "mlf") {
-    se_type <- gettext("First-order derivatives based")
-    ci_type <- gettext("Robust")
-  } else {
-    se_type <- modelOptions$se
-    se_type <- gsub('.sem', '', se_type)
-    se_type <- gettext(stringr::str_to_title(gsub('\\.', ' ', se_type)))
-    if(se_type == "Standard") {
-      se_type <- gettext("Delta method")
-      ci_type <- gettext("Normal theory")
-    } else if (se_type == "Bootstrap") {
-      se_type <- gettext("Delta method")
-      ci_type <- switch(options$bootstrapCiType,
-                        "percentile"              = gettext("Percentile bootstrap"),
-                        "normalTheory"            = gettext("Normal theory bootstrap"),
-                        "percentileBiasCorrected" = gettext("Bias-corrected percentile bootstrap")
-      )
-    } else {
-      ci_type <- gettext("Robust")
-    }
-
-  }
-  est_type <- gettext(modelOptions$estimator)
-
-  indtab$addFootnote(gettextf("'%1$s' estimation with '%2$s' standard errors and '%3$s' confidence intervals", est_type, se_type, ci_type))
+  indtab$addFootnote(est_se_ci_footnote)
 
   pecont[["ind"]] <- indtab
 
@@ -659,7 +662,7 @@ checkLavaanModel <- function(model, availableVars) {
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
 
-  regtab$addFootnote(gettextf("'%1$s' estimation with '%2$s' standard errors and '%3$s' confidence intervals", est_type, se_type, ci_type))
+  regtab$addFootnote(est_se_ci_footnote)
 
   pecont[["reg"]] <- regtab
 
@@ -682,7 +685,7 @@ checkLavaanModel <- function(model, availableVars) {
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
 
-  thrtab$addFootnote(gettextf("'%1$s' estimation with '%2$s' standard errors and '%3$s' confidence intervals", est_type, se_type, ci_type))
+  thrtab$addFootnote(est_se_ci_footnote)
 
   pecont[["thr"]] <- thrtab
 
@@ -704,7 +707,7 @@ checkLavaanModel <- function(model, availableVars) {
                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
 
-  lvartab$addFootnote(gettextf("'%1$s' estimation with '%2$s' standard errors and '%3$s' confidence intervals", est_type, se_type, ci_type))
+  lvartab$addFootnote(est_se_ci_footnote)
 
   pecont[["lvar"]] <- lvartab
 
@@ -726,7 +729,7 @@ checkLavaanModel <- function(model, availableVars) {
                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
 
-  lcovtab$addFootnote(gettextf("'%1$s' estimation with '%2$s' standard errors and '%3$s' confidence intervals", est_type, se_type, ci_type))
+  lcovtab$addFootnote(est_se_ci_footnote)
 
   pecont[["lcov"]] <- lcovtab
 
@@ -747,7 +750,7 @@ checkLavaanModel <- function(model, availableVars) {
   vartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  vartab$addFootnote(gettextf("'%1$s' estimation with '%2$s' standard errors and '%3$s' confidence intervals", est_type, se_type, ci_type))
+  vartab$addFootnote(est_se_ci_footnote)
 
   pecont[["var"]] <- vartab
 
@@ -768,7 +771,7 @@ checkLavaanModel <- function(model, availableVars) {
   covtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  covtab$addFootnote(gettextf("'%1$s' estimation with '%2$s' standard errors and '%3$s' confidence intervals", est_type, se_type, ci_type))
+  covtab$addFootnote(est_se_ci_footnote)
 
   pecont[["cov"]] <- covtab
 
@@ -791,7 +794,7 @@ checkLavaanModel <- function(model, availableVars) {
                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
 
-    mutab$addFootnote(gettextf("'%1$s' estimation with '%2$s' standard errors and '%3$s' confidence intervals", est_type, se_type, ci_type))
+    mutab$addFootnote(est_se_ci_footnote)
 
     pecont[["mu"]] <- mutab
   }
@@ -809,7 +812,7 @@ checkLavaanModel <- function(model, availableVars) {
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
 
-  deftab$addFootnote(gettextf("'%1$s' estimation with '%2$s' standard errors and '%3$s' confidence intervals", est_type, se_type, ci_type))
+  deftab$addFootnote(est_se_ci_footnote)
 
   pecont[["def"]] <- deftab
 
