@@ -1060,6 +1060,10 @@ checkLavaanModel <- function(model, availableVars) {
 
   .computeFitMeasures <- function(fit, alpha = 0.05) {
     fm <- lavaan::fitMeasures(fit, fit.measures = "all")
+    if (lavaan::lavInspect(fit, what = "options")[["test"]] != "standard")
+      fm[c("chisq", "df", "baseline.chisq", "baseline.df", "cfi", "tli", "nnfi", "rfi", "ifi", "rni", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue")] <- fm[c("chisq.scaled", "df.scaled", "baseline.chisq.scaled", "baseline.df.scaled", "cfi.scaled", "tli.scaled", "nnfi.scaled", "rfi.scaled", "ifi.scaled", "rni.scaled", "rmsea.scaled", "rmsea.ci.lower.scaled", "rmsea.ci.upper.scaled", "rmsea.pvalue.scaled")]
+
+
 
     ncp_chi2 <- function(alpha, chisqModel, df){
       z <- qnorm(1-alpha)
