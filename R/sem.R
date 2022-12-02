@@ -358,6 +358,10 @@ checkLavaanModel <- function(model, availableVars) {
                                                       options[["naAction"]]))))
 
   # estimation options
+  ordered_vars <- sapply(dataset, is.ordered)
+  if (sum(ordered_vars > 0) && options[["estimator"]] == "default")
+    options[["estimator"]] <- "wlsmv"
+
   lavopts[["estimator"]]   <- options[["estimator"]]
   if (options[["estimator"]] %in% c("default", "ml", "gls", "wls", "uls", "dwls", "pml"))
     lavopts[["se"]]          <- ifelse(options[["errorCalculationMethod"]] == "bootstrap", "standard",
@@ -549,6 +553,9 @@ checkLavaanModel <- function(model, availableVars) {
   if (options$estimator %in% c("dwls", "gls", "wls", "uls", "wlsm", "wlsmvs", "wlsmv", "ulsm", "ulsmv", "ulsmvs")) {
     fittab$addFootnote(message = gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators"))
   }
+  ordered_vars <- sapply(dataset, is.ordered)
+  if (sum(ordered_vars > 0) && options[["estimator"]] == "default")
+    fittab$addFootnote(message = gettext("Ordered variable(s) detected! Automatically switched to WLSMV estimator (robust). If you wish to override this setting, please select another estimator in the 'Estimation options' tab."))
 }
 
 .semParameters <- function(modelContainer, dataset, options, ready) {
@@ -639,7 +646,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["group"]] != "")
     regtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
-  regtab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string", combine = TRUE)
+  regtab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string", combine = ifelse(options[["group"]] != "", FALSE, TRUE))
   regtab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),    type = "string")
   regtab$addColumnInfo(name = "label",    title = "",                    type = "string")
   regtab$addColumnInfo(name = "est",      title = est_title,             type = "number")
@@ -875,6 +882,8 @@ checkLavaanModel <- function(model, availableVars) {
   #Thresholds
   pe_thr <- pe[pe$op == "|",]
   if (nrow(pe_thr) == 0) pecont[["thr"]] <- NULL # remove if no estimates
+  if (options[["group"]] != "")
+    thrtab[["group"]] <- pe_thr[["groupname"]]
 
   thrtab[["lhs"]]      <- pe_thr[["lhs"]]
   thrtab[["rhs"]]      <- pe_thr[["rhs"]]
@@ -1706,7 +1715,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   pcont <- createJaspContainer(gettext("Path diagram"))
   pcont$position <- 7
-  pcont$dependOn(c("pathPlot", "pathPlotParameter", "pathPlotLegend", "models"))
+  pcont$dependOn(c("pathPlot", "pathPlotParameter", "pathPlotLegend", "models", "standardizedEstimate", "standardizedEstimateType"))
 
   modelContainer[["plot"]] <- pcont
 
@@ -1738,9 +1747,30 @@ checkLavaanModel <- function(model, availableVars) {
 
   if (!ready || !inherits(fit, "lavaan")) return()
 
-  if (length(lavaan::lavInspect(fit, "ordered")) > 0) {
-    plt$setError(gettext("Model plot not available with ordinal variables"))
-    return()
+  if (options[["standardizedEstimate"]]) {
+    type <- switch(options[["standardizedEstimateType"]],
+                   "all" = "std.all",
+                   "latents" = "std.lv",
+                   "noX" = "std.nox")
+    pe <- lavaan::standardizedsolution(fit, type = type)
+    fit@ParTable$est <- pe[["est.std"]]
+  }
+
+  equality_constraints <- c(
+    options[["equalLoading"]],
+    options[["equalIntercept"]],
+    options[["equalMean"]],
+    options[["equalThreshold"]],
+    options[["equalRegression"]],
+    options[["equalResidual"]],
+    options[["equalResidualCovariance"]],
+    options[["equalVariance"]],
+    options[["equalLatentCovariance"]]
+  )
+
+  if (any(equality_constraints)) {
+    allPaths <- lapply(fit@ParTable, function(x) x[fit@ParTable$plabel != ""])
+    fit@ParTable <- as.list(allPaths)
   }
 
   # create a qgraph object using semplot
@@ -1748,6 +1778,7 @@ checkLavaanModel <- function(model, availableVars) {
   pp <- .suppressGrDevice(semPlot::semPaths(
     object         = po,
     layout         = "tree2",
+    curvePivot     = TRUE,
     intercepts     = FALSE,
     reorder        = FALSE,
     whatLabels     = ifelse(options[["pathPlotParameter"]], "par", "name"),
@@ -1759,7 +1790,7 @@ checkLavaanModel <- function(model, availableVars) {
     legend.cex     = 0.6,
     label.cex      = 1.3,
     edge.label.cex = 0.9,
-    nodeNames      = decodeColNames(po@Vars$name),
+    nodeNames      = c(decodeColNames(po@Vars$name), decodeColNames(po@Thresholds$lhs)),
     nCharNodes     = 3,
     rotation       = 2,
     ask            = FALSE

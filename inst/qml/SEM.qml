@@ -152,7 +152,7 @@ Form
 
 	Section
 	{
-		title: qsTr("Model Options")
+		title: qsTr("Model options")
 		Group
 		{
 			DropDown
@@ -309,6 +309,7 @@ Form
 			{
 				name: "emulation"
 				label: qsTr("Emulation")
+				enabled: estimator.currentValue == "default" || estimator.currentValue == "ml" || estimator.currentValue == "gls" || estimator.currentValue == "wls" || estimator.currentValue == "uls" || estimator.currentValue == "dwls" || estimator.currentValue == "pml"
 				values: [
 					{ value: "lavaan",	label: qsTr("None") 	},
 					{ value: "mplus",	label: qsTr("Mplus") 	},
