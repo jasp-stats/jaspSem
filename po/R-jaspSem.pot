@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2022-10-15 03:30\n"
+"POT-Creation-Date: 2022-12-03 02:49\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
-
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr ""
@@ -446,6 +446,24 @@ msgid "Defined parameters"
 msgstr ""
 
 msgid "Name"
+msgstr ""
+
+msgid "T-size CFI"
+msgstr ""
+
+msgid "The T-size equivalents of the conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are <b>poor < %1$s < fair < %2$s < close</b> for model: %3$s"
+msgstr ""
+
+msgid "T-size CFI is computed for <i>%s = 0.05</i>"
+msgstr ""
+
+msgid "T-size RMSEA"
+msgstr ""
+
+msgid "The T-size equivalents of the conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are <b>close < %1$s < fair < %2$s < poor</b> for model: %3$s"
+msgstr ""
+
+msgid "T-size RMSEA is computed for <i>%s = 0.05</i>"
 msgstr ""
 
 msgid "Mardia's coefficients"

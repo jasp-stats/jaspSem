@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2022-10-15 03:30\n"
+"POT-Creation-Date: 2022-12-03 02:49\n"
 "PO-Revision-Date: 2022-02-05 02:39+0000\n"
 "Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -493,6 +493,30 @@ msgstr "定義されたパラメータ"
 
 msgid "Name"
 msgstr "名前"
+
+msgid "T-size CFI"
+msgstr ""
+
+msgid ""
+"The T-size equivalents of the conventional CFI cut-off values (poor < 0.90 < "
+"fair < 0.95 < close) are <b>poor < %1$s < fair < %2$s < close</b> for model: "
+"%3$s"
+msgstr ""
+
+msgid "T-size CFI is computed for <i>%s = 0.05</i>"
+msgstr ""
+
+msgid "T-size RMSEA"
+msgstr ""
+
+msgid ""
+"The T-size equivalents of the conventional RMSEA cut-off values (close < "
+"0.05 < fair < 0.08 < poor) are <b>close < %1$s < fair < %2$s < poor</b> for "
+"model: %3$s"
+msgstr ""
+
+msgid "T-size RMSEA is computed for <i>%s = 0.05</i>"
+msgstr ""
 
 msgid "Mardia's coefficients"
 msgstr "マルディアの係数"

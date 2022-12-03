@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
-"POT-Creation-Date: 2022-10-15 03:30\n"
+"POT-Creation-Date: 2022-12-03 02:49\n"
 "PO-Revision-Date: 2022-10-16 20:14+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -515,6 +515,30 @@ msgstr "Parámetros definidos"
 
 msgid "Name"
 msgstr "Nombre"
+
+msgid "T-size CFI"
+msgstr ""
+
+msgid ""
+"The T-size equivalents of the conventional CFI cut-off values (poor < 0.90 < "
+"fair < 0.95 < close) are <b>poor < %1$s < fair < %2$s < close</b> for model: "
+"%3$s"
+msgstr ""
+
+msgid "T-size CFI is computed for <i>%s = 0.05</i>"
+msgstr ""
+
+msgid "T-size RMSEA"
+msgstr ""
+
+msgid ""
+"The T-size equivalents of the conventional RMSEA cut-off values (close < "
+"0.05 < fair < 0.08 < poor) are <b>close < %1$s < fair < %2$s < poor</b> for "
+"model: %3$s"
+msgstr ""
+
+msgid "T-size RMSEA is computed for <i>%s = 0.05</i>"
+msgstr ""
 
 msgid "Mardia's coefficients"
 msgstr "Coeficientes de Mardia"
