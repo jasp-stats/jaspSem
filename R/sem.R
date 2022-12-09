@@ -61,11 +61,17 @@ SEM <- function(jaspResults, dataset, options, ...) {
 .semReadData <- function(dataset, options) {
   if (!is.null(dataset)) return(dataset)
 
-  variablesToRead <- if (options[["group"]] == "") character() else options[["group"]]
-  for (model in options[["models"]])
-    variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
+  if(options[["dataType"]] == "raw") {
+    variablesToRead <- if (options[["group"]] == "") character() else options[["group"]]
+    for (model in options[["models"]])
+      variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
 
-  return(.readDataSetToEnd(columns = variablesToRead))
+    dataset <- .readDataSetToEnd(columns = variablesToRead)
+  } else {
+    dataset <- .readDataSetToEnd(all.columns = TRUE)
+  }
+
+  return(dataset)
 }
 
 .semIsReady <- function(dataset, options) {
@@ -82,11 +88,7 @@ SEM <- function(jaspResults, dataset, options, ...) {
 .semCheckErrors <- function(dataset, options, ready, modelContainer) {
   if (!ready) return()
 
-  if (options$dataType == "varianceCovariance") {
-    # Check if dataset is variance covariance matrix:
-    .hasErrors(dataset, type = c("varCovMatrix", "infinity"),
-               message='default', exitAnalysisIfErrors = TRUE)
-  } else if (ncol(dataset) > 0) {
+  if (ncol(dataset) > 0) {
     if (length(options[["models"]]) < 1) return(FALSE)
     usedvars <- unique(unlist(lapply(options[["models"]], function(x) {
       .semGetUsedVars(x[["syntax"]], colnames(dataset))
@@ -111,7 +113,6 @@ SEM <- function(jaspResults, dataset, options, ...) {
 
     }
   }
-
 
   # Check mean structure:
   if (options[["dataType"]] == "varianceCovariance") {
@@ -316,8 +317,9 @@ checkLavaanModel <- function(model, availableVars) {
   if (inherits(mat, "try-error") || any(is.na(mat)))
     .quitAnalysis("Input data does not seem to be a covariance matrix! Please check the format of the input data.
                    All cells must be numeric, and the number of rows must equal the number of columns.")
+  .hasErrors(mat, type = "varCovMatrix", message='default', exitAnalysisIfErrors = TRUE)
+
   colnames(mat) <- rownames(mat) <- colnames(dataset)[var_idx]
-  print(mat)
   return(mat)
 }
 

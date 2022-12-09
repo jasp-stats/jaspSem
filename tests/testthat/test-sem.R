@@ -563,6 +563,7 @@ test_that("Bootstrapping works", {
 
 })
 
+
 test_that("t-size RMSEA and CFI match values of original article (Katerina M. Marcoulides & Ke-Hai Yuan (2017))", {
   options <- jaspTools::analysisOptions("SEM")
   options$sampleSize <- 600
@@ -620,4 +621,34 @@ test_that("t-size RMSEA and CFI match values of original article (Katerina M. Ma
                                       "Goodness of fit index (GFI)", 0.984016681585093, "McDonald fit index (MFI)",
                                       0.995501480640541, "Expected cross validation index (ECVI)",
                                       0.220684002957567))
+})
+
+
+test_that("Variance-covariance input works", {
+  options <- jaspTools::analysisOptions("SEM")
+  options$dataType          <- "varianceCovariance"
+  options$sampleSize        <- 75
+  options$emulation         <- "lavaan"
+  options$estimator         <- "default"
+  options$group             <- ""
+  options$samplingWeights   <- ""
+  options$informationMatrix <- "expected"
+  options$naAction          <- "fiml"
+  options$modelTest         <- "standard"
+  options$models <- list(
+    list(name = "Model1", syntax = list(model = "F =~ x1 + x3 + y1", columns = c("x1", "x2", "x3"))),
+    list(name = "Model2", syntax = list(model = "F =~ y1 + y2 + y3", columns = c("y1", "y2", "y3")))
+    )
+
+  data <- read.csv("poldem_grouped.csv")
+  data <- cov(data)
+  data <- as.data.frame(data)
+
+  set.seed(1)
+  results <- jaspTools::runAnalysis("SEM", data, options)
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(713.570148255052, 734.427541276879, 0, 0, "Model1", 75, 1, "",
+                                      "", "", 1101.63355300897, 1122.4909460308, 0, 0, "Model2", 75,
+                                      1, "", 0, 0))
 })
