@@ -1,34 +1,41 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2022-12-14 08:48+0000\n"
+"Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
+"Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
+"pl/>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.15-dev\n"
 "X-Qt-Contexts: true\n"
 
 msgctxt "Description|"
 msgid "SEM"
-msgstr ""
+msgstr "SEM"
 
 msgctxt "Description|"
 msgid "Structural Equation Modeling"
-msgstr ""
+msgstr "Modelowanie równań strukturalnych"
 
 msgctxt "Description|"
 msgid "Mediation Analysis"
-msgstr ""
+msgstr "Analiza mediacji"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Variables"
-msgstr ""
+msgstr "Zmienne"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Regressions"
-msgstr ""
+msgstr "Analizy regresji"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Factor"
-msgstr ""
+msgstr "Czynnik"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Time-varying covariates"
@@ -40,27 +47,27 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Model Options"
-msgstr ""
+msgstr "Opcje modelu"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Growth curve shape"
-msgstr ""
+msgstr "Kształt krzywej wzrostu"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Intercept"
-msgstr ""
+msgstr "Wyraz wolny"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Linear"
-msgstr ""
+msgstr "Liniowy"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Quadratic"
-msgstr ""
+msgstr "Kwadratowy"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Cubic"
-msgstr ""
+msgstr "Sześcienny"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Covarying latent curve"
@@ -68,19 +75,19 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Additional Output"
-msgstr ""
+msgstr "Dodatkowe wyniki"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Additional Fit Measures"
-msgstr ""
+msgstr "Dodatkowe miary dopasowania"
 
 msgctxt "LatentGrowthCurve|"
 msgid "R-Squared"
-msgstr ""
+msgstr "R-kwadrat"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Standardized estimates"
-msgstr ""
+msgstr "Oszacowania standaryzowane"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Implied covariance matrix"
@@ -92,39 +99,39 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Show lavaan syntax"
-msgstr ""
+msgstr "Pokaż składnię lavaan"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Plots"
-msgstr ""
+msgstr "Wykresy"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Color palette"
-msgstr ""
+msgstr "Paleta kolorów"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Colorblind"
-msgstr ""
+msgstr "Colorblind"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Colorblind Alt."
-msgstr ""
+msgstr "Colorblind alt."
 
 msgctxt "LatentGrowthCurve|"
 msgid "Viridis"
-msgstr ""
+msgstr "Viridis"
 
 msgctxt "LatentGrowthCurve|"
 msgid "ggplot2"
-msgstr ""
+msgstr "ggplot2"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Gray"
-msgstr ""
+msgstr "Szary"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Curve plot"
-msgstr ""
+msgstr "Wykres krzywej"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Misfit plot"
@@ -136,31 +143,31 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Show parameters"
-msgstr ""
+msgstr "Pokaż parametry"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Show means"
-msgstr ""
+msgstr "Pokaż średnie"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Advanced"
-msgstr ""
+msgstr "Zaawansowane"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Emulation"
-msgstr ""
+msgstr "Emulacja"
 
 msgctxt "LatentGrowthCurve|"
 msgid "None"
-msgstr ""
+msgstr "Brak"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Mplus"
-msgstr ""
+msgstr "Mplus"
 
 msgctxt "LatentGrowthCurve|"
 msgid "EQS"
-msgstr ""
+msgstr "EQS"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Missing value handling"
@@ -168,11 +175,11 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Full Information Maximum Likelihood"
-msgstr ""
+msgstr "Metoda Największej Wiarygodności z pełną informacją (FIML)"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Exclude cases listwise"
-msgstr ""
+msgstr "Wyklucz obserwacje ze wszystkich analiz"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Error calculation"
@@ -180,23 +187,23 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "CI width"
-msgstr ""
+msgstr "Szerokość CI"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Method"
-msgstr ""
+msgstr "Metoda"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Standard"
-msgstr ""
+msgstr "Standardowa"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Robust"
-msgstr ""
+msgstr "Odporna"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Bootstrap CI"
-msgstr ""
+msgstr "Bootstrap CI"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Bootstrap samples"
@@ -204,35 +211,35 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Estimator"
-msgstr ""
+msgstr "Estymator"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Auto"
-msgstr ""
+msgstr "Automatyczny"
 
 msgctxt "LatentGrowthCurve|"
 msgid "ML"
-msgstr ""
+msgstr "ML"
 
 msgctxt "LatentGrowthCurve|"
 msgid "GLS"
-msgstr ""
+msgstr "GLS"
 
 msgctxt "LatentGrowthCurve|"
 msgid "WLS"
-msgstr ""
+msgstr "WLS"
 
 msgctxt "LatentGrowthCurve|"
 msgid "ULS"
-msgstr ""
+msgstr "ULS"
 
 msgctxt "LatentGrowthCurve|"
 msgid "DWLS"
-msgstr ""
+msgstr "DWLS"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Options"
-msgstr ""
+msgstr "Opcje"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Fix manifest intercepts to zero"
