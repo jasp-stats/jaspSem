@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
 "POT-Creation-Date: 2022-12-03 02:49\n"
-"PO-Revision-Date: 2022-11-26 00:43+0000\n"
+"PO-Revision-Date: 2022-12-13 19:48+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-r/pl/"
 ">\n"
@@ -54,10 +54,10 @@ msgid "z-value"
 msgstr ""
 
 msgid "p"
-msgstr ""
+msgstr "p"
 
 msgid "Lower"
-msgstr ""
+msgstr "Dolny"
 
 msgid "95%% Confidence Interval"
 msgstr ""
@@ -96,7 +96,7 @@ msgid "Cubic slope"
 msgstr ""
 
 msgid "Mean"
-msgstr ""
+msgstr "Średnia"
 
 msgid "Variance"
 msgstr ""
@@ -250,10 +250,10 @@ msgid "Direct effects"
 msgstr ""
 
 msgid "%s%% Confidence Interval"
-msgstr ""
+msgstr "%s%% Przedział ufności"
 
 msgid "Upper"
-msgstr ""
+msgstr "Górny"
 
 msgid "Indirect effects"
 msgstr ""
@@ -314,7 +314,7 @@ msgid "Chi Square test"
 msgstr ""
 
 msgid "df"
-msgstr ""
+msgstr "df"
 
 msgid "&#967;&sup2;"
 msgstr ""
@@ -400,7 +400,7 @@ msgid "BIC"
 msgstr ""
 
 msgid "n"
-msgstr ""
+msgstr "n"
 
 msgid "Baseline test"
 msgstr ""
@@ -449,7 +449,7 @@ msgid "Factor Loadings"
 msgstr ""
 
 msgid "Group"
-msgstr ""
+msgstr "Grupa"
 
 msgid "Regression coefficients"
 msgstr ""
