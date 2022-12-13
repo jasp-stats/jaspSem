@@ -9,6 +9,8 @@ test_that("Simple mediation analysis works", {
   options$estimator              <- "ml"
   options$errorCalculationMethod <- "standard"
   options$naAction               <- "fiml"
+  options$errorCalculationMethod <- "standard"
+  options$ciLevel                <- 0.95
   results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
 
   dir_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
@@ -54,6 +56,7 @@ test_that("Categorical confounders work", {
   options$estimator      <- "ml"
   options$errorCalculationMethod <- "standard"
   options$naAction       <- "fiml"
+  options$ciLevel        <- 0.95
   results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
 
   ind_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_ind"]][["data"]]
@@ -75,6 +78,7 @@ test_that("Multiple mediation with missing values works", {
   options$estimator      <- "ml"
   options$errorCalculationMethod <- "standard"
   options$naAction       <- "fiml"
+  options$ciLevel        <- 0.95
   results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
 
   dir_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
@@ -181,6 +185,7 @@ test_that("Bootstrapping works", {
   options$bootstrapSamples <- 100
   options$bootstrapCiType  <- "percentileBiasCorrected"
   options$naAction         <- "fiml"
+  options$ciLevel          <- 0.95
 
   set.seed(1)
   results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options)
