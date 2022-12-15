@@ -305,10 +305,6 @@ checkCSemModel <- function(model, availableVars) {
                                            "harmonicMean" = "mean_harmonic",
                                            "geometricHarmonicMean" = "geo_of_harmonic")
 
-
-  if (options[["group"]] != "" || length(options[["models"]]) > 1)
-    cSemOpts[[".eval_plan"]] <- "multiprocess"
-
   if (options[["group"]] != "")
     cSemOpts[[".id"]] <- options[["group"]]
 
