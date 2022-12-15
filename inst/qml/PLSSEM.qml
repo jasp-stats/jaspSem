@@ -33,7 +33,7 @@ Form
 		name: "models"
 		maximumItems: 9
 		newItemName: qsTr("Model 1")
-		optionKey: "modelName"
+		optionKey: "name"
 
 		content: TextArea { name: "syntax"; width: models.width; textType: JASP.TextTypeCSem }
 	}
@@ -45,9 +45,80 @@ Form
 
 		Group
 		{
+			CheckBox
+			{
+				enabled: approachWeigths.currentValue == "PLS-PM"
+				name: "structuralModelIgnored"
+				label: qsTr("Ignore structural model")
+			}
+
+			CheckBox
+			{
+				name: "compositeCorrelationDisattenuated";		label: qsTr("Disattenuate composite correlations");	checked: true
+				DropDown
+				{
+					name: "correctionFactor"
+					label: qsTr("Approach correction factors")
+					values: [
+						{ value: "squaredEuclidean", 		label: qsTr("Squared Euclidean distance")	},
+						{ value: "weightedEuclidean", 		label: qsTr("Weighted Euclidean distance")	},
+						{ value: "fisherTransformed", 		label: qsTr("Fisher transformed") 			},
+						{ value: "arithmeticMean", 			label: qsTr("Arithmetic mean")				},
+						{ value: "geometricMean", 			label: qsTr("Geometric mean")				},
+						{ value: "harmonicMean", 			label: qsTr("Harmonic mean")				},
+						{ value: "geometricHarmonicMean", 	label: qsTr("Geometric-harmonic mean")		}
+					]
+				}
+			}
+
 			DropDown
 			{
-				name: "approachWeights"
+				id: grpvar
+				name: "group"
+				label: qsTr("Grouping Variable")
+				showVariableTypeIcon: true
+				addEmptyValue: true
+			}
+		}
+	}
+
+	Section
+	{
+		title: qsTr("Estimation")
+
+		Group
+		{
+			RadioButtonGroup
+			{
+				title: qsTr("Error calculation method")
+				name: "errorCalculationMethod"
+				RadioButton { value: "none";		label: qsTr("None"); checked: true	}
+				RadioButton { value: "robust";	label: qsTr("Robust")				}
+				RadioButton
+				{
+					value: "bootstrap";	label: qsTr("Bootstrap")
+					IntegerField
+					{
+						name: "bootstrapSamples"
+						label: qsTr("Bootstrap samples")
+						fieldWidth: 60
+						defaultValue: 200
+						min: 1
+					}
+				}
+			}
+			CIField {
+				text: qsTr("Confidence intervals")
+				name: "ciLevel"
+			}
+			SetSeed {}
+		}
+
+		Group
+		{
+			DropDown
+			{
+				name: "weightingApproach"
 				label: qsTr("Weighting approach")
 				id: approachWeigths 
 				values: 
@@ -77,103 +148,30 @@ Form
 					{ value: "factorial", 	label: qsTr("Factorial")	}
 				]
 			}
-			CheckBox
-			{
-				enabled: approachWeigths.currentValue == "PLS-PM"
-				name: "ignoreStructuralModel"
-				label: qsTr("Ignore structural model")
-			}
 
 			DropDown
 			{
 				name: "convergenceCriterion"
 				label: qsTr("Convergence criterion")
 				values: [
-					{ value: "diff_absolute",	label: qsTr("Absolute difference")	},
-					{ value: "diff_squared",	label: qsTr("Squared difference")	},
-					{ value: "diff_relative",	label: qsTr("Relative difference")	}
+					{ value: "absoluteDifference",	label: qsTr("Absolute difference")	},
+					{ value: "squaredDifference",	label: qsTr("Squared difference")	},
+					{ value: "relativeDifference",	label: qsTr("Relative difference")	}
 				]
 			}
-		}
 
-		Group
-		{
 			RadioButtonGroup
 			{
 				title: qsTr("Correlation matrix")
-				name: "approachCorRobust"
-				RadioButton { value: "none"		; label: qsTr("Pearson"); checked: true	}
+				name: "correlationMatrix"
+				RadioButton { value: "pearson"	; label: qsTr("Pearson"); checked: true	}
 				RadioButton { value: "spearman" ; label: qsTr("Spearman")				}
 			}
 
-			CheckBox
-			{
-				name: "disattenuate";		label: qsTr("Disattenuate composite correlations");	checked: true
-				DropDown
-				{
-					name: "approachCorrectionFactors"
-					label: qsTr("Approach correction factors")
-					values: [
-						{ value: "dist_squared_euclid", 	label: qsTr("Squared Euclidean distance")	},
-						{ value: "dist_euclid_weighted", 	label: qsTr("Weighted Euclidean distance")	},
-						{ value: "fisher_transformed", 		label: qsTr("Fisher transformed") 			},
-						{ value: "mean_arithmetic", 		label: qsTr("Arithmetic mean")				},
-						{ value: "mean_geometric", 			label: qsTr("Geometric mean")				},
-						{ value: "mean_harmonic", 			label: qsTr("Harmonic mean")				},
-						{ value: "geo_of_harmonic", 		label: qsTr("Geometric-harmonic mean")		}
-					]
-				}
-			}
-
-			DropDown
-			{
-				id: grpvar
-				name: "groupingVariable"
-				label: qsTr("Grouping Variable")
-				showVariableTypeIcon: true
-				addEmptyValue: true
-			}
-		}
-	}
-
-	Section
-	{
-		title: qsTr("Resampling")
-
-		Group
-		{
 			RadioButtonGroup
 			{
-				title: qsTr("Error calculation method")
-				name: "resamplingMethod"
-				RadioButton { value: "none";		label: qsTr("None"); checked: true	}
-				RadioButton { value: "jackknife";	label: qsTr("Robust")				}
-				RadioButton
-				{
-					value: "bootstrap";	label: qsTr("Bootstrap")
-					IntegerField
-					{
-						name: "nBootstraps"
-						label: qsTr("Bootstrap samples")
-						fieldWidth: 60
-						defaultValue: 200
-						min: 1
-					}
-				}
-			}
-			CIField {
-				text: qsTr("Confidence intervals")
-				name: "ciWidth"
-			}
-			SetSeed {}
-		}
-
-		Group
-		{
-			RadioButtonGroup
-			{
-				title: qsTr("Inadmissibles handling")
-				name: "handleInadmissibles"
+				title: qsTr("Handling of inadmissibles")
+				name: "handlingOfInadmissibles"
 				RadioButton { value: "replace"; label: qsTr("Replace")	; checked: true	}
 				RadioButton { value: "ignore"; 	label: qsTr("Ignore")					}
 				RadioButton { value: "drop"; 	label: qsTr("Drop")						}
@@ -181,15 +179,36 @@ Form
 
 			DropDown
 				{
-					name: "signFlippingHandling"
-					label: qsTr("Sign flipping handling")
+					name: "handlingOfFlippedSigns"
+					label: qsTr("Handling of flipped signs")
 					values: [
 						{ value: "none", 					label: qsTr("None")						},
-						{ value: "individual", 				label: qsTr("Indiviual")				},
-						{ value: "individual_reestimate", 	label: qsTr("Individual re-estimate")	},
-						{ value: "construct_reestimate", 	label: qsTr("Construct re-estimate") 	}
+						{ value: "individual", 				label: qsTr("Individual")				},
+						{ value: "individualReestimation", 	label: qsTr("Individual re-estimation")	},
+						{ value: "constructReestimation", 	label: qsTr("Construct re-estimation") 	}
 					]
 				}
+		}
+	}
+
+	Section
+	{
+		title: qsTr("Output")
+
+		Group
+		{
+		  	CheckBox { name: "rSquared";				label: qsTr("R-squared")				}
+			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures")	}
+			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient")		}
+			CheckBox { name: "reliabilityMeasures";		label: qsTr("Reliability measures")		}
+		}
+
+		Group
+		{
+		  	CheckBox { name: "observedIndicatorCorrelation";	label: qsTr("Observed indicator correlations")	}
+			CheckBox { name: "impliedIndicatorCorrelation";		label: qsTr("Implied indicator correlations")	}
+			CheckBox { name: "observedConstructCorrelation"; 	label: qsTr("Observed construct correlations")	}
+			CheckBox { name: "impliedConstructCorrelation"; 	label: qsTr("Implied construct correlations")	}
 		}
 	}
 
@@ -240,27 +259,6 @@ Form
 			}
 
 			CheckBox { name: "predictedScore";	label: qsTr("Show predicted scores"); enabled: prediction.checked}
-		}
-	}
-
-	Section
-	{
-		title: qsTr("Output")
-
-		Group
-		{
-		  	CheckBox { name: "outputRSquared";				label: qsTr("R-squared")				}
-			CheckBox { name: "outputAdditionalFitMeasures";	label: qsTr("Additional fit measures")	}
-			CheckBox { name: "outputMardiasCoefficients";	label: qsTr("Mardia's coefficient")		}
-			CheckBox { name: "outputReliabilityMeasures";	label: qsTr("Reliability measures")		}
-		}
-
-		Group
-		{
-		  	CheckBox { name: "outputObservedIndicatorCorrelations";	label: qsTr("Observed indicator correlations")	}
-			CheckBox { name: "outputImpliedIndicatorCorrelations";	label: qsTr("Implied indicator correlations")	}
-			CheckBox { name: "outputObservedConstructCorrelations"; label: qsTr("Observed construct correlations")	}
-			CheckBox { name: "outputImpliedConstructCorrelations"; 	label: qsTr("Implied construct correlations")	}
 		}
 	}
 }
