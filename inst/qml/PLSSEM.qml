@@ -47,7 +47,7 @@ Form
 		{
 			CheckBox
 			{
-				enabled: approachWeigths.currentValue == "PLS-PM"
+				enabled: approachWeigths.currentValue == "PLS-PM" && approachInner.currentValue != "path"
 				name: "structuralModelIgnored"
 				label: qsTr("Ignore structural model")
 			}
@@ -142,6 +142,7 @@ Form
 				enabled: approachWeigths.currentValue == "PLS-PM"
 				name: "innerWeightingScheme"
 				label: qsTr("Inner weighting scheme")
+				id: approachInner
 				values: [
 					{ value: "path", 		label: qsTr("Path")			},
 					{ value: "centroid", 	label: qsTr("Centroid")		},
@@ -214,7 +215,7 @@ Form
 
 	Section
 	{
-		title: "Prediction"
+		title: qsTr("Prediction")
 
 		Group
 		{

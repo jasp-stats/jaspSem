@@ -36,7 +36,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   .plsSemRsquared(modelContainer, dataset, options, ready)
   .plsSemPrediction(modelContainer, options, ready)
   .plsSemAdditionalFits(modelContainer, dataset, options, ready)
-  .plsSemMardiasCoefficient(modelContainer, dataset, options, ready)
+  .semMardiasCoefficient(modelContainer, dataset, options, ready)
   .plsSemReliabilities(modelContainer, dataset, options, ready)
   .plsSemCor(modelContainer, options, ready)
 }
@@ -83,7 +83,7 @@ PLSSEM <- function(jaspResults, dataset, options, ...) {
   if (ncol(dataset) > 0) {
     if (length(options[["models"]]) < 1) return(FALSE)
     usedvars <- unique(unlist(lapply(options[["models"]], function(x) {
-      .plsSemGetUsedVars(x[["syntax"]], colnames(dataset))
+      .semGetUsedVars(x[["syntax"]], colnames(dataset))
     })))
     .hasErrors(dataset[,usedvars],
                type = c('variance', 'infinity'), message='default', exitAnalysisIfErrors = TRUE)
@@ -145,16 +145,6 @@ checkCSemModel <- function(model, availableVars) {
   return("")
 }
 
-.plsSemGetUsedVars <- function(syntax, availablevars) {
-  vv <- availablevars
-  findpattern <- paste0("(?<=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|^)\\Q",
-                        vv,
-                        "\\E(?=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|$)")
-  return(vv[vapply(findpattern,
-                   function(p) stringr::str_detect(syntax, p),
-                   FUN.VALUE = TRUE,
-                   USE.NAMES = FALSE)])
-}
 
 .plsSemModelContainer <- function(jaspResults) {
   if (!is.null(jaspResults[["modelContainer"]])) {
@@ -314,7 +304,7 @@ checkCSemModel <- function(model, availableVars) {
 
 .plsSemTranslateModel <- function(syntax, dataset) {
   #' translate model syntax to jasp column names syntax
-  usedvars <- .plsSemGetUsedVars(syntax, colnames(dataset))
+  usedvars <- .semGetUsedVars(syntax, colnames(dataset))
 
   if (length(usedvars) == 0) {
     return(syntax)
@@ -1032,9 +1022,9 @@ checkCSemModel <- function(model, availableVars) {
       if (isTryError(prediction)) {
         err <- .extractErrorMessage(prediction)
         if(grepl("attempt to set 'colnames'", err))
-          err <- "There are not enough observations for each k-fold, try setting 'cross-validation k-folds' to a lower number"
+          err <- gettext("There are not enough observations for each k-fold, try setting 'cross-validation k-folds' to a lower number")
         if(grepl("the condition has length > 1", err))
-          err <- "Are all indicator variables set to 'scale'?"
+          err <- gettext("Are all indicator variables set to 'scale'?")
         errmsg <- gettextf("Prediction failed Message: %1$s", err)
         predictcont$setError(errmsg)
         return()
@@ -1180,7 +1170,7 @@ checkCSemModel <- function(model, availableVars) {
     if(options[["group"]] == "")
       fitin$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
     else {
-      for (j in names(mfm$mfm["CFI",])) {
+      for (j in colnames(mfm$mfm)) {
         fitin$addColumnInfo(name = paste0("value_", j), title = gettext(j), overtitle = options[["models"]][[1]][["name"]],
                             type = "number")
       }
@@ -1192,7 +1182,7 @@ checkCSemModel <- function(model, availableVars) {
       }
     } else {
       for (i in seq_along(options[["models"]])) {
-        for (j in names(mfm[[i]]$mfm["CFI",])) {
+        for (j in colnames(mfm[[i]]$mfm)) {
           fitin$addColumnInfo(name = paste0("value_",i,"_", j), title = gettext(j), overtitle = options[["models"]][[i]][["name"]],
                               type = "number")
         }
@@ -1238,8 +1228,8 @@ checkCSemModel <- function(model, availableVars) {
                                mfm$mfm$GoF, mfm$mfm$DG, mfm$mfm$DL, mfm$mfm$DML)
 
     } else {
-      for (j in names(mfm["CFI",])) {
-        fitin[[paste0("value_", j)]] <- list(mfm$mfm["CFI",j], mfm$mfm["GFI", j], mfm$mfm["CN", j], mfm$mfm["IFI", j],
+      for (j in colnames(mfm$mfm)) {
+        fitin[[paste0("value_", j)]] <- list(mfm$mfm["CFI", j], mfm$mfm["GFI", j], mfm$mfm["CN", j], mfm$mfm["IFI", j],
                                              mfm$mfm["NNFI", j], mfm$mfm["NFI", j], mfm$mfm["RMSEA", j], mfm$mfm["RMS_theta", j],
                                              mfm$mfm["SRMR", j], mfm$mfm["GoF", j], mfm$mfm["DG", j], mfm$mfm["DL", j],
                                              mfm$mfm["DML", j])
@@ -1259,7 +1249,7 @@ checkCSemModel <- function(model, availableVars) {
 
     } else {
       for (i in seq_along(options[["models"]])) {
-        for (j in names(mfm[[i]]$mfm["CFI",])) {
+        for (j in colnames(mfm[[i]]$mfm)) {
           fitin[[paste0("value_",i,"_", j)]] <- list(mfm[[i]]$mfm["CFI",j], mfm[[i]]$mfm["GFI", j], mfm[[i]]$mfm["CN", j],
                                                      mfm[[i]]$mfm["IFI", j], mfm[[i]]$mfm["NNFI", j], mfm[[i]]$mfm["NFI", j],
                                                      mfm[[i]]$mfm["RMSEA", j], mfm[[i]]$mfm["RMS_theta", j], mfm[[i]]$mfm["SRMR", j],
@@ -1415,66 +1405,6 @@ checkCSemModel <- function(model, availableVars) {
       for (i in seq_along(adjR2li)) tabr2[[paste0("adjustedRsq_", i)]] <- adjR2df[[i + 2]]
     }
   }
-}
-
-# Mardias Coefficients table
-.plsSemMardiasCoefficient <- function(modelContainer, dataset, options, ready) {
-  if (!options[["mardiasCoefficient"]] || !is.null(modelContainer[["semMardiasTable"]])) return()
-
-  # create mardias coefficients table
-  mardiatab <- createJaspTable(title = gettext("Mardia's coefficients"))
-  mardiatab$position <- .2
-
-  mardiatab$addColumnInfo(name = "Type",        title = "",                      type = "string")
-  mardiatab$addColumnInfo(name = "Coefficient", title = gettext("Coefficient"),  type = "number")
-  mardiatab$addColumnInfo(name = "z",           title = gettext("z"),            type = "number")
-  mardiatab$addColumnInfo(name = "Chisq",       title = gettext("\u03C7\u00B2"), type = "number")
-  mardiatab$addColumnInfo(name = "DF",          title = gettext("df"),           type = "integer")
-  mardiatab$addColumnInfo(name = "pvalue",      title = gettext("p"),            type = "pvalue")
-
-  mardiatab$dependOn(c("mardiasCoefficient", "models"))
-  modelContainer[["mardiasTable"]] <- mardiatab
-
-  if (!ready || modelContainer$getError()) return()
-
-  # fill mardias coefficients table
-  if (options[["group"]] == "") {
-    varNames <- unique(unlist(lapply(modelContainer[["results"]][["object"]], function(x) colnames(x$Information$Model$measurement))))
-  } else {
-    varNames <- unique(unlist(lapply(modelContainer[["results"]][["object"]], function(x) lapply(x, function(y) colnames(y$Information$Model$measurement)))))
-  }
-
-  if (length(options[["models"]]) > 1)
-    mardiatab$addFootnote(
-      gettext("Multivariate skewness and kurtosis calculated for observed variables from all models.")
-    )
-
-
-  if (!all(sapply(dataset[, varNames, drop = FALSE], is.numeric))) {
-    mardiatab$setError(gettext("Not all used variables are numeric. Mardia's coefficients not available."))
-    return()
-  }
-
-  mardiaSkew <- unname(semTools:::mardiaSkew(dataset[, varNames]))
-  mardiaKurtosis <- unname(semTools:::mardiaKurtosis(dataset[, varNames]))
-  mardiatab$addRows(
-    data.frame(Type        = gettext("Skewness"),
-               Coefficient = mardiaSkew[1],
-               z           = NA,
-               Chisq       = mardiaSkew[2],
-               DF          = mardiaSkew[3],
-               pvalue      = mardiaSkew[4])
-  )
-  mardiatab$addRows(
-    data.frame(Type        = gettext("Kurtosis"),
-               Coefficient = mardiaKurtosis[1],
-               z           = mardiaKurtosis[2],
-               Chisq       = NA,
-               DF          = NA,
-               pvalue      = mardiaKurtosis[3])
-  )
-
-  return()
 }
 
 .plsSemReliabilities <- function(modelContainer, dataset, options, ready) {
@@ -1678,28 +1608,28 @@ checkCSemModel <- function(model, availableVars) {
     # without groups, these are tables
 
     if (options[["observedIndicatorCorrelation"]]) {
-      oictab <- createJaspTable("Observed indicator correlation matrix")
+      oictab <- createJaspTable(gettext("Observed indicator correlation matrix"))
       oictab$dependOn("observedIndicatorCorrelation")
       oictab$position <- 1
       corcont[["observedInd"]] <- oictab
     }
 
     if (options[["impliedIndicatorCorrelation"]]) {
-      iictab <- createJaspTable("Implied indicator correlation matrix")
+      iictab <- createJaspTable(gettext("Implied indicator correlation matrix"))
       iictab$dependOn("impliedIndicatorCorrelation")
       iictab$position <- 2
       corcont[["impliedInd"]] <- iictab
     }
 
     if (options[["observedConstructCorrelation"]]) {
-      occtab <- createJaspTable("Observed construct correlation matrix")
+      occtab <- createJaspTable(gettext("Observed construct correlation matrix"))
       occtab$dependOn("observedConstructCorrelation")
       occtab$position <- 3
       corcont[["observedCon"]] <- occtab
     }
 
     if (options[["impliedConstructCorrelation"]]) {
-      icctab <- createJaspTable("Implied construct correlation matrix")
+      icctab <- createJaspTable(gettext("Implied construct correlation matrix"))
       icctab$dependOn("impliedConstructCorrelation")
       icctab$position <- 4
       corcont[["impliedCon"]] <- icctab
@@ -1710,28 +1640,28 @@ checkCSemModel <- function(model, availableVars) {
     # with multiple groups these become containers
 
     if (options[["observedIndicatorCorrelation"]]) {
-      oiccont <- createJaspContainer("Observed indicator correlation matrix", initCollapsed = TRUE)
+      oiccont <- createJaspContainer(gettext("Observed indicator correlation matrix", initCollapsed = TRUE))
       oiccont$dependOn("observedIndicatorCorrelation")
       oiccont$position <- 1
       corcont[["observedInd"]] <- oiccont
     }
 
     if (options[["impliedIndicatorCorrelation"]]) {
-      iiccont <- createJaspContainer("Implied indicator correlation matrix", initCollapsed = TRUE)
+      iiccont <- createJaspContainer(gettext("Implied indicator correlation matrix", initCollapsed = TRUE))
       iiccont$dependOn("impliedIndicatorCorrelation")
       iiccont$position <- 2
       corcont[["impliedInd"]] <- iiccont
     }
 
     if (options[["observedConstructCorrelation"]]) {
-      occcont <- createJaspContainer("Observed construct correlation matrix", initCollapsed = TRUE)
+      occcont <- createJaspContainer(gettext("Observed construct correlation matrix", initCollapsed = TRUE))
       occcont$dependOn("observedConstructCorrelation")
       occcont$position <- 3
       corcont[["observedCon"]] <- occcont
     }
 
     if (options[["impliedConstructCorrelation"]]) {
-      icccont <- createJaspContainer("Implied construct correlation matrix", initCollapsed = TRUE)
+      icccont <- createJaspContainer(gettext("Implied construct correlation matrix", initCollapsed = TRUE))
       icccont$dependOn("impliedConstructCorrelation")
       icccont$position <- 4
       corcont[["impliedCon"]] <- icccont
@@ -1753,10 +1683,14 @@ checkCSemModel <- function(model, availableVars) {
       oic[upper.tri(oic)] <- NA
 
       for (i in 1:ncol(oic)) {
+        if(i == 1) {
+          oictab$addColumnInfo(name = "rownames", title = "", type = "string")
+          oictab[["rownames"]] <- rownames(oic)
+        }
         nm <- colnames(oic)[i]
         oictab$addColumnInfo(nm, title = nm, type = "pvalue")
+        oictab[[nm]] <- oic[,i]
       }
-      oictab$addRows(oic, rowNames = colnames(oic))
     }
 
     if (options[["impliedIndicatorCorrelation"]]) {
@@ -1765,10 +1699,14 @@ checkCSemModel <- function(model, availableVars) {
       iic[upper.tri(iic)] <- NA
 
       for (i in 1:ncol(iic)) {
+        if(i == 1) {
+          iictab$addColumnInfo(name = "rownames", title = "", type = "string")
+          iictab[["rownames"]] <- rownames(iic)
+        }
         nm <- colnames(iic)[i]
         iictab$addColumnInfo(nm, title = nm, type = "pvalue")
+        iictab[[nm]] <- iic[,i]
       }
-      iictab$addRows(iic, rowNames = colnames(iic))
     }
 
     if (options[["observedConstructCorrelation"]]) {
@@ -1777,10 +1715,14 @@ checkCSemModel <- function(model, availableVars) {
       occ[upper.tri(occ)] <- NA
 
       for (i in 1:ncol(occ)) {
+        if(i == 1) {
+          occtab$addColumnInfo(name = "rownames", title = "", type = "string")
+          occtab[["rownames"]] <- rownames(occ)
+        }
         nm <- colnames(occ)[i]
         occtab$addColumnInfo(nm, title = nm, type = "pvalue")
+        occtab[[nm]] <- occ[,i]
       }
-      occtab$addRows(occ, rowNames = colnames(occ))
     }
 
     if (options[["impliedConstructCorrelation"]]) {
@@ -1789,10 +1731,14 @@ checkCSemModel <- function(model, availableVars) {
       icc[upper.tri(icc)] <- NA
 
       for (i in 1:ncol(icc)) {
+        if(i == 1) {
+          icctab$addColumnInfo(name = "rownames", title = "", type = "string")
+          icctab[["rownames"]] <- rownames(icc)
+        }
         nm <- colnames(icc)[i]
         icctab$addColumnInfo(nm, title = nm, type = "pvalue")
+        icctab[[nm]] <- icc[,i]
       }
-      icctab$addRows(icc, rowNames = colnames(icc))
     }
 
   } else {
@@ -1811,10 +1757,14 @@ checkCSemModel <- function(model, availableVars) {
 
 
         for (j in 1:ncol(oic)) {
+          if(j == 1) {
+            oiccont[[groupNames[i]]]$addColumnInfo(name = "rownames", title = "", type = "string")
+            oiccont[[groupNames[i]]][["rownames"]] <- rownames(oic)
+          }
           nm <- colnames(oic)[j]
           oiccont[[groupNames[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
+          oiccont[[groupNames[i]]][[nm]] <- oic[,j]
         }
-        oiccont[[groupNames[i]]]$addRows(oic, rowNames = colnames(oic))
       }
     }
 
@@ -1832,10 +1782,14 @@ checkCSemModel <- function(model, availableVars) {
 
 
         for (j in 1:ncol(iic)) {
+          if(j == 1) {
+            iiccont[[groupNames[i]]]$addColumnInfo(name = "rownames", title = "", type = "string")
+            iiccont[[groupNames[i]]][["rownames"]] <- rownames(iic)
+          }
           nm <- colnames(iic)[j]
           iiccont[[groupNames[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
+          iiccont[[groupNames[i]]][[nm]] <- iic[,j]
         }
-        iiccont[[groupNames[i]]]$addRows(iic, rowNames = colnames(iic))
       }
     }
 
@@ -1851,10 +1805,14 @@ checkCSemModel <- function(model, availableVars) {
 
 
         for (j in 1:ncol(occ)) {
+          if(j == 1) {
+            occcont[[groupNames[i]]]$addColumnInfo(name = "rownames", title = "", type = "string")
+            occcont[[groupNames[i]]][["rownames"]] <- rownames(occ)
+          }
           nm <- colnames(occ)[j]
           occcont[[groupNames[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
+          occcont[[groupNames[i]]][[nm]] <- occ[,j]
         }
-        occcont[[groupNames[i]]]$addRows(occ, rowNames = colnames(occ))
       }
     }
 
@@ -1872,10 +1830,14 @@ checkCSemModel <- function(model, availableVars) {
 
 
         for (j in 1:ncol(icc)) {
+          if(j == 1) {
+            icccont[[groupNames[i]]]$addColumnInfo(name = "rownames", title = "", type = "string")
+            icccont[[groupNames[i]]][["rownames"]] <- rownames(icc)
+          }
           nm <- colnames(icc)[j]
           icccont[[groupNames[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
+          icccont[[groupNames[i]]][[nm]] <- icc[,j]
         }
-        icccont[[groupNames[i]]]$addRows(icc, rowNames = colnames(icc))
       }
     }
   }
