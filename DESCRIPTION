@@ -15,6 +15,7 @@ Imports:
   jaspBase,
   jaspGraphs,
   lavaan,
+  cSEM,
   reshape2,
   semPlot,
   semTools,

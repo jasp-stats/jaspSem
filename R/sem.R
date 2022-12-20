@@ -1302,7 +1302,7 @@ checkLavaanModel <- function(model, availableVars) {
   mardiatab$addColumnInfo(name = "Type",        title = "",                      type = "string")
   mardiatab$addColumnInfo(name = "Coefficient", title = gettext("Coefficient"),  type = "number")
   mardiatab$addColumnInfo(name = "z",           title = gettext("z"),            type = "number")
-  mardiatab$addColumnInfo(name = "Chisq",       title = gettext("&#967;&sup2;"), type = "number")
+  mardiatab$addColumnInfo(name = "Chisq",       title = gettext("\u03C7\u00B2"), type = "number")
   mardiatab$addColumnInfo(name = "DF",          title = gettext("df"),           type = "integer")
   mardiatab$addColumnInfo(name = "pvalue",      title = gettext("p"),            type = "pvalue")
 
@@ -1311,7 +1311,9 @@ checkLavaanModel <- function(model, availableVars) {
 
   if (!ready || modelContainer$getError()) return()
 
-  varNames <- unique(unlist(lapply(modelContainer[["results"]][["object"]], lavaan::lavaanNames, type = "ov")))
+  varNames <- unique(unlist(lapply(options[["models"]], function(x) {
+    .semGetUsedVars(x[["syntax"]], colnames(dataset))
+  })))
   if (length(options[["models"]]) > 1)
     mardiatab$addFootnote(
       gettext("Multivariate skewness and kurtosis calculated for observed variables from all models.")

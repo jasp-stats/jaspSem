@@ -1,4 +1,5 @@
 export(SEM)
+export(PLSSEM)
 export(MediationAnalysis)
 export(MIMIC)
 export(LatentGrowthCurve)
