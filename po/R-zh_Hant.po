@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
 "POT-Creation-Date: 2022-12-03 02:49\n"
-"PO-Revision-Date: 2022-11-25 07:48+0000\n"
+"PO-Revision-Date: 2022-12-20 20:17+0000\n"
 "Last-Translator: Changya Hu <changyahu@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
 "jasp/jaspsem-r/zh_Hant/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 4.15.1-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "此模型無法估計: 迭代結果無法聚合"
@@ -55,8 +55,9 @@ msgstr "z 值"
 msgid "p"
 msgstr "p"
 
+#, fuzzy
 msgid "Lower"
-msgstr "下限"
+msgstr "下界"
 
 msgid "95%% Confidence Interval"
 msgstr "95%% 信賴區間"
@@ -192,7 +193,7 @@ msgid "McDonald fit index (MFI)"
 msgstr "McDonald 適配指標 (IFI)"
 
 msgid "Expected cross validation index (ECVI)"
-msgstr "Expected cross validation index  (EVCI)"
+msgstr "Expected cross validation index (EVCI)"
 
 msgid "R-Squared"
 msgstr "R平方"
@@ -256,8 +257,9 @@ msgstr "直接效果"
 msgid "%s%% Confidence Interval"
 msgstr "%s%% 信賴區間"
 
+#, fuzzy
 msgid "Upper"
-msgstr "上限"
+msgstr "上界"
 
 msgid "Indirect effects"
 msgstr "間接效果"
@@ -353,8 +355,8 @@ msgid "Model plot not available with ordinal variables"
 msgstr "使用次序變數分析時，無法提供模型圖"
 
 msgid "FIML missing data handling only available with ML-type estimators"
-msgstr ""
-"只有在使用最大概似法 (ML)類型的估計數時，才提供以完全訊息最大概似法處理遺漏值"
+msgstr "只有使用最大概似法 "
+"(ML)類的估計法時，才能使用完全訊息最大概似法的方式來處理遺漏值"
 
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "分組變數在%s組中的觀察值小於3"
@@ -409,7 +411,6 @@ msgstr "AIC"
 msgid "BIC"
 msgstr "BIC"
 
-#, fuzzy
 msgid "n"
 msgstr "樣本數"
 
