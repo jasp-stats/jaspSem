@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
 "POT-Creation-Date: 2022-12-03 02:49\n"
-"PO-Revision-Date: 2022-12-20 20:17+0000\n"
+"PO-Revision-Date: 2022-12-24 02:43+0000\n"
 "Last-Translator: Changya Hu <changyahu@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
 "jasp/jaspsem-r/zh_Hant/>\n"
@@ -44,7 +44,7 @@ msgid "Parameter"
 msgstr "參數"
 
 msgid "Estimate"
-msgstr "估計數"
+msgstr "估計"
 
 msgid "Std. Error"
 msgstr "標準誤"
@@ -53,7 +53,7 @@ msgid "z-value"
 msgstr "z 值"
 
 msgid "p"
-msgstr "p"
+msgstr "p值"
 
 #, fuzzy
 msgid "Lower"
