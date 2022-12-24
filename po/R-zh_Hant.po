@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2022-12-03 02:49\n"
+"POT-Creation-Date: 2022-12-24 02:45\n"
 "PO-Revision-Date: 2022-12-24 02:43+0000\n"
 "Last-Translator: Changya Hu <changyahu@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
@@ -354,12 +354,229 @@ msgstr "潛在"
 msgid "Model plot not available with ordinal variables"
 msgstr "使用次序變數分析時，無法提供模型圖"
 
-msgid "FIML missing data handling only available with ML-type estimators"
-msgstr "只有使用最大概似法 "
-"(ML)類的估計法時，才能使用完全訊息最大概似法的方式來處理遺漏值"
-
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "分組變數在%s組中的觀察值小於3"
+
+msgid "Estimation failed Message: %s"
+msgstr "估計失敗。訊息:%s"
+
+msgid "Estimation failed! Message: Model %s did not converge!"
+msgstr "估計失敗。訊息:模型%s無法收斂!"
+
+msgid "Model fit"
+msgstr "模型適配度"
+
+msgid "Group"
+msgstr "組別"
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "n"
+msgstr "樣本數"
+
+msgid "χ²"
+msgstr ""
+
+msgid "Baseline test"
+msgstr "基底模式檢定"
+
+msgid "Δχ²"
+msgstr ""
+
+msgid "Difference test"
+msgstr "差異檢定"
+
+#, fuzzy
+msgid "Δdf"
+msgstr "自由度"
+
+msgid "WARNING! model %1$s: %2$s"
+msgstr ""
+
+msgid "WARNING! model %1$s, group %2$s: %3$s"
+msgstr ""
+
+msgid "Weigths"
+msgstr ""
+
+msgid "Factor Loadings"
+msgstr "因素負荷量"
+
+#, fuzzy
+msgid "Regression Coefficients"
+msgstr "迴歸係數"
+
+msgid "Outcome"
+msgstr "結果"
+
+msgid "f²"
+msgstr ""
+
+#, fuzzy
+msgid "Total effects"
+msgstr "所有間接效果"
+
+msgid "Endogenous Indicator Prediction"
+msgstr ""
+
+msgid ""
+"The target model uses the same weighting approach as the benchmark model, "
+"please choose another benchmark."
+msgstr ""
+
+msgid ""
+"For the predicted indicator scores table(s), please select a single "
+"benchmark or 'none'."
+msgstr ""
+
+#, fuzzy
+msgid "Prediction Metrics"
+msgstr "預測變項"
+
+msgid "Target MAE"
+msgstr ""
+
+#, fuzzy
+msgid "Linear model MAE"
+msgstr "線性斜率"
+
+msgid "PLS-PM MAE"
+msgstr ""
+
+msgid "GSCA MAE"
+msgstr ""
+
+msgid "PCA MAE"
+msgstr ""
+
+msgid "MAXVAR MAE"
+msgstr ""
+
+msgid "Target RMSE"
+msgstr ""
+
+#, fuzzy
+msgid "Linear model RMSE"
+msgstr "線性斜率"
+
+msgid "PLS-PM RMSE"
+msgstr ""
+
+msgid "GSCA RMSE"
+msgstr ""
+
+msgid "PCA RMSE"
+msgstr ""
+
+msgid "MAXVAR RMSE"
+msgstr ""
+
+msgid "Target Q2 prediction"
+msgstr ""
+
+msgid ""
+"There are not enough observations for each k-fold, try setting 'cross-"
+"validation k-folds' to a lower number"
+msgstr ""
+
+msgid "Are all indicator variables set to 'scale'?"
+msgstr ""
+
+#, fuzzy
+msgid "Prediction failed Message: %1$s"
+msgstr "估計失敗。訊息:%s"
+
+#, fuzzy
+msgid "Indicator Scores"
+msgstr "指標係數"
+
+msgid "Actual scores"
+msgstr ""
+
+#, fuzzy
+msgid "Predicted scores"
+msgstr "預測變項"
+
+msgid "Target residuals"
+msgstr ""
+
+msgid "benchmark"
+msgstr ""
+
+msgid "lm"
+msgstr ""
+
+#, fuzzy
+msgid "Linear model"
+msgstr "線性斜率"
+
+msgid "residuals"
+msgstr ""
+
+#, fuzzy
+msgid "Additional Fit Measures"
+msgstr "其他適配指標"
+
+#, fuzzy
+msgid "Hoelter's critical N (CN)"
+msgstr "Hoelter 關鍵N (%s = .05)"
+
+#, fuzzy
+msgid "Root mean square residual covariance (RMS theta)"
+msgstr "標準化均方根殘差值"
+
+#, fuzzy
+msgid "Goodness of Fit (GoF)"
+msgstr "適合度適配指標 (GFI)"
+
+msgid "Geodesic distance"
+msgstr ""
+
+msgid "Squared Euclidean distance"
+msgstr ""
+
+msgid "Maximum likelihood-based dinstance"
+msgstr ""
+
+#, fuzzy
+msgid "Reliability Measures"
+msgstr "其他適配指標"
+
+msgid "Cronbach's %s"
+msgstr ""
+
+msgid "J%1$sreskog's %2$s"
+msgstr ""
+
+msgid "Dijkstra-Henseler's %s"
+msgstr ""
+
+#, fuzzy
+msgid "Correlation tables"
+msgstr "共變數表"
+
+msgid "Observed indicator correlation matrix"
+msgstr ""
+
+#, fuzzy
+msgid "Implied indicator correlation matrix"
+msgstr "模式隱含之共變數矩陣"
+
+msgid "Observed construct correlation matrix"
+msgstr ""
+
+#, fuzzy
+msgid "Implied construct correlation matrix"
+msgstr "模式隱含之共變數矩陣"
+
+msgid "FIML missing data handling only available with ML-type estimators"
+msgstr ""
+"只有使用最大概似法 (ML)類的估計法時，才能使用完全訊息最大概似法的方式來處理遺"
+"漏值"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
@@ -393,35 +610,11 @@ msgstr ""
 "                        請在「估計選項」選單中的\n"
 "                        「遺漏值處理」選單中選擇其他方式。"
 
-msgid "Estimation failed Message: %s"
-msgstr "估計失敗。訊息:%s"
-
-msgid "Estimation failed! Message: Model %s did not converge!"
-msgstr "估計失敗。訊息:模型%s無法收斂!"
-
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr "估計失敗!訊息:模型%s的自由度為負值"
 
-msgid "Model fit"
-msgstr "模型適配度"
-
-msgid "AIC"
-msgstr "AIC"
-
-msgid "BIC"
-msgstr "BIC"
-
-msgid "n"
-msgstr "樣本數"
-
-msgid "Baseline test"
-msgstr "基底模式檢定"
-
 msgid "&#916;&#967;&sup2;"
 msgstr "&#916;&#967;&sup2;"
-
-msgid "Difference test"
-msgstr "差異檢定"
 
 msgid "&#916;df"
 msgstr "&#916;自由度"
@@ -460,17 +653,8 @@ msgid ""
 msgstr ""
 "只有在使用最大概似法 (ML)類的估計法時，才提供AIC, BIC與其他訊息準則指標"
 
-msgid "Factor Loadings"
-msgstr "因素負荷量"
-
-msgid "Group"
-msgstr "組別"
-
 msgid "Regression coefficients"
 msgstr "迴歸係數"
-
-msgid "Outcome"
-msgstr "結果"
 
 msgid "Factor variances"
 msgstr "因素變異數"

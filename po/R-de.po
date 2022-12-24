@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2022-12-03 02:49\n"
+"POT-Creation-Date: 2022-12-24 02:45\n"
 "PO-Revision-Date: 2022-12-11 12:47+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
@@ -363,11 +363,227 @@ msgstr "Latent"
 msgid "Model plot not available with ordinal variables"
 msgstr "Modelldiagramm nicht verfügbar mit Ordinalvariablen"
 
-msgid "FIML missing data handling only available with ML-type estimators"
-msgstr "FIML-Behandlung fehlender Daten nur mit ML-Schätzern verfügbar"
-
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "Gruppierungsvariable hat weniger als 3 Beobachtungen in Gruppe %s"
+
+msgid "Estimation failed Message: %s"
+msgstr "Meldung zu fehlgeschlagener Schätzung: %s"
+
+msgid "Estimation failed! Message: Model %s did not converge!"
+msgstr "Schätzung fehlgeschlagen! Meldung: Modell %s ist nicht konvergiert!"
+
+msgid "Model fit"
+msgstr "Modell-Anpassung"
+
+msgid "Group"
+msgstr "Gruppe"
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "n"
+msgstr "n"
+
+msgid "χ²"
+msgstr ""
+
+msgid "Baseline test"
+msgstr "Baseline-Test"
+
+msgid "Δχ²"
+msgstr ""
+
+msgid "Difference test"
+msgstr "Differenz-Test"
+
+#, fuzzy
+msgid "Δdf"
+msgstr "df"
+
+msgid "WARNING! model %1$s: %2$s"
+msgstr ""
+
+msgid "WARNING! model %1$s, group %2$s: %3$s"
+msgstr ""
+
+msgid "Weigths"
+msgstr ""
+
+msgid "Factor Loadings"
+msgstr "Faktorladungen"
+
+#, fuzzy
+msgid "Regression Coefficients"
+msgstr "Regressionskoeffizienten"
+
+msgid "Outcome"
+msgstr "Ergebnis"
+
+msgid "f²"
+msgstr ""
+
+#, fuzzy
+msgid "Total effects"
+msgstr "Gesamte indirekte Effekte"
+
+msgid "Endogenous Indicator Prediction"
+msgstr ""
+
+msgid ""
+"The target model uses the same weighting approach as the benchmark model, "
+"please choose another benchmark."
+msgstr ""
+
+msgid ""
+"For the predicted indicator scores table(s), please select a single "
+"benchmark or 'none'."
+msgstr ""
+
+#, fuzzy
+msgid "Prediction Metrics"
+msgstr "Prädiktor"
+
+msgid "Target MAE"
+msgstr ""
+
+#, fuzzy
+msgid "Linear model MAE"
+msgstr "Lineare Steigung"
+
+msgid "PLS-PM MAE"
+msgstr ""
+
+msgid "GSCA MAE"
+msgstr ""
+
+msgid "PCA MAE"
+msgstr ""
+
+msgid "MAXVAR MAE"
+msgstr ""
+
+msgid "Target RMSE"
+msgstr ""
+
+#, fuzzy
+msgid "Linear model RMSE"
+msgstr "Lineare Steigung"
+
+msgid "PLS-PM RMSE"
+msgstr ""
+
+msgid "GSCA RMSE"
+msgstr ""
+
+msgid "PCA RMSE"
+msgstr ""
+
+msgid "MAXVAR RMSE"
+msgstr ""
+
+msgid "Target Q2 prediction"
+msgstr ""
+
+msgid ""
+"There are not enough observations for each k-fold, try setting 'cross-"
+"validation k-folds' to a lower number"
+msgstr ""
+
+msgid "Are all indicator variables set to 'scale'?"
+msgstr ""
+
+#, fuzzy
+msgid "Prediction failed Message: %1$s"
+msgstr "Meldung zu fehlgeschlagener Schätzung: %s"
+
+#, fuzzy
+msgid "Indicator Scores"
+msgstr "Indikator-Koeffizienten"
+
+msgid "Actual scores"
+msgstr ""
+
+#, fuzzy
+msgid "Predicted scores"
+msgstr "Prädiktor"
+
+msgid "Target residuals"
+msgstr ""
+
+msgid "benchmark"
+msgstr ""
+
+msgid "lm"
+msgstr ""
+
+#, fuzzy
+msgid "Linear model"
+msgstr "Lineare Steigung"
+
+msgid "residuals"
+msgstr ""
+
+#, fuzzy
+msgid "Additional Fit Measures"
+msgstr "Weitere Anpassungsgütemaße"
+
+#, fuzzy
+msgid "Hoelter's critical N (CN)"
+msgstr "Hoelters kritisches N (%s = .05)"
+
+#, fuzzy
+msgid "Root mean square residual covariance (RMS theta)"
+msgstr "Root mean square error of approximation (RMSEA)"
+
+#, fuzzy
+msgid "Goodness of Fit (GoF)"
+msgstr "Goodness of fit index (GFI)"
+
+msgid "Geodesic distance"
+msgstr ""
+
+msgid "Squared Euclidean distance"
+msgstr ""
+
+msgid "Maximum likelihood-based dinstance"
+msgstr ""
+
+#, fuzzy
+msgid "Reliability Measures"
+msgstr "Weitere Anpassungsgütemaße"
+
+msgid "Cronbach's %s"
+msgstr ""
+
+msgid "J%1$sreskog's %2$s"
+msgstr ""
+
+msgid "Dijkstra-Henseler's %s"
+msgstr ""
+
+#, fuzzy
+msgid "Correlation tables"
+msgstr "Kovarianztabellen"
+
+msgid "Observed indicator correlation matrix"
+msgstr ""
+
+#, fuzzy
+msgid "Implied indicator correlation matrix"
+msgstr "Implizierte Kovarianzmatrix"
+
+msgid "Observed construct correlation matrix"
+msgstr ""
+
+#, fuzzy
+msgid "Implied construct correlation matrix"
+msgstr "Implizierte Kovarianzmatrix"
+
+msgid "FIML missing data handling only available with ML-type estimators"
+msgstr "FIML-Behandlung fehlender Daten nur mit ML-Schätzern verfügbar"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
@@ -413,36 +629,12 @@ msgstr ""
 "                        unter Registerkarte 'Schätzoptionen' eine andere "
 "Methode aus."
 
-msgid "Estimation failed Message: %s"
-msgstr "Meldung zu fehlgeschlagener Schätzung: %s"
-
-msgid "Estimation failed! Message: Model %s did not converge!"
-msgstr "Schätzung fehlgeschlagen! Meldung: Modell %s ist nicht konvergiert!"
-
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr ""
 "Schätzung fehlgeschlagen! Meldung: Modell %s hat negative Freiheitsgrade."
 
-msgid "Model fit"
-msgstr "Modell-Anpassung"
-
-msgid "AIC"
-msgstr "AIC"
-
-msgid "BIC"
-msgstr "BIC"
-
-msgid "n"
-msgstr "n"
-
-msgid "Baseline test"
-msgstr "Baseline-Test"
-
 msgid "&#916;&#967;&sup2;"
 msgstr "&#916;&#967;&sup2;"
-
-msgid "Difference test"
-msgstr "Differenz-Test"
 
 msgid "&#916;df"
 msgstr "&#916;df"
@@ -483,17 +675,8 @@ msgstr ""
 "Das AIC, BIC und weitere Informationskriterien sind nur bei ML-Schätzern "
 "verfügbar"
 
-msgid "Factor Loadings"
-msgstr "Faktorladungen"
-
-msgid "Group"
-msgstr "Gruppe"
-
 msgid "Regression coefficients"
 msgstr "Regressionskoeffizienten"
-
-msgid "Outcome"
-msgstr "Ergebnis"
 
 msgid "Factor variances"
 msgstr "Faktorvarianzen"

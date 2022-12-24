@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2022-12-03 02:49\n"
+"POT-Creation-Date: 2022-12-24 02:45\n"
 "PO-Revision-Date: 2022-09-27 18:23+0000\n"
 "Last-Translator: Alexander Ly <a.ly@uva.nl>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/"
@@ -364,13 +364,229 @@ msgstr "Latent"
 msgid "Model plot not available with ordinal variables"
 msgstr "Modelplot niet beschikbaar met ordinale variabelen"
 
+msgid "Grouping variable has fewer than 3 observations in group %s"
+msgstr "Groeperingsvariabele heeft minder dan 3 waarnemingen in groep %s"
+
+msgid "Estimation failed Message: %s"
+msgstr "Schatting mislukt Melding: %s"
+
+msgid "Estimation failed! Message: Model %s did not converge!"
+msgstr "Schatting mislukt! Bericht: Model %s convergeert niet!"
+
+msgid "Model fit"
+msgstr "Model passing"
+
+msgid "Group"
+msgstr "Groep"
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "n"
+msgstr "n"
+
+msgid "χ²"
+msgstr ""
+
+msgid "Baseline test"
+msgstr "Baseline test"
+
+msgid "Δχ²"
+msgstr ""
+
+msgid "Difference test"
+msgstr "Verschillen test"
+
+#, fuzzy
+msgid "Δdf"
+msgstr "vg"
+
+msgid "WARNING! model %1$s: %2$s"
+msgstr ""
+
+msgid "WARNING! model %1$s, group %2$s: %3$s"
+msgstr ""
+
+msgid "Weigths"
+msgstr ""
+
+msgid "Factor Loadings"
+msgstr "Factorladingen"
+
+#, fuzzy
+msgid "Regression Coefficients"
+msgstr "Regressie Coëfficiënten"
+
+msgid "Outcome"
+msgstr "Uitkomst"
+
+msgid "f²"
+msgstr ""
+
+#, fuzzy
+msgid "Total effects"
+msgstr "Totale indirecte effecten"
+
+msgid "Endogenous Indicator Prediction"
+msgstr ""
+
+msgid ""
+"The target model uses the same weighting approach as the benchmark model, "
+"please choose another benchmark."
+msgstr ""
+
+msgid ""
+"For the predicted indicator scores table(s), please select a single "
+"benchmark or 'none'."
+msgstr ""
+
+#, fuzzy
+msgid "Prediction Metrics"
+msgstr "Voorspeller"
+
+msgid "Target MAE"
+msgstr ""
+
+#, fuzzy
+msgid "Linear model MAE"
+msgstr "Lineaire helling"
+
+msgid "PLS-PM MAE"
+msgstr ""
+
+msgid "GSCA MAE"
+msgstr ""
+
+msgid "PCA MAE"
+msgstr ""
+
+msgid "MAXVAR MAE"
+msgstr ""
+
+msgid "Target RMSE"
+msgstr ""
+
+#, fuzzy
+msgid "Linear model RMSE"
+msgstr "Lineaire helling"
+
+msgid "PLS-PM RMSE"
+msgstr ""
+
+msgid "GSCA RMSE"
+msgstr ""
+
+msgid "PCA RMSE"
+msgstr ""
+
+msgid "MAXVAR RMSE"
+msgstr ""
+
+msgid "Target Q2 prediction"
+msgstr ""
+
+msgid ""
+"There are not enough observations for each k-fold, try setting 'cross-"
+"validation k-folds' to a lower number"
+msgstr ""
+
+msgid "Are all indicator variables set to 'scale'?"
+msgstr ""
+
+#, fuzzy
+msgid "Prediction failed Message: %1$s"
+msgstr "Schatting mislukt Melding: %s"
+
+#, fuzzy
+msgid "Indicator Scores"
+msgstr "Indicator coëfficiënten"
+
+msgid "Actual scores"
+msgstr ""
+
+#, fuzzy
+msgid "Predicted scores"
+msgstr "Voorspeller"
+
+msgid "Target residuals"
+msgstr ""
+
+msgid "benchmark"
+msgstr ""
+
+msgid "lm"
+msgstr ""
+
+#, fuzzy
+msgid "Linear model"
+msgstr "Lineaire helling"
+
+msgid "residuals"
+msgstr ""
+
+#, fuzzy
+msgid "Additional Fit Measures"
+msgstr "Extra fitmaten"
+
+#, fuzzy
+msgid "Hoelter's critical N (CN)"
+msgstr "Hoelter's kritische N (%s = .05)"
+
+#, fuzzy
+msgid "Root mean square residual covariance (RMS theta)"
+msgstr "Wortel van de gemiddelde fout kwadraat van benadering (RMSEA)"
+
+#, fuzzy
+msgid "Goodness of Fit (GoF)"
+msgstr "Pasmaat index (GFI)"
+
+msgid "Geodesic distance"
+msgstr ""
+
+msgid "Squared Euclidean distance"
+msgstr ""
+
+msgid "Maximum likelihood-based dinstance"
+msgstr ""
+
+#, fuzzy
+msgid "Reliability Measures"
+msgstr "Extra fitmaten"
+
+msgid "Cronbach's %s"
+msgstr ""
+
+msgid "J%1$sreskog's %2$s"
+msgstr ""
+
+msgid "Dijkstra-Henseler's %s"
+msgstr ""
+
+#, fuzzy
+msgid "Correlation tables"
+msgstr "Covariantie tabellen"
+
+msgid "Observed indicator correlation matrix"
+msgstr ""
+
+#, fuzzy
+msgid "Implied indicator correlation matrix"
+msgstr "Geïmpliceerde covariantie matrices"
+
+msgid "Observed construct correlation matrix"
+msgstr ""
+
+#, fuzzy
+msgid "Implied construct correlation matrix"
+msgstr "Geïmpliceerde covariantie matrices"
+
 msgid "FIML missing data handling only available with ML-type estimators"
 msgstr ""
 "FIML verwerking van ontbrekende gegevens alleen beschikbaar met ML-type "
 "schatters"
-
-msgid "Grouping variable has fewer than 3 observations in group %s"
-msgstr "Groeperingsvariabele heeft minder dan 3 waarnemingen in groep %s"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
@@ -414,35 +630,11 @@ msgstr ""
 "ontbrekende gegevens\".\n"
 "                        in het tabblad \"Schattingsopties\"."
 
-msgid "Estimation failed Message: %s"
-msgstr "Schatting mislukt Melding: %s"
-
-msgid "Estimation failed! Message: Model %s did not converge!"
-msgstr "Schatting mislukt! Bericht: Model %s convergeert niet!"
-
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr "Schatting mislukt! Bericht: Model %s heeft negatieve vrijheidsgraden."
 
-msgid "Model fit"
-msgstr "Model passing"
-
-msgid "AIC"
-msgstr "AIC"
-
-msgid "BIC"
-msgstr "BIC"
-
-msgid "n"
-msgstr "n"
-
-msgid "Baseline test"
-msgstr "Baseline test"
-
 msgid "&#916;&#967;&sup2;"
 msgstr "&#916;2&#967;3&sup2;"
-
-msgid "Difference test"
-msgstr "Verschillen test"
 
 msgid "&#916;df"
 msgstr "&#916;df"
@@ -485,17 +677,8 @@ msgstr ""
 "FIML verwerking van ontbrekende gegevens alleen beschikbaar met ML-type "
 "schatters"
 
-msgid "Factor Loadings"
-msgstr "Factorladingen"
-
-msgid "Group"
-msgstr "Groep"
-
 msgid "Regression coefficients"
 msgstr "Regressie Coëfficiënten"
-
-msgid "Outcome"
-msgstr "Uitkomst"
 
 msgid "Factor variances"
 msgstr "Factorvarianties"

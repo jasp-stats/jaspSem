@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-12-03 02:49\n"
+"POT-Creation-Date: 2022-12-24 02:45\n"
 "PO-Revision-Date: 2022-12-18 14:17+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -369,13 +369,230 @@ msgstr "Latente"
 msgid "Model plot not available with ordinal variables"
 msgstr "A gráfica do modelo non está dispoñible con variables ordinais"
 
+msgid "Grouping variable has fewer than 3 observations in group %s"
+msgstr "A variable de agrupamento ten menos de 3 observacións no grupo %s"
+
+msgid "Estimation failed Message: %s"
+msgstr "Mensaxe de fallo da estimación: %s"
+
+msgid "Estimation failed! Message: Model %s did not converge!"
+msgstr "Fallou a estimación! Mensaxe: O modelo %s non converxeu!"
+
+msgid "Model fit"
+msgstr "Axuste do modelo"
+
+msgid "Group"
+msgstr "Grupo"
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "n"
+msgstr "n"
+
+msgid "χ²"
+msgstr ""
+
+msgid "Baseline test"
+msgstr "Proba de referencia"
+
+msgid "Δχ²"
+msgstr ""
+
+msgid "Difference test"
+msgstr "Proba de diferenzas"
+
+#, fuzzy
+msgid "Δdf"
+msgstr "gl"
+
+msgid "WARNING! model %1$s: %2$s"
+msgstr ""
+
+msgid "WARNING! model %1$s, group %2$s: %3$s"
+msgstr ""
+
+msgid "Weigths"
+msgstr ""
+
+msgid "Factor Loadings"
+msgstr "Cargas dos Factores"
+
+#, fuzzy
+msgid "Regression Coefficients"
+msgstr "Coeficientes da regresión"
+
+msgid "Outcome"
+msgstr "Resultado"
+
+msgid "f²"
+msgstr ""
+
+#, fuzzy
+msgid "Total effects"
+msgstr "Efectos indirectos totais"
+
+msgid "Endogenous Indicator Prediction"
+msgstr ""
+
+msgid ""
+"The target model uses the same weighting approach as the benchmark model, "
+"please choose another benchmark."
+msgstr ""
+
+msgid ""
+"For the predicted indicator scores table(s), please select a single "
+"benchmark or 'none'."
+msgstr ""
+
+#, fuzzy
+msgid "Prediction Metrics"
+msgstr "Preditor"
+
+msgid "Target MAE"
+msgstr ""
+
+#, fuzzy
+msgid "Linear model MAE"
+msgstr "Pendente linear"
+
+msgid "PLS-PM MAE"
+msgstr ""
+
+msgid "GSCA MAE"
+msgstr ""
+
+msgid "PCA MAE"
+msgstr ""
+
+msgid "MAXVAR MAE"
+msgstr ""
+
+#, fuzzy
+msgid "Target RMSE"
+msgstr "Tamaño T da REACM (RMSEA)"
+
+#, fuzzy
+msgid "Linear model RMSE"
+msgstr "Pendente linear"
+
+msgid "PLS-PM RMSE"
+msgstr ""
+
+msgid "GSCA RMSE"
+msgstr ""
+
+msgid "PCA RMSE"
+msgstr ""
+
+msgid "MAXVAR RMSE"
+msgstr ""
+
+msgid "Target Q2 prediction"
+msgstr ""
+
+msgid ""
+"There are not enough observations for each k-fold, try setting 'cross-"
+"validation k-folds' to a lower number"
+msgstr ""
+
+msgid "Are all indicator variables set to 'scale'?"
+msgstr ""
+
+#, fuzzy
+msgid "Prediction failed Message: %1$s"
+msgstr "Mensaxe de fallo da estimación: %s"
+
+#, fuzzy
+msgid "Indicator Scores"
+msgstr "Coeficientes de indicador"
+
+msgid "Actual scores"
+msgstr ""
+
+#, fuzzy
+msgid "Predicted scores"
+msgstr "Preditor"
+
+msgid "Target residuals"
+msgstr ""
+
+msgid "benchmark"
+msgstr ""
+
+msgid "lm"
+msgstr ""
+
+#, fuzzy
+msgid "Linear model"
+msgstr "Pendente linear"
+
+msgid "residuals"
+msgstr ""
+
+#, fuzzy
+msgid "Additional Fit Measures"
+msgstr "Medidas Adicionais de Axuste"
+
+#, fuzzy
+msgid "Hoelter's critical N (CN)"
+msgstr "N crítico de Hoelter (%s = .05)"
+
+#, fuzzy
+msgid "Root mean square residual covariance (RMS theta)"
+msgstr "Raíz do erro de aproximación cadrado medio (REACM, RMSEA)"
+
+#, fuzzy
+msgid "Goodness of Fit (GoF)"
+msgstr "Índice da bondade do axuste (IBA, GFI)"
+
+msgid "Geodesic distance"
+msgstr ""
+
+msgid "Squared Euclidean distance"
+msgstr ""
+
+msgid "Maximum likelihood-based dinstance"
+msgstr ""
+
+#, fuzzy
+msgid "Reliability Measures"
+msgstr "Medidas Adicionais de Axuste"
+
+msgid "Cronbach's %s"
+msgstr ""
+
+msgid "J%1$sreskog's %2$s"
+msgstr ""
+
+msgid "Dijkstra-Henseler's %s"
+msgstr ""
+
+#, fuzzy
+msgid "Correlation tables"
+msgstr "Táboas de covarianzas"
+
+msgid "Observed indicator correlation matrix"
+msgstr ""
+
+#, fuzzy
+msgid "Implied indicator correlation matrix"
+msgstr "Matriz de covarianzas implícitas"
+
+msgid "Observed construct correlation matrix"
+msgstr ""
+
+#, fuzzy
+msgid "Implied construct correlation matrix"
+msgstr "Matriz de covarianzas implícitas"
+
 msgid "FIML missing data handling only available with ML-type estimators"
 msgstr ""
 "O manexo de datos ausentes de MVIC só está dispoñible con estimadores de "
 "tipo MV"
-
-msgid "Grouping variable has fewer than 3 observations in group %s"
-msgstr "A variable de agrupamento ten menos de 3 observacións no grupo %s"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
@@ -418,37 +635,13 @@ msgstr ""
 "ausentes'\n"
 "                        na lapela de 'Opcións de estimación'"
 
-msgid "Estimation failed Message: %s"
-msgstr "Mensaxe de fallo da estimación: %s"
-
-msgid "Estimation failed! Message: Model %s did not converge!"
-msgstr "Fallou a estimación! Mensaxe: O modelo %s non converxeu!"
-
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr ""
 "Fallou a estimación! Mensaxe: O modelo %s ten un número de graos de "
 "liberdade negativo."
 
-msgid "Model fit"
-msgstr "Axuste do modelo"
-
-msgid "AIC"
-msgstr "AIC"
-
-msgid "BIC"
-msgstr "BIC"
-
-msgid "n"
-msgstr "n"
-
-msgid "Baseline test"
-msgstr "Proba de referencia"
-
 msgid "&#916;&#967;&sup2;"
 msgstr "&#916;&#967;&sup2;"
-
-msgid "Difference test"
-msgstr "Proba de diferenzas"
 
 msgid "&#916;df"
 msgstr "&#916;gl"
@@ -489,17 +682,8 @@ msgstr ""
 "Os criterios AIC, BIC e de información adicional só están dispoñibles con "
 "estimadores de tipo MV"
 
-msgid "Factor Loadings"
-msgstr "Cargas dos Factores"
-
-msgid "Group"
-msgstr "Grupo"
-
 msgid "Regression coefficients"
 msgstr "Coeficientes da regresión"
-
-msgid "Outcome"
-msgstr "Resultado"
 
 msgid "Factor variances"
 msgstr "Varianzas dos factores"
@@ -530,9 +714,9 @@ msgid ""
 "fair < 0.95 < close) are <b>poor < %1$s < fair < %2$s < close</b> for model: "
 "%3$s"
 msgstr ""
-"Os equivalentes de tamaño T aos valores de corte do IAC (CFI) convencional ("
-"malo < 0.90 < razoable < 0.95 < próximo) son <b>malo < %1$s < razoable < %2$"
-"s < próximo</b> para o modelo: %3$s"
+"Os equivalentes de tamaño T aos valores de corte do IAC (CFI) convencional "
+"(malo < 0.90 < razoable < 0.95 < próximo) son <b>malo < %1$s < razoable < "
+"%2$s < próximo</b> para o modelo: %3$s"
 
 msgid "T-size CFI is computed for <i>%s = 0.05</i>"
 msgstr "O tamaño T do IAC (CFI) calcúlase para <i>%s = 0.05</i>"

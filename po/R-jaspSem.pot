@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2022-12-03 02:49\n"
+"POT-Creation-Date: 2022-12-24 02:45\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -328,10 +328,202 @@ msgstr ""
 msgid "Model plot not available with ordinal variables"
 msgstr ""
 
-msgid "FIML missing data handling only available with ML-type estimators"
+msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr ""
 
-msgid "Grouping variable has fewer than 3 observations in group %s"
+msgid "Estimation failed Message: %s"
+msgstr ""
+
+msgid "Estimation failed! Message: Model %s did not converge!"
+msgstr ""
+
+msgid "Model fit"
+msgstr ""
+
+msgid "Group"
+msgstr ""
+
+msgid "AIC"
+msgstr ""
+
+msgid "BIC"
+msgstr ""
+
+msgid "n"
+msgstr ""
+
+msgid "χ²"
+msgstr ""
+
+msgid "Baseline test"
+msgstr ""
+
+msgid "Δχ²"
+msgstr ""
+
+msgid "Difference test"
+msgstr ""
+
+msgid "Δdf"
+msgstr ""
+
+msgid "WARNING! model %1$s: %2$s"
+msgstr ""
+
+msgid "WARNING! model %1$s, group %2$s: %3$s"
+msgstr ""
+
+msgid "Weigths"
+msgstr ""
+
+msgid "Factor Loadings"
+msgstr ""
+
+msgid "Regression Coefficients"
+msgstr ""
+
+msgid "Outcome"
+msgstr ""
+
+msgid "f²"
+msgstr ""
+
+msgid "Total effects"
+msgstr ""
+
+msgid "Endogenous Indicator Prediction"
+msgstr ""
+
+msgid "The target model uses the same weighting approach as the benchmark model, please choose another benchmark."
+msgstr ""
+
+msgid "For the predicted indicator scores table(s), please select a single benchmark or 'none'."
+msgstr ""
+
+msgid "Prediction Metrics"
+msgstr ""
+
+msgid "Target MAE"
+msgstr ""
+
+msgid "Linear model MAE"
+msgstr ""
+
+msgid "PLS-PM MAE"
+msgstr ""
+
+msgid "GSCA MAE"
+msgstr ""
+
+msgid "PCA MAE"
+msgstr ""
+
+msgid "MAXVAR MAE"
+msgstr ""
+
+msgid "Target RMSE"
+msgstr ""
+
+msgid "Linear model RMSE"
+msgstr ""
+
+msgid "PLS-PM RMSE"
+msgstr ""
+
+msgid "GSCA RMSE"
+msgstr ""
+
+msgid "PCA RMSE"
+msgstr ""
+
+msgid "MAXVAR RMSE"
+msgstr ""
+
+msgid "Target Q2 prediction"
+msgstr ""
+
+msgid "There are not enough observations for each k-fold, try setting 'cross-validation k-folds' to a lower number"
+msgstr ""
+
+msgid "Are all indicator variables set to 'scale'?"
+msgstr ""
+
+msgid "Prediction failed Message: %1$s"
+msgstr ""
+
+msgid "Indicator Scores"
+msgstr ""
+
+msgid "Actual scores"
+msgstr ""
+
+msgid "Predicted scores"
+msgstr ""
+
+msgid "Target residuals"
+msgstr ""
+
+msgid "benchmark"
+msgstr ""
+
+msgid "lm"
+msgstr ""
+
+msgid "Linear model"
+msgstr ""
+
+msgid "residuals"
+msgstr ""
+
+msgid "Additional Fit Measures"
+msgstr ""
+
+msgid "Hoelter's critical N (CN)"
+msgstr ""
+
+msgid "Root mean square residual covariance (RMS theta)"
+msgstr ""
+
+msgid "Goodness of Fit (GoF)"
+msgstr ""
+
+msgid "Geodesic distance"
+msgstr ""
+
+msgid "Squared Euclidean distance"
+msgstr ""
+
+msgid "Maximum likelihood-based dinstance"
+msgstr ""
+
+msgid "Reliability Measures"
+msgstr ""
+
+msgid "Cronbach's %s"
+msgstr ""
+
+msgid "J%1$sreskog's %2$s"
+msgstr ""
+
+msgid "Dijkstra-Henseler's %s"
+msgstr ""
+
+msgid "Correlation tables"
+msgstr ""
+
+msgid "Observed indicator correlation matrix"
+msgstr ""
+
+msgid "Implied indicator correlation matrix"
+msgstr ""
+
+msgid "Observed construct correlation matrix"
+msgstr ""
+
+msgid "Implied construct correlation matrix"
+msgstr ""
+
+msgid "FIML missing data handling only available with ML-type estimators"
 msgstr ""
 
 msgid "Mean structure can not be included when data is variance-covariance matrix"
@@ -355,34 +547,10 @@ msgstr ""
 msgid "Missing data handling '%s' is not supported for categorical data,\n                        please select another method under 'Missing data handling'\n                        within the 'Estimation options' tab"
 msgstr ""
 
-msgid "Estimation failed Message: %s"
-msgstr ""
-
-msgid "Estimation failed! Message: Model %s did not converge!"
-msgstr ""
-
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr ""
 
-msgid "Model fit"
-msgstr ""
-
-msgid "AIC"
-msgstr ""
-
-msgid "BIC"
-msgstr ""
-
-msgid "n"
-msgstr ""
-
-msgid "Baseline test"
-msgstr ""
-
 msgid "&#916;&#967;&sup2;"
-msgstr ""
-
-msgid "Difference test"
 msgstr ""
 
 msgid "&#916;df"
@@ -415,16 +583,7 @@ msgstr ""
 msgid "The AIC, BIC and additional information criteria are only available with ML-type estimators"
 msgstr ""
 
-msgid "Factor Loadings"
-msgstr ""
-
-msgid "Group"
-msgstr ""
-
 msgid "Regression coefficients"
-msgstr ""
-
-msgid "Outcome"
 msgstr ""
 
 msgid "Factor variances"

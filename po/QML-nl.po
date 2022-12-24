@@ -967,3 +967,288 @@ msgstr "Latente Groei"
 msgctxt "MediationAnalysis|"
 msgid "Path coefficients"
 msgstr "Voorspeller coëfficiënten"
+
+msgctxt "Description|"
+msgid "Partial Least Squares SEM"
+msgstr ""
+
+#, fuzzy
+msgctxt "PLSSEM|"
+msgid "Model 1"
+msgstr "Model 1"
+
+msgctxt "PLSSEM|"
+msgid "Model"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Ignore structural model"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Disattenuate composite correlations"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Approach correction factors"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Squared Euclidean distance"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Weighted Euclidean distance"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Fisher transformed"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Arithmetic mean"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Geometric mean"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Harmonic mean"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Geometric-harmonic mean"
+msgstr ""
+
+#, fuzzy
+msgctxt "PLSSEM|"
+msgid "Grouping Variable"
+msgstr "Groepsvariabele"
+
+msgctxt "PLSSEM|"
+msgid "Estimation"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Error calculation method"
+msgstr ""
+
+#, fuzzy
+msgctxt "PLSSEM|"
+msgid "None"
+msgstr "Geen"
+
+#, fuzzy
+msgctxt "PLSSEM|"
+msgid "Robust"
+msgstr "Robuust"
+
+#, fuzzy
+msgctxt "PLSSEM|"
+msgid "Bootstrap"
+msgstr "Bootstrap"
+
+#, fuzzy
+msgctxt "PLSSEM|"
+msgid "Bootstrap samples"
+msgstr "Bootstrap steekproeven"
+
+msgctxt "PLSSEM|"
+msgid "Confidence intervals"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Weighting approach"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "PLS-PM"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "GSCA"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "SUMCORR"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "MAXVAR"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "SSQCORR"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "MINVAR"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "GENVAR"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "PCA"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Unit"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Bartlett"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Regression"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Inner weighting scheme"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Path"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Centroid"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Factorial"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Convergence criterion"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Absolute difference"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Squared difference"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Relative difference"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Correlation matrix"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Pearson"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Spearman"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Handling of inadmissibles"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Replace"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Ignore"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Drop"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Handling of flipped signs"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Individual"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Individual re-estimation"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Construct re-estimation"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Output"
+msgstr ""
+
+#, fuzzy
+msgctxt "PLSSEM|"
+msgid "R-squared"
+msgstr "R-kwadraat"
+
+#, fuzzy
+msgctxt "PLSSEM|"
+msgid "Additional fit measures"
+msgstr "Extra fitmaten"
+
+#, fuzzy
+msgctxt "PLSSEM|"
+msgid "Mardia's coefficient"
+msgstr "Mardia's coëfficiënt"
+
+msgctxt "PLSSEM|"
+msgid "Reliability measures"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Observed indicator correlations"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Implied indicator correlations"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Observed construct correlations"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Implied construct correlations"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Prediction"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Predict endogenous indicator scores"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Cross-validation k-folds"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Repetitions"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Benchmark(s)"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Linear model"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "All"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Show predicted scores"
+msgstr ""

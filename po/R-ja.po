@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2022-12-03 02:49\n"
+"POT-Creation-Date: 2022-12-24 02:45\n"
 "PO-Revision-Date: 2022-02-05 02:39+0000\n"
 "Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -357,11 +357,227 @@ msgstr "潜在"
 msgid "Model plot not available with ordinal variables"
 msgstr "順序変数ではモデルプロットを使用できません"
 
-msgid "FIML missing data handling only available with ML-type estimators"
-msgstr "FIML の欠損値処理は，ML タイプの推定法でのみ使用可能です"
-
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "グループ化変数のグループ%sの観測値が3未満です"
+
+msgid "Estimation failed Message: %s"
+msgstr "推定失敗 :%s"
+
+msgid "Estimation failed! Message: Model %s did not converge!"
+msgstr "推定に失敗しました! メッセージ: モデル %s が収束しませんでした!"
+
+msgid "Model fit"
+msgstr "モデル適合"
+
+msgid "Group"
+msgstr "群"
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "n"
+msgstr "n"
+
+msgid "χ²"
+msgstr ""
+
+msgid "Baseline test"
+msgstr "ベースラインテスト"
+
+msgid "Δχ²"
+msgstr ""
+
+msgid "Difference test"
+msgstr "差異の検定"
+
+#, fuzzy
+msgid "Δdf"
+msgstr "df"
+
+msgid "WARNING! model %1$s: %2$s"
+msgstr ""
+
+msgid "WARNING! model %1$s, group %2$s: %3$s"
+msgstr ""
+
+msgid "Weigths"
+msgstr ""
+
+msgid "Factor Loadings"
+msgstr "因子負荷量"
+
+#, fuzzy
+msgid "Regression Coefficients"
+msgstr "回帰係数"
+
+msgid "Outcome"
+msgstr "結果変数"
+
+msgid "f²"
+msgstr ""
+
+#, fuzzy
+msgid "Total effects"
+msgstr "総間接効果"
+
+msgid "Endogenous Indicator Prediction"
+msgstr ""
+
+msgid ""
+"The target model uses the same weighting approach as the benchmark model, "
+"please choose another benchmark."
+msgstr ""
+
+msgid ""
+"For the predicted indicator scores table(s), please select a single "
+"benchmark or 'none'."
+msgstr ""
+
+#, fuzzy
+msgid "Prediction Metrics"
+msgstr "予測変数"
+
+msgid "Target MAE"
+msgstr ""
+
+#, fuzzy
+msgid "Linear model MAE"
+msgstr "線形勾配"
+
+msgid "PLS-PM MAE"
+msgstr ""
+
+msgid "GSCA MAE"
+msgstr ""
+
+msgid "PCA MAE"
+msgstr ""
+
+msgid "MAXVAR MAE"
+msgstr ""
+
+msgid "Target RMSE"
+msgstr ""
+
+#, fuzzy
+msgid "Linear model RMSE"
+msgstr "線形勾配"
+
+msgid "PLS-PM RMSE"
+msgstr ""
+
+msgid "GSCA RMSE"
+msgstr ""
+
+msgid "PCA RMSE"
+msgstr ""
+
+msgid "MAXVAR RMSE"
+msgstr ""
+
+msgid "Target Q2 prediction"
+msgstr ""
+
+msgid ""
+"There are not enough observations for each k-fold, try setting 'cross-"
+"validation k-folds' to a lower number"
+msgstr ""
+
+msgid "Are all indicator variables set to 'scale'?"
+msgstr ""
+
+#, fuzzy
+msgid "Prediction failed Message: %1$s"
+msgstr "推定失敗 :%s"
+
+#, fuzzy
+msgid "Indicator Scores"
+msgstr "指標係数"
+
+msgid "Actual scores"
+msgstr ""
+
+#, fuzzy
+msgid "Predicted scores"
+msgstr "予測変数"
+
+msgid "Target residuals"
+msgstr ""
+
+msgid "benchmark"
+msgstr ""
+
+msgid "lm"
+msgstr ""
+
+#, fuzzy
+msgid "Linear model"
+msgstr "線形勾配"
+
+msgid "residuals"
+msgstr ""
+
+#, fuzzy
+msgid "Additional Fit Measures"
+msgstr "追加の適合度指標"
+
+#, fuzzy
+msgid "Hoelter's critical N (CN)"
+msgstr "HoelterのN (%s = .05)"
+
+#, fuzzy
+msgid "Root mean square residual covariance (RMS theta)"
+msgstr "二乗平均平方根誤差(RMSEA)"
+
+#, fuzzy
+msgid "Goodness of Fit (GoF)"
+msgstr "適合度指標(GFI)"
+
+msgid "Geodesic distance"
+msgstr ""
+
+msgid "Squared Euclidean distance"
+msgstr ""
+
+msgid "Maximum likelihood-based dinstance"
+msgstr ""
+
+#, fuzzy
+msgid "Reliability Measures"
+msgstr "追加の適合度指標"
+
+msgid "Cronbach's %s"
+msgstr ""
+
+msgid "J%1$sreskog's %2$s"
+msgstr ""
+
+msgid "Dijkstra-Henseler's %s"
+msgstr ""
+
+#, fuzzy
+msgid "Correlation tables"
+msgstr "共分散表"
+
+msgid "Observed indicator correlation matrix"
+msgstr ""
+
+#, fuzzy
+msgid "Implied indicator correlation matrix"
+msgstr "モデル共分散行列"
+
+msgid "Observed construct correlation matrix"
+msgstr ""
+
+#, fuzzy
+msgid "Implied construct correlation matrix"
+msgstr "モデル共分散行列"
+
+msgid "FIML missing data handling only available with ML-type estimators"
+msgstr "FIML の欠損値処理は，ML タイプの推定法でのみ使用可能です"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
@@ -393,35 +609,11 @@ msgid ""
 "                        within the 'Estimation options' tab"
 msgstr ""
 
-msgid "Estimation failed Message: %s"
-msgstr "推定失敗 :%s"
-
-msgid "Estimation failed! Message: Model %s did not converge!"
-msgstr "推定に失敗しました! メッセージ: モデル %s が収束しませんでした!"
-
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr "推定に失敗しました! メッセージ: モデル%sの自由度は負です."
 
-msgid "Model fit"
-msgstr "モデル適合"
-
-msgid "AIC"
-msgstr "AIC"
-
-msgid "BIC"
-msgstr "BIC"
-
-msgid "n"
-msgstr "n"
-
-msgid "Baseline test"
-msgstr "ベースラインテスト"
-
 msgid "&#916;&#967;&sup2;"
 msgstr "&#916;2&#967;3&sup2;"
-
-msgid "Difference test"
-msgstr "差異の検定"
 
 msgid "&#916;df"
 msgstr "&#916;自由度"
@@ -461,17 +653,8 @@ msgid ""
 "type estimators"
 msgstr "FIML の欠損値処理は，ML タイプの推定法でのみ使用可能です"
 
-msgid "Factor Loadings"
-msgstr "因子負荷量"
-
-msgid "Group"
-msgstr "群"
-
 msgid "Regression coefficients"
 msgstr "回帰係数"
-
-msgid "Outcome"
-msgstr "結果変数"
 
 msgid "Factor variances"
 msgstr "因子の分散"
