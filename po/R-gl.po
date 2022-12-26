@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2022-12-24 02:45\n"
-"PO-Revision-Date: 2022-12-18 14:17+0000\n"
+"PO-Revision-Date: 2022-12-26 17:53+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "gl/>\n"
@@ -358,7 +358,7 @@ msgid "Endo"
 msgstr "Endo"
 
 msgid "Indicator coefficients"
-msgstr "Coeficientes de indicador"
+msgstr "Coeficientes de indicadores"
 
 msgid "Indicator"
 msgstr "Indicador"
@@ -394,200 +394,187 @@ msgid "n"
 msgstr "n"
 
 msgid "χ²"
-msgstr ""
+msgstr "χ²"
 
 msgid "Baseline test"
 msgstr "Proba de referencia"
 
 msgid "Δχ²"
-msgstr ""
+msgstr "Δχ²"
 
 msgid "Difference test"
 msgstr "Proba de diferenzas"
 
-#, fuzzy
 msgid "Δdf"
-msgstr "gl"
+msgstr "Δgl"
 
 msgid "WARNING! model %1$s: %2$s"
-msgstr ""
+msgstr "AVISO! %1$s modelo: %2$s"
 
 msgid "WARNING! model %1$s, group %2$s: %3$s"
-msgstr ""
+msgstr "AVISO! %1$s modelo, %2$s grupo: %3$s"
 
 msgid "Weigths"
-msgstr ""
+msgstr "Ponderacións"
 
 msgid "Factor Loadings"
 msgstr "Cargas dos Factores"
 
-#, fuzzy
 msgid "Regression Coefficients"
-msgstr "Coeficientes da regresión"
+msgstr "Coeficientes da Regresión"
 
 msgid "Outcome"
 msgstr "Resultado"
 
 msgid "f²"
-msgstr ""
+msgstr "f²"
 
-#, fuzzy
 msgid "Total effects"
-msgstr "Efectos indirectos totais"
+msgstr "Efectos totais"
 
 msgid "Endogenous Indicator Prediction"
-msgstr ""
+msgstr "Predición de Indicadores Endóxenos"
 
 msgid ""
 "The target model uses the same weighting approach as the benchmark model, "
 "please choose another benchmark."
 msgstr ""
+"O modelo obxectivo utiliza o mesmo enfoque de ponderación que o modelo de "
+"referencia; por favor, elixe outra referencia."
 
 msgid ""
 "For the predicted indicator scores table(s), please select a single "
 "benchmark or 'none'."
 msgstr ""
+"Para as táboas de puntuacións de indicadores preditos, por favor, elixe unha "
+"única referencia ou 'ningunha'."
 
-#, fuzzy
 msgid "Prediction Metrics"
-msgstr "Preditor"
+msgstr "Métricas de Predición"
 
 msgid "Target MAE"
-msgstr ""
+msgstr "EAM (MAE) obxectivo"
 
-#, fuzzy
 msgid "Linear model MAE"
-msgstr "Pendente linear"
+msgstr "EAM (MAE) do modelo linear"
 
 msgid "PLS-PM MAE"
-msgstr ""
+msgstr "EAM (MAE) de MCP-MR (PLS-PM)"
 
 msgid "GSCA MAE"
-msgstr ""
+msgstr "EAM (MAE) de GSCA"
 
 msgid "PCA MAE"
-msgstr ""
+msgstr "EAM (MAE) de CP (PCA)"
 
 msgid "MAXVAR MAE"
-msgstr ""
+msgstr "EAM (MAE) de MAXVAR"
 
-#, fuzzy
 msgid "Target RMSE"
-msgstr "Tamaño T da REACM (RMSEA)"
+msgstr "RECM (RMSE) obxectivo"
 
-#, fuzzy
 msgid "Linear model RMSE"
-msgstr "Pendente linear"
+msgstr "RECM (RMSE) do modelo linear"
 
 msgid "PLS-PM RMSE"
-msgstr ""
+msgstr "RECM (RMSE) de MCP-MR (PLS-PM)"
 
 msgid "GSCA RMSE"
-msgstr ""
+msgstr "RECM (RMSE) de GSCA"
 
 msgid "PCA RMSE"
-msgstr ""
+msgstr "RECM (RMSE) de CP (PCA)"
 
 msgid "MAXVAR RMSE"
-msgstr ""
+msgstr "RECM (RMSE) de MAXVAR"
 
 msgid "Target Q2 prediction"
-msgstr ""
+msgstr "Predición Q2 obxectivo"
 
 msgid ""
 "There are not enough observations for each k-fold, try setting 'cross-"
 "validation k-folds' to a lower number"
 msgstr ""
+"Non hai observacións dabondo para cada prego k; intenta establecer un número "
+"máis baixo para 'pregos k da validación cruzada'"
 
 msgid "Are all indicator variables set to 'scale'?"
-msgstr ""
+msgstr "Están tódalas variables indicadoras fixadas como 'escala'?"
 
-#, fuzzy
 msgid "Prediction failed Message: %1$s"
-msgstr "Mensaxe de fallo da estimación: %s"
+msgstr "Mensaxe de fallo da predición: %1$s"
 
-#, fuzzy
 msgid "Indicator Scores"
-msgstr "Coeficientes de indicador"
+msgstr "Puntuacións de Indicadores"
 
 msgid "Actual scores"
-msgstr ""
+msgstr "Puntuacións actuais"
 
-#, fuzzy
 msgid "Predicted scores"
-msgstr "Preditor"
+msgstr "Puntuacións preditas"
 
 msgid "Target residuals"
-msgstr ""
+msgstr "Erros obxectivo"
 
 msgid "benchmark"
-msgstr ""
+msgstr "referencia"
 
 msgid "lm"
-msgstr ""
+msgstr "lm"
 
-#, fuzzy
 msgid "Linear model"
-msgstr "Pendente linear"
+msgstr "Modelo linear"
 
 msgid "residuals"
-msgstr ""
+msgstr "Erros"
 
-#, fuzzy
 msgid "Additional Fit Measures"
 msgstr "Medidas Adicionais de Axuste"
 
-#, fuzzy
 msgid "Hoelter's critical N (CN)"
-msgstr "N crítico de Hoelter (%s = .05)"
+msgstr "N crítico de Hoelter (NC)"
 
-#, fuzzy
 msgid "Root mean square residual covariance (RMS theta)"
-msgstr "Raíz do erro de aproximación cadrado medio (REACM, RMSEA)"
+msgstr "Raíz cadrada media da covarianza dos erros (RCM theta)"
 
-#, fuzzy
 msgid "Goodness of Fit (GoF)"
-msgstr "Índice da bondade do axuste (IBA, GFI)"
+msgstr "Bondade do Axuste (BA, GoF)"
 
 msgid "Geodesic distance"
-msgstr ""
+msgstr "Distancia xeodésica"
 
 msgid "Squared Euclidean distance"
-msgstr ""
+msgstr "Distancia Euclídea cadrada"
 
 msgid "Maximum likelihood-based dinstance"
-msgstr ""
+msgstr "Distancia baseada na Máxima-Verosimilitude"
 
-#, fuzzy
 msgid "Reliability Measures"
-msgstr "Medidas Adicionais de Axuste"
+msgstr "Medidas de Fiabilidade"
 
 msgid "Cronbach's %s"
-msgstr ""
+msgstr "%s de Cronbach"
 
 msgid "J%1$sreskog's %2$s"
-msgstr ""
+msgstr "%2$s de J%1$sreskog"
 
 msgid "Dijkstra-Henseler's %s"
-msgstr ""
+msgstr "%s de Dijkstra-Henseler"
 
-#, fuzzy
 msgid "Correlation tables"
-msgstr "Táboas de covarianzas"
+msgstr "Táboas de correlacións"
 
 msgid "Observed indicator correlation matrix"
-msgstr ""
+msgstr "Matriz de correlacións de indicadores observados"
 
-#, fuzzy
 msgid "Implied indicator correlation matrix"
-msgstr "Matriz de covarianzas implícitas"
+msgstr "Matriz de correlacións de indicadores implicados"
 
 msgid "Observed construct correlation matrix"
-msgstr ""
+msgstr "Matriz de correlacións de construcións observadas"
 
-#, fuzzy
 msgid "Implied construct correlation matrix"
-msgstr "Matriz de covarianzas implícitas"
+msgstr "Matriz de correlacións de construcións implicadas"
 
 msgid "FIML missing data handling only available with ML-type estimators"
 msgstr ""
