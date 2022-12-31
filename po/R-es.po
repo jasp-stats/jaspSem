@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
 "POT-Creation-Date: 2022-12-24 02:45\n"
-"PO-Revision-Date: 2022-12-18 14:17+0000\n"
+"PO-Revision-Date: 2022-12-26 17:53+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "es/>\n"
@@ -107,7 +107,7 @@ msgstr ""
 "especificación del modelo."
 
 msgid "Additional Fit measures"
-msgstr "Medidas Adicionales de Ajuste"
+msgstr "Medidas de Ajuste Adicionales"
 
 msgid "Fit indices"
 msgstr "Índices de ajuste"
@@ -351,7 +351,7 @@ msgid "Endo"
 msgstr "Endo"
 
 msgid "Indicator coefficients"
-msgstr "Coeficientes del indicador"
+msgstr "Coeficientes de indicadores"
 
 msgid "Indicator"
 msgstr "Indicador"
@@ -388,200 +388,187 @@ msgid "n"
 msgstr "n"
 
 msgid "χ²"
-msgstr ""
+msgstr "χ²"
 
 msgid "Baseline test"
 msgstr "Contraste de referencia"
 
 msgid "Δχ²"
-msgstr ""
+msgstr "Δχ²"
 
 msgid "Difference test"
 msgstr "Contraste de diferencias"
 
-#, fuzzy
 msgid "Δdf"
-msgstr "gl"
+msgstr "Δgl"
 
 msgid "WARNING! model %1$s: %2$s"
-msgstr ""
+msgstr "AVISO! %1$s modelo: %2$s"
 
 msgid "WARNING! model %1$s, group %2$s: %3$s"
-msgstr ""
+msgstr "AVISO! %1$s modelo, %2$s grupo: %3$s"
 
 msgid "Weigths"
-msgstr ""
+msgstr "Ponderaciones"
 
 msgid "Factor Loadings"
 msgstr "Cargas de los Factores"
 
-#, fuzzy
 msgid "Regression Coefficients"
-msgstr "Coeficientes de regresión"
+msgstr "Coeficientes de Regresión"
 
 msgid "Outcome"
 msgstr "Resultado"
 
 msgid "f²"
-msgstr ""
+msgstr "f²"
 
-#, fuzzy
 msgid "Total effects"
-msgstr "Efectos indirectos totales"
+msgstr "Efectos totales"
 
 msgid "Endogenous Indicator Prediction"
-msgstr ""
+msgstr "Predicción de Indicadores Endógenos"
 
 msgid ""
 "The target model uses the same weighting approach as the benchmark model, "
 "please choose another benchmark."
 msgstr ""
+"El modelo objetivo utiliza el mismo enfoque de ponderación que el modelo de "
+"referencia; por favor, elige otra referencia."
 
 msgid ""
 "For the predicted indicator scores table(s), please select a single "
 "benchmark or 'none'."
 msgstr ""
+"Para las tablas de puntuaciones de indicadores predichos, por favor, elige "
+"una única referencia o 'ninguna'."
 
-#, fuzzy
 msgid "Prediction Metrics"
-msgstr "Predictor"
+msgstr "Métricas de Predición"
 
 msgid "Target MAE"
-msgstr ""
+msgstr "EAM (MAE) objetivo"
 
-#, fuzzy
 msgid "Linear model MAE"
-msgstr "Pendiente lineal"
+msgstr "EAM (MAE) del modelo lineal"
 
 msgid "PLS-PM MAE"
-msgstr ""
+msgstr "EAM (MAE) de MCP-MR (PLS-PM)"
 
 msgid "GSCA MAE"
-msgstr ""
+msgstr "EAM (MAE) de GSCA"
 
 msgid "PCA MAE"
-msgstr ""
+msgstr "EAM (MAE) de CP (PCA)"
 
 msgid "MAXVAR MAE"
-msgstr ""
+msgstr "EAM (MAE) de MAXVAR"
 
-#, fuzzy
 msgid "Target RMSE"
-msgstr "Tamaño T de la REACM (RMSEA)"
+msgstr "RECM (RMSE) objetivo"
 
-#, fuzzy
 msgid "Linear model RMSE"
-msgstr "Pendiente lineal"
+msgstr "RECM (RMSE) del modelo lineal"
 
 msgid "PLS-PM RMSE"
-msgstr ""
+msgstr "RECM (RMSE) de MCP-MR (PLS-PM)"
 
 msgid "GSCA RMSE"
-msgstr ""
+msgstr "RECM (RMSE) de GSCA"
 
 msgid "PCA RMSE"
-msgstr ""
+msgstr "RECM (RMSE) de CP (PCA)"
 
 msgid "MAXVAR RMSE"
-msgstr ""
+msgstr "RECM (RMSE) de MAXVAR"
 
 msgid "Target Q2 prediction"
-msgstr ""
+msgstr "Predicción Q2 objetivo"
 
 msgid ""
 "There are not enough observations for each k-fold, try setting 'cross-"
 "validation k-folds' to a lower number"
 msgstr ""
+"No hay suficientes observaciones para cada pliegue k; intenta establecer un "
+"número más bajo para 'pliegues k de la validación cruzada'"
 
 msgid "Are all indicator variables set to 'scale'?"
-msgstr ""
+msgstr "¿Están todas las variables indicadoras fijadas como 'escala'?"
 
-#, fuzzy
 msgid "Prediction failed Message: %1$s"
-msgstr "Mensaje de fallo de la estimación: %s"
+msgstr "Mensaje de fallo de la predicción: %1$s"
 
-#, fuzzy
 msgid "Indicator Scores"
-msgstr "Coeficientes del indicador"
+msgstr "Coeficientes de Indicadores"
 
 msgid "Actual scores"
-msgstr ""
+msgstr "Puntuacións actuais"
 
-#, fuzzy
 msgid "Predicted scores"
-msgstr "Predictor"
+msgstr "Puntuacións preditas"
 
 msgid "Target residuals"
-msgstr ""
+msgstr "Errores objetivo"
 
 msgid "benchmark"
-msgstr ""
+msgstr "referencia"
 
 msgid "lm"
-msgstr ""
+msgstr "lm"
 
-#, fuzzy
 msgid "Linear model"
-msgstr "Pendiente lineal"
+msgstr "Modelo lineal"
 
 msgid "residuals"
-msgstr ""
+msgstr "Errores"
 
-#, fuzzy
 msgid "Additional Fit Measures"
-msgstr "Medidas Adicionales de Ajuste"
+msgstr "Medidas de Ajuste Adicionales"
 
-#, fuzzy
 msgid "Hoelter's critical N (CN)"
-msgstr "N crítico de Hoelter (%s = .05)"
+msgstr "N crítico de Hoelter (NC)"
 
-#, fuzzy
 msgid "Root mean square residual covariance (RMS theta)"
-msgstr "Error cuadrático medio de aproximación (RMSEA)"
+msgstr "Raíz cuadrada media de la covarianza de los errores (RCM theta)"
 
-#, fuzzy
 msgid "Goodness of Fit (GoF)"
-msgstr "Índice de bondad de ajuste (GFI)"
+msgstr "Bondad de Ajuste (BA, GoF)"
 
 msgid "Geodesic distance"
-msgstr ""
+msgstr "Distancia geodésica"
 
 msgid "Squared Euclidean distance"
-msgstr ""
+msgstr "Distancia Euclídea cuadrada"
 
 msgid "Maximum likelihood-based dinstance"
-msgstr ""
+msgstr "Distancia basada en la Máxima-Verosimilitud"
 
-#, fuzzy
 msgid "Reliability Measures"
-msgstr "Medidas Adicionales de Ajuste"
+msgstr "Medidas de Fiabilidad"
 
 msgid "Cronbach's %s"
-msgstr ""
+msgstr "%s de Cronbach"
 
 msgid "J%1$sreskog's %2$s"
-msgstr ""
+msgstr "%2$s de J%1$sreskog"
 
 msgid "Dijkstra-Henseler's %s"
-msgstr ""
+msgstr "%s de Dijkstra-Henseler"
 
-#, fuzzy
 msgid "Correlation tables"
-msgstr "Tablas de covarianzas"
+msgstr "Tablas de correlaciones"
 
 msgid "Observed indicator correlation matrix"
-msgstr ""
+msgstr "Matriz de correlaciones de indicadores observados"
 
-#, fuzzy
 msgid "Implied indicator correlation matrix"
-msgstr "Matriz de covarianzas implícitas"
+msgstr "Matriz de correlaciones de indicadores implicados"
 
 msgid "Observed construct correlation matrix"
-msgstr ""
+msgstr "Matriz de correlaciones de construcciones observadas"
 
-#, fuzzy
 msgid "Implied construct correlation matrix"
-msgstr "Matriz de covarianzas implícitas"
+msgstr "Matriz de correlaciones de construcciones implicadas"
 
 msgid "FIML missing data handling only available with ML-type estimators"
 msgstr ""
