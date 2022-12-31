@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2022-12-26 17:53+0000\n"
+"Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
+"de/>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.15.1-dev\n"
 "X-Language: de\n"
 "X-Source-Language: American English\n"
 "X-Qt-Contexts: true\n"
@@ -974,18 +980,17 @@ msgctxt "Description|"
 msgid "Partial Least Squares SEM"
 msgstr ""
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Model 1"
 msgstr "Modell 1"
 
 msgctxt "PLSSEM|"
 msgid "Model"
-msgstr ""
+msgstr "Modell"
 
 msgctxt "PLSSEM|"
 msgid "Ignore structural model"
-msgstr ""
+msgstr "Strukturmodell ignorieren"
 
 msgctxt "PLSSEM|"
 msgid "Disattenuate composite correlations"
@@ -1009,56 +1014,51 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Arithmetic mean"
-msgstr ""
+msgstr "Arithmetischer Mittelwert"
 
 msgctxt "PLSSEM|"
 msgid "Geometric mean"
-msgstr ""
+msgstr "Geometrischer Mittelwert"
 
 msgctxt "PLSSEM|"
 msgid "Harmonic mean"
-msgstr ""
+msgstr "Harmonischer Mittelwert"
 
 msgctxt "PLSSEM|"
 msgid "Geometric-harmonic mean"
-msgstr ""
+msgstr "Geometrisch-Harmonischer Mittelwert"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Grouping Variable"
 msgstr "Gruppierungsvariable"
 
 msgctxt "PLSSEM|"
 msgid "Estimation"
-msgstr ""
+msgstr "Schätzung"
 
 msgctxt "PLSSEM|"
 msgid "Error calculation method"
-msgstr ""
+msgstr "Fehlerberechnungsmethode"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "None"
 msgstr "Keine"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Robust"
 msgstr "Robust"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Bootstrap samples"
 msgstr "Bootstrap-Stichprobe"
 
 msgctxt "PLSSEM|"
 msgid "Confidence intervals"
-msgstr ""
+msgstr "Konfidenzintervalle"
 
 msgctxt "PLSSEM|"
 msgid "Weighting approach"
@@ -1106,7 +1106,7 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Regression"
-msgstr ""
+msgstr "Regression"
 
 msgctxt "PLSSEM|"
 msgid "Inner weighting scheme"
@@ -1130,27 +1130,27 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Absolute difference"
-msgstr ""
+msgstr "Absolute Differenz"
 
 msgctxt "PLSSEM|"
 msgid "Squared difference"
-msgstr ""
+msgstr "Quadrierte Differenz"
 
 msgctxt "PLSSEM|"
 msgid "Relative difference"
-msgstr ""
+msgstr "Relative Differenz"
 
 msgctxt "PLSSEM|"
 msgid "Correlation matrix"
-msgstr ""
+msgstr "Korrelationsmatrix"
 
 msgctxt "PLSSEM|"
 msgid "Pearson"
-msgstr ""
+msgstr "Pearson"
 
 msgctxt "PLSSEM|"
 msgid "Spearman"
-msgstr ""
+msgstr "Spearman"
 
 msgctxt "PLSSEM|"
 msgid "Handling of inadmissibles"
@@ -1158,11 +1158,11 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Replace"
-msgstr ""
+msgstr "Ersetzen"
 
 msgctxt "PLSSEM|"
 msgid "Ignore"
-msgstr ""
+msgstr "Ignorieren"
 
 msgctxt "PLSSEM|"
 msgid "Drop"
@@ -1170,15 +1170,15 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Handling of flipped signs"
-msgstr ""
+msgstr "Umgang mit umgekehrten Vorzeichen"
 
 msgctxt "PLSSEM|"
 msgid "Individual"
-msgstr ""
+msgstr "Individuell"
 
 msgctxt "PLSSEM|"
 msgid "Individual re-estimation"
-msgstr ""
+msgstr "Individuelle Neu-Schätzung"
 
 msgctxt "PLSSEM|"
 msgid "Construct re-estimation"
@@ -1186,26 +1186,23 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Output"
-msgstr ""
+msgstr "Ausgabe"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "R-squared"
 msgstr "R-Quadrat"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Additional fit measures"
 msgstr "Weitere Anpassungsmaße"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Mardia's coefficient"
 msgstr "Mardias Koeffizient"
 
 msgctxt "PLSSEM|"
 msgid "Reliability measures"
-msgstr ""
+msgstr "Reliabilitätsmaße"
 
 msgctxt "PLSSEM|"
 msgid "Observed indicator correlations"
@@ -1225,7 +1222,7 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Prediction"
-msgstr ""
+msgstr "Vorhersage"
 
 msgctxt "PLSSEM|"
 msgid "Predict endogenous indicator scores"
@@ -1237,7 +1234,7 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Repetitions"
-msgstr ""
+msgstr "Wiederholungen"
 
 msgctxt "PLSSEM|"
 msgid "Benchmark(s)"
@@ -1245,11 +1242,11 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Linear model"
-msgstr ""
+msgstr "Lineares Modell"
 
 msgctxt "PLSSEM|"
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
 msgctxt "PLSSEM|"
 msgid "Show predicted scores"
