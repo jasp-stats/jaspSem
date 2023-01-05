@@ -1,3 +1,7 @@
+export(SEMInternal)
+export(MediationAnalysisInternal)
+export(MIMICInternal)
+export(LatentGrowthCurveInternal)
 export(SEM)
 export(PLSSEM)
 export(MediationAnalysis)

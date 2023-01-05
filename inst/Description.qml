@@ -12,6 +12,7 @@ Description
 	maintainer:		"JASP Team <info@jasp-stats.org>"
 	website:		"https://github.com/jasp-stats/jaspSem/"
 	license:		"GPL (>= 2)"
+	hasWrappers:	true
 
 	Analysis
 	{
