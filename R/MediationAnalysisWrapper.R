@@ -19,28 +19,29 @@
 
 MediationAnalysis <- function(
           data = NULL,
-          version = "0.15",
-          bootCItype = "bca.simple",
-          bootstrapNumber = 1000,
-          ciWidth = 0.95,
+          version = "0.17",
+          bootstrapCiType = "percentileBiasCorrected",
+          bootstrapSamples = 1000,
+          ciLevel = 0.95,
           confounds = list(),
-          dependent = list(),
+          emulation = "lavaan",
+          errorCalculationMethod = "standard",
           estimator = "default",
           mediators = list(),
-          mimic = "lavaan",
-          missing = "fiml",
-          pathplot = FALSE,
+          naAction = "fiml",
+          outcomes = list(),
+          pathCoefficient = TRUE,
+          pathPlot = FALSE,
+          pathPlotLegend = FALSE,
+          pathPlotParameter = FALSE,
           plotHeight = 320,
           plotWidth = 480,
-          plotlegend = FALSE,
-          plotpars = FALSE,
-          predictor = list(),
-          rsquared = FALSE,
-          se = "standard",
-          showSyntax = FALSE,
-          showres = TRUE,
-          showtotind = TRUE,
-          std = FALSE) {
+          predictors = list(),
+          rSquared = FALSE,
+          residualCovariance = TRUE,
+          standardizedEstimate = FALSE,
+          syntax = FALSE,
+          totalIndirectEffect = TRUE) {
 
    defaultArgCalls <- formals(jaspSem::MediationAnalysis)
    defaultArgs <- lapply(defaultArgCalls, eval)
@@ -51,7 +52,7 @@ MediationAnalysis <- function(
    options[["data"]] <- NULL
    options[["version"]] <- NULL
 
-   optionsWithFormula <- c("bootCItype", "confounds", "dependent", "mediators", "predictor")
+   optionsWithFormula <- c("bootstrapCiType", "confounds", "mediators", "outcomes", "predictors")
    for (name in optionsWithFormula) {
       if ((name %in% optionsWithFormula) && inherits(options[[name]], "formula")) options[[name]] = jaspBase::jaspFormula(options[[name]], data)   }
 

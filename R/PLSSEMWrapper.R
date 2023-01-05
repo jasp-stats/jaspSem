@@ -17,29 +17,42 @@
 
 # This is a generated file. Don't change it
 
-MIMIC <- function(
+PLSSEM <- function(
           data = NULL,
           version = "0.17",
           additionalFitMeasures = FALSE,
-          bootstrapCiType = "percentileBiasCorrected",
-          bootstrapSamples = 1000,
+          benchmark = "none",
+          bootstrapSamples = 200,
           ciLevel = 0.95,
-          emulation = "lavaan",
-          errorCalculationMethod = "standard",
-          estimator = "default",
-          indicators = list(),
-          naAction = "fiml",
-          pathPlot = FALSE,
-          pathPlotLegend = FALSE,
-          pathPlotParameter = FALSE,
+          compositeCorrelationDisattenuated = TRUE,
+          convergenceCriterion = "absoluteDifference",
+          correctionFactor = "squaredEuclidean",
+          correlationMatrix = "pearson",
+          endogenousIndicatorPrediction = FALSE,
+          errorCalculationMethod = "none",
+          group = "",
+          handlingOfFlippedSigns = "none",
+          handlingOfInadmissibles = "replace",
+          impliedConstructCorrelation = FALSE,
+          impliedIndicatorCorrelation = FALSE,
+          innerWeightingScheme = "path",
+          kFolds = 10,
+          mardiasCoefficient = FALSE,
+          models = list(list(name = "Model 1", syntax = list(columns = list(), model = "", modelOriginal = ""))),
+          observedConstructCorrelation = FALSE,
+          observedIndicatorCorrelation = FALSE,
           plotHeight = 320,
           plotWidth = 480,
-          predictors = list(),
+          predictedScore = FALSE,
           rSquared = FALSE,
-          standardizedEstimate = FALSE,
-          syntax = FALSE) {
+          reliabilityMeasures = FALSE,
+          repetitions = 10,
+          seed = 1,
+          setSeed = FALSE,
+          structuralModelIgnored = FALSE,
+          weightingApproach = "PLS-PM") {
 
-   defaultArgCalls <- formals(jaspSem::MIMIC)
+   defaultArgCalls <- formals(jaspSem::PLSSEM)
    defaultArgs <- lapply(defaultArgCalls, eval)
    options <- as.list(match.call())[-1L]
    options <- lapply(options, eval)
@@ -48,9 +61,9 @@ MIMIC <- function(
    options[["data"]] <- NULL
    options[["version"]] <- NULL
 
-   optionsWithFormula <- c("bootstrapCiType", "indicators", "predictors")
+   optionsWithFormula <- c("convergenceCriterion", "correctionFactor", "group", "handlingOfFlippedSigns", "innerWeightingScheme", "models", "weightingApproach")
    for (name in optionsWithFormula) {
       if ((name %in% optionsWithFormula) && inherits(options[[name]], "formula")) options[[name]] = jaspBase::jaspFormula(options[[name]], data)   }
 
-   return(jaspBase::runWrappedAnalysis("jaspSem::MIMIC", data, options, version))
+   return(jaspBase::runWrappedAnalysis("jaspSem::PLSSEM", data, options, version))
 }
