@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2022-12-24 02:45\n"
-"PO-Revision-Date: 2022-12-26 17:53+0000\n"
+"PO-Revision-Date: 2023-01-01 12:47+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
@@ -447,7 +447,7 @@ msgstr ""
 
 #, fuzzy
 msgid "Linear model MAE"
-msgstr "Lineare Steigung"
+msgstr "Lineares Modell MAE"
 
 msgid "PLS-PM MAE"
 msgstr ""
@@ -486,6 +486,8 @@ msgid ""
 "There are not enough observations for each k-fold, try setting 'cross-"
 "validation k-folds' to a lower number"
 msgstr ""
+"Es gibt nicht genügend Beobachtungen für jede k-Teilmenge; versuchen Sie, "
+"'Kreuzvalidierung k-fach' auf eine niedrigere Zahl zu setzen"
 
 msgid "Are all indicator variables set to 'scale'?"
 msgstr ""
@@ -496,14 +498,14 @@ msgstr "Meldung zu fehlgeschlagener Schätzung: %s"
 
 #, fuzzy
 msgid "Indicator Scores"
-msgstr "Indikator-Koeffizienten"
+msgstr "Indikator-Scores"
 
 msgid "Actual scores"
 msgstr ""
 
 #, fuzzy
 msgid "Predicted scores"
-msgstr "Prädiktor"
+msgstr "Vorhergesage Scores"
 
 msgid "Target residuals"
 msgstr ""
@@ -514,68 +516,63 @@ msgstr ""
 msgid "lm"
 msgstr ""
 
-#, fuzzy
 msgid "Linear model"
-msgstr "Lineare Steigung"
+msgstr "Lineares Modell"
 
 msgid "residuals"
-msgstr ""
+msgstr "Residuen"
 
-#, fuzzy
 msgid "Additional Fit Measures"
-msgstr "Weitere Anpassungsgütemaße"
+msgstr "Weitere Anpassungsmaße"
 
-#, fuzzy
 msgid "Hoelter's critical N (CN)"
-msgstr "Hoelters kritisches N (%s = .05)"
+msgstr "Hoelters kritisches N (CN)"
 
 #, fuzzy
 msgid "Root mean square residual covariance (RMS theta)"
-msgstr "Root mean square error of approximation (RMSEA)"
+msgstr "Mittlere quadratische Residualkovarianz (RMS theta)"
 
 #, fuzzy
 msgid "Goodness of Fit (GoF)"
-msgstr "Goodness of fit index (GFI)"
+msgstr "Anpassungsgüte (GoF)"
 
+#, fuzzy
 msgid "Geodesic distance"
-msgstr ""
+msgstr "Geodätische Distanz"
 
 msgid "Squared Euclidean distance"
-msgstr ""
+msgstr "Quadrierte Euklidische Distanz"
 
 msgid "Maximum likelihood-based dinstance"
-msgstr ""
+msgstr "Maximum-Likelihood-basierte Distanz"
 
-#, fuzzy
 msgid "Reliability Measures"
-msgstr "Weitere Anpassungsgütemaße"
+msgstr "Reliabilitätsmaße"
 
 msgid "Cronbach's %s"
-msgstr ""
+msgstr "Cronbachs %s"
 
 msgid "J%1$sreskog's %2$s"
-msgstr ""
+msgstr "J%1$sreskogs %2$s"
 
 msgid "Dijkstra-Henseler's %s"
-msgstr ""
+msgstr "Dijkstra-Henselers %s"
 
-#, fuzzy
 msgid "Correlation tables"
-msgstr "Kovarianztabellen"
+msgstr "Korrelationstabellen"
 
 msgid "Observed indicator correlation matrix"
-msgstr ""
+msgstr "Beobachtete Indikator-Korrelationsmatrix"
 
-#, fuzzy
 msgid "Implied indicator correlation matrix"
-msgstr "Implizierte Kovarianzmatrix"
+msgstr "Implizierte Indikator-Korrelationsmatrix"
 
 msgid "Observed construct correlation matrix"
 msgstr ""
 
 #, fuzzy
 msgid "Implied construct correlation matrix"
-msgstr "Implizierte Kovarianzmatrix"
+msgstr "Implizierte Konstrukt-Korrelationsmatrix"
 
 msgid "FIML missing data handling only available with ML-type estimators"
 msgstr "FIML-Behandlung fehlender Daten nur mit ML-Schätzern verfügbar"
@@ -587,7 +584,7 @@ msgstr ""
 "Matrix ist"
 
 msgid "Please set the sample size!"
-msgstr "Bitte setze den Stichprobenumfang!"
+msgstr "Bitte setzen Sie den Stichprobenumfang!"
 
 msgid ""
 "Multiple group analysis not supported when data is variance-covariance matrix"
