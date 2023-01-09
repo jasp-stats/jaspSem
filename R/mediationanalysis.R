@@ -22,7 +22,6 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   dataset <- .medReadData(dataset, options)
   options <- .medEditOptions(dataset, options)
   ready   <- .medCheckErrors(dataset, options)
-
   modelContainer <- .getModelContainer(jaspResults)
 
   # Output functions
@@ -143,6 +142,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
     medResult <- try(lavaan::sem(
       model           = .medToLavMod(options),
       data            = dataset,
+      information.meat = "first.order",
       information     = options$informationMatrix,
       se              = switch(options[["errorCalculationMethod"]], "bootstrap" = "standard", "robust" = "robust.sem", "standard" = "standard"),
       mimic           = options$emulation,
@@ -159,6 +159,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
     medResult <- try(lavaan::sem(
       model           = .medToLavMod(options),
       data            = dataset,
+      information.meat = "first.order",
       information     = options$informationMatrix,
       mimic           = options$emulation,
       estimator       = options$estimator,

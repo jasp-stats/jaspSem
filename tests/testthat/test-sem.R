@@ -471,8 +471,8 @@ test_that("Bootstrapping works", {
   # Model fit table results match
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(48.1563554263441, 59.7437959940257, 0, 0, "Model1", 75, 1, 0,
-                                      0, ""),
+                                 list(48.1563554263441, 59.7437959940257, 0, 0, "Model1", 75, 1, "",
+                                      0, 0),
                                  label = "Model fit table results match")
 
   # Residual covariances table results match
