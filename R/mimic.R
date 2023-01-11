@@ -284,6 +284,8 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   # add test statistic correction footnote
   if (options[["estimator"]] != "wlsmv") {
     test <- lavaan::lavInspect(modelContainer[["model"]][["object"]], what = "options")[["test"]]
+    if(length(test) > 1)
+      test <- test[[2]]
 
     if (test != "standard") {
       LUT <- tibble::tribble(
