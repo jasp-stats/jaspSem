@@ -623,7 +623,18 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   }
 
   # create a qgraph object using semplot
-  po <- .medLavToPlotObj(modelContainer[["model"]][["object"]])
+  po <- try(.medLavToPlotObj(modelContainer[["model"]][["object"]]), silent = TRUE)
+
+  if(jaspBase::isTryError(po)) {
+    message <- jaspBase::.extractErrorMessage(po)
+    if(message == "length of 'dimnames' [2] not equal to array extent") {
+      # Related to https://github.com/SachaEpskamp/semPlot/issues/40
+      plt$setError(gettext("Currently it is not possible to plot some mediation models with ordinal variables. The plot could not be generated."))
+    } else {
+      plt$setError(gettextf("The plot could not be generated. The underlying code resulted in the following error message: %s", message))
+    }
+    return()
+  }
 
   pp <- jaspBase:::.suppressGrDevice(semPlot::semPaths(
     object         = po,
