@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2022-12-15 11:48+0000\n"
+"PO-Revision-Date: 2023-01-13 12:30+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "pl/>\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.15-dev\n"
+"X-Generator: Weblate 4.15.1-dev\n"
 "X-Qt-Contexts: true\n"
 
 msgctxt "Description|"
@@ -171,7 +171,7 @@ msgstr "EQS"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Missing value handling"
-msgstr ""
+msgstr "Obsługa braków danych"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Full Information Maximum Likelihood"
@@ -331,7 +331,7 @@ msgstr ""
 
 msgctxt "MediationAnalysis|"
 msgid "Method"
-msgstr ""
+msgstr "Metoda"
 
 msgctxt "MediationAnalysis|"
 msgid "Standard"
@@ -475,7 +475,7 @@ msgstr ""
 
 msgctxt "Mimic|"
 msgid "Method"
-msgstr ""
+msgstr "Metoda"
 
 msgctxt "Mimic|"
 msgid "Standard"
@@ -603,7 +603,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Sample size"
-msgstr ""
+msgstr "Wielkość próby"
 
 msgctxt "SEM|"
 msgid "Sampling weights"
