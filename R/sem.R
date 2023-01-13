@@ -509,6 +509,8 @@ checkLavaanModel <- function(model, availableVars) {
 
   # add test statistic correction footnote
   test <- lavaan::lavInspect(semResults[[1]], "options")[["test"]]
+  if(length(test) > 1)
+    test <- test[[2]]
 
   if (test != "standard") {
     LUT <- tibble::tribble(

@@ -188,7 +188,7 @@ test_that("Bootstrapping works", {
   # Direct effects table results match
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.0425663855373132, 0.792177915779829, 0.257757857221231, "contcor1",
+                                 list(0.0761400441341873, 0.671443275931252, 0.257757857221231, "contcor1",
                                       "<unicode>", 0.0585458466298006, "contNormal", 0.136265300259528,
                                       1.89158837011558),
                                  label = "Direct effects table results match")
@@ -196,7 +196,7 @@ test_that("Bootstrapping works", {
   # Indirect effects table results match
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_ind"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.28761880151593, 0.07473726135656, -0.0893136271813779, "contcor2",
+                                 list(-0.299720825954288, 0.07329367848577, -0.0893136271813779, "contcor2",
                                       "<unicode>", "<unicode>", 0.32161886441617, 0.0901123252539836,
                                       "contcor1", "contNormal", -0.991136638963043),
                                  label = "Indirect effects table results match")
@@ -204,18 +204,18 @@ test_that("Bootstrapping works", {
   # Total effects table results match
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_tot"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.0503046496398278, 0.527735697854857, 0.168444230039853, "contcor1",
+                                 list(-0.00126714302931763, 0.440665080716848, 0.168444230039853, "contcor1",
                                       "<unicode>", 0.102761018524938, "contNormal", 0.103237851474511,
                                       1.63161309184588),
                                  label = "Total effects table results match")
   # Path coefficients table results match
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_path"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.411615880219859, 0.112629248781708, -0.136980438302071, "contcor2",
+                                 list(-0.475862353202891, 0.110585516049068, -0.136980438302071, "contcor2",
                                       "<unicode>", 0.318469030743472, "contNormal", 0.137308753597124,
-                                      -0.997608926696571, 0.0425663855373095, 0.792177915779836, 0.257757844059186,
+                                      -0.997608926696571, 0.0761400441341873, 0.671443275931252, 0.257757844059186,
                                       "contcor1", "<unicode>", 0.0585458547695155, "contNormal", 0.136265297698809,
-                                      1.89158830907129, 0.538092671935867, 0.807562678367665, 0.652017217213314,
+                                      1.89158830907129, 0.48165177793888, 0.754639896102569, 0.652017217213314,
                                       "contcor1", "<unicode>", 0, "contcor2", 0.0748152807686884,
                                       8.71502733818777),
                                  label = "Path coefficients table results match")
