@@ -13,7 +13,7 @@ test_that("Basic SEM works", {
   results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
 
   fittab   <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-  expect_equal_tables(fittab, list(48.156355426353, 59.7437959940346, 0, 0, "Model1", 75, 1, "", 0, 0), "Model fit table")
+  expect_equal_tables(fittab, list(48.156355426353, 59.7437959940346, 0, 0, "Model1", 75, 0, "", 0, 0), "Model fit table")
 
   parcont <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]]
   parcov  <- parcont[["modelContainer_params_cov"]][["data"]]
@@ -525,7 +525,7 @@ test_that("Bootstrapping works", {
   # Model fit table results match
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(48.1563554263444, 59.7437959940259, 0, 0, "Model1", 75, 1, "",
+                                 list(48.1563554263444, 59.7437959940259, 0, 0, "Model1", 75, 0, "",
                                       0, 0),
                                  label = "Model fit table results match")
 
@@ -541,11 +541,11 @@ test_that("Bootstrapping works", {
   # Regression coefficients table results match
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_reg"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.268681438601061, 0.452255904547886, 0.355178163031198, "", "x1",
+                                 list(0.249609316197927, 0.447867152439517, 0.355178163031198, "", "x1",
                                       3.13082892944294e-14, "x2", 0.0467810927627533, 7.59234430098623,
-                                      -0.0227477328700399, 0.150803623251047, 0.0779182545603887,
+                                      -0.0367153099343001, 0.19997796482335, 0.0779182545603887,
                                       "", "x1", 0.112759836982545, "x3", 0.0491315890359824, 1.58590951543057,
-                                      -0.000464737724491137, 0.0538034630405118, 0.0306885890503354,
+                                      0.00301905711375346, 0.056769954444189, 0.0306885890503354,
                                       "", "x1", 0.0358943948473298, "y1", 0.0146266962697169, 2.09812171418867
                                  ),
                                  label = "Regression coefficients table results match")
@@ -553,7 +553,7 @@ test_that("Bootstrapping works", {
   # Residual variances table results match
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_var"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.0692094430059861, 0.123114076435843, "x1", 0.097380852992327,
+                                 list(0.0579281075433616, 0.121472727074924, "x1", 0.097380852992327,
                                       "", "x1", 9.14129882900738e-10, 0.0159022267032121, 6.12372435695794,
                                       2.25167664969695, 2.25167664969695, "x2", 2.25167664969695,
                                       "", "x2", "", 0, "", 1.94967853807201, 1.94967853807201, "x3",
@@ -597,8 +597,8 @@ test_that("t-size RMSEA and CFI match values of original article (Katerina M. Ma
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_incrits"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list("Log-likelihood", -10988.8301074082, "Number of free parameters",
-                                      37, "Akaike (AIC)", 22051.6602148164, "Bayesian (BIC)", 22214.3466120594,
-                                      "Sample-size adjusted Bayesian (SSABIC)", 22096.88174857))
+                                      25, "Akaike (AIC)", 22027.6602148165, "Bayesian (BIC)", 22137.5834561969,
+                                      "Sample-size adjusted Bayesian (SSABIC)", 22058.2153051905))
 
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_indices"]][["data"]]
   jaspTools::expect_equal_tables(table,
@@ -615,12 +615,12 @@ test_that("t-size RMSEA and CFI match values of original article (Katerina M. Ma
                                  list("Root mean square error of approximation (RMSEA)", 0.0130437119173581,
                                       "RMSEA 90% CI lower bound", 0, "RMSEA 90% CI upper bound", 0.0297980428058939,
                                       "RMSEA p-value", 0.999994986450328, "T-size RMSEA", 0.029823208611982,
-                                      "Standardized root mean square residual (SRMR)", 0.0236005293827133,
+                                      "Standardized root mean square residual (SRMR)", 0.0253510370222869,
                                       "Hoelter's critical N (<unicode> = .05)", 730.254899918116,
                                       "Hoelter's critical N (<unicode> = .01)", 821.162187177968,
                                       "Goodness of fit index (GFI)", 0.984016681585093, "McDonald fit index (MFI)",
                                       0.995501480640541, "Expected cross validation index (ECVI)",
-                                      0.220684002957567))
+                                      0.180684002957667))
 })
 
 
@@ -648,7 +648,7 @@ test_that("Variance-covariance input works", {
   results <- jaspTools::runAnalysis("SEM", data, options)
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(713.570148255052, 734.427541276879, 0, 0, "Model1", 75, 1, "",
-                                      "", "", 1101.63355300897, 1122.4909460308, 0, 0, "Model2", 75,
+                                 list(707.570148255052, 721.47507693627, 0, 0, "Model1", 75, 1, "",
+                                      "", "", 1095.63355300897, 1109.53848169019, 0, 0, "Model2", 75,
                                       1, "", 0, 0))
 })
