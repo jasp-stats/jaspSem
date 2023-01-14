@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2022-12-24 02:45\n"
+"POT-Creation-Date: 2023-01-14 02:47\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -284,6 +284,12 @@ msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
 msgstr ""
 
 msgid "Path plot"
+msgstr ""
+
+msgid "Currently it is not possible to plot mediation models with ordinal variables. The plot could not be generated."
+msgstr ""
+
+msgid "The plot could not be generated. The underlying code resulted in the following error message: %s"
 msgstr ""
 
 msgid "Model syntax"

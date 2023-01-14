@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2022-12-24 02:45\n"
+"POT-Creation-Date: 2023-01-14 02:47\n"
 "PO-Revision-Date: 2023-01-09 04:16+0000\n"
 "Last-Translator: Changya Hu <changyahu@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
@@ -309,6 +309,16 @@ msgstr "%1$s 標準誤, %2$s 信賴區間, %3$s 估計法"
 
 msgid "Path plot"
 msgstr "路徑圖"
+
+msgid ""
+"Currently it is not possible to plot mediation models with ordinal "
+"variables. The plot could not be generated."
+msgstr ""
+
+msgid ""
+"The plot could not be generated. The underlying code resulted in the "
+"following error message: %s"
+msgstr ""
 
 msgid "Model syntax"
 msgstr "模型語法"
