@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2023-01-13 12:30+0000\n"
+"Last-Translator: Don van den Bergh <donvdbergh@hotmail.com>\n"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
+"nl/>\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 4.15.1-dev\n"
 "X-Language: nl\n"
 "X-Source-Language: American English\n"
 "X-Qt-Contexts: true\n"
@@ -970,285 +976,276 @@ msgstr "Voorspeller coëfficiënten"
 
 msgctxt "Description|"
 msgid "Partial Least Squares SEM"
-msgstr ""
+msgstr "Partial Least Squares SEM"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Model 1"
 msgstr "Model 1"
 
 msgctxt "PLSSEM|"
 msgid "Model"
-msgstr ""
+msgstr "Model"
 
 msgctxt "PLSSEM|"
 msgid "Ignore structural model"
-msgstr ""
+msgstr "Negeer structureel model"
 
 msgctxt "PLSSEM|"
 msgid "Disattenuate composite correlations"
-msgstr ""
+msgstr "Ontkracht samengestelde correlaties"
 
 msgctxt "PLSSEM|"
 msgid "Approach correction factors"
-msgstr ""
+msgstr "Benadering correctiefactoren"
 
 msgctxt "PLSSEM|"
 msgid "Squared Euclidean distance"
-msgstr ""
+msgstr "Gekwadrateerde Euclidische afstand"
 
 msgctxt "PLSSEM|"
 msgid "Weighted Euclidean distance"
-msgstr ""
+msgstr "Gewogen Euclidische afstand"
 
 msgctxt "PLSSEM|"
 msgid "Fisher transformed"
-msgstr ""
+msgstr "Fisher getransformeerd"
 
 msgctxt "PLSSEM|"
 msgid "Arithmetic mean"
-msgstr ""
+msgstr "Rekenkundig gemiddelde"
 
 msgctxt "PLSSEM|"
 msgid "Geometric mean"
-msgstr ""
+msgstr "Geometrisch gemiddelde"
 
 msgctxt "PLSSEM|"
 msgid "Harmonic mean"
-msgstr ""
+msgstr "Harmonisch gemiddelde"
 
 msgctxt "PLSSEM|"
 msgid "Geometric-harmonic mean"
-msgstr ""
+msgstr "Geometrisch-harmonisch gemiddelde"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Grouping Variable"
 msgstr "Groepsvariabele"
 
 msgctxt "PLSSEM|"
 msgid "Estimation"
-msgstr ""
+msgstr "Schatting"
 
 msgctxt "PLSSEM|"
 msgid "Error calculation method"
-msgstr ""
+msgstr "Foutberekeningsmethode"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "None"
 msgstr "Geen"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Robust"
 msgstr "Robuust"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Bootstrap samples"
 msgstr "Bootstrap steekproeven"
 
 msgctxt "PLSSEM|"
 msgid "Confidence intervals"
-msgstr ""
+msgstr "Betrouwbaarheidsintervallen"
 
 msgctxt "PLSSEM|"
 msgid "Weighting approach"
-msgstr ""
+msgstr "Wegingsbenadering"
 
 msgctxt "PLSSEM|"
 msgid "PLS-PM"
-msgstr ""
+msgstr "PLS-PM"
 
 msgctxt "PLSSEM|"
 msgid "GSCA"
-msgstr ""
+msgstr "GSCA"
 
 msgctxt "PLSSEM|"
 msgid "SUMCORR"
-msgstr ""
+msgstr "SUMCORR"
 
 msgctxt "PLSSEM|"
 msgid "MAXVAR"
-msgstr ""
+msgstr "MAXVAR"
 
 msgctxt "PLSSEM|"
 msgid "SSQCORR"
-msgstr ""
+msgstr "SSQCORR"
 
 msgctxt "PLSSEM|"
 msgid "MINVAR"
-msgstr ""
+msgstr "MINVAR"
 
 msgctxt "PLSSEM|"
 msgid "GENVAR"
-msgstr ""
+msgstr "GENVAR"
 
 msgctxt "PLSSEM|"
 msgid "PCA"
-msgstr ""
+msgstr "PCA"
 
 msgctxt "PLSSEM|"
 msgid "Unit"
-msgstr ""
+msgstr "Eenheid"
 
 msgctxt "PLSSEM|"
 msgid "Bartlett"
-msgstr ""
+msgstr "Bartlett"
 
 msgctxt "PLSSEM|"
 msgid "Regression"
-msgstr ""
+msgstr "Regressie"
 
 msgctxt "PLSSEM|"
 msgid "Inner weighting scheme"
-msgstr ""
+msgstr "Intern wegingsschema"
 
 msgctxt "PLSSEM|"
 msgid "Path"
-msgstr ""
+msgstr "Pad"
 
 msgctxt "PLSSEM|"
 msgid "Centroid"
-msgstr ""
+msgstr "Centroid"
 
 msgctxt "PLSSEM|"
 msgid "Factorial"
-msgstr ""
+msgstr "Factorieel"
 
 msgctxt "PLSSEM|"
 msgid "Convergence criterion"
-msgstr ""
+msgstr "Convergentiecriterium"
 
 msgctxt "PLSSEM|"
 msgid "Absolute difference"
-msgstr ""
+msgstr "Absoluut verschil"
 
 msgctxt "PLSSEM|"
 msgid "Squared difference"
-msgstr ""
+msgstr "Gekwadrateerd verschil"
 
 msgctxt "PLSSEM|"
 msgid "Relative difference"
-msgstr ""
+msgstr "Relatief verschil"
 
 msgctxt "PLSSEM|"
 msgid "Correlation matrix"
-msgstr ""
+msgstr "Correlatiematrix"
 
 msgctxt "PLSSEM|"
 msgid "Pearson"
-msgstr ""
+msgstr "Pearson"
 
 msgctxt "PLSSEM|"
 msgid "Spearman"
-msgstr ""
+msgstr "Spearman"
 
 msgctxt "PLSSEM|"
 msgid "Handling of inadmissibles"
-msgstr ""
+msgstr "Behandeling van niet-ontvankelijken"
 
 msgctxt "PLSSEM|"
 msgid "Replace"
-msgstr ""
+msgstr "Vervang"
 
 msgctxt "PLSSEM|"
 msgid "Ignore"
-msgstr ""
+msgstr "Negeer"
 
 msgctxt "PLSSEM|"
 msgid "Drop"
-msgstr ""
+msgstr "Laten vallen"
 
 msgctxt "PLSSEM|"
 msgid "Handling of flipped signs"
-msgstr ""
+msgstr "Behandeling van geflipte tekens"
 
 msgctxt "PLSSEM|"
 msgid "Individual"
-msgstr ""
+msgstr "Individueel"
 
 msgctxt "PLSSEM|"
 msgid "Individual re-estimation"
-msgstr ""
+msgstr "Individuele herschatting"
 
 msgctxt "PLSSEM|"
 msgid "Construct re-estimation"
-msgstr ""
+msgstr "Construct herschatting"
 
 msgctxt "PLSSEM|"
 msgid "Output"
-msgstr ""
+msgstr "Uitvoer"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "R-squared"
 msgstr "R-kwadraat"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Additional fit measures"
 msgstr "Extra fitmaten"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Mardia's coefficient"
 msgstr "Mardia's coëfficiënt"
 
 msgctxt "PLSSEM|"
 msgid "Reliability measures"
-msgstr ""
+msgstr "Betrouwbaarheids maten"
 
 msgctxt "PLSSEM|"
 msgid "Observed indicator correlations"
-msgstr ""
+msgstr "Waargenomen correlaties tussen indicatoren"
 
 msgctxt "PLSSEM|"
 msgid "Implied indicator correlations"
-msgstr ""
+msgstr "Geïmpliceerde indicator correlaties"
 
 msgctxt "PLSSEM|"
 msgid "Observed construct correlations"
-msgstr ""
+msgstr "Waargenomen correlaties van het construct"
 
 msgctxt "PLSSEM|"
 msgid "Implied construct correlations"
-msgstr ""
+msgstr "Geïmpliceerde construct correlaties"
 
 msgctxt "PLSSEM|"
 msgid "Prediction"
-msgstr ""
+msgstr "Voorspellen"
 
 msgctxt "PLSSEM|"
 msgid "Predict endogenous indicator scores"
-msgstr ""
+msgstr "Voorspel endogene indicatorscores"
 
 msgctxt "PLSSEM|"
 msgid "Cross-validation k-folds"
-msgstr ""
+msgstr "Kruisvalidatie k-folds"
 
 msgctxt "PLSSEM|"
 msgid "Repetitions"
-msgstr ""
+msgstr "Herhalingen"
 
 msgctxt "PLSSEM|"
 msgid "Benchmark(s)"
-msgstr ""
+msgstr "Benchmark(s)"
 
 msgctxt "PLSSEM|"
 msgid "Linear model"
-msgstr ""
+msgstr "Lineair model"
 
 msgctxt "PLSSEM|"
 msgid "All"
-msgstr ""
+msgstr "Alle"
 
 msgctxt "PLSSEM|"
 msgid "Show predicted scores"
-msgstr ""
+msgstr "Toon voorspelde scores"
