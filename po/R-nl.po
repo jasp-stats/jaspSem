@@ -3,16 +3,16 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2022-12-24 02:45\n"
-"PO-Revision-Date: 2022-09-27 18:23+0000\n"
-"Last-Translator: Alexander Ly <a.ly@uva.nl>\n"
-"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/"
-">\n"
+"PO-Revision-Date: 2023-01-13 12:30+0000\n"
+"Last-Translator: Don van den Bergh <donvdbergh@hotmail.com>\n"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/>"
+"\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 4.14.1\n"
+"X-Generator: Weblate 4.15.1-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "Het model kon niet worden geschat door niet-convergentie."
@@ -389,34 +389,32 @@ msgid "n"
 msgstr "n"
 
 msgid "χ²"
-msgstr ""
+msgstr "χ²"
 
 msgid "Baseline test"
 msgstr "Baseline test"
 
 msgid "Δχ²"
-msgstr ""
+msgstr "Δχ²"
 
 msgid "Difference test"
 msgstr "Verschillen test"
 
-#, fuzzy
 msgid "Δdf"
-msgstr "vg"
+msgstr "Δdf"
 
 msgid "WARNING! model %1$s: %2$s"
-msgstr ""
+msgstr "WAARSCHUWING! Model %1$s: %2$s"
 
 msgid "WARNING! model %1$s, group %2$s: %3$s"
-msgstr ""
+msgstr "WAARSCHUWING! model %1$s, groep %2$s: %3$s"
 
 msgid "Weigths"
-msgstr ""
+msgstr "Wegen"
 
 msgid "Factor Loadings"
 msgstr "Factorladingen"
 
-#, fuzzy
 msgid "Regression Coefficients"
 msgstr "Regressie Coëfficiënten"
 
@@ -424,169 +422,157 @@ msgid "Outcome"
 msgstr "Uitkomst"
 
 msgid "f²"
-msgstr ""
+msgstr "f²"
 
-#, fuzzy
 msgid "Total effects"
-msgstr "Totale indirecte effecten"
+msgstr "Totale effecten"
 
 msgid "Endogenous Indicator Prediction"
-msgstr ""
+msgstr "Endogene indicator voorspelling"
 
 msgid ""
 "The target model uses the same weighting approach as the benchmark model, "
 "please choose another benchmark."
 msgstr ""
+"Het streefmodel gebruikt dezelfde wegingsmethode als het benchmarkmodel, "
+"kies een andere benchmark."
 
 msgid ""
 "For the predicted indicator scores table(s), please select a single "
 "benchmark or 'none'."
 msgstr ""
+"Selecteer voor de tabel(len) met voorspelde indicatorscores een enkele "
+"benchmark of 'geen'."
 
-#, fuzzy
 msgid "Prediction Metrics"
-msgstr "Voorspeller"
+msgstr "Voorspellingsmetriek"
 
 msgid "Target MAE"
-msgstr ""
+msgstr "Doel MAE"
 
-#, fuzzy
 msgid "Linear model MAE"
-msgstr "Lineaire helling"
+msgstr "Lineair model MAE"
 
 msgid "PLS-PM MAE"
-msgstr ""
+msgstr "PLS-PM MAE"
 
 msgid "GSCA MAE"
-msgstr ""
+msgstr "GSCA MAE"
 
 msgid "PCA MAE"
-msgstr ""
+msgstr "PCA MAE"
 
 msgid "MAXVAR MAE"
-msgstr ""
+msgstr "MAXVAR MAE"
 
 msgid "Target RMSE"
-msgstr ""
+msgstr "Doel RMSE"
 
-#, fuzzy
 msgid "Linear model RMSE"
-msgstr "Lineaire helling"
+msgstr "Lineair model RMSE"
 
 msgid "PLS-PM RMSE"
-msgstr ""
+msgstr "PLS-PM RMSE"
 
 msgid "GSCA RMSE"
-msgstr ""
+msgstr "GSCA RMSE"
 
 msgid "PCA RMSE"
-msgstr ""
+msgstr "PCA RMSE"
 
 msgid "MAXVAR RMSE"
-msgstr ""
+msgstr "MAXVAR RMSE"
 
 msgid "Target Q2 prediction"
-msgstr ""
+msgstr "Doelstelling Q2 voorspelling"
 
 msgid ""
 "There are not enough observations for each k-fold, try setting 'cross-"
 "validation k-folds' to a lower number"
 msgstr ""
+"Er zijn niet genoeg waarnemingen voor elke k-fold, probeer 'cross-validation "
+"k-folds' in te stellen op een lager getal"
 
 msgid "Are all indicator variables set to 'scale'?"
-msgstr ""
+msgstr "Zijn alle indicatorvariabelen ingesteld op \"schaal\"?"
 
-#, fuzzy
 msgid "Prediction failed Message: %1$s"
 msgstr "Schatting mislukt Melding: %s"
 
-#, fuzzy
 msgid "Indicator Scores"
-msgstr "Indicator coëfficiënten"
+msgstr "Indicator Scores"
 
 msgid "Actual scores"
-msgstr ""
+msgstr "Werkelijke scores"
 
-#, fuzzy
 msgid "Predicted scores"
-msgstr "Voorspeller"
+msgstr "Voorspelde scores"
 
 msgid "Target residuals"
-msgstr ""
+msgstr "Doel residuen"
 
 msgid "benchmark"
-msgstr ""
+msgstr "benchmark"
 
 msgid "lm"
-msgstr ""
+msgstr "lm"
 
-#, fuzzy
 msgid "Linear model"
-msgstr "Lineaire helling"
+msgstr "Lineair model"
 
 msgid "residuals"
-msgstr ""
+msgstr "residuen"
 
-#, fuzzy
 msgid "Additional Fit Measures"
-msgstr "Extra fitmaten"
+msgstr "Extra Fitmaten"
 
-#, fuzzy
 msgid "Hoelter's critical N (CN)"
-msgstr "Hoelter's kritische N (%s = .05)"
+msgstr "Hoelter's kritische N (CN)"
 
-#, fuzzy
 msgid "Root mean square residual covariance (RMS theta)"
-msgstr "Wortel van de gemiddelde fout kwadraat van benadering (RMSEA)"
+msgstr "Root mean square residuele covariantie (RMS theta)"
 
-#, fuzzy
 msgid "Goodness of Fit (GoF)"
-msgstr "Pasmaat index (GFI)"
+msgstr "Goedheid van Fit (GoF)"
 
 msgid "Geodesic distance"
-msgstr ""
+msgstr "Geodetische afstand"
 
 msgid "Squared Euclidean distance"
-msgstr ""
+msgstr "Gekwadrateerde Euclidische afstand"
 
 msgid "Maximum likelihood-based dinstance"
-msgstr ""
+msgstr "Meest aannemelijke schatter-gebaseerde afstand"
 
-#, fuzzy
 msgid "Reliability Measures"
-msgstr "Extra fitmaten"
+msgstr "Betrouwbaarheids Maten"
 
 msgid "Cronbach's %s"
-msgstr ""
+msgstr "Cronbach's %s"
 
 msgid "J%1$sreskog's %2$s"
-msgstr ""
+msgstr "J%1$sreskog's %2$s"
 
 msgid "Dijkstra-Henseler's %s"
-msgstr ""
+msgstr "Dijkstra-Henseler's %s"
 
-#, fuzzy
 msgid "Correlation tables"
-msgstr "Covariantie tabellen"
+msgstr "Correlatietabellen"
 
 msgid "Observed indicator correlation matrix"
-msgstr ""
+msgstr "Waargenomen correlatiematrix van indicatoren"
 
-#, fuzzy
 msgid "Implied indicator correlation matrix"
-msgstr "Geïmpliceerde covariantie matrices"
+msgstr "Geïmpliceerde indicator correlatie matrix"
 
 msgid "Observed construct correlation matrix"
-msgstr ""
+msgstr "Waargenomen correlatiematrix van het construct"
 
-#, fuzzy
 msgid "Implied construct correlation matrix"
-msgstr "Geïmpliceerde covariantie matrices"
+msgstr "Geïmpliceerde construct correlatie matrix"
 
 msgid "FIML missing data handling only available with ML-type estimators"
-msgstr ""
-"FIML verwerking van ontbrekende gegevens alleen beschikbaar met ML-type "
-"schatters"
+msgstr "FIML missende dataverwerking alleen beschikbaar met ML-type schatters"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
@@ -617,6 +603,7 @@ msgstr ""
 
 msgid "One or more variables are constants or contain only missing values"
 msgstr ""
+"Een of meer variabelen zijn constanten of bevatten alleen ontbrekende waarden"
 
 msgid ""
 "Missing data handling '%s' is not supported for categorical data,\n"
@@ -639,7 +626,6 @@ msgstr "&#916;2&#967;3&sup2;"
 msgid "&#916;df"
 msgstr "&#916;df"
 
-#, fuzzy
 msgid ""
 "A total of %g cases were removed due to missing values. You can avoid this "
 "by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
@@ -669,13 +655,12 @@ msgstr "bootstrap (Bollen-Stine) waarschijnlijkheidswaarde"
 msgid "Model tests based on %s."
 msgstr "Model termen getest met %s methode."
 
-#, fuzzy
 msgid ""
 "The AIC, BIC and additional information criteria are only available with ML-"
 "type estimators"
 msgstr ""
-"FIML verwerking van ontbrekende gegevens alleen beschikbaar met ML-type "
-"schatters"
+"De AIC, BIC en aanvullende informatiecriteria zijn alleen beschikbaar met "
+"schatters van het ML-type"
 
 msgid "Regression coefficients"
 msgstr "Regressie Coëfficiënten"
@@ -702,28 +687,34 @@ msgid "Name"
 msgstr "Naam"
 
 msgid "T-size CFI"
-msgstr ""
+msgstr "T-maat CFI"
 
 msgid ""
 "The T-size equivalents of the conventional CFI cut-off values (poor < 0.90 < "
 "fair < 0.95 < close) are <b>poor < %1$s < fair < %2$s < close</b> for model: "
 "%3$s"
 msgstr ""
+"De T-grootte equivalenten van de conventionele CFI-afkapwaarden (slecht < "
+"0,90 < redelijk < 0,95 < dichtbij) zijn <b>slecht < %1$s < redelijk < %2$s < "
+"dichtbij</b> voor model: %3$s"
 
 msgid "T-size CFI is computed for <i>%s = 0.05</i>"
-msgstr ""
+msgstr "T-size CFI wordt berekend voor <i>%s = 0,05</i>"
 
 msgid "T-size RMSEA"
-msgstr ""
+msgstr "T-grootte RMSEA"
 
 msgid ""
 "The T-size equivalents of the conventional RMSEA cut-off values (close < "
 "0.05 < fair < 0.08 < poor) are <b>close < %1$s < fair < %2$s < poor</b> for "
 "model: %3$s"
 msgstr ""
+"De T-grootte equivalenten van de conventionele RMSEA-afkapwaarden (dichtbij "
+"< 0,05 < redelijk < 0,95 < slecht) zijn <b>dichtbij < %1$s < redelijk < %2$s "
+"< slecht</b> voor model: %3$s"
 
 msgid "T-size RMSEA is computed for <i>%s = 0.05</i>"
-msgstr ""
+msgstr "T-size RMSEA wordt berekend voor <i>%s = 0,05</i>"
 
 msgid "Mardia's coefficients"
 msgstr "Mardia's coëfficiënten"
@@ -759,17 +750,23 @@ msgid ""
 "The standardized residual covariance table is currently unavailable when the "
 "error calculation method is 'Bootstrap'"
 msgstr ""
+"De gestandaardiseerde residuele covariantietabel is momenteel niet "
+"beschikbaar wanneer de foutenberekeningsmethode \"Bootstrap\" is"
 
 msgid "The standardized residual covariance matrix could not be computed"
 msgstr ""
+"De gestandaardiseerde residuele covariantiematrix kon niet worden berekend"
 
 msgid ""
 "The standardized residual covariance tables are currently unavailable when "
 "the error calculation method is 'Bootstrap'"
 msgstr ""
+"De gestandaardiseerde residuele covariantietabellen zijn momenteel niet "
+"beschikbaar wanneer de foutenberekeningsmethode \"Bootstrap\" is"
 
 msgid "The standardized residual covariance matrices could not be computed"
 msgstr ""
+"De gestandaardiseerde residuele covariantiematrix kon niet worden berekend"
 
 msgid "Modification indices"
 msgstr "Modificatie Indices"
