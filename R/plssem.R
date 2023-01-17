@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-PLSSEM <- function(jaspResults, dataset, options, ...) {
+PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
   options <- .plsSemPrepOpts(options)
