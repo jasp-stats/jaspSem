@@ -29,7 +29,7 @@ Form
 	// The following part is used for spawning upgrade notifications about multigroup analysis
 	Rectangle
 	{
-		visible:		myAnalysis !== null && myAnalysis.needsRefresh && grpvar.currentIndex !== 0 // if groupvar index is 0, there is no grouping variable -> no multigroup analysis
+		visible:		needsRefresh && grpvar.currentIndex !== 0 // if groupvar index is 0, there is no grouping variable -> no multigroup analysis
 		color:			jaspTheme.controlWarningBackgroundColor
 		width:			form.implicitWidth
 		height:			warningMessageUpdate.height
