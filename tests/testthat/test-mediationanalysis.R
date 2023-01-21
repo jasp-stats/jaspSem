@@ -9,7 +9,7 @@ test_that("Simple mediation analysis works", {
   options$estimator              <- "ml"
   options$errorCalculationMethod <- "standard"
   options$naAction               <- "fiml"
-  results <- jaspTools::runAnalysis("MediationAnalysisInternal","test.csv", options)
+  results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
 
   dir_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
   ind_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_ind"]][["data"]]
@@ -54,7 +54,7 @@ test_that("Categorical confounders work", {
   options$estimator      <- "ml"
   options$errorCalculationMethod <- "standard"
   options$naAction       <- "fiml"
-  results <- jaspTools::runAnalysis("MediationAnalysisInternal","test.csv", options)
+  results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
 
   ind_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_ind"]][["data"]]
 
@@ -75,7 +75,7 @@ test_that("Multiple mediation with missing values works", {
   options$estimator      <- "ml"
   options$errorCalculationMethod <- "standard"
   options$naAction       <- "fiml"
-  results <- jaspTools::runAnalysis("MediationAnalysisInternal","test.csv", options)
+  results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
 
   dir_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
   expect_equal_tables(dir_tab, list(0.0479536537219549, 0.579284062996402, 0.313618858359178, "contcor1",
@@ -183,7 +183,7 @@ test_that("Bootstrapping works", {
   options$naAction         <- "fiml"
 
   set.seed(1)
-  results <- jaspTools::runAnalysis("MediationAnalysisInternal", "test.csv", options)
+  results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options)
 
   # Direct effects table results match
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]

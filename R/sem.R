@@ -654,8 +654,8 @@ checkLavaanModel <- function(model, availableVars) {
   fittab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
   fittab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
   fittab$addColumnInfo(name = "N",        title = gettext("n(Observations)"),    type = "integer")
-  fittab$addColumnInfo(name = "npar",     title = gettext("total"),              overtitle = gettext("n(Parameters)"), type = "integer")
-  fittab$addColumnInfo(name = "nfree",    title = gettext("free"),              overtitle = gettext("n(Parameters)"), type = "integer")
+  fittab$addColumnInfo(name = "npar",     title = gettext("Total"),              overtitle = gettext("n(Parameters)"), type = "integer")
+  fittab$addColumnInfo(name = "nfree",    title = gettext("Free"),              overtitle = gettext("n(Parameters)"), type = "integer")
   fittab$addColumnInfo(name = "Chisq",    title = gettext("&#967;&sup2;"),       type = "number" ,
                        overtitle = gettext("Baseline test"))
   fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
@@ -722,13 +722,14 @@ checkLavaanModel <- function(model, availableVars) {
 
   }
 
-<<<<<<< HEAD
   dtFill <- data.frame(matrix(ncol = 0, nrow = length(rownames(lrt$value))))
 
   dtFill[["Model"]]    <- rownames(lrt$value)
   dtFill[["AIC"]]      <- lrt$value[["AIC"]]
   dtFill[["BIC"]]      <- lrt$value[["BIC"]]
   dtFill[["N"]]        <- Ns
+  dtFill[["npar"]]     <- npar
+  dtFill[["nfree"]]    <- nfree
   dtFill[["Chisq"]]    <- chiSq
   dtFill[["Df"]]       <- dfs
   dtFill[["PrChisq"]]  <- pchisq(q = chiSq, df = dfs, lower.tail = FALSE)
@@ -738,20 +739,6 @@ checkLavaanModel <- function(model, availableVars) {
     dtFill[["ddf"]]      <- lrt$value[["Df diff"]]
     dtFill[["dPrChisq"]] <- lrt$value[["Pr(>Chisq)"]]
   }
-=======
-  fittab[["Model"]]    <- rownames(lrt$value)
-  fittab[["AIC"]]      <- lrt$value[["AIC"]]
-  fittab[["BIC"]]      <- lrt$value[["BIC"]]
-  fittab[["N"]]        <- Ns
-  fittab[["npar"]]     <- npar
-  fittab[["nfree"]]    <- nfree
-  fittab[["Chisq"]]    <- lrt$value[["Chisq"]]
-  fittab[["Df"]]       <- lrt$value[["Df"]]
-  fittab[["PrChisq"]]  <- pchisq(q = lrt$value[["Chisq"]], df = lrt$value[["Df"]], lower.tail = FALSE)
-  fittab[["dchisq"]]   <- lrt$value[["Chisq diff"]]
-  fittab[["ddf"]]      <- lrt$value[["Df diff"]]
-  fittab[["dPrChisq"]] <- lrt$value[["Pr(>Chisq)"]]
->>>>>>> 66b19e4d7 (added n(Parameters) to fit table)
 
   # add warning footnote
   fnote <- ""
