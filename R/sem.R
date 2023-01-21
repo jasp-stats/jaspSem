@@ -447,8 +447,8 @@ checkLavaanModel <- function(model, availableVars) {
   fittab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
   fittab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
   fittab$addColumnInfo(name = "N",        title = gettext("n(Observations)"),    type = "integer")
-  fittab$addColumnInfo(name = "npar",     title = gettext("total"),              overtitle = gettext("n(Parameters)"), type = "integer")
-  fittab$addColumnInfo(name = "nfree",    title = gettext("free"),              overtitle = gettext("n(Parameters)"), type = "integer")
+  fittab$addColumnInfo(name = "npar",     title = gettext("Total"),              overtitle = gettext("n(Parameters)"), type = "integer")
+  fittab$addColumnInfo(name = "nfree",    title = gettext("Free"),              overtitle = gettext("n(Parameters)"), type = "integer")
   fittab$addColumnInfo(name = "Chisq",    title = gettext("&#967;&sup2;"),       type = "number" ,
                        overtitle = gettext("Baseline test"))
   fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
