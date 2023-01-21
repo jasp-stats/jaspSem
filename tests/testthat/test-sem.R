@@ -10,10 +10,11 @@ test_that("Basic SEM works", {
   options$informationMatrix <- "expected"
   options$naAction          <- "fiml"
   options$modelTest         <- "standard"
-  results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
+  results <- jaspTools::runAnalysis("SEMInternal", "poldem_grouped.csv", options)
 
   fittab   <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-  expect_equal_tables(fittab, list(48.156355426353, 59.7437959940346, 0, 0, "Model1", 75, 1, "", 0, 0), "Model fit table")
+  expect_equal_tables(fittab, list(48.1563554263441, 59.7437959940257, 0, 0, "Model1", 75, 1, 0,
+                                   "", 0, 5, 5), "Model fit table")
 
   parcont <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]]
   parcov  <- parcont[["modelContainer_params_cov"]][["data"]]
@@ -115,15 +116,16 @@ test_that("Multigroup, multimodel SEM works", {
     list(name = "more constrained", syntax = modelMoreConstrained)
   )
 
-  results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
+  results <- jaspTools::runAnalysis("SEMInternal", "poldem_grouped.csv", options)
 
   fittab   <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   expect_equal_tables(fittab, list(3189.26691715402, 3383.93591869107, 82.2032643259552, 70, "default",
-                                   75, 0.150923770163707, "", "", "", 3184.34803034567, 3372.06456754211,
-                                   83.2843775176126, 73, "constrained", 75, 0.19249046571302, 0.647754490401111,
-                                   1.65156784895969, 3, 3181.07183366569, 3361.83590652152, 86.0081808376312,
-                                   76, "more constrained", 75, 0.202652084622712, 0.110596895607335,
-                                   6.02091896557529, 3), "Model fit table")
+                                   75, 0.150923770163707, "", "", "", 84, 84, 3184.34803034567,
+                                   3372.06456754211, 83.2843775176126, 73, "constrained", 75, 0.19249046571302,
+                                   0.647754490401136, 1.65156784895958, 3, 81, 84, 3181.07183366569,
+                                   3361.83590652152, 86.0081808376312, 76, "more constrained",
+                                   75, 0.202652084622712, 0.110596895607244, 6.02091896557718,
+                                   3, 78, 84), "Model fit table")
 
 
   rsquared <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_rsquared"]][["data"]]
@@ -520,13 +522,13 @@ test_that("Bootstrapping works", {
   options$bootstrapSamples  <- 100
 
   set.seed(1)
-  results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
+  results <- jaspTools::runAnalysis("SEMInternal", "poldem_grouped.csv", options)
 
   # Model fit table results match
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(48.1563554263444, 59.7437959940259, 0, 0, "Model1", 75, 1, "",
-                                      0, 0),
+                                 list(48.1563554263441, 59.7437959940257, 0, 0, "Model1", 75, 1, 0,
+                                      "", 0, 5, 5),
                                  label = "Model fit table results match")
 
   # Residual covariances table results match
@@ -592,7 +594,7 @@ test_that("t-size RMSEA and CFI match values of original article (Katerina M. Ma
                             V11 = c(0.374, 0.448, 0.359, 0.368, 0.348, 0.404, 0.335, 0.591, 0.608, 0.659, 1.63, 0.64),
                             V12 = c(0.381, 0.486, 0.387, 0.359, 0.37, 0.438, 0.371, 0.556, 0.69, 0.529, 0.64, 1.673)),
                        class = "data.frame", row.names = c("V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12"))
-  results <- jaspTools::runAnalysis("SEM", dataset, options)
+  results <- jaspTools::runAnalysis("SEMInternal", dataset, options)
 
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_incrits"]][["data"]]
   jaspTools::expect_equal_tables(table,
@@ -645,10 +647,10 @@ test_that("Variance-covariance input works", {
   data <- as.data.frame(data)
 
   set.seed(1)
-  results <- jaspTools::runAnalysis("SEM", data, options)
+  results <- jaspTools::runAnalysis("SEMInternal", data, options)
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(707.570148255052, 721.47507693627, 0, 0, "Model1", 75, 1, "",
-                                      "", "", 1095.63355300897, 1109.53848169019, 0, 0, "Model2", 75,
-                                      1, "", 0, 0))
+                                      "", "", 6, 6, 1095.63355300898, 1109.53848169019, 0, 0, "Model2",
+                                      75, 1, "", 0, 0, 6, 6))
 })

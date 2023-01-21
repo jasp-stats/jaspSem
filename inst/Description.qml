@@ -18,35 +18,35 @@ Description
 	{
 		title:	qsTr("Structural Equation Modeling")
 		qml:	"SEM.qml"
-		func:	"SEM"
+		func:	"SEMInternal"
 	}
 
 	Analysis
 	{
 		title:	qsTr("Partial Least Squares SEM")
 		qml:	"PLSSEM.qml"
-		func:	"PLSSEM"
+		func:	"PLSSEMInternal"
 	}
 
 	Analysis
 	{
 		title:	qsTr("Mediation Analysis")
 		qml:	"MediationAnalysis.qml"
-		func:	"MediationAnalysis"
+		func:	"MediationAnalysisInternal"
 	}
 
 	Analysis
 	{
 		title:	qsTr("MIMIC Model")
 		qml:	"Mimic.qml"
-		func:	"MIMIC"
+		func:	"MIMICInternal"
 	}
 
 	Analysis
 	{
 		title:	qsTr("Latent Growth")
 		qml:	"LatentGrowthCurve.qml"
-		func:	"LatentGrowthCurve"
+		func:	"LatentGrowthCurveInternal"
 		//enabled: false
 	}
 }

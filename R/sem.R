@@ -446,19 +446,23 @@ checkLavaanModel <- function(model, availableVars) {
   fittab$addColumnInfo(name = "Model",    title = "",                            type = "string" )
   fittab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
   fittab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
-  fittab$addColumnInfo(name = "N",        title = gettext("n"),                  type = "integer")
+  fittab$addColumnInfo(name = "N",        title = gettext("n(Observations)"),    type = "integer")
+  fittab$addColumnInfo(name = "npar",     title = gettext("total"),              overtitle = gettext("n(Parameters)"), type = "integer")
+  fittab$addColumnInfo(name = "nfree",    title = gettext("free"),              overtitle = gettext("n(Parameters)"), type = "integer")
   fittab$addColumnInfo(name = "Chisq",    title = gettext("&#967;&sup2;"),       type = "number" ,
                        overtitle = gettext("Baseline test"))
   fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
                        overtitle = gettext("Baseline test"))
   fittab$addColumnInfo(name = "PrChisq",  title = gettext("p"),                  type = "pvalue",
                        overtitle = gettext("Baseline test"))
-  fittab$addColumnInfo(name = "dchisq",   title = gettext("&#916;&#967;&sup2;"), type = "number" ,
-                       overtitle = gettext("Difference test"))
-  fittab$addColumnInfo(name = "ddf",      title = gettext("&#916;df"),           type = "integer",
-                       overtitle = gettext("Difference test"))
-  fittab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
-                       overtitle = gettext("Difference test"))
+  if (length(options[["models"]]) > 1) {
+    fittab$addColumnInfo(name = "dchisq",   title = gettext("&#916;&#967;&sup2;"), type = "number" ,
+                         overtitle = gettext("Difference test"))
+    fittab$addColumnInfo(name = "ddf",      title = gettext("&#916;df"),           type = "integer",
+                         overtitle = gettext("Difference test"))
+    fittab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
+                         overtitle = gettext("Difference test"))
+  }
 
   modelContainer[["fittab"]] <- fittab
 
@@ -473,8 +477,18 @@ checkLavaanModel <- function(model, availableVars) {
     lrt <- .withWarnings(lavaan::lavTestLRT(semResults[[1]])[-1, ])
     rownames(lrt$value) <- options[["models"]][[1]][["name"]]
     Ns <- lavaan::lavInspect(semResults[[1]], "ntotal")
+    npar <- lavaan::lavInspect(semResults[[1]], "npar")
+    nfree <- if (length(semResults[[1]]@Model@eq.constraints.K) == 0) lavaan::lavInspect(semResults[[1]], "npar") else length(semResults[[1]]@Model@eq.constraints.K[1,])
   } else {
     Ns <- vapply(semResults, lavaan::lavInspect, 0, what = "ntotal")
+    npar <- vapply(semResults, lavaan::lavInspect, 0, what = "npar")
+    nfree <- vapply(semResults, function(x) {
+      if(length(x@Model@eq.constraints.K) == 0) {
+        lavaan::lavInspect(x, "npar")
+      } else {
+        length(x@Model@eq.constraints.K[1,])
+      }
+    }, 0)
     lrt_args <- semResults
     names(lrt_args) <- "object" # (the first result is object, the others ...)
     lrt_args[["model.names"]] <- vapply(options[["models"]], getElement, name = "name", "")
@@ -486,6 +500,8 @@ checkLavaanModel <- function(model, availableVars) {
   fittab[["AIC"]]      <- lrt$value[["AIC"]]
   fittab[["BIC"]]      <- lrt$value[["BIC"]]
   fittab[["N"]]        <- Ns
+  fittab[["npar"]]     <- npar
+  fittab[["nfree"]]    <- nfree
   fittab[["Chisq"]]    <- lrt$value[["Chisq"]]
   fittab[["Df"]]       <- lrt$value[["Df"]]
   fittab[["PrChisq"]]  <- pchisq(q = lrt$value[["Chisq"]], df = lrt$value[["Df"]], lower.tail = FALSE)

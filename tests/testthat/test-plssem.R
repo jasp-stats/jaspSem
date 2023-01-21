@@ -18,7 +18,7 @@ test_that("Basic PLSSEM works", {
   options$handlingOfFlippedSigns    <- "none"
 
 
-  results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
+  results <- jaspTools::runAnalysis("PLSSEMInternal", "poldem_grouped.csv", options)
 
 
   fittab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
@@ -95,7 +95,7 @@ test_that("Multigroup, multimodel PLSSEM works", {
   options$structuralModelIgnored        <- TRUE
   options$handlingOfFlippedSigns        <- "none"
 
-  results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
+  results <- jaspTools::runAnalysis("PLSSEMInternal", "poldem_grouped.csv", options)
 
   fittab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(fittab,
@@ -292,7 +292,7 @@ test_that("Bootstrapping works", {
   options$handlingOfFlippedSigns    <- "none"
 
   set.seed(123)
-  results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
+  results <- jaspTools::runAnalysis("PLSSEMInternal", "poldem_grouped.csv", options)
 
 
   fittab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
@@ -410,7 +410,7 @@ test_that("cSEM example matches output", {
   options$mardiasCoefficient            <- TRUE
   options$reliabilityMeasures           <- TRUE
 
-  results <- jaspTools::runAnalysis("PLSSEM", cSEM::satisfaction, options)
+  results <- jaspTools::runAnalysis("PLSSEMInternal", cSEM::satisfaction, options)
 
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["data"]]
   jaspTools::expect_equal_tables(table,
