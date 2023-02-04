@@ -1,35 +1,41 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2023-01-31 20:49+0000\n"
+"Last-Translator: Ünal Halit ÖZDEN <uozden@ticaret.edu.tr>\n"
+"Language-Team: Turkish <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
+"tr/>\n"
+"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.16-dev\n"
 "X-Language: tr\n"
 "X-Qt-Contexts: true\n"
 
 msgctxt "Description|"
 msgid "SEM"
-msgstr ""
+msgstr "YEM"
 
 msgctxt "Description|"
 msgid "Structural Equation Modeling"
-msgstr ""
+msgstr "Yapısal Eşitlik Modellemesi"
 
 msgctxt "Description|"
 msgid "Mediation Analysis"
-msgstr ""
+msgstr "Aracılık Analizi"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Variables"
-msgstr ""
+msgstr "Değişkenler"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Regressions"
-msgstr ""
+msgstr "Regresyonlar"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Factor"
-msgstr ""
+msgstr "faktör"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Time-varying covariates"
@@ -41,7 +47,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Model Options"
-msgstr ""
+msgstr "A/B Testi"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Growth curve shape"
@@ -53,11 +59,11 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Linear"
-msgstr ""
+msgstr "Doğrusal"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Quadratic"
-msgstr ""
+msgstr "ikinci dereceden"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Cubic"
@@ -69,7 +75,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Additional Output"
-msgstr ""
+msgstr "Ek Çıktı"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Additional Fit Measures"
@@ -97,31 +103,31 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Plots"
-msgstr ""
+msgstr "Grafikler"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Color palette"
-msgstr ""
+msgstr "Renk paleti"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Colorblind"
-msgstr ""
+msgstr "Renk körü"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Colorblind Alt."
-msgstr ""
+msgstr "Renk Körü Alt."
 
 msgctxt "LatentGrowthCurve|"
 msgid "Viridis"
-msgstr ""
+msgstr "Ağırlıklı"
 
 msgctxt "LatentGrowthCurve|"
 msgid "ggplot2"
-msgstr ""
+msgstr "ggplot2"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Gray"
-msgstr ""
+msgstr "Gri"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Curve plot"
@@ -133,7 +139,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Model plot"
-msgstr ""
+msgstr "Model grafiği"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Show parameters"
