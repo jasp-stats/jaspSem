@@ -19,7 +19,7 @@
 
 MediationAnalysis <- function(
           data = NULL,
-          version = "0.17",
+          version = "0.17.1",
           bootstrapCiType = "percentileBiasCorrected",
           bootstrapSamples = 1000,
           ciLevel = 0.95,
