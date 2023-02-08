@@ -19,7 +19,7 @@
 
 MIMIC <- function(
           data = NULL,
-          version = "0.17",
+          version = "0.17.1",
           additionalFitMeasures = FALSE,
           bootstrapCiType = "percentileBiasCorrected",
           bootstrapSamples = 1000,

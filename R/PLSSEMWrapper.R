@@ -19,7 +19,7 @@
 
 PLSSEM <- function(
           data = NULL,
-          version = "0.17",
+          version = "0.17.1",
           additionalFitMeasures = FALSE,
           benchmark = "none",
           bootstrapSamples = 200,
