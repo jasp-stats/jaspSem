@@ -1113,7 +1113,7 @@ checkLavaanModel <- function(model, availableVars) {
   )
   if (length(options[["models"]]) == 1) {
     fitin[["value"]] <- fmli[[1]][c("cfi", "cfi.t", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
-    cfi_t_footnote <- gettextf("T-size CFI is computed for <i>%1$s = 0.05</i>. The T-size equivalents of the conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are <b>poor < %2$s < fair < %3$s < close</b> for model: %4$s",
+    cfi_t_footnote <- gettextf("T-size CFI is computed for <i>%1$s = 0.05</i>. The T-size equivalents of the conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are <b>poor < %2$s < fair < %3$s < close</b> for model: %4$s.",
                                "\u03B1",
                                round(fmli[[1]]["cfi.t.e90"], 3),
                                round(fmli[[1]]["cfi.t.e95"], 3),
@@ -1122,13 +1122,22 @@ checkLavaanModel <- function(model, availableVars) {
   } else {
     for (i in seq_along(options[["models"]])) {
       fitin[[paste0("value_", i)]] <- fmli[[i]][c("cfi", "cfi.t", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
-      cfi_t_footnote <- gettextf("T-size CFI is computed for <i>%1$s = 0.05</i>. The T-size equivalents of the conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are <b>poor < %2$s < fair < %3$s < close</b> for model: %4$s",
-                                 "\u03B1",
-                                 round(fmli[[i]]["cfi.t.e90"], 3),
-                                 round(fmli[[i]]["cfi.t.e95"], 3),
-                                 options[["models"]][[i]][["name"]])
-      fitin$addFootnote(cfi_t_footnote)
+      if (i == 1) {
+        cfi_t_footnote <- gettextf("T-size CFI is computed for <i>%1$s = 0.05</i>. The T-size equivalents of the conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are <b>poor < %2$s < fair < %3$s < close</b> for model: %4$s.",
+                                   "\u03B1",
+                                   round(fmli[[i]]["cfi.t.e90"], 3),
+                                   round(fmli[[i]]["cfi.t.e95"], 3),
+                                   options[["models"]][[i]][["name"]])
+      } else {
+        cfi_t_footnote <- paste0(cfi_t_footnote,
+                                 gettextf(" The T-size equivalents of the conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are <b>poor < %1$s < fair < %2$s < close</b> for model: %3$s.",
+                                          round(fmli[[i]]["cfi.t.e90"], 3),
+                                          round(fmli[[i]]["cfi.t.e95"], 3),
+                                          options[["models"]][[i]][["name"]])
+                                 )
+      }
     }
+    fitin$addFootnote(cfi_t_footnote)
   }
 
   # information criteria
@@ -1168,7 +1177,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (length(options[["models"]]) == 1) {
     fitot[["value"]] <- fmli[[1]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue", "rmsea.t",
                                     "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
-    rmsea_t_footnote <- gettextf("T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents of the conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are <b>close < %2$s < fair < %3$s < poor</b> for model: %4$s",
+    rmsea_t_footnote <- gettextf("T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents of the conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are <b>close < %2$s < fair < %3$s < poor</b> for model: %4$s.",
                                  "\u03B1",
                                  round(fmli[[1]]["rmsea.t.e05"], 3),
                                  round(fmli[[1]]["rmsea.t.e08"], 3),
@@ -1178,13 +1187,21 @@ checkLavaanModel <- function(model, availableVars) {
     for (i in seq_along(options[["models"]])) {
       fitot[[paste0("value_", i)]] <- fmli[[i]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue", "rmsea.t",
                                                   "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
-      rmsea_t_footnote <- gettextf("T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents of the conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are <b>close < %2$s < fair < %3$s < poor</b> for model: %4$s",
-                                   "\u03B1",
-                                   round(fmli[[i]]["rmsea.t.e05"], 3),
-                                   round(fmli[[i]]["rmsea.t.e08"], 3),
-                                   options[["models"]][[i]][["name"]])
-      fitot$addFootnote(rmsea_t_footnote)
+      if(i == 1) {
+        rmsea_t_footnote <- gettextf("T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents of the conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are <b>close < %2$s < fair < %3$s < poor</b> for model: %4$s.",
+                                     "\u03B1",
+                                     round(fmli[[i]]["rmsea.t.e05"], 3),
+                                     round(fmli[[i]]["rmsea.t.e08"], 3),
+                                     options[["models"]][[i]][["name"]])
+      } else {
+        rmsea_t_footnote <- paste0(rmsea_t_footnote,
+                                   gettextf(" The T-size equivalents of the conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are <b>close < %1$s < fair < %2$s < poor</b> for model: %3$s.",
+                                            round(fmli[[i]]["rmsea.t.e05"], 3),
+                                            round(fmli[[i]]["rmsea.t.e08"], 3),
+                                            options[["models"]][[i]][["name"]]))
+      }
     }
+    fitot$addFootnote(rmsea_t_footnote)
   }
 }
 
