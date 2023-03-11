@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2023-03-10 16:20+0000\n"
+"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
+"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
+"jasp/jaspsem-qml/zh_Hans/>\n"
+"Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.16.2-dev\n"
 "X-Language: zh_Hans\n"
 "X-Qt-Contexts: true\n"
 
@@ -967,20 +973,19 @@ msgstr "路径系数"
 
 msgctxt "Description|"
 msgid "Partial Least Squares SEM"
-msgstr ""
+msgstr "偏最小二乘 SEM"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Model 1"
 msgstr "模型 1"
 
 msgctxt "PLSSEM|"
 msgid "Model"
-msgstr ""
+msgstr "模型"
 
 msgctxt "PLSSEM|"
 msgid "Ignore structural model"
-msgstr ""
+msgstr "忽略结构模型"
 
 msgctxt "PLSSEM|"
 msgid "Disattenuate composite correlations"
@@ -992,81 +997,75 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Squared Euclidean distance"
-msgstr ""
+msgstr "平方欧氏距离"
 
 msgctxt "PLSSEM|"
 msgid "Weighted Euclidean distance"
-msgstr ""
+msgstr "加权欧氏距离"
 
 msgctxt "PLSSEM|"
 msgid "Fisher transformed"
-msgstr ""
+msgstr "应用 Fisher 变换"
 
 msgctxt "PLSSEM|"
 msgid "Arithmetic mean"
-msgstr ""
+msgstr "算术平均值"
 
 msgctxt "PLSSEM|"
 msgid "Geometric mean"
-msgstr ""
+msgstr "几何平均值"
 
 msgctxt "PLSSEM|"
 msgid "Harmonic mean"
-msgstr ""
+msgstr "调和平均值"
 
 msgctxt "PLSSEM|"
 msgid "Geometric-harmonic mean"
-msgstr ""
+msgstr "几何调和平均值"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Grouping Variable"
 msgstr "分组变量"
 
 msgctxt "PLSSEM|"
 msgid "Estimation"
-msgstr ""
+msgstr "估计"
 
 msgctxt "PLSSEM|"
 msgid "Error calculation method"
-msgstr ""
+msgstr "误差计算方法"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "None"
 msgstr "无"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Robust"
 msgstr "稳健性"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Bootstrap"
 msgstr "Bootstrap 自助抽样"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Bootstrap samples"
 msgstr "Bootstrap 抽样次数"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Confidence intervals"
 msgstr "置信区间"
 
 msgctxt "PLSSEM|"
 msgid "Weighting approach"
-msgstr ""
+msgstr "加权方法"
 
 msgctxt "PLSSEM|"
 msgid "PLS-PM"
-msgstr ""
+msgstr "PLS-PM"
 
 msgctxt "PLSSEM|"
 msgid "GSCA"
-msgstr ""
+msgstr "GSCA"
 
 msgctxt "PLSSEM|"
 msgid "SUMCORR"
@@ -1122,69 +1121,68 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Convergence criterion"
-msgstr ""
+msgstr "收敛准则"
 
 msgctxt "PLSSEM|"
 msgid "Absolute difference"
-msgstr ""
+msgstr "绝对差异"
 
 msgctxt "PLSSEM|"
 msgid "Squared difference"
-msgstr ""
+msgstr "平方差异"
 
 msgctxt "PLSSEM|"
 msgid "Relative difference"
-msgstr ""
+msgstr "相对差异"
 
 msgctxt "PLSSEM|"
 msgid "Correlation matrix"
-msgstr ""
+msgstr "相关矩阵"
 
 msgctxt "PLSSEM|"
 msgid "Pearson"
-msgstr ""
+msgstr "Pearson"
 
 msgctxt "PLSSEM|"
 msgid "Spearman"
-msgstr ""
+msgstr "Spearman"
 
 msgctxt "PLSSEM|"
 msgid "Handling of inadmissibles"
-msgstr ""
+msgstr "对不容许的估计值的处理方式"
 
 msgctxt "PLSSEM|"
 msgid "Replace"
-msgstr ""
+msgstr "替换"
 
 msgctxt "PLSSEM|"
 msgid "Ignore"
-msgstr ""
+msgstr "忽略"
 
 msgctxt "PLSSEM|"
 msgid "Drop"
-msgstr ""
+msgstr "去除"
 
 msgctxt "PLSSEM|"
 msgid "Handling of flipped signs"
-msgstr ""
+msgstr "对翻转符号的处理方式"
 
 msgctxt "PLSSEM|"
 msgid "Individual"
-msgstr ""
+msgstr "单个"
 
 msgctxt "PLSSEM|"
 msgid "Individual re-estimation"
-msgstr ""
+msgstr "单个重新估计"
 
 msgctxt "PLSSEM|"
 msgid "Construct re-estimation"
-msgstr ""
+msgstr "构造重新估计"
 
 msgctxt "PLSSEM|"
 msgid "Output"
-msgstr ""
+msgstr "输出"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "R-squared"
 msgstr "R 平方"
