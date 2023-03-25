@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2023-03-24 09:38+0000\n"
+"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
+"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
+"jasp/jaspsem-qml/zh_Hans/>\n"
+"Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.17-dev\n"
 "X-Language: zh_Hans\n"
 "X-Qt-Contexts: true\n"
 
@@ -1095,11 +1101,11 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Regression"
-msgstr ""
+msgstr "回归"
 
 msgctxt "PLSSEM|"
 msgid "Inner weighting scheme"
-msgstr ""
+msgstr "内部加权方案"
 
 msgctxt "PLSSEM|"
 msgid "Path"
@@ -1111,7 +1117,7 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Factorial"
-msgstr ""
+msgstr "阶乘"
 
 msgctxt "PLSSEM|"
 msgid "Convergence criterion"
@@ -1181,19 +1187,17 @@ msgctxt "PLSSEM|"
 msgid "R-squared"
 msgstr "R 平方"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Additional fit measures"
 msgstr "附加拟合测度"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Mardia's coefficient"
 msgstr "Mardia's 系数"
 
 msgctxt "PLSSEM|"
 msgid "Reliability measures"
-msgstr ""
+msgstr "可靠性测量"
 
 msgctxt "PLSSEM|"
 msgid "Observed indicator correlations"
