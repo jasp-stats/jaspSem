@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
 "POT-Creation-Date: 2023-01-14 02:47\n"
-"PO-Revision-Date: 2023-04-14 22:52+0000\n"
+"PO-Revision-Date: 2023-04-26 20:33+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-r/pl/"
 ">\n"
@@ -12,13 +12,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 4.17-dev\n"
+"X-Generator: Weblate 4.18-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
-msgstr ""
+msgstr "Model nie mógł zostać oszacowany ze względu na brak konwergencji."
 
 msgid "The model could not be estimated: No degrees of freedom left."
-msgstr ""
+msgstr "Model nie mógł zostać oszacowany: nie pozostały żadne stopnie swobody."
 
 msgid "Chi-square Test"
 msgstr ""
@@ -30,7 +30,7 @@ msgid "Growth curve model"
 msgstr ""
 
 msgid "The model is not admissible: %s"
-msgstr ""
+msgstr "Model nie jest dopuszczalny: %s"
 
 msgid "Warning."
 msgstr ""
@@ -127,73 +127,73 @@ msgid "Metric"
 msgstr ""
 
 msgid "Comparative Fit Index (CFI)"
-msgstr ""
+msgstr "CFI"
 
 msgid "Tucker-Lewis Index (TLI)"
-msgstr ""
+msgstr "TLI"
 
 msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
-msgstr ""
+msgstr "NNFI"
 
 msgid "Bentler-Bonett Normed Fit Index (NFI)"
-msgstr ""
+msgstr "NFI"
 
 msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr ""
+msgstr "PNFI"
 
 msgid "Bollen's Relative Fit Index (RFI)"
-msgstr ""
+msgstr "RFI"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
-msgstr ""
+msgstr "IFI"
 
 msgid "Relative Noncentrality Index (RNI)"
-msgstr ""
+msgstr "RNI"
 
 msgid "Log-likelihood"
 msgstr ""
 
 msgid "Number of free parameters"
-msgstr ""
+msgstr "Liczba wolnych parametrów"
 
 msgid "Akaike (AIC)"
-msgstr ""
+msgstr "Akaike (AIC)"
 
 msgid "Bayesian (BIC)"
-msgstr ""
+msgstr "bayesowski (BIC)"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr ""
+msgstr "Bayesowski skorygowany do wielkości próby (SSABIC)"
 
 msgid "Root mean square error of approximation (RMSEA)"
-msgstr ""
+msgstr "RMSEA"
 
 msgid "RMSEA 90%% CI lower bound"
-msgstr ""
+msgstr "RMSEA 90%% PU (dolna granica)"
 
 msgid "RMSEA 90%% CI upper bound"
-msgstr ""
+msgstr "RMSEA 90%% PU (górna granica)"
 
 msgid "RMSEA p-value"
-msgstr ""
+msgstr "Wartość p dla RMSEA"
 
 msgid "Standardized root mean square residual (SRMR)"
-msgstr ""
+msgstr "SRMR"
 
 msgid "Hoelter's critical N (%s = .05)"
-msgstr ""
+msgstr "N Hoeltera (%s = .05)"
 
 msgid "Hoelter's critical N (%s = .01)"
-msgstr ""
+msgstr "N Hoeltera (%s = .01)"
 
 msgid "Goodness of fit index (GFI)"
-msgstr ""
+msgstr "GFI"
 
 msgid "McDonald fit index (MFI)"
-msgstr ""
+msgstr "MFI"
 
 msgid "Expected cross validation index (ECVI)"
-msgstr ""
+msgstr "ECVI"
 
 msgid "R-Squared"
 msgstr ""
@@ -366,7 +366,7 @@ msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr ""
 
 msgid "Model fit"
-msgstr ""
+msgstr "Dopasowanie modelu"
 
 msgid "Group"
 msgstr "Grupa"
@@ -560,6 +560,7 @@ msgstr ""
 
 msgid "FIML missing data handling only available with ML-type estimators"
 msgstr ""
+"Obsługa braków danych typu FIML jest dostępna tylko dla estymatorów typu ML"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
