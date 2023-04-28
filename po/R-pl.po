@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
 "POT-Creation-Date: 2023-01-14 02:47\n"
-"PO-Revision-Date: 2023-04-26 20:33+0000\n"
+"PO-Revision-Date: 2023-04-29 02:42+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-r/pl/"
 ">\n"
@@ -18,7 +18,7 @@ msgid "The model could not be estimated due to nonconvergence."
 msgstr "Model nie mógł zostać oszacowany ze względu na brak konwergencji."
 
 msgid "The model could not be estimated: No degrees of freedom left."
-msgstr "Model nie mógł zostać oszacowany: nie pozostały żadne stopnie swobody."
+msgstr "Model nie mógł zostać oszacowany: brak wolnych stopni swobody."
 
 msgid "Chi-square Test"
 msgstr ""
@@ -30,7 +30,7 @@ msgid "Growth curve model"
 msgstr ""
 
 msgid "The model is not admissible: %s"
-msgstr "Model nie jest dopuszczalny: %s"
+msgstr "Model jest niedopuszczalny: %s"
 
 msgid "Warning."
 msgstr ""
@@ -109,22 +109,22 @@ msgid "Additional Fit measures"
 msgstr ""
 
 msgid "Fit indices"
-msgstr ""
+msgstr "Wskaźniki dopasowania"
 
 msgid "Index"
-msgstr ""
+msgstr "Indeks"
 
 msgid "Value"
 msgstr "Wartość"
 
 msgid "Information criteria"
-msgstr ""
+msgstr "Kryteria informacyjne"
 
 msgid "Other fit measures"
-msgstr ""
+msgstr "Inne środki dopasowania"
 
 msgid "Metric"
-msgstr ""
+msgstr "Metryczne"
 
 msgid "Comparative Fit Index (CFI)"
 msgstr "CFI"
@@ -163,7 +163,7 @@ msgid "Bayesian (BIC)"
 msgstr "bayesowski (BIC)"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr "Bayesowski skorygowany do wielkości próby (SSABIC)"
+msgstr "Bayesowski (SSABIC) skorygowany do wielkości próby"
 
 msgid "Root mean square error of approximation (RMSEA)"
 msgstr "RMSEA"
@@ -196,7 +196,7 @@ msgid "Expected cross validation index (ECVI)"
 msgstr "ECVI"
 
 msgid "R-Squared"
-msgstr ""
+msgstr "R-kwadrat"
 
 msgid "Implied covariance matrix"
 msgstr ""
@@ -333,7 +333,7 @@ msgid "Factor model"
 msgstr ""
 
 msgid "Additional fit measures"
-msgstr ""
+msgstr "Dodatkowe miary dopasowania"
 
 msgid "Predictor coefficients"
 msgstr ""
