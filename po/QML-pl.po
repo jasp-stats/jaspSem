@@ -1,10 +1,16 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2023-05-04 19:40+0000\n"
+"Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
+"Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
+"pl/>\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 4.18-dev\n"
 "X-Language: pl\n"
 "X-Qt-Contexts: true\n"
 
@@ -246,73 +252,71 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Omit residual single indicator"
-msgstr ""
+msgstr "Pomiń pojedynczy wskaźnik resztowy"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Residual variances"
-msgstr ""
+msgstr "Wariancje reszt"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Correlate exogenous latents"
-msgstr ""
+msgstr "Skoreluj latentne zmienne egzogeniczne"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Add thresholdds"
-msgstr ""
+msgstr "Dodaj progi"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Add scalings parameters"
-msgstr ""
+msgstr "Dodaj parametry skalowania"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Correlate dependent variables"
-msgstr ""
+msgstr "Skoreluj zmienne zależne"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Multigroup LGCM"
-msgstr ""
+msgstr "Wielogrupowe LGCM"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Grouping variable"
-msgstr ""
+msgstr "Zmienna grupująca"
 
 msgctxt "MediationAnalysis|"
 msgid "Predictors"
-msgstr ""
+msgstr "Predyktory"
 
 msgctxt "MediationAnalysis|"
 msgid "Mediators"
-msgstr ""
+msgstr "Mediatory"
 
 msgctxt "MediationAnalysis|"
 msgid "Outcome"
-msgstr ""
+msgstr "Wynik"
 
 msgctxt "MediationAnalysis|"
 msgid "Background confounders"
-msgstr ""
+msgstr "Zmienne zakłócające"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Options"
 msgstr "Opcje"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Standardized estimates"
 msgstr "Oszacowania standaryzowane"
 
 msgctxt "MediationAnalysis|"
 msgid "Lavaan syntax"
-msgstr ""
+msgstr "Składnia Lavaan"
 
 msgctxt "MediationAnalysis|"
 msgid "R-squared"
-msgstr ""
+msgstr "R-kwadrat"
 
 msgctxt "MediationAnalysis|"
 msgid "Additional parameter estimates"
-msgstr ""
+msgstr "Dodatkowe oszacowania parametrów"
 
 msgctxt "MediationAnalysis|"
 msgid "Total indirect effects"
@@ -411,7 +415,6 @@ msgctxt "MediationAnalysis|"
 msgid "None"
 msgstr "Brak"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Mplus"
 msgstr "Mplus"
@@ -574,7 +577,6 @@ msgctxt "Mimic|"
 msgid "None"
 msgstr "Brak"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "Mplus"
 msgstr "Mplus"
@@ -936,7 +938,6 @@ msgctxt "SEM|"
 msgid "Emulation"
 msgstr "Emulacja"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Mplus"
 msgstr "Mplus"
@@ -994,6 +995,7 @@ msgstr ""
 msgctxt "Description|"
 msgid "Evaluate latent data structures with Yves Rosseel’s lavaan program"
 msgstr ""
+"Wyszukaj ukryte struktury danych za pomocą programu lavaan Yvesa Rosseela"
 
 msgctxt "SEM|"
 msgid ""
