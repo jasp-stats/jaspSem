@@ -320,16 +320,16 @@ checkCSemModel <- function(model, availableVars) {
   fittab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
   fittab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
   fittab$addColumnInfo(name = "N",        title = gettext("n"),                  type = "integer")
-  fittab$addColumnInfo(name = "Chisq",    title = gettext("\u03C7\u00B2"),       type = "number" ,
+  fittab$addColumnInfo(name = "Chisq",    title = "\u03C7\u00B2",       type = "number" ,
                        overtitle = gettext("Baseline test"))
   fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
                        overtitle = gettext("Baseline test"))
   fittab$addColumnInfo(name = "PrChisq",  title = gettext("p"),                  type = "pvalue",
                        overtitle = gettext("Baseline test"))
   if (length(options[["models"]]) > 1) {
-    fittab$addColumnInfo(name = "dchisq",   title = gettext("\u0394\u03C7\u00B2"), type = "number" ,
+    fittab$addColumnInfo(name = "dchisq",   title = "\u0394\u03C7\u00B2", type = "number" ,
                          overtitle = gettext("Difference test"))
-    fittab$addColumnInfo(name = "ddf",      title = gettext("\u0394df"),           type = "integer",
+    fittab$addColumnInfo(name = "ddf",      title = "\u0394df",           type = "integer",
                          overtitle = gettext("Difference test"))
     fittab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
                          overtitle = gettext("Difference test"))
@@ -597,12 +597,12 @@ checkCSemModel <- function(model, availableVars) {
   pathTab <- createJaspTable(title = gettext("Regression Coefficients"))
 
   if (options[["group"]] != "")
-    pathTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+    pathTab$addColumnInfo(name = "group",  title = gettext("Group"),        type = "string", combine = TRUE)
 
-  pathTab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),  type = "string", combine = TRUE)
+  pathTab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),      type = "string", combine = TRUE)
   pathTab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),    type = "string")
-  pathTab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
-  pathTab$addColumnInfo(name = "f2",       title = gettext("f\u00B2"),   type = "number")
+  pathTab$addColumnInfo(name = "est",      title = gettext("Estimate"),     type = "number")
+  pathTab$addColumnInfo(name = "f2",       title = "f\u00B2",               type = "number")
 
   if (options[["errorCalculationMethod"]] != "none") {
     pathTab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
