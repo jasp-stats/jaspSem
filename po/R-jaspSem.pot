@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.2\n"
-"POT-Creation-Date: 2023-04-22 02:44\n"
+"POT-Creation-Date: 2023-05-08 15:12\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -358,19 +358,10 @@ msgstr ""
 msgid "n"
 msgstr ""
 
-msgid "χ²"
-msgstr ""
-
 msgid "Baseline test"
 msgstr ""
 
-msgid "Δχ²"
-msgstr ""
-
 msgid "Difference test"
-msgstr ""
-
-msgid "Δdf"
 msgstr ""
 
 msgid "WARNING! model %1$s: %2$s"
@@ -389,9 +380,6 @@ msgid "Regression Coefficients"
 msgstr ""
 
 msgid "Outcome"
-msgstr ""
-
-msgid "f²"
 msgstr ""
 
 msgid "Total effects"

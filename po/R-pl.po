@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2023-01-14 02:47\n"
+"POT-Creation-Date: 2023-05-08 15:12\n"
 "PO-Revision-Date: 2023-05-04 19:40+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-r/pl/"
@@ -380,21 +380,11 @@ msgstr "BIC"
 msgid "n"
 msgstr "n"
 
-msgid "χ²"
-msgstr ""
-
 msgid "Baseline test"
-msgstr ""
-
-msgid "Δχ²"
 msgstr ""
 
 msgid "Difference test"
 msgstr ""
-
-#, fuzzy
-msgid "Δdf"
-msgstr "df"
 
 msgid "WARNING! model %1$s: %2$s"
 msgstr ""
@@ -412,9 +402,6 @@ msgid "Regression Coefficients"
 msgstr ""
 
 msgid "Outcome"
-msgstr ""
-
-msgid "f²"
 msgstr ""
 
 msgid "Total effects"
@@ -748,3 +735,7 @@ msgstr ""
 
 msgid "Path diagram"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Δdf"
+#~ msgstr "df"

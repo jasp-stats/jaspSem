@@ -2,11 +2,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2023-01-14 02:47\n"
+"POT-Creation-Date: 2023-05-08 15:12\n"
 "PO-Revision-Date: 2023-04-20 12:51+0000\n"
 "Last-Translator: Don van den Bergh <donvdbergh@hotmail.com>\n"
-"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/>"
-"\n"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/"
+">\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -402,20 +402,11 @@ msgstr "BIC"
 msgid "n"
 msgstr "n"
 
-msgid "χ²"
-msgstr "χ²"
-
 msgid "Baseline test"
 msgstr "Baseline test"
 
-msgid "Δχ²"
-msgstr "Δχ²"
-
 msgid "Difference test"
 msgstr "Verschillen test"
-
-msgid "Δdf"
-msgstr "Δdf"
 
 msgid "WARNING! model %1$s: %2$s"
 msgstr "WAARSCHUWING! Model %1$s: %2$s"
@@ -434,9 +425,6 @@ msgstr "Regressie Coëfficiënten"
 
 msgid "Outcome"
 msgstr "Uitkomst"
-
-msgid "f²"
-msgstr "f²"
 
 msgid "Total effects"
 msgstr "Totale effecten"
@@ -808,6 +796,18 @@ msgstr "sepc (nox)"
 
 msgid "Path diagram"
 msgstr "Paddiagram"
+
+#~ msgid "χ²"
+#~ msgstr "χ²"
+
+#~ msgid "Δχ²"
+#~ msgstr "Δχ²"
+
+#~ msgid "Δdf"
+#~ msgstr "Δdf"
+
+#~ msgid "f²"
+#~ msgstr "f²"
 
 #~ msgid "RMSEA 90% CI lower bound"
 #~ msgstr "RMSEA 90% BI ondergrens"

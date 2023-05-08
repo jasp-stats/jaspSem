@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2023-01-14 02:47\n"
+"POT-Creation-Date: 2023-05-08 15:12\n"
 "PO-Revision-Date: 2023-01-07 10:35+0000\n"
 "Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -379,19 +379,10 @@ msgstr ""
 msgid "n"
 msgstr ""
 
-msgid "χ²"
-msgstr ""
-
 msgid "Baseline test"
 msgstr ""
 
-msgid "Δχ²"
-msgstr ""
-
 msgid "Difference test"
-msgstr ""
-
-msgid "Δdf"
 msgstr ""
 
 msgid "WARNING! model %1$s: %2$s"
@@ -410,9 +401,6 @@ msgid "Regression Coefficients"
 msgstr ""
 
 msgid "Outcome"
-msgstr ""
-
-msgid "f²"
 msgstr ""
 
 msgid "Total effects"

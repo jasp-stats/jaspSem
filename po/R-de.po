@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2023-01-14 02:47\n"
+"POT-Creation-Date: 2023-05-08 15:12\n"
 "PO-Revision-Date: 2023-04-16 13:59+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
@@ -401,20 +401,11 @@ msgstr "BIC"
 msgid "n"
 msgstr "n"
 
-msgid "χ²"
-msgstr "χ²"
-
 msgid "Baseline test"
 msgstr "Baseline-Test"
 
-msgid "Δχ²"
-msgstr "Δχ²"
-
 msgid "Difference test"
 msgstr "Differenz-Test"
-
-msgid "Δdf"
-msgstr "Δdf"
 
 msgid "WARNING! model %1$s: %2$s"
 msgstr "WARNUNG! Modell %1$s: %2$s"
@@ -433,9 +424,6 @@ msgstr "Regressionskoeffizienten"
 
 msgid "Outcome"
 msgstr "Ergebnis"
-
-msgid "f²"
-msgstr "f²"
 
 msgid "Total effects"
 msgstr "Gesamte Effekte"
@@ -807,6 +795,18 @@ msgstr "sepc (all)"
 
 msgid "Path diagram"
 msgstr "Pfaddiagramm"
+
+#~ msgid "χ²"
+#~ msgstr "χ²"
+
+#~ msgid "Δχ²"
+#~ msgstr "Δχ²"
+
+#~ msgid "Δdf"
+#~ msgstr "Δdf"
+
+#~ msgid "f²"
+#~ msgstr "f²"
 
 #~ msgid "RMSEA 90% CI lower bound"
 #~ msgstr "RMSEA 90% KI untere Grenze"

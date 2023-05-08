@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2023-01-14 02:47\n"
+"POT-Creation-Date: 2023-05-08 15:12\n"
 "PO-Revision-Date: 2023-04-21 17:51+0000\n"
 "Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -391,21 +391,11 @@ msgstr "BIC"
 msgid "n"
 msgstr "n"
 
-msgid "χ²"
-msgstr ""
-
 msgid "Baseline test"
 msgstr "ベースラインテスト"
 
-msgid "Δχ²"
-msgstr ""
-
 msgid "Difference test"
 msgstr "差異の検定"
-
-#, fuzzy
-msgid "Δdf"
-msgstr "df"
 
 msgid "WARNING! model %1$s: %2$s"
 msgstr ""
@@ -425,9 +415,6 @@ msgstr "回帰係数"
 
 msgid "Outcome"
 msgstr "結果変数"
-
-msgid "f²"
-msgstr ""
 
 #, fuzzy
 msgid "Total effects"
@@ -782,6 +769,10 @@ msgstr "sept(nox)"
 
 msgid "Path diagram"
 msgstr "パス図"
+
+#, fuzzy
+#~ msgid "Δdf"
+#~ msgstr "df"
 
 #~ msgid "RMSEA 90% CI lower bound"
 #~ msgstr "RMSEA 90% CI 下限"

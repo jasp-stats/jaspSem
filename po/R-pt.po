@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2023-01-14 02:47\n"
+"POT-Creation-Date: 2023-05-08 15:12\n"
 "PO-Revision-Date: 2023-01-11 15:53+0000\n"
 "Last-Translator: ssantos <ssantos@web.de>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/jaspsem-"
@@ -385,21 +385,11 @@ msgstr "BIC"
 msgid "n"
 msgstr "n"
 
-msgid "χ²"
-msgstr ""
-
 msgid "Baseline test"
-msgstr ""
-
-msgid "Δχ²"
 msgstr ""
 
 msgid "Difference test"
 msgstr ""
-
-#, fuzzy
-msgid "Δdf"
-msgstr "gl"
 
 msgid "WARNING! model %1$s: %2$s"
 msgstr ""
@@ -419,9 +409,6 @@ msgstr "Coeficientes de Regressão"
 
 msgid "Outcome"
 msgstr "Resultado"
-
-msgid "f²"
-msgstr ""
 
 #, fuzzy
 msgid "Total effects"
@@ -780,6 +767,10 @@ msgstr ""
 
 msgid "Path diagram"
 msgstr "Diagrama de caminhos"
+
+#, fuzzy
+#~ msgid "Δdf"
+#~ msgstr "gl"
 
 #~ msgid "RMSEA 90% CI lower bound"
 #~ msgstr "RMSEA limite inferior 90% IC"

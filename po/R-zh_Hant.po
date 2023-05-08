@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2023-01-14 02:47\n"
+"POT-Creation-Date: 2023-05-08 15:12\n"
 "PO-Revision-Date: 2023-01-09 04:16+0000\n"
 "Last-Translator: Changya Hu <changyahu@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
@@ -388,21 +388,11 @@ msgstr "BIC"
 msgid "n"
 msgstr "樣本數"
 
-msgid "χ²"
-msgstr ""
-
 msgid "Baseline test"
 msgstr "基底模式檢定"
 
-msgid "Δχ²"
-msgstr ""
-
 msgid "Difference test"
 msgstr "差異檢定"
-
-#, fuzzy
-msgid "Δdf"
-msgstr "自由度"
 
 msgid "WARNING! model %1$s: %2$s"
 msgstr ""
@@ -422,9 +412,6 @@ msgstr "迴歸係數"
 
 msgid "Outcome"
 msgstr "結果"
-
-msgid "f²"
-msgstr ""
 
 #, fuzzy
 msgid "Total effects"
@@ -781,3 +768,7 @@ msgstr "sepc (非內生變數)"
 
 msgid "Path diagram"
 msgstr "路徑圖"
+
+#, fuzzy
+#~ msgid "Δdf"
+#~ msgstr "自由度"

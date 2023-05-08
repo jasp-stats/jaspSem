@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
-"POT-Creation-Date: 2023-01-14 02:47\n"
+"POT-Creation-Date: 2023-05-08 15:12\n"
 "PO-Revision-Date: 2023-01-16 12:06+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -401,20 +401,11 @@ msgstr "BIC"
 msgid "n"
 msgstr "n"
 
-msgid "χ²"
-msgstr "χ²"
-
 msgid "Baseline test"
 msgstr "Contraste de referencia"
 
-msgid "Δχ²"
-msgstr "Δχ²"
-
 msgid "Difference test"
 msgstr "Contraste de diferencias"
-
-msgid "Δdf"
-msgstr "Δgl"
 
 msgid "WARNING! model %1$s: %2$s"
 msgstr "AVISO! %1$s modelo: %2$s"
@@ -433,9 +424,6 @@ msgstr "Coeficientes de Regresión"
 
 msgid "Outcome"
 msgstr "Resultado"
-
-msgid "f²"
-msgstr "f²"
 
 msgid "Total effects"
 msgstr "Efectos totales"
@@ -810,3 +798,15 @@ msgstr "sepc (nox)"
 
 msgid "Path diagram"
 msgstr "Diagrama de ruta"
+
+#~ msgid "χ²"
+#~ msgstr "χ²"
+
+#~ msgid "Δχ²"
+#~ msgstr "Δχ²"
+
+#~ msgid "Δdf"
+#~ msgstr "Δgl"
+
+#~ msgid "f²"
+#~ msgstr "f²"
