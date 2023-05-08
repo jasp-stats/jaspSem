@@ -1304,7 +1304,7 @@ checkLavaanModel <- function(model, availableVars) {
   mardiatab$addColumnInfo(name = "Type",        title = "",                      type = "string")
   mardiatab$addColumnInfo(name = "Coefficient", title = gettext("Coefficient"),  type = "number")
   mardiatab$addColumnInfo(name = "z",           title = gettext("z"),            type = "number")
-  mardiatab$addColumnInfo(name = "Chisq",       title = gettext("\u03C7\u00B2"), type = "number")
+  mardiatab$addColumnInfo(name = "Chisq",       title = "\u03C7\u00B2",          type = "number")
   mardiatab$addColumnInfo(name = "DF",          title = gettext("df"),           type = "integer")
   mardiatab$addColumnInfo(name = "pvalue",      title = gettext("p"),            type = "pvalue")
 
