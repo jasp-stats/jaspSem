@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
 "POT-Creation-Date: 2023-05-08 15:12\n"
-"PO-Revision-Date: 2023-01-07 10:35+0000\n"
-"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
+"PO-Revision-Date: 2023-05-19 13:48+0000\n"
+"Last-Translator: Pr0ph3t <beomnyul@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "jasp/jaspsem-r/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -11,22 +11,22 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.15.1-dev\n"
+"X-Generator: Weblate 4.18-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
-msgstr ""
+msgstr "由于不收敛，该模型无法估计。"
 
 msgid "The model could not be estimated: No degrees of freedom left."
 msgstr ""
 
 msgid "Chi-square Test"
-msgstr ""
+msgstr "卡方检验"
 
 msgid "Baseline model"
-msgstr ""
+msgstr "基准模型"
 
 msgid "Growth curve model"
-msgstr ""
+msgstr "生长曲线模型"
 
 msgid "The model is not admissible: %s"
 msgstr ""
@@ -50,7 +50,7 @@ msgid "Std. Error"
 msgstr ""
 
 msgid "z-value"
-msgstr ""
+msgstr "z 值"
 
 msgid "p"
 msgstr ""
@@ -71,7 +71,7 @@ msgid "Std. Est."
 msgstr ""
 
 msgid "All"
-msgstr ""
+msgstr "全部"
 
 msgid "No X"
 msgstr ""
@@ -95,10 +95,10 @@ msgid "Cubic slope"
 msgstr ""
 
 msgid "Mean"
-msgstr ""
+msgstr "均值"
 
 msgid "Variance"
-msgstr ""
+msgstr "方差"
 
 msgid ""
 "Residual variance is negative. This may indicate model misspecification."
@@ -632,7 +632,7 @@ msgid "Residual variances"
 msgstr ""
 
 msgid "Means"
-msgstr ""
+msgstr "均值"
 
 msgid "Defined parameters"
 msgstr ""
