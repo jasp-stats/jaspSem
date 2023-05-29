@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
 "POT-Creation-Date: 2023-05-08 15:12\n"
-"PO-Revision-Date: 2023-05-12 11:49+0000\n"
+"PO-Revision-Date: 2023-05-30 18:51+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-r/pl/"
 ">\n"
@@ -21,10 +21,10 @@ msgid "The model could not be estimated: No degrees of freedom left."
 msgstr "Model nie mógł zostać oszacowany: brak wolnych stopni swobody."
 
 msgid "Chi-square Test"
-msgstr ""
+msgstr "Test Chi-kwadrat"
 
 msgid "Baseline model"
-msgstr ""
+msgstr "Model bazowy"
 
 msgid "Growth curve model"
 msgstr ""
@@ -33,25 +33,25 @@ msgid "The model is not admissible: %s"
 msgstr "Model jest niedopuszczalny: %s"
 
 msgid "Warning."
-msgstr ""
+msgstr "Ostrzeżenie."
 
 msgid "Parameter estimates"
-msgstr ""
+msgstr "Oszacowanie parametrów"
 
 msgid "Component"
 msgstr "Składowa"
 
 msgid "Parameter"
-msgstr ""
+msgstr "Parametr"
 
 msgid "Estimate"
 msgstr "Oszacowanie"
 
 msgid "Std. Error"
-msgstr ""
+msgstr "Błąd stand."
 
 msgid "z-value"
-msgstr ""
+msgstr "wartość z"
 
 msgid "p"
 msgstr "<em>p</em>"
@@ -60,25 +60,25 @@ msgid "Lower"
 msgstr "Dolna granica"
 
 msgid "95%% Confidence Interval"
-msgstr ""
+msgstr "95%% przedział ufności"
 
 msgid "Latent covariances"
 msgstr ""
 
 msgid "LV"
-msgstr ""
+msgstr "LV"
 
 msgid "Std. Est."
 msgstr ""
 
 msgid "All"
-msgstr ""
+msgstr "Wszystko"
 
 msgid "No X"
 msgstr ""
 
 msgid "Predictor"
-msgstr ""
+msgstr "Predyktor"
 
 msgid "Variable"
 msgstr "Zmienna"
@@ -710,7 +710,7 @@ msgid "The standardized residual covariance matrices could not be computed"
 msgstr ""
 
 msgid "Modification indices"
-msgstr ""
+msgstr "Indeksy modyfikacyjne"
 
 msgid "Modification Indices"
 msgstr ""
