@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
 "POT-Creation-Date: 2023-05-08 15:12\n"
-"PO-Revision-Date: 2023-05-12 11:49+0000\n"
+"PO-Revision-Date: 2023-06-02 20:48+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-r/pl/"
 ">\n"
@@ -21,10 +21,10 @@ msgid "The model could not be estimated: No degrees of freedom left."
 msgstr "Model nie mógł zostać oszacowany: brak wolnych stopni swobody."
 
 msgid "Chi-square Test"
-msgstr ""
+msgstr "Test Chi-kwadrat"
 
 msgid "Baseline model"
-msgstr ""
+msgstr "Model bazowy"
 
 msgid "Growth curve model"
 msgstr ""
@@ -33,25 +33,25 @@ msgid "The model is not admissible: %s"
 msgstr "Model jest niedopuszczalny: %s"
 
 msgid "Warning."
-msgstr ""
+msgstr "Ostrzeżenie."
 
 msgid "Parameter estimates"
-msgstr ""
+msgstr "Oszacowanie parametrów"
 
 msgid "Component"
 msgstr "Składowa"
 
 msgid "Parameter"
-msgstr ""
+msgstr "Parametr"
 
 msgid "Estimate"
 msgstr "Oszacowanie"
 
 msgid "Std. Error"
-msgstr ""
+msgstr "Błąd stand."
 
 msgid "z-value"
-msgstr ""
+msgstr "wartość z"
 
 msgid "p"
 msgstr "<em>p</em>"
@@ -60,25 +60,25 @@ msgid "Lower"
 msgstr "Dolna granica"
 
 msgid "95%% Confidence Interval"
-msgstr ""
+msgstr "95%% przedział ufności"
 
 msgid "Latent covariances"
 msgstr ""
 
 msgid "LV"
-msgstr ""
+msgstr "LV"
 
 msgid "Std. Est."
 msgstr ""
 
 msgid "All"
-msgstr ""
+msgstr "Wszystko"
 
 msgid "No X"
 msgstr ""
 
 msgid "Predictor"
-msgstr ""
+msgstr "Predyktor"
 
 msgid "Variable"
 msgstr "Zmienna"
@@ -205,7 +205,7 @@ msgid "Residual covariance matrix"
 msgstr ""
 
 msgid "Curve plot"
-msgstr ""
+msgstr "Wykres krzywej"
 
 msgid "Model plot"
 msgstr ""
@@ -247,7 +247,7 @@ msgid ""
 msgstr ""
 
 msgid "Direct effects"
-msgstr ""
+msgstr "Efekty bezpośrednie"
 
 msgid "%s%% Confidence Interval"
 msgstr "%s%% Przedział ufności"
@@ -256,7 +256,7 @@ msgid "Upper"
 msgstr "Górna granica"
 
 msgid "Indirect effects"
-msgstr ""
+msgstr "Efekty pośrednie"
 
 msgid "Total indirect effects"
 msgstr ""
@@ -271,7 +271,7 @@ msgid "Delta method"
 msgstr ""
 
 msgid "Robust"
-msgstr ""
+msgstr "Odporne"
 
 msgid "percentile bootstrap"
 msgstr ""
@@ -286,10 +286,10 @@ msgid "normal theory"
 msgstr ""
 
 msgid "robust"
-msgstr ""
+msgstr "odporne"
 
 msgid "%1$s standard errors, %2$s confidence intervals."
-msgstr ""
+msgstr "%1$s błędy standardowe, %2$s przedziały ufności."
 
 msgid ""
 "%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all "
@@ -297,7 +297,7 @@ msgid ""
 msgstr ""
 
 msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
-msgstr ""
+msgstr "%1$s błędy standardowe, %2$s przedziały ufności, %3$s estymator."
 
 msgid "Path plot"
 msgstr ""
@@ -313,7 +313,7 @@ msgid ""
 msgstr ""
 
 msgid "Model syntax"
-msgstr ""
+msgstr "Składnia modelu"
 
 msgid ""
 "Estimation failed! Message: The model did not converge. Try using a "
@@ -321,25 +321,25 @@ msgid ""
 msgstr ""
 
 msgid "Chi Square test"
-msgstr ""
+msgstr "Test chi kwadrat"
 
 msgid "df"
 msgstr "df"
 
 msgid "&#967;&sup2;"
-msgstr ""
+msgstr "&#967;&sup2;"
 
 msgid "Factor model"
-msgstr ""
+msgstr "Model czynnikowy"
 
 msgid "Additional fit measures"
 msgstr "Dodatkowe miary dopasowania"
 
 msgid "Predictor coefficients"
-msgstr ""
+msgstr "Współczynniki predyktora"
 
 msgid "Standardized"
-msgstr ""
+msgstr "Standaryzowane"
 
 msgid "Endo"
 msgstr ""
@@ -384,25 +384,25 @@ msgid "Baseline test"
 msgstr ""
 
 msgid "Difference test"
-msgstr ""
+msgstr "Test różnic"
 
 msgid "WARNING! model %1$s: %2$s"
-msgstr ""
+msgstr "UWAGA! model %1$s: %2$s"
 
 msgid "WARNING! model %1$s, group %2$s: %3$s"
-msgstr ""
+msgstr "UWAGA! model %1$s, grupa %2$s: %3$s"
 
 msgid "Weigths"
-msgstr ""
+msgstr "Wagi"
 
 msgid "Factor Loadings"
-msgstr ""
+msgstr "Ładunki czynnikowe"
 
 msgid "Regression Coefficients"
-msgstr ""
+msgstr "Współczynniki regresji"
 
 msgid "Outcome"
-msgstr ""
+msgstr "Rezultat"
 
 msgid "Total effects"
 msgstr ""
@@ -433,13 +433,13 @@ msgid "PLS-PM MAE"
 msgstr ""
 
 msgid "GSCA MAE"
-msgstr ""
+msgstr "GSCA MAE"
 
 msgid "PCA MAE"
-msgstr ""
+msgstr "PCA MAE"
 
 msgid "MAXVAR MAE"
-msgstr ""
+msgstr "MAXVAR MAE"
 
 msgid "Target RMSE"
 msgstr ""
@@ -448,7 +448,7 @@ msgid "Linear model RMSE"
 msgstr ""
 
 msgid "PLS-PM RMSE"
-msgstr ""
+msgstr "PLS-PM RMSE"
 
 msgid "GSCA RMSE"
 msgstr ""
@@ -622,7 +622,7 @@ msgid "Regression coefficients"
 msgstr ""
 
 msgid "Factor variances"
-msgstr ""
+msgstr "Wariancja czynnika"
 
 msgid "Factor covariances"
 msgstr ""
@@ -631,7 +631,7 @@ msgid "Variables"
 msgstr ""
 
 msgid "Residual variances"
-msgstr ""
+msgstr "Wariancje reszt"
 
 msgid "Means"
 msgstr ""
@@ -710,10 +710,10 @@ msgid "The standardized residual covariance matrices could not be computed"
 msgstr ""
 
 msgid "Modification indices"
-msgstr ""
+msgstr "Indeksy modyfikacyjne"
 
 msgid "Modification Indices"
-msgstr ""
+msgstr "Indeksy modyfikacyjne"
 
 msgid "group"
 msgstr ""
