@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2023-05-08 15:12\n"
-"PO-Revision-Date: 2023-04-16 13:59+0000\n"
+"PO-Revision-Date: 2023-06-18 13:47+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 4.17-dev\n"
+"X-Generator: Weblate 4.18.1\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "Das Modell konnte nicht geschätzt werden durch fehlende Konvergenz."
@@ -431,10 +431,13 @@ msgstr "Gesamte Effekte"
 msgid "Endogenous Indicator Prediction"
 msgstr ""
 
+#, fuzzy
 msgid ""
 "The target model uses the same weighting approach as the benchmark model, "
 "please choose another benchmark."
 msgstr ""
+"Das Zielmodell verwendet denselben Gewichtungsansatz wie das Referenz-"
+"Modell, bitte wählen Sie eine andere Referenz."
 
 msgid ""
 "For the predicted indicator scores table(s), please select a single "
@@ -481,8 +484,9 @@ msgstr ""
 msgid "MAXVAR RMSE"
 msgstr ""
 
+#, fuzzy
 msgid "Target Q2 prediction"
-msgstr ""
+msgstr "Ziel-Q2-Vorhersage"
 
 msgid ""
 "There are not enough observations for each k-fold, try setting 'cross-"
@@ -501,15 +505,16 @@ msgstr "Vorhersage fehlgeschlagen, Meldung: %s"
 msgid "Indicator Scores"
 msgstr "Indikator-Scores"
 
+#, fuzzy
 msgid "Actual scores"
-msgstr ""
+msgstr "Tatsächliche Scores"
 
 #, fuzzy
 msgid "Predicted scores"
 msgstr "Vorhergesagte Scores"
 
 msgid "Target residuals"
-msgstr ""
+msgstr "Ziel-Residuen"
 
 msgid "benchmark"
 msgstr ""
