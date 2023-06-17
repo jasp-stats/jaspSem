@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2023-06-18 06:47+0000\n"
+"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
+"Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
+"jasp/jaspsem-qml/zh_Hans/>\n"
+"Language: zh_Hans\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 4.18.1\n"
 "X-Language: zh_Hans\n"
 "X-Qt-Contexts: true\n"
 
@@ -983,11 +989,11 @@ msgstr "忽略结构模型"
 
 msgctxt "PLSSEM|"
 msgid "Disattenuate composite correlations"
-msgstr ""
+msgstr "减弱复合相关性"
 
 msgctxt "PLSSEM|"
 msgid "Approach correction factors"
-msgstr ""
+msgstr "方法校正因子"
 
 msgctxt "PLSSEM|"
 msgid "Squared Euclidean distance"
@@ -1063,27 +1069,27 @@ msgstr "GSCA"
 
 msgctxt "PLSSEM|"
 msgid "SUMCORR"
-msgstr ""
+msgstr "SUMCORR"
 
 msgctxt "PLSSEM|"
 msgid "MAXVAR"
-msgstr ""
+msgstr "MAXVAR"
 
 msgctxt "PLSSEM|"
 msgid "SSQCORR"
-msgstr ""
+msgstr "SSQCORR"
 
 msgctxt "PLSSEM|"
 msgid "MINVAR"
-msgstr ""
+msgstr "MINVAR"
 
 msgctxt "PLSSEM|"
 msgid "GENVAR"
-msgstr ""
+msgstr "GENVAR"
 
 msgctxt "PLSSEM|"
 msgid "PCA"
-msgstr ""
+msgstr "主成分分析"
 
 msgctxt "PLSSEM|"
 msgid "Unit"
@@ -1091,7 +1097,7 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Bartlett"
-msgstr ""
+msgstr "Bartlett"
 
 msgctxt "PLSSEM|"
 msgid "Regression"
@@ -1107,7 +1113,7 @@ msgstr "路径"
 
 msgctxt "PLSSEM|"
 msgid "Centroid"
-msgstr ""
+msgstr "质心"
 
 msgctxt "PLSSEM|"
 msgid "Factorial"
@@ -1203,35 +1209,35 @@ msgstr "隐含指标相关性"
 
 msgctxt "PLSSEM|"
 msgid "Observed construct correlations"
-msgstr ""
+msgstr "观察到的结构相关性"
 
 msgctxt "PLSSEM|"
 msgid "Implied construct correlations"
-msgstr ""
+msgstr "隐含的结构相关性"
 
 msgctxt "PLSSEM|"
 msgid "Prediction"
-msgstr ""
+msgstr "预测"
 
 msgctxt "PLSSEM|"
 msgid "Predict endogenous indicator scores"
-msgstr ""
+msgstr "预测内生指标得分"
 
 msgctxt "PLSSEM|"
 msgid "Cross-validation k-folds"
-msgstr ""
+msgstr "交叉验证 k-folds"
 
 msgctxt "PLSSEM|"
 msgid "Repetitions"
-msgstr ""
+msgstr "重复次数"
 
 msgctxt "PLSSEM|"
 msgid "Benchmark(s)"
-msgstr ""
+msgstr "基准"
 
 msgctxt "PLSSEM|"
 msgid "Linear model"
-msgstr ""
+msgstr "线性模型"
 
 msgctxt "PLSSEM|"
 msgid "All"
@@ -1239,4 +1245,4 @@ msgstr "全部"
 
 msgctxt "PLSSEM|"
 msgid "Show predicted scores"
-msgstr ""
+msgstr "显示预测分数"
