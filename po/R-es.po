@@ -44,7 +44,7 @@ msgid "Parameter"
 msgstr "Parámetro"
 
 msgid "Estimate"
-msgstr "Estimar"
+msgstr "Estimación"
 
 msgid "Std. Error"
 msgstr "Error Típico"
