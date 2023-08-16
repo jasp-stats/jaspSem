@@ -285,7 +285,8 @@ checkCSemModel <- function(model, availableVars) {
   cSemOpts[[".PLS_ignore_structural_model"]] <- options[["structuralModelIgnored"]]
   cSemOpts[[".PLS_weight_scheme_inner"]]     <- options[["innerWeightingScheme"]]
 
-  if (options[["compositeCorrelationDisattenuated"]])
+  if (options[["compositeCorrelationDisattenuated"]]) {
+    cSemOpts[".disattenuate"] <- TRUE
     cSemOpts[".PLS_approach_cf"] <- switch(options[["correctionFactor"]],
                                            "squaredEuclidean" = "dist_squared_euclid",
                                            "weightedEuclidean" = "dist_euclid_weighted",
@@ -294,6 +295,10 @@ checkCSemModel <- function(model, availableVars) {
                                            "geometricMean" = "mean_geometric",
                                            "harmonicMean" = "mean_harmonic",
                                            "geometricHarmonicMean" = "geo_of_harmonic")
+
+  } else {
+    cSemOpts[".disattenuate"] <- FALSE
+  }
 
   if (options[["group"]] != "")
     cSemOpts[[".id"]] <- options[["group"]]
