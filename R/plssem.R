@@ -18,6 +18,7 @@
 PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
+
   options <- .plsSemPrepOpts(options)
 
   # Read data, check if ready
@@ -182,6 +183,7 @@ checkCSemModel <- function(model, availableVars) {
   cSemOpts <- .plsSemOptionsTocSemOptions(options, dataset)
 
   for (i in seq_along(results)) {
+
     if (!is.null(results[[i]])) next # existing model is reused
 
     # create options
@@ -213,26 +215,25 @@ checkCSemModel <- function(model, availableVars) {
     }
 
     # resample if robust/ bootstrap
-    if (options[["errorCalculationMethod"]] != "none") {
+    if (options[["errorCalculationMethod"]] == "robust") {
 
-      if(options[["errorCalculationMethod"]] == "bootstrap") {
+      if(options[["robustMethod"]] == "bootstrap") {
         startProgressbar(options[["bootstrapSamples"]], "Resampling")
       } else {
         startProgressbar(nrow(dataset), "Resampling")
       }
 
-      #argument .user_funs in cSEM::resamplecSEMResults only accepts a function with .object as input and a vector as output; c(0,0) does not have any other function
+      # argument .user_funs in cSEM::resamplecSEMResults only accepts a function with .object as input and a vector as output; c(0,0) does not have any other function
       tickFunction <- function(.object)
       {
         progressbarTick()
         return(c(0,0))
       }
-
       # resample
       fit <- try(cSEM::resamplecSEMResults(.object = fit,
                                                  .R = options[["bootstrapSamples"]],
                                                  .user_funs = tickFunction,
-                                                 .resample_method = ifelse(options[["errorCalculationMethod"]] == "robust", "jackknife", options[["errorCalculationMethod"]]),
+                                                 .resample_method = options[["robustMethod"]],
                                                  .handle_inadmissibles = options[["handlingOfInadmissibles"]],
                                                  .sign_change_option = switch(options[["handlingOfFlippedSigns"]],
                                                                               "individualReestimation" = "individual_reestimate",
@@ -240,6 +241,8 @@ checkCSemModel <- function(model, availableVars) {
                                                                               options[["handlingOfFlippedSigns"]]
                                                                               ),
                                                  .seed = if (options[["setSeed"]]) options[["seed"]]))
+
+
       if (isTryError(fit)) {
         err <- .extractErrorMessage(fit)
 
@@ -552,7 +555,7 @@ checkCSemModel <- function(model, availableVars) {
   # Measurement model
 
   # create weights table
-  weightTab <- createJaspTable(title = gettext("Weigths"))
+  weightTab <- createJaspTable(title = gettext("Weights"))
 
   if (options[["group"]] != "")
     weightTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -690,6 +693,7 @@ checkCSemModel <- function(model, availableVars) {
       }
     }
   } else {
+
     pe <- cSEM::infer(fit, .alpha = 1 - options[["ciLevel"]])
   }
 

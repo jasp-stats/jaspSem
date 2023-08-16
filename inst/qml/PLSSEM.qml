@@ -92,25 +92,42 @@ Form
 			{
 				title: qsTr("Error calculation method")
 				name: "errorCalculationMethod"
+				id: errorCalcMethod
 				RadioButton { value: "none";		label: qsTr("None"); checked: true	}
-				RadioButton { value: "robust";	label: qsTr("Robust")				}
-				RadioButton
-				{
-					value: "bootstrap";	label: qsTr("Bootstrap")
-					IntegerField
+				RadioButton 
+				{ 
+					value: "robust";	
+					label: qsTr("Robust")
+					RadioButtonGroup 
+					{ 
+						title: qsTr("")
+						name: "robustMethod"	
+						RadioButton { 
+							value: "bootstrap";	label: qsTr("Bootstrap"); checked: true
+							IntegerField
+							{
+								name: "bootstrapSamples"
+								label: qsTr("Samples")
+								fieldWidth: 60
+								defaultValue: 200
+								min: 1
+								// enabled: errorCalcMethod.value == "robust"
+							} 
+						}
+						RadioButton { value: "jackknife";	label: qsTr("Jackknife") }
+					}
+
+					CIField 
 					{
-						name: "bootstrapSamples"
-						label: qsTr("Bootstrap samples")
-						fieldWidth: 60
-						defaultValue: 200
-						min: 1
+						text: qsTr("Confidence intervals")
+						name: "ciLevel"
+						enabled: errorCalcMethod.value == "robust"
 					}
 				}
+
+				
 			}
-			CIField {
-				text: qsTr("Confidence intervals")
-				name: "ciLevel"
-			}
+
 			SetSeed {}
 		}
 
