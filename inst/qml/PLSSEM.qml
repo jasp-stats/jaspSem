@@ -100,7 +100,7 @@ Form
 					label: qsTr("Robust")
 					RadioButtonGroup 
 					{ 
-						title: qsTr("")
+						title: ""
 						name: "robustMethod"	
 						RadioButton { 
 							value: "bootstrap";	label: qsTr("Bootstrap"); checked: true
