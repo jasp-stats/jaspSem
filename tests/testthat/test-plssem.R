@@ -286,7 +286,8 @@ test_that("Bootstrapping works", {
   options$correctionFactor          <- "squaredEuclidean"
   options$setSeed                   <- TRUE
   options$seed                      <- 123
-  options$errorCalculationMethod    <- "bootstrap"
+  options$errorCalculationMethod    <- "robust"
+  options$robustMethod              <- "bootstrap"
   options$bootstrapSamples          <- 200
   options$handlingOfInadmissibles   <- "ignore"
   options$handlingOfFlippedSigns    <- "none"
