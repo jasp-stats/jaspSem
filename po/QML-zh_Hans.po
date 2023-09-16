@@ -104,30 +104,6 @@ msgid "Plots"
 msgstr "绘图"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Color palette"
-msgstr "调色板"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Colorblind"
-msgstr "色盲"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Colorblind Alt."
-msgstr "色盲Alt."
-
-msgctxt "LatentGrowthCurve|"
-msgid "Viridis"
-msgstr "Viridis"
-
-msgctxt "LatentGrowthCurve|"
-msgid "ggplot2"
-msgstr "ggplot2"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Gray"
-msgstr "灰阶"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Curve plot"
 msgstr "曲线图"
 
@@ -1042,10 +1018,6 @@ msgid "Bootstrap"
 msgstr "Bootstrap 自助抽样"
 
 msgctxt "PLSSEM|"
-msgid "Bootstrap samples"
-msgstr "Bootstrap 抽样次数"
-
-msgctxt "PLSSEM|"
 msgid "Confidence intervals"
 msgstr "置信区间"
 
@@ -1240,3 +1212,11 @@ msgstr "全部"
 msgctxt "PLSSEM|"
 msgid "Show predicted scores"
 msgstr "显示预测分数"
+
+msgctxt "PLSSEM|"
+msgid "Samples"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Jackknife"
+msgstr ""

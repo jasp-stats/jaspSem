@@ -101,30 +101,6 @@ msgid "Plots"
 msgstr "Wykresy"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Color palette"
-msgstr "Paleta kolorów"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Colorblind"
-msgstr "Kontrastowy"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Colorblind Alt."
-msgstr "Kontrastowy 2"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Viridis"
-msgstr "Viridis"
-
-msgctxt "LatentGrowthCurve|"
-msgid "ggplot2"
-msgstr "ggplot2"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Gray"
-msgstr "Szary"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Curve plot"
 msgstr "Wykres krzywej"
 
@@ -1041,10 +1017,6 @@ msgid "Bootstrap"
 msgstr "Bootstrap"
 
 msgctxt "PLSSEM|"
-msgid "Bootstrap samples"
-msgstr "Próbki bootstrapowe"
-
-msgctxt "PLSSEM|"
 msgid "Confidence intervals"
 msgstr "Przedziały ufności"
 
@@ -1239,3 +1211,11 @@ msgstr "Wszystko"
 msgctxt "PLSSEM|"
 msgid "Show predicted scores"
 msgstr "Pokaż przewidywane oceny"
+
+msgctxt "PLSSEM|"
+msgid "Samples"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Jackknife"
+msgstr ""

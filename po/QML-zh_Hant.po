@@ -100,30 +100,6 @@ msgid "Plots"
 msgstr "圖"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Color palette"
-msgstr "條色盤"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Colorblind"
-msgstr "色盲友善調色一"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Colorblind Alt."
-msgstr "色盲友善調色二"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Viridis"
-msgstr "色盲友善調色三"
-
-msgctxt "LatentGrowthCurve|"
-msgid "ggplot2"
-msgstr "ggplot2 調色"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Gray"
-msgstr "灰階"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Curve plot"
 msgstr "曲線圖"
 
@@ -1045,10 +1021,6 @@ msgctxt "PLSSEM|"
 msgid "Bootstrap"
 msgstr "拔靴法"
 
-msgctxt "PLSSEM|"
-msgid "Bootstrap samples"
-msgstr ""
-
 #, fuzzy
 msgctxt "PLSSEM|"
 msgid "Confidence intervals"
@@ -1247,4 +1219,12 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Show predicted scores"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Samples"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Jackknife"
 msgstr ""

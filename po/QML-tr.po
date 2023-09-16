@@ -100,30 +100,6 @@ msgid "Plots"
 msgstr "Grafikler"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Color palette"
-msgstr "Renk paleti"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Colorblind"
-msgstr "Renk körü"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Colorblind Alt."
-msgstr "Renk Körü Alt."
-
-msgctxt "LatentGrowthCurve|"
-msgid "Viridis"
-msgstr "Ağırlıklı"
-
-msgctxt "LatentGrowthCurve|"
-msgid "ggplot2"
-msgstr "ggplot2"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Gray"
-msgstr "Gri"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Curve plot"
 msgstr ""
 
@@ -1044,10 +1020,6 @@ msgid "Bootstrap"
 msgstr ""
 
 msgctxt "PLSSEM|"
-msgid "Bootstrap samples"
-msgstr ""
-
-msgctxt "PLSSEM|"
 msgid "Confidence intervals"
 msgstr ""
 
@@ -1241,4 +1213,12 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Show predicted scores"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Samples"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Jackknife"
 msgstr ""

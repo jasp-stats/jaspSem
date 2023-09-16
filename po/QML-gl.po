@@ -162,30 +162,6 @@ msgid "Plots"
 msgstr "Gráficas"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Color palette"
-msgstr "Paleta de cores"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Colorblind"
-msgstr "Daltónica"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Colorblind Alt."
-msgstr "Daltónica Alternativa"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Viridis"
-msgstr "Violeta"
-
-msgctxt "LatentGrowthCurve|"
-msgid "ggplot2"
-msgstr "GGplot2"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Gray"
-msgstr "Gris"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Curve plot"
 msgstr "Gráfica da curva"
 
@@ -1046,10 +1022,6 @@ msgid "Bootstrap"
 msgstr "Bootstrap"
 
 msgctxt "PLSSEM|"
-msgid "Bootstrap samples"
-msgstr "Mostras de Bootstrap"
-
-msgctxt "PLSSEM|"
 msgid "Confidence intervals"
 msgstr "Intervalos de confianza"
 
@@ -1244,3 +1216,11 @@ msgstr "Todo"
 msgctxt "PLSSEM|"
 msgid "Show predicted scores"
 msgstr "Amosar as puntuacións preditas"
+
+msgctxt "PLSSEM|"
+msgid "Samples"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Jackknife"
+msgstr ""

@@ -100,30 +100,6 @@ msgid "Plots"
 msgstr "プロット"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Color palette"
-msgstr "カラーパレット"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Colorblind"
-msgstr "カラーブラインド"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Colorblind Alt."
-msgstr "カラーブラインドのための代案"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Viridis"
-msgstr "ビリジアン"
-
-msgctxt "LatentGrowthCurve|"
-msgid "ggplot2"
-msgstr "ggplot2"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Gray"
-msgstr "グレー"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Curve plot"
 msgstr "曲線プロット"
 
@@ -1049,11 +1025,6 @@ msgstr "ブートストラップ"
 
 #, fuzzy
 msgctxt "PLSSEM|"
-msgid "Bootstrap samples"
-msgstr "ブートストラップサンプル"
-
-#, fuzzy
-msgctxt "PLSSEM|"
 msgid "Confidence intervals"
 msgstr "信頼区間"
 
@@ -1250,4 +1221,12 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Show predicted scores"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Samples"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Jackknife"
 msgstr ""
