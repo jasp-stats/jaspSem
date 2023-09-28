@@ -18,6 +18,7 @@
 SEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
+
   # Read dataset
   options <- .semPrepOpts(options)
 
@@ -109,7 +110,7 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
     if (any(factab < 3)) {
       violations <- names(table(groupfac))[table(groupfac) < 3]
       .quitAnalysis(gettextf("Grouping variable has fewer than 3 observations in group %s",
-                    paste(violations, collapse = ", ")))
+                             paste(violations, collapse = ", ")))
 
     }
   }
@@ -273,7 +274,7 @@ checkLavaanModel <- function(model, availableVars) {
       errmsg <- gettextf("Estimation failed Message: %s", err)
 
       modelContainer$setError(paste0("Error in model \"", options[["models"]][[i]][["name"]], "\" - ",
-                                    .decodeVarsInMessage(names(dataset), errmsg)))
+                                     .decodeVarsInMessage(names(dataset), errmsg)))
       modelContainer$dependOn("models") # add dependency so everything gets updated upon model change
       break
     }
@@ -479,7 +480,20 @@ checkLavaanModel <- function(model, availableVars) {
     names(lrt_args) <- "object" # (the first result is object, the others ...)
     lrt_args[["model.names"]] <- vapply(options[["models"]], getElement, name = "name", "")
     lrt <- .withWarnings(do.call(lavaan::lavTestLRT, lrt_args))
+
+    # the lrt test in lavaan produces the standard chisq values and df and pvalue, even when each model is using a scaled test
+    # so we should replace the necessary values
+    chis <- sapply(semResults, function(x) {
+      ins <- lavaan::inspect(x, what = "fit")
+      if (is.na(ins["chisq.scaled"])) return(c(ins["chisq"], ins["df"], ins["pvalue"]))
+      else return(c(ins["chisq.scaled"], ins["df.scaled"], ins["pvalue.scaled"]))
+    })
+    lrt$value[["Chisq"]] <- chis[1, ]
+    lrt$value[["Df"]] <- chis[2, ]
+    lrt$value[["PrChisq"]] <- chis[3, ]
+
     lrt$value[1,5:7] <- NA
+
   }
 
   fittab[["Model"]]    <- rownames(lrt$value)
@@ -773,9 +787,9 @@ checkLavaanModel <- function(model, availableVars) {
   deftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   deftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   deftab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                      overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   deftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                      overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
   if (options[["standardizedEstimate"]]) {
     deftab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
@@ -1064,10 +1078,10 @@ checkLavaanModel <- function(model, availableVars) {
       sig6 <- sig2*sig4
 
       delta <- chisqModel-df+2+sig*(z+(z2-1)/sig-z/sig2 + 2*(df-1)*(z2-1)/(3*sig3)
-                              +( -(df-1)*(4*z3-z)/6+(df-2)*z/2 )/sig4
-                              +4*(df-1)*(3*z4+2*z2-11)/(15*sig5)
-                              +(-(df-1)*(96*z5+164*z3-767*z)/90-4*(df-1)*(df-2)*(2*z3-5*z)/9+(df-2)*z/2)/sig6
-                              )
+                                    +( -(df-1)*(4*z3-z)/6+(df-2)*z/2 )/sig4
+                                    +4*(df-1)*(3*z4+2*z2-11)/(15*sig5)
+                                    +(-(df-1)*(96*z5+164*z3-767*z)/90-4*(df-1)*(df-2)*(2*z3-5*z)/9+(df-2)*z/2)/sig6
+      )
       delta <- max(delta,0)
       return(delta)
     }
