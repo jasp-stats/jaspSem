@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2023-09-16 02:40\n"
-"PO-Revision-Date: 2023-10-24 04:16+0000\n"
+"PO-Revision-Date: 2023-10-25 16:04+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 5.1.1-dev\n"
+"X-Generator: Weblate 5.1.1\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "Das Modell konnte nicht geschätzt werden durch fehlende Konvergenz."
@@ -413,7 +413,6 @@ msgstr "WARNUNG! Modell %1$s: %2$s"
 msgid "WARNING! model %1$s, group %2$s: %3$s"
 msgstr "WARNUNG! Modell %1$s, Gruppe %2$s: %3$s"
 
-#, fuzzy
 msgid "Weights"
 msgstr "Gewichte"
 
@@ -517,8 +516,9 @@ msgstr "Vorhergesagte Scores"
 msgid "Target residuals"
 msgstr "Ziel-Residuen"
 
+#, fuzzy
 msgid "benchmark"
-msgstr ""
+msgstr "Referenz"
 
 msgid "lm"
 msgstr "lm"
