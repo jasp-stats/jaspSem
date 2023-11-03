@@ -207,7 +207,7 @@ checkLavaanModel <- function(model, availableVars) {
                               "dependentCorrelation", "threshold", "scalingParameter", "efaConstrained", "standardizedVariable", "naAction", "estimator", "test",
                               "errorCalculationMethod", "informationMatrix", "emulation", "group", "equalLoading", "equalIntercept",
                               "equalResidual", "equalResidualCovariance", "equalMean", "equalThreshold", "equalRegression",
-                              "equalVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters"))
+                              "equalVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters", "manifestMeanFixedToZero"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -331,7 +331,6 @@ checkLavaanModel <- function(model, availableVars) {
 
   lavopts[["mimic"]] <- options[["emulation"]]
 
-
   # model features
   lavopts[["meanstructure"]]   <- options[["meanStructure"]]
   lavopts[["int.ov.free"]]     <- !options[["manifestInterceptFixedToZero"]]
@@ -339,7 +338,8 @@ checkLavaanModel <- function(model, availableVars) {
   lavopts[["fixed.x"]]         <- options[["exogenousCovariateFixed"]]
   lavopts[["orthogonal"]]      <- options[["orthogonal"]]
   lavopts[["std.lv"]]          <- options[["factorScaling"]] == "factorVariance"
-  lavopts[["effect.coding"]]   <- options[["factorScaling"]] == "effectCoding"
+  lavopts[["effect.coding"]]   <- ifelse(options[["factorScaling"]] == "effectCoding", TRUE,
+                                         ifelse(options[["manifestMeanFixedToZero"]], "intercepts", FALSE))
   lavopts[["auto.fix.first"]]  <- options[["factorScaling"]] == "factorLoading"
   lavopts[["auto.fix.single"]] <- options[["residualSingleIndicatorOmitted"]]
   lavopts[["auto.var"]]        <- options[["residualVariance"]]
@@ -751,7 +751,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   # Means
   if (options[["meanStructure"]]) {
-    mutab <- createJaspTable(title = gettext("Means"))
+    mutab <- createJaspTable(title = gettext("Intercepts"))
 
     if (options[["group"]] != "")
       mutab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)

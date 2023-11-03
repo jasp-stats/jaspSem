@@ -154,8 +154,9 @@ Form
 				]
 			}
 			CheckBox { name: "meanStructure";					label: qsTr("Include mean structure")							}
-			CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Fix manifest intercepts to zero")					}
 			CheckBox { name: "latentInterceptFixedToZero";		label: qsTr("Fix latent intercepts to zero");	checked: true	}
+			CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Fix manifest intercepts to zero")					}
+			CheckBox { name: "manifestMeanFixedToZero";		label: qsTr("Fix mean of manifest intercepts to zero")}
 			CheckBox { name: "orthogonal";						label: qsTr("Assume factors uncorrelated")						}
 		}
 
