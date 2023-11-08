@@ -137,6 +137,7 @@ Form
 			CheckBox
 			{
 				name: "standardizedEstimate"
+				id: stdest
 				label: qsTr("Standardized estimates")
 				checked: false
 				RadioButtonGroup
@@ -256,13 +257,15 @@ Form
 				RadioButton
 				{
 					value: "bootstrap";	label: qsTr("Bootstrap")
+					enabled: !stdest.checked
 					IntegerField
 					{
 						name: "bootstrapSamples"
 						label: qsTr("Bootstrap samples")
 						fieldWidth: 60
 						defaultValue: 1000
-						min: 1
+						min: 100
+						max:100000
 					}
 					DropDown {
                         label: qsTr("Type")
