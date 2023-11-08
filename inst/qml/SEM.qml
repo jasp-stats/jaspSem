@@ -83,7 +83,44 @@ Form
 
 	Section
 	{
-		title: qsTr("Output options")
+		title: qsTr("Model")
+		Group
+		{
+			DropDown
+			{
+				name: "factorScaling"
+				label: qsTr("Factor scaling")
+				values:
+				[
+					{ label: qsTr("Factor loadings")	, value: "factorLoading"	},
+					{ label: qsTr("Factor variance")	, value: "factorVariance"			},
+					{ label: qsTr("Effects coding")		, value: "effectCoding"	},
+					{ label: qsTr("None")				, value: "none"				}
+				]
+			}
+			CheckBox { name: "meanStructure";					label: qsTr("Include mean structure")							}
+			CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Fix manifest intercepts to zero")					}
+			CheckBox { name: "latentInterceptFixedToZero";		label: qsTr("Fix latent intercepts to zero");	checked: true	}
+			CheckBox { name: "orthogonal";						label: qsTr("Assume factors uncorrelated")						}
+		}
+
+		Group
+		{
+
+			CheckBox { name: "exogenousCovariateFixed";			label: qsTr("Fix exogenous covariates"); 		checked: true	}
+			CheckBox { name: "residualSingleIndicatorOmitted";	label: qsTr("Omit residual single indicator");	checked: true	}
+			CheckBox { name: "residualVariance";				label: qsTr("Include residual variances");		checked: true	}
+			CheckBox { name: "exogenousLatentCorrelation";		label: qsTr("Correlate exogenous latents");		checked: true	}
+			CheckBox { name: "dependentCorrelation";			label: qsTr("Correlate dependent variables");	checked: true	}
+			CheckBox { name: "threshold";						label: qsTr("Add thresholds");					checked: true	}
+			CheckBox { name: "scalingParameter";				label: qsTr("Add scaling parameters");			checked: true	}
+			CheckBox { name: "efaConstrained";					label: qsTr("Constrain EFA blocks");			checked: true	}
+		}
+	}
+
+	Section
+	{
+		title: qsTr("Output")
 
 		Group
 		{
@@ -152,6 +189,7 @@ Form
 
 	Section
 	{
+<<<<<<< HEAD
 		title: qsTr("Model options")
 		Group
 		{
@@ -191,6 +229,9 @@ Form
 	Section
 	{
 		title: qsTr("Estimation options")
+=======
+		title: qsTr("Estimation")
+>>>>>>> 069a741bd (improved handling of ordinal endogenous variables, other minor fixes)
 
 		Group
 		{
@@ -259,17 +300,8 @@ Form
                     { value: "uls",     label: qsTr("ULS")      },
                     { value: "dwls",    label: qsTr("DWLS")     },
                     { value: "pml",     label: qsTr("PML")      },
-                    { value: "mlm",     label: qsTr("MLM")      },
-                    { value: "mlmvs",   label: qsTr("MLMVS")    },
                     { value: "mlf",     label: qsTr("MLF")      },
-                    { value: "mlr",     label: qsTr("MLR")      },
-                    { value: "wlsm",    label: qsTr("WLSM")     },
-                    { value: "wlsmvs",  label: qsTr("WLSMVS")   },
-                    { value: "wlsmv",   label: qsTr("WLSMV")    },
-                    { value: "ulsm",    label: qsTr("ULSM")     },
-                    { value: "ulsmvs",  label: qsTr("ULSMVS")   },
-                    { value: "ulsmv",   label: qsTr("ULSMV")    }
-
+                    { value: "mlr",     label: qsTr("MLR")      }
                 ]
 
 			}
@@ -296,6 +328,7 @@ Form
 				label: qsTr("Missing data handling")
 				values:
 				[
+					{ label: qsTr("Auto")               , value: "default"			},
 					{ label: qsTr("FIML")				, value: "fiml"				},
 					{ label: qsTr("Listwise deletion")	, value: "listwise"			},
 					{ label: qsTr("Pairwise")			, value: "pairwise"			},
@@ -309,7 +342,6 @@ Form
 			{
 				name: "emulation"
 				label: qsTr("Emulation")
-				enabled: estimator.currentValue == "default" || estimator.currentValue == "ml" || estimator.currentValue == "gls" || estimator.currentValue == "wls" || estimator.currentValue == "uls" || estimator.currentValue == "dwls" || estimator.currentValue == "pml"
 				values: [
 					{ value: "lavaan",	label: qsTr("None") 	},
 					{ value: "mplus",	label: qsTr("Mplus") 	},

@@ -83,7 +83,7 @@ Form
 
 	Section
 	{
-		title: qsTr("Model Options")
+		title: qsTr("Model")
 		Group
 		{
 			title: qsTr("Growth curve shape")
@@ -134,17 +134,31 @@ Form
 
 	Section
 	{
-		title: qsTr("Additional Output")
+		title: qsTr("Output")
+		GroupBox
+        {
+            CheckBox
+			{
+				name: "standardizedEstimate"
+                id: stdest
+				label: qsTr("Standardized estimates")
+				checked: false
+				RadioButtonGroup
+				{
+					name: "standardizedEstimateType"
+					RadioButton { value: "all"; 	label: qsTr("All"); checked: true	}
+					RadioButton { value: "latents"; label: qsTr("Latents")	}
+					RadioButton { value: "noX"; 	label: qsTr("no X")		}
+				
+				}
+			}
+			CheckBox { label: qsTr("Implied covariance matrix")  ; name: "impliedCovariance" 	}
+			CheckBox { label: qsTr("Residual covariance matrix") ; name: "residualCovariance"	}
+        }
 		GroupBox
 		{
 			CheckBox { label: qsTr("Additional Fit Measures")   ; name: "additionalFitMeasures"	}
 			CheckBox { label: qsTr("R-Squared")                 ; name: "rSquared"				}
-			CheckBox { label: qsTr("Standardized estimates")    ; name: "standardizedEstimate"	}
-		}
-		GroupBox
-		{
-			CheckBox { label: qsTr("Implied covariance matrix")  ; name: "impliedCovariance" 	}
-			CheckBox { label: qsTr("Residual covariance matrix") ; name: "residualCovariance"	}
 			CheckBox { label: qsTr("Show lavaan syntax")         ; name: "syntax" 				}
 		}
 	}
@@ -185,84 +199,97 @@ Form
 		}
 	}
 
-	Section
-	{
-		text: qsTr("Advanced")
-		RadioButtonGroup
-		{
-			title: qsTr("Emulation")
-			name: "emulation"
-			RadioButton { text: qsTr("None")  ; name: "lavaan"  ; checked: true }
-			RadioButton { text: qsTr("Mplus") ; name: "mplus" }
-			RadioButton { text: qsTr("EQS")   ; name: "eqs"   }
-		}
-
-		DropDown
-			{
-				name: "naAction"
-				label: qsTr("Missing data handling")
-				values:
-				[
-					{ label: qsTr("FIML")				, value: "fiml"				},
-					{ label: qsTr("Listwise deletion")	, value: "listwise"			},
-					{ label: qsTr("Pairwise")			, value: "pairwise"			},
-					{ label: qsTr("Two-stage")			, value: "twoStage"			},
-					{ label: qsTr("Robust two-stage")	, value: "twoStageRobust"	},
-					{ label: qsTr("Doubly robust")		, value: "doublyRobust"		},
-				]
-			}
-
-		GroupBox
-		{
-			title: qsTr("Error calculation")
-			CIField { text: qsTr("CI width"); name: "ciLevel" }
-			RadioButtonGroup
-			{
-				title: qsTr("Method")
-				name: "errorCalculationMethod"
-				RadioButton { text: qsTr("Standard")  ; name: "standard" ; checked: true }
-				RadioButton { text: qsTr("Robust")    ; name: "robust" }
-				RadioButton {
-					text: qsTr("Bootstrap CI")
-					name: "bootstrap"
-					IntegerField {
-						text: qsTr("Bootstrap samples")
-						name: "bootstrapSamples"
-						defaultValue: 1000
-						min: 100
-						max: 1000000
-					}
-				}
-			}
-		}
-
-		DropDown
+	Section {
+        text: qsTr("Estimation")
+        GroupBox
+        {
+            RadioButtonGroup {
+                title: qsTr("Error calculation")
+                name: "errorCalculationMethod"
+				enabled: estimator.currentValue == "default" || estimator.currentValue == "ml" || estimator.currentValue == "gls" || estimator.currentValue == "wls" || estimator.currentValue == "uls" || estimator.currentValue == "dwls"
+                RadioButton { text: qsTr("Standard")  ; name: "standard" ; checked: true }
+                RadioButton { text: qsTr("Robust")    ; name: "robust" }
+                RadioButton {
+                    text: qsTr("Bootstrap")
+                    name: "bootstrap"
+                    enabled: !stdest.checked
+                    IntegerField {
+                        text: qsTr("Replications")
+                        name: "bootstrapSamples"
+                        defaultValue: 1000
+                        min: 100
+                        max: 100000
+                    }
+                    DropDown {
+                        label: qsTr("Type")
+                        name: "bootstrapCiType"
+                        values: [
+                            { label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"   },
+                            { label: qsTr("Percentile"),                value: "percentile"         },
+                            { label: qsTr("Normal theory"),             value: "normalTheory"         }
+                        ]
+                    }
+                }
+            }
+            CIField {
+                text: qsTr("Confidence intervals")
+                name: "ciLevel"
+            }
+        }
+        
+        GroupBox {
+            Layout.fillWidth: true
+            CheckBox{name: "standardizedVariable"; id: stdvar; label: qsTr("Standardize variables before estimation"); checked: false}
+            DropDown
 			{
 				name: "estimator"
 				id: estimator
 				label: qsTr("Estimator")
 				values: [
-                    { value: "default", label: qsTr("Auto")     },
+                    { value: "default", label: qsTr("Auto"), checked: true    },
                     { value: "ml",      label: qsTr("ML")       },
                     { value: "gls",     label: qsTr("GLS")      },
                     { value: "wls",     label: qsTr("WLS")      },
                     { value: "uls",     label: qsTr("ULS")      },
                     { value: "dwls",    label: qsTr("DWLS")     },
-                    { value: "pml",     label: qsTr("PML")      },
-                    { value: "mlm",     label: qsTr("MLM")      },
-                    { value: "mlmvs",   label: qsTr("MLMVS")    },
                     { value: "mlf",     label: qsTr("MLF")      },
-                    { value: "mlr",     label: qsTr("MLR")      },
-                    { value: "wlsm",    label: qsTr("WLSM")     },
-                    { value: "wlsmvs",  label: qsTr("WLSMVS")   },
-                    { value: "wlsmv",   label: qsTr("WLSMV")    },
-                    { value: "ulsm",    label: qsTr("ULSM")     },
-                    { value: "ulsmvs",  label: qsTr("ULSMVS")   },
-                    { value: "ulsmv",   label: qsTr("ULSMV")    }
-
+                    { value: "mlr",     label: qsTr("MLR")      }
                 ]
-
 			}
+            DropDown
+			{
+				name: "modelTest"
+				label: qsTr("Model test")
+				values: [
+					{ value: "default",					label: qsTr("Auto") 						},
+					{ value: "standard",				label: qsTr("Standard")						},
+					{ value: "satorraBentler",			label: qsTr("Satorra-Bentler")				},
+					{ value: "yuanBentler",				label: qsTr("Yuan-Bentler")					},
+					{ value: "meanAndVarianceAdjusted",	label: qsTr("Mean and Variance adjusted")	},
+					{ value: "scaledAndShifted",		label: qsTr("Scaled and shifted")			},
+					{ value: "bollenStine",				label: qsTr("Bootstrap (Bollen-Stine)")		}
+				]
+				enabled: estimator.currentValue == "default" || estimator.currentValue == "ml" || estimator.currentValue == "gls" || estimator.currentValue == "wls" || estimator.currentValue == "uls" || estimator.currentValue == "dwls"
+            }
+            RadioButtonGroup {
+                title: qsTr("Missing data handling")
+                name: "naAction"
+				RadioButton { text: qsTr("Auto")                                ; name: "default" ; checked: true   }
+                RadioButton { text: qsTr("Full Information Maximum Likelihood") ; name: "fiml"					}
+                RadioButton { text: qsTr("Exclude cases listwise")              ; name: "listwise"            	}
+                RadioButton { text: qsTr("Exclude cases pairwise")              ; name: "pairwise"             	}
+            }
+            DropDown
+			{
+				name: "emulation"
+				label: qsTr("Emulation")
+				values: [
+					{ value: "lavaan",	label: qsTr("None") 	},
+					{ value: "mplus",	label: qsTr("Mplus") 	},
+					{ value: "eqs",		label: qsTr("EQS") 		}
+				]
+			}
+        }
 
 		GroupBox
 		{

@@ -27,6 +27,9 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   # Enrich dataset
   dataset <- .lgcmEnrichData(dataset, options)
 
+  #Edit options
+  options <- .lgcmEditOptions(options)
+
   # Error checking
   errors <- .lgcmCheckErrors(dataset, options)
 
@@ -84,6 +87,17 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   return(dataset)
 }
 
+.lgcmEditOptions <- function(options) {
+  if (options[["naAction"]] == "default") {
+    if(options[["estimator"]] %in% c("gls", "wls", "uls", "dwls")) {
+      options[["naAction"]] <- "listwise"
+    } else {
+      options[["naAction"]] <- "fiml"
+    }
+  }
+  return(options)
+}
+
 .lgcmCheckErrors <- function(dataset, options) {
   # some error check
   return(TRUE)
@@ -91,14 +105,39 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 
 # Results functions ----
 .lgcmComputeResults <- function(modelContainer, dataset, options) {
-  lgcmResult <- try(lavaan::growth(
-    model     = .lgcmOptionsToMod(options),
-    data      = dataset,
-    se        = ifelse(options[["errorCalculationMethod"]] == "bootstrap", "standard", options[["errorCalculationMethod"]]),
-    mimic     = options[["emulation"]],
-    estimator = options[["estimator"]],
-    missing   = options[["naAction"]]
-  ))
+  if (options[["estimator"]] %in% c("default", "ml", "gls", "wls", "uls", "dwls")) {
+    lgcmResult <- try(lavaan::growth(
+      model     = .lgcmOptionsToMod(options),
+      data      = dataset,
+      se        = ifelse(options[["errorCalculationMethod"]] == "bootstrap", "standard", options[["errorCalculationMethod"]]),
+      information     = "expected",
+      mimic     = options[["emulation"]],
+      estimator = options[["estimator"]],
+      test            = switch(options[["modelTest"]],
+                               "satorraBentler" = "Satorra.Bentler",
+                               "yuanBentler" = "Yuan.Bentler",
+                               "meanAndVarianceAdjusted" = "mean.var.adjusted",
+                               "scaledAndShifted" = "scaled.shifted",
+                               "bollenStine" = "Bollen.Stine",
+                               "default" = "default",
+                               "standard" = "standard"
+      ),
+      missing   = options[["naAction"]],
+      std.ov    = options[["standardizedVariable"]]
+    ))
+  } else {
+    lgcmResult <- try(lavaan::growth(
+      model     = .lgcmOptionsToMod(options),
+      data      = dataset,
+      information     = "expected",
+      mimic     = options[["emulation"]],
+      estimator = options[["estimator"]],
+      missing   = options[["naAction"]],
+      std.ov    = options[["standardizedVariable"]]
+    ))
+  }
+
+
   if (inherits(lgcmResult, "try-error")) {
     modelContainer$setError(paste(
       "Model error:",
@@ -203,7 +242,7 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     modelContainer$dependOn(c(
       "variables", "regressions", "covariates", "categorical", "timings",
       "intercept", "linear", "quadratic", "cubic", "covaryingLatentCurve", "emulation",
-      "naAction", "estimator", "errorCalculationMethod", "bootstrapSamples"
+      "naAction", "estimator", "errorCalculationMethod", "bootstrapSamples", "standardizedVariable"
     ))
     jaspResults[["modelContainer"]] <- modelContainer
   }
@@ -214,10 +253,10 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 .lgcmFitTable <- function(modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["maintab"]])) return()
   maintab <- createJaspTable(gettext("Chi-square Test"))
-  maintab$addColumnInfo(name = "mod",    title = "Model",        type = "string")
-  maintab$addColumnInfo(name = "chisq",  title = "\u03a7\u00b2", type = "number", format = "dp:3")
+  maintab$addColumnInfo(name = "mod",    title = "",        type = "string")
+  maintab$addColumnInfo(name = "chisq",  title = "<i>\u03a7\u00b2</i>", type = "number")
   maintab$addColumnInfo(name = "df",     title = "df",           type = "integer")
-  maintab$addColumnInfo(name = "pvalue", title = "p",            type = "number", format = "dp:3;p:.001")
+  maintab$addColumnInfo(name = "pvalue", title = "p",            type = "pvalue")
 
   modelContainer[["maintab"]] <- createJaspContainer("Model fit")
   modelContainer[["maintab"]]$position <- 1
@@ -229,10 +268,42 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   if (modelContainer$getError()) return()
 
   fm <- lavaan::fitMeasures(lgcmResult)
+  if (lavaan::lavInspect(modelContainer[["model"]][["object"]], what = "options")[["test"]] != "standard")
+    fm[c("chisq", "df", "baseline.chisq", "baseline.df", "pvalue", "baseline.pvalue")] <- fm[c("chisq.scaled", "df.scaled", "baseline.chisq.scaled", "baseline.df.scaled", "pvalue.scaled", "baseline.pvalue.scaled")]
+
   maintab[["mod"]]    <- c(gettext("Baseline model"), gettext("Growth curve model"))
   maintab[["chisq"]]  <- fm[c("baseline.chisq", "chisq")]
   maintab[["df"]]     <- fm[c("baseline.df", "df")]
-  maintab[["pvalue"]] <- c(NA, fm["pvalue"])
+  maintab[["pvalue"]] <- c(fm[["baseline.pvalue"]], fm["pvalue"])
+
+  # add test statistic correction footnote
+  test <- lavaan::lavInspect(modelContainer[["model"]][["object"]], what = "options")[["test"]]
+
+  if (test != "standard") {
+    LUT <- tibble::tribble(
+      ~option,              ~name,
+      "Satorra.Bentler",    gettext("Satorra-Bentler scaled test-statistic"),
+      "Yuan.Bentler",       gettext("Yuan-Bentler scaled test-statistic"),
+      "Yuan.Bentler.Mplus", gettext("Yuan-Bentler (Mplus) scaled test-statistic"),
+      "mean.var.adjusted",  gettext("mean and variance adjusted test-statistic"),
+      "Satterthwaite",      gettext("mean and variance adjusted test-statistic"),
+      "scaled.shifted",     gettext("scaled and shifted test-statistic"),
+      "Bollen.Stine",       gettext("bootstrap (Bollen-Stine) probability value"),
+      "bootstrap",          gettext("bootstrap (Bollen-Stine) probability value"),
+      "boot",               gettext("bootstrap (Bollen-Stine) probability value")
+    )
+    testname <- LUT[test == tolower(LUT$option), "name"][[1]]
+    ftext <- gettextf("Model tests based on %s.", testname)
+    maintab$addFootnote(message = ftext)
+  }
+
+  #add missing data footnote
+  nrm <- nrow(dataset) - lavaan::lavInspect(modelContainer[["model"]][["object"]], "ntotal")
+  if(nrm == 0) {
+    maintab$addFootnote(gettextf("Missing data handling: <i>%1$s</i>.", ifelse(options[["naAction"]] == "fiml", "Full information maximum likelihood", options[["naAction"]])))
+  } else {
+    maintab$addFootnote(gettextf("Missing data handling: <i>%1$s</i>. Removed cases: %2$s", ifelse(options[["naAction"]] == "fiml", "Full information maximum likelihood", options[["naAction"]]), nrm))
+  }
 
   # display warnings in footnote
 
@@ -256,16 +327,17 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   } else {
     modelContainer[["partabs"]] <- createJaspContainer(gettext("Parameter estimates"))
   }
-  partabs$dependOn("standardizedEstimate")
+  partabs$dependOn(c("ciLevel", "bootstrapCiType", "standardizedEstimate", "standardizedEstimateType"))
   partabs$position <- 2
 
   # create tables
+  est_title <- ifelse(options[["standardizedEstimate"]], gettext("Standardized Estimate"), gettext("Estimate"))
 
   # latent curve
   latcur <- createJaspTable("Latent curve")
   latcur$addColumnInfo("component", title = gettext("Component"),  type = "string", combine = TRUE)
   latcur$addColumnInfo("param",     title = gettext("Parameter"),  type = "string")
-  latcur$addColumnInfo("est",       title = gettext("Estimate"),   type = "number", format = "dp:3")
+  latcur$addColumnInfo("est",       title = est_title,             type = "number", format = "dp:3")
   latcur$addColumnInfo("se" ,       title = gettext("Std. Error"), type = "number", format = "dp:3")
   latcur$addColumnInfo("zval",      title = gettext("z-value"),    type = "number", format = "dp:3")
   latcur$addColumnInfo("pval",      title = gettext("p"),          type = "number", format = "dp:3;p:.001")
@@ -273,12 +345,6 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
                        overtitle = gettext("95%% Confidence Interval"))
   latcur$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
                        overtitle = gettext("95%% Confidence Interval"))
-
-  if (options[["standardizedEstimate"]]) {
-    latcur$addColumnInfo("std.lv",  title = "LV",   type = "number", format = "dp:3", overtitle = "Std. Est.")
-    latcur$addColumnInfo("std.all", title = "All",  type = "number", format = "dp:3", overtitle = "Std. Est.")
-    latcur$addColumnInfo("std.nox", title = "No X", type = "number", format = "dp:3", overtitle = "Std. Est.")
-  }
 
   modelContainer[["partabs"]][["latcur"]] <- latcur
 
@@ -288,7 +354,7 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     latcov$addColumnInfo("lhs",  title = "", type = "string")
     latcov$addColumnInfo("sep",  title = "", type = "separator")
     latcov$addColumnInfo("rhs",  title = "", type = "string")
-    latcov$addColumnInfo("est",  title = gettext("Estimate"),   type = "number", format = "dp:3")
+    latcov$addColumnInfo("est",  title = est_title,             type = "number", format = "dp:3")
     latcov$addColumnInfo("se" ,  title = gettext("Std. Error"), type = "number", format = "dp:3")
     latcov$addColumnInfo("zval", title = gettext("z-value"),    type = "number", format = "dp:3")
     latcov$addColumnInfo("pval", title = gettext("p"),          type = "number", format = "dp:3;p:.001")
@@ -296,12 +362,6 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
                          overtitle = gettext("95%% Confidence Interval"))
     latcov$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
                          overtitle = gettext("95%% Confidence Interval"))
-
-    if (options[["standardizedEstimate"]]) {
-      latcov$addColumnInfo("std.lv",  title = gettext("LV"),   type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
-      latcov$addColumnInfo("std.all", title = gettext("All"),  type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
-      latcov$addColumnInfo("std.nox", title = gettext("No X"), type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
-    }
 
     modelContainer[["partabs"]][["latcov"]] <- latcov
 
@@ -312,7 +372,7 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     latreg <- createJaspTable("Regressions")
     latreg$addColumnInfo("component", title = gettext("Component"),  type = "string", combine = TRUE)
     latreg$addColumnInfo("predictor", title = gettext("Predictor"),  type = "string")
-    latreg$addColumnInfo("est",       title = gettext("Estimate"),   type = "number", format = "dp:3")
+    latreg$addColumnInfo("est",       title = est_title,             type = "number", format = "dp:3")
     latreg$addColumnInfo("se" ,       title = gettext("Std. Error"), type = "number", format = "dp:3")
     latreg$addColumnInfo("zval",      title = gettext("z-value"),    type = "number", format = "dp:3")
     latreg$addColumnInfo("pval",      title = gettext("p"),          type = "number", format = "dp:3;p:.001")
@@ -321,19 +381,13 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     latreg$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
                          overtitle = gettext("95%% Confidence Interval"))
 
-    if (options[["standardizedEstimate"]]) {
-      latreg$addColumnInfo("std.lv",  title = gettext("LV"),   type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
-      latreg$addColumnInfo("std.all", title = gettext("All"),  type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
-      latreg$addColumnInfo("std.nox", title = gettext("No X"), type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
-    }
-
     modelContainer[["partabs"]][["latreg"]] <- latreg
   }
 
   # residual variances
   resvar <- createJaspTable("Residual variances")
   resvar$addColumnInfo("var",  title = gettext("Variable"),   type = "string")
-  resvar$addColumnInfo("est",  title = gettext("Estimate"),   type = "number", format = "dp:3")
+  resvar$addColumnInfo("est",  title = est_title,             type = "number", format = "dp:3")
   resvar$addColumnInfo("se" ,  title = gettext("Std. Error"), type = "number", format = "dp:3")
   resvar$addColumnInfo("zval", title = gettext("z-value"),    type = "number", format = "dp:3")
   resvar$addColumnInfo("pval", title = gettext("p"),          type = "number", format = "dp:3;p:.001")
@@ -342,19 +396,29 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   resvar$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
                        overtitle = gettext("95%% Confidence Interval"))
 
-  if (options[["standardizedEstimate"]]) {
-    resvar$addColumnInfo("std.lv",  title = gettext("LV"),   type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
-    resvar$addColumnInfo("std.all", title = gettext("All"),  type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
-    resvar$addColumnInfo("std.nox", title = gettext("No X"), type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
-  }
 
   modelContainer[["partabs"]][["resvar"]] <- resvar
 
   if (!ready || modelContainer$getError()) return()
 
-  lgcmResult <- modelContainer[["model"]][["object"]]
-  pe <- lavaan::parameterestimates(lgcmResult, level = options[["ciLevel"]],
-                                   standardized = options[["standardizedEstimate"]])
+
+  bootstrapCiType <- ifelse(options[["bootstrapCiType"]] == "percentileBiasCorrected", "bca.simple",
+                            ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
+                                   "norm"))
+
+  if (options[["standardizedEstimate"]]) {
+    type <- switch(options[["standardizedEstimateType"]],
+                   "all" = "std.all",
+                   "latents" = "std.lv",
+                   "noX" = "std.nox")
+    pe <- lavaan::standardizedsolution(modelContainer[["model"]][["object"]], type = type, level = options[["ciLevel"]])
+  } else {
+    pe <- lavaan::parameterestimates(modelContainer[["model"]][["object"]], standardized = TRUE, level = options[["ciLevel"]],
+                                     boot.ci.type = bootstrapCiType)
+  }
+
+  foot_message <- .lgcmFootMessage(modelContainer, options)
+
   slope_names <- c(
     "^I$" = gettext("Intercept"),
     "^L$" = gettext("Linear slope"),
@@ -370,18 +434,14 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   pecur <- pecur[order(pecur$lhs, rev(pecur$op)),]
   latcur[["component"]] <- pecur[["lhs"]]
   latcur[["param"]]     <- ifelse(pecur[["op"]] == "~1", gettext("Mean"), gettext("Variance"))
-  latcur[["est"]]       <- pecur[["est"]]
+  latcur[["est"]]       <- if (options[["standardizedEstimate"]]) pecur[["est.std"]] else pecur[["est"]]
   latcur[["se" ]]       <- pecur[["se"]]
   latcur[["zval"]]      <- pecur[["z"]]
   latcur[["pval"]]      <- pecur[["pvalue"]]
   latcur[["cilo"]]      <- pecur[["ci.lower"]]
   latcur[["ciup"]]      <- pecur[["ci.upper"]]
+  latcur$addFootnote(foot_message)
 
-  if (options[["standardizedEstimate"]]) {
-    latcur[["std.lv"]]  <- pecur[["std.lv"]]
-    latcur[["std.all"]] <- pecur[["std.all"]]
-    latcur[["std.nox"]] <- pecur[["std.nox"]]
-  }
 
   # covariance
   if (options[["covaryingLatentCurve"]]) {
@@ -389,17 +449,13 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     latcov[["lhs"]]  <- pecov[["lhs"]]
     latcov[["sep"]]  <- rep("\u2B64\u00A0", nrow(pecov))
     latcov[["rhs"]]  <- pecov[["rhs"]]
-    latcov[["est"]]  <- pecov[["est"]]
+    latcov[["est"]]  <- if (options[["standardizedEstimate"]]) pecov[["est.std"]] else pecov[["est"]]
     latcov[["se" ]]  <- pecov[["se"]]
     latcov[["zval"]] <- pecov[["z"]]
     latcov[["pval"]] <- pecov[["pvalue"]]
     latcov[["cilo"]] <- pecov[["ci.lower"]]
     latcov[["ciup"]] <- pecov[["ci.upper"]]
-    if (options[["standardizedEstimate"]]) {
-      latcov[["std.lv"]]  <- pecov[["std.lv"]]
-      latcov[["std.all"]] <- pecov[["std.all"]]
-      latcov[["std.nox"]] <- pecov[["std.nox"]]
-    }
+    latcov$addFootnote(foot_message)
   }
 
   # regressions
@@ -408,34 +464,26 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     pereg <- pereg[order(pereg$lhs), ]
     latreg[["component"]] <- pereg[["lhs"]]
     latreg[["predictor"]] <- .unv(pereg[["rhs"]])
-    latreg[["est"]]       <- pereg[["est"]]
+    latreg[["est"]]       <- if (options[["standardizedEstimate"]]) pereg[["est.std"]] else pereg[["est"]]
     latreg[["se" ]]       <- pereg[["se"]]
     latreg[["zval"]]      <- pereg[["z"]]
     latreg[["pval"]]      <- pereg[["pvalue"]]
     latreg[["cilo"]]      <- pereg[["ci.lower"]]
     latreg[["ciup"]]      <- pereg[["ci.upper"]]
-    if (options[["standardizedEstimate"]]) {
-      latreg[["std.lv"]]  <- pereg[["std.lv"]]
-      latreg[["std.all"]] <- pereg[["std.all"]]
-      latreg[["std.nox"]] <- pereg[["std.nox"]]
-    }
+    latreg$addFootnote(foot_message)
   }
 
   # residual variances
   perev <- pe[pe$lhs %in% .v(options[["variables"]]) & pe$lhs == pe$rhs,]
   resvar[["var"]]  <- .unv(perev[["lhs"]])
-  resvar[["est"]]  <- perev[["est"]]
+  resvar[["est"]]  <- if (options[["standardizedEstimate"]]) perev[["est.std"]] else perev[["est"]]
   resvar[["se"]]   <- perev[["se"]]
   resvar[["zval"]] <- perev[["z"]]
   resvar[["pval"]] <- perev[["pvalue"]]
   resvar[["cilo"]] <- perev[["ci.lower"]]
   resvar[["ciup"]] <- perev[["ci.upper"]]
+  resvar$addFootnote(foot_message)
 
-  if (options[["standardizedEstimate"]]) {
-    resvar[["std.lv"]]  <- perev[["std.lv"]]
-    resvar[["std.all"]] <- perev[["std.all"]]
-    resvar[["std.nox"]] <- perev[["std.nox"]]
-  }
 
   if (any(perev[["est"]] < 0)) {
     resvar$addFootnote(gettext("Residual variance is negative. This may indicate model misspecification."),
@@ -463,6 +511,9 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   fitic$addColumnInfo(name = "index", title = "",               type = "string")
   fitic$addColumnInfo(name = "value", title = gettext("Value"), type = "number", format = "sf:4;dp:3")
   fitic$setExpectedSize(rows = 1, cols = 2)
+  if (options$estimator %in% c("dwls", "gls", "wls", "uls", "wlsmv"))
+    fitic$setError(gettext("The information criteria are only available with ML-type estimators, please select the 'ML', 'MLF' or 'MLR' estimator in the 'Estimation' tab."))
+
 
   # other fit measures
   fitms[["others"]] <- fitot <- createJaspTable(gettext("Other fit measures"))
@@ -475,8 +526,16 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   # actually compute the fit measures
   fm <- lavaan::fitmeasures(modelContainer[["model"]][["object"]])
 
+  if (lavaan::lavInspect(modelContainer[["model"]][["object"]], what = "options")[["test"]] != "standard") {
+    fm[c("chisq", "df", "baseline.chisq", "baseline.df", "cfi", "tli", "nnfi", "nfi", "rfi", "ifi", "rni", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue")] <- fm[c("chisq.scaled", "df.scaled", "baseline.chisq.scaled", "baseline.df.scaled", "cfi.scaled", "tli.scaled", "nnfi.scaled", "nfi.scaled",  "rfi.scaled", "ifi.scaled", "rni.scaled", "rmsea.scaled", "rmsea.ci.lower.scaled", "rmsea.ci.upper.scaled", "rmsea.pvalue.scaled")]
+    fm["pnfi"] <- NA
+  }
+  na_values <- is.na(fm)
+
   # Fit indices
-  fitin[["index"]] <- c(
+  fm_fitin <- fm[c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
+  isna <- is.na(fm_fitin)
+  indices <- c(
     gettext("Comparative Fit Index (CFI)"),
     gettext("Tucker-Lewis Index (TLI)"),
     gettext("Bentler-Bonett Non-normed Fit Index (NNFI)"),
@@ -486,20 +545,34 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     gettext("Bollen's Incremental Fit Index (IFI)"),
     gettext("Relative Noncentrality Index (RNI)")
   )
-  fitin[["value"]] <- fm[c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
+  fitin[["index"]] <- indices[!isna]
+  fitin[["value"]] <- fm_fitin[!isna]
+
+  if (sum(isna) > 0)
+    fitin$addFootnote(gettextf("The following fit indices could not be computed: %s.", paste(indices[isna], collapse = ", ")))
 
   # information criteria
-  fitic[["index"]] <- c(
+  fm_fitic <- fm[c("logl", "npar", "aic", "bic", "bic2")]
+  isna <- is.na(fm_fitic)
+
+  indices <- c(
     gettext("Log-likelihood"),
     gettext("Number of free parameters"),
     gettext("Akaike (AIC)"),
     gettext("Bayesian (BIC)"),
     gettext("Sample-size adjusted Bayesian (SSABIC)")
   )
-  fitic[["value"]] <- fm[c("logl", "npar", "aic", "bic", "bic2")]
+  fitic[["index"]] <- indices[!isna]
+  fitic[["value"]] <- fm_fitic[!isna]
+
+  if (sum(isna) > 0)
+    fitic$addFootnote(gettextf("The following information criteria could not be computed: %s.", paste(indices[isna], collapse = ", ")))
 
   # other fitmeasures
-  fitot[["index"]] <- c(
+  fm_fitot <- fm[c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
+                   "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
+  isna <- is.na(fm_fitot)
+  indices <- c(
     gettext("Root mean square error of approximation (RMSEA)"),
     gettext("RMSEA 90%% CI lower bound"),
     gettext("RMSEA 90%% CI upper bound"),
@@ -511,8 +584,11 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     gettext("McDonald fit index (MFI)"),
     gettext("Expected cross validation index (ECVI)")
   )
-  fitot[["value"]] <- fm[c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
-                           "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
+  fitot[["index"]] <- indices[!isna]
+  fitot[["value"]] <- fm_fitot[!isna]
+
+  if (sum(isna) > 0)
+    fitin$addFootnote(gettextf("The following other fit measure(s) could not be computed: %s.", paste(indices[isna], collapse = ", ")))
 
   return()
 }
@@ -792,4 +868,52 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     ) +
     labs(fill = "", x = "Time", y = "Value") +
     theme_minimal()
+}
+
+.lgcmFootMessage <- function(modelContainer, options) {
+  if (is.null(modelContainer[["model"]][["object"]])) return()
+
+  fit <- modelContainer[["model"]][["object"]]
+  # Create the footnote message
+  if (options[["estimator"]] %in% c("default", "ml", "gls", "wls", "uls", "dwls", "pml")) {
+    se_type <- switch(options$errorCalculationMethod,
+                      "bootstrap" = gettext("delta method"),
+                      "standard"  = gettext("delta method"),
+                      "default"   = gettext("delta method"),
+                      "robust"    = gettext("robust")
+    )
+    ci_type <- switch(options$errorCalculationMethod,
+                      "bootstrap" = switch(options$bootstrapCiType,
+                                           "percentile"              = gettext("percentile bootstrap"),
+                                           "normalTheory"            = gettext("normal theory bootstrap"),
+                                           "percentileBiasCorrected" = gettext("bias-corrected percentile bootstrap")
+                      ),
+                      "standard"  = gettext("normal theory"),
+                      "default"   = gettext("normal theory"),
+                      "robust"    = gettext("robust")
+    )
+  } else {
+    modelOptions <- lavaan::lavInspect(fit, what = "options")
+    if(options[["estimator"]] == "mlf") {
+      se_type <- gettext("first-order derivatives based")
+    } else {
+      se_type <- modelOptions$se
+      se_type <- gsub('.sem', '', se_type)
+      se_type <- gettext(stringr::str_to_title(gsub('\\.', ' ', se_type)))
+      se_type <- paste0(tolower(substr(se_type, 1, 1)), substr(se_type, 2, nchar(se_type)))
+    }
+    ci_type <- gettext("robust")
+  }
+
+  if (options$errorCalculationMethod == "bootstrap" && nrow(fit@boot[["coef"]]) < options$bootstrapSamples) {
+    return(gettextf(
+      "<i>%1$s</i> estimation with <i>%2$s</i> standard errors and <i>%3$s</i> confidence intervals. NB: Not all bootstrap samples were successful: CI based on %4$.0f samples.",
+      fit@Options$estimator, se_type, ci_type, nrow(fit@boot[["coef"]])
+    ))
+  } else {
+    return(gettextf(
+      "<i>%1$s</i> estimation with <i>%2$s</i> standard errors and <i>%3$s</i> confidence intervals.",
+      fit@Options$estimator, se_type, ci_type
+    ))
+  }
 }
