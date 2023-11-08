@@ -15,11 +15,11 @@
 // License along with this program.  If not, see
 // <http://www.gnu.org/licenses/>.
 //
-import QtQuick			2.8
-import QtQuick.Layouts	1.3
-import QtQuick.Controls 2.12
+import QtQuick			2.12
 import JASP.Controls	1.0
+import JASP.Widgets		1.0
 import JASP				1.0
+import "./common" as Common
 
 Form
 {
@@ -188,6 +188,7 @@ Form
 
 	}
 
+<<<<<<< HEAD
 	Section
 	{
 <<<<<<< HEAD
@@ -354,10 +355,13 @@ Form
 
 		}
 	}
+=======
+	Common.Estimation {	}
+>>>>>>> e025d372c (final changes)
 
 	Section
 	{
-		title: qsTr("Multigroup SEM")
+		title: qsTr("Multigroup")
 		id: multigroup
 		Group
 		{

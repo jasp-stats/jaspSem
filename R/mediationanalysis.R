@@ -55,7 +55,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
       options[["naAction"]] <- "listwise"
   } else {
     if (options[["naAction"]] == "default") {
-      if(options[["estimator"]] %in% c("gls", "wls", "uls", "dwls")) {
+      if(options[["estimator"]] %in% c("gls", "wls", "uls", "dwls", "pml")) {
         options[["naAction"]] <- "listwise"
       } else {
         options[["naAction"]] <- "fiml"
@@ -69,8 +69,8 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   if (length(options$outcomes) == 0 || length(options$mediators) == 0 || length(options$predictors) == 0) return(FALSE)
 
   # Check for missing value handling
-  if (options$estimator %in% c("gls", "wls", "uls", "dwls") && options$naAction == "fiml")
-    jaspBase:::.quitAnalysis(gettext("FIML missing data handling only available with ML-type estimators."))
+  if (options$estimator %in% c("gls", "wls", "uls", "dwls", "pml") && options$naAction == "fiml")
+    jaspBase:::.quitAnalysis(gettext("FIML missing data handling only available with ML estimators, please select the 'ML', 'MLF' or 'MLR' estimator in the 'Estimation' tab."))
 
   # Exogenous variables can be binary or continuous
   exo <- ifelse(length(options$confounds) > 0, options$confounds, options$predictors)
@@ -107,19 +107,24 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
       admissible <- vapply(endo, function(endo_var) {
         var <- na.omit(dataset[[endo_var]])
-        if (is.ordered(var) && options$naAction == "fiml") {
+        if (is.ordered(var) && (options$naAction == "fiml" || options$estimator %in% c("ml", "mlf", "mlr", "pml"))) {
           return(FALSE)
         }
         return(TRUE)
       }, TRUE)
 
       if (!all(admissible)) {
-        if (options[["estimator"]] %in% c("ml", "mlf", "mlr")) {
+        if (options[["estimator"]] %in% c("ml", "mlf", "mlr", "pml")) {
           gettextf("ML estimation only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s", paste(endo[!admissible], collapse = ", "))
         } else {
           gettextf("FIML missing value handling only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s", paste(endo[!admissible], collapse = ", "))
         }
       }
+    },
+
+    checkNaAction = function() {
+      if (options$naAction %in% c("twoStage", "twoStageRobust"))
+        gettext("Missing data handling methods 'two-stage' and 'robust two-stage' are currently only available for the Structural Equation Modeling analysis.")
     }
 
   )
@@ -138,20 +143,32 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
     medResult <- try(lavaan::sem(
       model           = .medToLavMod(options),
       data            = dataset,
+      information     = options$informationMatrix,
       se              = switch(options[["errorCalculationMethod"]], "bootstrap" = "standard", "robust" = "robust.sem", "standard" = "standard"),
       mimic           = options$emulation,
       estimator       = options$estimator,
       std.ov          = options$standardizedVariable,
-      missing         = options$naAction
+      missing         = switch(options[["naAction"]],
+                               "twoStage" = "two.stage",
+                               "twoStageRobust" = "robust.two.stage",
+                               "doublyRobust" = "doubly.robust",
+                               options[["naAction"]]
+      )
     ))
   } else {
     medResult <- try(lavaan::sem(
       model           = .medToLavMod(options),
       data            = dataset,
+      information     = options$informationMatrix,
       mimic           = options$emulation,
       estimator       = options$estimator,
       std.ov          = options$standardizedVariable,
-      missing         = options$naAction
+      missing         = switch(options[["naAction"]],
+                               "twoStage" = "two.stage",
+                               "twoStageRobust" = "robust.two.stage",
+                               "doublyRobust" = "doubly.robust",
+                               options[["naAction"]]
+      )
     ))
   }
 
@@ -287,7 +304,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c(
       "predictors", "mediators", "outcomes", "confounds", "includemeanstructure",
-      "bootstrapSamples", "fixManifestInterceptsToZero", "emulation", "errorCalculationMethod", "estimator",
+      "bootstrapSamples", "fixManifestInterceptsToZero", "emulation", "informationMatrix", "errorCalculationMethod", "estimator",
       "standardizedVariable", "naAction")
     )
     jaspResults[["modelContainer"]] <- modelContainer
@@ -295,6 +312,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
   return(modelContainer)
 }
+
 
 .medParTable <- function(modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["parest"]])) return()
@@ -396,16 +414,19 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
   #Footnotes
   if (options[["estimator"]] == "wlsmv") {
-    dirtab$addFootnote(message = gettext("Ordinal endogenous variable(s) detected! Automatically switched to <i>DWLS</i> estimation with <i>robust</i> standard errors and <i>robust</i> confidence intervals. If you wish to override these settings, please select another (LS-)estimator and the preferred error calculation method in the 'Estimation' tab."))
+    dirtab$addFootnote(message = gettext("Ordinal endogenous variable(s) detected! Automatically switched to <i>DWLS</i> estimation with <i>robust</i> standard errors, <i>robust</i> confidence intervals and a <i>scaled and shifted</i> test-statistic. <br><i>If you wish to override these settings, please select another (LS-)estimator and/or model test and \u2014optionally\u2014 change the error calculation method in the 'Estimation' tab.</i>"))
   } else {
     dirtab$addFootnote(foot_message)
   }
   nrm <- nrow(dataset) - lavaan::lavInspect(modelContainer[["model"]][["object"]], "ntotal")
-  if(nrm == 0) {
-    dirtab$addFootnote(gettextf("Missing data handling: <i>%1$s</i>.", ifelse(options[["naAction"]] == "fiml", "Full information maximum likelihood", options[["naAction"]])))
-  } else {
-    dirtab$addFootnote(gettextf("Missing data handling: <i>%1$s</i>. Removed cases: %2$s", ifelse(options[["naAction"]] == "fiml", "Full information maximum likelihood", options[["naAction"]]), nrm))
-  }
+  method <- switch(options[["naAction"]],
+                   "twoStage" = "two-stage",
+                   "twoStageRobust" = "robust two-stage",
+                   "doublyRobust" = "doubly robust",
+                   "fiml" = "full information maximum likelihood",
+                   options[["naAction"]])
+  if(nrm > 0)
+    dirtab$addFootnote(gettextf("Missing data handling: <i>%1$s</i>. Removed cases: %2$s", method, nrm))
 
   # Fill indirect effects
   pe_ind <- pe[pe$op == ":=" & vapply(gregexpr("_", pe$lhs), length, 1) == 3, ]
@@ -631,9 +652,9 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
   fit <- modelContainer[["model"]][["object"]]
   # Create the footnote message
-  if (options[["estimator"]] %in% c("default", "ml", "gls", "wls", "uls", "dwls", "pml")) {
+  if (options[["estimator"]] %in% c("default", "ml", "gls", "wls", "uls", "dwls")) {
     se_type <- switch(options$errorCalculationMethod,
-                      "bootstrap" = gettext("delta method"),
+                      "bootstrap" = gettext("bootstrap"),
                       "standard"  = gettext("delta method"),
                       "default"   = gettext("delta method"),
                       "robust"    = gettext("robust")

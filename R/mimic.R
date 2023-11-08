@@ -54,7 +54,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
       options[["naAction"]] <- "listwise"
   } else {
     if (options[["naAction"]] == "default") {
-      if(options[["estimator"]] %in% c("gls", "wls", "uls", "dwls")) {
+      if(options[["estimator"]] %in% c("gls", "wls", "uls", "dwls", "pml")) {
         options[["naAction"]] <- "listwise"
       } else {
         options[["naAction"]] <- "fiml"
@@ -68,8 +68,8 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   if (length(options$indicators) < 3 || length(options$predictors) == 0) return(FALSE)
 
   # Check for missing value handling
-  if (options$estimator %in% c("gls", "wls", "uls", "dwls") && options$naAction == "fiml")
-    jaspBase:::.quitAnalysis(gettext("FIML missing data handling only available with ML-type estimators."))
+  if (options$estimator %in% c("gls", "wls", "uls", "dwls", "pml") && options$naAction == "fiml")
+    jaspBase:::.quitAnalysis(gettext("FIML missing data handling only available with ML estimators, please select the 'ML', 'MLF' or 'MLR' estimator in the 'Estimation' tab."))
 
   # Exogenous variables can be binary or continuous
   exo <- options$predictors
@@ -106,19 +106,24 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 
       admissible <- vapply(endo, function(endo_var) {
         var <- na.omit(dataset[[.v(endo_var)]])
-        if (is.ordered(var) && options$naAction == "fiml") {
+        if (is.ordered(var) && (options$naAction == "fiml" || options$estimator %in% c("ml", "mlf", "mlr", "pml"))) {
           return(FALSE)
         }
         return(TRUE)
       }, TRUE)
 
       if (!all(admissible)) {
-        if (options[["estimator"]] %in% c("ml", "mlf", "mlr")) {
+        if (options[["estimator"]] %in% c("ml", "mlf", "mlr", "pml")) {
           gettextf("ML estimation only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s", paste(endo[!admissible], collapse = ", "))
         } else {
           gettextf("FIML missing value handling only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s", paste(endo[!admissible], collapse = ", "))
         }
       }
+    },
+
+    checkNaAction = function() {
+      if (options$naAction %in% c("twoStage", "twoStageRobust"))
+        gettext("Missing data handling methods 'two-stage' and 'robust two-stage' are currently only available for the Structural Equation Modeling analysis.")
     }
 
   )
@@ -140,8 +145,9 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
       se              = switch(options[["errorCalculationMethod"]],
                                "bootstrap" = "standard",
                                "robust" = "robust.sem",
-                               "standard" = "standard"),
-      information     = "expected",
+                               "standard" = "standard"
+                               ),
+      information     = options$informationMatrix,
       mimic           = options$emulation,
       estimator       = options$estimator,
       test            = switch(options[["modelTest"]],
@@ -150,10 +156,14 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
                                "meanAndVarianceAdjusted" = "mean.var.adjusted",
                                "scaledAndShifted" = "scaled.shifted",
                                "bollenStine" = "Bollen.Stine",
-                               "default" = "default",
-                               "standard" = "standard"
-      ),
-      missing         = options$naAction,
+                               options[["modelTest"]]
+                               ),
+      missing         = switch(options[["naAction"]],
+                               "twoStage" = "two.stage",
+                               "twoStageRobust" = "robust.two.stage",
+                               "doublyRobust" = "doubly.robust",
+                               options[["naAction"]]
+                               ),
       std.lv          = TRUE,
       std.ov          = options[["standardizedVariable"]]
     ))
@@ -161,10 +171,15 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
     mimicResult <- try(lavaan::sem(
       model           = .mimicToLavMod(options),
       data            = dataset,
-      information     = "expected",
+      information     = options$informationMatrix,
       mimic           = options$emulation,
       estimator       = options$estimator,
-      missing         = options$naAction,
+      missing         = switch(options[["naAction"]],
+                               "twoStage" = "two.stage",
+                               "twoStageRobust" = "robust.two.stage",
+                               "doublyRobust" = "doubly.robust",
+                               options[["naAction"]]
+                               ),
       std.lv          = TRUE,
       std.ov          = options[["standardizedVariable"]]
     ))
@@ -228,7 +243,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c(
       "predictors", "indicators", "includemeanstructure",
-      "bootstrapSamples", "emulation", "errorCalculationMethod", "estimator", "standardizedVariable",
+      "bootstrapSamples", "emulation", "errorCalculationMethod", "estimator", "informationMatrix", "standardizedVariable",
       "naAction", "modelTest")
     )
     jaspResults[["modelContainer"]] <- modelContainer
@@ -263,7 +278,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 
   #add ordinal endogenous estimation footnote
   if (options[["estimator"]] == "wlsmv") {
-    fittab$addFootnote(message = gettext("Ordinal endogenous variable(s) detected! Automatically switched to <i>DWLS</i> estimation with <i>robust</i> standard errors, <i>robust</i> confidence intervals and a <i>scaled and shifted</i> test-statistic. <br><i>If you wish to override these settings, please select another (LS-)estimator and \u2014optionally\u2014 select the preferred error calculation method and model test in the 'Estimation' tab.</i>"))
+    fittab$addFootnote(message = gettext("Ordinal endogenous variable(s) detected! Automatically switched to <i>DWLS</i> estimation with <i>robust</i> standard errors, <i>robust</i> confidence intervals and a <i>scaled and shifted</i> test-statistic. <br><i>If you wish to override these settings, please select another (LS-)estimator and/or model test and \u2014optionally\u2014 change the error calculation method in the 'Estimation' tab.</i>"))
   }
 
   # add test statistic correction footnote
@@ -291,11 +306,14 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 
   # add missing data handling footnote
   nrm <- nrow(dataset) - lavaan::lavInspect(modelContainer[["model"]][["object"]], "ntotal")
-  if(nrm == 0) {
-    fittab$addFootnote(gettextf("Missing data handling: <i>%1$s</i>.", ifelse(options[["naAction"]] == "fiml", "Full information maximum likelihood", options[["naAction"]])))
-  } else {
-    fittab$addFootnote(gettextf("Missing data handling: <i>%1$s</i>. Removed cases: %2$s", ifelse(options[["naAction"]] == "fiml", "Full information maximum likelihood", options[["naAction"]]), nrm))
-  }
+  method <- switch(options[["naAction"]],
+                   "twoStage" = "two-stage",
+                   "twoStageRobust" = "robust two-stage",
+                   "doublyRobust" = "doubly robust",
+                   "fiml" = "full information maximum likelihood",
+                   options[["naAction"]])
+  if(nrm > 0)
+    fittab$addFootnote(gettextf("Missing data handling: <i>%1$s</i>. Removed cases: %2$s", method, nrm))
 
   # warnings footnote
   fittab$addFootnote(.mimicFootMessage(modelContainer[["model"]][["object"]]))
@@ -564,9 +582,9 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 
   fit <- modelContainer[["model"]][["object"]]
   # Create the footnote message
-  if (options[["estimator"]] %in% c("default", "ml", "gls", "wls", "uls", "dwls", "pml")) {
+  if (options[["estimator"]] %in% c("default", "ml", "gls", "wls", "uls", "dwls")) {
     se_type <- switch(options$errorCalculationMethod,
-                      "bootstrap" = gettext("delta method"),
+                      "bootstrap" = gettext("bootstrap"),
                       "standard"  = gettext("delta method"),
                       "default"   = gettext("delta method"),
                       "robust"    = gettext("robust")

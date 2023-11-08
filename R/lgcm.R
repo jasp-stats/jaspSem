@@ -89,7 +89,7 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 
 .lgcmEditOptions <- function(options) {
   if (options[["naAction"]] == "default") {
-    if(options[["estimator"]] %in% c("gls", "wls", "uls", "dwls")) {
+    if(options[["estimator"]] %in% c("gls", "wls", "uls", "dwls", "pml")) {
       options[["naAction"]] <- "listwise"
     } else {
       options[["naAction"]] <- "fiml"
@@ -99,7 +99,19 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 }
 
 .lgcmCheckErrors <- function(dataset, options) {
-  # some error check
+  if (options$estimator %in% c("gls", "wls", "uls", "dwls", "pml") && options$naAction == "fiml")
+    jaspBase:::.quitAnalysis(gettext("FIML missing data handling only available with ML estimators, please select the 'ML', 'MLF' or 'MLR' estimator in the 'Estimation' tab."))
+  customChecks <- list(
+    checkNaAction = function() {
+      if (options$naAction %in% c("twoStage", "twoStageRobust"))
+        gettext("Missing data handling methods 'two-stage' and 'robust two-stage' are currently only available for the Structural Equation Modeling analysis.")
+    }
+
+  )
+
+  .hasErrors(dataset, type = c('variance', 'infinity'), custom = customChecks,
+             exitAnalysisIfErrors = TRUE)
+
   return(TRUE)
 }
 
@@ -109,31 +121,44 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     lgcmResult <- try(lavaan::growth(
       model     = .lgcmOptionsToMod(options),
       data      = dataset,
-      se        = ifelse(options[["errorCalculationMethod"]] == "bootstrap", "standard", options[["errorCalculationMethod"]]),
-      information     = "expected",
+      se              = switch(options[["errorCalculationMethod"]],
+                                "bootstrap" = "standard",
+                                "robust" = "robust.sem",
+                                "standard" = "standard"),
+      information     = options$informationMatrix,
       mimic     = options[["emulation"]],
       estimator = options[["estimator"]],
-      test            = switch(options[["modelTest"]],
-                               "satorraBentler" = "Satorra.Bentler",
-                               "yuanBentler" = "Yuan.Bentler",
-                               "meanAndVarianceAdjusted" = "mean.var.adjusted",
-                               "scaledAndShifted" = "scaled.shifted",
-                               "bollenStine" = "Bollen.Stine",
-                               "default" = "default",
-                               "standard" = "standard"
+      test      = switch(options[["modelTest"]],
+                          "satorraBentler" = "Satorra.Bentler",
+                          "yuanBentler" = "Yuan.Bentler",
+                          "meanAndVarianceAdjusted" = "mean.var.adjusted",
+                          "scaledAndShifted" = "scaled.shifted",
+                          "bollenStine" = "Bollen.Stine",
+                          "default" = "default",
+                          "standard" = "standard"
       ),
-      missing   = options[["naAction"]],
+      missing         = switch(options[["naAction"]],
+                               "twoStage" = "two.stage",
+                               "twoStageRobust" = "robust.two.stage",
+                               "doublyRobust" = "doubly.robust",
+                               options[["naAction"]]
+      ),
       std.ov    = options[["standardizedVariable"]]
     ))
   } else {
     lgcmResult <- try(lavaan::growth(
-      model     = .lgcmOptionsToMod(options),
-      data      = dataset,
-      information     = "expected",
-      mimic     = options[["emulation"]],
-      estimator = options[["estimator"]],
-      missing   = options[["naAction"]],
-      std.ov    = options[["standardizedVariable"]]
+      model         = .lgcmOptionsToMod(options),
+      data          = dataset,
+      information   = options$informationMatrix,
+      mimic         = options[["emulation"]],
+      estimator     = options[["estimator"]],
+      missing         = switch(options[["naAction"]],
+                               "twoStage" = "two.stage",
+                               "twoStageRobust" = "robust.two.stage",
+                               "doublyRobust" = "doubly.robust",
+                               options[["naAction"]]
+      ),
+      std.ov        = options[["standardizedVariable"]]
     ))
   }
 
@@ -241,7 +266,7 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c(
       "variables", "regressions", "covariates", "categorical", "timings",
-      "intercept", "linear", "quadratic", "cubic", "covaryingLatentCurve", "emulation",
+      "intercept", "linear", "quadratic", "cubic", "covaryingLatentCurve", "emulation", "informationMatrix",
       "naAction", "estimator", "errorCalculationMethod", "bootstrapSamples", "standardizedVariable"
     ))
     jaspResults[["modelContainer"]] <- modelContainer
@@ -299,11 +324,15 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 
   #add missing data footnote
   nrm <- nrow(dataset) - lavaan::lavInspect(modelContainer[["model"]][["object"]], "ntotal")
-  if(nrm == 0) {
-    maintab$addFootnote(gettextf("Missing data handling: <i>%1$s</i>.", ifelse(options[["naAction"]] == "fiml", "Full information maximum likelihood", options[["naAction"]])))
-  } else {
-    maintab$addFootnote(gettextf("Missing data handling: <i>%1$s</i>. Removed cases: %2$s", ifelse(options[["naAction"]] == "fiml", "Full information maximum likelihood", options[["naAction"]]), nrm))
-  }
+  method <- switch(options[["naAction"]],
+                   "twoStage" = "two-stage",
+                   "twoStageRobust" = "robust two-stage",
+                   "doublyRobust" = "doubly robust",
+                   "fiml" = "full information maximum likelihood",
+                   options[["naAction"]])
+  if(nrm > 0)
+    maintab$addFootnote(gettextf("Missing data handling: <i>%1$s</i>. Removed cases: %2$s", method, nrm))
+
 
   # display warnings in footnote
 
@@ -511,7 +540,7 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   fitic$addColumnInfo(name = "index", title = "",               type = "string")
   fitic$addColumnInfo(name = "value", title = gettext("Value"), type = "number", format = "sf:4;dp:3")
   fitic$setExpectedSize(rows = 1, cols = 2)
-  if (options$estimator %in% c("dwls", "gls", "wls", "uls", "wlsmv"))
+  if (options$estimator %in% c("dwls", "gls", "wls", "uls", "wlsmv", "pml"))
     fitic$setError(gettext("The information criteria are only available with ML-type estimators, please select the 'ML', 'MLF' or 'MLR' estimator in the 'Estimation' tab."))
 
 
@@ -875,9 +904,9 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 
   fit <- modelContainer[["model"]][["object"]]
   # Create the footnote message
-  if (options[["estimator"]] %in% c("default", "ml", "gls", "wls", "uls", "dwls", "pml")) {
+  if (options[["estimator"]] %in% c("default", "ml", "gls", "wls", "uls", "dwls")) {
     se_type <- switch(options$errorCalculationMethod,
-                      "bootstrap" = gettext("delta method"),
+                      "bootstrap" = gettext("bootstrap"),
                       "standard"  = gettext("delta method"),
                       "default"   = gettext("delta method"),
                       "robust"    = gettext("robust")
