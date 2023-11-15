@@ -15,11 +15,12 @@
 // License along with this program.  If not, see
 // <http://www.gnu.org/licenses/>.
 //
-import QtQuick          2.8
-import QtQuick.Layouts  1.3
-import JASP.Controls    1.0
-import JASP.Theme		1.0
-import JASP.Widgets     1.0
+
+import QtQuick			2.12
+import JASP.Controls	1.0
+import JASP.Widgets		1.0
+import JASP				1.0
+import "./common" as Common
 
 Form
 {
@@ -83,7 +84,7 @@ Form
 
 	Section
 	{
-		title: qsTr("Model Options")
+		title: qsTr("Model")
 		Group
 		{
 			title: qsTr("Growth curve shape")
@@ -134,17 +135,31 @@ Form
 
 	Section
 	{
-		title: qsTr("Additional Output")
+		title: qsTr("Output")
+		GroupBox
+        {
+            CheckBox
+			{
+				name: "standardizedEstimate"
+                id: stdest
+				label: qsTr("Standardized estimates")
+				checked: false
+				RadioButtonGroup
+				{
+					name: "standardizedEstimateType"
+					RadioButton { value: "all"; 	label: qsTr("All"); checked: true	}
+					RadioButton { value: "latents"; label: qsTr("Latents")	}
+					RadioButton { value: "noX"; 	label: qsTr("no X")		}
+				
+				}
+			}
+			CheckBox { label: qsTr("Implied covariance matrix")  ; name: "impliedCovariance" 	}
+			CheckBox { label: qsTr("Residual covariance matrix") ; name: "residualCovariance"	}
+        }
 		GroupBox
 		{
 			CheckBox { label: qsTr("Additional Fit Measures")   ; name: "additionalFitMeasures"	}
 			CheckBox { label: qsTr("R-Squared")                 ; name: "rSquared"				}
-			CheckBox { label: qsTr("Standardized estimates")    ; name: "standardizedEstimate"	}
-		}
-		GroupBox
-		{
-			CheckBox { label: qsTr("Implied covariance matrix")  ; name: "impliedCovariance" 	}
-			CheckBox { label: qsTr("Residual covariance matrix") ; name: "residualCovariance"	}
 			CheckBox { label: qsTr("Show lavaan syntax")         ; name: "syntax" 				}
 		}
 	}
@@ -185,75 +200,7 @@ Form
 		}
 	}
 
-	Section
-	{
-		text: qsTr("Advanced")
-		RadioButtonGroup
-		{
-			title: qsTr("Emulation")
-			name: "emulation"
-			RadioButton { text: qsTr("None")  ; name: "lavaan"  ; checked: true }
-			RadioButton { text: qsTr("Mplus") ; name: "mplus" }
-			RadioButton { text: qsTr("EQS")   ; name: "eqs"   }
-		}
-
-		RadioButtonGroup {
-			title: qsTr("Missing value handling")
-			name: "naAction"
-			RadioButton { text: qsTr("Full Information Maximum Likelihood") ; name: "fiml" ; checked: true }
-			RadioButton { text: qsTr("Exclude cases listwise")              ; name: "listwise"	}
-		}
-
-		GroupBox
-		{
-			title: qsTr("Error calculation")
-			CIField { text: qsTr("CI width"); name: "ciLevel" }
-			RadioButtonGroup
-			{
-				title: qsTr("Method")
-				name: "errorCalculationMethod"
-				RadioButton { text: qsTr("Standard")  ; name: "standard" ; checked: true }
-				RadioButton { text: qsTr("Robust")    ; name: "robust" }
-				RadioButton {
-					text: qsTr("Bootstrap CI")
-					name: "bootstrap"
-					IntegerField {
-						text: qsTr("Bootstrap samples")
-						name: "bootstrapSamples"
-						defaultValue: 1000
-						min: 100
-						max: 1000000
-					}
-				}
-			}
-		}
-
-		RadioButtonGroup
-		{
-			title: qsTr("Estimator")
-			name: "estimator"
-			RadioButton { text: qsTr("Auto") ; name: "default"; checked: true }
-			RadioButton { text: qsTr("ML")   ; name: "ml"       }
-			RadioButton { text: qsTr("GLS")  ; name: "gls"      }
-			RadioButton { text: qsTr("WLS")  ; name: "wls"      }
-			RadioButton { text: qsTr("ULS")  ; name: "uls"      }
-			RadioButton { text: qsTr("DWLS") ; name: "dwls"     }
-		}
-
-		GroupBox
-		{
-			title: qsTr("Options")
-			debug: true
-			CheckBox { text: qsTr("Fix manifest intercepts to zero") ; name: "manifestInterceptFixedToZero" 	}
-			CheckBox { text: qsTr("Fix latent intercepts to zero")   ; name: "latentInterceptFixedToZero"		; checked: true }
-			CheckBox { text: qsTr("Omit residual single indicator")  ; name: "residualSingleIndicatorOmitted"	; checked: true }
-			CheckBox { text: qsTr("Residual variances")              ; name: "residualVariance"           		; checked: true }
-			CheckBox { text: qsTr("Correlate exogenous latents")     ; name: "exogenousLatentCorrelation"   	; checked: true }
-			CheckBox { text: qsTr("Add thresholdds")                 ; name: "threshold"               			; checked: true }
-			CheckBox { text: qsTr("Add scalings parameters")         ; name: "scalingParameter"        			; checked: true }
-			CheckBox { text: qsTr("Correlate dependent variables")   ; name: "dependentCorrelation" 			; checked: true }
-		}
-	}
+	Common.Estimation {	}
 
 	Section
 	{

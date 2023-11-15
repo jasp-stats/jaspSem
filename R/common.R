@@ -113,6 +113,9 @@ lavBootstrap <- function(fit, samples = 1000) {
   manifests <- semPlotMod@Vars$name[semPlotMod@Vars$manifest]
   semPlotMod@Vars$name[semPlotMod@Vars$manifest] <- decodeColNames(manifests)
 
+  thresholds <- semPlotMod@Thresholds$lhs
+  semPlotMod@Thresholds$lhs <- decodeColNames(thresholds)
+
   lhsAreManifest <- semPlotMod@Pars$lhs %in% manifests
   if (any(lhsAreManifest))
     semPlotMod@Pars$lhs[lhsAreManifest] <- decodeColNames(semPlotMod@Pars$lhs[lhsAreManifest])
