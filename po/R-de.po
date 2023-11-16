@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2023-09-16 02:40\n"
-"PO-Revision-Date: 2023-11-06 09:06+0000\n"
-"Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
+"PO-Revision-Date: 2023-11-18 02:40+0000\n"
+"Last-Translator: Thomas Langkamp <thomas.lassdiesonnerein@gmx.de>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
 "Language: de\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 5.2-dev\n"
+"X-Generator: Weblate 5.2\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "Das Modell konnte nicht geschätzt werden durch fehlende Konvergenz."
@@ -429,9 +429,8 @@ msgid "Total effects"
 msgstr "Gesamte Effekte"
 
 msgid "Endogenous Indicator Prediction"
-msgstr ""
+msgstr "Endogene Indikatorvorhersage"
 
-#, fuzzy
 msgid ""
 "The target model uses the same weighting approach as the benchmark model, "
 "please choose another benchmark."
@@ -443,48 +442,48 @@ msgid ""
 "For the predicted indicator scores table(s), please select a single "
 "benchmark or 'none'."
 msgstr ""
+"Für die Tabelle(n) mit den voraussichtlichen Indikatorwerten wählen Sie "
+"bitte eine einzelne Benchmark oder 'keine'."
 
 msgid "Prediction Metrics"
 msgstr "Vorhersage-Metriken"
 
 msgid "Target MAE"
-msgstr ""
+msgstr "Ziel MAE"
 
-#, fuzzy
 msgid "Linear model MAE"
 msgstr "Lineares Modell MAE"
 
 msgid "PLS-PM MAE"
-msgstr ""
+msgstr "PLS-PM MAE"
 
 msgid "GSCA MAE"
-msgstr ""
+msgstr "GSCA MAE"
 
 msgid "PCA MAE"
-msgstr ""
+msgstr "PCA MAE"
 
 msgid "MAXVAR MAE"
-msgstr ""
+msgstr "MAXVAR MAE"
 
 msgid "Target RMSE"
-msgstr ""
+msgstr "Ziel RMSE"
 
 msgid "Linear model RMSE"
 msgstr "Lineares Modell RMSE"
 
 msgid "PLS-PM RMSE"
-msgstr ""
+msgstr "PLS-PM RMSE"
 
 msgid "GSCA RMSE"
-msgstr ""
+msgstr "GSCA RMSE"
 
 msgid "PCA RMSE"
-msgstr ""
+msgstr "PCA RMSE"
 
 msgid "MAXVAR RMSE"
-msgstr ""
+msgstr "MAXVAR RMSE"
 
-#, fuzzy
 msgid "Target Q2 prediction"
 msgstr "Ziel-Q2-Vorhersage"
 
@@ -496,27 +495,23 @@ msgstr ""
 "'Kreuzvalidierung k-fach' auf eine niedrigere Zahl zu setzen"
 
 msgid "Are all indicator variables set to 'scale'?"
-msgstr ""
+msgstr "Sind alle Indikatorvariablen auf \"Metrisch\" eingestellt?"
 
 msgid "Prediction failed Message: %1$s"
 msgstr "Vorhersage fehlgeschlagen, Meldung: %1$s"
 
-#, fuzzy
 msgid "Indicator Scores"
-msgstr "Indikator-Scores"
+msgstr "Indikator-Punktzahl"
 
-#, fuzzy
 msgid "Actual scores"
-msgstr "Tatsächliche Scores"
+msgstr "Tatsächliche Punktzahl"
 
-#, fuzzy
 msgid "Predicted scores"
-msgstr "Vorhergesagte Scores"
+msgstr "Vorhergesagte Punktzahl"
 
 msgid "Target residuals"
 msgstr "Ziel-Residuen"
 
-#, fuzzy
 msgid "benchmark"
 msgstr "Referenz"
 
@@ -535,15 +530,12 @@ msgstr "Weitere Anpassungsmaße"
 msgid "Hoelter's critical N (CN)"
 msgstr "Hoelters kritisches N (CN)"
 
-#, fuzzy
 msgid "Root mean square residual covariance (RMS theta)"
 msgstr "Mittlere quadratische Residualkovarianz (RMS theta)"
 
-#, fuzzy
 msgid "Goodness of Fit (GoF)"
 msgstr "Anpassungsgüte (GoF)"
 
-#, fuzzy
 msgid "Geodesic distance"
 msgstr "Geodätische Distanz"
 
@@ -574,11 +566,9 @@ msgstr "Beobachtete Indikator-Korrelationsmatrix"
 msgid "Implied indicator correlation matrix"
 msgstr "Implizierte Indikator-Korrelationsmatrix"
 
-#, fuzzy
 msgid "Observed construct correlation matrix"
 msgstr "Beobachtete Konstrukt-Korrelationsmatrix"
 
-#, fuzzy
 msgid "Implied construct correlation matrix"
 msgstr "Implizierte Konstrukt-Korrelationsmatrix"
 
@@ -700,7 +690,7 @@ msgid "Name"
 msgstr "Name"
 
 msgid "T-size CFI"
-msgstr ""
+msgstr "T-skaliertes CFI"
 
 msgid ""
 "T-size CFI is computed for <i>%1$s = 0.05</i>. The T-size equivalents of "
@@ -710,6 +700,12 @@ msgid ""
 "                                      < %2$s < fair < %3$s < close</b> for "
 "model: %4$s."
 msgstr ""
+"T-skalliertes CFI wird berechnet für <i>%1$s = 0.05</i>. Das T-skallierten "
+"Equivalente von den\n"
+"                                      konventionellen CFI Grenzwerten ("
+"schlecht < 0.90 < mittel < 0.95 < gut) sind <b>schlecht\n"
+"                                      < %2$s < mittel < %3$s < gut</b> für "
+"Model: %4$s."
 
 msgid ""
 "The T-size equivalents of the conventional CFI cut-off values\n"
@@ -717,9 +713,13 @@ msgid ""
 "are <b>poor < %1$s < fair < %2$s <\n"
 "                                        close</b> for model: %3$s."
 msgstr ""
+"Das T-skallierte Equivalent der konventionellen CFI Grenzwerte\n"
+"                                        (schlecht < 0.90 < mittel < 0.95 < "
+"gut) sind <b>schlecht < %1$s < mittel < %2$s <\n"
+"                                        gut</b> für Model: %3$s."
 
 msgid "T-size RMSEA"
-msgstr ""
+msgstr "T-skallierter RMSEA"
 
 msgid ""
 "T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents of "
@@ -729,6 +729,12 @@ msgid ""
 "                                        <b>close < %2$s < fair < %3$s < "
 "poor</b> for model: %4$s."
 msgstr ""
+"T-skallierter RMSEA wird berechnet für <i>%1$s = 0.05</i>. Das T-skallierte "
+"Equivalent der\n"
+"                                        konventionellen RMSEA Grenzwerte ("
+"gut < 0.05 < mittel < 0.08 < schlecht) sind\n"
+"                                        <b>gut < %2$s < mittel < %3$s < "
+"schlecht</b> für Model: %4$s."
 
 msgid ""
 "The T-size equivalents of the conventional RMSEA cut-off values\n"
@@ -736,6 +742,10 @@ msgid ""
 "poor) are <b>close < %1$s < fair < %2$s\n"
 "                                          < poor</b> for model: %3$s."
 msgstr ""
+"Das T-skallierte Equivalent der konventionellen RMSEA Grenzwerte\n"
+"                                          (gut < 0.05 < mittel < 0.08 < "
+"schlecht) sind <b>gut < %1$s < mittel < %2$s\n"
+"                                          < schlecht</b> für Model: %3$s."
 
 msgid "Mardia's coefficients"
 msgstr "Mardias Koeffizienten"
