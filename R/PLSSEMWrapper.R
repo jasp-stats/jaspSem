@@ -19,7 +19,7 @@
 
 PLSSEM <- function(
           data = NULL,
-          version = "0.17.1",
+          version = "0.18.2",
           additionalFitMeasures = FALSE,
           benchmark = "none",
           bootstrapSamples = 200,
@@ -47,6 +47,7 @@ PLSSEM <- function(
           rSquared = FALSE,
           reliabilityMeasures = FALSE,
           repetitions = 10,
+          robustMethod = "bootstrap",
           seed = 1,
           setSeed = FALSE,
           structuralModelIgnored = FALSE,

@@ -19,7 +19,7 @@
 
 SEM <- function(
           data = NULL,
-          version = "0.17.1",
+          version = "0.18.2",
           additionalFitMeasures = FALSE,
           bootstrapCiType = "percentileBiasCorrected",
           bootstrapSamples = 1000,
@@ -48,6 +48,7 @@ SEM <- function(
           informationMatrix = "expected",
           latentInterceptFixedToZero = TRUE,
           manifestInterceptFixedToZero = FALSE,
+          manifestMeanFixedToZero = FALSE,
           mardiasCoefficient = FALSE,
           meanStructure = FALSE,
           modelTest = "default",
