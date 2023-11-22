@@ -19,7 +19,7 @@
 
 LatentGrowthCurve <- function(
           data = NULL,
-          version = "0.17.1",
+          version = "0.18.2",
           additionalFitMeasures = FALSE,
           bootstrapSamples = 1000,
           categorical = list(),
