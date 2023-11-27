@@ -57,7 +57,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   customChecks <- list(
     checkExogenous = function() {
       admissible <- vapply(exo, function(exo_var) {
-        var <- na.omit(dataset[[.v(exo_var)]])
+        var <- na.omit(dataset[[exo_var]])
         if (is.ordered(var)) return(FALSE)
         if ((is.character(var) || is.factor(var)) && length(unique(var)) != 2) return(FALSE)
         return(TRUE)
@@ -69,7 +69,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
     checkEndogenous = function() {
       if (length(options$confounds) > 0) endo <- c(endo, options$predictor)
       admissible <- vapply(endo, function(endo_var) {
-        var <- na.omit(dataset[[.v(endo_var)]])
+        var <- na.omit(dataset[[endo_var]])
         if (!(is.ordered(var) || is.numeric(var))) {
           return(FALSE)
         }
@@ -83,7 +83,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
       if (length(options$confounds) > 0) endo <- c(endo, options$predictor)
 
       admissible <- vapply(endo, function(endo_var) {
-        var <- na.omit(dataset[[.v(endo_var)]])
+        var <- na.omit(dataset[[endo_var]])
         if (is.ordered(var) && options$naAction == "fiml") {
           return(FALSE)
         }
@@ -149,7 +149,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
     "  Y =~",
     paste(
       paste("lambda", seq_along(options[["indicators"]]), "*", sep = ""),
-      .v(options[["indicators"]]),
+      options[["indicators"]],
       collapse = " + ", sep = ""
     )
   )
@@ -157,7 +157,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
     "  Y ~ ",
     paste(
       paste("beta", seq_along(options[["predictors"]]), "*", sep = ""),
-      .v(options[["predictors"]]),
+      options[["predictors"]],
       collapse = " + ", sep = ""
     )
   )
@@ -354,7 +354,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
                                    standardized = TRUE)
 
   pe_bet <- pe[substr(pe$label, 1, 1) == "b", ]
-  bettab[["rhs"]]      <- .unv(pe_bet$rhs)
+  bettab[["rhs"]]      <- pe_bet$rhs
   bettab[["est"]]      <- pe_bet$est
   bettab[["se"]]       <- pe_bet$se
   bettab[["z"]]        <- pe_bet$z
@@ -369,7 +369,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   }
 
   pe_lam <- pe[substr(pe$label, 1, 1) == "l", ]
-  lamtab[["rhs"]]      <- .unv(pe_lam$rhs)
+  lamtab[["rhs"]]      <- pe_lam$rhs
   lamtab[["est"]]      <- pe_lam$est
   lamtab[["se"]]       <- pe_lam$se
   lamtab[["z"]]        <- pe_lam$z
@@ -398,7 +398,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   if (!ready || modelContainer$getError()) return()
 
   r2res              <- lavaan::inspect(modelContainer[["model"]][["object"]], "r2")
-  tabr2[["__var__"]] <- .unv(names(r2res))
+  tabr2[["__var__"]] <- names(r2res)
   tabr2[["rsq"]]     <- r2res
 }
 
