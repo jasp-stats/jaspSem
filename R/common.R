@@ -60,8 +60,8 @@ lavBootstrap <- function(fit, samples = 1000) {
   ggmisfit$labels <- substr(round(ggmisfit$value, 2), 2, 4)
   ggmisfit$labels[ggmisfit$labels == ""] <- "0"
 
-  levels(ggmisfit$Var1) <- .unv(levels(ggmisfit$Var1))
-  levels(ggmisfit$Var2) <- .unv(levels(ggmisfit$Var2))
+  levels(ggmisfit$Var1) <- levels(ggmisfit$Var1)
+  levels(ggmisfit$Var2) <- levels(ggmisfit$Var2)
 
   misfitplot <-
     ggplot2::ggplot(ggmisfit, ggplot2::aes(x = Var1, y = Var2, fill = value,
@@ -99,7 +99,7 @@ lavBootstrap <- function(fit, samples = 1000) {
   if (length(encodedVars) == 0 || !is.character(encodedVars) || !is.character(message))
     return(message)
 
-  decodedVars <- .unv(encodedVars)
+  decodedVars <- encodedVars
   names(decodedVars) <- encodedVars
   stringr::str_replace_all(message, decodedVars)
 }

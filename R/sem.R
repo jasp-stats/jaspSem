@@ -105,7 +105,7 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
 
   # Check whether grouping variable is a grouping variable
   if (options[["group"]] != "") {
-    groupfac <- factor(dataset[[.v(options[["group"]])]])
+    groupfac <- factor(dataset[[options[["group"]]]])
     factab <- table(groupfac)
     if (any(factab < 3)) {
       violations <- names(table(groupfac))[table(groupfac) < 3]
@@ -313,7 +313,7 @@ checkLavaanModel <- function(model, availableVars) {
 
 .semDataCovariance <- function(dataset, syntax) {
   usedvars <- .semGetUsedVars(syntax, colnames(dataset))
-  var_idx  <- match(usedvars, .unv(colnames(dataset)))
+  var_idx  <- match(usedvars, colnames(dataset))
   mat <- try(as.matrix(dataset[var_idx, var_idx]))
   if (inherits(mat, "try-error") || any(is.na(mat)))
     .quitAnalysis("Input data does not seem to be a covariance matrix! Please check the format of the input data.
@@ -393,12 +393,12 @@ checkLavaanModel <- function(model, availableVars) {
 
   # group variable
   if (options[["group"]] != "") {
-    lavopts[["group"]] <- .v(options[["group"]])
+    lavopts[["group"]] <- options[["group"]]
   }
 
   # sampling weights
   if (options[["samplingWeights"]] != "") {
-    lavopts[["sampling.weights"]] <- .v(options[["samplingWeights"]])
+    lavopts[["sampling.weights"]] <- options[["samplingWeights"]]
   }
 
 
@@ -832,8 +832,8 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["group"]] != "")
     indtab[["group"]] <- pe_ind[["groupname"]]
 
-  indtab[["rhs"]]      <- .unv(pe_ind[["rhs"]])
-  indtab[["lhs"]]      <- .unv(pe_ind[["lhs"]])
+  indtab[["rhs"]]      <- pe_ind[["rhs"]]
+  indtab[["lhs"]]      <- pe_ind[["lhs"]]
   indtab[["label"]]    <- pe_ind[["label"]]
   indtab[["est"]]      <- pe_ind[["est"]]
   indtab[["se"]]       <- pe_ind[["se"]]
@@ -856,8 +856,8 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["group"]] != "")
     regtab[["group"]] <- pe_reg[["groupname"]]
 
-  regtab[["rhs"]]      <- .unv(pe_reg[["rhs"]])
-  regtab[["lhs"]]      <- .unv(pe_reg[["lhs"]])
+  regtab[["rhs"]]      <- pe_reg[["rhs"]]
+  regtab[["lhs"]]      <- pe_reg[["lhs"]]
   regtab[["label"]]    <- pe_reg[["label"]]
   regtab[["est"]]      <- pe_reg[["est"]]
   regtab[["se"]]       <- pe_reg[["se"]]
@@ -879,8 +879,8 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["group"]] != "")
     lvartab[["group"]] <- pe_lvar[["groupname"]]
 
-  lvartab[["rhs"]]      <- .unv(pe_lvar[["rhs"]])
-  lvartab[["lhs"]]      <- .unv(pe_lvar[["lhs"]])
+  lvartab[["rhs"]]      <- pe_lvar[["rhs"]]
+  lvartab[["lhs"]]      <- pe_lvar[["lhs"]]
   lvartab[["label"]]    <- pe_lvar[["label"]]
   lvartab[["est"]]      <- pe_lvar[["est"]]
   lvartab[["se"]]       <- pe_lvar[["se"]]
@@ -902,7 +902,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["group"]] != "")
     lcovtab[["group"]] <- pe_lcov[["groupname"]]
 
-  lcovtab[["lhs"]]      <- paste(.unv(pe_lcov[["lhs"]]), "-", .unv(pe_lcov[["rhs"]]))
+  lcovtab[["lhs"]]      <- paste(pe_lcov[["lhs"]], "-", pe_lcov[["rhs"]])
   lcovtab[["label"]]    <- pe_lcov[["label"]]
   lcovtab[["est"]]      <- pe_lcov[["est"]]
   lcovtab[["se"]]       <- pe_lcov[["se"]]
@@ -924,8 +924,8 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["group"]] != "")
     vartab[["group"]] <- pe_var[["groupname"]]
 
-  vartab[["rhs"]]      <- .unv(pe_var[["rhs"]])
-  vartab[["lhs"]]      <- .unv(pe_var[["lhs"]])
+  vartab[["rhs"]]      <- pe_var[["rhs"]]
+  vartab[["lhs"]]      <- pe_var[["lhs"]]
   vartab[["label"]]    <- pe_var[["label"]]
   vartab[["est"]]      <- pe_var[["est"]]
   vartab[["se"]]       <- pe_var[["se"]]
@@ -947,7 +947,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["group"]] != "")
     covtab[["group"]] <- pe_cov[["groupname"]]
 
-  covtab[["lhs"]]      <- paste(.unv(pe_cov[["lhs"]]), "-", .unv(pe_cov[["rhs"]]))
+  covtab[["lhs"]]      <- paste(pe_cov[["lhs"]], "-", pe_cov[["rhs"]])
   covtab[["label"]]    <- pe_cov[["label"]]
   covtab[["est"]]      <- pe_cov[["est"]]
   covtab[["se"]]       <- pe_cov[["se"]]
@@ -970,7 +970,7 @@ checkLavaanModel <- function(model, availableVars) {
     if (options[["group"]] != "")
       mutab[["group"]] <- pe_mu[["groupname"]]
 
-    mutab[["lhs"]] <- .unv(pe_mu[["lhs"]])
+    mutab[["lhs"]] <- pe_mu[["lhs"]]
     mutab[["label"]]    <- pe_mu[["label"]]
     mutab[["est"]]      <- pe_mu[["est"]]
     mutab[["se"]]       <- pe_mu[["se"]]
@@ -1246,7 +1246,7 @@ checkLavaanModel <- function(model, availableVars) {
     if (length(options[["models"]]) < 2) {
 
       r2res              <- lavaan::inspect(modelContainer[["results"]][["object"]][[1]], "r2")
-      tabr2[["__var__"]] <- .unv(names(r2res))
+      tabr2[["__var__"]] <- names(r2res)
       tabr2[["rsq"]]     <- r2res
 
     } else {
@@ -1256,7 +1256,7 @@ checkLavaanModel <- function(model, availableVars) {
 
       # generate df with these names
       r2df <- data.frame("varname__" = unique(unlist(lapply(r2li, names))))
-      tabr2[["__var__"]] <- .unv(unique(unlist(lapply(r2li, names))))
+      tabr2[["__var__"]] <- unique(unlist(lapply(r2li, names)))
 
       for (i in 1:length(r2li)) {
         # fill matching vars from model with df
@@ -1273,7 +1273,7 @@ checkLavaanModel <- function(model, availableVars) {
 
       r2res              <- lavaan::inspect(modelContainer[["results"]][["object"]][[1]], "r2")
       tabr2[["__grp__"]] <- rep(names(r2res), vapply(r2res, length, 0))
-      tabr2[["__var__"]] <- .unv(unlist(lapply(r2res, names)))
+      tabr2[["__var__"]] <- unlist(lapply(r2res, names))
       tabr2[["rsq"]]     <- unlist(r2res)
 
     } else {
@@ -1317,7 +1317,7 @@ checkLavaanModel <- function(model, availableVars) {
 
       # fill jasp table with data
       tabr2[["__grp__"]] <- r2df[["grpname__"]]
-      tabr2[["__var__"]] <- .unv(r2df[["varname__"]])
+      tabr2[["__var__"]] <- r2df[["varname__"]]
       for (i in seq_along(r2li)) tabr2[[paste0("rsq_", i)]] <- r2df[[i + 2]]
 
     }
@@ -1490,7 +1490,7 @@ checkLavaanModel <- function(model, availableVars) {
 
       for (i in 1:ncol(oc)) {
         nm <- colnames(oc)[i]
-        octab$addColumnInfo(nm, title = .unv(nm), type ="pvalue")
+        octab$addColumnInfo(nm, title = nm, type ="pvalue")
       }
       octab$addRows(oc, rowNames = colnames(oc))
     }
@@ -1503,7 +1503,7 @@ checkLavaanModel <- function(model, availableVars) {
 
       for (i in 1:ncol(ic)) {
         nm <- colnames(ic)[i]
-        ictab$addColumnInfo(nm, title = .unv(nm), type = "pvalue")
+        ictab$addColumnInfo(nm, title = nm, type = "pvalue")
       }
       ictab$addRows(ic, rowNames = colnames(ic))
     }
@@ -1516,7 +1516,7 @@ checkLavaanModel <- function(model, availableVars) {
 
       for (i in 1:ncol(rc)) {
         nm <- colnames(rc)[i]
-        rctab$addColumnInfo(nm, title = .unv(nm), type = "pvalue")
+        rctab$addColumnInfo(nm, title = nm, type = "pvalue")
       }
       rctab$addRows(rc, rowNames = colnames(rc))
     }
@@ -1535,7 +1535,7 @@ checkLavaanModel <- function(model, availableVars) {
 
           for (i in 1:ncol(sr)) {
             nm <- colnames(sr)[i]
-            srtab$addColumnInfo(nm, title = .unv(nm), type = "pvalue")
+            srtab$addColumnInfo(nm, title = nm, type = "pvalue")
           }
           srtab$addRows(sr, rowNames = colnames(sr))
         }
@@ -1559,7 +1559,7 @@ checkLavaanModel <- function(model, availableVars) {
 
         for (j in 1:ncol(oc)) {
           nm <- colnames(oc)[j]
-          occont[[level_names[i]]]$addColumnInfo(nm, title = .unv(nm), type = "pvalue")
+          occont[[level_names[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
         }
         occont[[level_names[i]]]$addRows(oc, rowNames = colnames(oc))
       }
@@ -1578,7 +1578,7 @@ checkLavaanModel <- function(model, availableVars) {
 
         for (j in 1:ncol(ic)) {
           nm <- colnames(ic)[j]
-          iccont[[level_names[i]]]$addColumnInfo(nm, title = .unv(nm), type = "pvalue")
+          iccont[[level_names[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
         }
         iccont[[level_names[i]]]$addRows(ic, rowNames = colnames(ic))
       }
@@ -1597,7 +1597,7 @@ checkLavaanModel <- function(model, availableVars) {
 
         for (j in 1:ncol(rc)) {
           nm <- colnames(rc)[j]
-          rccont[[level_names[i]]]$addColumnInfo(nm, title = .unv(nm), type = "pvalue")
+          rccont[[level_names[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
         }
         rccont[[level_names[i]]]$addRows(rc, rowNames = colnames(rc))
       }
@@ -1626,7 +1626,7 @@ checkLavaanModel <- function(model, availableVars) {
 
             for (j in 1:ncol(sr)) {
               nm <- colnames(sr)[j]
-              srcont[[level_names[i]]]$addColumnInfo(nm, title = .unv(nm), type = "pvalue")
+              srcont[[level_names[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
             }
             srcont[[level_names[i]]]$addRows(sr, rowNames = colnames(sr))
           }

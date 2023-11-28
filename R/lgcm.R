@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
+
 
 LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   ready <- length(options[["variables"]]) > 2
@@ -51,13 +51,9 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 .lgcmPreprocessOptions <- function(dataset, options) {
   # add dummy names
   if (length(options[["categorical"]]) > 0) {
-    frml <- as.formula(paste("~", paste(.v(options[["categorical"]]), collapse = "+")))
+    frml <- as.formula(paste("~", paste(options[["categorical"]], collapse = "+")))
     dumnames <- colnames(model.matrix(frml, dataset))[-1]
-    options[["dummy_names"]] <- stringr::str_replace_all(
-      string      = dumnames,
-      pattern     = .v(options[["categorical"]]),
-      replacement = options[["categorical"]]
-    )
+    options[["dummy_names"]] <- dumnames
   }
   return(options)
 }
@@ -75,9 +71,12 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 .lgcmEnrichData <- function(dataset, options) {
   # Add dummies
   if (length(options[["categorical"]]) > 0) {
-    frml <- as.formula(paste("~", paste(.v(options[["categorical"]]), collapse = "+")))
+    frml <- as.formula(paste("~", paste(options[["categorical"]], collapse = "+")))
+    # not error when the categorical variable has NAs:
+    options(na.action = "na.pass")
     mm <- model.matrix(frml, dataset)[,-1, drop = FALSE]
-    colnames(mm) <- .v(options[["dummy_names"]])
+    options(na.action = currentNa)
+    colnames(mm) <- options[["dummy_names"]]
     dataset <- cbind(dataset, mm)
 
   }
@@ -151,16 +150,16 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 
   # Basic LGCM curve information
   Int <- if (options[["intercept"]])
-    paste("I =~", paste0("1*", .v(options[["variables"]]), collapse = " + "))
+    paste("I =~", paste0("1*", options[["variables"]], collapse = " + "))
   else NULL
   Lin <- if (options[["linear"]])
-    paste("\nL =~", paste0(timings, "*", .v(options[["variables"]]), collapse = " + "))
+    paste("\nL =~", paste0(timings, "*", options[["variables"]], collapse = " + "))
   else NULL
   Qua <- if (options[["quadratic"]])
-    paste("\nQ =~", paste0(timings^2, "*", .v(options[["variables"]]), collapse = " + "))
+    paste("\nQ =~", paste0(timings^2, "*", options[["variables"]], collapse = " + "))
   else NULL
   Cub <- if (options[["cubic"]])
-    paste("\nC =~", paste0(timings^3, "*", .v(options[["variables"]]), collapse = " + "))
+    paste("\nC =~", paste0(timings^3, "*", options[["variables"]], collapse = " + "))
   else NULL
   LGC <- paste0("\n# Growth curve\n", Int, Lin, Qua, Cub)
 
@@ -179,13 +178,13 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   # Add regressions
   Reg <- if (length(options[["regressions"]]) > 0)
     paste0("\n\n# Regressions\n", paste(curve, collapse = " + "), " ~ ",
-           paste(.v(options[["regressions"]]), collapse = " + "))
+           paste(options[["regressions"]], collapse = " + "))
   else NULL
 
   # Add dummy variables
   Dum <- if (length(options[["dummy_names"]]) > 0)
     paste0("\n\n# Dummy-coded categorical predictors\n", paste(curve, collapse = " + "), " ~ ",
-           paste(.v(options[["dummy_names"]]), collapse = " + "))
+           paste(options[["dummy_names"]], collapse = " + "))
 
   # Add time-varying covariates
   # eww this is hard
@@ -407,7 +406,7 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     pereg <- pe[pe$lhs %in% slope_names & pe$op == "~",]
     pereg <- pereg[order(pereg$lhs), ]
     latreg[["component"]] <- pereg[["lhs"]]
-    latreg[["predictor"]] <- .unv(pereg[["rhs"]])
+    latreg[["predictor"]] <- pereg[["rhs"]]
     latreg[["est"]]       <- pereg[["est"]]
     latreg[["se" ]]       <- pereg[["se"]]
     latreg[["zval"]]      <- pereg[["z"]]
@@ -422,8 +421,8 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   }
 
   # residual variances
-  perev <- pe[pe$lhs %in% .v(options[["variables"]]) & pe$lhs == pe$rhs,]
-  resvar[["var"]]  <- .unv(perev[["lhs"]])
+  perev <- pe[pe$lhs %in% options[["variables"]] & pe$lhs == pe$rhs,]
+  resvar[["var"]]  <- perev[["lhs"]]
   resvar[["est"]]  <- perev[["est"]]
   resvar[["se"]]   <- perev[["se"]]
   resvar[["zval"]] <- perev[["z"]]
@@ -532,7 +531,7 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   # get r2 of variables, excluding the latent variables.
   r2res <- lavaan::inspect(modelContainer[["model"]][["object"]], "r2")
   r2res <- r2res[!names(r2res) %in% c("I", "L", "Q", "C")]
-  varnames <- .unv(names(r2res))
+  varnames <- names(r2res)
   tabr2[["__var__"]] <- varnames
   tabr2[["rsq"]]     <- r2res
 }
@@ -553,7 +552,7 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 
   for (i in 1:ncol(ic)) {
     nm <- colnames(ic)[i]
-    tab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+    tab$addColumnInfo(nm, title = nm, type = "number", format = "sf:4;dp:3")
   }
   tab$addRows(ic, rowNames = colnames(ic))
 
@@ -576,7 +575,7 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 
   for (i in 1:ncol(rc)) {
     nm <- colnames(rc)[i]
-    tab$addColumnInfo(nm, title = .unv(nm), type = "number", format = "sf:4;dp:3")
+    tab$addColumnInfo(nm, title = nm, type = "number", format = "sf:4;dp:3")
   }
   tab$addRows(rc, rowNames = colnames(rc))
 
@@ -616,17 +615,17 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   df_long <- tidyr::gather(df_wide, key = "Participant", value = "Val", -"xx")
 
   if (ctgcl)
-    df_long[[options[["curvePlotCategorical"]]]] <- rep(dataset[[.v(options[["curvePlotCategorical"]])]][idx], each = 1000)
+    df_long[[options[["curvePlotCategorical"]]]] <- rep(dataset[[options[["curvePlotCategorical"]]]][idx], each = 1000)
 
   # create raw data points data frame
-  points <- data.frame(lgcmResult@Data@X[[1]])[idx, lgcmResult@Data@ov.names[[1]] %in% .v(options[["variables"]])]
+  points <- data.frame(lgcmResult@Data@X[[1]])[idx, lgcmResult@Data@ov.names[[1]] %in% options[["variables"]]]
   names(points) <- timings
   points[["Participant"]] <- paste0("X", 1:nrow(points))
   points_long <- tidyr::gather(points, key = "xx", value = "Val", -"Participant")
   points_long[["xx"]] <- as.numeric(points_long[["xx"]])
 
   if (ctgcl)
-    points_long[[options[["curvePlotCategorical"]]]] <- rep(dataset[[.v(options[["curvePlotCategorical"]])]][idx],
+    points_long[[options[["curvePlotCategorical"]]]] <- rep(dataset[[options[["curvePlotCategorical"]]]][idx],
                                                         length(timings))
 
   # points may need to be jittered
