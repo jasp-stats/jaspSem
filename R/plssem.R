@@ -33,6 +33,7 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   # Output functions
   .plsSemFitTab(modelContainer, dataset, options, ready)
+  if (modelContainer$getError()) return()
   .plsSemParameters(modelContainer, dataset, options, ready)
   .plsSemRsquared(modelContainer, dataset, options, ready)
   .plsSemPrediction(modelContainer, options, ready)
@@ -154,7 +155,7 @@ checkCSemModel <- function(model, availableVars) {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c("weightingApproach", "correlationMatrix", "convergenceCriterion",
                               "estimateStructural", "group", "correctionFactor", "compositeCorrelationDisattenuated",
-                              "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod", "bootstrapSamples", "ciLevel",
+                              "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod", "robustMethod", "bootstrapSamples", "ciLevel",
                               "setSeed", "seed", "handlingOfInadmissibles", "Data", "handlingOfFlippedSigns", "endogenousIndicatorPrediction",
                               "kFolds", "repetitions", "benchmark", "predictedScore"))
     jaspResults[["modelContainer"]] <- modelContainer
