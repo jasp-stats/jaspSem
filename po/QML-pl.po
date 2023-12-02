@@ -1,10 +1,16 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2023-12-01 22:07+0000\n"
+"Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
+"Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
+"pl/>\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2;\n"
+"X-Generator: Weblate 5.3-dev\n"
 "X-Language: pl\n"
 "X-Qt-Contexts: true\n"
 
@@ -90,7 +96,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Residual covariance matrix"
-msgstr ""
+msgstr "Macierz kowariancji reszt"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Show lavaan syntax"
@@ -106,7 +112,7 @@ msgstr "Wykres krzywej"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Misfit plot"
-msgstr ""
+msgstr "Wykres niedopasowania"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Model plot"
@@ -214,11 +220,11 @@ msgstr "Opcje"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Fix manifest intercepts to zero"
-msgstr ""
+msgstr "Ustal wyrazy wolne manifestu jako zero"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Fix latent intercepts to zero"
-msgstr ""
+msgstr "Ustal latentne wyrazy wolne jako zero"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Omit residual single indicator"
@@ -262,7 +268,7 @@ msgstr "Mediatory"
 
 msgctxt "MediationAnalysis|"
 msgid "Outcome"
-msgstr "Wynik"
+msgstr "Zmienne zależne"
 
 msgctxt "MediationAnalysis|"
 msgid "Background confounders"
@@ -294,7 +300,7 @@ msgstr ""
 
 msgctxt "MediationAnalysis|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "Kowariancje reszt"
 
 msgctxt "MediationAnalysis|"
 msgid "Confidence intervals"
@@ -414,7 +420,7 @@ msgstr "DWLS"
 
 msgctxt "Mimic|"
 msgid "Indicators"
-msgstr ""
+msgstr "Wskaźniki"
 
 msgctxt "Mimic|"
 msgid "Predictors"
@@ -556,7 +562,6 @@ msgctxt "Mimic|"
 msgid "DWLS"
 msgstr "DWLS"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Model 1"
 msgstr "Model 1"
@@ -579,7 +584,7 @@ msgstr "Wielkość próby"
 
 msgctxt "SEM|"
 msgid "Sampling weights"
-msgstr ""
+msgstr "Wagi próbkowania"
 
 msgctxt "SEM|"
 msgid "Output options"
@@ -603,7 +608,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Residual covariances"
-msgstr ""
+msgstr "Kowariancje reszt"
 
 msgctxt "SEM|"
 msgid "Standardized residuals"
@@ -691,7 +696,7 @@ msgstr "Pomiń pojedynczy wskaźnik resztowy"
 
 msgctxt "SEM|"
 msgid "Include residual variances"
-msgstr ""
+msgstr "Uwzględnij wariancję resztową"
 
 msgctxt "SEM|"
 msgid "Correlate exogenous latents"
@@ -855,7 +860,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Doubly robust"
-msgstr ""
+msgstr "Podwójnie odporna"
 
 msgctxt "SEM|"
 msgid "Emulation"
@@ -903,11 +908,11 @@ msgstr "Analizy regresji"
 
 msgctxt "SEM|"
 msgid "Latent variances"
-msgstr ""
+msgstr "Latentna wariancja"
 
 msgctxt "SEM|"
 msgid "Latent covariances"
-msgstr ""
+msgstr "Latentna kowariancja"
 
 msgctxt "SEM|"
 msgid "Release constraints (one per line)"
@@ -927,6 +932,12 @@ msgid ""
 "More details about the update can be found at https://groups.google.com/g/"
 "lavaan/c/HSavF8oaW5M"
 msgstr ""
+"Ta analiza została utworzona przy użyciu starszej wersji JASP (lub modułu "
+"dynamicznego). Od tego czasu nastąpiły zmiany w pakiecie lavaan, który "
+"wykonuje analizę. W szczególności składnia lavaan dotycząca ograniczeń "
+"równości w analizie wielogrupowej jest teraz interpretowana inaczej. Proszę "
+"postępować ostrożnie! Więcej szczegółów na temat aktualizacji można znaleźć "
+"pod adresem https://groups.google.com/g/lavaan/c/HSavF8oaW5M"
 
 msgctxt "Description|"
 msgid "MIMIC Model"
@@ -934,11 +945,11 @@ msgstr "Model MIMIC"
 
 msgctxt "Description|"
 msgid "Latent Growth"
-msgstr ""
+msgstr "Przyrost latentny"
 
 msgctxt "MediationAnalysis|"
 msgid "Path coefficients"
-msgstr ""
+msgstr "Współczynniki dla ścieżek"
 
 msgctxt "Description|"
 msgid "Partial Least Squares SEM"
@@ -990,7 +1001,7 @@ msgstr "Średnia harmoniczna"
 
 msgctxt "PLSSEM|"
 msgid "Geometric-harmonic mean"
-msgstr ""
+msgstr "Średnia geometryczno-harmoniczna"
 
 msgctxt "PLSSEM|"
 msgid "Grouping Variable"
@@ -1162,7 +1173,7 @@ msgstr "Współczynnik Mardia"
 
 msgctxt "PLSSEM|"
 msgid "Reliability measures"
-msgstr ""
+msgstr "Miary rzetelności"
 
 msgctxt "PLSSEM|"
 msgid "Observed indicator correlations"
@@ -1194,11 +1205,11 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Repetitions"
-msgstr ""
+msgstr "Powtórzenia"
 
 msgctxt "PLSSEM|"
 msgid "Benchmark(s)"
-msgstr ""
+msgstr "Benchmark(i)"
 
 msgctxt "PLSSEM|"
 msgid "Linear model"
@@ -1214,7 +1225,7 @@ msgstr "Pokaż przewidywane oceny"
 
 msgctxt "PLSSEM|"
 msgid "Samples"
-msgstr ""
+msgstr "Próbki"
 
 msgctxt "PLSSEM|"
 msgid "Jackknife"
