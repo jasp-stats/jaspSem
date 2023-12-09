@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2023-09-16 02:40\n"
+"POT-Creation-Date: 2023-12-09 02:41\n"
 "PO-Revision-Date: 2023-01-09 04:16+0000\n"
 "Last-Translator: Changya Hu <changyahu@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
@@ -665,8 +665,9 @@ msgstr "變數"
 msgid "Residual variances"
 msgstr "殘差變異數"
 
-msgid "Means"
-msgstr "平均數"
+#, fuzzy
+msgid "Intercepts"
+msgstr "截距"
 
 msgid "Defined parameters"
 msgstr "變數定義"
@@ -782,6 +783,9 @@ msgstr "sepc (非內生變數)"
 
 msgid "Path diagram"
 msgstr "路徑圖"
+
+#~ msgid "Means"
+#~ msgstr "平均數"
 
 #, fuzzy
 #~ msgid "Δdf"

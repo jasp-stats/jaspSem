@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2023-09-16 02:40\n"
+"POT-Creation-Date: 2023-12-09 02:41\n"
 "PO-Revision-Date: 2023-04-20 12:51+0000\n"
 "Last-Translator: Don van den Bergh <donvdbergh@hotmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/"
@@ -680,8 +680,9 @@ msgstr "Variabelen"
 msgid "Residual variances"
 msgstr "Residu varianties"
 
-msgid "Means"
-msgstr "Gemiddelden"
+#, fuzzy
+msgid "Intercepts"
+msgstr "Intercept"
 
 msgid "Defined parameters"
 msgstr "Gedefineerde Parameters"
@@ -821,6 +822,9 @@ msgstr "sepc (nox)"
 
 msgid "Path diagram"
 msgstr "Paddiagram"
+
+#~ msgid "Means"
+#~ msgstr "Gemiddelden"
 
 #~ msgid "T-size CFI is computed for <i>%s = 0.05</i>"
 #~ msgstr "T-size CFI wordt berekend voor <i>%s = 0,05</i>"

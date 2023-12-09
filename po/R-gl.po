@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2023-09-16 02:40\n"
+"POT-Creation-Date: 2023-12-09 02:41\n"
 "PO-Revision-Date: 2023-09-16 14:58+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -686,8 +686,9 @@ msgstr "Variables"
 msgid "Residual variances"
 msgstr "Varianzas dos erros"
 
-msgid "Means"
-msgstr "Medias"
+#, fuzzy
+msgid "Intercepts"
+msgstr "Constante"
 
 msgid "Defined parameters"
 msgstr "Parámetros definidos"
@@ -708,8 +709,8 @@ msgid ""
 msgstr ""
 "O tamaño do IAC (CFI) calcúlase para <i>%1$s = 0.05</i>. Os equivalentes de "
 "tamaño T aos\n"
-"                                      valores de corte do IAC convencional ("
-"malo < 0.90 < razoable < 0.95 < próximo) son <b>malo\n"
+"                                      valores de corte do IAC convencional "
+"(malo < 0.90 < razoable < 0.95 < próximo) son <b>malo\n"
 "                                      < %2$s < razoable < %3$s < próximo</b> "
 "para o modelo: %4$s."
 
@@ -831,6 +832,9 @@ msgstr "sepc (nox)"
 
 msgid "Path diagram"
 msgstr "Diagrama de ruta"
+
+#~ msgid "Means"
+#~ msgstr "Medias"
 
 #~ msgid "T-size CFI is computed for <i>%s = 0.05</i>"
 #~ msgstr "O tamaño T do IAC (CFI) calcúlase para <i>%s = 0.05</i>"

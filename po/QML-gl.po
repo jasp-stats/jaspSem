@@ -1224,3 +1224,7 @@ msgstr "Mostras"
 msgctxt "PLSSEM|"
 msgid "Jackknife"
 msgstr "Jackknife"
+
+msgctxt "SEM|"
+msgid "Fix mean of manifest intercepts to zero"
+msgstr ""

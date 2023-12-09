@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2023-09-16 02:40\n"
+"POT-Creation-Date: 2023-12-09 02:41\n"
 "PO-Revision-Date: 2023-12-02 02:39+0000\n"
 "Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -665,8 +665,9 @@ msgstr "変数"
 msgid "Residual variances"
 msgstr "残差分散"
 
-msgid "Means"
-msgstr "平均値"
+#, fuzzy
+msgid "Intercepts"
+msgstr "切片"
 
 msgid "Defined parameters"
 msgstr "定義されたパラメータ"
@@ -783,6 +784,9 @@ msgstr "sept(nox)"
 
 msgid "Path diagram"
 msgstr "パス図"
+
+#~ msgid "Means"
+#~ msgstr "平均値"
 
 #, fuzzy
 #~ msgid "Δdf"

@@ -1220,3 +1220,7 @@ msgstr "样本"
 msgctxt "PLSSEM|"
 msgid "Jackknife"
 msgstr "刀切法（Jackknife）"
+
+msgctxt "SEM|"
+msgid "Fix mean of manifest intercepts to zero"
+msgstr ""
