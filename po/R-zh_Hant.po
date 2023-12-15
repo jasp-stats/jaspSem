@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
 "POT-Creation-Date: 2023-12-09 02:41\n"
-"PO-Revision-Date: 2023-01-09 04:16+0000\n"
-"Last-Translator: Changya Hu <changyahu@gmail.com>\n"
+"PO-Revision-Date: 2023-12-16 01:08+0000\n"
+"Last-Translator: Ginger Shu-Ying Yeh <gingershuying@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
 "jasp/jaspsem-r/zh_Hant/>\n"
 "Language: zh_Hant\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.15.1-dev\n"
+"X-Generator: Weblate 5.3\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "此模型無法估計: 迭代結果無法聚合"
@@ -53,9 +53,8 @@ msgid "z-value"
 msgstr "z 值"
 
 msgid "p"
-msgstr "p值"
+msgstr "p"
 
-#, fuzzy
 msgid "Lower"
 msgstr "下界"
 
@@ -257,7 +256,6 @@ msgstr "直接效果"
 msgid "%s%% Confidence Interval"
 msgstr "%s%% 信賴區間"
 
-#, fuzzy
 msgid "Upper"
 msgstr "上界"
 
@@ -377,7 +375,7 @@ msgid "Model fit"
 msgstr "模型適配度"
 
 msgid "Group"
-msgstr "組別"
+msgstr "群"
 
 msgid "AIC"
 msgstr "AIC"
@@ -386,7 +384,7 @@ msgid "BIC"
 msgstr "BIC"
 
 msgid "n"
-msgstr "樣本數"
+msgstr "n"
 
 msgid "Baseline test"
 msgstr "基底模式檢定"
