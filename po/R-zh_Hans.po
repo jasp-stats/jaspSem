@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
 "POT-Creation-Date: 2023-12-09 02:41\n"
-"PO-Revision-Date: 2023-09-21 18:28+0000\n"
-"Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
+"PO-Revision-Date: 2023-12-23 02:39+0000\n"
+"Last-Translator: Peng Li <P.Lee2008@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
 "jasp/jaspsem-r/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.1-dev\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "由于不收敛，该模型无法估计。"
@@ -35,19 +35,19 @@ msgid "Warning."
 msgstr ""
 
 msgid "Parameter estimates"
-msgstr ""
+msgstr "参数估计"
 
 msgid "Component"
 msgstr ""
 
 msgid "Parameter"
-msgstr ""
+msgstr "参数"
 
 msgid "Estimate"
 msgstr "估计"
 
 msgid "Std. Error"
-msgstr ""
+msgstr "标准误"
 
 msgid "z-value"
 msgstr "z 值"
@@ -68,7 +68,7 @@ msgid "LV"
 msgstr ""
 
 msgid "Std. Est."
-msgstr ""
+msgstr "标准化估计"
 
 msgid "All"
 msgstr "全部"
@@ -86,13 +86,13 @@ msgid "Intercept"
 msgstr "截距"
 
 msgid "Linear slope"
-msgstr ""
+msgstr "一次方程斜率"
 
 msgid "Quadratic slope"
-msgstr ""
+msgstr "二次方程斜率"
 
 msgid "Cubic slope"
-msgstr ""
+msgstr "三次方程斜率"
 
 msgid "Mean"
 msgstr "均值"
@@ -108,7 +108,7 @@ msgid "Additional Fit measures"
 msgstr ""
 
 msgid "Fit indices"
-msgstr ""
+msgstr "拟合指数"
 
 msgid "Index"
 msgstr ""
