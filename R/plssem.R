@@ -65,7 +65,7 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   for (model in options[["models"]])
     variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
 
-  return(.readDataSetToEnd(columns = variablesToRead))
+  return(.readDataSetToEnd(columns = variablesToRead, exclude.na.listwise = variablesToRead))
 }
 
 .plsSemIsReady <- function(dataset, options) {
@@ -476,7 +476,7 @@ checkCSemModel <- function(model, availableVars) {
       msgs <- warningmsgs[warnings]
 
       for (j in seq_along(msgs)) {
-        warningFootnote <- gettextf("WARNING! model %1$s: %2$s", options[["models"]][[i]][["name"]],  msgs[j])
+        warningFootnote <- gettextf("WARNING! %1$s: %2$s", options[["models"]][[i]][["name"]],  msgs[j])
         fittab$addFootnote(warningFootnote)
       }
     }
@@ -487,7 +487,7 @@ checkCSemModel <- function(model, availableVars) {
         msgs <- warningmsgs[warnings]
 
         for (k in seq_along(msgs)) {
-          warningFootnote <- gettextf("WARNING! model %1$s, group %2$s: %3$s",
+          warningFootnote <- gettextf("WARNING! %1$s, group %2$s: %3$s",
                                       options[["models"]][[i]][["name"]], names(plsSemResults[[i]])[[j]], msgs[k])
           fittab$addFootnote(warningFootnote)
         }
