@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
 "POT-Creation-Date: 2023-12-30 02:40\n"
-"PO-Revision-Date: 2023-12-09 14:30+0000\n"
+"PO-Revision-Date: 2023-12-31 13:06+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "es/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.3-dev\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "El modelo no se pudo estimar debido a la no-convergencia."
@@ -407,13 +407,11 @@ msgstr "Contraste de referencia"
 msgid "Difference test"
 msgstr "Contraste de diferencias"
 
-#, fuzzy
 msgid "WARNING! %1$s: %2$s"
-msgstr "AVISO! %1$s modelo: %2$s"
+msgstr "¡AVISO! %1$s: %2$s"
 
-#, fuzzy
 msgid "WARNING! %1$s, group %2$s: %3$s"
-msgstr "AVISO! %1$s modelo, %2$s grupo: %3$s"
+msgstr "AVISO! %1$s, %2$s grupo: %3$s"
 
 msgid "Weights"
 msgstr "Pesos"
