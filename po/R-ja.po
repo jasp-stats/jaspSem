@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2023-12-09 02:41\n"
+"POT-Creation-Date: 2023-12-30 02:40\n"
 "PO-Revision-Date: 2023-12-02 02:39+0000\n"
 "Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -397,10 +397,10 @@ msgstr "ベースラインテスト"
 msgid "Difference test"
 msgstr "差異の検定"
 
-msgid "WARNING! model %1$s: %2$s"
+msgid "WARNING! %1$s: %2$s"
 msgstr ""
 
-msgid "WARNING! model %1$s, group %2$s: %3$s"
+msgid "WARNING! %1$s, group %2$s: %3$s"
 msgstr ""
 
 msgid "Weights"

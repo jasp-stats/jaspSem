@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2023-12-09 02:41\n"
+"POT-Creation-Date: 2023-12-30 02:40\n"
 "PO-Revision-Date: 2023-12-23 02:39+0000\n"
 "Last-Translator: Peng Li <P.Lee2008@gmail.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -385,10 +385,10 @@ msgstr ""
 msgid "Difference test"
 msgstr ""
 
-msgid "WARNING! model %1$s: %2$s"
+msgid "WARNING! %1$s: %2$s"
 msgstr ""
 
-msgid "WARNING! model %1$s, group %2$s: %3$s"
+msgid "WARNING! %1$s, group %2$s: %3$s"
 msgstr ""
 
 msgid "Weights"

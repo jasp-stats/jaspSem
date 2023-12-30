@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2023-12-09 02:41\n"
+"POT-Creation-Date: 2023-12-30 02:40\n"
 "PO-Revision-Date: 2023-12-01 22:03+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-r/pl/"
@@ -387,10 +387,12 @@ msgstr ""
 msgid "Difference test"
 msgstr "Test różnic"
 
-msgid "WARNING! model %1$s: %2$s"
+#, fuzzy
+msgid "WARNING! %1$s: %2$s"
 msgstr "UWAGA! model %1$s: %2$s"
 
-msgid "WARNING! model %1$s, group %2$s: %3$s"
+#, fuzzy
+msgid "WARNING! %1$s, group %2$s: %3$s"
 msgstr "UWAGA! model %1$s, grupa %2$s: %3$s"
 
 #, fuzzy

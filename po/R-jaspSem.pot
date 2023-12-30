@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.18.2\n"
-"POT-Creation-Date: 2023-12-09 02:41\n"
+"POT-Creation-Date: 2023-12-30 02:40\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -364,10 +364,10 @@ msgstr ""
 msgid "Difference test"
 msgstr ""
 
-msgid "WARNING! model %1$s: %2$s"
+msgid "WARNING! %1$s: %2$s"
 msgstr ""
 
-msgid "WARNING! model %1$s, group %2$s: %3$s"
+msgid "WARNING! %1$s, group %2$s: %3$s"
 msgstr ""
 
 msgid "Weights"

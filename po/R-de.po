@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2023-12-09 02:41\n"
+"POT-Creation-Date: 2023-12-30 02:40\n"
 "PO-Revision-Date: 2023-12-19 10:10+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
@@ -407,10 +407,12 @@ msgstr "Baseline-Test"
 msgid "Difference test"
 msgstr "Differenz-Test"
 
-msgid "WARNING! model %1$s: %2$s"
+#, fuzzy
+msgid "WARNING! %1$s: %2$s"
 msgstr "WARNUNG! Modell %1$s: %2$s"
 
-msgid "WARNING! model %1$s, group %2$s: %3$s"
+#, fuzzy
+msgid "WARNING! %1$s, group %2$s: %3$s"
 msgstr "WARNUNG! Modell %1$s, Gruppe %2$s: %3$s"
 
 msgid "Weights"
