@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2023-12-30 02:40\n"
-"PO-Revision-Date: 2023-12-19 10:10+0000\n"
+"PO-Revision-Date: 2024-01-11 18:06+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 5.3\n"
+"X-Generator: Weblate 5.4-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "Das Modell konnte nicht geschätzt werden durch fehlende Konvergenz."
@@ -407,13 +407,11 @@ msgstr "Baseline-Test"
 msgid "Difference test"
 msgstr "Differenz-Test"
 
-#, fuzzy
 msgid "WARNING! %1$s: %2$s"
-msgstr "WARNUNG! Modell %1$s: %2$s"
+msgstr "WARNUNG! %1$s: %2$s"
 
-#, fuzzy
 msgid "WARNING! %1$s, group %2$s: %3$s"
-msgstr "WARNUNG! Modell %1$s, Gruppe %2$s: %3$s"
+msgstr "WARNUNG! %1$s, Gruppe %2$s: %3$s"
 
 msgid "Weights"
 msgstr "Gewichte"
