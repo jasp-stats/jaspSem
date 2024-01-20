@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-01-11 11:06+0000\n"
+"PO-Revision-Date: 2024-01-14 16:06+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "de/>\n"
@@ -1235,18 +1235,21 @@ msgctxt "PLSSEM|"
 msgid "All"
 msgstr "Alle"
 
+#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Show predicted scores"
-msgstr ""
+msgstr "Vorhergesagte Scores anzeigen"
 
 msgctxt "PLSSEM|"
 msgid "Samples"
 msgstr "Stichproben"
 
+#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Jackknife"
-msgstr ""
+msgstr "Jackknife"
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Fix mean of manifest intercepts to zero"
-msgstr ""
+msgstr "Manifeste Konstanten auf Null fixieren"
