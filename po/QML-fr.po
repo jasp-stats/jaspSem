@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-01-21 19:02+0000\n"
+"PO-Revision-Date: 2024-01-22 18:11+0000\n"
 "Last-Translator: robachowyk <kaya.robach@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "fr/>\n"
@@ -37,7 +37,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Regressions"
-msgstr ""
+msgstr "Régressions"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Factor"
