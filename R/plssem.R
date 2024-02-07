@@ -153,8 +153,8 @@ checkCSemModel <- function(model, availableVars) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("weightingApproach", "correlationMatrix", "convergenceCriterion",
-                              "estimateStructural", "group", "correctionFactor", "compositeCorrelationDisattenuated",
+    modelContainer$dependOn(c("correlationMatrix", "convergenceCriterion",
+                              "estimateStructural", "group", "correctionFactor", "consistentPartialLeastSquares",
                               "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod", "robustMethod", "bootstrapSamples", "ciLevel",
                               "setSeed", "seed", "handlingOfInadmissibles", "Data", "handlingOfFlippedSigns", "endogenousIndicatorPrediction",
                               "kFolds", "repetitions", "benchmark", "predictedScore"))
@@ -277,7 +277,7 @@ checkCSemModel <- function(model, availableVars) {
   cSemOpts <- list()
 
   # model features
-  cSemOpts[[".approach_weights"]]            <- options[["weightingApproach"]]
+  cSemOpts[[".approach_weights"]]            <- "PLS-PM"
   cSemOpts[[".approach_cor_robust"]]         <- if (options[["correlationMatrix"]] == "pearson") "none" else options[["correlationMatrix"]]
   cSemOpts[[".approach_nl"]]                 <- options[["approachNonLinear"]]
   cSemOpts[[".conv_criterion"]]              <- switch(options[["convergenceCriterion"]],
@@ -289,7 +289,7 @@ checkCSemModel <- function(model, availableVars) {
   cSemOpts[[".PLS_ignore_structural_model"]] <- options[["structuralModelIgnored"]]
   cSemOpts[[".PLS_weight_scheme_inner"]]     <- options[["innerWeightingScheme"]]
 
-  if (options[["compositeCorrelationDisattenuated"]]) {
+  if (options[["consistentPartialLeastSquares"]]) {
     cSemOpts[".disattenuate"] <- TRUE
     cSemOpts[".PLS_approach_cf"] <- switch(options[["correctionFactor"]],
                                            "squaredEuclidean" = "dist_squared_euclid",
@@ -927,19 +927,19 @@ checkCSemModel <- function(model, availableVars) {
     predictcont <- createJaspContainer(name, initCollapsed = TRUE)
   }
 
-  #Error messages
+  # Error messages
 
   if (options[["benchmark"]] != "none" && options[["benchmark"]] != "all") {
     benchmarks <- options[["benchmark"]]
   }
   else if (options[["benchmark"]] == "all") {
     benchmarks <- c("lm", "PLS-PM", "GSCA", "PCA", "MAXVAR")
-    benchmarks <- benchmarks[benchmarks != options[["weightingApproach"]]]
+    benchmarks <- benchmarks[benchmarks != "PLS-PM"]
   } else {
     benchmarks <- NULL
   }
 
-  if (options[["benchmark"]] != "none" && options[["benchmark"]] != "all" && benchmarks == options[["weightingApproach"]]) {
+  if (options[["benchmark"]] != "none" && options[["benchmark"]] != "all" && benchmarks == "PLS-PM") {
     errormsg <- gettextf("The target model uses the same weighting approach as the benchmark model, please choose another benchmark.")
     modelContainer$setError(errormsg)
     modelContainer$dependOn("benchmark")
