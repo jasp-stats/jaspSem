@@ -69,6 +69,7 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 }
 
 .lgcmEnrichData <- function(dataset, options) {
+  currentNa <- getOption("na.action")
   # Add dummies
   if (length(options[["categorical"]]) > 0) {
     frml <- as.formula(paste("~", paste(options[["categorical"]], collapse = "+")))
