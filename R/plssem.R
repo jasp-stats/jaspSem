@@ -164,6 +164,11 @@ checkCSemModel <- function(model, availableVars) {
   return(modelContainer)
 }
 
+# This function fits the model and stores results as follows
+# modelContainer[["results"]] <- createJaspState(results)
+# modelContainer[["results"]]$dependOn(optionsFromObject = modelContainer)
+# modelContainer[["models"]]  <- createJaspState(options[["models"]])
+# modelContainer[["models"]]$dependOn(optionsFromObject = modelContainer)
 .plsSemComputeResults <- function(modelContainer, dataset, options) {
   # create result list from options
 
@@ -561,7 +566,7 @@ checkCSemModel <- function(model, availableVars) {
   if (options[["group"]] != "")
     weightTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
-  weightTab$addColumnInfo(name = "lhs",      title = gettext("Latent"),   type = "string", combine = TRUE)
+  weightTab$addColumnInfo(name = "lhs",      title = gettext("Construct"),   type = "string", combine = TRUE)
   weightTab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
   weightTab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
 
@@ -579,7 +584,7 @@ checkCSemModel <- function(model, availableVars) {
   pecont[["weight"]] <- weightTab
 
   # create loadings table
-  loadingTab <- createJaspTable(title = gettext("Factor Loadings"))
+  loadingTab <- createJaspTable(title = gettext("Loadings"))
 
   if (options[["group"]] != "")
     loadingTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -611,6 +616,7 @@ checkCSemModel <- function(model, availableVars) {
   pathTab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),      type = "string", combine = TRUE)
   pathTab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),    type = "string")
   pathTab$addColumnInfo(name = "est",      title = gettext("Estimate"),     type = "number")
+  pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
   pathTab$addColumnInfo(name = "f2",       title = "f\u00B2",               type = "number")
 
   if (options[["errorCalculationMethod"]] != "none") {
@@ -777,6 +783,31 @@ checkCSemModel <- function(model, availableVars) {
 
 
   # fill Paths table
+  # Make VIFs into a matrix
+  # Restructure the VIFs into a table.
+  VIFspath <- cSEM::assess(.object = fit,.quality_criterion = 'vif')
+
+  idx2 <- which(VIFspath$VIF!=0,arr.ind = T)
+  # VIFOrgDf <- data.frame(Relation=paste(rownames(VIFspath$VIF)[idx2[,'row']],'~',colnames(VIFspath$VIF)[idx2[,'col']]),
+  #                         VIF=VIFspath$VIF[cbind(rownames(VIFspath$VIF)[idx2[,'row']],colnames(VIFspath$VIF)[idx2[,'col']])])
+
+
+  # VIFOrgDf <- data.frame(lhs=rownames(VIFspath$VIF)[idx2[,'row']],rhs=colnames(VIFspath$VIF)[idx2[,'col']])
+  # paste(rownames(VIFspath$VIF)[idx2[,'row']],'~',colnames(VIFspath$VIF)[idx2[,'col']])
+
+  # VIFOrgDf$VIF <- VIFspath$VIF[cbind(VIFOrgDf$lhs,VIFOrgDf$rhs)]
+
+  # if(nrow(VIFOrgDf)!=0){
+  # VIF=merge(x=VIFDf,y=VIFOrgDf,by.x=c('lhs','rhs'),by.y=c('lhs','rhs'),all.x = TRUE)
+  # VIF <- VIF[order(VIF$sort),]
+  # VIF <- VIF[,c('lhs','rhs','VIF')]
+  # } else{
+  # VIF <- VIFDf
+  # VIF <- VIF[,c('lhs','rhs','vif')]
+  # colnames(VIF) <- c('lhs','rhs','VIF')
+  # }
+
+
   f2 <- cSEM::calculatef2(fit)
   if (options[["group"]] == "") {
     pathEstimates <- try(.prepareEstimates(pe, estimateType = "Path_estimates", options = options))
