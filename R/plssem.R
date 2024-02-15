@@ -164,11 +164,7 @@ checkCSemModel <- function(model, availableVars) {
   return(modelContainer)
 }
 
-# This function fits the model and stores results as follows
-# modelContainer[["results"]] <- createJaspState(results)
-# modelContainer[["results"]]$dependOn(optionsFromObject = modelContainer)
-# modelContainer[["models"]]  <- createJaspState(options[["models"]])
-# modelContainer[["models"]]$dependOn(optionsFromObject = modelContainer)
+
 .plsSemComputeResults <- function(modelContainer, dataset, options) {
   # create result list from options
 
