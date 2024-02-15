@@ -287,7 +287,7 @@ checkCSemModel <- function(model, availableVars) {
   cSemOpts <- list()
 
   # model features
-  cSemOpts[[".approach_weights"]]            <- "PLS-PM"
+  cSemOpts[[".approach_weights"]]            <- options[["weightingApproach"]]
   cSemOpts[[".approach_cor_robust"]]         <- if (options[["correlationMatrix"]] == "pearson") "none" else options[["correlationMatrix"]]
   cSemOpts[[".approach_nl"]]                 <- options[["approachNonLinear"]]
   cSemOpts[[".conv_criterion"]]              <- switch(options[["convergenceCriterion"]],
