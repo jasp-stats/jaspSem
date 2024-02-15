@@ -1952,7 +1952,12 @@ checkCSemModel <- function(model, availableVars) {
 .plsSEMVIFBhelper <- function(fit){
   VIFsweights <- cSEM::calculateVIFModeB(fit)
 
-  if(!is.null(VIFsweights)){
+  # If there is only one weight, cSEM::calculateVIFModeB() returns NA for that VIF
+  # therefore, replace NAs with 0
+  VIFsweights[is.na(VIFsweights)] <- 0
+
+
+  if(!is.null(VIFsweights)&sum(VIFsweights)!=0){
   idx <- which(VIFsweights!=0,arr.ind = T)
 
   VIFBDf <- data.frame(Relation=paste(rownames(VIFsweights)[idx[,'row']],'<~',colnames(VIFsweights)[idx[,'col']]),
