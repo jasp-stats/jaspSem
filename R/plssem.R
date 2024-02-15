@@ -616,7 +616,7 @@ checkCSemModel <- function(model, availableVars) {
   pathTab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),      type = "string", combine = TRUE)
   pathTab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),    type = "string")
   pathTab$addColumnInfo(name = "est",      title = gettext("Estimate"),     type = "number")
-  pathTab$addColumnInfo(name = "vif",      title = gettext("vif")     ,     type = "number")
+  pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
   pathTab$addColumnInfo(name = "f2",       title = "f\u00B2",               type = "number")
 
   if (options[["errorCalculationMethod"]] != "none") {
@@ -718,6 +718,26 @@ checkCSemModel <- function(model, availableVars) {
   } else {
 
     pe <- cSEM::infer(fit, .alpha = 1 - options[["ciLevel"]])
+
+    if (options$group == "") {
+    pe[["vif"]] <- list()
+    pe[["vif"]][["mean"]] <- pe[["Path_estimates"]][["mean"]]
+    pe[["vif"]][["mean"]][names(pe[["vif"]][["mean"]])] <- NA
+    VIFtemp <- .plsSEMVIFhelper(fit)
+    if(!is.null(VIFtemp)){
+      pe[["vif"]][["mean"]][names(VIFtemp)] <- VIFtemp
+    }
+    }else{
+      for (i in names(pe)) {
+        pe[[i]][["vif"]] <- list()
+        pe[[i]][["vif"]][["mean"]] <- pe[[i]][["Path_estimates"]][["mean"]]
+        pe[[i]][["vif"]][["mean"]][names(pe[[i]][["vif"]][["mean"]])] <- NA
+        VIFtemp <- .plsSEMVIFhelper(fit[[i]])
+        if(!is.null(VIFtemp)){
+          pe[[i]][["vif"]][["mean"]][names(VIFtemp)] <- VIFtemp
+        }
+      }
+    }
   }
 
   # fill Weights table
@@ -908,10 +928,17 @@ checkCSemModel <- function(model, availableVars) {
   rhs      <- varNamesDf[,2]
   lhs      <- varNamesDf[,1]
   est      <- pe[[estimateType]]$mean
+  if(estimateType == "Path_estimates"){
   vif      <- pe$vif$mean
+  }
+
 
   if (options[["errorCalculationMethod"]] == "none") {
-    return(list(rhs=rhs, lhs=lhs, est=est, vif = vif))
+    temp=list(rhs=rhs, lhs=lhs, est=est)
+    if(estimateType == "Path_estimates"){
+      temp$vif <- vif
+    }
+    return(temp)
   } else {
     se       <- pe[[estimateType]]$sd
     zVal     <- pe[[estimateType]]$mean / pe[[estimateType]]$sd
@@ -919,7 +946,11 @@ checkCSemModel <- function(model, availableVars) {
     ciLower  <- pe[[estimateType]]$CI_percentile[1,]
     ciUpper  <- pe[[estimateType]]$CI_percentile[2,]
 
-    return(list(rhs=rhs, lhs=lhs, est=est, vif=vif, se=se, zVal=zVal, pVal=pVal, ciLower=ciLower, ciUpper=ciUpper))
+    temp<- list(rhs=rhs, lhs=lhs, est=est, se=se, zVal=zVal, pVal=pVal, ciLower=ciLower, ciUpper=ciUpper)
+    if(estimateType == "Path_estimates"){
+      temp$vif <- vif
+    }
+    return(temp)
   }
 }
 
