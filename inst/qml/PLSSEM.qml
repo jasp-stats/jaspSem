@@ -219,6 +219,7 @@ Form
 			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures")	}
 			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient")		}
 			CheckBox { name: "reliabilityMeasures";		label: qsTr("Reliability measures")		}
+			CheckBox { name: "htmt";		label: qsTr("HTMT")		}
 		}
 
 		Group
