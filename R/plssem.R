@@ -153,12 +153,7 @@ checkCSemModel <- function(model, availableVars) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    # modelContainer$dependOn(c("weightingApproach", "correlationMatrix", "convergenceCriterion",
-    #                           "estimateStructural", "group", "correctionFactor", "compositeCorrelationDisattenuated",
-    #                           "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod", "robustMethod", "bootstrapSamples", "ciLevel",
-    #                           "setSeed", "seed", "handlingOfInadmissibles", "Data", "handlingOfFlippedSigns", "endogenousIndicatorPrediction",
-    #                           "kFolds", "repetitions", "benchmark", "predictedScore"))
-    modelContainer$dependOn(c("correlationMatrix", "convergenceCriterion",
+    modelContainer$dependOn(c("weightingApproach", "correlationMatrix", "convergenceCriterion",
                               "estimateStructural", "group", "correctionFactor", "compositeCorrelationDisattenuated",
                               "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod", "robustMethod", "bootstrapSamples", "ciLevel",
                               "setSeed", "seed", "handlingOfInadmissibles", "Data", "handlingOfFlippedSigns", "endogenousIndicatorPrediction",
