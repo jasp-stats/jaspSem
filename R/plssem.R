@@ -153,7 +153,12 @@ checkCSemModel <- function(model, availableVars) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("weightingApproach", "correlationMatrix", "convergenceCriterion",
+    # modelContainer$dependOn(c("weightingApproach", "correlationMatrix", "convergenceCriterion",
+    #                           "estimateStructural", "group", "correctionFactor", "compositeCorrelationDisattenuated",
+    #                           "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod", "robustMethod", "bootstrapSamples", "ciLevel",
+    #                           "setSeed", "seed", "handlingOfInadmissibles", "Data", "handlingOfFlippedSigns", "endogenousIndicatorPrediction",
+    #                           "kFolds", "repetitions", "benchmark", "predictedScore"))
+    modelContainer$dependOn(c("correlationMatrix", "convergenceCriterion",
                               "estimateStructural", "group", "correctionFactor", "compositeCorrelationDisattenuated",
                               "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod", "robustMethod", "bootstrapSamples", "ciLevel",
                               "setSeed", "seed", "handlingOfInadmissibles", "Data", "handlingOfFlippedSigns", "endogenousIndicatorPrediction",
@@ -282,7 +287,7 @@ checkCSemModel <- function(model, availableVars) {
   cSemOpts <- list()
 
   # model features
-  cSemOpts[[".approach_weights"]]            <- options[["weightingApproach"]]
+  cSemOpts[[".approach_weights"]]            <- "PLS-PM"
   cSemOpts[[".approach_cor_robust"]]         <- if (options[["correlationMatrix"]] == "pearson") "none" else options[["correlationMatrix"]]
   cSemOpts[[".approach_nl"]]                 <- options[["approachNonLinear"]]
   cSemOpts[[".conv_criterion"]]              <- switch(options[["convergenceCriterion"]],
