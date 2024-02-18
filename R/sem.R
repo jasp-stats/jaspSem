@@ -18,7 +18,6 @@
 SEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
-
   # Read dataset
   options <- .semPrepOpts(options)
 
@@ -377,9 +376,10 @@ checkLavaanModel <- function(model, availableVars) {
     options[["equalRegression"]],
     options[["equalResidual"]],
     options[["equalResidualCovariance"]],
-    options[["equalVariance"]],
+    options[["equalLatentVariance"]],
     options[["equalLatentCovariance"]]
   )
+
 
   if (any(equality_constraints)) {
     lavopts[["group.equal"]] <- c("loadings", "intercepts", "means", "thresholds", "regressions", "residuals",
