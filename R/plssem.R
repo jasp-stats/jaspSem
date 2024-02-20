@@ -156,7 +156,7 @@ checkCSemModel <- function(model, availableVars) {
     modelContainer$dependOn(c("correlationMatrix", "convergenceCriterion",
                               "estimateStructural", "group", "correctionFactor", "consistentPartialLeastSquares",
                               "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod", "robustMethod", "bootstrapSamples", "ciLevel",
-                              "setSeed", "seed", "handlingOfInadmissibles", "Data", "handlingOfFlippedSigns", "endogenousIndicatorPrediction",
+                              "setSeed", "seed", "handlingOfInadmissibles", "Data", "endogenousIndicatorPrediction",
                               "kFolds", "repetitions", "benchmark", "predictedScore"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
@@ -236,11 +236,7 @@ checkCSemModel <- function(model, availableVars) {
                                                  .user_funs = tickFunction,
                                                  .resample_method = options[["robustMethod"]],
                                                  .handle_inadmissibles = options[["handlingOfInadmissibles"]],
-                                                 .sign_change_option = switch(options[["handlingOfFlippedSigns"]],
-                                                                              "individualReestimation" = "individual_reestimate",
-                                                                              "constructReestimation" = "construct_reestimate",
-                                                                              options[["handlingOfFlippedSigns"]]
-                                                                              ),
+                                                 .sign_change_option = "none",
                                                  .seed = if (options[["setSeed"]]) options[["seed"]]))
 
 

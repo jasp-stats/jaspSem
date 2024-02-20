@@ -45,12 +45,6 @@ Form
 
 		Group
 		{
-			CheckBox
-			{
-				enabled: approachWeigths.currentValue == "PLS-PM" && approachInner.currentValue != "path"
-				name: "structuralModelIgnored"
-				label: qsTr("Ignore structural model")
-			}
 
 			CheckBox
 			{
@@ -146,6 +140,13 @@ Form
 				]
 			}
 
+			CheckBox
+			{
+				enabled: approachInner.currentValue != "path"
+				name: "structuralModelIgnored"
+				label: qsTr("Ignore structural model")
+			}
+
 			DropDown
 			{
 				name: "convergenceCriterion"
@@ -173,18 +174,6 @@ Form
 				RadioButton { value: "ignore"; 	label: qsTr("Ignore")					}
 				RadioButton { value: "drop"; 	label: qsTr("Drop")						}
 			}
-
-			DropDown
-				{
-					name: "handlingOfFlippedSigns"
-					label: qsTr("Handling of flipped signs")
-					values: [
-						{ value: "none", 					label: qsTr("None")						},
-						{ value: "individual", 				label: qsTr("Individual")				},
-						{ value: "individualReestimation", 	label: qsTr("Individual re-estimation")	},
-						{ value: "constructReestimation", 	label: qsTr("Construct re-estimation") 	}
-					]
-				}
 		}
 	}
 

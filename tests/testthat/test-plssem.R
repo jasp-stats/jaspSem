@@ -15,7 +15,6 @@ test_that("Basic PLSSEM works", {
   options$innerWeightingScheme      <- "path"
   options$convergenceCriterion      <- "absoluteDifference"
   options$correctionFactor          <- "squaredEuclidean"
-  options$handlingOfFlippedSigns    <- "none"
 
 
   results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
@@ -93,7 +92,6 @@ test_that("Multigroup, multimodel PLSSEM works", {
   options$observedIndicatorCorrelation  <- TRUE
   options$innerWeightingScheme          <- "centroid"
   options$structuralModelIgnored        <- TRUE
-  options$handlingOfFlippedSigns        <- "none"
 
   results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
 
@@ -290,7 +288,6 @@ test_that("Bootstrapping works", {
   options$robustMethod              <- "bootstrap"
   options$bootstrapSamples          <- 200
   options$handlingOfInadmissibles   <- "ignore"
-  options$handlingOfFlippedSigns    <- "none"
 
   set.seed(123)
   results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
@@ -405,7 +402,6 @@ test_that("cSEM example matches output", {
   options$innerWeightingScheme      <- "path"
   options$convergenceCriterion      <- "absoluteDifference"
   options$correctionFactor          <- "squaredEuclidean"
-  options$handlingOfFlippedSigns    <- "none"
   options$additionalFitMeasures         <- TRUE
   options$rSquared                      <- TRUE
   options$mardiasCoefficient            <- TRUE
