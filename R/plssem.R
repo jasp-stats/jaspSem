@@ -576,7 +576,7 @@ checkCSemModel <- function(model, availableVars) {
                             overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   }
 
-  weightTab$addColumnInfo(name = "vifb",      title = gettext("VIF"),   type = "number")
+  # weightTab$addColumnInfo(name = "vifb",      title = gettext("VIF"),   type = "number")
 
   pecont[["weight"]] <- weightTab
 
@@ -586,7 +586,7 @@ checkCSemModel <- function(model, availableVars) {
   if (options[["group"]] != "")
     loadingTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
-  loadingTab$addColumnInfo(name = "lhs",      title = gettext("Latent"),     type = "string", combine = TRUE)
+  loadingTab$addColumnInfo(name = "lhs",      title = gettext("Construct"),     type = "string", combine = TRUE)
   loadingTab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
   loadingTab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
 
@@ -624,7 +624,7 @@ checkCSemModel <- function(model, availableVars) {
                           overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   }
   pathTab$addColumnInfo(name = "f2",       title = "f\u00B2",               type = "number")
-  pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
+  # pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
 
   pecont[["path"]] <- pathTab
 
@@ -670,6 +670,8 @@ checkCSemModel <- function(model, availableVars) {
       pe[["vifb"]][["mean"]][names(pe[["vifb"]][["mean"]])] <- NA
       VIFBtemp <- .plsSEMVIFBhelper(fit)
       if(!is.null(VIFBtemp)){
+        weightTab$addColumnInfo(name = "vifb",      title = gettext("VIF"),   type = "number")
+        pecont[["weight"]] <- weightTab
         pe[["vifb"]][["mean"]][names(VIFBtemp)] <- VIFBtemp
       }
 
@@ -686,6 +688,8 @@ checkCSemModel <- function(model, availableVars) {
       pe[["vif"]][["mean"]][names(pe[["vif"]][["mean"]])] <- NA
       VIFtemp <- .plsSEMVIFhelper(fit)
       if(!is.null(VIFtemp)){
+      pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
+      pecont[["path"]] <- pathTab
       pe[["vif"]][["mean"]][names(VIFtemp)] <- VIFtemp
       }
 
@@ -693,6 +697,8 @@ checkCSemModel <- function(model, availableVars) {
       pe[["Total_effect"]][["mean"]] <- summ$Effect_estimates$Total_effect$Estimate
       names(pe[["Total_effect"]][["mean"]]) <- summ$Effect_estimates$Total_effect$Name
     } else{
+      IdxViFB <- 0
+      IdxViF <- 0
       for (i in names(summ)) {
         pe[[i]] <- list()
         pe[[i]][["Weight_estimates"]] <- list()
@@ -705,6 +711,12 @@ checkCSemModel <- function(model, availableVars) {
         VIFBtemp <- .plsSEMVIFBhelper(fit[[i]])
         if(!is.null(VIFBtemp)){
           pe[[i]][["vifb"]][["mean"]][names(VIFBtemp)] <- VIFBtemp
+
+          if(IdxViFB==0){
+          weightTab$addColumnInfo(name = "vifb",      title = gettext("VIF"),   type = "number")
+          pecont[["weight"]] <- weightTab
+          IdxViFB <- 1
+          }
         }
 
 
@@ -722,6 +734,12 @@ checkCSemModel <- function(model, availableVars) {
         VIFtemp <- .plsSEMVIFhelper(fit[[i]])
         if(!is.null(VIFtemp)){
           pe[[i]][["vif"]][["mean"]][names(VIFtemp)] <- VIFtemp
+
+          if(IdxViF==0){
+          pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
+          pecont[["path"]] <- pathTab
+          IdxViF <- 1
+          }
         }
 
         pe[[i]][["Total_effect"]] <- list()
@@ -739,6 +757,8 @@ checkCSemModel <- function(model, availableVars) {
       pe[["vifb"]][["mean"]][names(pe[["vifb"]][["mean"]])] <- NA
       VIFBtemp <- .plsSEMVIFBhelper(fit)
       if(!is.null(VIFBtemp)){
+        weightTab$addColumnInfo(name = "vifb",      title = gettext("VIF"),   type = "number")
+        pecont[["weight"]] <- weightTab
         pe[["vifb"]][["mean"]][names(VIFBtemp)] <- VIFBtemp
       }
 
@@ -748,9 +768,13 @@ checkCSemModel <- function(model, availableVars) {
     pe[["vif"]][["mean"]][names(pe[["vif"]][["mean"]])] <- NA
     VIFtemp <- .plsSEMVIFhelper(fit)
     if(!is.null(VIFtemp)){
+      pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
+      pecont[["path"]] <- pathTab
       pe[["vif"]][["mean"]][names(VIFtemp)] <- VIFtemp
     }
     }else{
+      IdxViFB <- 0
+      IdxViF <- 0
       for (i in names(pe)) {
         pe[[i]][["vifb"]] <-list()
         pe[[i]][["vifb"]][["mean"]] <- pe[[i]][["Weight_estimates"]][["mean"]]
@@ -758,6 +782,11 @@ checkCSemModel <- function(model, availableVars) {
         VIFBtemp <- .plsSEMVIFBhelper(fit[[i]])
         if(!is.null(VIFBtemp)){
           pe[[i]][["vifb"]][["mean"]][names(VIFBtemp)] <- VIFBtemp
+          if(IdxViFB==0){
+            weightTab$addColumnInfo(name = "vifb",      title = gettext("VIF"),   type = "number")
+            pecont[["weight"]] <- weightTab
+            IdxViFB <- 1
+          }
         }
 
 
@@ -767,6 +796,11 @@ checkCSemModel <- function(model, availableVars) {
         VIFtemp <- .plsSEMVIFhelper(fit[[i]])
         if(!is.null(VIFtemp)){
           pe[[i]][["vif"]][["mean"]][names(VIFtemp)] <- VIFtemp
+          if(IdxViF==0){
+          pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
+          pecont[["path"]] <- pathTab
+          IdxViF <- 1
+          }
         }
       }
     }
@@ -810,6 +844,7 @@ checkCSemModel <- function(model, availableVars) {
     }
 
     weightTab[["vifb"]]      <- weightEstimates[["vifb"]]
+
   }
 
 
@@ -895,6 +930,7 @@ checkCSemModel <- function(model, availableVars) {
     pathTab[["rhs"]]      <- pathEstimates[["rhs"]]
     pathTab[["lhs"]]      <- pathEstimates[["lhs"]]
     pathTab[["est"]]      <- pathEstimates[["est"]]
+
     pathTab[["vif"]]      <- pathEstimates[["vif"]]
     pathTab[["f2"]]       <- pathEstimates[["f2"]]
 
