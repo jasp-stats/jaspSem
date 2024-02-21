@@ -662,16 +662,16 @@ checkLavaanModel <- function(model, availableVars) {
     grouptab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
     grouptab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
     grouptab$addColumnInfo(name = "N",        title = gettext("n"),                  type = "integer")
-    grouptab$addColumnInfo(name = "Chisq",    title = gettext("&#967;&sup2;"),       type = "number" ,
+    grouptab$addColumnInfo(name = "Chisq",    title = "\u03C7\u00B2",       type = "number" ,
                          overtitle = gettext("Baseline test"))
     grouptab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
                          overtitle = gettext("Baseline test"))
     grouptab$addColumnInfo(name = "PrChisq",  title = gettext("p"),                  type = "pvalue",
                          overtitle = gettext("Baseline test"))
     if (length(options[["models"]]) > 1) {
-      grouptab$addColumnInfo(name = "dchisq",   title = gettext("\u0394\u03C7\u00B2"), type = "number" ,
+      grouptab$addColumnInfo(name = "dchisq",   title = "\u0394\u03C7\u00B2", type = "number" ,
                            overtitle = gettext("Difference test"))
-      grouptab$addColumnInfo(name = "ddf",      title = gettext("\u0394df"),           type = "integer",
+      grouptab$addColumnInfo(name = "ddf",      title = gettextf("%1$sdf", "\u0394"),           type = "integer",
                            overtitle = gettext("Difference test"))
       grouptab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
                            overtitle = gettext("Difference test"))
