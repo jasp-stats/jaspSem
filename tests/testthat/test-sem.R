@@ -60,7 +60,7 @@ test_that("Multigroup, multimodel SEM works", {
   options$standardizedResidual        = TRUE
   options$pathPlotParameter           = TRUE
   options$standardizedEstimate        = TRUE
-  options$modelTest                   = "Satorra.Bentler"
+  options$modelTest                   = "satorraBentler"
   options$samplingWeights             = ""
 
   modelDefault <- list(model = "
