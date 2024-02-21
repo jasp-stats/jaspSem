@@ -18,7 +18,6 @@
 SEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
-
   # Read dataset
   options <- .semPrepOpts(options)
 
@@ -377,9 +376,10 @@ checkLavaanModel <- function(model, availableVars) {
     options[["equalRegression"]],
     options[["equalResidual"]],
     options[["equalResidualCovariance"]],
-    options[["equalVariance"]],
+    options[["equalLatentVariance"]],
     options[["equalLatentCovariance"]]
   )
+
 
   if (any(equality_constraints)) {
     lavopts[["group.equal"]] <- c("loadings", "intercepts", "means", "thresholds", "regressions", "residuals",
@@ -1490,7 +1490,7 @@ checkLavaanModel <- function(model, availableVars) {
 
       for (i in 1:ncol(oc)) {
         nm <- colnames(oc)[i]
-        octab$addColumnInfo(nm, title = nm, type ="pvalue")
+        octab$addColumnInfo(nm, title = nm, type ="number")
       }
       octab$addRows(oc, rowNames = colnames(oc))
     }
@@ -1503,7 +1503,7 @@ checkLavaanModel <- function(model, availableVars) {
 
       for (i in 1:ncol(ic)) {
         nm <- colnames(ic)[i]
-        ictab$addColumnInfo(nm, title = nm, type = "pvalue")
+        ictab$addColumnInfo(nm, title = nm, type = "number")
       }
       ictab$addRows(ic, rowNames = colnames(ic))
     }
@@ -1516,7 +1516,7 @@ checkLavaanModel <- function(model, availableVars) {
 
       for (i in 1:ncol(rc)) {
         nm <- colnames(rc)[i]
-        rctab$addColumnInfo(nm, title = nm, type = "pvalue")
+        rctab$addColumnInfo(nm, title = nm, type = "number")
       }
       rctab$addRows(rc, rowNames = colnames(rc))
     }
@@ -1535,7 +1535,7 @@ checkLavaanModel <- function(model, availableVars) {
 
           for (i in 1:ncol(sr)) {
             nm <- colnames(sr)[i]
-            srtab$addColumnInfo(nm, title = nm, type = "pvalue")
+            srtab$addColumnInfo(nm, title = nm, type = "number")
           }
           srtab$addRows(sr, rowNames = colnames(sr))
         }
@@ -1559,7 +1559,7 @@ checkLavaanModel <- function(model, availableVars) {
 
         for (j in 1:ncol(oc)) {
           nm <- colnames(oc)[j]
-          occont[[level_names[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
+          occont[[level_names[i]]]$addColumnInfo(nm, title = nm, type = "number")
         }
         occont[[level_names[i]]]$addRows(oc, rowNames = colnames(oc))
       }
@@ -1578,7 +1578,7 @@ checkLavaanModel <- function(model, availableVars) {
 
         for (j in 1:ncol(ic)) {
           nm <- colnames(ic)[j]
-          iccont[[level_names[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
+          iccont[[level_names[i]]]$addColumnInfo(nm, title = nm, type = "number")
         }
         iccont[[level_names[i]]]$addRows(ic, rowNames = colnames(ic))
       }
@@ -1597,7 +1597,7 @@ checkLavaanModel <- function(model, availableVars) {
 
         for (j in 1:ncol(rc)) {
           nm <- colnames(rc)[j]
-          rccont[[level_names[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
+          rccont[[level_names[i]]]$addColumnInfo(nm, title = nm, type = "number")
         }
         rccont[[level_names[i]]]$addRows(rc, rowNames = colnames(rc))
       }
@@ -1626,7 +1626,7 @@ checkLavaanModel <- function(model, availableVars) {
 
             for (j in 1:ncol(sr)) {
               nm <- colnames(sr)[j]
-              srcont[[level_names[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
+              srcont[[level_names[i]]]$addColumnInfo(nm, title = nm, type = "number")
             }
             srcont[[level_names[i]]]$addRows(sr, rowNames = colnames(sr))
           }
