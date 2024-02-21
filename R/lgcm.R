@@ -269,9 +269,9 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   latcur$addColumnInfo("zval",      title = gettext("z-value"),    type = "number", format = "dp:3")
   latcur$addColumnInfo("pval",      title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   latcur$addColumnInfo("cilo",      title = gettext("Lower"),      type = "number", format = "dp:3",
-                       overtitle = gettext("95%% Confidence Interval"))
+                       overtitle = gettextf("95%% Confidence Interval"))
   latcur$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
-                       overtitle = gettext("95%% Confidence Interval"))
+                       overtitle = gettextf("95%% Confidence Interval"))
 
   if (options[["standardizedEstimate"]]) {
     latcur$addColumnInfo("std.lv",  title = "LV",   type = "number", format = "dp:3", overtitle = "Std. Est.")
@@ -292,9 +292,9 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     latcov$addColumnInfo("zval", title = gettext("z-value"),    type = "number", format = "dp:3")
     latcov$addColumnInfo("pval", title = gettext("p"),          type = "number", format = "dp:3;p:.001")
     latcov$addColumnInfo("cilo", title = gettext("Lower"),      type = "number", format = "dp:3",
-                         overtitle = gettext("95%% Confidence Interval"))
+                         overtitle = gettextf("95%% Confidence Interval"))
     latcov$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
-                         overtitle = gettext("95%% Confidence Interval"))
+                         overtitle = gettextf("95%% Confidence Interval"))
 
     if (options[["standardizedEstimate"]]) {
       latcov$addColumnInfo("std.lv",  title = gettext("LV"),   type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
@@ -316,9 +316,9 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     latreg$addColumnInfo("zval",      title = gettext("z-value"),    type = "number", format = "dp:3")
     latreg$addColumnInfo("pval",      title = gettext("p"),          type = "number", format = "dp:3;p:.001")
     latreg$addColumnInfo("cilo",      title = gettext("Lower"),      type = "number", format = "dp:3",
-                         overtitle = gettext("95%% Confidence Interval"))
+                         overtitle = gettextf("95%% Confidence Interval"))
     latreg$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
-                         overtitle = gettext("95%% Confidence Interval"))
+                         overtitle = gettextf("95%% Confidence Interval"))
 
     if (options[["standardizedEstimate"]]) {
       latreg$addColumnInfo("std.lv",  title = gettext("LV"),   type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
@@ -337,9 +337,9 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   resvar$addColumnInfo("zval", title = gettext("z-value"),    type = "number", format = "dp:3")
   resvar$addColumnInfo("pval", title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   resvar$addColumnInfo("cilo", title = gettext("Lower"),      type = "number", format = "dp:3",
-                       overtitle = gettext("95%% Confidence Interval"))
+                       overtitle = gettextf("95%% Confidence Interval"))
   resvar$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
-                       overtitle = gettext("95%% Confidence Interval"))
+                       overtitle = gettextf("95%% Confidence Interval"))
 
   if (options[["standardizedEstimate"]]) {
     resvar$addColumnInfo("std.lv",  title = gettext("LV"),   type = "number", format = "dp:3", overtitle = gettext("Std. Est."))
@@ -500,8 +500,8 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   # other fitmeasures
   fitot[["index"]] <- c(
     gettext("Root mean square error of approximation (RMSEA)"),
-    gettext("RMSEA 90%% CI lower bound"),
-    gettext("RMSEA 90%% CI upper bound"),
+    gettextf("RMSEA 90%% CI lower bound"),
+    gettextf("RMSEA 90%% CI upper bound"),
     gettext("RMSEA p-value"),
     gettext("Standardized root mean square residual (SRMR)"),
     gettextf("Hoelter's critical N (%s = .05)","\u03B1"),
