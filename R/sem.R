@@ -1893,7 +1893,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (!options[["htmt"]] || !is.null(modelContainer[["htmt"]])) return()
 
 
-  htmt <- createJaspContainer(gettext("heterotrait-monotrait ratio"))
+  htmt <- createJaspContainer(gettext("Heterotrait-monotrait ratio"))
   htmt$position <- 0.95
   htmt$dependOn(c("htmt", "naAction", "models"))
 
