@@ -1706,7 +1706,7 @@ checkLavaanModel <- function(model, availableVars) {
 
       ave_result          <- semTools::AVE(modelContainer[["results"]][["object"]][[1]])
       groups <- ave_result[, "group"]
-      ave_result <- ave_result[, -1]
+      ave_result <- ave_result[, -1, drop = FALSE]
 
       avetab[["group"]]   <- rep(groups, rep(ncol(ave_result), length(groups)))
       avetab[["factor"]]  <- rep(names(ave_result), length(groups))
