@@ -634,6 +634,11 @@ checkLavaanModel <- function(model, availableVars) {
   fittab$position <- 0
 
   fittab$addColumnInfo(name = "Model",    title = "",                            type = "string" , combine = TRUE)
+
+  if (options[["group"]] != "") {
+    fittab$addColumnInfo(name = "group",    title = gettext("Group"),              type = "string" )
+  }
+
   fittab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
   fittab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
   fittab$addColumnInfo(name = "N",        title = gettext("n"),                  type = "integer")
@@ -643,43 +648,17 @@ checkLavaanModel <- function(model, availableVars) {
                        overtitle = gettext("Baseline test"))
   fittab$addColumnInfo(name = "PrChisq",  title = gettext("p"),                  type = "pvalue",
                        overtitle = gettext("Baseline test"))
-  fittab$addColumnInfo(name = "dchisq",   title = gettext("&#916;&#967;&sup2;"), type = "number" ,
-                       overtitle = gettext("Difference test"))
-  fittab$addColumnInfo(name = "ddf",      title = gettext("&#916;df"),           type = "integer",
-                       overtitle = gettext("Difference test"))
-  fittab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
-                       overtitle = gettext("Difference test"))
 
-  modelContainer[["fittab"]] <- fittab
-
-  if (options[["group"]] != "") {
-    grouptab <- createJaspTable(title = gettext("Model fit by group"))
-    grouptab$dependOn("models")
-    grouptab$position <- 0.05
-
-    grouptab$addColumnInfo(name = "Model",    title = "",                            type = "string" , combine = TRUE)
-    grouptab$addColumnInfo(name = "group",    title = gettext("Group"),              type = "string" )
-    grouptab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
-    grouptab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
-    grouptab$addColumnInfo(name = "N",        title = gettext("n"),                  type = "integer")
-    grouptab$addColumnInfo(name = "Chisq",    title = "\u03C7\u00B2",       type = "number" ,
-                         overtitle = gettext("Baseline test"))
-    grouptab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
-                         overtitle = gettext("Baseline test"))
-    grouptab$addColumnInfo(name = "PrChisq",  title = gettext("p"),                  type = "pvalue",
-                         overtitle = gettext("Baseline test"))
-    if (length(options[["models"]]) > 1) {
-      grouptab$addColumnInfo(name = "dchisq",   title = "\u0394\u03C7\u00B2", type = "number" ,
-                           overtitle = gettext("Difference test"))
-      grouptab$addColumnInfo(name = "ddf",      title = gettextf("%1$sdf", "\u0394"),           type = "integer",
-                           overtitle = gettext("Difference test"))
-      grouptab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
-                           overtitle = gettext("Difference test"))
-    }
-
-    modelContainer[["grouptab"]] <- grouptab
+  if (length(options[["models"]]) > 1) {
+    fittab$addColumnInfo(name = "dchisq",   title = "\u0394\u03C7\u00B2", type = "number" ,
+                         overtitle = gettext("Difference test"))
+    fittab$addColumnInfo(name = "ddf",      title = gettextf("%1$sdf", "\u0394"),           type = "integer",
+                         overtitle = gettext("Difference test"))
+    fittab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
+                         overtitle = gettext("Difference test"))
   }
 
+  modelContainer[["fittab"]] <- fittab
 
   if (!ready) return()
 
@@ -722,25 +701,32 @@ checkLavaanModel <- function(model, availableVars) {
     lrt$value[["Df"]] <- chis[2, ]
     lrt$value[["PrChisq"]] <- chis[3, ]
 
+
     lrt$value[1,5:7] <- NA
     chiSq <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$stat}))
     dfs <- unlist(lapply(semResults, function(x) {round(lavaan::lavInspect(x, what = "test")[[testName]]$df, 3)}))
   }
 
-  fittab[["Model"]]    <- rownames(lrt$value)
-  fittab[["AIC"]]      <- lrt$value[["AIC"]]
-  fittab[["BIC"]]      <- lrt$value[["BIC"]]
-  fittab[["N"]]        <- Ns
-  fittab[["Chisq"]]    <- chiSq
-  fittab[["Df"]]       <- dfs
-  fittab[["PrChisq"]]  <- pchisq(q = chiSq, df = dfs, lower.tail = FALSE)
-  fittab[["dchisq"]]   <- lrt$value[["Chisq diff"]]
-  fittab[["ddf"]]      <- lrt$value[["Df diff"]]
-  fittab[["dPrChisq"]] <- lrt$value[["Pr(>Chisq)"]]
+  dtFill <- data.frame(matrix(ncol = 0, nrow = length(rownames(lrt$value))))
+
+  dtFill[["Model"]]    <- rownames(lrt$value)
+  dtFill[["AIC"]]      <- lrt$value[["AIC"]]
+  dtFill[["BIC"]]      <- lrt$value[["BIC"]]
+  dtFill[["N"]]        <- Ns
+  dtFill[["Chisq"]]    <- chiSq
+  dtFill[["Df"]]       <- dfs
+  dtFill[["PrChisq"]]  <- pchisq(q = chiSq, df = dfs, lower.tail = FALSE)
+
+  if (length(options[["models"]]) > 1) {
+    dtFill[["dchisq"]]   <- lrt$value[["Chisq diff"]]
+    dtFill[["ddf"]]      <- lrt$value[["Df diff"]]
+    dtFill[["dPrChisq"]] <- lrt$value[["Pr(>Chisq)"]]
+  }
 
   # add warning footnote
+  fnote <- ""
   if (!is.null(lrt$warnings)) {
-    fittab$addFootnote(gsub("lavaan WARNING: ", "", lrt$warnings[[1]]$message))
+    fnote <- paste0(fnote, gsub("lavaan WARNING: ", "", lrt$warnings[[1]]$message))
   }
 
   if(options$naAction == "listwise"){
@@ -748,7 +734,7 @@ checkLavaanModel <- function(model, availableVars) {
     if (nrm != 0) {
       missingFootnote <- gettextf("A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options.",
                                   nrm)
-      fittab$addFootnote(message = missingFootnote)
+      fnote <- paste0(fnote, missingFootnote)
     }
   }
 
@@ -776,12 +762,14 @@ checkLavaanModel <- function(model, availableVars) {
     if (length(semResults) > 1)
       ftext <- gettextf("Baseline tests based on %s. Difference tests based on a function of two standard test-statistics.", testname)
 
-    fittab$addFootnote(message = ftext)
+    fnote <- paste0(fnote, ftext)
+
   }
 
   if (options$estimator %in% c("dwls", "gls", "wls", "uls")) {
-    fittab$addFootnote(message = gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators"))
+    fnote <- paste0(fnote, gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators"))
   }
+
   if (options[["group"]] != "") {
 
     groupNames <- semResults[[1]]@Data@group.label
@@ -810,7 +798,7 @@ checkLavaanModel <- function(model, availableVars) {
         fit_group <- try(do.call(lavaan::lavaan, lav_args))
         if (isTryError(fit_group)) {
           errormsg <- gettextf("The model fit by group is unavailable for the specified model: %s", options[["models"]][[i]][["name"]])
-          grouptab$setError(errormsg)
+          fittab$setError(errormsg)
           break
         }
         results_grouped[[k]] <- fit_group
@@ -825,14 +813,17 @@ checkLavaanModel <- function(model, availableVars) {
     bic <- vapply(results_grouped, BIC, 0)
     Ns  <- vapply(results_grouped, lavaan::lavInspect, 0, what = "ntotal")
 
-    grouptab[["Model"]]    <- models
-    grouptab[["group"]]    <- rep(groupNames, length(rownames(lrt$value)))
-    grouptab[["AIC"]]      <- aic
-    grouptab[["BIC"]]      <- bic
-    grouptab[["N"]]        <- Ns
-    grouptab[["Chisq"]]    <- chiSq
-    grouptab[["Df"]]       <- dfs
-    grouptab[["PrChisq"]]  <- pchisq(q = chiSq, df = dfs, lower.tail = FALSE)
+    dtFillGroup <- data.frame(matrix(ncol = 0, nrow = length(models)))
+
+    dtFillGroup[["Model"]]    <- models
+    dtFillGroup[["group"]]    <- rep(groupNames, length(rownames(lrt$value)))
+    dtFillGroup[["AIC"]]      <- aic
+    dtFillGroup[["BIC"]]      <- bic
+    dtFillGroup[["N"]]        <- Ns
+    dtFillGroup[["Chisq"]]    <- chiSq
+    dtFillGroup[["Df"]]       <- dfs
+    dtFillGroup[["PrChisq"]]  <- pchisq(q = chiSq, df = dfs, lower.tail = FALSE)
+
     if (length(semResults) > 1) {
       dchisq   <- rep(NA, length(groupNames))
       ddf      <- rep(NA, length(groupNames))
@@ -843,15 +834,20 @@ checkLavaanModel <- function(model, availableVars) {
         ddf    <- c(ddf, lrt[2, "Df diff"])
         dPrChisq <- c(dPrChisq, lrt[2, "Pr(>Chisq)"])
       }
-      grouptab[["dchisq"]] <- dchisq
-      grouptab[["ddf"]] <- ddf
-      grouptab[["dPrChisq"]] <- dPrChisq
+      dtFillGroup[["dchisq"]] <- dchisq
+      dtFillGroup[["ddf"]] <- ddf
+      dtFillGroup[["dPrChisq"]] <- dPrChisq
 
     }
-    if (test != "standard") {
-      grouptab$addFootnote(message = ftext)
-    }
+    dtFill[["group"]] <- gettext("all")
+    dtFill <- dtFill[, c(1, ncol(dtFill), 2:(ncol(dtFill)-1))]
+    dtFill <- rbind(dtFill, NA, dtFillGroup)
+
   }
+
+  fittab$setData(dtFill)
+  fittab$addFootnote(message = fnote)
+
 }
 
 .semParameters <- function(modelContainer, dataset, options, ready) {
