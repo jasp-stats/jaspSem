@@ -178,14 +178,7 @@ test_that("Multigroup, multimodel SEM works", {
   results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
 
   fittab   <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-<<<<<<< HEAD
-  expect_equal_tables(fittab, list(3189.26691715402, 3383.93591869107, 85.6796813843018, 70, "default",
-                                   75, 0.0980338951401478, "", "", "", 3184.34803034567, 3372.06456754211,
-                                   87.9549367720082, 73, "constrained", 75, 0.111927575441416, 0.647754490401111,
-                                   1.65156784895969, 3, 3181.07183366569, 3361.83590652152, 92.7433708195334,
-                                   76, "more constrained", 75, 0.0929761753674234, 0.110596895607335,
-                                   6.02091896557529, 3), "Model fit table")
-=======
+
   expect_equal_tables(fittab, list(3189.26691715402, 3383.93591869107, 85.6796813843025, 70, "default",
                                    75, 0.0980338951401389, "", "", "", 3184.34803034567, 3372.06456754211,
                                    87.9549367720072, 73, "constrained", 75, 0.111927575441429,
@@ -206,7 +199,6 @@ test_that("Multigroup, multimodel SEM works", {
                                      1631.17917549795, 1695.04503572728, 38.1908170729371, 38, "more constrained",
                                      38, 0.460812777513164, 0.110723819122933, 6.0182887677031, 3,
                                      2), "Model fit by group table")
->>>>>>> 6daf3fe21 (added fit by group table)
 
 
   rsquared <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_rsquared"]][["data"]]
