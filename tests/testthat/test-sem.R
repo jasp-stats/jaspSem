@@ -15,7 +15,7 @@ fittab   <- results[["results"]][["modelContainer"]][["collection"]][["modelCont
 
 test_that("Basic SEM fit table works", {
   if (jaspBase::getOS() == "linux") skip("Skipped for now cause that part of the table is removed in another PR anyways")
-  expect_equal_tables(fittab, list(48.156355426353, 59.7437959940346, 0, 0, "Model1", 75, 1, "", 0, 0), "Model fit table")
+  expect_equal_tables(fittab, list(48.156355426353, 59.7437959940346, 0, 0, "Model1", 75, 1), "Model fit table")
 })
 
   parcont <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]]
@@ -646,8 +646,7 @@ test_that("Bootstrapping model fit table works", {
 
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(48.1563554263444, 59.7437959940259, 0, 0, "Model1", 75, 1, "",
-                                      0, 0),
+                                 list(48.1563554263444, 59.7437959940259, 0, 0, "Model1", 75, 1),
                                  label = "Model fit table results match")
 })
 
