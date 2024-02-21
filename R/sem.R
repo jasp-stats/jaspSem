@@ -777,16 +777,16 @@ checkLavaanModel <- function(model, availableVars) {
     lavopts <- .semOptionsToLavOptions(options, dataset)
     lavopts[["group"]] <- NULL
     results_grouped <- list()
-    k = 1
+    k <- 1
     for (i in 1:length(options[["models"]])) {
       syntax   <- lavaan::parTable(semResults[[i]])
       for (group in seq_along(groupNames)) {
         lav_args <- lavopts
         syntax_group <- syntax[syntax$group == group,]
-        equalityConstraints <- syntax[syntax$op == "==",]
+        equalityConstraints <- syntax[syntax$op == "==", ]
         if (nrow(equalityConstraints) > 0) {
           for (j in 1:nrow(equalityConstraints)) {
-            if(equalityConstraints[j, "lhs"] %in% syntax_group[, "plabel"]) {
+            if (equalityConstraints[j, "lhs"] %in% syntax_group[, "plabel"]) {
               syntax_group <- rbind(syntax_group, equalityConstraints[j,])
             }
           }
@@ -795,7 +795,9 @@ checkLavaanModel <- function(model, availableVars) {
         lav_args[["model"]] <- syntax_group
         dataset_group <- dataset[dataset[[options[["group"]]]] == groupNames[group],]
         lav_args[["data"]]  <- dataset_group
+
         fit_group <- try(do.call(lavaan::lavaan, lav_args))
+
         if (isTryError(fit_group)) {
           errormsg <- gettextf("The model fit by group is unavailable for the specified model: %s", options[["models"]][[i]][["name"]])
           fittab$setError(errormsg)
