@@ -1754,13 +1754,13 @@ checkLavaanModel <- function(model, availableVars) {
     reliabilitytab$addColumnInfo(name = "group", title = gettext("Group"), type = "string", combine = TRUE)
   reliabilitytab$addColumnInfo(name = "factor", title = "", type = "string")
   if (length(options[["models"]]) < 2) {
-    reliabilitytab$addColumnInfo(name = "reliabilityAlpha", title = gettext("Cronbach's \u03B1"), type = "number")
-    reliabilitytab$addColumnInfo(name = "reliabilityOmega", title = gettext("McDonald's \u03C9"), type = "number")
+    reliabilitytab$addColumnInfo(name = "reliabilityAlpha", title = gettext("Coefficient \u03B1"), type = "number")
+    reliabilitytab$addColumnInfo(name = "reliabilityOmega", title = gettext("Coefficient \u03C9"), type = "number")
   } else {
     for (i in seq_along(options[["models"]])) {
-      reliabilitytab$addColumnInfo(name = paste0("reliabilityAlpha_", i), title = gettext("Cronbach's \u03B1"),
+      reliabilitytab$addColumnInfo(name = paste0("reliabilityAlpha_", i), title = gettext("Coefficient \u03B1"),
                                   overtitle = options[["models"]][[i]][["name"]], type = "number")
-      reliabilitytab$addColumnInfo(name = paste0("reliabilityOmega_", i), title = gettext("McDonald's \u03C9"),
+      reliabilitytab$addColumnInfo(name = paste0("reliabilityOmega_", i), title = gettext("Coefficient \u03C9"),
                                   overtitle = options[["models"]][[i]][["name"]], type = "number")
     }
   }
@@ -1893,7 +1893,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (!options[["htmt"]] || !is.null(modelContainer[["htmt"]])) return()
 
 
-  htmt <- createJaspContainer(gettext("Heterotrait-monotrait ratio"))
+  htmt <- createJaspContainer()
   htmt$position <- 0.95
   htmt$dependOn(c("htmt", "naAction", "models"))
 
@@ -1902,6 +1902,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (length(options[["models"]]) < 2) {
     .semHtmtTables(modelContainer[["results"]][["object"]][[1]], NULL, htmt, options, ready, dataset)
   } else {
+    htmt$title <- gettext("Heterotrait-monotrait ratio")
 
     for (i in seq_along(options[["models"]])) {
       fit <- modelContainer[["results"]][["object"]][[i]]
@@ -1914,13 +1915,16 @@ checkLavaanModel <- function(model, availableVars) {
 .semHtmtTables <- function(fit, model, parentContainer, options, ready, dataset) {
   if (is.null(model)) {
     htmtcont <- parentContainer
+    title <- gettext("Heterotrait-monotrait ratio")
   } else {
     htmtcont <- createJaspContainer(model[["name"]], initCollapsed = TRUE)
+    title <- ""
   }
 
+  htmttab <- createJaspTable(title = title)
+  htmtcont[["htmttab"]] <- htmttab
+
   if (options[["group"]] == "") {
-    htmttab <- createJaspTable(title = "")
-    htmtcont[["htmttab"]] <- htmttab
     lavopts <- .semOptionsToLavOptions(options, dataset)
     lavmodel <- ifelse(is.null(model), .semTranslateModel(options[["models"]][[1]][["syntax"]], dataset), .semTranslateModel(model[["syntax"]], dataset))
 
@@ -1943,27 +1947,36 @@ checkLavaanModel <- function(model, availableVars) {
     htmttab$addRows(htmt_result, rowNames = colnames(htmt_result))
 
   } else {
+
+    lavopts <- .semOptionsToLavOptions(options, dataset)
+    lavmodel <- ifelse(is.null(model), .semTranslateModel(options[["models"]][[1]][["syntax"]], dataset), .semTranslateModel(model[["syntax"]], dataset))
+
+    parTable <- lavaan::lavaanify(lavmodel)
+    latents  <- parTable[parTable$op == "=~",]
+    higherOrder <- unique(latents[!latents$rhs %in% names(dataset),]$lhs)
+    lavmodel <- parTable[!parTable$lhs %in% higherOrder, ]
+
+    # prepare the columns
+    lvNames <- unique(lavmodel[lavmodel$op == "=~", "lhs"])
+    htmttab$addColumnInfo(name = "group", title = gettext("Group"), type = "string")
+    for (name in lvNames) {
+      htmttab$addColumnInfo(name, title = name, type ="number")
+    }
+
+    fillMat <- NULL
     for (group in unique(dataset[, options[["group"]]])) {
-      htmtcont[[paste0("htmttab", group)]] <- createJaspTable(title = as.character(group))
 
       dataset_per_group <- dataset[dataset[, options[["group"]]] == group, ]
-      lavopts <- .semOptionsToLavOptions(options, dataset)
-      lavmodel <- ifelse(is.null(model), .semTranslateModel(options[["models"]][[1]][["syntax"]], dataset), .semTranslateModel(model[["syntax"]], dataset))
-
-      parTable <- lavaan::lavaanify(lavmodel)
-      latents  <- parTable[parTable$op == "=~",]
-      higherOrder <- unique(latents[!latents$rhs %in% names(dataset),]$lhs)
-      lavmodel <- parTable[!parTable$lhs %in% higherOrder, ]
 
       htmt_result <- semTools::htmt(model = lavmodel, data = dataset_per_group, missing = lavopts[["missing"]])
       htmt_result[upper.tri(htmt_result)] <- NA
+      groupCol <- data.frame(group = c(group, rep(NA, nrow(htmt_result) - 1)))
+      htmtFill <- cbind(groupCol, as.data.frame(htmt_result))
+      fillMat <- rbind(fillMat, htmtFill)
 
-      for (i in 1:ncol(htmt_result)) {
-        name <- colnames(htmt_result)[i]
-        htmtcont[[paste0("htmttab", group)]]$addColumnInfo(name, title = gettext(name), type ="pvalue")
-      }
-      htmtcont[[paste0("htmttab", group)]]$addRows(htmt_result, rowNames = colnames(htmt_result))
     }
+    htmttab$setData(fillMat)
+
   }
   if (!is.null(model)) parentContainer[[model[["name"]]]] <- htmtcont
 }
