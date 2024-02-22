@@ -87,13 +87,16 @@ Form
 
 		Group
 		{
-			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures")	}
-			CheckBox { name: "rSquared";				label: qsTr("R-squared")				}
-			CheckBox { name: "observedCovariance";		label: qsTr("Observed covariances")		}
-			CheckBox { name: "impliedCovariance";		label: qsTr("Implied covariances")		}
-			CheckBox { name: "residualCovariance";		label: qsTr("Residual covariances")		}
-			CheckBox { name: "standardizedResidual"; 	label: qsTr("Standardized residuals")	}
-			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient")		}
+			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures")				}
+			CheckBox { name: "rSquared";				label: qsTr("R-squared")							}
+			CheckBox { name: "ave";						label: qsTr("Average variance extracted (AVE)")		}
+			CheckBox { name: "htmt";					label: qsTr("Heterotrait-monotrait ratio (HTMT)")	}
+			CheckBox { name: "reliability";				label: qsTr("Reliability measures")					}
+			CheckBox { name: "observedCovariance";		label: qsTr("Observed covariances")					}
+			CheckBox { name: "impliedCovariance";		label: qsTr("Implied covariances")					}
+			CheckBox { name: "residualCovariance";		label: qsTr("Residual covariances")					}
+			CheckBox { name: "standardizedResidual"; 	label: qsTr("Standardized residuals")				}
+			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient")					}
 		}
 		Group
 		{
