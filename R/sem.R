@@ -1942,7 +1942,7 @@ checkLavaanModel <- function(model, availableVars) {
 
     for (i in 1:ncol(htmt_result)) {
       name <- colnames(htmt_result)[i]
-      htmttab$addColumnInfo(name, title = gettext(name), type ="pvalue")
+      htmttab$addColumnInfo(name, title = name, type ="number")
     }
     htmttab$addRows(htmt_result, rowNames = colnames(htmt_result))
 
