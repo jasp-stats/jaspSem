@@ -35,6 +35,9 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
   .semParameters(modelContainer, dataset, options, ready)
   .semAdditionalFits(modelContainer, dataset, options, ready)
   .semRsquared(modelContainer, dataset, options, ready)
+  .semAve(modelContainer, dataset, options, ready)
+  .semReliability(modelContainer, dataset, options, ready)
+  .semHtmt(modelContainer, dataset, options, ready)
   .semMardiasCoefficient(modelContainer, dataset, options, ready)
   .semCov(modelContainer, dataset, options, ready)
   .semMI(modelContainer, datset, options, ready)
@@ -238,8 +241,26 @@ checkLavaanModel <- function(model, availableVars) {
 
     # create options
     lav_args <- lavopts
-    syntax   <- .semTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
-    lav_args[["model"]] <- syntax
+    originalSyntax   <- .semTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
+    if(options[["group"]] == "")
+      syntaxTable <- lavaan::lavaanify(originalSyntax)
+    if (options[["group"]] != "") {
+      fit <- lavaan::sem(model = originalSyntax, data = dataset, group = options[["group"]])
+      syntaxTable <- lavaan::parTable(fit)
+    }
+
+    if(nrow(syntaxTable[syntaxTable$op == ":=",]) == 0) {
+      regressions <- syntaxTable[syntaxTable$op == "~",]
+      if (nrow(regressions) > 0) {
+        syntax <- .semEffectsSyntax(originalSyntax, syntaxTable, regressions, dataset, options)
+      }
+    }
+
+    if (exists("syntax")) {
+      lav_args[["model"]] <- syntax
+    } else {
+      lav_args[["model"]] <- originalSyntax
+    }
     if (options[["dataType"]] == "raw") {
       lav_args[["data"]]  <- dataset
     } else {
@@ -247,8 +268,12 @@ checkLavaanModel <- function(model, availableVars) {
       lav_args[["sample.nobs"]] <- options[["sampleSize"]]
     }
 
-    # fit the model
+    # fit the enriched model
     fit <- try(do.call(lavaan::lavaan, lav_args))
+    if (isTryError(fit)) { # if try-error, fit original model
+      lav_args[["model"]] <- originalSyntax
+      fit <- try(do.call(lavaan::lavaan, lav_args))
+    }
 
     if (isTryError(fit)) {
       err <- .extractErrorMessage(fit)
@@ -305,6 +330,8 @@ checkLavaanModel <- function(model, availableVars) {
     modelContainer[["results"]]$dependOn(optionsFromObject = modelContainer)
     modelContainer[["models"]]  <- createJaspState(options[["models"]])
     modelContainer[["models"]]$dependOn(optionsFromObject = modelContainer)
+    modelContainer[["originalSyntax"]] <- createJaspState(list(syntaxTable))
+    modelContainer[["originalSyntax"]]$dependOn(optionsFromObject = modelContainer)
   }
 
   return(results)
@@ -434,6 +461,168 @@ checkLavaanModel <- function(model, availableVars) {
   return(syntax)
 }
 
+.semEffectsSyntax <- function(originalSyntax, syntaxTable, regressions, dataset, options) {
+  if(options[["group"]] == "") {
+    regressionLabels <- letters[1:nrow(regressions)]
+    if (!any(syntaxTable[, "label"] %in% regressionLabels)) {
+      regressions[, "label"] <- letters[1:nrow(regressions)]
+    } else {
+      while (any(syntaxTable[, "label"] %in% regressionLabels)) {
+        regressionLabels <- paste0(sample(letters, nrow(regressions)), sample(letters, nrow(regressions)))
+      }
+      regressions[, "label"] <- regressionLabels
+    }
+  } else {
+    groups <- unique(dataset[, options[["group"]]])
+    groupLevels <- length(groups)
+    regressions <- regressions[1:(nrow(regressions) / groupLevels),]
+    regressionsPerGroup <- list()
+    labelsPerGroup <- list()
+    for (group in seq_along(groups)) {
+      regressionsPerGroup[[group]] <- regressions
+      labelsPerGroup[[group]] <- paste(letters[1:nrow(regressions)], group, sep = "")
+    }
+    if (!any(syntaxTable[, "label"] %in% unlist(labelsPerGroup))) {
+      for (group in seq_along(groups)) {
+        regressionsPerGroup[[group]][, "label"] <- labelsPerGroup[[group]]
+        labelsLetters <- NULL
+      }
+    } else {
+      while (any(syntaxTable[, "label"] %in% unlist(labelsPerGroup))) {
+        labelsLetters <- paste0(sample(letters, nrow(regressions)), sample(letters, nrow(regressions)))
+        for (group in seq_along(groups)) {
+          labelsPerGroup[[group]] <- paste(labelsLetters, group, sep = "")
+        }
+        if(!any(syntaxTable[, "label"] %in% unlist(labelsPerGroup))) {
+          for (group in seq_along(groups)) {
+            regressionsPerGroup[[group]][, "label"] <- labelsPerGroup[[group]]
+          }
+        }
+      }
+    }
+
+    create_group_vector <- function(letter, n) {
+      groups <- paste(letter, 1:n, sep="")
+      groups <- paste0(groups, collapse = ", ")
+      groups <- paste0("c(", groups, ")")
+      return(groups)
+    }
+
+    if(is.null(labelsLetters)) {
+      for (label in 1:nrow(regressions)) {
+        regressions[label, "label"] <- create_group_vector(letters[label], groupLevels)
+      }
+    } else {
+      for (label in seq_along(labelsLetters)) {
+        regressions[label, "label"] <- create_group_vector(labelsLetters[label], groupLevels)
+      }
+    }
+  }
+
+  # add labels to syntax
+  syntax_splitted <- stringr::str_split_1(originalSyntax, "\n")
+  syntax_splitted <- unlist(lapply(syntax_splitted, trimws))
+
+  for (j in 1:nrow(regressions)) {
+    idx <- unlist(lapply(syntax_splitted, function(x) {
+      all(c(startsWith(x, regressions[j, "lhs"]), grepl(regressions[j, "rhs"], x)))
+    }))
+    syntax_splitted[idx] <- gsub(regressions[j, "rhs"], paste0(regressions[j, "label"], "*", regressions[j, "rhs"]), syntax_splitted[idx])
+  }
+  syntax <- paste0(syntax_splitted, collapse = "\n")
+
+  if(options[["group"]] != "") {
+    regressions <- regressionsPerGroup
+  } else {
+    groups <- 1
+    regressions <- list(regressions)
+  }
+
+  get_indirect_effects <- function(df, current_indirect = "", current_predictor = "", idx){
+    outcome <- df$lhs
+    predictor <- df$rhs
+    label <- df$label
+    indirect <- c()
+
+    if (current_predictor == "") {
+      current_predictor <- outcome[idx]
+      current_indirect <- label[idx]
+    }
+
+    for (row in 1:nrow(df)){
+      if (current_predictor == predictor[row]){
+        indirect_effect <- paste0(current_indirect, "*", label[row])
+        indirect <- c(indirect, indirect_effect)
+        indirect <- c(indirect, get_indirect_effects(df, indirect_effect, outcome[row]))
+      }
+    }
+
+    return(indirect)
+  }
+
+  for (group in seq_along(groups)) {
+    # enrich model
+    indirect_effects <- list()
+    for (idx in 1:nrow(regressions[[group]])) {
+      indirect_effects[[idx]] <- get_indirect_effects(regressions[[group]], idx = idx)
+    }
+    indirect_effects <- unlist(indirect_effects)
+    indirect_effects_with_parentheses <- unlist(lapply(indirect_effects, function(x) {
+      paste0("(", x, ")")
+    }))
+    pred <- c()
+    out <- c()
+    if (length(indirect_effects) > 0) {
+      indirect_effects_splitted <- lapply(strsplit(indirect_effects, split = "\\*"), as.list)
+      effect_names <- c()
+      for (effect in 1:length(indirect_effects_splitted)) {
+        for (label in 1:length(indirect_effects_splitted[[effect]])) {
+          if (label == 1) {
+            pred <- c(pred, regressions[[group]][regressions[[group]]$label == indirect_effects_splitted[[effect]][[label]], "rhs"])
+            effect_name <- paste0(regressions[[group]][regressions[[group]]$label == indirect_effects_splitted[[effect]][[label]], "rhs"], "_", regressions[[group]][regressions[[group]]$label == indirect_effects_splitted[[effect]][[label]], "lhs"], "_ ", groups[group])
+          } else if (label == length(indirect_effects_splitted[[effect]])) {
+            out <- c(out, regressions[[group]][regressions[[group]]$label == indirect_effects_splitted[[effect]][[label]], "lhs"])
+            effect_name <- paste0(effect_name, "_", regressions[[group]][regressions[[group]]$label == indirect_effects_splitted[[effect]][[label]], "lhs"])
+          } else {
+            effect_name <- paste0(effect_name, "_", regressions[[group]][regressions[[group]]$label == indirect_effects_splitted[[effect]][[label]], "lhs"])
+          }
+        }
+        effect_names <- c(effect_names, effect_name)
+      }
+      names(indirect_effects) <- effect_names
+    }
+
+    total_effects <- c()
+    for (pred in unique(c(pred,regressions[[group]][["rhs"]]))) {
+      for (out in unique(c(out, regressions[[group]][["lhs"]]))) {
+        total_effect <- NULL
+        total_effect_name <- paste0("total_ ", groups[group], "_", pred, "_", out)
+        indirect_effect_idx <- unlist(lapply(names(indirect_effects), function(x) {
+          startsWith(x, pred) && endsWith(x, out)
+        }))
+        if(sum(indirect_effect_idx > 0)) {
+          total_effect <- paste(indirect_effects_with_parentheses[indirect_effect_idx], collapse = "+")
+        }
+        direct_effect <- regressions[[group]][regressions[[group]][["rhs"]] == pred,]
+        direct_effect <- direct_effect[direct_effect$lhs == out,]
+        if (sum(indirect_effect_idx) > 0 && nrow(direct_effect) > 0)
+          total_effect <- paste0(total_effect, "+", direct_effect[["label"]])
+        if (sum(indirect_effect_idx) == 0 && nrow(direct_effect) > 0)
+          total_effect <- direct_effect[["label"]]
+
+        if(length(total_effect) > 0) {
+          names(total_effect) <- total_effect_name
+          total_effects <- c(total_effects, total_effect)
+        }
+      }
+    }
+    effects_all <- c(indirect_effects, total_effects)
+    for (effect in seq_along(effects_all))
+      syntax <- paste0(syntax, "\n", names(effects_all)[effect], " := ", effects_all[effect], "\n")
+  }
+  return(syntax)
+}
+
 
 # output functions
 
@@ -560,22 +749,23 @@ checkLavaanModel <- function(model, availableVars) {
   modelContainer[["params"]] <- params
 
   if (length(options[["models"]]) < 2) {
-    .semParameterTables(modelContainer[["results"]][["object"]][[1]], NULL, params, options, ready)
+    .semParameterTables(modelContainer[["results"]][["object"]][[1]], NULL, params, options, ready, modelContainer, dataset)
   } else {
 
     for (i in seq_along(options[["models"]])) {
       fit <- modelContainer[["results"]][["object"]][[i]]
-      modelname <- options[["models"]][[i]][["name"]]
-      .semParameterTables(fit, modelname, params, options, ready)
+      model <- options[["models"]][[i]]
+      .semParameterTables(fit, model, params, options, ready, modelContainer, dataset)
     }
   }
 }
 
-.semParameterTables <- function(fit, modelname, parentContainer, options, ready) {
-  if (is.null(modelname)) {
+.semParameterTables <- function(fit, model, parentContainer, options, ready, modelContainer, dataset) {
+  if (!ready) return()
+  if (is.null(model)) {
     pecont <- parentContainer
   } else {
-    pecont <- createJaspContainer(modelname, initCollapsed = TRUE)
+    pecont <- createJaspContainer(model[["name"]], initCollapsed = TRUE)
   }
 
 
@@ -614,8 +804,8 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["group"]] != "")
     regtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
-  regtab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string", combine = TRUE)
-  regtab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),    type = "string")
+  regtab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),    type = "string", combine = TRUE)
+  regtab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string")
   regtab$addColumnInfo(name = "label",    title = "",                    type = "string")
   regtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
   regtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
@@ -779,30 +969,87 @@ checkLavaanModel <- function(model, availableVars) {
     pecont[["mu"]] <- mutab
   }
 
-  deftab <- createJaspTable(title = gettext("Defined parameters"))
+  originalSyntaxTable <- modelContainer[["originalSyntax"]][["object"]][[1]]
+  if(nrow(originalSyntaxTable[originalSyntaxTable$op == ":=",]) > 0) {
+    deftab <- createJaspTable(title = gettext("Defined parameters"))
 
-  deftab$addColumnInfo(name = "lhs",      title = gettext("Name"),       type = "string")
-  deftab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
-  deftab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
-  deftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
-  deftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
-  deftab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-  deftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+    deftab$addColumnInfo(name = "lhs",      title = gettext("Name"),       type = "string")
+    deftab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+    deftab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
+    deftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
+    deftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+    deftab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+    deftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  if (options[["standardizedEstimate"]]) {
-    deftab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                         overtitle = gettext("Standardized"))
-    deftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                         overtitle = gettext("Standardized"))
-    deftab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
-                         overtitle = gettext("Standardized"))
+    if (options[["standardizedEstimate"]]) {
+      deftab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
+                           overtitle = gettext("Standardized"))
+      deftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
+                           overtitle = gettext("Standardized"))
+      deftab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
+                           overtitle = gettext("Standardized"))
+    }
+
+    pecont[["def"]] <- deftab
+  } else {
+    indefftab <- createJaspTable(title = gettext("Indirect effects"))
+
+    if (options[["group"]] != "")
+      indefftab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+
+    indefftab$addColumnInfo(name = "path",     title = "",                    type = "string")
+    indefftab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+    indefftab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
+    indefftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
+    indefftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+    indefftab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+    indefftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+
+    if (options[["standardizedEstimate"]]) {
+      indefftab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
+                           overtitle = gettext("Standardized"))
+      indefftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
+                           overtitle = gettext("Standardized"))
+      indefftab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
+                           overtitle = gettext("Standardized"))
+    }
+
+    pecont[["indeff"]] <- indefftab
+
+    totefftab <- createJaspTable(title = gettext("Total effects"))
+
+    if (options[["group"]] != "")
+      totefftab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+
+    totefftab$addColumnInfo(name = "path",     title = "",                    type = "string")
+    totefftab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+    totefftab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
+    totefftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
+    totefftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+    totefftab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                            overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+    totefftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                            overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+
+    if (options[["standardizedEstimate"]]) {
+      totefftab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
+                              overtitle = gettext("Standardized"))
+      totefftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
+                              overtitle = gettext("Standardized"))
+      totefftab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
+                              overtitle = gettext("Standardized"))
+    }
+
+    pecont[["toteff"]] <- totefftab
   }
 
-  pecont[["def"]] <- deftab
 
-  if (!is.null(modelname)) parentContainer[[modelname]] <- pecont
+
+  if (!is.null(model)) parentContainer[[model[["name"]]]] <- pecont
 
   if (!ready || !inherits(fit, "lavaan")) return()
 
@@ -849,6 +1096,7 @@ checkLavaanModel <- function(model, availableVars) {
   }
 
   # Structural model
+  # coefficients
   pe_reg <- pe[pe$op == "~",]
   pe_reg <- pe_reg[order(pe_reg[["group"]], pe_reg[["lhs"]]),]
   if (nrow(pe_reg) == 0) pecont[["reg"]] <- NULL # remove if no estimates
@@ -856,9 +1104,10 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["group"]] != "")
     regtab[["group"]] <- pe_reg[["groupname"]]
 
-  regtab[["rhs"]]      <- pe_reg[["rhs"]]
   regtab[["lhs"]]      <- pe_reg[["lhs"]]
-  regtab[["label"]]    <- pe_reg[["label"]]
+  regtab[["rhs"]]      <- pe_reg[["rhs"]]
+  if (nrow(originalSyntaxTable[originalSyntaxTable$op == ":=",]) > 0)
+    regtab[["label"]]    <- pe_reg[["label"]]
   regtab[["est"]]      <- pe_reg[["est"]]
   regtab[["se"]]       <- pe_reg[["se"]]
   regtab[["z"]]        <- pe_reg[["z"]]
@@ -987,23 +1236,101 @@ checkLavaanModel <- function(model, availableVars) {
   }
 
   # defined parameters
-  pe_def <- pe[pe$op == ":=",]
-  if (nrow(pe_def) == 0) pecont[["def"]] <- NULL # remove if no estimates
+  if (nrow(originalSyntaxTable[originalSyntaxTable$op == ":=",]) > 0) {
+    pe_def <- pe[pe$op == ":=",]
+    if (nrow(pe_def) == 0) pecont[["def"]] <- NULL # remove if no estimates
 
-  deftab[["lhs"]]      <- pe_def[["lhs"]]
-  deftab[["est"]]      <- pe_def[["est"]]
-  deftab[["se"]]       <- pe_def[["se"]]
-  deftab[["z"]]        <- pe_def[["z"]]
-  deftab[["pvalue"]]   <- pe_def[["pvalue"]]
-  deftab[["ci.lower"]] <- pe_def[["ci.lower"]]
-  deftab[["ci.upper"]] <- pe_def[["ci.upper"]]
+    deftab[["lhs"]]      <- pe_def[["lhs"]]
+    deftab[["est"]]      <- pe_def[["est"]]
+    deftab[["se"]]       <- pe_def[["se"]]
+    deftab[["z"]]        <- pe_def[["z"]]
+    deftab[["pvalue"]]   <- pe_def[["pvalue"]]
+    deftab[["ci.lower"]] <- pe_def[["ci.lower"]]
+    deftab[["ci.upper"]] <- pe_def[["ci.upper"]]
 
-  if (options[["standardizedEstimate"]]) {
-    deftab[["std.all"]] <- pe_def[["std.all"]]
-    deftab[["std.lv"]]  <- pe_def[["std.lv"]]
-    deftab[["std.nox"]] <- pe_def[["std.nox"]]
+    if (options[["standardizedEstimate"]]) {
+      deftab[["std.all"]] <- pe_def[["std.all"]]
+      deftab[["std.lv"]]  <- pe_def[["std.lv"]]
+      deftab[["std.nox"]] <- pe_def[["std.nox"]]
+    }
+  } else {
+    pe_eff <- pe[pe$op == ":=",]
+    pe_toteff <- subset(pe_eff, substring(lhs, 1, nchar("total_")) == "total_")
+    if (nrow(pe_toteff) == 0) {
+      pecont[["toteff"]] <- NULL
+      pecont[["indeff"]] <- NULL
+      return()
+    }
+
+    if (options[["group"]] != "") {
+      groups <- unique(dataset[, options[["group"]]])
+      groupvec <- c()
+      for (group in groups)
+        groupvec <- c(groupvec, rep(group, (nrow(pe_toteff) / length(groups))))
+    } else {
+      groups <- 1
+    }
+
+    path <- list()
+    for (idx in 1:nrow(pe_toteff)) {
+      path[[idx]] <- gsub("_", " \u2192 ", pe_toteff[idx, "lhs"])
+      path[[idx]] <- gsub("total \u2192", "", path[[idx]])
+      for (group in groups)
+        path[[idx]] <- gsub(paste0(" ", group, " \u2192"), "", path[[idx]])
+
+    }
+
+    if (options[["group"]] != "")
+      totefftab[["group"]]  <- groupvec
+    totefftab[["path"]]     <- path
+    totefftab[["est"]]      <- pe_toteff$est
+    totefftab[["se"]]       <- pe_toteff$se
+    totefftab[["z"]]        <- pe_toteff$z
+    totefftab[["pvalue"]]   <- pe_toteff$pvalue
+    totefftab[["ci.lower"]] <- pe_toteff$ci.lower
+    totefftab[["ci.upper"]] <- pe_toteff$ci.upper
+
+    if (options[["standardizedEstimate"]]) {
+      totefftab[["std.all"]] <- pe_toteff[["std.all"]]
+      totefftab[["std.lv"]]  <- pe_toteff[["std.lv"]]
+      totefftab[["std.nox"]] <- pe_toteff[["std.nox"]]
+    }
+
+    pe_indeff <- subset(pe_eff, substring(lhs, 1, nchar("total_")) != "total_")
+    if (nrow(pe_indeff) == 0) {
+      pecont[["indeff"]] <- NULL
+      return()
+    }
+
+    if (nrow(pe_indeff) > 0) {
+      groupvec <- c()
+      for (group in groups)
+        groupvec <- c(groupvec, rep(group, (nrow(pe_indeff) / length(groups))))
+
+      path <- list()
+      for (idx in 1:nrow(pe_indeff)) {
+        path[[idx]] <- gsub("_", " \u2192 ", pe_indeff[idx, "lhs"])
+        for (group in groups)
+          path[[idx]] <- gsub(paste0(" ", group, " \u2192"), "", path[[idx]])
+      }
+
+      if (options[["group"]] != "")
+        indefftab[["group"]]  <- groupvec
+      indefftab[["path"]]     <- path
+      indefftab[["est"]]      <- pe_indeff$est
+      indefftab[["se"]]       <- pe_indeff$se
+      indefftab[["z"]]        <- pe_indeff$z
+      indefftab[["pvalue"]]   <- pe_indeff$pvalue
+      indefftab[["ci.lower"]] <- pe_indeff$ci.lower
+      indefftab[["ci.upper"]] <- pe_indeff$ci.upper
+
+      if (options[["standardizedEstimate"]]) {
+        indefftab[["std.all"]] <- pe_indeff[["std.all"]]
+        indefftab[["std.lv"]]  <- pe_indeff[["std.lv"]]
+        indefftab[["std.nox"]] <- pe_indeff[["std.nox"]]
+      }
+    }
   }
-
 }
 
 .semAdditionalFits <- function(modelContainer, dataset, options, ready) {
@@ -1323,6 +1650,335 @@ checkLavaanModel <- function(model, availableVars) {
     }
 
   }
+}
+
+.semAve <- function(modelContainer, dataset, options, ready) {
+  if (!options[["ave"]] || !is.null(modelContainer[["AVE"]])) return()
+
+  # init table
+  avetab <- createJaspTable(gettext("Average variance extracted"))
+  if (options[["group"]] != "")
+    avetab$addColumnInfo(name = "group", title = gettext("Group"), type = "string", combine = TRUE)
+  avetab$addColumnInfo(name = "factor", title = gettext("Latent"), type = "string")
+  if (length(options[["models"]]) < 2) {
+    avetab$addColumnInfo(name = "ave", title = gettext("AVE"), type = "number")
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      avetab$addColumnInfo(name = paste0("ave_", i), title = options[["models"]][[i]][["name"]],
+                          overtitle = gettext("AVE"), type = "number")
+    }
+  }
+
+  avetab$dependOn(c("ave", "models"))
+  avetab$position <- .9
+
+  modelContainer[["AVE"]] <- avetab
+
+  if (!ready || modelContainer$getError()) return()
+
+  # compute data and fill table
+  if (options[["group"]] == "") {
+
+    if (length(options[["models"]]) < 2) {
+
+      ave_result          <- semTools::AVE(modelContainer[["results"]][["object"]][[1]])
+      avetab[["factor"]]  <- names(ave_result)
+      avetab[["ave"]]     <- ave_result
+
+    } else {
+
+      # determine variable names
+      avelist <- lapply(modelContainer[["results"]][["object"]], semTools::AVE)
+
+      # generate df with these names
+      avedf <- data.frame("factor" = unique(unlist(lapply(avelist, names))))
+      avetab[["factor"]] <- unique(unlist(lapply(avelist, names)))
+
+      for (i in 1:length(avelist)) {
+        # fill matching vars from model with df
+        avedf[match(names(avelist[[i]]), avedf[["factor"]]), i + 1] <- avelist[[i]]
+        # add column to table
+        avetab[[paste0("ave_", i)]] <- avedf[[i + 1]]
+      }
+    }
+  } else {
+    if (length(options[["models"]]) < 2) {
+
+      ave_result          <- semTools::AVE(modelContainer[["results"]][["object"]][[1]])
+      groups <- ave_result[, "group"]
+      ave_result <- ave_result[, -1, drop = FALSE]
+
+      avetab[["group"]]   <- rep(groups, rep(ncol(ave_result), length(groups)))
+      avetab[["factor"]]  <- rep(names(ave_result), length(groups))
+      avetab[["ave"]]     <- c(t(ave_result))
+
+    } else {
+      avelist <- lapply(modelContainer[["results"]][["object"]], semTools::AVE)
+      # for each group, find all variable names in each model
+      groups <- unique(unlist(lapply(avelist, function(ave_result) { ave_result[, "group"] })))
+      avelist <- lapply(avelist, function(ave_result) { ave_result[, -1] })
+      all_names <- unique(unlist(lapply(avelist, names)))
+
+      # generate df with these names
+      avedf <- data.frame(
+        "group" = rep(groups, rep(length(all_names), length(groups))),
+        "factor" = rep(all_names, length(groups)),
+        stringsAsFactors = FALSE
+      )
+
+      for (mod_idx in seq_along(avelist)) {
+        avedf[mod_idx + 2] <- NA
+        for (grp in seq_along(groups)) {
+          grp_idx <- which(avedf[["group"]] == groups[grp])
+          row_idx <- grp_idx[match(names(avelist[[mod_idx]]), avedf[grp_idx, "factor"])]
+          for (row in row_idx)
+            avedf[row, mod_idx + 2] <- c(avelist[[mod_idx]][grp, which(names(avelist[[mod_idx]]) == avedf[row, "factor"])])
+        }
+      }
+
+      # fill jasp table with data
+      avetab[["group"]] <- avedf[["group"]]
+      avetab[["factor"]] <- avedf[["factor"]]
+      for (i in seq_along(avelist)) avetab[[paste0("ave_", i)]] <- avedf[[i + 2]]
+
+    }
+  }
+}
+
+.semReliability <- function(modelContainer, dataset, options, ready) {
+  if (!options[["reliability"]] || !is.null(modelContainer[["reliability"]])) return()
+
+  # init table
+  reliabilitytab <- createJaspTable(gettext("Reliability"))
+  if (options[["group"]] != "")
+    reliabilitytab$addColumnInfo(name = "group", title = gettext("Group"), type = "string", combine = TRUE)
+  reliabilitytab$addColumnInfo(name = "factor", title = "", type = "string")
+  if (length(options[["models"]]) < 2) {
+    reliabilitytab$addColumnInfo(name = "reliabilityAlpha", title = gettext("Coefficient \u03B1"), type = "number")
+    reliabilitytab$addColumnInfo(name = "reliabilityOmega", title = gettext("Coefficient \u03C9"), type = "number")
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      reliabilitytab$addColumnInfo(name = paste0("reliabilityAlpha_", i), title = gettext("Coefficient \u03B1"),
+                                  overtitle = options[["models"]][[i]][["name"]], type = "number")
+      reliabilitytab$addColumnInfo(name = paste0("reliabilityOmega_", i), title = gettext("Coefficient \u03C9"),
+                                  overtitle = options[["models"]][[i]][["name"]], type = "number")
+    }
+  }
+
+  reliabilitytab$dependOn(c("reliability", "models"))
+  reliabilitytab$position <- .95
+
+  modelContainer[["reliability"]] <- reliabilitytab
+
+  if (!ready || modelContainer$getError()) return()
+
+  # compute data and fill table
+  if (options[["group"]] == "") {
+
+    if (length(options[["models"]]) < 2) {
+
+      parTable <- lavaan::parameterTable(modelContainer[["results"]][["object"]][[1]])
+      parTable <- parTable[parTable$op == "=~",]
+      higherOrder <- unique(parTable[!parTable$rhs %in% names(dataset),]$lhs)
+
+      reliability_alpha          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[1]], tau.eq = TRUE, return.total = TRUE)
+      reliability_omega          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[1]], tau.eq = FALSE, higher = higherOrder, return.total = TRUE)
+      reliabilitytab[["factor"]] <- names(reliability_omega)
+      reliabilitytab[["reliabilityAlpha"]]     <- reliability_alpha
+      reliabilitytab[["reliabilityOmega"]]     <- reliability_omega
+
+    } else {
+      alphalist <- list()
+      omegalist <- list()
+      for (i in seq_along(options[["models"]])) {
+        parTable <- lavaan::parameterTable(modelContainer[["results"]][["object"]][[i]])
+        parTable <- parTable[parTable$op == "=~",]
+        higherOrder <- unique(parTable[!parTable$rhs %in% names(dataset),]$lhs)
+
+        reliability_alpha          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[i]], tau.eq = TRUE, higher = higherOrder, return.total = TRUE)
+        reliability_omega          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[i]], tau.eq = FALSE, higher = higherOrder, return.total = TRUE)
+        alphalist[[i]] <- reliability_alpha
+        omegalist[[i]] <- reliability_omega
+      }
+      alphadf <- data.frame("factor" = unique(unlist(lapply(omegalist, names))))
+      omegadf <- data.frame("factor" = unique(unlist(lapply(omegalist, names))))
+      reliabilitytab[["factor"]] <- unique(unlist(lapply(omegalist, names)))
+
+      for (i in 1:length(alphalist)) {
+          # fill matching vars from model with df
+          alphadf[match(names(alphalist[[i]]), alphadf[["factor"]]), i + 1] <- alphalist[[i]]
+          omegadf[match(names(omegalist[[i]]), omegadf[["factor"]]), i + 1] <- omegalist[[i]]
+          # add column to table
+          reliabilitytab[[paste0("reliabilityAlpha_", i)]] <- alphadf[[i + 1]]
+          reliabilitytab[[paste0("reliabilityOmega_", i)]] <- omegadf[[i + 1]]
+        }
+      }
+  } else {
+    if (length(options[["models"]]) < 2) {
+
+      parTable <- lavaan::parameterTable(modelContainer[["results"]][["object"]][[1]])
+      parTable <- parTable[parTable$op == "=~",]
+      higherOrder <- unique(parTable[!parTable$rhs %in% names(dataset),]$lhs)
+
+      reliability_alpha          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[1]], tau.eq = TRUE, higher = higherOrder, return.total = TRUE)
+      reliability_omega          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[1]], tau.eq = FALSE, higher = higherOrder, return.total = TRUE)
+      groups <- reliability_alpha[, "group"]
+      reliability_alpha <- reliability_alpha[, -1]
+      if(length(higherOrder > 0))
+        for (i in 1:length(higherOrder))
+          reliability_alpha <- cbind(reliability_alpha, rep(NA, length(groups)))
+      reliability_omega <- reliability_omega[, -1]
+
+      reliabilitytab[["group"]]   <- rep(groups, rep(ncol(reliability_omega), length(groups)))
+      reliabilitytab[["factor"]]  <- rep(names(reliability_omega), length(groups))
+      reliabilitytab[["reliabilityAlpha"]]     <- c(t(reliability_alpha))
+      reliabilitytab[["reliabilityOmega"]]     <- c(t(reliability_omega))
+
+    } else {
+      alphalist <- list()
+      omegalist <- list()
+      for (i in seq_along(options[["models"]])) {
+        parTable <- lavaan::parameterTable(modelContainer[["results"]][["object"]][[i]])
+        parTable <- parTable[parTable$op == "=~",]
+        higherOrder <- unique(parTable[!parTable$rhs %in% names(dataset),]$lhs)
+
+        reliability_alpha          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[i]], tau.eq = TRUE, higher = higherOrder, return.total = TRUE)
+        reliability_omega          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[i]], tau.eq = FALSE, higher = higherOrder, return.total = TRUE)
+        alphalist[[i]] <- reliability_alpha
+        omegalist[[i]] <- reliability_omega
+      }
+      # for each group, find all variable names in each model
+      groups <- unique(unlist(lapply(alphalist, function(reliability_alpha) { reliability_alpha[, "group"] })))
+      alphalist <- lapply(alphalist, function(reliability_alpha) { reliability_alpha[, -1] })
+      omegalist <- lapply(omegalist, function(reliability_omega) { reliability_omega[, -1] })
+      all_names <- unique(unlist(lapply(omegalist, names)))
+
+      # generate df with these names
+      alphadf <- data.frame(
+        "group" = rep(groups, rep(length(all_names), length(groups))),
+        "factor" = rep(all_names, length(groups)),
+        stringsAsFactors = FALSE
+      )
+      omegadf <- data.frame(
+        "group" = rep(groups, rep(length(all_names), length(groups))),
+        "factor" = rep(all_names, length(groups)),
+        stringsAsFactors = FALSE
+      )
+
+      for (mod_idx in seq_along(alphalist)) {
+        alphadf[mod_idx + 2] <- NA
+        omegadf[mod_idx + 2] <- NA
+        for (grp in seq_along(groups)) {
+          grp_idx_alpha <- which(alphadf[["group"]] == groups[grp])
+          grp_idx_omega <- which(omegadf[["group"]] == groups[grp])
+          row_idx_alpha <- grp_idx_alpha[match(names(alphalist[[mod_idx]]), alphadf[grp_idx_alpha, "factor"])]
+          for (row in row_idx_alpha)
+            alphadf[row, mod_idx + 2] <- c(alphalist[[mod_idx]][grp, which(names(alphalist[[mod_idx]]) == alphadf[row, "factor"])])
+          row_idx_omega <- grp_idx_omega[match(names(omegalist[[mod_idx]]), omegadf[grp_idx_omega, "factor"])]
+          for (row in row_idx_omega)
+            omegadf[row, mod_idx + 2] <- c(omegalist[[mod_idx]][grp, which(names(omegalist[[mod_idx]]) == omegadf[row, "factor"])])
+        }
+      }
+
+      # fill jasp table with data
+      reliabilitytab[["group"]] <- alphadf[["group"]]
+      reliabilitytab[["factor"]] <- alphadf[["factor"]]
+      for (i in seq_along(alphalist)) reliabilitytab[[paste0("reliabilityAlpha_", i)]] <- alphadf[[i + 2]]
+      for (i in seq_along(omegalist)) reliabilitytab[[paste0("reliabilityOmega_", i)]] <- omegadf[[i + 2]]
+    }
+  }
+}
+
+.semHtmt <- function(modelContainer, dataset, options, ready) {
+  if (!options[["htmt"]] || !is.null(modelContainer[["htmt"]])) return()
+
+
+  htmt <- createJaspContainer()
+  htmt$position <- 0.95
+  htmt$dependOn(c("htmt", "naAction", "models"))
+
+  modelContainer[["htmt"]] <- htmt
+
+  if (length(options[["models"]]) < 2) {
+    .semHtmtTables(modelContainer[["results"]][["object"]][[1]], NULL, htmt, options, ready, dataset)
+  } else {
+    htmt$title <- gettext("Heterotrait-monotrait ratio")
+
+    for (i in seq_along(options[["models"]])) {
+      fit <- modelContainer[["results"]][["object"]][[i]]
+      model <- options[["models"]][[i]]
+      .semHtmtTables(fit, model, htmt, options, ready, dataset)
+    }
+  }
+}
+
+.semHtmtTables <- function(fit, model, parentContainer, options, ready, dataset) {
+  if (is.null(model)) {
+    htmtcont <- parentContainer
+    title <- gettext("Heterotrait-monotrait ratio")
+  } else {
+    htmtcont <- createJaspContainer(model[["name"]], initCollapsed = TRUE)
+    title <- ""
+  }
+
+  htmttab <- createJaspTable(title = title)
+  htmtcont[["htmttab"]] <- htmttab
+
+  if (options[["group"]] == "") {
+    lavopts <- .semOptionsToLavOptions(options, dataset)
+    lavmodel <- ifelse(is.null(model), .semTranslateModel(options[["models"]][[1]][["syntax"]], dataset), .semTranslateModel(model[["syntax"]], dataset))
+
+    parTable <- lavaan::lavaanify(lavmodel)
+    latents  <- parTable[parTable$op == "=~",]
+    higherOrder <- unique(latents[!latents$rhs %in% names(dataset),]$lhs)
+    lavmodel <- parTable[!parTable$lhs %in% higherOrder, ]
+
+    if (options[["dataType"]] == "raw") {
+      htmt_result <- semTools::htmt(model = lavmodel, data = dataset, missing = lavopts[["missing"]])
+    } else {
+      htmt_result <- semTools::htmt(model = lavmodel, sample.cov = .semDataCovariance(dataset, model), missing = lavopts[["missing"]])
+    }
+    htmt_result[upper.tri(htmt_result)] <- NA
+
+    for (i in 1:ncol(htmt_result)) {
+      name <- colnames(htmt_result)[i]
+      htmttab$addColumnInfo(name, title = name, type ="number")
+    }
+    htmttab$addRows(htmt_result, rowNames = colnames(htmt_result))
+
+  } else {
+
+    lavopts <- .semOptionsToLavOptions(options, dataset)
+    lavmodel <- ifelse(is.null(model), .semTranslateModel(options[["models"]][[1]][["syntax"]], dataset), .semTranslateModel(model[["syntax"]], dataset))
+
+    parTable <- lavaan::lavaanify(lavmodel)
+    latents  <- parTable[parTable$op == "=~",]
+    higherOrder <- unique(latents[!latents$rhs %in% names(dataset),]$lhs)
+    lavmodel <- parTable[!parTable$lhs %in% higherOrder, ]
+
+    # prepare the columns
+    lvNames <- unique(lavmodel[lavmodel$op == "=~", "lhs"])
+    htmttab$addColumnInfo(name = "group", title = gettext("Group"), type = "string")
+    for (name in lvNames) {
+      htmttab$addColumnInfo(name, title = name, type ="number")
+    }
+
+    fillMat <- NULL
+    for (group in unique(dataset[, options[["group"]]])) {
+
+      dataset_per_group <- dataset[dataset[, options[["group"]]] == group, ]
+
+      htmt_result <- semTools::htmt(model = lavmodel, data = dataset_per_group, missing = lavopts[["missing"]])
+      htmt_result[upper.tri(htmt_result)] <- NA
+      groupCol <- data.frame(group = c(group, rep(NA, nrow(htmt_result) - 1)))
+      htmtFill <- cbind(groupCol, as.data.frame(htmt_result))
+      fillMat <- rbind(fillMat, htmtFill)
+
+    }
+    htmttab$setData(fillMat)
+
+  }
+  if (!is.null(model)) parentContainer[[model[["name"]]]] <- htmtcont
 }
 
 .semMardiasCoefficient <- function(modelContainer, dataset, options, ready) {
