@@ -18,6 +18,8 @@
 SEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
+  sink(file = "~/Downloads/log.txt")
+  on.exit(sink(NULL))
   # Read dataset
   options <- .semPrepOpts(options)
 
@@ -774,76 +776,49 @@ checkLavaanModel <- function(model, availableVars) {
 
     groupNames <- semResults[[1]]@Data@group.label
     models <- rep(rownames(lrt$value), each = length(groupNames))
-    lavopts <- .semOptionsToLavOptions(options, dataset)
-    lavopts[["group"]] <- NULL
-    results_grouped <- list()
-    k <- 1
-    for (i in 1:length(options[["models"]])) {
-      syntax   <- lavaan::parTable(semResults[[i]])
-      for (group in seq_along(groupNames)) {
-        lav_args <- lavopts
-        syntax_group <- syntax[syntax$group == group,]
-        equalityConstraints <- syntax[syntax$op == "==", ]
-        if (nrow(equalityConstraints) > 0) {
-          for (j in 1:nrow(equalityConstraints)) {
-            if (equalityConstraints[j, "lhs"] %in% syntax_group[, "plabel"]) {
-              syntax_group <- rbind(syntax_group, equalityConstraints[j,])
-            }
-          }
-        }
-        syntax_group[["group"]] <- syntax_group[["block"]] <- rep(1, nrow(syntax_group))
-        lav_args[["model"]] <- syntax_group
-        dataset_group <- dataset[dataset[[options[["group"]]]] == groupNames[group],]
-        lav_args[["data"]]  <- dataset_group
+    modelDfs <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$df}))
+    print(modelDfs)
 
-        fit_group <- try(do.call(lavaan::lavaan, lav_args))
+    # so the models from the lrt are ordered so the model with fewer dfs is up, we should check that and
+    # adjust accorindlgy
+    # also need to check what happens with the likelihood and a different test?
+    # shouldnt the likleihood come before the test
+    # so does the LRT for models then depend on the test in each model?
 
-        if (isTryError(fit_group)) {
-          errormsg <- gettextf("The model fit by group is unavailable for the specified model: %s", options[["models"]][[i]][["name"]])
-          fittab$setError(errormsg)
-          break
-        }
-        results_grouped[[k]] <- fit_group
-        k = k + 1
-      }
-    }
+    # also see if unlist is the way to go, probably not:
 
-    chiSq <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$stat.group}))
-    dfs <- vapply(results_grouped, function(x) {round(lavaan::lavInspect(x, what = "test")[[testName]]$df, 3)}, 0)
 
-    aic <- vapply(results_grouped, AIC, 0)
-    bic <- vapply(results_grouped, BIC, 0)
-    Ns  <- vapply(results_grouped, lavaan::lavInspect, 0, what = "ntotal")
+    chiSq <- lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$stat.group})
+    logLGroup <- unlist(lapply(semResults, function(x) x@loglik$loglik.group))
+    npar <- unlist(lapply(semResults, function(x) x@loglik$npar))
+    aics <- -2 * logLGroup + 2 * npar
+    Ns  <- unlist(lapply(semResults, function(x) x@Data@nobs))
+    bics <- -2 * logLGroup + npar * log(Ns)
 
     dtFillGroup <- data.frame(matrix(ncol = 0, nrow = length(models)))
 
     dtFillGroup[["Model"]]    <- models
     dtFillGroup[["group"]]    <- rep(groupNames, length(rownames(lrt$value)))
-    dtFillGroup[["AIC"]]      <- aic
-    dtFillGroup[["BIC"]]      <- bic
+    dtFillGroup[["AIC"]]      <- aics
+    dtFillGroup[["BIC"]]      <- bics
     dtFillGroup[["N"]]        <- Ns
     dtFillGroup[["Chisq"]]    <- chiSq
-    dtFillGroup[["Df"]]       <- dfs
-    dtFillGroup[["PrChisq"]]  <- pchisq(q = chiSq, df = dfs, lower.tail = FALSE)
+    dtFillGroup[["Df"]]       <- NA
+    dtFillGroup[["PrChisq"]]  <- NA
 
+    # we want the LRT for multiple models
     if (length(semResults) > 1) {
-      dchisq   <- rep(NA, length(groupNames))
-      ddf      <- rep(NA, length(groupNames))
-      dPrChisq <- rep(NA, length(groupNames))
-      for(i in 1:(length(chiSq)-length(groupNames))) {
-        lrt <- lavaan::lavTestLRT(results_grouped[[i]], results_grouped[[i+length(groupNames)]])
-        dchisq <- c(dchisq, ifelse(lrt[2, "Chisq diff"] < 1e-05, 0, lrt[2, "Chisq diff"]))
-        ddf    <- c(ddf, lrt[2, "Df diff"])
-        dPrChisq <- c(dPrChisq, lrt[2, "Pr(>Chisq)"])
-      }
-      dtFillGroup[["dchisq"]] <- dchisq
-      dtFillGroup[["ddf"]] <- ddf
-      dtFillGroup[["dPrChisq"]] <- dPrChisq
+
+      # lrts <- -2 * log()
+
+      # dtFillGroup[["dchisq"]] <- dchisq
+      # dtFillGroup[["ddf"]] <- ddf
+      # dtFillGroup[["dPrChisq"]] <- dPrChisq
 
     }
     dtFill[["group"]] <- gettext("all")
     dtFill <- dtFill[, c(1, ncol(dtFill), 2:(ncol(dtFill)-1))]
-    dtFill <- rbind(dtFill, NA, dtFillGroup)
+    dtFill <- rbind(dtFill, dtFillGroup)
 
   }
 
