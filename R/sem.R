@@ -18,8 +18,6 @@
 SEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
-  sink(file = "~/Downloads/log.txt")
-  on.exit(sink(NULL))
   # Read dataset
   options <- .semPrepOpts(options)
 
@@ -777,43 +775,43 @@ checkLavaanModel <- function(model, availableVars) {
     groupNames <- semResults[[1]]@Data@group.label
     models <- rep(rownames(lrt$value), each = length(groupNames))
     modelDfs <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$df}))
-    print(modelDfs)
-
-    # so the models from the lrt are ordered so the model with fewer dfs is up, we should check that and
-    # adjust accorindlgy
-    # also need to check what happens with the likelihood and a different test?
-    # shouldnt the likleihood come before the test
-    # so does the LRT for models then depend on the test in each model?
-
-    # also see if unlist is the way to go, probably not:
 
 
-    chiSq <- lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$stat.group})
-    logLGroup <- unlist(lapply(semResults, function(x) x@loglik$loglik.group))
-    npar <- unlist(lapply(semResults, function(x) x@loglik$npar))
-    aics <- -2 * logLGroup + 2 * npar
-    Ns  <- unlist(lapply(semResults, function(x) x@Data@nobs))
-    bics <- -2 * logLGroup + npar * log(Ns)
+    modelDfs <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$df}))
+    ord <- match(modelDfs, sort(modelDfs))
+
+    chiSq <- sapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$stat.group})
+    logLGroup <- sapply(semResults, function(x) x@loglik$loglik.group)
+
+    npar <- sapply(semResults, function(x) x@loglik$npar)
+    aics <- -2 * logLGroup + 2 * matrix(npar, nrow(logLGroup), ncol(logLGroup), byrow = TRUE)
+    Ns  <- sapply(semResults, function(x) x@Data@nobs)
+    bics <- -2 * logLGroup + matrix(npar, nrow(logLGroup), ncol(logLGroup), byrow = TRUE) * matrix(sapply(Ns, log), nrow(Ns), ncol(Ns))
+
+    aics <- aics[, ord]
+    bics <- bics[, ord]
 
     dtFillGroup <- data.frame(matrix(ncol = 0, nrow = length(models)))
 
     dtFillGroup[["Model"]]    <- models
     dtFillGroup[["group"]]    <- rep(groupNames, length(rownames(lrt$value)))
-    dtFillGroup[["AIC"]]      <- aics
-    dtFillGroup[["BIC"]]      <- bics
-    dtFillGroup[["N"]]        <- Ns
-    dtFillGroup[["Chisq"]]    <- chiSq
+    dtFillGroup[["AIC"]]      <- c(aics)
+    dtFillGroup[["BIC"]]      <- c(bics)
+    dtFillGroup[["N"]]        <- c(Ns)
+    dtFillGroup[["Chisq"]]    <- c(chiSq)
     dtFillGroup[["Df"]]       <- NA
     dtFillGroup[["PrChisq"]]  <- NA
 
     # we want the LRT for multiple models
     if (length(semResults) > 1) {
 
-      # lrts <- -2 * log()
+      # so the LRT for the models by group depends on the test statistic used
+      # but lavaan does not provide this
+      # it is also not very clear how sensible it is to calculate the fit for each group anyways
 
-      # dtFillGroup[["dchisq"]] <- dchisq
-      # dtFillGroup[["ddf"]] <- ddf
-      # dtFillGroup[["dPrChisq"]] <- dPrChisq
+      dtFillGroup[["dchisq"]] <- NA
+      dtFillGroup[["ddf"]] <- NA
+      dtFillGroup[["dPrChisq"]] <- NA
 
     }
     dtFill[["group"]] <- gettext("all")
