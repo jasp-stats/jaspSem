@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2023-12-30 02:40\n"
+"POT-Creation-Date: 2024-02-24 02:41\n"
 "PO-Revision-Date: 2023-04-20 12:51+0000\n"
 "Last-Translator: Don van den Bergh <donvdbergh@hotmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/"
@@ -745,6 +745,27 @@ msgstr ""
 "De T-grootte equivalenten van de conventionele RMSEA-afkapwaarden (dichtbij "
 "< 0,05 < redelijk < 0,95 < slecht) zijn <b>dichtbij < %1$s < redelijk < %2$s "
 "< slecht</b> voor model: %3$s"
+
+msgid "Average variance extracted"
+msgstr ""
+
+msgid "AVE"
+msgstr ""
+
+#, fuzzy
+msgid "Reliability"
+msgstr "Betrouwbaarheids Maten"
+
+#, fuzzy
+msgid "Coefficient α"
+msgstr "Coëfficiënt"
+
+#, fuzzy
+msgid "Coefficient ω"
+msgstr "Coëfficiënt"
+
+msgid "Heterotrait-monotrait ratio"
+msgstr ""
 
 msgid "Mardia's coefficients"
 msgstr "Mardia's coëfficiënten"

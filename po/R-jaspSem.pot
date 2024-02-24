@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.18.3\n"
-"POT-Creation-Date: 2024-01-13 02:42\n"
+"POT-Creation-Date: 2024-02-24 02:41\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -617,6 +617,24 @@ msgid "T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents o
 msgstr ""
 
 msgid "The T-size equivalents of the conventional RMSEA cut-off values\n                                          (close < 0.05 < fair < 0.08 < poor) are <b>close < %1$s < fair < %2$s\n                                          < poor</b> for model: %3$s."
+msgstr ""
+
+msgid "Average variance extracted"
+msgstr ""
+
+msgid "AVE"
+msgstr ""
+
+msgid "Reliability"
+msgstr ""
+
+msgid "Coefficient α"
+msgstr ""
+
+msgid "Coefficient ω"
+msgstr ""
+
+msgid "Heterotrait-monotrait ratio"
 msgstr ""
 
 msgid "Mardia's coefficients"

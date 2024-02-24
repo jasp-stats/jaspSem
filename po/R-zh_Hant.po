@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2023-12-30 02:40\n"
+"POT-Creation-Date: 2024-02-24 02:41\n"
 "PO-Revision-Date: 2023-12-16 01:08+0000\n"
 "Last-Translator: Ginger Shu-Ying Yeh <gingershuying@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
@@ -709,6 +709,27 @@ msgid ""
 "                                          (close < 0.05 < fair < 0.08 < "
 "poor) are <b>close < %1$s < fair < %2$s\n"
 "                                          < poor</b> for model: %3$s."
+msgstr ""
+
+msgid "Average variance extracted"
+msgstr ""
+
+msgid "AVE"
+msgstr ""
+
+#, fuzzy
+msgid "Reliability"
+msgstr "其他適配指標"
+
+#, fuzzy
+msgid "Coefficient α"
+msgstr "係數"
+
+#, fuzzy
+msgid "Coefficient ω"
+msgstr "係數"
+
+msgid "Heterotrait-monotrait ratio"
 msgstr ""
 
 msgid "Mardia's coefficients"

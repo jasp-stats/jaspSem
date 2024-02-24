@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
-"POT-Creation-Date: 2023-12-30 02:40\n"
+"POT-Creation-Date: 2024-02-24 02:41\n"
 "PO-Revision-Date: 2023-12-31 13:06+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -748,6 +748,27 @@ msgstr ""
 "                                          (próximo < 0.05 < razonable < 0.08 "
 "< malo) son <b>próximo < %1$s < razonable < %2$s\n"
 "                                          < malo</b> para el modelo: %3$s."
+
+msgid "Average variance extracted"
+msgstr ""
+
+msgid "AVE"
+msgstr ""
+
+#, fuzzy
+msgid "Reliability"
+msgstr "Medidas de Fiabilidad"
+
+#, fuzzy
+msgid "Coefficient α"
+msgstr "Coeficiente"
+
+#, fuzzy
+msgid "Coefficient ω"
+msgstr "Coeficiente"
+
+msgid "Heterotrait-monotrait ratio"
+msgstr ""
 
 msgid "Mardia's coefficients"
 msgstr "Coeficientes de Mardia"

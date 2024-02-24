@@ -1238,3 +1238,15 @@ msgstr ""
 msgctxt "SEM|"
 msgid "Fix mean of manifest intercepts to zero"
 msgstr ""
+
+msgctxt "SEM|"
+msgid "Average variance extracted (AVE)"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Heterotrait-monotrait ratio (HTMT)"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Reliability measures"
+msgstr ""

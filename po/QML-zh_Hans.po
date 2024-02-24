@@ -1224,3 +1224,16 @@ msgstr "刀切法（Jackknife）"
 msgctxt "SEM|"
 msgid "Fix mean of manifest intercepts to zero"
 msgstr "将外显截距的平均值固定为零"
+
+msgctxt "SEM|"
+msgid "Average variance extracted (AVE)"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Heterotrait-monotrait ratio (HTMT)"
+msgstr ""
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "Reliability measures"
+msgstr "可靠性测量"

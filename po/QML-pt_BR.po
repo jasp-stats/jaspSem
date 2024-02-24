@@ -1220,3 +1220,15 @@ msgstr ""
 msgctxt "SEM|"
 msgid "Release constraints (one per line)"
 msgstr ""
+
+msgctxt "SEM|"
+msgid "Average variance extracted (AVE)"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Heterotrait-monotrait ratio (HTMT)"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Reliability measures"
+msgstr ""
