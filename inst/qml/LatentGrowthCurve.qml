@@ -245,7 +245,7 @@ Form
 			title: qsTr("Options")
 			debug: true
 			CheckBox { text: qsTr("Fix manifest intercepts to zero") ; name: "manifestInterceptFixedToZero" 	}
-			CheckBox { text: qsTr("Fix latent intercepts to zero")   ; name: "latentMeanFixedToZero"		; checked: true }
+			CheckBox { text: qsTr("Fix latent intercepts to zero")   ; name: "latentInterceptFixedToZero"		; checked: true }
 			CheckBox { text: qsTr("Omit residual single indicator")  ; name: "residualSingleIndicatorOmitted"	; checked: true }
 			CheckBox { text: qsTr("Residual variances")              ; name: "residualVariance"           		; checked: true }
 			CheckBox { text: qsTr("Correlate exogenous latents")     ; name: "exogenousLatentCorrelation"   	; checked: true }

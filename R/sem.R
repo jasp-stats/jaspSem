@@ -204,7 +204,7 @@ checkLavaanModel <- function(model, availableVars) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("samplingWeights", "meanStructure", "manifestInterceptFixedToZero", "latentMeanFixedToZero", "exogenousCovariateFixed", "orthogonal",
+    modelContainer$dependOn(c("samplingWeights", "meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero", "exogenousCovariateFixed", "orthogonal",
                               "factorScaling", "residualSingleIndicatorOmitted", "residualVariance", "exogenousLatentCorrelation",
                               "dependentCorrelation", "threshold", "scalingParameter", "efaConstrained", "standardizedVariable", "naAction", "estimator", "test",
                               "errorCalculationMethod", "informationMatrix", "emulation", "group", "equalLoading", "equalIntercept",
@@ -360,7 +360,7 @@ checkLavaanModel <- function(model, availableVars) {
   # model features
   lavopts[["meanstructure"]]   <- options[["meanStructure"]]
   lavopts[["int.ov.free"]]     <- !options[["manifestInterceptFixedToZero"]]
-  lavopts[["int.lv.free"]]     <- !options[["latentMeanFixedToZero"]]
+  lavopts[["int.lv.free"]]     <- !options[["latentInterceptFixedToZero"]]
   lavopts[["fixed.x"]]         <- options[["exogenousCovariateFixed"]]
   lavopts[["orthogonal"]]      <- options[["orthogonal"]]
   lavopts[["std.lv"]]          <- options[["factorScaling"]] == "factorVariance"

@@ -99,103 +99,7 @@ test_that("reliability/ AVE/ htmt works", {
                                    "total", 0.91494164193877, 0.919205517992938))
 })
 
-# Multigroup, multimodel SEM works
-options <- jaspTools::analysisOptions("SEM")
-options$emulation                   <-  "lavaan"
-options$estimator                   <- "default"
-options$group                       <- "group"
-options$informationMatrix           <- "expected"
-options$meanStructure               <- TRUE
-options$modificationIndexLowHidden  <- TRUE
-options$naAction                    <- "listwise"
-options$impliedCovariance           <- TRUE
-options$mardiasCoefficient          <- TRUE
-options$modificationIndex           <- TRUE
-options$observedCovariance          <- TRUE
-options$pathPlot                    <- TRUE
-options$rSquared                    <- TRUE
-options$residualCovariance          <- TRUE
-options$standardizedResidual        <- TRUE
-options$pathPlotParameter           <- TRUE
-options$standardizedEstimate        <- TRUE
-options$latentMeanFixedToZero  <- TRUE
-options$modelTest                   <- "satorraBentler"
-options$samplingWeights             <- ""
 
-modelDefault <- list(model = "
-# latent variable definitions
-  ind60 =~ x1 + x2 + x3
-  dem60 =~ y1 + y2 + y3 + y4
-  dem65 =~ y5 + y6 + y7 + y8
-# regressions
-  dem60 ~ ind60
-  dem65 ~ ind60 + dem60
-# residual (co)variances
-  y1 ~~ y5
-  y2 ~~ y4 + y6
-  y3 ~~ y7
-  y4 ~~ y8
-  y6 ~~ y8
-", columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))
-modelConstrained <- list(model = "
-# latent variable definitions
-  ind60 =~ x1 + x2 + x3
-  dem60 =~ c(a1,a2)*y1 + c(b1,b2)*y2 + c(c1,c2)*y3 + c(d1,d2)*y4
-  dem65 =~ c(a1,a3)*y5 + c(b1,b3)*y6 + c(c1,c3)*y7 + c(d1,d3)*y8
-# regressions
-  dem60 ~ ind60
-  dem65 ~ ind60 + dem60
-# residual (co)variances
-  y1 ~~ y5
-  y2 ~~ y4 + y6
-  y3 ~~ y7
-  y4 ~~ y8
-  y6 ~~ y8
-", columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))
-modelMoreConstrained <- list(model = "
-# latent variable definitions
-  ind60 =~ x1 + x2 + x3
-  dem60 =~ c(a1, a2)*y1 + c(b1, b2)*y2 + c(c1, c2)*y3 + c(d1, d2)*y4
-  dem65 =~ c(a1, a2)*y5 + c(b1, b2)*y6 + c(c1, c2)*y7 + c(d1, d2)*y8
-# regressions
-  dem60 ~ ind60
-  dem65 ~ ind60 + dem60
-# residual (co)variances
-  y1 ~~ y5
-  y2 ~~ y4 + y6
-  y3 ~~ y7
-  y4 ~~ y8
-  y6 ~~ y8
-", columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))
-
-options$models = list(
-  list(name = "default",          syntax = modelDefault),
-  list(name = "constrained",      syntax = modelConstrained),
-  list(name = "more constrained", syntax = modelMoreConstrained)
-)
-
-results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
-
-
-test_that("Model fit table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list(3189.26691715401, 3383.93591869106, 85.6796813843018, 70, "default",
-                                      75, 0.0980338951401478, "", "", "", "all", 3184.34803034567,
-                                      3372.06456754211, 87.9549367720082, 73, "constrained", 75, 0.111927575441416,
-                                      0.647754490400887, 1.65156784896069, 3, "all", 3181.07183366569,
-                                      3361.83590652152, 92.7433708195334, 76, "more constrained",
-                                      75, 0.0929761753674234, 0.110596895611682, 6.02091896548516,
-                                      3, "all", 1638.81154499845, 1774.12864966057, 51.6035277328312,
-                                      "", "default", 37, "", "", "", "", 1, 1718.45537215556, 1856.01260957258,
-                                      34.0761536514705, "", "default", 38, "", "", "", "", 2, 1633.89265814398,
-                                      1764.37700906817, 53.4279668719259, "", "constrained", 37, "",
-                                      "", "", "", 1, 1712.45537220169, 1845.09985113953, 34.5269699000823,
-                                      "", "constrained", 38, "", "", "", "", 2, 1627.89265813238,
-                                      1753.54425531862, 54.5525537466071, "", "more constrained",
-                                      37, "", "", "", "", 1, 1709.17917553332, 1836.91089599197, 38.1908170729263,
-                                      "", "more constrained", 38, "", "", "", "", 2))
-})
 
 test_that("Multigroup, multimodel SEM works", {
   options <- jaspTools::analysisOptions("SEM")
@@ -216,6 +120,7 @@ test_that("Multigroup, multimodel SEM works", {
   options$standardizedResidual        = TRUE
   options$pathPlotParameter           = TRUE
   options$standardizedEstimate        = TRUE
+  options$latentInterceptFixedToZero <- TRUE
   options$modelTest                   = "satorraBentler"
   options$samplingWeights             = ""
 

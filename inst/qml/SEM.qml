@@ -143,7 +143,7 @@ Form
 				]
 			}
 			CheckBox { name: "meanStructure";					label: qsTr("Include mean structure") ; checked: eq_intercepts.checked || eq_means.checked || eq_thresholds.checked
-				CheckBox { name: "latentMeanFixedToZero";		label: qsTr("Fix latent means to zero"); checked: !eq_means.checked }
+				CheckBox { name: "latentInterceptFixedToZero";		label: qsTr("Fix latent means to zero"); checked: !eq_means.checked }
 				CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Fix manifest intercepts to zero"); }
 				CheckBox { name: "manifestMeanFixedToZero";		label: qsTr("Fix mean of manifest intercepts to zero")}
 			}

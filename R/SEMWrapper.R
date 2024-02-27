@@ -46,7 +46,7 @@ SEM <- function(
           group = "",
           impliedCovariance = FALSE,
           informationMatrix = "expected",
-          latentMeanFixedToZero = TRUE,
+          latentInterceptFixedToZero = TRUE,
           manifestInterceptFixedToZero = FALSE,
           manifestMeanFixedToZero = FALSE,
           mardiasCoefficient = FALSE,
