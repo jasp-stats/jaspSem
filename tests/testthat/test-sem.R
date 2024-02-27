@@ -53,41 +53,43 @@ test_that("Basic SEM covariance parameter table works", {
                                    "y1", 6.78685155555555, "", "y1", "", 0, ""))
 })
 
+
+# Reliability, AVE, HTMT works
+options <- jaspTools::analysisOptions("SEM")
+options$models <- list(list(name = "Model1", syntax = list(model = "
+# latent variable definitions
+  ind60 =~ x1 + x2 + x3
+  dem60 =~ y1 + y2 + y3 + y4
+  dem65 =~ y5 + y6 + y7 + y8
+# regressions
+  dem60 ~ ind60
+  dem65 ~ ind60 + dem60
+# residual (co)variances
+  y1 ~~ y5
+  y2 ~~ y4 + y6
+  y3 ~~ y7
+  y4 ~~ y8
+  y6 ~~ y8
+", columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))))
+options$emulation         <- "lavaan"
+options$estimator         <- "default"
+options$group             <- ""
+options$samplingWeights   <- ""
+options$informationMatrix <- "expected"
+options$naAction          <- "fiml"
+options$modelTest         <- "standard"
+options$reliability       <- TRUE
+options$ave               <- TRUE
+options$htmt              <- TRUE
+results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
+
+
+container   <- results[["results"]][["modelContainer"]][["collection"]]
+ave         <- container[["modelContainer_AVE"]][["data"]]
+htmt        <- container[["modelContainer_htmt"]][["collection"]][["modelContainer_htmt_htmttab"]][["data"]]
+reliability <- container[["modelContainer_reliability"]][["data"]]
+
 test_that("reliability/ AVE/ htmt works", {
-  options <- jaspTools::analysisOptions("SEM")
-  options$models <- list(list(name = "Model1", syntax = list(model = "
-  # latent variable definitions
-    ind60 =~ x1 + x2 + x3
-    dem60 =~ y1 + y2 + y3 + y4
-    dem65 =~ y5 + y6 + y7 + y8
-  # regressions
-    dem60 ~ ind60
-    dem65 ~ ind60 + dem60
-  # residual (co)variances
-    y1 ~~ y5
-    y2 ~~ y4 + y6
-    y3 ~~ y7
-    y4 ~~ y8
-    y6 ~~ y8
-  ", columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))))
-  options$emulation         <- "lavaan"
-  options$estimator         <- "default"
-  options$group             <- ""
-  options$samplingWeights   <- ""
-  options$informationMatrix <- "expected"
-  options$naAction          <- "fiml"
-  options$modelTest         <- "standard"
-  options$reliability       <- TRUE
-  options$ave               <- TRUE
-  options$htmt              <- TRUE
-  results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
-
-
-  container   <- results[["results"]][["modelContainer"]][["collection"]]
-  ave         <- container[["modelContainer_AVE"]][["data"]]
-  htmt        <- container[["modelContainer_htmt"]][["collection"]][["modelContainer_htmt_htmttab"]][["data"]]
-  reliability <- container[["modelContainer_reliability"]][["data"]]
-
   expect_equal_tables(ave, list(0.8588015398276, "ind60", 0.597128239158634, "dem60", 0.640021072526866,
                                    "dem65"))
   expect_equal_tables(htmt, list("", "", 1, 1, "", 0.420934414880351, 0.980709420149052, 1, 0.549916280338394
@@ -99,25 +101,26 @@ test_that("reliability/ AVE/ htmt works", {
 
 # Multigroup, multimodel SEM works
 options <- jaspTools::analysisOptions("SEM")
-options$emulation                   = "lavaan"
-options$estimator                   = "default"
-options$group                       = "group"
-options$informationMatrix           = "expected"
-options$meanStructure               = TRUE
-options$modificationIndexLowHidden  = TRUE
-options$naAction                    = "listwise"
-options$impliedCovariance           = TRUE
-options$mardiasCoefficient          = TRUE
-options$modificationIndex           = TRUE
-options$observedCovariance          = TRUE
-options$pathPlot                    = TRUE
-options$rSquared                    = TRUE
-options$residualCovariance          = TRUE
-options$standardizedResidual        = TRUE
-options$pathPlotParameter           = TRUE
-options$standardizedEstimate        = TRUE
-options$modelTest                   = "satorraBentler"
-options$samplingWeights             = ""
+options$emulation                   <-  "lavaan"
+options$estimator                   <- "default"
+options$group                       <- "group"
+options$informationMatrix           <- "expected"
+options$meanStructure               <- TRUE
+options$modificationIndexLowHidden  <- TRUE
+options$naAction                    <- "listwise"
+options$impliedCovariance           <- TRUE
+options$mardiasCoefficient          <- TRUE
+options$modificationIndex           <- TRUE
+options$observedCovariance          <- TRUE
+options$pathPlot                    <- TRUE
+options$rSquared                    <- TRUE
+options$residualCovariance          <- TRUE
+options$standardizedResidual        <- TRUE
+options$pathPlotParameter           <- TRUE
+options$standardizedEstimate        <- TRUE
+options$latentMeanFixedToZero  <- TRUE
+options$modelTest                   <- "satorraBentler"
+options$samplingWeights             <- ""
 
 modelDefault <- list(model = "
 # latent variable definitions

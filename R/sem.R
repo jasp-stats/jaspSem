@@ -204,12 +204,12 @@ checkLavaanModel <- function(model, availableVars) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("samplingWeights", "meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero", "exogenousCovariateFixed", "orthogonal",
+    modelContainer$dependOn(c("samplingWeights", "meanStructure", "manifestInterceptFixedToZero", "latentMeanFixedToZero", "exogenousCovariateFixed", "orthogonal",
                               "factorScaling", "residualSingleIndicatorOmitted", "residualVariance", "exogenousLatentCorrelation",
                               "dependentCorrelation", "threshold", "scalingParameter", "efaConstrained", "standardizedVariable", "naAction", "estimator", "modelTest",
                               "errorCalculationMethod", "informationMatrix", "emulation", "group", "equalLoading", "equalIntercept",
                               "equalResidual", "equalResidualCovariance", "equalMean", "equalThreshold", "equalRegression",
-                              "equalVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters", "manifestMeanFixedToZero"))
+                              "equalLatentVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters", "manifestMeanFixedToZero"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -360,7 +360,7 @@ checkLavaanModel <- function(model, availableVars) {
   # model features
   lavopts[["meanstructure"]]   <- options[["meanStructure"]]
   lavopts[["int.ov.free"]]     <- !options[["manifestInterceptFixedToZero"]]
-  lavopts[["int.lv.free"]]     <- !options[["latentInterceptFixedToZero"]]
+  lavopts[["int.lv.free"]]     <- !options[["latentMeanFixedToZero"]]
   lavopts[["fixed.x"]]         <- options[["exogenousCovariateFixed"]]
   lavopts[["orthogonal"]]      <- options[["orthogonal"]]
   lavopts[["std.lv"]]          <- options[["factorScaling"]] == "factorVariance"
@@ -2449,7 +2449,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["group"]] != "")
     semModIndResult[["group"]] <- lavaan::lavInspect(fit, "group.label")[semModIndResult[["group"]]]
 
-  semModIndicesTable$setData(lapply(semModIndResult, .unv))
+  semModIndicesTable$setData(semModIndResult)
 
 
   if (!is.null(modelname)) {

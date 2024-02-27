@@ -39,7 +39,7 @@ LatentGrowthCurve <- function(
           group = "",
           impliedCovariance = FALSE,
           intercept = TRUE,
-          latentInterceptFixedToZero = TRUE,
+          latentMeanFixedToZero = TRUE,
           linear = TRUE,
           manifestInterceptFixedToZero = FALSE,
           misfitPlot = FALSE,
