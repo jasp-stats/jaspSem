@@ -81,63 +81,49 @@ Form
 		addEmptyValue: true
 	}
 
+
 	Section
 	{
-		title: qsTr("Output options")
-
+		title: qsTr("Multigroup SEM")
+		id: multigroup
 		Group
 		{
-			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures")				}
-			CheckBox { name: "rSquared";				label: qsTr("R-squared")							}
-			CheckBox { name: "ave";						label: qsTr("Average variance extracted (AVE)")		}
-			CheckBox { name: "htmt";					label: qsTr("Heterotrait-monotrait ratio (HTMT)")	}
-			CheckBox { name: "reliability";				label: qsTr("Reliability measures")					}
-			CheckBox { name: "observedCovariance";		label: qsTr("Observed covariances")					}
-			CheckBox { name: "impliedCovariance";		label: qsTr("Implied covariances")					}
-			CheckBox { name: "residualCovariance";		label: qsTr("Residual covariances")					}
-			CheckBox { name: "standardizedResidual"; 	label: qsTr("Standardized residuals")				}
-			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient")					}
-		}
-		Group
-		{
-			CheckBox{name: "standardizedEstimate"; label: qsTr("Standardized estimates"); checked: false}
-			CheckBox
+			DropDown
 			{
-				name: "pathPlot";
-				text: qsTr("Path diagram");
-				checked: false
-				CheckBox {
-					name: "pathPlotParameter"
-					text: qsTr("Show parameter estimates")
-					checked: false
-				}
-				CheckBox {
-					name: "pathPlotLegend"
-					text: qsTr("Show legend")
-					checked: false
-				}
-			}
-			CheckBox
+				id: grpvar
+				name: "group"
+				label: qsTr("Grouping Variable")
+				showVariableTypeIcon: true
+				addEmptyValue: true
+			} // No model or source: it takes all variables per default
+			Group
 			{
-				name: "modificationIndex"
-				label: qsTr("Modification indices")
-				CheckBox
-				{
-					name: "modificationIndexHiddenLow"
-					label: qsTr("Hide low indices")
-					DoubleField
-					{
-						name: "modificationIndexThreshold"
-						label: qsTr("Threshold")
-						negativeValues: false
-						decimals: 2
-						defaultValue: 10
-					}
-				}
+				visible: grpvar.value != ""
+				id: constraints
+				title: qsTr("Equality Constraints")
+				CheckBox { id: eq_loadings; 			name: "equalLoading";				label: qsTr("Loadings")				}
+				CheckBox { id: eq_intercepts; 			name: "equalIntercept";				label: qsTr("Intercepts")			}
+				CheckBox { id: eq_residuals; 			name: "equalResidual";				label: qsTr("Residuals")			}
+				CheckBox { id: eq_residualcovariances; 	name: "equalResidualCovariance";	label: qsTr("Residual covariances")	}
+				CheckBox { id: eq_means; 				name: "equalMean";					label: qsTr("Means")				}
+				CheckBox { id: eq_thresholds; 			name: "equalThreshold";				label: qsTr("Thresholds")			}
+				CheckBox { id: eq_regressions; 			name: "equalRegression";			label: qsTr("Regressions")			}
+				CheckBox { id: eq_variances; 			name: "equalLatentVariance";		label: qsTr("Latent variances")		}
+				CheckBox { id: eq_lvcovariances; 		name: "equalLatentCovariance";		label: qsTr("Latent covariances")	}
 			}
-		}
 
+		}
+		TextArea
+		{
+			name: "freeParameters"
+			title: qsTr("Release constraints (one per line)")
+			width: multigroup.width / 2
+			height: constraints.height + grpvar.height
+			textType: JASP.TextTypeLavaan
+			visible: eq_loadings.checked || eq_intercepts.checked || eq_residuals.checked || eq_residualcovariances.checked || eq_means.checked || eq_thresholds.checked || eq_regressions.checked || eq_variances.checked || eq_lvcovariances.checked
+		}
 	}
+
 
 	Section
 	{
@@ -156,10 +142,12 @@ Form
 					{ label: qsTr("None")				, value: "none"				}
 				]
 			}
-			CheckBox { name: "meanStructure";					label: qsTr("Include mean structure")							}
-			CheckBox { name: "latentInterceptFixedToZero";		label: qsTr("Fix latent intercepts to zero");	checked: true	}
-			CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Fix manifest intercepts to zero")					}
-			CheckBox { name: "manifestMeanFixedToZero";		label: qsTr("Fix mean of manifest intercepts to zero")}
+			CheckBox { name: "meanStructure";					label: qsTr("Include mean structure") ; checked: eq_intercepts.checked || eq_means.checked || eq_thresholds.checked
+				CheckBox { name: "latentMeanFixedToZero";		label: qsTr("Fix latent means to zero"); checked: !eq_means.checked }
+				CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Fix manifest intercepts to zero"); }
+				CheckBox { name: "manifestMeanFixedToZero";		label: qsTr("Fix mean of manifest intercepts to zero")}
+			}
+			
 			CheckBox { name: "orthogonal";						label: qsTr("Assume factors uncorrelated")						}
 		}
 
@@ -179,7 +167,7 @@ Form
 
 	Section
 	{
-		title: qsTr("Estimation options")
+		title: qsTr("Estimation Options")
 
 		Group
 		{
@@ -293,44 +281,60 @@ Form
 		}
 	}
 
-	Section
+Section
 	{
-		title: qsTr("Multigroup SEM")
-		id: multigroup
+		title: qsTr("Output Options")
+
 		Group
 		{
-			DropDown
-			{
-				id: grpvar
-				name: "group"
-				label: qsTr("Grouping Variable")
-				showVariableTypeIcon: true
-				addEmptyValue: true
-			} // No model or source: it takes all variables per default
-			Group
-			{
-				id: constraints
-				title: qsTr("Equality Constraints")
-				CheckBox { id: eq_loadings; 			name: "equalLoading";				label: qsTr("Loadings")				}
-				CheckBox { id: eq_intercepts; 			name: "equalIntercept";				label: qsTr("Intercepts")			}
-				CheckBox { id: eq_residuals; 			name: "equalResidual";				label: qsTr("Residuals")			}
-				CheckBox { id: eq_residualcovariances; 	name: "equalResidualCovariance";	label: qsTr("Residual covariances")	}
-				CheckBox { id: eq_means; 				name: "equalMean";					label: qsTr("Means")				}
-				CheckBox { id: eq_thresholds; 			name: "equalThreshold";				label: qsTr("Threshold")			}
-				CheckBox { id: eq_regressions; 			name: "equalRegression";			label: qsTr("Regressions")			}
-				CheckBox { id: eq_variances; 			name: "equalLatentVariance";		label: qsTr("Latent variances")		}
-				CheckBox { id: eq_lvcovariances; 		name: "equalLatentCovariance";		label: qsTr("Latent covariances")	}
-			}
-
+			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures")				}
+			CheckBox { name: "rSquared";				label: qsTr("R-squared")							}
+			CheckBox { name: "ave";						label: qsTr("Average variance extracted (AVE)")		}
+			CheckBox { name: "htmt";					label: qsTr("Heterotrait-monotrait ratio (HTMT)")	}
+			CheckBox { name: "reliability";				label: qsTr("Reliability measures")					}
+			CheckBox { name: "observedCovariance";		label: qsTr("Observed covariances")					}
+			CheckBox { name: "impliedCovariance";		label: qsTr("Implied covariances")					}
+			CheckBox { name: "residualCovariance";		label: qsTr("Residual covariances")					}
+			CheckBox { name: "standardizedResidual"; 	label: qsTr("Standardized residuals")				}
+			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient")					}
 		}
-		TextArea
+		Group
 		{
-			name: "freeParameters"
-			title: qsTr("Release constraints (one per line)")
-			width: multigroup.width / 2
-			height: constraints.height + grpvar.height
-			textType: JASP.TextTypeLavaan
-			visible: eq_loadings.checked || eq_intercepts.checked || eq_residuals.checked || eq_residualcovariances.checked || eq_means.checked || eq_thresholds.checked || eq_regressions.checked || eq_variances.checked || eq_lvcovariances.checked
+			CheckBox{name: "standardizedEstimate"; label: qsTr("Standardized estimates"); checked: false}
+			CheckBox
+			{
+				name: "pathPlot";
+				text: qsTr("Path diagram");
+				checked: false
+				CheckBox {
+					name: "pathPlotParameter"
+					text: qsTr("Show parameter estimates")
+					checked: false
+				}
+				CheckBox {
+					name: "pathPlotLegend"
+					text: qsTr("Show legend")
+					checked: false
+				}
+			}
+			CheckBox
+			{
+				name: "modificationIndex"
+				label: qsTr("Modification indices")
+				CheckBox
+				{
+					name: "modificationIndexHiddenLow"
+					label: qsTr("Hide low indices")
+					DoubleField
+					{
+						name: "modificationIndexThreshold"
+						label: qsTr("Threshold")
+						negativeValues: false
+						decimals: 2
+						defaultValue: 10
+					}
+				}
+			}
 		}
 	}
 }

@@ -118,7 +118,7 @@ Upgrades
 		}
 
 		ChangeRename {	from:	"fixManifestInterceptsToZero";	to:		"manifestInterceptFixedToZero"		}
-		ChangeRename {	from:	"fixLatentInterceptsToZero";	to:		"latentInterceptFixedToZero"		}
+		ChangeRename {	from:	"fixlatentMeansToZero";	to:		"latentMeanFixedToZero"		}
 		ChangeRename {	from:	"omitResidualSingleIndicator";	to:		"residualSingleIndicatorOmitted"	}
 		ChangeRename {	from:	"residualVariances";			to:		"residualVariance"					}
 		ChangeRename {	from:	"correlateExogenousLatents";	to:		"exogenousLatentCorrelation"		}
@@ -333,7 +333,7 @@ Upgrades
 
 		ChangeRename {	from:	"meanstructure";						to:		"meanStructure"						}
 		ChangeRename {	from:	"int.ov.fixed";							to:		"manifestInterceptFixedToZero"		}
-		ChangeRename {	from:	"int.lv.fixed";							to:		"latentInterceptFixedToZero"		}
+		ChangeRename {	from:	"int.lv.fixed";							to:		"latentMeanFixedToZero"		}
 		ChangeRename {	from:	"fixed.x";								to:		"exogenousCovariateFixed"			}
 		ChangeRename {	from:	"auto.fix.single";						to:		"residualSingleIndicatorOmitted"	}
 		ChangeRename {	from:	"auto.var";								to:		"residualVariance"					}
