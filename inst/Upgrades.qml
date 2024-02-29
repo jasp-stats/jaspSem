@@ -118,7 +118,7 @@ Upgrades
 		}
 
 		ChangeRename {	from:	"fixManifestInterceptsToZero";	to:		"manifestInterceptFixedToZero"		}
-		ChangeRename {	from:	"fixLatentInterceptsToZero";	to:		"latentInterceptFixedToZero"		}
+		ChangeRename {	from:	"fixlatentInterceptsToZero";	to:		"latentInterceptFixedToZero"		}
 		ChangeRename {	from:	"omitResidualSingleIndicator";	to:		"residualSingleIndicatorOmitted"	}
 		ChangeRename {	from:	"residualVariances";			to:		"residualVariance"					}
 		ChangeRename {	from:	"correlateExogenousLatents";	to:		"exogenousLatentCorrelation"		}

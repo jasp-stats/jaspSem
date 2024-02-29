@@ -209,7 +209,7 @@ checkLavaanModel <- function(model, availableVars) {
                               "dependentCorrelation", "threshold", "scalingParameter", "efaConstrained", "standardizedVariable", "naAction", "estimator", "test",
                               "errorCalculationMethod", "informationMatrix", "emulation", "group", "equalLoading", "equalIntercept",
                               "equalResidual", "equalResidualCovariance", "equalMean", "equalThreshold", "equalRegression",
-                              "equalVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters", "manifestMeanFixedToZero"))
+                              "equalLatentVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters", "manifestMeanFixedToZero"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -2362,7 +2362,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["group"]] != "")
     semModIndResult[["group"]] <- lavaan::lavInspect(fit, "group.label")[semModIndResult[["group"]]]
 
-  semModIndicesTable$setData(lapply(semModIndResult, .unv))
+  semModIndicesTable$setData(semModIndResult)
 
 
   if (!is.null(modelname)) {
