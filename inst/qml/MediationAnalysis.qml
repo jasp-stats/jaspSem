@@ -59,13 +59,13 @@ Form
 	{
         title: qsTr("Options")
         ColumnLayout {
-            GroupBox
+			Group
             {
                 CheckBox { label: qsTr("Standardized estimates") ;  name: "standardizedEstimate" }
                 CheckBox { label: qsTr("Lavaan syntax")     ;       name: "syntax" }
                 CheckBox { label: qsTr("R-squared")         ;       name: "rSquared" }
             }
-            GroupBox
+			Group
             {
                 title: qsTr("Additional parameter estimates")
                 CheckBox { label: qsTr("Total indirect effects");   name: "totalIndirectEffect"; checked: true }
@@ -73,7 +73,7 @@ Form
                 CheckBox { label: qsTr("Path coefficients");        name: "pathCoefficient";    checked: true }
             }
         }
-        GroupBox
+		Group
         {
             CIField {
                 text: qsTr("Confidence intervals")
@@ -121,7 +121,7 @@ Form
 
 	Section {
         text: qsTr("Advanced")
-        GroupBox {
+		Group {
             Layout.fillWidth: true
             RadioButtonGroup {
                 title: qsTr("Missing value handling")
@@ -137,7 +137,7 @@ Form
                 RadioButton { text: qsTr("EQS")   ; name: "eqs"   }
             }
         }
-        GroupBox {
+		Group {
             Layout.fillWidth: true
             RadioButtonGroup {
                 title: qsTr("Estimator")

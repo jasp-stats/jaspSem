@@ -47,7 +47,7 @@ Form
 	{
         title: qsTr("Options")
 
-        GroupBox
+		Group
         {
             CheckBox { label: qsTr("Standardized estimates")    ; name: "standardizedEstimate" }
             CheckBox { label: qsTr("Lavaan syntax")             ; name: "syntax" }
@@ -55,7 +55,7 @@ Form
             CheckBox { label: qsTr("Additional fit measures")   ; name: "additionalFitMeasures" }
         }
 
-        GroupBox
+		Group
         {
             CIField {
                 text: qsTr("Confidence intervals")
@@ -103,7 +103,7 @@ Form
     
 	Section {
         text: qsTr("Advanced")
-        GroupBox {
+		Group {
             Layout.fillWidth: true
             RadioButtonGroup {
                 title: qsTr("Missing value handling")
@@ -119,7 +119,7 @@ Form
                 RadioButton { text: qsTr("EQS")   ; name: "eqs"   }
             }
         }
-        GroupBox {
+		Group {
             Layout.fillWidth: true
             RadioButtonGroup {
                 title: qsTr("Estimator")

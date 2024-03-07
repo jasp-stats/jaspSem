@@ -135,13 +135,13 @@ Form
 	Section
 	{
 		title: qsTr("Additional Output")
-		GroupBox
+		Group
 		{
 			CheckBox { label: qsTr("Additional Fit Measures")   ; name: "additionalFitMeasures"	}
 			CheckBox { label: qsTr("R-Squared")                 ; name: "rSquared"				}
 			CheckBox { label: qsTr("Standardized estimates")    ; name: "standardizedEstimate"	}
 		}
-		GroupBox
+		Group
 		{
 			CheckBox { label: qsTr("Implied covariance matrix")  ; name: "impliedCovariance" 	}
 			CheckBox { label: qsTr("Residual covariance matrix") ; name: "residualCovariance"	}
@@ -152,7 +152,7 @@ Form
 	Section
 	{
 		text: qsTr("Plots")
-		GroupBox
+		Group
 		{
 			title: "Plots"
 			ColorPalette{}
@@ -204,7 +204,7 @@ Form
 			RadioButton { text: qsTr("Exclude cases listwise")              ; name: "listwise"	}
 		}
 
-		GroupBox
+		Group
 		{
 			title: qsTr("Error calculation")
 			CIField { text: qsTr("CI width"); name: "ciLevel" }
@@ -240,7 +240,7 @@ Form
 			RadioButton { text: qsTr("DWLS") ; name: "dwls"     }
 		}
 
-		GroupBox
+		Group
 		{
 			title: qsTr("Options")
 			debug: true
