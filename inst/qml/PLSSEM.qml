@@ -45,16 +45,10 @@ Form
 
 		Group
 		{
-			CheckBox
-			{
-				enabled: approachWeigths.currentValue == "PLS-PM" && approachInner.currentValue != "path"
-				name: "structuralModelIgnored"
-				label: qsTr("Ignore structural model")
-			}
 
 			CheckBox
 			{
-				name: "compositeCorrelationDisattenuated";		label: qsTr("Disattenuate composite correlations");	checked: true
+				name: "consistentPartialLeastSquares";		label: qsTr("Consistent partial least squares");	checked: true
 				DropDown
 				{
 					name: "correctionFactor"
@@ -133,30 +127,9 @@ Form
 
 		Group
 		{
-			DropDown
-			{
-				name: "weightingApproach"
-				label: qsTr("Weighting approach")
-				id: approachWeigths 
-				values: 
-				[
-					{ label: qsTr("PLS-PM"), 		value: "PLS-PM" 		},
-					{ label: qsTr("GSCA"), 			value: "GSCA"			},
-					{ label: qsTr("SUMCORR"), 		value: "SUMCORR"	 	},
-					{ label: qsTr("MAXVAR"), 		value: "MAXVAR" 		},
-					{ label: qsTr("SSQCORR"), 		value: "SSQCORR" 		},
-					{ label: qsTr("MINVAR"), 		value: "MINVAR" 		},
-					{ label: qsTr("GENVAR"), 		value: "GENVAR" 		},
-					{ label: qsTr("PCA"), 			value: "PCA"			},
-					{ label: qsTr("Unit"), 			value: "unit"			},
-					{ label: qsTr("Bartlett"), 		value: "bartlett"		},
-					{ label: qsTr("Regression"), 	value: "regression"		}
-				] 
-			}
 			
 			DropDown
 			{
-				enabled: approachWeigths.currentValue == "PLS-PM"
 				name: "innerWeightingScheme"
 				label: qsTr("Inner weighting scheme")
 				id: approachInner
@@ -165,6 +138,13 @@ Form
 					{ value: "centroid", 	label: qsTr("Centroid")		},
 					{ value: "factorial", 	label: qsTr("Factorial")	}
 				]
+			}
+
+			CheckBox
+			{
+				enabled: approachInner.currentValue != "path"
+				name: "structuralModelIgnored"
+				label: qsTr("Ignore structural model")
 			}
 
 			DropDown
@@ -194,18 +174,6 @@ Form
 				RadioButton { value: "ignore"; 	label: qsTr("Ignore")					}
 				RadioButton { value: "drop"; 	label: qsTr("Drop")						}
 			}
-
-			DropDown
-				{
-					name: "handlingOfFlippedSigns"
-					label: qsTr("Handling of flipped signs")
-					values: [
-						{ value: "none", 					label: qsTr("None")						},
-						{ value: "individual", 				label: qsTr("Individual")				},
-						{ value: "individualReestimation", 	label: qsTr("Individual re-estimation")	},
-						{ value: "constructReestimation", 	label: qsTr("Construct re-estimation") 	}
-					]
-				}
 		}
 	}
 

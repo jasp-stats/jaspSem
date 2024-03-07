@@ -24,7 +24,7 @@ PLSSEM <- function(
           benchmark = "none",
           bootstrapSamples = 200,
           ciLevel = 0.95,
-          compositeCorrelationDisattenuated = TRUE,
+          consistentPartialLeastSquares = TRUE,
           convergenceCriterion = "absoluteDifference",
           correctionFactor = "squaredEuclidean",
           correlationMatrix = "pearson",
@@ -50,8 +50,7 @@ PLSSEM <- function(
           robustMethod = "bootstrap",
           seed = 1,
           setSeed = FALSE,
-          structuralModelIgnored = FALSE,
-          weightingApproach = "PLS-PM") {
+          structuralModelIgnored = FALSE) {
 
    defaultArgCalls <- formals(jaspSem::PLSSEM)
    defaultArgs <- lapply(defaultArgCalls, eval)
@@ -62,7 +61,7 @@ PLSSEM <- function(
    options[["data"]] <- NULL
    options[["version"]] <- NULL
 
-   optionsWithFormula <- c("convergenceCriterion", "correctionFactor", "group", "handlingOfFlippedSigns", "innerWeightingScheme", "models", "weightingApproach")
+   optionsWithFormula <- c("convergenceCriterion", "correctionFactor", "group", "handlingOfFlippedSigns", "innerWeightingScheme", "models")
    for (name in optionsWithFormula) {
       if ((name %in% optionsWithFormula) && inherits(options[[name]], "formula")) options[[name]] = jaspBase::jaspFormula(options[[name]], data)   }
 
