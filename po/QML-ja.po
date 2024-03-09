@@ -580,10 +580,6 @@ msgid "Sampling weights"
 msgstr "サンプリングの重み付け"
 
 msgctxt "SEM|"
-msgid "Output options"
-msgstr "出力オプション"
-
-msgctxt "SEM|"
 msgid "Additional fit measures"
 msgstr "追加の適合度指標"
 
@@ -672,10 +668,6 @@ msgid "Fix manifest intercepts to zero"
 msgstr "顕在切片をゼロに修正"
 
 msgctxt "SEM|"
-msgid "Fix latent intercepts to zero"
-msgstr "潜在変数の切片をゼロに修正"
-
-msgctxt "SEM|"
 msgid "Assume factors uncorrelated"
 msgstr "因子は相関しないと仮定する"
 
@@ -710,10 +702,6 @@ msgstr "スケーリングパラメータを追加"
 msgctxt "SEM|"
 msgid "Constrain EFA blocks"
 msgstr "EFAブロックを統制"
-
-msgctxt "SEM|"
-msgid "Estimation options"
-msgstr "推定オプション"
 
 msgctxt "SEM|"
 msgid "Information matrix"
@@ -1245,4 +1233,20 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Reliability measures"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Thresholds"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Fix latent means to zero"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Estimation Options"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Output Options"
 msgstr ""

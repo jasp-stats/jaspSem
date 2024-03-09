@@ -584,10 +584,6 @@ msgid "Sampling weights"
 msgstr "样本加权"
 
 msgctxt "SEM|"
-msgid "Output options"
-msgstr "输出选项"
-
-msgctxt "SEM|"
 msgid "Additional fit measures"
 msgstr "附加拟合测度"
 
@@ -676,10 +672,6 @@ msgid "Fix manifest intercepts to zero"
 msgstr "将显变量截距固定为0"
 
 msgctxt "SEM|"
-msgid "Fix latent intercepts to zero"
-msgstr "将潜变量的截距固定为 0"
-
-msgctxt "SEM|"
 msgid "Assume factors uncorrelated"
 msgstr "假定因子不相关"
 
@@ -714,10 +706,6 @@ msgstr "添加尺度设定参数"
 msgctxt "SEM|"
 msgid "Constrain EFA blocks"
 msgstr "约束 EFA 块"
-
-msgctxt "SEM|"
-msgid "Estimation options"
-msgstr "估计选项"
 
 msgctxt "SEM|"
 msgid "Information matrix"
@@ -1237,3 +1225,19 @@ msgstr ""
 msgctxt "SEM|"
 msgid "Reliability measures"
 msgstr "可靠性测量"
+
+msgctxt "SEM|"
+msgid "Thresholds"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Fix latent means to zero"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Estimation Options"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Output Options"
+msgstr ""

@@ -581,10 +581,6 @@ msgid "Sampling weights"
 msgstr "Wagi próbkowania"
 
 msgctxt "SEM|"
-msgid "Output options"
-msgstr "Opcje wyników"
-
-msgctxt "SEM|"
 msgid "Additional fit measures"
 msgstr "Dodatkowe miary dopasowania"
 
@@ -673,11 +669,6 @@ msgctxt "SEM|"
 msgid "Fix manifest intercepts to zero"
 msgstr "Ustal wyrazy wolne manifestu jako zero"
 
-#, fuzzy
-msgctxt "SEM|"
-msgid "Fix latent intercepts to zero"
-msgstr "Ustal latentne wyrazy wolne jako zero"
-
 msgctxt "SEM|"
 msgid "Assume factors uncorrelated"
 msgstr "Przyjmij, że czynniki nie są skorelowane"
@@ -713,10 +704,6 @@ msgstr ""
 msgctxt "SEM|"
 msgid "Constrain EFA blocks"
 msgstr ""
-
-msgctxt "SEM|"
-msgid "Estimation options"
-msgstr "Opcje estymacji"
 
 msgctxt "SEM|"
 msgid "Information matrix"
@@ -1243,3 +1230,19 @@ msgstr ""
 msgctxt "SEM|"
 msgid "Reliability measures"
 msgstr "Miary rzetelności"
+
+msgctxt "SEM|"
+msgid "Thresholds"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Fix latent means to zero"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Estimation Options"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Output Options"
+msgstr ""

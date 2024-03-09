@@ -581,10 +581,6 @@ msgid "Sampling weights"
 msgstr "Steekproef gewichten"
 
 msgctxt "SEM|"
-msgid "Output options"
-msgstr "Uitvoeropties"
-
-msgctxt "SEM|"
 msgid "Additional fit measures"
 msgstr "Extra fitmaten"
 
@@ -673,10 +669,6 @@ msgid "Fix manifest intercepts to zero"
 msgstr "Zet manifeste intercepten vast op 0"
 
 msgctxt "SEM|"
-msgid "Fix latent intercepts to zero"
-msgstr "Zet latente intercepten vast op 0"
-
-msgctxt "SEM|"
 msgid "Assume factors uncorrelated"
 msgstr "Neem aan dat factoren niet gecorreleerd zijn"
 
@@ -711,10 +703,6 @@ msgstr "Voeg schaalparameters toe"
 msgctxt "SEM|"
 msgid "Constrain EFA blocks"
 msgstr "Beperk EFA blokken"
-
-msgctxt "SEM|"
-msgid "Estimation options"
-msgstr "Schattingsinformatie"
 
 msgctxt "SEM|"
 msgid "Information matrix"
@@ -1240,3 +1228,19 @@ msgstr ""
 msgctxt "SEM|"
 msgid "Reliability measures"
 msgstr "Betrouwbaarheids maten"
+
+msgctxt "SEM|"
+msgid "Thresholds"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Fix latent means to zero"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Estimation Options"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Output Options"
+msgstr ""

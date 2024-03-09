@@ -580,10 +580,6 @@ msgid "Sampling weights"
 msgstr "樣本加權"
 
 msgctxt "SEM|"
-msgid "Output options"
-msgstr "報表設定"
-
-msgctxt "SEM|"
 msgid "Additional fit measures"
 msgstr "其他適配指標"
 
@@ -672,10 +668,6 @@ msgid "Fix manifest intercepts to zero"
 msgstr "將觀察變項截距設為0"
 
 msgctxt "SEM|"
-msgid "Fix latent intercepts to zero"
-msgstr "將潛在變項截距設為0"
-
-msgctxt "SEM|"
 msgid "Assume factors uncorrelated"
 msgstr "假設因素間無相關"
 
@@ -710,10 +702,6 @@ msgstr "加入尺規設定參數"
 msgctxt "SEM|"
 msgid "Constrain EFA blocks"
 msgstr "限制 EFA 區塊"
-
-msgctxt "SEM|"
-msgid "Estimation options"
-msgstr "估計設定"
 
 msgctxt "SEM|"
 msgid "Information matrix"
@@ -1243,4 +1231,20 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Reliability measures"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Thresholds"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Fix latent means to zero"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Estimation Options"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Output Options"
 msgstr ""

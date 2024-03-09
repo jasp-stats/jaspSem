@@ -596,10 +596,6 @@ msgid "Sampling weights"
 msgstr ""
 
 msgctxt "SEM|"
-msgid "Output options"
-msgstr ""
-
-msgctxt "SEM|"
 msgid "Additional fit measures"
 msgstr ""
 
@@ -688,10 +684,6 @@ msgid "Fix manifest intercepts to zero"
 msgstr ""
 
 msgctxt "SEM|"
-msgid "Fix latent intercepts to zero"
-msgstr ""
-
-msgctxt "SEM|"
 msgid "Assume factors uncorrelated"
 msgstr ""
 
@@ -725,10 +717,6 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Constrain EFA blocks"
-msgstr ""
-
-msgctxt "SEM|"
-msgid "Estimation options"
 msgstr ""
 
 msgctxt "SEM|"
@@ -1234,4 +1222,20 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Reliability measures"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Thresholds"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Fix latent means to zero"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Estimation Options"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Output Options"
 msgstr ""
