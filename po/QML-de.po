@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2024-03-10 14:01+0000\n"
+"Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
+"de/>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.5-dev\n"
 "X-Language: de\n"
 "X-Source-Language: American English\n"
 "X-Qt-Contexts: true\n"
@@ -1226,7 +1232,6 @@ msgctxt "PLSSEM|"
 msgid "Samples"
 msgstr "Stichproben"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Jackknife"
 msgstr "Jackknife"
@@ -1235,31 +1240,31 @@ msgctxt "SEM|"
 msgid "Fix mean of manifest intercepts to zero"
 msgstr "Manifeste Konstanten auf Null fixieren"
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Average variance extracted (AVE)"
-msgstr ""
+msgstr "Durchschnittliche extrahierte Varianz (DEV)"
 
 msgctxt "SEM|"
 msgid "Heterotrait-monotrait ratio (HTMT)"
 msgstr ""
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Reliability measures"
 msgstr "Reliabilitätsmaße"
 
 msgctxt "SEM|"
 msgid "Thresholds"
-msgstr ""
+msgstr "Schwellenwerte"
 
 msgctxt "SEM|"
 msgid "Fix latent means to zero"
-msgstr ""
+msgstr "Latente Mittelwerte auf Null fixieren"
 
 msgctxt "SEM|"
 msgid "Estimation Options"
-msgstr ""
+msgstr "Schätzoptionen"
 
 msgctxt "SEM|"
 msgid "Output Options"
-msgstr ""
+msgstr "Ausgabeoptionen"
