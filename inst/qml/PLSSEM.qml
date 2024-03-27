@@ -94,15 +94,15 @@ Form
 				name: "errorCalculationMethod"
 				id: errorCalcMethod
 				RadioButton { value: "none";		label: qsTr("None"); checked: true	}
-				RadioButton 
-				{ 
-					value: "robust";	
+				RadioButton
+				{
+					value: "robust";
 					label: qsTr("Robust")
-					RadioButtonGroup 
-					{ 
+					RadioButtonGroup
+					{
 						title: ""
-						name: "robustMethod"	
-						RadioButton { 
+						name: "robustMethod"
+						RadioButton {
 							value: "bootstrap";	label: qsTr("Bootstrap"); checked: true
 							IntegerField
 							{
@@ -112,12 +112,12 @@ Form
 								defaultValue: 200
 								min: 1
 								// enabled: errorCalcMethod.value == "robust"
-							} 
+							}
 						}
 						RadioButton { value: "jackknife";	label: qsTr("Jackknife") }
 					}
 
-					CIField 
+					CIField
 					{
 						text: qsTr("Confidence intervals")
 						name: "ciLevel"
@@ -125,7 +125,7 @@ Form
 					}
 				}
 
-				
+
 			}
 
 			SetSeed {}
@@ -137,8 +137,8 @@ Form
 			{
 				name: "weightingApproach"
 				label: qsTr("Weighting approach")
-				id: approachWeigths 
-				values: 
+				id: approachWeigths
+				values:
 				[
 					{ label: qsTr("PLS-PM"), 		value: "PLS-PM" 		},
 					{ label: qsTr("GSCA"), 			value: "GSCA"			},
@@ -151,9 +151,9 @@ Form
 					{ label: qsTr("Unit"), 			value: "unit"			},
 					{ label: qsTr("Bartlett"), 		value: "bartlett"		},
 					{ label: qsTr("Regression"), 	value: "regression"		}
-				] 
+				]
 			}
-			
+
 			DropDown
 			{
 				enabled: approachWeigths.currentValue == "PLS-PM"
