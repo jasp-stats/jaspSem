@@ -576,7 +576,6 @@ checkCSemModel <- function(model, availableVars) {
                             overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   }
 
-  # weightTab$addColumnInfo(name = "vifb",      title = gettext("VIF"),   type = "number")
 
   pecont[["weight"]] <- weightTab
 
@@ -624,7 +623,6 @@ checkCSemModel <- function(model, availableVars) {
                           overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   }
   pathTab$addColumnInfo(name = "f2",       title = "f\u00B2",               type = "number")
-  # pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
 
   pecont[["path"]] <- pathTab
 

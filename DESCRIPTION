@@ -1,12 +1,12 @@
 Package: jaspSem
 Type: Package
 Title: SEM Module for JASP
-Version: 0.18.3
-Date: 2022-10-05
+Version: 0.19
+Date: 2023-03-27
 Author: JASP Team
 Website: https://github.com/jasp-stats/jaspSem/
 Maintainer: JASP Team <info@jasp-stats.org>
-Description: Evaluate latent data structures with Yves Rosseel’s lavaan program
+Description: Evaluate latent data structures
 License: GPL (>= 2)
 Encoding: UTF-8
 Imports:
