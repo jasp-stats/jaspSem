@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-03-29 16:02+0000\n"
+"PO-Revision-Date: 2024-04-03 03:22+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "pl/>\n"
@@ -220,7 +220,7 @@ msgstr "Opcje"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Fix manifest intercepts to zero"
-msgstr "Ustal wyrazy wolne manifestu jako zero"
+msgstr "Ustal wyrazy wolne wskaźników jako zero"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Fix latent intercepts to zero"
@@ -670,10 +670,9 @@ msgctxt "SEM|"
 msgid "Include mean structure"
 msgstr ""
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Fix manifest intercepts to zero"
-msgstr "Ustal wyrazy wolne manifestu jako zero"
+msgstr "Ustal wyrazy wolne wskaźników jako zero"
 
 msgctxt "SEM|"
 msgid "Assume factors uncorrelated"
@@ -1222,7 +1221,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Fix mean of manifest intercepts to zero"
-msgstr ""
+msgstr "Ustal średnie wyrazów wolnych wskaźników jako zero"
 
 msgctxt "SEM|"
 msgid "Average variance extracted (AVE)"
