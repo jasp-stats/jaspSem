@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-04-07 21:01+0000\n"
+"PO-Revision-Date: 2024-04-09 13:34+0000\n"
 "Last-Translator: robachowyk <kaya.robach@gmail.com>\n"
 "Language-Team: French <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "fr/>\n"
@@ -89,11 +89,11 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "R-Squared"
-msgstr ""
+msgstr "R-carré"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Standardized estimates"
-msgstr ""
+msgstr "Estimations normalisées"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Implied covariance matrix"
