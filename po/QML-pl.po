@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-04-03 03:22+0000\n"
+"PO-Revision-Date: 2024-04-09 13:34+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "pl/>\n"
@@ -969,7 +969,7 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Weighted Euclidean distance"
-msgstr ""
+msgstr "Ważona odległość euklidesowa"
 
 msgctxt "PLSSEM|"
 msgid "Fisher transformed"
