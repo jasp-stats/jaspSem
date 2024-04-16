@@ -51,7 +51,7 @@ Form
 			id: categorical
 			title: qsTr("Factor")
 			suggestedColumns: ["ordinal", "nominal"]
-			allowedColumns: ["ordinal", "nominal", "nominalText"]
+			allowedColumns: ["ordinal", "nominal"]
 		}
 		AssignedVariablesList
 		{
