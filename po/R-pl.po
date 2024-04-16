@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
 "POT-Creation-Date: 2024-02-24 02:41\n"
-"PO-Revision-Date: 2024-03-29 16:02+0000\n"
+"PO-Revision-Date: 2024-04-17 06:49+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-r/pl/"
 ">\n"
@@ -259,13 +259,13 @@ msgid "Indirect effects"
 msgstr "Efekty pośrednie"
 
 msgid "Total indirect effects"
-msgstr ""
+msgstr "Suma efektów pośrednich"
 
 msgid "Residual covariances"
 msgstr "Kowariancje reszt"
 
 msgid "Path coefficients"
-msgstr ""
+msgstr "Współczynniki ścieżek"
 
 msgid "Delta method"
 msgstr ""
@@ -434,7 +434,7 @@ msgid "Linear model MAE"
 msgstr ""
 
 msgid "PLS-PM MAE"
-msgstr ""
+msgstr "PLS-PM MAE"
 
 msgid "GSCA MAE"
 msgstr "GSCA MAE"
