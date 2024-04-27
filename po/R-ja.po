@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2024-02-24 02:41\n"
+"POT-Creation-Date: 2024-04-27 02:40\n"
 "PO-Revision-Date: 2023-12-02 02:39+0000\n"
 "Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -406,7 +406,11 @@ msgstr ""
 msgid "Weights"
 msgstr "ウェイト"
 
-msgid "Factor Loadings"
+msgid "Construct"
+msgstr ""
+
+#, fuzzy
+msgid "Loadings"
 msgstr "因子負荷量"
 
 #, fuzzy
@@ -419,6 +423,9 @@ msgstr "結果変数"
 #, fuzzy
 msgid "Total effects"
 msgstr "総間接効果"
+
+msgid "VIF"
+msgstr ""
 
 msgid "Endogenous Indicator Prediction"
 msgstr ""
@@ -649,6 +656,9 @@ msgid ""
 "The AIC, BIC and additional information criteria are only available with ML-"
 "type estimators"
 msgstr "FIML の欠損値処理は，ML タイプの推定法でのみ使用可能です"
+
+msgid "Factor Loadings"
+msgstr "因子負荷量"
 
 msgid "Regression coefficients"
 msgstr "回帰係数"

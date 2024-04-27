@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2024-02-24 02:41\n"
+"POT-Creation-Date: 2024-04-27 02:40\n"
 "PO-Revision-Date: 2023-01-11 15:53+0000\n"
 "Last-Translator: ssantos <ssantos@web.de>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/jaspsem-"
@@ -400,7 +400,11 @@ msgstr ""
 msgid "Weights"
 msgstr ""
 
-msgid "Factor Loadings"
+msgid "Construct"
+msgstr ""
+
+#, fuzzy
+msgid "Loadings"
 msgstr "Cargas Fatoriais"
 
 #, fuzzy
@@ -413,6 +417,9 @@ msgstr "Resultado"
 #, fuzzy
 msgid "Total effects"
 msgstr "Efeitos Indiretos"
+
+msgid "VIF"
+msgstr ""
 
 msgid "Endogenous Indicator Prediction"
 msgstr ""
@@ -645,6 +652,9 @@ msgid ""
 "The AIC, BIC and additional information criteria are only available with ML-"
 "type estimators"
 msgstr ""
+
+msgid "Factor Loadings"
+msgstr "Cargas Fatoriais"
 
 msgid "Regression coefficients"
 msgstr "Coeficientes de Regressão"

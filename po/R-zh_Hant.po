@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2024-02-24 02:41\n"
+"POT-Creation-Date: 2024-04-27 02:40\n"
 "PO-Revision-Date: 2023-12-16 01:08+0000\n"
 "Last-Translator: Ginger Shu-Ying Yeh <gingershuying@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
@@ -401,7 +401,11 @@ msgstr ""
 msgid "Weights"
 msgstr ""
 
-msgid "Factor Loadings"
+msgid "Construct"
+msgstr ""
+
+#, fuzzy
+msgid "Loadings"
 msgstr "因素負荷量"
 
 #, fuzzy
@@ -414,6 +418,9 @@ msgstr "結果"
 #, fuzzy
 msgid "Total effects"
 msgstr "所有間接效果"
+
+msgid "VIF"
+msgstr ""
 
 msgid "Endogenous Indicator Prediction"
 msgstr ""
@@ -647,6 +654,9 @@ msgid ""
 "type estimators"
 msgstr ""
 "只有在使用最大概似法 (ML)類的估計法時，才提供AIC, BIC與其他訊息準則指標"
+
+msgid "Factor Loadings"
+msgstr "因素負荷量"
 
 msgid "Regression coefficients"
 msgstr "迴歸係數"

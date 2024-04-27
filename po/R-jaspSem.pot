@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: jaspSem 0.18.3\n"
-"POT-Creation-Date: 2024-02-24 02:41\n"
+"Project-Id-Version: jaspSem 0.19\n"
+"POT-Creation-Date: 2024-04-27 02:40\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -373,7 +373,10 @@ msgstr ""
 msgid "Weights"
 msgstr ""
 
-msgid "Factor Loadings"
+msgid "Construct"
+msgstr ""
+
+msgid "Loadings"
 msgstr ""
 
 msgid "Regression Coefficients"
@@ -383,6 +386,9 @@ msgid "Outcome"
 msgstr ""
 
 msgid "Total effects"
+msgstr ""
+
+msgid "VIF"
 msgstr ""
 
 msgid "Endogenous Indicator Prediction"
@@ -575,6 +581,9 @@ msgid "Model tests based on %s."
 msgstr ""
 
 msgid "The AIC, BIC and additional information criteria are only available with ML-type estimators"
+msgstr ""
+
+msgid "Factor Loadings"
 msgstr ""
 
 msgid "Regression coefficients"

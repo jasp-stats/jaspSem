@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2024-02-24 02:41\n"
+"POT-Creation-Date: 2024-04-27 02:40\n"
 "PO-Revision-Date: 2023-04-20 12:51+0000\n"
 "Last-Translator: Don van den Bergh <donvdbergh@hotmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/"
@@ -420,7 +420,11 @@ msgstr "WAARSCHUWING! model %1$s, groep %2$s: %3$s"
 msgid "Weights"
 msgstr "Wegen"
 
-msgid "Factor Loadings"
+msgid "Construct"
+msgstr ""
+
+#, fuzzy
+msgid "Loadings"
 msgstr "Factorladingen"
 
 msgid "Regression Coefficients"
@@ -431,6 +435,9 @@ msgstr "Uitkomst"
 
 msgid "Total effects"
 msgstr "Totale effecten"
+
+msgid "VIF"
+msgstr ""
 
 msgid "Endogenous Indicator Prediction"
 msgstr "Endogene indicator voorspelling"
@@ -666,6 +673,9 @@ msgid ""
 msgstr ""
 "De AIC, BIC en aanvullende informatiecriteria zijn alleen beschikbaar met "
 "schatters van het ML-type"
+
+msgid "Factor Loadings"
+msgstr "Factorladingen"
 
 msgid "Regression coefficients"
 msgstr "Regressie Coëfficiënten"

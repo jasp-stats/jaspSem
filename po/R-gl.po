@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2024-02-24 02:41\n"
+"POT-Creation-Date: 2024-04-27 02:40\n"
 "PO-Revision-Date: 2024-02-26 16:08+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -422,7 +422,11 @@ msgstr "AVISO! %1$s, %2$s grupo: %3$s"
 msgid "Weights"
 msgstr "Ponderacións"
 
-msgid "Factor Loadings"
+msgid "Construct"
+msgstr ""
+
+#, fuzzy
+msgid "Loadings"
 msgstr "Cargas dos Factores"
 
 msgid "Regression Coefficients"
@@ -433,6 +437,9 @@ msgstr "Resultado"
 
 msgid "Total effects"
 msgstr "Efectos totais"
+
+msgid "VIF"
+msgstr ""
 
 msgid "Endogenous Indicator Prediction"
 msgstr "Predición de Indicadores Endóxenos"
@@ -670,6 +677,9 @@ msgid ""
 msgstr ""
 "Os criterios AIC, BIC e de información adicional só están dispoñibles con "
 "estimadores de tipo MV"
+
+msgid "Factor Loadings"
+msgstr "Cargas dos Factores"
 
 msgid "Regression coefficients"
 msgstr "Coeficientes da regresión"
