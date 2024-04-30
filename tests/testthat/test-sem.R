@@ -11,18 +11,19 @@ options$naAction          <- "fiml"
 options$modelTest         <- "standard"
 results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
 
-fittab   <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-
-test_that("Basic SEM fit table works", {
+test_that("Model fit table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   if (jaspBase::getOS() == "linux") skip("Skipped for now cause that part of the table is removed in another PR anyways")
-  expect_equal_tables(fittab, list(48.156355426353, 59.7437959940346, 0, 0, "Model1", 75, 1), "Model fit table")
+  jaspTools::expect_equal_tables(table,
+                                 list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, 0, "Model1",
+                                      75, 0))
 })
 
-  parcont <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]]
-  parcov  <- parcont[["modelContainer_params_cov"]][["data"]]
-  parreg  <- parcont[["modelContainer_params_reg"]][["data"]]
-  parvar  <- parcont[["modelContainer_params_var"]][["data"]]
-  partot  <- parcont[["modelContainer_params_toteff"]][["data"]]
+parcont <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]]
+parcov  <- parcont[["modelContainer_params_cov"]][["data"]]
+parreg  <- parcont[["modelContainer_params_reg"]][["data"]]
+parvar  <- parcont[["modelContainer_params_var"]][["data"]]
+partot  <- parcont[["modelContainer_params_toteff"]][["data"]]
 
 
 test_that("Basic SEM covariance parameter table works", {
@@ -179,21 +180,25 @@ results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
 test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(3189.26691715401, 3383.93591869106, 85.6796813843018, 70, "default",
-                                      75, 0.0980338951401478, "", "", "", "all", 3184.34803034567,
-                                      3372.06456754211, 87.9549367720082, 73, "constrained", 75, 0.111927575441416,
-                                      0.647754490400887, 1.65156784896069, 3, "all", 3181.07183366569,
-                                      3361.83590652152, 92.7433708195334, 76, "more constrained",
-                                      75, 0.0929761753674234, 0.110596895611682, 6.02091896548516,
-                                      3, "all", 1638.81154499845, 1774.12864966057, 51.6035277328312,
-                                      "", "default", 37, "", "", "", "", 1, 1718.45537215556, 1856.01260957258,
-                                      34.0761536514705, "", "default", 38, "", "", "", "", 2, 1633.89265814398,
-                                      1764.37700906817, 53.4279668719259, "", "constrained", 37, "",
-                                      "", "", "", 1, 1712.45537220169, 1845.09985113953, 34.5269699000823,
-                                      "", "constrained", 38, "", "", "", "", 2, 1627.89265813238,
-                                      1753.54425531862, 54.5525537466071, "", "more constrained",
-                                      37, "", "", "", "", 1, 1709.17917553332, 1836.91089599197, 38.1908170729263,
-                                      "", "more constrained", 38, "", "", "", "", 2))
+                                 list(3189.26691715402, 3383.93591869107, 85.6796813843016, 70, "default",
+                                      75, 0.0980338951401504, "", "", "", "all", 3184.34803034567,
+                                      3372.06456754211, 87.9549367720077, 73, "constrained", 75, 0.111927575441422,
+                                      0.647754490400877, 1.65156784896073, 3, "all", 3181.07183366569,
+                                      3361.83590652152, 92.7433708195404, 76, "more constrained",
+                                      75, 0.0929761753673403, 0.110596895610444, 6.02091896551083,
+                                      3, "all", 1638.81154499845, 1774.12864966057, 51.603527732831,
+                                      70, "default", 37, 0.951434618744164, "", "", "", 1, 1718.45537215556,
+                                      1856.01260957258, 34.0761536514706, 70, "default", 38, 0.999909631385078,
+                                      "", "", "", 2, 1633.89265814398, 1764.37700906817, 53.4279668719256,
+                                      73, "constrained", 37, 0.958714294372556, 0.60963120104942,
+                                      1.82443913909461, 3, 1, 1712.45537220169, 1845.09985113953,
+                                      34.5269699000821, 73, "constrained", 38, 0.999963257835091,
+                                      0.929556093266984, 0.450816248611524, 3, 2, 1627.89265813238,
+                                      1753.54425531862, 54.5525537466108, 76, "more constrained",
+                                      37, 0.970044580307764, 0.771142273547438, 1.12458687468521,
+                                      3, 1, 1709.17917553332, 1836.91089599197, 38.1908170729296,
+                                      76, "more constrained", 38, 0.999911473827655, 0.300125123328537,
+                                      3.66384717284747, 3, 2))
 })
 
 test_that("Multigroup, multimodel SEM works", {
@@ -627,8 +632,8 @@ test_that("Bootstrapping model fit table works", {
 
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(48.1563554263444, 59.7437959940259, 0, 0, "Model1", 75, 1),
-                                 label = "Model fit table results match")
+                                 list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, 0, "Model1",
+                                      75, 0))
 })
 
 
@@ -758,9 +763,9 @@ test_that("Variance-covariance input works", {
   results <- jaspTools::runAnalysis("SEM", data, options)
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(707.570148255052, 721.47507693627, 0, 0, "Model1", 75, 1, "",
-                                      "", "", 1095.63355300897, 1109.53848169019, 0, 0, "Model2", 75,
-                                      1, "", 0, 0))
+                                 list(707.570148255052, 721.47507693627, 6.66133814775094e-14, 0, "Model1",
+                                      75, 0, "", "", "", 1095.63355300897, 1109.53848169019, 0, 0,
+                                      "Model2", 75, 1, "", -6.66133814775094e-14, 0))
 })
 
 

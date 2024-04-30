@@ -690,21 +690,12 @@ checkLavaanModel <- function(model, availableVars) {
     lrt_args[["type"]] <- "Chisq"
     lrt <- .withWarnings(do.call(lavaan::lavTestLRT, lrt_args))
 
-    # the lrt test in lavaan produces the standard chisq values and df and pvalue, even when each model is using a scaled test
-    # so we should replace the necessary values
-    chis <- sapply(semResults, function(x) {
-      ins <- lavaan::inspect(x, what = "fit")
-      if (is.na(ins["chisq.scaled"])) return(c(ins["chisq"], ins["df"], ins["pvalue"]))
-      else return(c(ins["chisq.scaled"], ins["df.scaled"], ins["pvalue.scaled"]))
-    })
-    lrt$value[["Chisq"]] <- chis[1, ]
-    lrt$value[["Df"]] <- chis[2, ]
-    lrt$value[["PrChisq"]] <- chis[3, ]
-
-
-    lrt$value[1,5:7] <- NA
     chiSq <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$stat}))
     dfs <- unlist(lapply(semResults, function(x) {round(lavaan::lavInspect(x, what = "test")[[testName]]$df, 3)}))
+    # because the LRT orders the models according to the df, we need to reorder this as well
+    chiSq <- chiSq[order(dfs)]
+    dfs <- sort(dfs)
+
   }
 
   dtFill <- data.frame(matrix(ncol = 0, nrow = length(rownames(lrt$value))))
@@ -775,10 +766,9 @@ checkLavaanModel <- function(model, availableVars) {
     groupNames <- semResults[[1]]@Data@group.label
     models <- rep(rownames(lrt$value), each = length(groupNames))
     modelDfs <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$df}))
-
-
-    modelDfs <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$df}))
     ord <- match(modelDfs, sort(modelDfs))
+    modelDfs <- modelDfs[ord]
+
 
     chiSq <- sapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$stat.group})
     logLGroup <- sapply(semResults, function(x) x@loglik$loglik.group)
@@ -790,6 +780,8 @@ checkLavaanModel <- function(model, availableVars) {
 
     aics <- aics[, ord]
     bics <- bics[, ord]
+    chiSq <- chiSq[, ord]
+    modelDfsRep <- rep(modelDfs, each = length(groupNames))
 
     dtFillGroup <- data.frame(matrix(ncol = 0, nrow = length(models)))
 
@@ -799,19 +791,21 @@ checkLavaanModel <- function(model, availableVars) {
     dtFillGroup[["BIC"]]      <- c(bics)
     dtFillGroup[["N"]]        <- c(Ns)
     dtFillGroup[["Chisq"]]    <- c(chiSq)
-    dtFillGroup[["Df"]]       <- NA
-    dtFillGroup[["PrChisq"]]  <- NA
+    dtFillGroup[["Df"]]       <- c(modelDfsRep)
+
+    dtFillGroup[["PrChisq"]]  <- apply(data.frame(c(chiSq), modelDfsRep), 1, function(x) {pchisq(x[1], x[2], lower.tail = FALSE)})
 
     # we want the LRT for multiple models
     if (length(semResults) > 1) {
 
-      # so the LRT for the models by group depends on the test statistic used
-      # but lavaan does not provide this
-      # it is also not very clear how sensible it is to calculate the fit for each group anyways
+      nGroups <- length(groupNames)
+      dchisq <- diff(c(chiSq), lag = nGroups)
+      ddf <- diff(c(modelDfsRep), lag = nGroups)
+      dprchisq <- apply(data.frame(dchisq, ddf), 1, function(x) {pchisq(x[1], x[2], lower.tail = FALSE)})
 
-      dtFillGroup[["dchisq"]] <- NA
-      dtFillGroup[["ddf"]] <- NA
-      dtFillGroup[["dPrChisq"]] <- NA
+      dtFillGroup[["dchisq"]] <- c(rep(NA, nGroups), dchisq)
+      dtFillGroup[["ddf"]] <- c(rep(NA, nGroups), ddf)
+      dtFillGroup[["dPrChisq"]] <- c(rep(NA, nGroups), dprchisq)
 
     }
     dtFill[["group"]] <- gettext("all")
