@@ -1,7 +1,7 @@
 Package: jaspSem
 Type: Package
 Title: SEM Module for JASP
-Version: 0.19
+Version: 0.19.0
 Date: 2023-03-27
 Author: JASP Team
 Website: https://github.com/jasp-stats/jaspSem/
