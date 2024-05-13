@@ -1,20 +1,20 @@
 context("PLS-SEM")
 
-test_that("Basic PLSSEM works", {
 
-  options <- jaspTools::analysisOptions("PLSSEM")
-  model <- "
-    ind60 =~ x1 + x2 + x3
-    dem60 =~ y1 + y2 + y3 + y4
-    dem65 =~ y5 + y6 + y7 + y8
-    dem60 ~ ind60
-    dem65 ~ ind60 + dem60
-  "
-  options$models <- list(list(name = "Model1", syntax = list(model = model, columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))))
-  options$group                     <- ""
-  options$innerWeightingScheme      <- "path"
-  options$convergenceCriterion      <- "absoluteDifference"
-  options$correctionFactor          <- "squaredEuclidean"
+
+options <- jaspTools::analysisOptions("PLSSEM")
+model <- "
+  ind60 =~ x1 + x2 + x3
+  dem60 =~ y1 + y2 + y3 + y4
+  dem65 =~ y5 + y6 + y7 + y8
+  dem60 ~ ind60
+  dem65 ~ ind60 + dem60
+"
+options$models <- list(list(name = "Model1", syntax = list(model = model, columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))))
+options$group                     <- ""
+options$innerWeightingScheme      <- "path"
+options$convergenceCriterion      <- "absoluteDifference"
+options$correctionFactor          <- "squaredEuclidean"
 
 results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
 
