@@ -2022,3 +2022,45 @@ checkCSemModel <- function(model, availableVars) {
   return()
 
 }
+
+
+.plsSEMVIFhelper <- function(fit){
+  # Make VIFs into a matrix
+  # Restructure the VIFs into a table.
+  VIFspath <- cSEM::assess(.object = fit,.quality_criterion = 'vif')
+
+  idx <- which(VIFspath$VIF!=0,arr.ind = T)
+
+  if(nrow(idx)!=0){
+    VIFDf <- data.frame(Relation=paste(rownames(VIFspath$VIF)[idx[,'row']],'~',colnames(VIFspath$VIF)[idx[,'col']]),
+                        vif=VIFspath$VIF[cbind(rownames(VIFspath$VIF)[idx[,'row']],colnames(VIFspath$VIF)[idx[,'col']])])
+
+    VIFvector <-setNames(VIFDf$vif, VIFDf$Relation)
+  } else{
+    VIFvector <- NULL
+  }
+  return(VIFvector)
+}
+
+.plsSEMVIFBhelper <- function(fit){
+  VIFsweights <- cSEM::calculateVIFModeB(fit)
+
+  # If there is only one weight, cSEM::calculateVIFModeB() returns NA for that VIF
+  # therefore, replace NAs with 0
+  VIFsweights[is.na(VIFsweights)] <- 0
+
+
+  if(!is.null(VIFsweights)&sum(VIFsweights)!=0){
+    idx <- which(VIFsweights!=0,arr.ind = T)
+
+    VIFBDf <- data.frame(Relation=paste(rownames(VIFsweights)[idx[,'row']],'<~',colnames(VIFsweights)[idx[,'col']]),
+                         vif=VIFsweights[cbind(rownames(VIFsweights)[idx[,'row']],colnames(VIFsweights)[idx[,'col']])])
+
+    VIFBvector <-setNames(VIFBDf$vif, VIFBDf$Relation)
+
+  } else{
+    VIFBvector <- NULL
+  }
+  return(VIFBvector)
+
+}
