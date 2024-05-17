@@ -117,7 +117,7 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
     }
   }
 
-  # Check mean structure:
+  # Check variance covariance matrix input and its implications:
   if (options[["dataType"]] == "varianceCovariance") {
     if (options[["meanStructure"]]) {
       modelContainer$setError(gettext("Mean structure can not be included when data is variance-covariance matrix"))
@@ -140,6 +140,15 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
   } else {
     if (ncol(dataset) > 0 && !nrow(dataset) > ncol(dataset)) {
       modelContainer$setError(gettext("Not more cases than number of variables. Is your data a variance-covariance matrix?"))
+      return()
+    }
+  }
+
+  # Check if meanstructure is true but then no checkbox to fix the intercepts to zero is checked
+  if (options[["meanStructure"]]) {
+    if (!any(c(options[["manifestInterceptFixedToZero"]], options[["latentInterceptFixedToZero"]],
+               options[["manifestMeanFixedToZero"]]))) {
+      .quitAnalysis(gettext("When mean structure is included, at least one of the checkboxes to fix the intercepts to zero has to be checked"))
       return()
     }
   }
