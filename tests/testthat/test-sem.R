@@ -107,6 +107,7 @@ options$estimator                   = "default"
 options$group                       = "group"
 options$informationMatrix           = "expected"
 options$meanStructure               = TRUE
+options$latentInterceptFixedToZero  = TRUE
 options$modificationIndexLowHidden  = TRUE
 options$naAction                    = "listwise"
 options$impliedCovariance           = TRUE
