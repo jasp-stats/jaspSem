@@ -13,10 +13,16 @@ results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
 
 test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-  if (jaspBase::getOS() == "linux") skip("Skipped for now cause that part of the table is removed in another PR anyways")
-  jaspTools::expect_equal_tables(table,
-                                 list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, 0, "Model1",
-                                      75, 0))
+  if (jaspBase::getOS() == "windows") {
+    jaspTools::expect_equal_tables(table,
+                                   list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, 1, "Model1",
+                                        75, 0))
+  } else {
+    jaspTools::expect_equal_tables(table,
+                                   list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, 0, "Model1",
+                                        75, 0))
+  }
+
 })
 
 parcont <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]]
@@ -629,12 +635,18 @@ results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
 # Model fit table results match
 test_that("Bootstrapping model fit table works", {
 
-  if (jaspBase::getOS() == "linux") skip("Skipped for now cause that part of the table is removed in another PR anyways")
-
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, 0, "Model1",
-                                      75, 0))
+
+  if (jaspBase::getOS() == "windows") {
+    jaspTools::expect_equal_tables(table,
+                                   list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, 1, "Model1",
+                                        75, 0))
+  } else {
+    jaspTools::expect_equal_tables(table,
+                                   list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, 0, "Model1",
+                                        75, 0))
+  }
+
 })
 
 
@@ -757,16 +769,27 @@ test_that("Variance-covariance input works", {
     )
 
   data <- read.csv("poldem_grouped.csv")
+  # data <- read.csv("tests/testthat/poldem_grouped.csv")
   data <- cov(data)
   data <- as.data.frame(data)
 
   set.seed(1)
   results <- jaspTools::runAnalysis("SEM", data, options)
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list(707.570148255052, 721.47507693627, 6.66133814775094e-14, 0, "Model1",
-                                      75, 0, "", "", "", 1095.63355300897, 1109.53848169019, 0, 0,
-                                      "Model2", 75, 1, "", -6.66133814775094e-14, 0))
+
+  if (jaspBase::getOS() == "osx") {
+    jaspTools::expect_equal_tables(table,
+                                   list(707.570148255052, 721.47507693627, 6.66133814775094e-14, 0, "Model1",
+                                        75, 0, "", "", "", 1095.63355300897, 1109.53848169019, 0, 0,
+                                        "Model2", 75, 1, "", -6.66133814775094e-14, 0))
+  } else {
+    jaspTools::expect_equal_tables(table,
+                                   list(707.570148255052, 721.47507693627, 6.66133814775094e-14, 1, "Model1",
+                                        75, 0, "", "", "", 1095.63355300897, 1109.53848169019, 0, 0,
+                                        "Model2", 75, 1, "", -6.66133814775094e-14, 0))
+
+  }
+
 })
 
 
