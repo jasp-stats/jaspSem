@@ -117,7 +117,7 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
     }
   }
 
-  # Check mean structure:
+  # Check variance covariance matrix input and its implications:
   if (options[["dataType"]] == "varianceCovariance") {
     if (options[["meanStructure"]]) {
       modelContainer$setError(gettext("Mean structure can not be included when data is variance-covariance matrix"))
@@ -140,6 +140,15 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
   } else {
     if (ncol(dataset) > 0 && !nrow(dataset) > ncol(dataset)) {
       modelContainer$setError(gettext("Not more cases than number of variables. Is your data a variance-covariance matrix?"))
+      return()
+    }
+  }
+
+  # Check if meanstructure is true but then no checkbox to fix the intercepts to zero is checked
+  if (options[["meanStructure"]]) {
+    if (!any(c(options[["manifestInterceptFixedToZero"]], options[["latentInterceptFixedToZero"]],
+               options[["manifestMeanFixedToZero"]]))) {
+      .quitAnalysis(gettext("When mean structure is included, at least one of the checkboxes to fix the intercepts to zero has to be checked"))
       return()
     }
   }
@@ -206,7 +215,7 @@ checkLavaanModel <- function(model, availableVars) {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c("samplingWeights", "meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero", "exogenousCovariateFixed", "orthogonal",
                               "factorScaling", "residualSingleIndicatorOmitted", "residualVariance", "exogenousLatentCorrelation",
-                              "dependentCorrelation", "threshold", "scalingParameter", "efaConstrained", "standardizedVariable", "naAction", "estimator", "test",
+                              "dependentCorrelation", "threshold", "scalingParameter", "efaConstrained", "standardizedVariable", "naAction", "estimator", "modelTest",
                               "errorCalculationMethod", "informationMatrix", "emulation", "group", "equalLoading", "equalIntercept",
                               "equalResidual", "equalResidualCovariance", "equalMean", "equalThreshold", "equalRegression",
                               "equalLatentVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters", "manifestMeanFixedToZero"))
@@ -387,11 +396,11 @@ checkLavaanModel <- function(model, availableVars) {
   lavopts[["estimator"]]   <- options[["estimator"]]
   lavopts[["se"]]          <- ifelse(options[["errorCalculationMethod"]] == "bootstrap", "standard", options[["errorCalculationMethod"]])
   lavopts[["information"]] <- options[["informationMatrix"]]
-  lavopts[["test"]]        <- ifelse(options[["modelTest"]] == "satorraBentler", "Satorra.Bentler",
-                                     ifelse(options[["modelTest"]] == "yuanBentler", "Yuan.Bentler",
+  lavopts[["test"]]        <- ifelse(options[["modelTest"]] == "satorraBentler", "satorra.bentler",
+                                     ifelse(options[["modelTest"]] == "yuanBentler", "yuan.bentler",
                                             ifelse(options[["modelTest"]] == "meanAndVarianceAdjusted", "mean.var.adjusted",
                                                    ifelse(options[["modelTest"]] == "scaledAndShifted", "scaled.shifted",
-                                                          ifelse(options[["modelTest"]] == "bollenStine", "Bollen.Stine",
+                                                          ifelse(options[["modelTest"]] == "bollenStine", "bollen.stine",
                                                                  options[["modelTest"]])))))
 
   # group.equal options
@@ -633,7 +642,12 @@ checkLavaanModel <- function(model, availableVars) {
   fittab$dependOn("models")
   fittab$position <- 0
 
-  fittab$addColumnInfo(name = "Model",    title = "",                            type = "string" )
+  fittab$addColumnInfo(name = "Model",    title = "",                            type = "string" , combine = TRUE)
+
+  if (options[["group"]] != "") {
+    fittab$addColumnInfo(name = "group",    title = gettext("Group"),              type = "string" )
+  }
+
   fittab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
   fittab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
   fittab$addColumnInfo(name = "N",        title = gettext("n"),                  type = "integer")
@@ -643,12 +657,15 @@ checkLavaanModel <- function(model, availableVars) {
                        overtitle = gettext("Baseline test"))
   fittab$addColumnInfo(name = "PrChisq",  title = gettext("p"),                  type = "pvalue",
                        overtitle = gettext("Baseline test"))
-  fittab$addColumnInfo(name = "dchisq",   title = gettext("&#916;&#967;&sup2;"), type = "number" ,
-                       overtitle = gettext("Difference test"))
-  fittab$addColumnInfo(name = "ddf",      title = gettext("&#916;df"),           type = "integer",
-                       overtitle = gettext("Difference test"))
-  fittab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
-                       overtitle = gettext("Difference test"))
+
+  if (length(options[["models"]]) > 1) {
+    fittab$addColumnInfo(name = "dchisq",   title = "\u0394\u03C7\u00B2", type = "number" ,
+                         overtitle = gettext("Difference test"))
+    fittab$addColumnInfo(name = "ddf",      title = gettextf("%1$sdf", "\u0394"),           type = "integer",
+                         overtitle = gettext("Difference test"))
+    fittab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
+                         overtitle = gettext("Difference test"))
+  }
 
   modelContainer[["fittab"]] <- fittab
 
@@ -659,8 +676,19 @@ checkLavaanModel <- function(model, availableVars) {
 
   if (modelContainer$getError()) return()
 
+  testName <- switch(options[["modelTest"]],
+                     "satorraBentler" = "satorra.bentler",
+                     "yuanBentler" = "yuan.bentler",
+                     "scaledAndShifted" = "scaled.shifted",
+                     "meanAndVarianceAdjusted" = "mean.var.adjusted",
+                     "bollenStine" = "bollen.stine",
+                     options[["modelTest"]])
+  if (testName == "default")
+    testName <- "standard"
   if (length(semResults) == 1) {
-    lrt <- .withWarnings(lavaan::lavTestLRT(semResults[[1]])[-1, ])
+    lrt <- .withWarnings(lavaan::lavTestLRT(semResults[[1]], type = "Chisq")[-1, ])
+    chiSq <- lavaan::lavInspect(semResults[[1]], what = "test")[[testName]]$stat
+    dfs <- lavaan::lavInspect(semResults[[1]], what = "test")[[testName]]$df
     rownames(lrt$value) <- options[["models"]][[1]][["name"]]
     Ns <- lavaan::lavInspect(semResults[[1]], "ntotal")
   } else {
@@ -668,37 +696,37 @@ checkLavaanModel <- function(model, availableVars) {
     lrt_args <- semResults
     names(lrt_args) <- "object" # (the first result is object, the others ...)
     lrt_args[["model.names"]] <- vapply(options[["models"]], getElement, name = "name", "")
+    lrt_args[["type"]] <- "Chisq"
     lrt <- .withWarnings(do.call(lavaan::lavTestLRT, lrt_args))
 
-    # the lrt test in lavaan produces the standard chisq values and df and pvalue, even when each model is using a scaled test
-    # so we should replace the necessary values
-    chis <- sapply(semResults, function(x) {
-      ins <- lavaan::inspect(x, what = "fit")
-      if (is.na(ins["chisq.scaled"])) return(c(ins["chisq"], ins["df"], ins["pvalue"]))
-      else return(c(ins["chisq.scaled"], ins["df.scaled"], ins["pvalue.scaled"]))
-    })
-    lrt$value[["Chisq"]] <- chis[1, ]
-    lrt$value[["Df"]] <- chis[2, ]
-    lrt$value[["PrChisq"]] <- chis[3, ]
-
-    lrt$value[1,5:7] <- NA
+    chiSq <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$stat}))
+    dfs <- unlist(lapply(semResults, function(x) {round(lavaan::lavInspect(x, what = "test")[[testName]]$df, 3)}))
+    # because the LRT orders the models according to the df, we need to reorder this as well
+    chiSq <- chiSq[order(dfs)]
+    dfs <- sort(dfs)
 
   }
 
-  fittab[["Model"]]    <- rownames(lrt$value)
-  fittab[["AIC"]]      <- lrt$value[["AIC"]]
-  fittab[["BIC"]]      <- lrt$value[["BIC"]]
-  fittab[["N"]]        <- Ns
-  fittab[["Chisq"]]    <- lrt$value[["Chisq"]]
-  fittab[["Df"]]       <- lrt$value[["Df"]]
-  fittab[["PrChisq"]]  <- pchisq(q = lrt$value[["Chisq"]], df = lrt$value[["Df"]], lower.tail = FALSE)
-  fittab[["dchisq"]]   <- lrt$value[["Chisq diff"]]
-  fittab[["ddf"]]      <- lrt$value[["Df diff"]]
-  fittab[["dPrChisq"]] <- lrt$value[["Pr(>Chisq)"]]
+  dtFill <- data.frame(matrix(ncol = 0, nrow = length(rownames(lrt$value))))
+
+  dtFill[["Model"]]    <- rownames(lrt$value)
+  dtFill[["AIC"]]      <- lrt$value[["AIC"]]
+  dtFill[["BIC"]]      <- lrt$value[["BIC"]]
+  dtFill[["N"]]        <- Ns
+  dtFill[["Chisq"]]    <- chiSq
+  dtFill[["Df"]]       <- dfs
+  dtFill[["PrChisq"]]  <- pchisq(q = chiSq, df = dfs, lower.tail = FALSE)
+
+  if (length(options[["models"]]) > 1) {
+    dtFill[["dchisq"]]   <- lrt$value[["Chisq diff"]]
+    dtFill[["ddf"]]      <- lrt$value[["Df diff"]]
+    dtFill[["dPrChisq"]] <- lrt$value[["Pr(>Chisq)"]]
+  }
 
   # add warning footnote
+  fnote <- ""
   if (!is.null(lrt$warnings)) {
-    fittab$addFootnote(gsub("lavaan WARNING: ", "", lrt$warnings[[1]]$message))
+    fnote <- paste0(fnote, gsub("lavaan WARNING: ", "", lrt$warnings[[1]]$message))
   }
 
   if(options$naAction == "listwise"){
@@ -706,7 +734,7 @@ checkLavaanModel <- function(model, availableVars) {
     if (nrm != 0) {
       missingFootnote <- gettextf("A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options.",
                                   nrm)
-      fittab$addFootnote(message = missingFootnote)
+      fnote <- paste0(fnote, missingFootnote)
     }
   }
 
@@ -729,13 +757,75 @@ checkLavaanModel <- function(model, availableVars) {
       "boot",               gettext("bootstrap (Bollen-Stine) probability value")
     )
     testname <- LUT[test == tolower(LUT$option), "name"][[1]]
-    ftext <- gettextf("Model tests based on %s.", testname)
-    fittab$addFootnote(message = ftext)
+    if (length(semResults) == 1)
+      ftext <- gettextf("Baseline tests based on %s.", testname)
+    if (length(semResults) > 1)
+      ftext <- gettextf("Baseline tests based on %s. Difference tests based on a function of two standard test-statistics.", testname)
+
+    fnote <- paste0(fnote, ftext)
+
   }
 
   if (options$estimator %in% c("dwls", "gls", "wls", "uls")) {
-    fittab$addFootnote(message = gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators"))
+    fnote <- paste0(fnote, gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators"))
   }
+
+  if (options[["group"]] != "") {
+
+    groupNames <- semResults[[1]]@Data@group.label
+    models <- rep(rownames(lrt$value), each = length(groupNames))
+    modelDfs <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$df}))
+    ord <- match(modelDfs, sort(modelDfs))
+    modelDfs <- modelDfs[ord]
+
+
+    chiSq <- sapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$stat.group})
+    logLGroup <- sapply(semResults, function(x) x@loglik$loglik.group)
+
+    npar <- sapply(semResults, function(x) x@loglik$npar)
+    aics <- -2 * logLGroup + 2 * matrix(npar, nrow(logLGroup), ncol(logLGroup), byrow = TRUE)
+    Ns  <- sapply(semResults, function(x) x@Data@nobs)
+    bics <- -2 * logLGroup + matrix(npar, nrow(logLGroup), ncol(logLGroup), byrow = TRUE) * matrix(sapply(Ns, log), nrow(Ns), ncol(Ns))
+
+    aics <- aics[, ord]
+    bics <- bics[, ord]
+    chiSq <- chiSq[, ord]
+    modelDfsRep <- rep(modelDfs, each = length(groupNames))
+
+    dtFillGroup <- data.frame(matrix(ncol = 0, nrow = length(models)))
+
+    dtFillGroup[["Model"]]    <- models
+    dtFillGroup[["group"]]    <- rep(groupNames, length(rownames(lrt$value)))
+    dtFillGroup[["AIC"]]      <- c(aics)
+    dtFillGroup[["BIC"]]      <- c(bics)
+    dtFillGroup[["N"]]        <- c(Ns)
+    dtFillGroup[["Chisq"]]    <- c(chiSq)
+    dtFillGroup[["Df"]]       <- c(modelDfsRep)
+
+    dtFillGroup[["PrChisq"]]  <- apply(data.frame(c(chiSq), modelDfsRep), 1, function(x) {pchisq(x[1], x[2], lower.tail = FALSE)})
+
+    # we want the LRT for multiple models
+    if (length(semResults) > 1) {
+
+      nGroups <- length(groupNames)
+      dchisq <- diff(c(chiSq), lag = nGroups)
+      ddf <- diff(c(modelDfsRep), lag = nGroups)
+      dprchisq <- apply(data.frame(dchisq, ddf), 1, function(x) {pchisq(x[1], x[2], lower.tail = FALSE)})
+
+      dtFillGroup[["dchisq"]] <- c(rep(NA, nGroups), dchisq)
+      dtFillGroup[["ddf"]] <- c(rep(NA, nGroups), ddf)
+      dtFillGroup[["dPrChisq"]] <- c(rep(NA, nGroups), dprchisq)
+
+    }
+    dtFill[["group"]] <- gettext("all")
+    dtFill <- dtFill[, c(1, ncol(dtFill), 2:(ncol(dtFill)-1))]
+    dtFill <- rbind(dtFill, dtFillGroup)
+
+  }
+
+  fittab$setData(dtFill)
+  fittab$addFootnote(message = fnote)
+
 }
 
 .semParameters <- function(modelContainer, dataset, options, ready) {
