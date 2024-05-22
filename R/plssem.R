@@ -156,11 +156,12 @@ checkCSemModel <- function(model, availableVars) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("correlationMatrix", "convergenceCriterion",
+    modelContainer$dependOn(c("syntax", "correlationMatrix", "convergenceCriterion",
                               "estimateStructural", "group", "correctionFactor", "consistentPartialLeastSquares",
-                              "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod", "robustMethod", "bootstrapSamples", "ciLevel",
+                              "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod",
+                              "robustMethod", "bootstrapSamples", "ciLevel",
                               "setSeed", "seed", "handlingOfInadmissibles", "endogenousIndicatorPrediction",
-                              "kFolds", "repetitions", "benchmark", "predictedScore"))
+                              "kFolds", "repetitions", "benchmark", "predictedScore", "models"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -1972,7 +1973,7 @@ checkCSemModel <- function(model, availableVars) {
   }
 
   container    <- createJaspContainer()
-  container$dependOn(optionsFromObject = modelContainer)
+  container$dependOn(optionsFromObject = modelContainer, options = "addConstructScores")
   jaspResults[["addedScoresContainer"]] <- container
 
   models <- modelContainer[["models"]][["object"]]
@@ -2002,6 +2003,8 @@ checkCSemModel <- function(model, availableVars) {
       allNamesR <- c(allNamesR, colNameR)
     }
   }
+
+  jaspResults[["addedScoresContainer"]] <- container
 
   # check if there are previous colNames that are not needed anymore and delete the cols
   oldNames <- jaspResults[["createdColumnNames"]][["object"]]
