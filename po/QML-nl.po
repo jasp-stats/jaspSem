@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-05-22 21:40+0000\n"
+"PO-Revision-Date: 2024-05-23 22:03+0000\n"
 "Last-Translator: Koen Derks <koen-derks@hotmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "nl/>\n"
@@ -1228,7 +1228,7 @@ msgstr "Gemiddelde geëxtraheerde variantie (AVE)"
 
 msgctxt "SEM|"
 msgid "Heterotrait-monotrait ratio (HTMT)"
-msgstr "Heterotrait-monotrait ratio (HTMT)"
+msgstr "Heterotrait-monotrait verhouding (HTMT)"
 
 msgctxt "SEM|"
 msgid "Reliability measures"
