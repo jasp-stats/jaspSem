@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2024-04-27 02:40\n"
+"POT-Creation-Date: 2024-05-27 16:03\n"
 "PO-Revision-Date: 2023-12-02 02:39+0000\n"
 "Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -600,6 +600,11 @@ msgid ""
 msgstr ""
 "変数の数よりもケースの数が少ないです。このデータは分散共分散行列ですか?"
 
+msgid ""
+"When mean structure is included, at least one of the checkboxes to fix the "
+"intercepts to zero has to be checked"
+msgstr ""
+
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr "モデル指定が無効です。変数名を文字列で渡していませんか？"
 
@@ -616,11 +621,8 @@ msgstr ""
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr "推定に失敗しました! メッセージ: モデル%sの自由度は負です."
 
-msgid "&#916;&#967;&sup2;"
-msgstr "&#916;2&#967;3&sup2;"
-
-msgid "&#916;df"
-msgstr "&#916;自由度"
+msgid "%1$sdf"
+msgstr ""
 
 #, fuzzy
 msgid ""
@@ -648,14 +650,24 @@ msgstr "スケーリングとシフトした検定統計量"
 msgid "bootstrap (Bollen-Stine) probability value"
 msgstr "ブートストラップ (ボレン・スティン) 確率値"
 
-msgid "Model tests based on %s."
+#, fuzzy
+msgid "Baseline tests based on %s."
 msgstr "%s に基づくモデルテスト"
+
+msgid ""
+"Baseline tests based on %s. Difference tests based on a function of two "
+"standard test-statistics."
+msgstr ""
 
 #, fuzzy
 msgid ""
 "The AIC, BIC and additional information criteria are only available with ML-"
 "type estimators"
 msgstr "FIML の欠損値処理は，ML タイプの推定法でのみ使用可能です"
+
+#, fuzzy
+msgid "all"
+msgstr "すべて"
 
 msgid "Factor Loadings"
 msgstr "因子負荷量"
@@ -815,6 +827,12 @@ msgstr "sept(nox)"
 
 msgid "Path diagram"
 msgstr "パス図"
+
+#~ msgid "&#916;&#967;&sup2;"
+#~ msgstr "&#916;2&#967;3&sup2;"
+
+#~ msgid "&#916;df"
+#~ msgstr "&#916;自由度"
 
 #~ msgid "Means"
 #~ msgstr "平均値"

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2024-04-27 02:40\n"
+"POT-Creation-Date: 2024-05-27 16:03\n"
 "PO-Revision-Date: 2024-04-28 12:07+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -611,6 +611,11 @@ msgstr ""
 "Non hai máis casos que o número de variables. Son os teus datos dunha matriz "
 "de varianzas-covarianzas?"
 
+msgid ""
+"When mean structure is included, at least one of the checkboxes to fix the "
+"intercepts to zero has to be checked"
+msgstr ""
+
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr ""
 "Especificación incorrecta de modelo. Indicaches un nome de variable como "
@@ -635,11 +640,8 @@ msgstr ""
 "Fallou a estimación! Mensaxe: O modelo %s ten un número de graos de "
 "liberdade negativo."
 
-msgid "&#916;&#967;&sup2;"
-msgstr "&#916;&#967;&sup2;"
-
-msgid "&#916;df"
-msgstr "&#916;gl"
+msgid "%1$sdf"
+msgstr ""
 
 msgid ""
 "A total of %g cases were removed due to missing values. You can avoid this "
@@ -667,8 +669,14 @@ msgstr "estatístico de proba escalado e desprazado"
 msgid "bootstrap (Bollen-Stine) probability value"
 msgstr "valor da probabilidade de Bootstrap (Bollen-Stine)"
 
-msgid "Model tests based on %s."
+#, fuzzy
+msgid "Baseline tests based on %s."
 msgstr "Probas do modelo baseadas en %s."
+
+msgid ""
+"Baseline tests based on %s. Difference tests based on a function of two "
+"standard test-statistics."
+msgstr ""
 
 msgid ""
 "The AIC, BIC and additional information criteria are only available with ML-"
@@ -676,6 +684,10 @@ msgid ""
 msgstr ""
 "Os criterios AIC, BIC e de información adicional só están dispoñibles con "
 "estimadores de tipo MV"
+
+#, fuzzy
+msgid "all"
+msgstr "Todo"
 
 msgid "Factor Loadings"
 msgstr "Cargas dos Factores"
@@ -858,6 +870,12 @@ msgstr "sepc (nox)"
 
 msgid "Path diagram"
 msgstr "Diagrama de ruta"
+
+#~ msgid "&#916;&#967;&sup2;"
+#~ msgstr "&#916;&#967;&sup2;"
+
+#~ msgid "&#916;df"
+#~ msgstr "&#916;gl"
 
 #~ msgid "Means"
 #~ msgstr "Medias"

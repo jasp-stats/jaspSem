@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2024-04-27 02:40\n"
+"POT-Creation-Date: 2024-05-27 16:03\n"
 "PO-Revision-Date: 2023-01-11 15:53+0000\n"
 "Last-Translator: ssantos <ssantos@web.de>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/jaspsem-"
@@ -594,6 +594,11 @@ msgstr ""
 "Não mais casos do que número de variáveis. Seus dados são uma matriz de "
 "variância-covariância?"
 
+msgid ""
+"When mean structure is included, at least one of the checkboxes to fix the "
+"intercepts to zero has to be checked"
+msgstr ""
+
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr ""
 "Especificação de modelo inválida. Passou um nome de variável como uma cadeia?"
@@ -616,10 +621,7 @@ msgstr ""
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr ""
 
-msgid "&#916;&#967;&sup2;"
-msgstr ""
-
-msgid "&#916;df"
+msgid "%1$sdf"
 msgstr ""
 
 msgid ""
@@ -645,13 +647,22 @@ msgstr ""
 msgid "bootstrap (Bollen-Stine) probability value"
 msgstr ""
 
-msgid "Model tests based on %s."
+msgid "Baseline tests based on %s."
+msgstr ""
+
+msgid ""
+"Baseline tests based on %s. Difference tests based on a function of two "
+"standard test-statistics."
 msgstr ""
 
 msgid ""
 "The AIC, BIC and additional information criteria are only available with ML-"
 "type estimators"
 msgstr ""
+
+#, fuzzy
+msgid "all"
+msgstr "Todas"
 
 msgid "Factor Loadings"
 msgstr "Cargas Fatoriais"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2024-04-27 02:40\n"
+"POT-Creation-Date: 2024-05-27 16:03\n"
 "PO-Revision-Date: 2024-03-03 11:01+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
@@ -604,6 +604,11 @@ msgstr ""
 "Nicht mehr Fälle als die Anzahl der Variablen. Sind Ihre Daten eine Varianz-"
 "Kovarianz-Matrix?"
 
+msgid ""
+"When mean structure is included, at least one of the checkboxes to fix the "
+"intercepts to zero has to be checked"
+msgstr ""
+
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr ""
 "Ungültige Modellspezifikation. Haben Sie einen Variablennamen als "
@@ -630,11 +635,8 @@ msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr ""
 "Schätzung fehlgeschlagen! Meldung: Modell %s hat negative Freiheitsgrade."
 
-msgid "&#916;&#967;&sup2;"
-msgstr "&#916;&#967;&sup2;"
-
-msgid "&#916;df"
-msgstr "&#916;df"
+msgid "%1$sdf"
+msgstr ""
 
 msgid ""
 "A total of %g cases were removed due to missing values. You can avoid this "
@@ -662,8 +664,14 @@ msgstr "skalierte und verschobene Test-Statistik"
 msgid "bootstrap (Bollen-Stine) probability value"
 msgstr "Bootstrap (Bollen-Stine)-Wahrscheinlichkeitswert"
 
-msgid "Model tests based on %s."
+#, fuzzy
+msgid "Baseline tests based on %s."
 msgstr "Modelltests basierend auf %s."
+
+msgid ""
+"Baseline tests based on %s. Difference tests based on a function of two "
+"standard test-statistics."
+msgstr ""
 
 msgid ""
 "The AIC, BIC and additional information criteria are only available with ML-"
@@ -671,6 +679,10 @@ msgid ""
 msgstr ""
 "Das AIC, BIC und weitere Informationskriterien sind nur bei ML-Schätzern "
 "verfügbar"
+
+#, fuzzy
+msgid "all"
+msgstr "Alle"
 
 msgid "Factor Loadings"
 msgstr "Faktorladungen"
@@ -855,6 +867,12 @@ msgstr "sepc (all)"
 
 msgid "Path diagram"
 msgstr "Pfaddiagramm"
+
+#~ msgid "&#916;&#967;&sup2;"
+#~ msgstr "&#916;&#967;&sup2;"
+
+#~ msgid "&#916;df"
+#~ msgstr "&#916;df"
 
 #~ msgid "Means"
 #~ msgstr "Mittelwerte"

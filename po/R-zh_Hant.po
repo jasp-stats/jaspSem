@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2024-04-27 02:40\n"
+"POT-Creation-Date: 2024-05-27 16:03\n"
 "PO-Revision-Date: 2023-12-16 01:08+0000\n"
 "Last-Translator: Ginger Shu-Ying Yeh <gingershuying@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
@@ -596,6 +596,11 @@ msgid ""
 "matrix?"
 msgstr "資料個數少於變數個數，是以變異數-共變數矩陣為資料進行分析嗎？"
 
+msgid ""
+"When mean structure is included, at least one of the checkboxes to fix the "
+"intercepts to zero has to be checked"
+msgstr ""
+
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr "模型設定無效。是否將某變數名稱誤設為字串資料？"
 
@@ -615,11 +620,8 @@ msgstr ""
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr "估計失敗!訊息:模型%s的自由度為負值"
 
-msgid "&#916;&#967;&sup2;"
-msgstr "&#916;&#967;&sup2;"
-
-msgid "&#916;df"
-msgstr "&#916;自由度"
+msgid "%1$sdf"
+msgstr ""
 
 msgid ""
 "A total of %g cases were removed due to missing values. You can avoid this "
@@ -646,14 +648,24 @@ msgstr "量尺與轉變(shifted)檢定統計數"
 msgid "bootstrap (Bollen-Stine) probability value"
 msgstr "拔靴法(Bollen-Stine) 機率值"
 
-msgid "Model tests based on %s."
+#, fuzzy
+msgid "Baseline tests based on %s."
 msgstr "模型檢定基於%s."
+
+msgid ""
+"Baseline tests based on %s. Difference tests based on a function of two "
+"standard test-statistics."
+msgstr ""
 
 msgid ""
 "The AIC, BIC and additional information criteria are only available with ML-"
 "type estimators"
 msgstr ""
 "只有在使用最大概似法 (ML)類的估計法時，才提供AIC, BIC與其他訊息準則指標"
+
+#, fuzzy
+msgid "all"
+msgstr "所有"
 
 msgid "Factor Loadings"
 msgstr "因素負荷量"
@@ -812,6 +824,12 @@ msgstr "sepc (非內生變數)"
 
 msgid "Path diagram"
 msgstr "路徑圖"
+
+#~ msgid "&#916;&#967;&sup2;"
+#~ msgstr "&#916;&#967;&sup2;"
+
+#~ msgid "&#916;df"
+#~ msgstr "&#916;自由度"
 
 #~ msgid "Means"
 #~ msgstr "平均數"

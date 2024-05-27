@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2024-04-27 02:40\n"
+"POT-Creation-Date: 2024-05-27 16:03\n"
 "PO-Revision-Date: 2024-04-30 07:08+0000\n"
 "Last-Translator: Cochrane <cunyikang@qq.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -569,6 +569,11 @@ msgid ""
 "matrix?"
 msgstr ""
 
+msgid ""
+"When mean structure is included, at least one of the checkboxes to fix the "
+"intercepts to zero has to be checked"
+msgstr ""
+
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr ""
 
@@ -585,10 +590,7 @@ msgstr ""
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr ""
 
-msgid "&#916;&#967;&sup2;"
-msgstr ""
-
-msgid "&#916;df"
+msgid "%1$sdf"
 msgstr ""
 
 msgid ""
@@ -614,13 +616,22 @@ msgstr ""
 msgid "bootstrap (Bollen-Stine) probability value"
 msgstr ""
 
-msgid "Model tests based on %s."
+msgid "Baseline tests based on %s."
+msgstr ""
+
+msgid ""
+"Baseline tests based on %s. Difference tests based on a function of two "
+"standard test-statistics."
 msgstr ""
 
 msgid ""
 "The AIC, BIC and additional information criteria are only available with ML-"
 "type estimators"
 msgstr ""
+
+#, fuzzy
+msgid "all"
+msgstr "全部"
 
 msgid "Factor Loadings"
 msgstr ""

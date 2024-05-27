@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
-"POT-Creation-Date: 2024-04-27 02:40\n"
+"POT-Creation-Date: 2024-05-27 16:03\n"
 "PO-Revision-Date: 2024-04-28 12:07+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -605,6 +605,11 @@ msgstr ""
 "No hay más casos que el número de variables. ¿Tus datos son de una matriz de "
 "varianzas-covarianzas?"
 
+msgid ""
+"When mean structure is included, at least one of the checkboxes to fix the "
+"intercepts to zero has to be checked"
+msgstr ""
+
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr ""
 "Especificación incorrecta de modelo. ¿Has indicado un nombre de variable "
@@ -629,11 +634,8 @@ msgstr ""
 "¡Falló la estimación! Mensaje: El modelo %s tiene un número de grados de "
 "libertad negativo."
 
-msgid "&#916;&#967;&sup2;"
-msgstr "&#916;&#967;&sup2;"
-
-msgid "&#916;df"
-msgstr "&#916;gl"
+msgid "%1$sdf"
+msgstr ""
 
 msgid ""
 "A total of %g cases were removed due to missing values. You can avoid this "
@@ -661,8 +663,14 @@ msgstr "estadístico de prueba escalado y desplazado"
 msgid "bootstrap (Bollen-Stine) probability value"
 msgstr "valor de la probabilidad de Bootstrap (Bollen-Stine)"
 
-msgid "Model tests based on %s."
+#, fuzzy
+msgid "Baseline tests based on %s."
 msgstr "Contrastes del modelo basadas en %s."
+
+msgid ""
+"Baseline tests based on %s. Difference tests based on a function of two "
+"standard test-statistics."
+msgstr ""
 
 msgid ""
 "The AIC, BIC and additional information criteria are only available with ML-"
@@ -670,6 +678,10 @@ msgid ""
 msgstr ""
 "Los criterios AIC, BIC y de información adicional solo están disponibles con "
 "estimadores de tipo MV"
+
+#, fuzzy
+msgid "all"
+msgstr "Todo"
 
 msgid "Factor Loadings"
 msgstr "Cargas de los Factores"
@@ -855,6 +867,12 @@ msgstr "sepc (nox)"
 
 msgid "Path diagram"
 msgstr "Diagrama de ruta"
+
+#~ msgid "&#916;&#967;&sup2;"
+#~ msgstr "&#916;&#967;&sup2;"
+
+#~ msgid "&#916;df"
+#~ msgstr "&#916;gl"
 
 #~ msgid "Means"
 #~ msgstr "Medias"
