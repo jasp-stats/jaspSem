@@ -19,8 +19,9 @@
 
 SEM <- function(
           data = NULL,
-          version = "0.18.2",
+          version = "0.19",
           additionalFitMeasures = FALSE,
+          ave = FALSE,
           bootstrapCiType = "percentileBiasCorrected",
           bootstrapSamples = 1000,
           ciLevel = 0.95,
@@ -44,6 +45,7 @@ SEM <- function(
           factorScaling = "factorLoading",
           freeParameters = list(columns = list(), model = "", modelOriginal = ""),
           group = "",
+          htmt = FALSE,
           impliedCovariance = FALSE,
           informationMatrix = "expected",
           latentInterceptFixedToZero = TRUE,
@@ -65,6 +67,7 @@ SEM <- function(
           plotHeight = 320,
           plotWidth = 480,
           rSquared = FALSE,
+          reliability = FALSE,
           residualCovariance = FALSE,
           residualSingleIndicatorOmitted = TRUE,
           residualVariance = TRUE,
