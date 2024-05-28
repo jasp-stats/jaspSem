@@ -111,9 +111,10 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
     model           = .medToLavMod(options),
     data            = dataset,
     se              = ifelse(options$errorCalculationMethod == "bootstrap", "standard", options$errorCalculationMethod),
+    std.ov          = options$standardizedEstimate,
+    fixed.x         = !options$standardizedEstimate,
     mimic           = options$emulation,
     estimator       = options$estimator,
-    std.ov          = options$standardizedEstimate,
     missing         = options$naAction
   ))
 

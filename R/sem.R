@@ -271,9 +271,17 @@ checkLavaanModel <- function(model, availableVars) {
       lav_args[["model"]] <- originalSyntax
     }
     if (options[["dataType"]] == "raw") {
-      lav_args[["data"]]  <- dataset
+      if (options[["standardizedVariable"]]) {
+        dataset <- scale(dataset)
+      }
+      lav_args[["data"]] <- dataset
+
     } else {
-      lav_args[["sample.cov"]] <- .semDataCovariance(dataset, options[["models"]][[i]][["syntax"]])
+      cov_mat <- .semDataCovariance(dataset, options[["models"]][[i]][["syntax"]])
+      if (options[["standardizedVariable"]]) {
+        cov_mat <- stats::cov2cor(cov_mat)
+      }
+      lav_args[["sample.cov"]] <- cov_mat
       lav_args[["sample.nobs"]] <- options[["sampleSize"]]
     }
 
@@ -385,7 +393,6 @@ checkLavaanModel <- function(model, availableVars) {
   lavopts[["auto.efa"]]        <- options[["efaConstrained"]]
 
   # data options
-  lavopts[["std.ov"]]  <- options[["standardizedVariable"]]
   lavopts[["missing"]] <- ifelse(options[["naAction"]] == "fiml", "ml",
                                  ifelse(options[["naAction"]] == "twoStage", "two.stage",
                                         ifelse(options[["naAction"]] == "twoStageRobust", "robust.two.stage",
