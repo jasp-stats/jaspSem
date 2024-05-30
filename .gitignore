@@ -47,3 +47,4 @@ po/*~
 # OSX files
 *.DS_Store
 Thumbs.db
+_processedLockFile.lock
