@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2024-05-27 16:03\n"
-"PO-Revision-Date: 2024-03-03 11:01+0000\n"
+"PO-Revision-Date: 2024-06-10 10:24+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 5.5-dev\n"
+"X-Generator: Weblate 5.6-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "Das Modell konnte nicht geschätzt werden durch fehlende Konvergenz."
@@ -417,11 +417,10 @@ msgid "Weights"
 msgstr "Gewichte"
 
 msgid "Construct"
-msgstr ""
+msgstr "Konstrukt"
 
-#, fuzzy
 msgid "Loadings"
-msgstr "Faktorladungen"
+msgstr "Ladungen"
 
 msgid "Regression Coefficients"
 msgstr "Regressionskoeffizienten"
@@ -636,7 +635,7 @@ msgstr ""
 "Schätzung fehlgeschlagen! Meldung: Modell %s hat negative Freiheitsgrade."
 
 msgid "%1$sdf"
-msgstr ""
+msgstr "%1$sdf"
 
 msgid ""
 "A total of %g cases were removed due to missing values. You can avoid this "
@@ -680,7 +679,6 @@ msgstr ""
 "Das AIC, BIC und weitere Informationskriterien sind nur bei ML-Schätzern "
 "verfügbar"
 
-#, fuzzy
 msgid "all"
 msgstr "Alle"
 
