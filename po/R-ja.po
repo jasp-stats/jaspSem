@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
 "POT-Creation-Date: 2024-05-27 16:03\n"
-"PO-Revision-Date: 2023-12-02 02:39+0000\n"
+"PO-Revision-Date: 2024-06-18 17:09+0000\n"
 "Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "ja/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.3-dev\n"
+"X-Generator: Weblate 5.6-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "収束しなかったため，モデルは推定できませんでした。"
@@ -736,14 +736,13 @@ msgid ""
 msgstr ""
 
 msgid "Average variance extracted"
-msgstr ""
+msgstr "平均分散抽出"
 
 msgid "AVE"
-msgstr ""
+msgstr "AVE"
 
-#, fuzzy
 msgid "Reliability"
-msgstr "追加の適合度指標"
+msgstr "信頼性"
 
 #, fuzzy
 msgid "Coefficient α"
@@ -754,7 +753,7 @@ msgid "Coefficient ω"
 msgstr "係数"
 
 msgid "Heterotrait-monotrait ratio"
-msgstr ""
+msgstr "Heterotrait-monotrait 比"
 
 msgid "Mardia's coefficients"
 msgstr "マルディアの係数"
