@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
 "POT-Creation-Date: 2024-05-27 16:03\n"
 "PO-Revision-Date: 2024-07-01 17:50+0000\n"
-"Last-Translator: Koji Kosugi <kosugitti@gmail.com>\n"
+"Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "ja/>\n"
 "Language: ja\n"
@@ -272,9 +272,8 @@ msgstr "総間接効果"
 msgid "Residual covariances"
 msgstr "残差共分散"
 
-#, fuzzy
 msgid "Path coefficients"
-msgstr "予測係数"
+msgstr "パス係数"
 
 msgid "Delta method"
 msgstr "デルタ法"
@@ -650,9 +649,8 @@ msgstr "スケーリングとシフトした検定統計量"
 msgid "bootstrap (Bollen-Stine) probability value"
 msgstr "ブートストラップ (ボレン・スティン) 確率値"
 
-#, fuzzy
 msgid "Baseline tests based on %s."
-msgstr "%s に基づくモデルテスト"
+msgstr "%s に基づくベースラインテスト"
 
 msgid ""
 "Baseline tests based on %s. Difference tests based on a function of two "
@@ -739,7 +737,7 @@ msgid "Average variance extracted"
 msgstr "平均分散抽出"
 
 msgid "AVE"
-msgstr ""
+msgstr "AVE"
 
 msgid "Reliability"
 msgstr "信頼性"
