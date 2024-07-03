@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2024-05-27 16:03\n"
-"PO-Revision-Date: 2024-06-30 10:01+0000\n"
+"PO-Revision-Date: 2024-07-04 17:09+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
@@ -431,8 +431,9 @@ msgstr "Ergebnis"
 msgid "Total effects"
 msgstr "Gesamte Effekte"
 
+#, fuzzy
 msgid "VIF"
-msgstr ""
+msgstr "VIF"
 
 msgid "Endogenous Indicator Prediction"
 msgstr "Endogene Indikatorvorhersage"
@@ -603,10 +604,13 @@ msgstr ""
 "Nicht mehr Fälle als die Anzahl der Variablen. Sind Ihre Daten eine Varianz-"
 "Kovarianz-Matrix?"
 
+#, fuzzy
 msgid ""
 "When mean structure is included, at least one of the checkboxes to fix the "
 "intercepts to zero has to be checked"
 msgstr ""
+"Falls Mittelwertstruktur einbezogen wird, muss mindestens eins der "
+"Kontrollkästchen zur Festlegung der Konstanten auf Null aktiviert werden"
 
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr ""
