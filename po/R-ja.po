@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
 "POT-Creation-Date: 2024-05-27 16:03\n"
-"PO-Revision-Date: 2024-06-24 10:09+0000\n"
-"Last-Translator: 上野真翔 <j20232024g@myjuen.jp>\n"
+"PO-Revision-Date: 2024-07-02 18:09+0000\n"
+"Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "ja/>\n"
 "Language: ja\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.6-rc\n"
+"X-Generator: Weblate 5.7-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "収束しなかったため，モデルは推定できませんでした。"
@@ -89,10 +89,10 @@ msgid "Linear slope"
 msgstr "線形勾配"
 
 msgid "Quadratic slope"
-msgstr "二次の勾配"
+msgstr "2次の傾き"
 
 msgid "Cubic slope"
-msgstr "三次の勾配"
+msgstr "3次の傾き"
 
 msgid "Mean"
 msgstr "平均値"
@@ -138,13 +138,13 @@ msgid "Bentler-Bonett Normed Fit Index (NFI)"
 msgstr "Bentler-Bonettの正規化指標(NFI)"
 
 msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr "倹約正規化適合度指標(PNFI)"
+msgstr "倹約的正規化適合度指標(PNFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
 msgstr "Bollenの相対適合度指標(RFI)"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
-msgstr "ボレンのインクリメンタルフィット指数(IFI)"
+msgstr "Bollenのインクレメンタル適合度指標(IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
 msgstr "相対的非中心性指数(RNI)"
@@ -165,7 +165,7 @@ msgid "Sample-size adjusted Bayesian (SSABIC)"
 msgstr "サンプルサイズ調整済みベイジアン情報量規準(SSABIC)"
 
 msgid "Root mean square error of approximation (RMSEA)"
-msgstr "二乗平均平方根誤差(RMSEA)"
+msgstr "近似の二乗平均平方根誤差（RMSEA）"
 
 msgid "RMSEA 90%% CI lower bound"
 msgstr "RMSEA 90%% CI 下限"
@@ -216,10 +216,10 @@ msgid "Curve + variance + uncertainty"
 msgstr "曲線 + 分散 + 不確実性"
 
 msgid "Curve + variance"
-msgstr "曲線+分散"
+msgstr "曲線 + 分散"
 
 msgid "Curve + parameter uncertainty"
-msgstr "曲線+パラメータの不確かさ"
+msgstr "曲線 + パラメータの不確実性"
 
 msgid "FIML only available with ML-type estimators."
 msgstr "FIMLは、MLタイプの推定量でのみ使用できます。"
@@ -241,9 +241,8 @@ msgstr ""
 msgid ""
 "FIML missing value handling only available when all endogenous variables are "
 "of scale type. Ordinal endogenous variables in the model: %s"
-msgstr ""
-"FIML 欠損値処理は、すべての内生変数がスケール・タイプの場合にのみ使用できま"
-"す。モデルに順序型内生変数があります: %s"
+msgstr "FIMLによる欠測値の処理は、すべての内生変数がスケールタイプの場合にのみ使用で"
+"きます。モデルに順序つき内生変数が含まれています：%s"
 
 msgid ""
 "Estimation failed\n"
@@ -272,9 +271,8 @@ msgstr "総間接効果"
 msgid "Residual covariances"
 msgstr "残差共分散"
 
-#, fuzzy
 msgid "Path coefficients"
-msgstr "予測係数"
+msgstr "パス係数"
 
 msgid "Delta method"
 msgstr "デルタ法"
@@ -308,7 +306,7 @@ msgstr ""
 "ンプルが成功したわけではありません。 Clはサンプルの%4$.0f に基づいています。"
 
 msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
-msgstr "%1$s の標準誤差，%2$sの信用区間，%3$sの推定法。"
+msgstr "%1$ 標準誤差，%2 信頼区間，%3$ 推定法。"
 
 msgid "Path plot"
 msgstr "パスプロット"
@@ -377,7 +375,7 @@ msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr "推定に失敗しました! メッセージ: モデル %s が収束しませんでした!"
 
 msgid "Model fit"
-msgstr "モデル適合"
+msgstr "モデルフィット"
 
 msgid "Group"
 msgstr "群"
@@ -395,7 +393,7 @@ msgid "Baseline test"
 msgstr "ベースラインテスト"
 
 msgid "Difference test"
-msgstr "差異の検定"
+msgstr "差分検定"
 
 msgid "WARNING! %1$s: %2$s"
 msgstr ""
@@ -633,26 +631,25 @@ msgstr ""
 "の取り扱い」で「FIML」を選択することで、これを回避することができます."
 
 msgid "Satorra-Bentler scaled test-statistic"
-msgstr "Satorra-Bentlerのスケーリングされた検定統計量"
+msgstr "Satorra-Bentlerでスケーリングされた検定統計量"
 
 msgid "Yuan-Bentler scaled test-statistic"
-msgstr "Yuan-Bentlerのスケーリングされた検定統計量"
+msgstr "Yuan-Bentlerでスケール化された検定統計量"
 
 msgid "Yuan-Bentler (Mplus) scaled test-statistic"
-msgstr "Yuan-Bentler（Mplus）のスケーリングされた検定統計量"
+msgstr "Yuan-Bentler(M plus)のスケール化検定統計量"
 
 msgid "mean and variance adjusted test-statistic"
 msgstr "平均および分散調整済み検定統計量"
 
 msgid "scaled and shifted test-statistic"
-msgstr "スケーリングとシフトした検定統計量"
+msgstr "スケーリングおよびシフトされた検定統計量"
 
 msgid "bootstrap (Bollen-Stine) probability value"
-msgstr "ブートストラップ (ボレン・スティン) 確率値"
+msgstr "ブートストラップ（Bollen-Stine）確率値"
 
-#, fuzzy
 msgid "Baseline tests based on %s."
-msgstr "%s に基づくモデルテスト"
+msgstr "%s に基づくベースラインテスト"
 
 msgid ""
 "Baseline tests based on %s. Difference tests based on a function of two "
@@ -739,7 +736,7 @@ msgid "Average variance extracted"
 msgstr "平均分散抽出"
 
 msgid "AVE"
-msgstr ""
+msgstr "AVE"
 
 msgid "Reliability"
 msgstr "信頼性"
@@ -767,7 +764,7 @@ msgstr "z"
 msgid ""
 "Multivariate skewness and kurtosis calculated for observed variables from "
 "all models."
-msgstr "すべてのモデルの観測変数について、多変量解析による歪度と尖度を算出"
+msgstr "すべてのモデルから観測変数に対して計算された多変量歪度と尖度。"
 
 msgid ""
 "Not all used variables are numeric. Mardia's coefficients not available."
