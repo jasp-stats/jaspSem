@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2024-07-02 17:09+0000\n"
+"Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
+"Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/"
+"jaspsem-qml/ja/>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.7-dev\n"
 "X-Language: ja\n"
 "X-Qt-Contexts: true\n"
 
@@ -920,32 +926,31 @@ msgstr ""
 
 msgctxt "Description|"
 msgid "MIMIC Model"
-msgstr ""
+msgstr "MIMICモデル"
 
 msgctxt "Description|"
 msgid "Latent Growth"
-msgstr ""
+msgstr "潜在成長"
 
 msgctxt "MediationAnalysis|"
 msgid "Path coefficients"
-msgstr ""
+msgstr "パス係数"
 
 msgctxt "Description|"
 msgid "Partial Least Squares SEM"
-msgstr ""
+msgstr "部分的最小二乗SEM"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Model 1"
 msgstr "モデル1"
 
 msgctxt "PLSSEM|"
 msgid "Model"
-msgstr ""
+msgstr "モデル"
 
 msgctxt "PLSSEM|"
 msgid "Ignore structural model"
-msgstr ""
+msgstr "構造モデルを無視"
 
 msgctxt "PLSSEM|"
 msgid "Disattenuate composite correlations"
@@ -957,112 +962,107 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Squared Euclidean distance"
-msgstr ""
+msgstr "二乗ユークリッド距離"
 
 msgctxt "PLSSEM|"
 msgid "Weighted Euclidean distance"
-msgstr ""
+msgstr "重み付きユークリッド距離"
 
 msgctxt "PLSSEM|"
 msgid "Fisher transformed"
-msgstr ""
+msgstr "フィッシャー変換された"
 
 msgctxt "PLSSEM|"
 msgid "Arithmetic mean"
-msgstr ""
+msgstr "算術平均"
 
 msgctxt "PLSSEM|"
 msgid "Geometric mean"
-msgstr ""
+msgstr "幾何平均"
 
 msgctxt "PLSSEM|"
 msgid "Harmonic mean"
-msgstr ""
+msgstr "調和平均"
 
 msgctxt "PLSSEM|"
 msgid "Geometric-harmonic mean"
-msgstr ""
+msgstr "幾何調和平均"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Grouping Variable"
 msgstr "グループ化変数"
 
 msgctxt "PLSSEM|"
 msgid "Estimation"
-msgstr ""
+msgstr "推定"
 
 msgctxt "PLSSEM|"
 msgid "Error calculation method"
-msgstr ""
+msgstr "誤差計算方法"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "None"
 msgstr "なし"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Robust"
 msgstr "ロバスト"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Bootstrap"
 msgstr "ブートストラップ"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Confidence intervals"
 msgstr "信頼区間"
 
 msgctxt "PLSSEM|"
 msgid "Weighting approach"
-msgstr ""
+msgstr "重み付けアプローチ"
 
 msgctxt "PLSSEM|"
 msgid "PLS-PM"
-msgstr ""
+msgstr "PLS-PM"
 
 msgctxt "PLSSEM|"
 msgid "GSCA"
-msgstr ""
+msgstr "GSCA"
 
 msgctxt "PLSSEM|"
 msgid "SUMCORR"
-msgstr ""
+msgstr "SUMCORR"
 
 msgctxt "PLSSEM|"
 msgid "MAXVAR"
-msgstr ""
+msgstr "MAXVAR"
 
 msgctxt "PLSSEM|"
 msgid "SSQCORR"
-msgstr ""
+msgstr "SSQCORR"
 
 msgctxt "PLSSEM|"
 msgid "MINVAR"
-msgstr ""
+msgstr "MINVAR"
 
 msgctxt "PLSSEM|"
 msgid "GENVAR"
-msgstr ""
+msgstr "GENVAR"
 
 msgctxt "PLSSEM|"
 msgid "PCA"
-msgstr ""
+msgstr "PCA"
 
 msgctxt "PLSSEM|"
 msgid "Unit"
-msgstr ""
+msgstr "単位"
 
 msgctxt "PLSSEM|"
 msgid "Bartlett"
-msgstr ""
+msgstr "バートレット"
 
 msgctxt "PLSSEM|"
 msgid "Regression"
-msgstr ""
+msgstr "回帰"
 
 msgctxt "PLSSEM|"
 msgid "Inner weighting scheme"
