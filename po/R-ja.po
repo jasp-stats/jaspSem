@@ -306,7 +306,7 @@ msgstr ""
 "ンプルが成功したわけではありません。 Clはサンプルの%4$.0f に基づいています。"
 
 msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
-msgstr "%1$ 標準誤差，%2 信頼区間，%3$ 推定法。"
+msgstr "%1$s 標準誤差，%2$s 信頼区間，%3$s 推定法。"
 
 msgid "Path plot"
 msgstr "パスプロット"
