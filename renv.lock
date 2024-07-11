@@ -81,7 +81,7 @@
     },
     "TruncatedNormal": {
       "Package": "TruncatedNormal",
-      "Version": "2.2.2",
+      "Version": "2.3",
       "Source": "Repository"
     },
     "XML": {
@@ -646,6 +646,11 @@
       "Version": "1.9.8",
       "Source": "Repository"
     },
+    "qrng": {
+      "Package": "qrng",
+      "Version": "0.0-10",
+      "Source": "Repository"
+    },
     "quadprog": {
       "Package": "quadprog",
       "Version": "1.5-8",
@@ -654,11 +659,6 @@
     "ragg": {
       "Package": "ragg",
       "Version": "1.3.2",
-      "Source": "Repository"
-    },
-    "randtoolbox": {
-      "Package": "randtoolbox",
-      "Version": "2.0.4",
       "Source": "Repository"
     },
     "rappdirs": {
@@ -694,11 +694,6 @@
     "rmarkdown": {
       "Package": "rmarkdown",
       "Version": "2.27",
-      "Source": "Repository"
-    },
-    "rngWELL": {
-      "Package": "rngWELL",
-      "Version": "0.10-9",
       "Source": "Repository"
     },
     "rockchalk": {
@@ -754,6 +749,11 @@
     "sourcetools": {
       "Package": "sourcetools",
       "Version": "0.1.7-1",
+      "Source": "Repository"
+    },
+    "spacefillr": {
+      "Package": "spacefillr",
+      "Version": "0.3.3",
       "Source": "Repository"
     },
     "stringi": {
