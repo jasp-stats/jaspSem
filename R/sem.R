@@ -882,8 +882,6 @@ checkLavaanModel <- function(model, availableVars) {
                          overtitle = gettext("Standardized"))
     indtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
                          overtitle = gettext("Standardized"))
-    indtab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
-                         overtitle = gettext("Standardized"))
   }
 
   pecont[["ind"]] <- indtab
@@ -911,8 +909,6 @@ checkLavaanModel <- function(model, availableVars) {
                          overtitle = gettext("Standardized"))
     regtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
                          overtitle = gettext("Standardized"))
-    regtab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
-                         overtitle = gettext("Standardized"))
   }
 
   pecont[["reg"]] <- regtab
@@ -938,8 +934,6 @@ checkLavaanModel <- function(model, availableVars) {
     lvartab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
                           overtitle = gettext("Standardized"))
     lvartab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                          overtitle = gettext("Standardized"))
-    lvartab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
                           overtitle = gettext("Standardized"))
   }
 
@@ -967,8 +961,6 @@ checkLavaanModel <- function(model, availableVars) {
                           overtitle = gettext("Standardized"))
     lcovtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
                           overtitle = gettext("Standardized"))
-    lcovtab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
-                          overtitle = gettext("Standardized"))
   }
 
   pecont[["lcov"]] <- lcovtab
@@ -994,8 +986,6 @@ checkLavaanModel <- function(model, availableVars) {
     vartab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
                          overtitle = gettext("Standardized"))
     vartab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                         overtitle = gettext("Standardized"))
-    vartab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
                          overtitle = gettext("Standardized"))
   }
 
@@ -1023,15 +1013,16 @@ checkLavaanModel <- function(model, availableVars) {
                          overtitle = gettext("Standardized"))
     covtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
                          overtitle = gettext("Standardized"))
-    covtab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
-                         overtitle = gettext("Standardized"))
   }
 
   pecont[["cov"]] <- covtab
 
+  allTables <- list(indtab, regtab, lvartab, lcovtab, vartab, covtab)
+
   # Means
   if (options[["meanStructure"]]) {
     mutab <- createJaspTable(title = gettext("Intercepts"))
+    allTables[[length(allTables) + 1]] <- mutab
 
     if (options[["group"]] != "")
       mutab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -1052,8 +1043,6 @@ checkLavaanModel <- function(model, availableVars) {
                           overtitle = gettext("Standardized"))
       mutab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
                           overtitle = gettext("Standardized"))
-      mutab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
-                          overtitle = gettext("Standardized"))
     }
 
     pecont[["mu"]] <- mutab
@@ -1062,6 +1051,7 @@ checkLavaanModel <- function(model, availableVars) {
   originalSyntaxTable <- modelContainer[["originalSyntax"]][["object"]][[1]]
   if(nrow(originalSyntaxTable[originalSyntaxTable$op == ":=",]) > 0) {
     deftab <- createJaspTable(title = gettext("Defined parameters"))
+    allTables[[length(allTables) + 1]] <- deftab
 
     deftab$addColumnInfo(name = "lhs",      title = gettext("Name"),       type = "string")
     deftab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
@@ -1078,13 +1068,12 @@ checkLavaanModel <- function(model, availableVars) {
                            overtitle = gettext("Standardized"))
       deftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
                            overtitle = gettext("Standardized"))
-      deftab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
-                           overtitle = gettext("Standardized"))
     }
 
     pecont[["def"]] <- deftab
   } else {
     indefftab <- createJaspTable(title = gettext("Indirect effects"))
+    allTables[[length(allTables) + 1]] <- indefftab
 
     if (options[["group"]] != "")
       indefftab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -1104,13 +1093,12 @@ checkLavaanModel <- function(model, availableVars) {
                            overtitle = gettext("Standardized"))
       indefftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
                            overtitle = gettext("Standardized"))
-      indefftab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
-                           overtitle = gettext("Standardized"))
     }
 
     pecont[["indeff"]] <- indefftab
 
     totefftab <- createJaspTable(title = gettext("Total effects"))
+    allTables[[length(allTables) + 1]] <- totefftab
 
     if (options[["group"]] != "")
       totefftab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -1130,8 +1118,6 @@ checkLavaanModel <- function(model, availableVars) {
                               overtitle = gettext("Standardized"))
       totefftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
                               overtitle = gettext("Standardized"))
-      totefftab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number",
-                              overtitle = gettext("Standardized"))
     }
 
     pecont[["toteff"]] <- totefftab
@@ -1142,6 +1128,9 @@ checkLavaanModel <- function(model, availableVars) {
   if (!is.null(model)) parentContainer[[model[["name"]]]] <- pecont
 
   if (!ready || !inherits(fit, "lavaan")) return()
+
+
+
 
   # fill tables with values
   lvnames <- lavaan::lavNames(fit, "lv")
@@ -1154,6 +1143,15 @@ checkLavaanModel <- function(model, availableVars) {
   pe <- lavaan::parameterestimates(fit, standardized = TRUE, level = options[["ciLevel"]],
                                    boot.ci.type = bootstrapCiType)
   pe <- lavaan::lavMatrixRepresentation(lavaan::lav_partable_complete(pe))
+
+  # the standardized value "std.nox" is conditionally present since lavaan 0.6-18 (see https://lavaan.ugent.be/history/dot6.html)
+  # if it exists, add the column info and the column values.
+  hasStdNox <- "std.nox" %in% colnames(pe)
+  if (hasStdNox) {
+    lapply(allTables, function(table) {
+      table$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number", overtitle = gettext("Standardized"))
+    })
+  }
 
   if (options[["group"]] != "")  {
     pe[pe[["op"]] != ":=", "groupname"] <- lavaan::lavInspect(fit, "group.label")[pe[["group"]]]
@@ -1182,7 +1180,8 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["standardizedEstimate"]]) {
     indtab[["std.all"]] <- pe_ind[["std.all"]]
     indtab[["std.lv"]]  <- pe_ind[["std.lv"]]
-    indtab[["std.nox"]] <- pe_ind[["std.nox"]]
+    if (hasStdNox)
+      indtab[["std.nox"]] <- pe_ind[["std.nox"]]
   }
 
   # Structural model
@@ -1208,7 +1207,8 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["standardizedEstimate"]]) {
     regtab[["std.all"]] <- pe_reg[["std.all"]]
     regtab[["std.lv"]]  <- pe_reg[["std.lv"]]
-    regtab[["std.nox"]] <- pe_reg[["std.nox"]]
+    if (hasStdNox)
+      regtab[["std.nox"]] <- pe_reg[["std.nox"]]
   }
 
   # Latent variances
@@ -1231,7 +1231,8 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["standardizedEstimate"]]) {
     lvartab[["std.all"]] <- pe_lvar[["std.all"]]
     lvartab[["std.lv"]]  <- pe_lvar[["std.lv"]]
-    lvartab[["std.nox"]] <- pe_lvar[["std.nox"]]
+    if (hasStdNox)
+      lvartab[["std.nox"]] <- pe_lvar[["std.nox"]]
   }
 
   # Latent covariances
@@ -1253,7 +1254,8 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["standardizedEstimate"]]) {
     lcovtab[["std.all"]] <- pe_lcov[["std.all"]]
     lcovtab[["std.lv"]]  <- pe_lcov[["std.lv"]]
-    lcovtab[["std.nox"]] <- pe_lcov[["std.nox"]]
+    if (hasStdNox)
+      lcovtab[["std.nox"]] <- pe_lcov[["std.nox"]]
   }
 
   # Residual variances
@@ -1276,7 +1278,8 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["standardizedEstimate"]]) {
     vartab[["std.all"]] <- pe_var[["std.all"]]
     vartab[["std.lv"]]  <- pe_var[["std.lv"]]
-    vartab[["std.nox"]] <- pe_var[["std.nox"]]
+    if (hasStdNox)
+      vartab[["std.nox"]] <- pe_var[["std.nox"]]
   }
 
   # Residual covariances
@@ -1298,7 +1301,8 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["standardizedEstimate"]]) {
     covtab[["std.all"]] <- pe_cov[["std.all"]]
     covtab[["std.lv"]]  <- pe_cov[["std.lv"]]
-    covtab[["std.nox"]] <- pe_cov[["std.nox"]]
+    if (hasStdNox)
+      covtab[["std.nox"]] <- pe_cov[["std.nox"]]
   }
 
 
@@ -1321,7 +1325,8 @@ checkLavaanModel <- function(model, availableVars) {
     if (options[["standardizedEstimate"]]) {
       mutab[["std.all"]] <- pe_mu[["std.all"]]
       mutab[["std.lv"]]  <- pe_mu[["std.lv"]]
-      mutab[["std.nox"]] <- pe_mu[["std.nox"]]
+      if (hasStdNox)
+        mutab[["std.nox"]] <- pe_mu[["std.nox"]]
     }
   }
 
@@ -1383,7 +1388,8 @@ checkLavaanModel <- function(model, availableVars) {
     if (options[["standardizedEstimate"]]) {
       totefftab[["std.all"]] <- pe_toteff[["std.all"]]
       totefftab[["std.lv"]]  <- pe_toteff[["std.lv"]]
-      totefftab[["std.nox"]] <- pe_toteff[["std.nox"]]
+      if (hasStdNox)
+        totefftab[["std.nox"]] <- pe_toteff[["std.nox"]]
     }
 
     pe_indeff <- subset(pe_eff, substring(lhs, 1, nchar("total_")) != "total_")
@@ -1417,7 +1423,8 @@ checkLavaanModel <- function(model, availableVars) {
       if (options[["standardizedEstimate"]]) {
         indefftab[["std.all"]] <- pe_indeff[["std.all"]]
         indefftab[["std.lv"]]  <- pe_indeff[["std.lv"]]
-        indefftab[["std.nox"]] <- pe_indeff[["std.nox"]]
+        if (hasStdNox)
+          indefftab[["std.nox"]] <- pe_indeff[["std.nox"]]
       }
     }
   }
