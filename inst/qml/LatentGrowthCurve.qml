@@ -35,14 +35,13 @@ Form
 		{
 			name: "variables"
 			title: qsTr("Variables")
-			suggestedColumns: ["scale"]
+			allowedColumns: ["scale"]
 			id: variables
 		}
 		AssignedVariablesList
 		{
 			name: "regressions"
 			title: qsTr("Regressions")
-			suggestedColumns: ["scale"]
 			allowedColumns: ["scale"]
 		}
 		AssignedVariablesList
@@ -50,14 +49,13 @@ Form
 			name: "categorical"
 			id: categorical
 			title: qsTr("Factor")
-			suggestedColumns: ["ordinal", "nominal"]
-			allowedColumns: ["ordinal", "nominal"]
+			allowedColumns: ["nominal"]
 		}
 		AssignedVariablesList
 		{
 			name: "covariates"
 			title: qsTr("Time-varying covariates")
-			suggestedColumns: ["scale"]
+			allowedColumns: ["scale"]
 			debug: true
 			//listViewType: "RepeatedMeasures"
 			//source: variables.name
