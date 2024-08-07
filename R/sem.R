@@ -650,12 +650,11 @@ checkLavaanModel <- function(model, availableVars) {
   if (options[["group"]] != "") {
     fittab$addColumnInfo(name = "group",    title = gettext("Group"),              type = "string" )
   }
-
   fittab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
   fittab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
   fittab$addColumnInfo(name = "N",        title = gettext("n(Observations)"),    type = "integer")
   fittab$addColumnInfo(name = "npar",     title = gettext("Total"),              overtitle = gettext("n(Parameters)"), type = "integer")
-  fittab$addColumnInfo(name = "nfree",    title = gettext("Free"),              overtitle = gettext("n(Parameters)"), type = "integer")
+  fittab$addColumnInfo(name = "nfree",    title = gettext("Free"),               overtitle = gettext("n(Parameters)"), type = "integer")
   fittab$addColumnInfo(name = "Chisq",    title = gettext("&#967;&sup2;"),       type = "number" ,
                        overtitle = gettext("Baseline test"))
   fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
@@ -690,6 +689,7 @@ checkLavaanModel <- function(model, availableVars) {
                      options[["modelTest"]])
   if (testName == "default")
     testName <- "standard"
+
   if (length(semResults) == 1) {
     lrt <- .withWarnings(lavaan::lavTestLRT(semResults[[1]], type = "Chisq")[-1, ])
     chiSq <- lavaan::lavInspect(semResults[[1]], what = "test")[[testName]]$stat
@@ -700,14 +700,9 @@ checkLavaanModel <- function(model, availableVars) {
     nfree <- if (length(semResults[[1]]@Model@eq.constraints.K) == 0) lavaan::lavInspect(semResults[[1]], "npar") else length(semResults[[1]]@Model@eq.constraints.K[1,])
   } else {
     Ns <- vapply(semResults, lavaan::lavInspect, 0, what = "ntotal")
-    npar <- vapply(semResults, lavaan::lavInspect, 0, what = "npar")
-    nfree <- vapply(semResults, function(x) {
-      if(length(x@Model@eq.constraints.K) == 0) {
-        lavaan::lavInspect(x, "npar")
-      } else {
-        length(x@Model@eq.constraints.K[1,])
-      }
-    }, 0)
+    npar <- vapply(semResults, lavaan::lavInspect, 0, what = "npar") # without eq constraints
+    nfree <- sapply(semResults, function(x) x@loglik$npar) # with eq constraints
+
     lrt_args <- semResults
     names(lrt_args) <- "object" # (the first result is object, the others ...)
     lrt_args[["model.names"]] <- vapply(options[["models"]], getElement, name = "name", "")
@@ -795,11 +790,12 @@ checkLavaanModel <- function(model, availableVars) {
     ord <- match(modelDfs, sort(modelDfs))
     modelDfs <- modelDfs[ord]
 
-
     chiSq <- sapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$stat.group})
     logLGroup <- sapply(semResults, function(x) x@loglik$loglik.group)
 
-    npar <- sapply(semResults, function(x) x@loglik$npar)
+    nfree <- sapply(semResults, function(x) x@loglik$npar)
+    npar <- sapply(semResults, lavaan::lavInspect, 0, what = "npar") # without eq constraints
+
     aics <- -2 * logLGroup + 2 * matrix(npar, nrow(logLGroup), ncol(logLGroup), byrow = TRUE)
     Ns  <- sapply(semResults, function(x) x@Data@nobs)
     bics <- -2 * logLGroup + matrix(npar, nrow(logLGroup), ncol(logLGroup), byrow = TRUE) * matrix(sapply(Ns, log), nrow(Ns), ncol(Ns))
@@ -816,6 +812,8 @@ checkLavaanModel <- function(model, availableVars) {
     dtFillGroup[["AIC"]]      <- c(aics)
     dtFillGroup[["BIC"]]      <- c(bics)
     dtFillGroup[["N"]]        <- c(Ns)
+    dtFillGroup[["npar"]]     <- c(npar)
+    dtFillGroup[["nfree"]]    <- c(nfree)
     dtFillGroup[["Chisq"]]    <- c(chiSq)
     dtFillGroup[["Df"]]       <- c(modelDfsRep)
 
