@@ -41,6 +41,8 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   .semMardiasCoefficient(modelContainer, dataset, options, ready)
   .plsSemReliabilities(modelContainer, dataset, options, ready)
   .plsSemCor(modelContainer, options, ready)
+
+  .plsAddConstructScores(jaspResults, modelContainer, options, ready)
 }
 
 .plsSemPrepOpts <- function(options) {
@@ -149,15 +151,17 @@ checkCSemModel <- function(model, availableVars) {
 
 
 .plsSemModelContainer <- function(jaspResults) {
+
   if (!is.null(jaspResults[["modelContainer"]])) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("weightingApproach", "correlationMatrix", "convergenceCriterion",
-                              "estimateStructural", "group", "correctionFactor", "compositeCorrelationDisattenuated",
-                              "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod", "robustMethod", "bootstrapSamples", "ciLevel",
-                              "setSeed", "seed", "handlingOfInadmissibles", "Data", "handlingOfFlippedSigns", "endogenousIndicatorPrediction",
-                              "kFolds", "repetitions", "benchmark", "predictedScore"))
+    modelContainer$dependOn(c("syntax", "correlationMatrix", "convergenceCriterion",
+                              "estimateStructural", "group", "correctionFactor", "consistentPartialLeastSquares",
+                              "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod",
+                              "robustMethod", "bootstrapSamples", "ciLevel",
+                              "setSeed", "seed", "handlingOfInadmissibles", "endogenousIndicatorPrediction",
+                              "kFolds", "repetitions", "benchmark", "predictedScore", "models"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -237,11 +241,7 @@ checkCSemModel <- function(model, availableVars) {
                                                  .user_funs = tickFunction,
                                                  .resample_method = options[["robustMethod"]],
                                                  .handle_inadmissibles = options[["handlingOfInadmissibles"]],
-                                                 .sign_change_option = switch(options[["handlingOfFlippedSigns"]],
-                                                                              "individualReestimation" = "individual_reestimate",
-                                                                              "constructReestimation" = "construct_reestimate",
-                                                                              options[["handlingOfFlippedSigns"]]
-                                                                              ),
+                                                 .sign_change_option = "none",
                                                  .seed = if (options[["setSeed"]]) options[["seed"]]))
 
 
@@ -278,7 +278,7 @@ checkCSemModel <- function(model, availableVars) {
   cSemOpts <- list()
 
   # model features
-  cSemOpts[[".approach_weights"]]            <- options[["weightingApproach"]]
+  cSemOpts[[".approach_weights"]]            <- "PLS-PM"
   cSemOpts[[".approach_cor_robust"]]         <- if (options[["correlationMatrix"]] == "pearson") "none" else options[["correlationMatrix"]]
   cSemOpts[[".approach_nl"]]                 <- options[["approachNonLinear"]]
   cSemOpts[[".conv_criterion"]]              <- switch(options[["convergenceCriterion"]],
@@ -290,7 +290,7 @@ checkCSemModel <- function(model, availableVars) {
   cSemOpts[[".PLS_ignore_structural_model"]] <- options[["structuralModelIgnored"]]
   cSemOpts[[".PLS_weight_scheme_inner"]]     <- options[["innerWeightingScheme"]]
 
-  if (options[["compositeCorrelationDisattenuated"]]) {
+  if (options[["consistentPartialLeastSquares"]]) {
     cSemOpts[".disattenuate"] <- TRUE
     cSemOpts[".PLS_approach_cf"] <- switch(options[["correctionFactor"]],
                                            "squaredEuclidean" = "dist_squared_euclid",
@@ -1059,19 +1059,19 @@ checkCSemModel <- function(model, availableVars) {
     predictcont <- createJaspContainer(name, initCollapsed = TRUE)
   }
 
-  #Error messages
+  # Error messages
 
   if (options[["benchmark"]] != "none" && options[["benchmark"]] != "all") {
     benchmarks <- options[["benchmark"]]
   }
   else if (options[["benchmark"]] == "all") {
     benchmarks <- c("lm", "PLS-PM", "GSCA", "PCA", "MAXVAR")
-    benchmarks <- benchmarks[benchmarks != options[["weightingApproach"]]]
+    benchmarks <- benchmarks[benchmarks != "PLS-PM"]
   } else {
     benchmarks <- NULL
   }
 
-  if (options[["benchmark"]] != "none" && options[["benchmark"]] != "all" && benchmarks == options[["weightingApproach"]]) {
+  if (options[["benchmark"]] != "none" && options[["benchmark"]] != "all" && benchmarks == "PLS-PM") {
     errormsg <- gettextf("The target model uses the same weighting approach as the benchmark model, please choose another benchmark.")
     modelContainer$setError(errormsg)
     modelContainer$dependOn("benchmark")
@@ -1961,6 +1961,72 @@ checkCSemModel <- function(model, availableVars) {
   return()
 }
 
+
+.plsAddConstructScores <- function(jaspResults, modelContainer, options, ready) {
+
+  if (!ready ||
+      !is.null(jaspResults[["addedScoresContainer"]]) ||
+      modelContainer$getError() ||
+      !options[["addConstructScores"]])
+  {
+    return()
+  }
+
+  container    <- createJaspContainer()
+  container$dependOn(optionsFromObject = modelContainer, options = "addConstructScores")
+  jaspResults[["addedScoresContainer"]] <- container
+
+  models <- modelContainer[["models"]][["object"]]
+  results <- modelContainer[["results"]][["object"]]
+
+  modelNames <- sapply(models, function(x) x[["name"]])
+  modelNames <- gsub(" ", "_", modelNames)
+  allNamesR <- c()
+  # loop over the models
+  for (i in seq_len(length(results))) {
+    scores <- cSEM::getConstructScores(results[[i]])$Construct_scores
+
+    # then loop over the scores
+    scoreNames <- colnames(scores)
+    for (ii in seq_len(ncol(scores))) {
+
+      colNameR <- paste0(modelNames[i], "_", scoreNames[ii])
+
+      if (jaspBase:::columnExists(colNameR) && !jaspBase:::columnIsMine(colNameR)) {
+        .quitAnalysis(gettextf("Column '%s' name already exists in the dataset", colNameR))
+      }
+
+      container[[colNameR]] <- jaspBase::createJaspColumn(colNameR)
+      container[[colNameR]]$setScale(scores[, ii])
+
+      # save the names to keep track of all names
+      allNamesR <- c(allNamesR, colNameR)
+    }
+  }
+
+  jaspResults[["addedScoresContainer"]] <- container
+
+  # check if there are previous colNames that are not needed anymore and delete the cols
+  oldNames <- jaspResults[["createdColumnNames"]][["object"]]
+  newNames <- allNamesR
+  if (!is.null(oldNames)) {
+    noMatch <- which(!(oldNames %in% newNames))
+    if (length(noMatch) > 0) {
+      for (iii in 1:length(noMatch)) {
+        jaspBase:::columnDelete(oldNames[noMatch[iii]])
+      }
+    }
+  }
+
+  # save the created col names
+  jaspResults[["createdColumnNames"]] <- createJaspState(allNamesR)
+
+
+  return()
+
+}
+
+
 .plsSEMVIFhelper <- function(fit){
   # Make VIFs into a matrix
   # Restructure the VIFs into a table.
@@ -1969,10 +2035,10 @@ checkCSemModel <- function(model, availableVars) {
   idx <- which(VIFspath$VIF!=0,arr.ind = T)
 
   if(nrow(idx)!=0){
-  VIFDf <- data.frame(Relation=paste(rownames(VIFspath$VIF)[idx[,'row']],'~',colnames(VIFspath$VIF)[idx[,'col']]),
-                          vif=VIFspath$VIF[cbind(rownames(VIFspath$VIF)[idx[,'row']],colnames(VIFspath$VIF)[idx[,'col']])])
+    VIFDf <- data.frame(Relation=paste(rownames(VIFspath$VIF)[idx[,'row']],'~',colnames(VIFspath$VIF)[idx[,'col']]),
+                        vif=VIFspath$VIF[cbind(rownames(VIFspath$VIF)[idx[,'row']],colnames(VIFspath$VIF)[idx[,'col']])])
 
-  VIFvector <-setNames(VIFDf$vif, VIFDf$Relation)
+    VIFvector <-setNames(VIFDf$vif, VIFDf$Relation)
   } else{
     VIFvector <- NULL
   }
@@ -1988,12 +2054,12 @@ checkCSemModel <- function(model, availableVars) {
 
 
   if(!is.null(VIFsweights)&sum(VIFsweights)!=0){
-  idx <- which(VIFsweights!=0,arr.ind = T)
+    idx <- which(VIFsweights!=0,arr.ind = T)
 
-  VIFBDf <- data.frame(Relation=paste(rownames(VIFsweights)[idx[,'row']],'<~',colnames(VIFsweights)[idx[,'col']]),
-                      vif=VIFsweights[cbind(rownames(VIFsweights)[idx[,'row']],colnames(VIFsweights)[idx[,'col']])])
+    VIFBDf <- data.frame(Relation=paste(rownames(VIFsweights)[idx[,'row']],'<~',colnames(VIFsweights)[idx[,'col']]),
+                         vif=VIFsweights[cbind(rownames(VIFsweights)[idx[,'row']],colnames(VIFsweights)[idx[,'col']])])
 
-  VIFBvector <-setNames(VIFBDf$vif, VIFBDf$Relation)
+    VIFBvector <-setNames(VIFBDf$vif, VIFBDf$Relation)
 
   } else{
     VIFBvector <- NULL
@@ -2001,4 +2067,3 @@ checkCSemModel <- function(model, availableVars) {
   return(VIFBvector)
 
 }
-
