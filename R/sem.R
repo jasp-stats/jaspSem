@@ -2138,7 +2138,7 @@ checkLavaanModel <- function(model, availableVars) {
   pathVars <- unique(c(modelTable[modelTable$op == "~", ]$rhs, modelTable[modelTable$op == "~", ]$lhs))
 
   if (length(pathVars) < 2) {
-    .quitAnalysis(gettext("Please include at least one path in the model to perform a sensitivity analysis."))
+    .quitAnalysis(gettext("Please include at least one regression path in the model to perform a sensitivity analysis."))
   }
 
   sensModel <- analyticModel
