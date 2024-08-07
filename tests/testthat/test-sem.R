@@ -208,6 +208,48 @@ test_that("Model fit table results match", {
                                       3.66384717284747, 3, 2))
 })
 
+test_that("Sensitivity analysis works", {
+  options <- analysisOptions("SEM")
+  options$samplingWeights <- ""
+  options$sensitivityAnalysis <- TRUE
+  options$sizeOfSolutionArchive <- 10
+  options$maxIterations <- 10
+  options$informationMatrix <- "expected"
+  options$estimator <- "default"
+  options$modelTest <- "standard"
+  options$emulation <- "lavaan"
+  options$group <- ""
+  options$setSeed <- TRUE
+  options$seed <- 1
+  options$models <- list(list(name = "Model1", syntax = list(model = "\n  # latent variable definitions\n    ind60 =~ x1 + x2 + x3\n    dem60 =~ y1 + y2 + y3 + y4\n    dem65 =~ y5 + y6 + y7 + y8\n  # regressions\n    dem60 ~ ind60\n    dem65 ~ ind60 + dem60\n  # residual (co)variances\n    y1 ~~ y5\n    y2 ~~ y4 + y6\n    y3 ~~ y7\n    y4 ~~ y8\n    y6 ~~ y8\n  ",
+                                                             columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))))
+  set.seed(1)
+  results <- runAnalysis("SEM", "C:/JASP/Development/Modules/jaspSem/tests/testthat/poldem_grouped.csv", options)
+
+  sencont <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_sensitivity"]][["collection"]]
+  sensumtab <- sencont[["modelContainer_sensitivity_sensum"]][["data"]]
+  senpartab <- sencont[["modelContainer_sensitivity_senpar"]][["data"]]
+  sensumpartab <- sencont[["modelContainer_sensitivity_sensumpar"]][["data"]]
+
+  expect_equal_tables(sensumtab, list(0.446712905437343, 0.817304450826043, 0.454361526415421, 0.109312503661981,
+                                      "dem60~ind60", 1.54185554406272e-05, 0.397240001459216, 0.885228943292037,
+                                      0.940534819295127, 0.889796135759017, 0.838319341744439, "dem65~dem60",
+                                      0, "", 0.1822594099762, 0.335620470155875, 0.172277112909256,
+                                      -0.13098545021451, "dem65~ind60", 0.00967601956304076, 0.125746802148124
+  ))
+
+
+  expect_equal_tables(senpartab, list(0.401998712582474, -0.133707492109712, 0.839306883347651, "dem60~ind60",
+                                      0.136451103548822, -0.356128009622868, -0.859719801919832, "dem65~ind60"
+  ))
+
+
+  expect_equal_tables(sensumpartab, list(0.401998712582474, 0.113806982564325, -0.428828062076269, "dem60~phantom",
+                                         0.21276746153651, -0.00984860889287904, -0.356128009622868,
+                                         "dem65~phantom", 0.87878147725911, 0.249441092202601, -0.937148975256221,
+                                         "ind60~phantom"))
+})
+
 test_that("Multigroup, multimodel SEM works", {
 
 rsquared <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_rsquared"]][["data"]]

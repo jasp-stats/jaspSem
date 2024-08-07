@@ -12,16 +12,18 @@ Encoding: UTF-8
 Imports:
   forcats,
   ggplot2,
-  jaspBase,
-  jaspGraphs,
   lavaan,
   cSEM,
   reshape2,
+  jaspBase,
+  jaspGraphs,
   semPlot,
   semTools,
   stringr,
   tibble,
-  tidyr
+  tidyr,
+  SEMsens
 Remotes:
   jasp-stats/jaspBase,
   jasp-stats/jaspGraphs
+

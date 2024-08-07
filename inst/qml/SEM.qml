@@ -337,4 +337,53 @@ Section
 			}
 		}
 	}
+	Section 
+	{
+		title: qsTr("Sensitivity Analysis")
+		CheckBox
+		{
+			name: "sensitivityAnalysis"
+			label: qsTr("Run sensitivity analysis")
+			RadioButtonGroup
+			{
+				title: qsTr("Search algorithm")
+				name: "searchAlgorithm"
+				id: search
+				RadioButton
+				{
+					value: "antColonyOptimization"
+					label: qsTr("Ant colony optimization")
+					checked: true 
+					IntegerField { name: "numberOfAnts"; 			label: qsTr("Number of ants"); 					defaultValue: 10	}
+					IntegerField { name: "sizeOfSolutionArchive"; 	label: qsTr("Size of the solution archive"); 	defaultValue: 100	}
+					DoubleField { name: "convergenceRateThreshold";	label: qsTr("Convergence rate threshold");		defaultValue: 0.1;	negativeValues: false	}
+				}
+				RadioButton { value: "tabuSearch"; 				label: qsTr("Tabu search") 								}
+			}
+			DropDown
+			{
+				name: "optimizerFunction"
+				label: qsTr("Optimizer function")
+				values:
+				[
+					{ label: qsTr("% change mean estimate")			, value: "percentChangeMeanEstimate"	},
+					{ label: qsTr("Sd of deviance / old estimate")	, value: "sdOfDeviance"					},
+					{ label: qsTr("Change of p-value")				, value: "changeOfPvalue"				},
+					{ label: qsTr("Distance of p-value from alpha")	, value: "distanceOfPvalue"				},
+					{ label: qsTr("Change of RMSEA")				, value: "changeOfRmsea"				},
+					{ label: qsTr("Distance of RMSEA from 0.05")	, value: "distanceOfRmsea"				}
+				]
+			}
+			DoubleField
+			{
+				name: "alpha"
+				label: qsTr("Significance level")
+				negativeValues: false
+				decimals: 4
+				defaultValue: 0.05
+			}
+			IntegerField { name: "maxIterations"; 	label: qsTr("Maximum number of iterations"); 	defaultValue: 1000	}
+			SetSeed{}
+		}
+	}
 }
