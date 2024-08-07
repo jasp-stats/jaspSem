@@ -653,7 +653,9 @@ checkLavaanModel <- function(model, availableVars) {
 
   fittab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
   fittab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
-  fittab$addColumnInfo(name = "N",        title = gettext("n"),                  type = "integer")
+  fittab$addColumnInfo(name = "N",        title = gettext("n(Observations)"),    type = "integer")
+  fittab$addColumnInfo(name = "npar",     title = gettext("total"),              overtitle = gettext("n(Parameters)"), type = "integer")
+  fittab$addColumnInfo(name = "nfree",    title = gettext("free"),              overtitle = gettext("n(Parameters)"), type = "integer")
   fittab$addColumnInfo(name = "Chisq",    title = gettext("&#967;&sup2;"),       type = "number" ,
                        overtitle = gettext("Baseline test"))
   fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
@@ -694,8 +696,18 @@ checkLavaanModel <- function(model, availableVars) {
     dfs <- lavaan::lavInspect(semResults[[1]], what = "test")[[testName]]$df
     rownames(lrt$value) <- options[["models"]][[1]][["name"]]
     Ns <- lavaan::lavInspect(semResults[[1]], "ntotal")
+    npar <- lavaan::lavInspect(semResults[[1]], "npar")
+    nfree <- if (length(semResults[[1]]@Model@eq.constraints.K) == 0) lavaan::lavInspect(semResults[[1]], "npar") else length(semResults[[1]]@Model@eq.constraints.K[1,])
   } else {
     Ns <- vapply(semResults, lavaan::lavInspect, 0, what = "ntotal")
+    npar <- vapply(semResults, lavaan::lavInspect, 0, what = "npar")
+    nfree <- vapply(semResults, function(x) {
+      if(length(x@Model@eq.constraints.K) == 0) {
+        lavaan::lavInspect(x, "npar")
+      } else {
+        length(x@Model@eq.constraints.K[1,])
+      }
+    }, 0)
     lrt_args <- semResults
     names(lrt_args) <- "object" # (the first result is object, the others ...)
     lrt_args[["model.names"]] <- vapply(options[["models"]], getElement, name = "name", "")
@@ -710,6 +722,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   }
 
+<<<<<<< HEAD
   dtFill <- data.frame(matrix(ncol = 0, nrow = length(rownames(lrt$value))))
 
   dtFill[["Model"]]    <- rownames(lrt$value)
@@ -725,6 +738,20 @@ checkLavaanModel <- function(model, availableVars) {
     dtFill[["ddf"]]      <- lrt$value[["Df diff"]]
     dtFill[["dPrChisq"]] <- lrt$value[["Pr(>Chisq)"]]
   }
+=======
+  fittab[["Model"]]    <- rownames(lrt$value)
+  fittab[["AIC"]]      <- lrt$value[["AIC"]]
+  fittab[["BIC"]]      <- lrt$value[["BIC"]]
+  fittab[["N"]]        <- Ns
+  fittab[["npar"]]     <- npar
+  fittab[["nfree"]]    <- nfree
+  fittab[["Chisq"]]    <- lrt$value[["Chisq"]]
+  fittab[["Df"]]       <- lrt$value[["Df"]]
+  fittab[["PrChisq"]]  <- pchisq(q = lrt$value[["Chisq"]], df = lrt$value[["Df"]], lower.tail = FALSE)
+  fittab[["dchisq"]]   <- lrt$value[["Chisq diff"]]
+  fittab[["ddf"]]      <- lrt$value[["Df diff"]]
+  fittab[["dPrChisq"]] <- lrt$value[["Pr(>Chisq)"]]
+>>>>>>> 66b19e4d7 (added n(Parameters) to fit table)
 
   # add warning footnote
   fnote <- ""

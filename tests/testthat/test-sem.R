@@ -734,7 +734,7 @@ test_that("t-size RMSEA and CFI match values of original article (Katerina M. Ma
                             V11 = c(0.374, 0.448, 0.359, 0.368, 0.348, 0.404, 0.335, 0.591, 0.608, 0.659, 1.63, 0.64),
                             V12 = c(0.381, 0.486, 0.387, 0.359, 0.37, 0.438, 0.371, 0.556, 0.69, 0.529, 0.64, 1.673)),
                        class = "data.frame", row.names = c("V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12"))
-  results <- jaspTools::runAnalysis("SEM", dataset, options)
+  results <- jaspTools::runAnalysis("SEMInternal", dataset, options)
 
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_incrits"]][["data"]]
   jaspTools::expect_equal_tables(table,
@@ -788,7 +788,7 @@ test_that("Variance-covariance input works", {
   data <- as.data.frame(data)
 
   set.seed(1)
-  results <- jaspTools::runAnalysis("SEM", data, options)
+  results <- jaspTools::runAnalysis("SEMInternal", data, options)
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
 
   if (jaspBase::getOS() == "osx") {

@@ -17,7 +17,11 @@ options$correctionFactor          <- "squaredEuclidean"
 options$handlingOfFlippedSigns    <- "none"
 
 
+<<<<<<< HEAD
 results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
+=======
+  results <- jaspTools::runAnalysis("PLSSEMInternal", "poldem_grouped.csv", options)
+>>>>>>> 66b19e4d7 (added n(Parameters) to fit table)
 
 test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
@@ -48,12 +52,16 @@ test_that("Regression Coefficients table results match", {
                                       29.4646949739788, "dem65", "dem60", 1.23851898205725))
 })
 
+<<<<<<< HEAD
 test_that("Total effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_total"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(0.438843974833827, "dem60", "ind60", 0.557409023483468, "dem65",
                                       "ind60", 0.908670674402449, "dem65", "dem60"))
 })
+=======
+  results <- jaspTools::runAnalysis("PLSSEMInternal", "poldem_grouped.csv", options)
+>>>>>>> 66b19e4d7 (added n(Parameters) to fit table)
 
 test_that("Weights table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_weight"]][["data"]]
@@ -706,7 +714,11 @@ options$rSquared                      <- TRUE
 options$mardiasCoefficient            <- TRUE
 options$reliabilityMeasures           <- TRUE
 
+<<<<<<< HEAD
 results <- jaspTools::runAnalysis("PLSSEM", cSEM::satisfaction, options)
+=======
+  results <- jaspTools::runAnalysis("PLSSEMInternal", cSEM::satisfaction, options)
+>>>>>>> 66b19e4d7 (added n(Parameters) to fit table)
 
 test_that("Additional Fit Measures table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["data"]]
