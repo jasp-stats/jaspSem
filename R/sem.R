@@ -43,6 +43,7 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
   .semMardiasCoefficient(modelContainer, dataset, options, ready)
   .semCov(modelContainer, dataset, options, ready)
   .semMI(modelContainer, datset, options, ready)
+  .semSensitivity(modelContainer, dataset, options, ready)
   .semPathPlot(modelContainer, dataset, options, ready)
 }
 
@@ -243,7 +244,6 @@ checkLavaanModel <- function(model, availableVars) {
     # where possible, prefill results with old results
     results[seq_along(reuse)] <- oldresults[reuse]
   }
-
   # generate lavaan options list
   lavopts <- .semOptionsToLavOptions(options, dataset)
 
@@ -473,7 +473,8 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 .semEffectsSyntax <- function(originalSyntax, syntaxTable, regressions, dataset, options) {
-  if(options[["group"]] == "") {
+
+    if(options[["group"]] == "") {
     regressionLabels <- letters[1:nrow(regressions)]
     if (!any(syntaxTable[, "label"] %in% regressionLabels)) {
       regressions[, "label"] <- letters[1:nrow(regressions)]
@@ -590,7 +591,7 @@ checkLavaanModel <- function(model, availableVars) {
         for (label in 1:length(indirect_effects_splitted[[effect]])) {
           if (label == 1) {
             pred <- c(pred, regressions[[group]][regressions[[group]]$label == indirect_effects_splitted[[effect]][[label]], "rhs"])
-            effect_name <- paste0(regressions[[group]][regressions[[group]]$label == indirect_effects_splitted[[effect]][[label]], "rhs"], "_", regressions[[group]][regressions[[group]]$label == indirect_effects_splitted[[effect]][[label]], "lhs"], "_ ", groups[group])
+            effect_name <- paste0(regressions[[group]][regressions[[group]]$label == indirect_effects_splitted[[effect]][[label]], "rhs"], "_", regressions[[group]][regressions[[group]]$label == indirect_effects_splitted[[effect]][[label]], "lhs"], "_", groups[group])
           } else if (label == length(indirect_effects_splitted[[effect]])) {
             out <- c(out, regressions[[group]][regressions[[group]]$label == indirect_effects_splitted[[effect]][[label]], "lhs"])
             effect_name <- paste0(effect_name, "_", regressions[[group]][regressions[[group]]$label == indirect_effects_splitted[[effect]][[label]], "lhs"])
@@ -607,7 +608,7 @@ checkLavaanModel <- function(model, availableVars) {
     for (pred in unique(c(pred,regressions[[group]][["rhs"]]))) {
       for (out in unique(c(out, regressions[[group]][["lhs"]]))) {
         total_effect <- NULL
-        total_effect_name <- paste0("total_ ", groups[group], "_", pred, "_", out)
+        total_effect_name <- paste0("total_", groups[group], "_", pred, "_", out)
         indirect_effect_idx <- unlist(lapply(names(indirect_effects), function(x) {
           startsWith(x, pred) && endsWith(x, out)
         }))
@@ -2080,291 +2081,6 @@ checkLavaanModel <- function(model, availableVars) {
   if (!is.null(model)) parentContainer[[model[["name"]]]] <- htmtcont
 }
 
-.semSensitivity <- function(modelContainer, dataset, options, ready) {
-  if (!options[["sensitivityAnalysis"]] || !is.null(modelContainer[["sensitivity"]])) return()
-
-  sensitivity <- createJaspContainer(gettext("Sensitivity analysis"))
-  sensitivity$position <- 0.8
-  sensitivity$dependOn(c("sensitivityAnalysis", "searchAlgorithm", "optimizerFunction", "sizeOfSolutionArchive", "numberOfAnts", "alpha", "maxIterations", "setSeed", "seed", "models"))
-
-  modelContainer[["sensitivity"]] <- sensitivity
-
-  if (length(options[["models"]]) < 2) {
-    .semSensitivityTables(modelContainer[["results"]][["object"]][[1]], NULL, sensitivity, dataset, options, ready)
-  } else {
-
-    for (i in seq_along(options[["models"]])) {
-      fit <- modelContainer[["results"]][["object"]][[i]]
-      model <- options[["models"]][[i]]
-      .semSensitivityTables(fit, model, sensitivity, dataset, options, ready)
-    }
-  }
-}
-
-.semSensitivityTables <- function(fit, model, parentContainer, dataset, options, ready) {
-  if (is.null(model)) {
-    sencont <- parentContainer
-  } else {
-    sencont <- createJaspContainer(model[["name"]], initCollapsed = TRUE)
-  }
-
-
-  # Summary of sensitivity analysis
-  sensumtab <- createJaspTable(title = gettext("Summary of sensitivity analysis"))
-
-  if (options[["group"]] != "")
-    sensumtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
-
-  sensumtab$addColumnInfo(name = "path",       title = gettext("Path"),          type = "string")
-  sensumtab$addColumnInfo(name = "est",        title = gettext("Standardized estimate"), overtitle = gettext("Original model"),    type = "number")
-  sensumtab$addColumnInfo(name = "pvalue",     title = gettext("p"),                     overtitle = gettext("Original model"),    type = "pvalue")
-  sensumtab$addColumnInfo(name = "pvaluesens", title = gettext("p\u002A"),               overtitle = gettext("Sensitivity model"), type = "pvalue")
-  sensumtab$addColumnInfo(name = "mean",       title = gettext("Mean"),                  overtitle = gettext("Sensitivity model"), type = "number")
-  sensumtab$addColumnInfo(name = "min",        title = gettext("Min"),                   overtitle = gettext("Sensitivity model"), type = "number")
-  sensumtab$addColumnInfo(name = "max",        title = gettext("Max"),                   overtitle = gettext("Sensitivity model"), type = "number")
-
-  sencont[["sensum"]] <- sensumtab
-
-  if (!ready || !inherits(fit, "lavaan")) return()
-
-  # create SEMsens model
-  if (is.null(model)) {
-    analyticModel <- .semTranslateModel(options[["models"]][[1]][["syntax"]], dataset)
-  } else {
-    analyticModel <- .semTranslateModel(model[["syntax"]], dataset)
-  }
-  #enrich model
-  modelTable <- lavaan::lavInspect(fit, what = "list")
-  pathVars <- unique(c(modelTable[modelTable$op == "~", ]$rhs, modelTable[modelTable$op == "~", ]$lhs))
-
-  if (length(pathVars) < 2) {
-    .quitAnalysis(gettext("Please include at least one regression path in the model to perform a sensitivity analysis."))
-  }
-
-  sensModel <- analyticModel
-  for (i in seq_along(pathVars)) {
-    sensParameter <- paste0("\n", pathVars[i], " ~", " phantom", i, "*phantom\n")
-    sensModel <- paste0(sensModel, sensParameter)
-  }
-  sensModel <- paste0(sensModel, "\nphantom =~ 0\nphantom ~~ 1*phantom\n")
-  optimizerFunction <- switch(options[["optimizerFunction"]],
-                              "percentChangeMeanEstimate" = 1,
-                              "sdOfDeviance"              = 2,
-                              "changeOfPvalue"            = 3,
-                              "distanceOfPvalue"          = 4,
-                              "changeOfRmsea"             = 5,
-                              "distanceOfRmsea"           = 6
-  )
-
-  if (options[["group"]] != "") {
-    saTables <- lapply(1:5, function(x) data.frame())
-    for (group in unique(dataset[, options[["group"]]])) {
-      data <- dataset[dataset[[options[["group"]]]] == group,]
-      if(options[["searchAlgorithm"]] == "antColonyOptimization") {
-        iter <- ifelse((2 * options[["sizeOfSolutionArchive"]]) >= options[["maxIterations"]], (options[["sizeOfSolutionArchive"]] + options[["numberOfAnts"]]), (options[["maxIterations"]] + options[["numberOfAnts"]]))
-        startProgressbar(iter,
-                         sprintf("Performing sensitivity analysis (model: %1$s, group: %2$s)",
-                                 ifelse(is.null(model),
-                                        options[["models"]][[1]][["name"]],
-                                        model[["name"]]),
-                                 group))
-        sa <- .sa.aco(data = data, model = analyticModel, sens.model = sensModel, n.of.ants = options[["numberOfAnts"]], k = options[["sizeOfSolutionArchive"]], rate.of.conv = options[["convergenceRateThreshold"]], opt.fun = optimizerFunction, max.iter = options[["maxIterations"]], sig.level = options[["alpha"]], seed = if (options[["setSeed"]]) options[["seed"]] else NULL)
-      }
-      if(options[["searchAlgorithm"]] == "tabuSearch") {
-        startProgressbar(options[["maxIterations"]],
-                         sprintf("Performing sensitivity analysis (model: %1$s, group: %2$s)",
-                                 ifelse(is.null(model),
-                                        options[["models"]][[1]][["name"]],
-                                        model[["name"]]),
-                                 group))
-        sa <- .sa.tabu(data = data, model = analyticModel, sens.model = sensModel, opt.fun = optimizerFunction, max.iter = options[["maxIterations"]], sig.level = options[["alpha"]], seed = if (options[["setSeed"]]) options[["seed"]] else NULL)
-      }
-      saTablesRows <- SEMsens::sens.tables(sa)
-      saTablesRows <- sapply(saTablesRows, function(x) {
-        cbind(x, "group" = rep(group, length(x[, 1])), "rowname" = row.names(x))
-        })
-      for (table in seq_along(saTablesRows)) {
-        saTables[[table]] <- rbind(saTables[[table]], saTablesRows[[table]])
-      }
-    }
-    saTables <- sapply(saTables, as.data.frame)
-    saTables <- sapply(saTables, function(x) {x[order(x[["group"]], x[["rowname"]]),]})
-  } else {
-    if (options[["dataType"]] == "raw") {
-      if(options[["searchAlgorithm"]] == "antColonyOptimization") {
-        iter <- ifelse((2 * options[["sizeOfSolutionArchive"]]) >= options[["maxIterations"]], (options[["sizeOfSolutionArchive"]] + options[["numberOfAnts"]]), (options[["maxIterations"]] + options[["numberOfAnts"]]))
-        startProgressbar(iter,
-                         sprintf("Performing sensitivity analysis (model: %1$s)",
-                                 ifelse(is.null(model),
-                                        options[["models"]][[1]][["name"]],
-                                        model[["name"]])
-                                 ))
-        sa <- .sa.aco(data = dataset, model = analyticModel, sens.model = sensModel, n.of.ants = options[["numberOfAnts"]], k = options[["sizeOfSolutionArchive"]], rate.of.conv = options[["convergenceRateThreshold"]], opt.fun = optimizerFunction, max.iter = options[["maxIterations"]], sig.level = options[["alpha"]], seed = if (options[["setSeed"]]) options[["seed"]] else NULL)
-      }
-      if(options[["searchAlgorithm"]] == "tabuSearch") {
-        startProgressbar(options[["maxIterations"]],
-                         sprintf("Performing sensitivity analysis (model: %1$s)",
-                                 ifelse(is.null(model),
-                                        options[["models"]][[1]][["name"]],
-                                        model[["name"]])
-                         ))
-        sa <- .sa.tabu(data = dataset, model = analyticModel, sens.model = sensModel, opt.fun = optimizerFunction, max.iter = options[["maxIterations"]], sig.level = options[["alpha"]], seed = if (options[["setSeed"]]) options[["seed"]] else NULL)
-      }
-    } else {
-      if (is.null(model)) {
-        syntax <- options[["models"]][[1]][["syntax"]]
-      } else {
-        syntax <- model[["syntax"]]
-      }
-      dataset <- .semDataCovariance(dataset, syntax)
-      if(options[["searchAlgorithm"]] == "antColonyOptimization") {
-        iter <- ifelse((2 * options[["sizeOfSolutionArchive"]]) >= options[["maxIterations"]], (options[["sizeOfSolutionArchive"]] + options[["numberOfAnts"]]), (options[["maxIterations"]] + options[["numberOfAnts"]]))
-        startProgressbar(iter,
-                         sprintf("Performing sensitivity analysis (model: %1$s)",
-                                 ifelse(is.null(model),
-                                        options[["models"]][[1]][["name"]],
-                                        model[["name"]])
-                         ))
-        sa <- .sa.aco(sample.cov = dataset, sample.nobs = options[["sampleSize"]], model = analyticModel, sens.model = sensModel, n.of.ants = options[["numberOfAnts"]], k = options[["sizeOfSolutionArchive"]], rate.of.conv = options[["convergenceRateThreshold"]], opt.fun = optimizerFunction, max.iter = options[["maxIterations"]], sig.level = options[["alpha"]], seed = if (options[["setSeed"]]) options[["seed"]] else NULL)
-      }
-      if(options[["searchAlgorithm"]] == "tabuSearch") {
-        startProgressbar(options[["maxIterations"]],
-                         sprintf("Performing sensitivity analysis (model: %1$s)",
-                                 ifelse(is.null(model),
-                                        options[["models"]][[1]][["name"]],
-                                        model[["name"]])
-                         ))
-        sa <- .sa.tabu(sample.cov = dataset, sample.nobs = options[["sampleSize"]], model = analyticModel, sens.model = sensModel, opt.fun = optimizerFunction, max.iter = options[["maxIterations"]], sig.level = options[["alpha"]], seed = if (options[["setSeed"]]) options[["seed"]] else NULL)
-      }
-    }
-    saTables <- SEMsens::sens.tables(sa)
-    saTables <- sapply(saTables, function(x) {
-      cbind(x, "rowname" = row.names(x))
-      })
-    saTables <- sapply(saTables, as.data.frame)
-    saTables <- sapply(saTables, function(x) {
-      x[order(x[["rowname"]]),]
-    })
-  }
-
-
-  # Fill table
-
-  if (options[["group"]] != "")
-    sensumtab[["group"]] <- saTables[[1]][["group"]]
-
-  sensumtab[["path"]]       <- saTables[[1]][["rowname"]]
-  sensumtab[["est"]]        <- saTables[[1]][["model.est"]]
-  sensumtab[["pvalue"]]     <- saTables[[1]][["model.pvalue"]]
-  sensumtab[["pvaluesens"]] <- saTables[[5]][["p.changed"]]
-  sensumtab[["mean"]]       <- saTables[[1]][["mean.est.sens"]]
-  sensumtab[["min"]]        <- saTables[[1]][["min.est.sens"]]
-  sensumtab[["max"]]        <- saTables[[1]][["max.est.sens"]]
-
-
-  # Sensitivity parameters that led to a change in significance
-  senpartab <- createJaspTable(title = gettext("Sensitivity parameters that led to a change in significance"))
-
-  if (options[["group"]] != "")
-    senpartab$addColumnInfo(name = "group", title = gettext("Group"), type = "string", combine = TRUE)
-
-  senpartab$addColumnInfo(name = "path", title = gettext("Path"), type = "string")
-
-  sensitivityParameters <- grep("~", colnames(saTables[[5]]), value = TRUE)
-  for (par in sensitivityParameters) {
-    senpartab$addColumnInfo(name = par, title = gettext(par), overtitle = gettext("Sensitivity parameters"), type = "number")
-  }
-
-  sencont[["senpar"]] <- senpartab
-
-  # Fill table
-  saTable_clean <- saTables[[5]][!is.na(saTables[[5]][["p.changed"]]), ]
-  if (nrow(saTable_clean) == 0) sencont[["senpar"]] <- NULL
-
-
-  if (options[["group"]] != "")
-    senpartab[["group"]] <- saTable_clean[["group"]]
-
-  senpartab[["path"]]    <- saTable_clean[["rowname"]]
-  for (par in sensitivityParameters) {
-    senpartab[[par]]     <- saTable_clean[[par]]
-  }
-
-  # # Sensitivity parameters that led to min est
-  # senparmintab <- createJaspTable(title = gettext("Sensitivity parameters that led to the minimum estimates in the sensitivity model"))
-  #
-  # if (options[["group"]] != "")
-  #   senparmintab$addColumnInfo(name = "group", title = gettext("Group"), type = "string", combine = TRUE)
-  #
-  # senparmintab$addColumnInfo(name = "path", title = gettext("Path"), type = "string")
-  #
-  # sensitivityParameters <- grep("~", colnames(saTables[[3]]), value = TRUE)
-  # for (par in sensitivityParameters) {
-  #   senparmintab$addColumnInfo(name = par, title = gettext(par), overtitle = gettext("Sensitivity parameters"), type = "number")
-  # }
-  #
-  # sencont[["senparmin"]] <- senparmintab
-  #
-  # # Fill table
-  # if (options[["group"]] != "")
-  #   senparmintab[["group"]] <- saTables[[3]][["group"]]
-  #
-  # senparmintab[["path"]]    <- saTables[[3]][["rowname"]]
-  # for (par in sensitivityParameters) {
-  #   senparmintab[[par]]     <- saTables[[3]][[par]]
-  # }
-
-  # # Sensitivity parameters that led to max est
-  # senparmaxtab <- createJaspTable(title = gettext("Sensitivity parameters that led to the maximum estimates in the sensitivity model"))
-  #
-  # if (options[["group"]] != "")
-  #   senparmaxtab$addColumnInfo(name = "group", title = gettext("Group"), type = "string", combine = TRUE)
-  #
-  # senparmaxtab$addColumnInfo(name = "path", title = gettext("Path"), type = "string")
-  #
-  # sensitivityParameters <- grep("~", colnames(saTables[[4]]), value = TRUE)
-  # for (par in sensitivityParameters) {
-  #   senparmaxtab$addColumnInfo(name = par, title = gettext(par), overtitle = gettext("Sensitivity parameters"), type = "number")
-  # }
-  #
-  # sencont[["senparmax"]] <- senparmaxtab
-  #
-  # # Fill table
-  # if (options[["group"]] != "")
-  #   senparmaxtab[["group"]] <- saTables[[4]][["group"]]
-  #
-  # senparmaxtab[["path"]]    <- saTables[[4]][["rowname"]]
-  # for (par in sensitivityParameters) {
-  #   senparmaxtab[[par]]     <- saTables[[4]][[par]]
-  # }
-
-  # Summary of sensitivity parameters
-  sensumpartab <- createJaspTable(title = gettext("Summary of sensitivity parameters"))
-
-  if (options[["group"]] != "")
-    sensumpartab$addColumnInfo(name = "group", title = gettext("Group"), type = "string", combine = TRUE)
-
-  sensumpartab$addColumnInfo(name = "par",      title = gettext("Sensitivity parameter"), type = "string")
-  sensumpartab$addColumnInfo(name = "mean",     title = gettext("Mean"),                  type = "number")
-  sensumpartab$addColumnInfo(name = "min",      title = gettext("Min"),                   type = "number")
-  sensumpartab$addColumnInfo(name = "max",      title = gettext("Max"),                   type = "number")
-
-  sencont[["sensumpar"]] <- sensumpartab
-
-  #Fill table
-
-  if (options[["group"]] != "")
-    sensumpartab[["group"]] <- saTables[[2]][["group"]]
-
-  sensumpartab[["par"]]        <- saTables[[2]][["rowname"]]
-  sensumpartab[["mean"]]       <- saTables[[2]][["mean.phan"]]
-  sensumpartab[["min"]]        <- saTables[[2]][["min.phan"]]
-  sensumpartab[["max"]]        <- saTables[[2]][["max.phan"]]
-
-  if (!is.null(model)) parentContainer[[model[["name"]]]] <- sencont
-}
-
-
 .semMardiasCoefficient <- function(modelContainer, dataset, options, ready) {
   if (!options[["mardiasCoefficient"]] || !is.null(modelContainer[["semMardiasTable"]])) return()
 
@@ -2755,6 +2471,294 @@ checkLavaanModel <- function(model, availableVars) {
 
   return()
 }
+
+.semSensitivity <- function(modelContainer, dataset, options, ready) {
+  if (!options[["sensitivityAnalysis"]] || !is.null(modelContainer[["sensitivity"]])) return()
+
+  sensitivity <- createJaspContainer(gettext("Sensitivity analysis"))
+  sensitivity$position <- 4.1
+  sensitivity$dependOn(c("sensitivityAnalysis", "searchAlgorithm", "optimizerFunction", "sizeOfSolutionArchive", "numberOfAnts", "alpha", "maxIterations", "setSeed", "seed", "models"))
+
+  modelContainer[["sensitivity"]] <- sensitivity
+
+  if (length(options[["models"]]) < 2) {
+    .semSensitivityTables(modelContainer[["results"]][["object"]][[1]], NULL, sensitivity, dataset, options, ready)
+  } else {
+
+    for (i in seq_along(options[["models"]])) {
+      fit <- modelContainer[["results"]][["object"]][[i]]
+      model <- options[["models"]][[i]]
+      .semSensitivityTables(fit, model, sensitivity, dataset, options, ready)
+    }
+  }
+}
+
+.semSensitivityTables <- function(fit, model, parentContainer, dataset, options, ready) {
+  if (is.null(model)) {
+    sencont <- parentContainer
+  } else {
+    sencont <- createJaspContainer(model[["name"]], initCollapsed = TRUE)
+  }
+
+
+  # Summary of sensitivity analysis
+  sensumtab <- createJaspTable(title = gettext("Summary of sensitivity analysis"))
+
+  if (options[["group"]] != "")
+    sensumtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+
+  sensumtab$addColumnInfo(name = "path",       title = gettext("Path"),          type = "string")
+  sensumtab$addColumnInfo(name = "est",        title = gettext("Standardized estimate"), overtitle = gettext("Original model"),    type = "number")
+  sensumtab$addColumnInfo(name = "pvalue",     title = gettext("p"),                     overtitle = gettext("Original model"),    type = "pvalue")
+  sensumtab$addColumnInfo(name = "pvaluesens", title = gettext("p\u002A"),               overtitle = gettext("Sensitivity model"), type = "pvalue")
+  sensumtab$addColumnInfo(name = "mean",       title = gettext("Mean"),                  overtitle = gettext("Sensitivity model"), type = "number")
+  sensumtab$addColumnInfo(name = "min",        title = gettext("Min"),                   overtitle = gettext("Sensitivity model"), type = "number")
+  sensumtab$addColumnInfo(name = "max",        title = gettext("Max"),                   overtitle = gettext("Sensitivity model"), type = "number")
+
+  sencont[["sensum"]] <- sensumtab
+
+  if (!ready || !inherits(fit, "lavaan")) return()
+
+  # create SEMsens model
+  if (is.null(model)) {
+    analyticModel <- .semTranslateModel(options[["models"]][[1]][["syntax"]], dataset)
+  } else {
+    analyticModel <- .semTranslateModel(model[["syntax"]], dataset)
+  }
+  #enrich model
+  modelTable <- lavaan::lavInspect(fit, what = "list")
+  pathVars <- unique(c(modelTable[modelTable$op == "~", ]$rhs, modelTable[modelTable$op == "~", ]$lhs))
+
+  if (length(pathVars) < 2) {
+    .quitAnalysis(gettext("Please include at least one regression path in the model to perform a sensitivity analysis."))
+  }
+
+  sensModel <- analyticModel
+  for (i in seq_along(pathVars)) {
+    sensParameter <- paste0("\n", pathVars[i], " ~", " phantom", i, "*phantom\n")
+    sensModel <- paste0(sensModel, sensParameter)
+  }
+  sensModel <- paste0(sensModel, "\nphantom =~ 0\nphantom ~~ 1*phantom\n")
+  optimizerFunction <- switch(options[["optimizerFunction"]],
+                              "percentChangeMeanEstimate" = 1,
+                              "sdOfDeviance"              = 2,
+                              "changeOfPvalue"            = 3,
+                              "distanceOfPvalue"          = 4,
+                              "changeOfRmsea"             = 5,
+                              "distanceOfRmsea"           = 6
+  )
+
+  if (options[["group"]] != "") {
+    saTables <- lapply(1:5, function(x) data.frame())
+    for (group in unique(dataset[, options[["group"]]])) {
+      data <- dataset[dataset[[options[["group"]]]] == group,]
+      if(options[["searchAlgorithm"]] == "antColonyOptimization") {
+        iter <- ifelse((2 * options[["sizeOfSolutionArchive"]]) >= options[["maxIterations"]], (options[["sizeOfSolutionArchive"]] + options[["numberOfAnts"]]), (options[["maxIterations"]] + options[["numberOfAnts"]]))
+        startProgressbar(iter,
+                         gettextf("Performing sensitivity analysis (model: %1$s, group: %2$s)",
+                                 ifelse(is.null(model),
+                                        options[["models"]][[1]][["name"]],
+                                        model[["name"]]),
+                                 group))
+        sa <- .sa.aco(data = data, model = analyticModel, sens.model = sensModel, n.of.ants = options[["numberOfAnts"]], k = options[["sizeOfSolutionArchive"]], rate.of.conv = options[["convergenceRateThreshold"]], opt.fun = optimizerFunction, max.iter = options[["maxIterations"]], sig.level = options[["alpha"]], seed = if (options[["setSeed"]]) options[["seed"]] else NULL)
+      }
+      if(options[["searchAlgorithm"]] == "tabuSearch") {
+        startProgressbar(options[["maxIterations"]],
+                         gettextf("Performing sensitivity analysis (model: %1$s, group: %2$s)",
+                                 ifelse(is.null(model),
+                                        options[["models"]][[1]][["name"]],
+                                        model[["name"]]),
+                                 group))
+        sa <- .sa.tabu(data = data, model = analyticModel, sens.model = sensModel, opt.fun = optimizerFunction, max.iter = options[["maxIterations"]], sig.level = options[["alpha"]], seed = if (options[["setSeed"]]) options[["seed"]] else NULL)
+      }
+      saTablesRows <- SEMsens::sens.tables(sa)
+      saTablesRows <- sapply(saTablesRows, function(x) {
+        cbind(x, "group" = rep(group, length(x[, 1])), "rowname" = row.names(x))
+      })
+      for (table in seq_along(saTablesRows)) {
+        saTables[[table]] <- rbind(saTables[[table]], saTablesRows[[table]])
+      }
+    }
+    saTables <- sapply(saTables, as.data.frame)
+    saTables <- sapply(saTables, function(x) {x[order(x[["group"]], x[["rowname"]]),]})
+  } else {
+    if (options[["dataType"]] == "raw") {
+      if(options[["searchAlgorithm"]] == "antColonyOptimization") {
+        iter <- ifelse((2 * options[["sizeOfSolutionArchive"]]) >= options[["maxIterations"]], (options[["sizeOfSolutionArchive"]] + options[["numberOfAnts"]]), (options[["maxIterations"]] + options[["numberOfAnts"]]))
+        startProgressbar(iter,
+                         gettextf("Performing sensitivity analysis (model: %1$s)",
+                                 ifelse(is.null(model),
+                                        options[["models"]][[1]][["name"]],
+                                        model[["name"]])
+                         ))
+        sa <- .sa.aco(data = dataset, model = analyticModel, sens.model = sensModel, n.of.ants = options[["numberOfAnts"]], k = options[["sizeOfSolutionArchive"]], rate.of.conv = options[["convergenceRateThreshold"]], opt.fun = optimizerFunction, max.iter = options[["maxIterations"]], sig.level = options[["alpha"]], seed = if (options[["setSeed"]]) options[["seed"]] else NULL)
+      }
+      if(options[["searchAlgorithm"]] == "tabuSearch") {
+        startProgressbar(options[["maxIterations"]],
+                         gettextf("Performing sensitivity analysis (model: %1$s)",
+                                 ifelse(is.null(model),
+                                        options[["models"]][[1]][["name"]],
+                                        model[["name"]])
+                         ))
+        sa <- .sa.tabu(data = dataset, model = analyticModel, sens.model = sensModel, opt.fun = optimizerFunction, max.iter = options[["maxIterations"]], sig.level = options[["alpha"]], seed = if (options[["setSeed"]]) options[["seed"]] else NULL)
+      }
+    } else {
+      if (is.null(model)) {
+        syntax <- options[["models"]][[1]][["syntax"]]
+      } else {
+        syntax <- model[["syntax"]]
+      }
+      dataset <- .semDataCovariance(dataset, syntax)
+      if(options[["searchAlgorithm"]] == "antColonyOptimization") {
+        iter <- ifelse((2 * options[["sizeOfSolutionArchive"]]) >= options[["maxIterations"]], (options[["sizeOfSolutionArchive"]] + options[["numberOfAnts"]]), (options[["maxIterations"]] + options[["numberOfAnts"]]))
+        startProgressbar(iter,
+                         gettextf("Performing sensitivity analysis (model: %1$s)",
+                                 ifelse(is.null(model),
+                                        options[["models"]][[1]][["name"]],
+                                        model[["name"]])
+                         ))
+        sa <- .sa.aco(sample.cov = dataset, sample.nobs = options[["sampleSize"]], model = analyticModel, sens.model = sensModel, n.of.ants = options[["numberOfAnts"]], k = options[["sizeOfSolutionArchive"]], rate.of.conv = options[["convergenceRateThreshold"]], opt.fun = optimizerFunction, max.iter = options[["maxIterations"]], sig.level = options[["alpha"]], seed = if (options[["setSeed"]]) options[["seed"]] else NULL)
+      }
+      if(options[["searchAlgorithm"]] == "tabuSearch") {
+        startProgressbar(options[["maxIterations"]],
+                         gettextf("Performing sensitivity analysis (model: %1$s)",
+                                 ifelse(is.null(model),
+                                        options[["models"]][[1]][["name"]],
+                                        model[["name"]])
+                         ))
+        sa <- .sa.tabu(sample.cov = dataset, sample.nobs = options[["sampleSize"]], model = analyticModel, sens.model = sensModel, opt.fun = optimizerFunction, max.iter = options[["maxIterations"]], sig.level = options[["alpha"]], seed = if (options[["setSeed"]]) options[["seed"]] else NULL)
+      }
+    }
+    saTables <- SEMsens::sens.tables(sa)
+    saTables <- sapply(saTables, function(x) {
+      cbind(x, "rowname" = row.names(x))
+    })
+    saTables <- sapply(saTables, as.data.frame)
+    saTables <- sapply(saTables, function(x) {
+      x[order(x[["rowname"]]),]
+    })
+  }
+
+
+  # Fill table
+
+  if (options[["group"]] != "")
+    sensumtab[["group"]] <- saTables[[1]][["group"]]
+
+  sensumtab[["path"]]       <- saTables[[1]][["rowname"]]
+  sensumtab[["est"]]        <- saTables[[1]][["model.est"]]
+  sensumtab[["pvalue"]]     <- saTables[[1]][["model.pvalue"]]
+  sensumtab[["pvaluesens"]] <- saTables[[5]][["p.changed"]]
+  sensumtab[["mean"]]       <- saTables[[1]][["mean.est.sens"]]
+  sensumtab[["min"]]        <- saTables[[1]][["min.est.sens"]]
+  sensumtab[["max"]]        <- saTables[[1]][["max.est.sens"]]
+
+
+  # Sensitivity parameters that led to a change in significance
+  senpartab <- createJaspTable(title = gettext("Sensitivity parameters that led to a change in significance"))
+
+  if (options[["group"]] != "")
+    senpartab$addColumnInfo(name = "group", title = gettext("Group"), type = "string", combine = TRUE)
+
+  senpartab$addColumnInfo(name = "path", title = gettext("Path"), type = "string")
+
+  sensitivityParameters <- grep("~", colnames(saTables[[5]]), value = TRUE)
+  for (par in sensitivityParameters) {
+    # unfortunately the title is set by the r package and is (usually) "phantom", not sure how to translate such a thing
+    senpartab$addColumnInfo(name = par, title = par, overtitle = gettext("Sensitivity parameters"), type = "number")
+  }
+
+  sencont[["senpar"]] <- senpartab
+
+  # Fill table
+  saTable_clean <- saTables[[5]][!is.na(saTables[[5]][["p.changed"]]), ]
+  if (nrow(saTable_clean) == 0) sencont[["senpar"]] <- NULL
+
+
+  if (options[["group"]] != "")
+    senpartab[["group"]] <- saTable_clean[["group"]]
+
+  senpartab[["path"]]    <- saTable_clean[["rowname"]]
+  for (par in sensitivityParameters) {
+    senpartab[[par]]     <- saTable_clean[[par]]
+  }
+
+  # # Not sure why this is here??? Lorenzo would know, lets just leave it in
+  # # Sensitivity parameters that led to min est
+  # senparmintab <- createJaspTable(title = gettext("Sensitivity parameters that led to the minimum estimates in the sensitivity model"))
+  #
+  # if (options[["group"]] != "")
+  #   senparmintab$addColumnInfo(name = "group", title = gettext("Group"), type = "string", combine = TRUE)
+  #
+  # senparmintab$addColumnInfo(name = "path", title = gettext("Path"), type = "string")
+  #
+  # sensitivityParameters <- grep("~", colnames(saTables[[3]]), value = TRUE)
+  # for (par in sensitivityParameters) {
+  #   senparmintab$addColumnInfo(name = par, title = gettext(par), overtitle = gettext("Sensitivity parameters"), type = "number")
+  # }
+  #
+  # sencont[["senparmin"]] <- senparmintab
+  #
+  # # Fill table
+  # if (options[["group"]] != "")
+  #   senparmintab[["group"]] <- saTables[[3]][["group"]]
+  #
+  # senparmintab[["path"]]    <- saTables[[3]][["rowname"]]
+  # for (par in sensitivityParameters) {
+  #   senparmintab[[par]]     <- saTables[[3]][[par]]
+  # }
+
+  # # Sensitivity parameters that led to max est
+  # senparmaxtab <- createJaspTable(title = gettext("Sensitivity parameters that led to the maximum estimates in the sensitivity model"))
+  #
+  # if (options[["group"]] != "")
+  #   senparmaxtab$addColumnInfo(name = "group", title = gettext("Group"), type = "string", combine = TRUE)
+  #
+  # senparmaxtab$addColumnInfo(name = "path", title = gettext("Path"), type = "string")
+  #
+  # sensitivityParameters <- grep("~", colnames(saTables[[4]]), value = TRUE)
+  # for (par in sensitivityParameters) {
+  #   senparmaxtab$addColumnInfo(name = par, title = gettext(par), overtitle = gettext("Sensitivity parameters"), type = "number")
+  # }
+  #
+  # sencont[["senparmax"]] <- senparmaxtab
+  #
+  # # Fill table
+  # if (options[["group"]] != "")
+  #   senparmaxtab[["group"]] <- saTables[[4]][["group"]]
+  #
+  # senparmaxtab[["path"]]    <- saTables[[4]][["rowname"]]
+  # for (par in sensitivityParameters) {
+  #   senparmaxtab[[par]]     <- saTables[[4]][[par]]
+  # }
+
+  # Summary of sensitivity parameters
+  sensumpartab <- createJaspTable(title = gettext("Summary of sensitivity parameters"))
+
+  if (options[["group"]] != "")
+    sensumpartab$addColumnInfo(name = "group", title = gettext("Group"), type = "string", combine = TRUE)
+
+  sensumpartab$addColumnInfo(name = "par",      title = gettext("Sensitivity parameter"), type = "string")
+  sensumpartab$addColumnInfo(name = "mean",     title = gettext("Mean"),                  type = "number")
+  sensumpartab$addColumnInfo(name = "min",      title = gettext("Min"),                   type = "number")
+  sensumpartab$addColumnInfo(name = "max",      title = gettext("Max"),                   type = "number")
+
+  sencont[["sensumpar"]] <- sensumpartab
+
+  #Fill table
+
+  if (options[["group"]] != "")
+    sensumpartab[["group"]] <- saTables[[2]][["group"]]
+
+  sensumpartab[["par"]]        <- saTables[[2]][["rowname"]]
+  sensumpartab[["mean"]]       <- saTables[[2]][["mean.phan"]]
+  sensumpartab[["min"]]        <- saTables[[2]][["min.phan"]]
+  sensumpartab[["max"]]        <- saTables[[2]][["max.phan"]]
+
+  if (!is.null(model)) parentContainer[[model[["name"]]]] <- sencont
+}
+
+
 
 .semPathPlot <- function(modelContainer, dataset, options, ready) {
   if (!options[["pathPlot"]] || !ready || !is.null(modelContainer[["plot"]])) return()
