@@ -16,8 +16,8 @@ options$convergenceCriterion      <- "absoluteDifference"
 options$correctionFactor          <- "squaredEuclidean"
 options$handlingOfFlippedSigns    <- "none"
 
-
 results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
+
 
 test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
