@@ -81,50 +81,6 @@ Form
 		addEmptyValue: true
 	}
 
-
-	Section
-	{
-		title: qsTr("Output Options")
-
-		Group
-		{
-			DropDown
-			{
-				id: grpvar
-				name: "group"
-				label: qsTr("Grouping Variable")
-				showVariableTypeIcon: true
-				addEmptyValue: true
-			} // No model or source: it takes all variables per default
-			Group
-			{
-				visible: grpvar.value != ""
-				id: constraints
-				title: qsTr("Equality Constraints")
-				CheckBox { id: eq_loadings; 			name: "equalLoading";				label: qsTr("Loadings")				}
-				CheckBox { id: eq_intercepts; 			name: "equalIntercept";				label: qsTr("Intercepts")			}
-				CheckBox { id: eq_residuals; 			name: "equalResidual";				label: qsTr("Residuals")			}
-				CheckBox { id: eq_residualcovariances; 	name: "equalResidualCovariance";	label: qsTr("Residual covariances")	}
-				CheckBox { id: eq_means; 				name: "equalMean";					label: qsTr("Means")				}
-				CheckBox { id: eq_thresholds; 			name: "equalThreshold";				label: qsTr("Thresholds")			}
-				CheckBox { id: eq_regressions; 			name: "equalRegression";			label: qsTr("Regressions")			}
-				CheckBox { id: eq_variances; 			name: "equalLatentVariance";		label: qsTr("Latent variances")		}
-				CheckBox { id: eq_lvcovariances; 		name: "equalLatentCovariance";		label: qsTr("Latent covariances")	}
-			}
-
-		}
-		TextArea
-		{
-			name: "freeParameters"
-			title: qsTr("Release constraints (one per line)")
-			width: multigroup.width / 2
-			height: constraints.height + grpvar.height
-			textType: JASP.TextTypeLavaan
-			visible: eq_loadings.checked || eq_intercepts.checked || eq_residuals.checked || eq_residualcovariances.checked || eq_means.checked || eq_thresholds.checked || eq_regressions.checked || eq_variances.checked || eq_lvcovariances.checked
-		}
-	}
-
-
 	Section
 	{
 		title: qsTr("Model Options")
@@ -177,12 +133,13 @@ Form
 				label: qsTr("Estimator")
 				id: estimator
 				values: [
-					{ value: "ml",		label: qsTr("ML")	},
-					{ value: "gls",		label: qsTr("GLS")	},
-					{ value: "wls",		label: qsTr("WLS")	},
-					{ value: "uls",		label: qsTr("ULS")	},
-					{ value: "dwls",	label: qsTr("DWLS")	},
-					{ value: "pml",		label: qsTr("PML")	}
+					{ value: "default", label: qsTr("Default")},
+					{ value: "ml",			label: qsTr("ML")			},
+					{ value: "gls",			label: qsTr("GLS")		},
+					{ value: "wls",			label: qsTr("WLS")		},
+					{ value: "uls",			label: qsTr("ULS")		},
+					{ value: "dwls",		label: qsTr("DWLS")		},
+					{ value: "pml",			label: qsTr("PML")		}
 				]
 			}
 
@@ -191,15 +148,16 @@ Form
 				name: "modelTest"
 				label: qsTr("Model test")
 				values: [
-					{ value: "standard",				label: qsTr("Standard")						},
-					{ value: "satorraBentler",			label: qsTr("Satorra-Bentler")				},
-					{ value: "yuanBentler",				label: qsTr("Yuan-Bentler")					},
+					{ value: "default", 								label: qsTr("Default")										},
+					{ value: "standard",								label: qsTr("Standard")										},
+					{ value: "satorraBentler",					label: qsTr("Satorra-Bentler")						},
+					{ value: "yuanBentler",							label: qsTr("Yuan-Bentler")								},
 					{ value: "yuanBentlerMplus",				label: qsTr("Yuan-Bentler Mplus")					},
-					{ value: "meanAndVarianceAdjusted",	label: qsTr("Mean and Variance adjusted")	},
-					{ value: "scaledAndShifted",		label: qsTr("Scaled and shifted")			},
-					{ value: "bollenStine",				label: qsTr("Bootstrap (Bollen-Stine)")		}, 
-					{ value: "browneResidualAdf", label: qsTr("Browne residual based (ADF)")}, 
-					{ value: "browneResidualNt", label: qsTr("Browne residual based (NT)")}
+					{ value: "meanAndVarianceAdjusted",	label: qsTr("Mean and variance adjusted")	},
+					{ value: "scaledAndShifted",				label: qsTr("Scaled and shifted")					},
+					{ value: "bollenStine",							label: qsTr("Bootstrap (Bollen-Stine)")		}, 
+					{ value: "browneResidualAdf", 			label: qsTr("Browne residual based (ADF)")}, 
+					{ value: "browneResidualNt", 				label: qsTr("Browne residual based (NT)")	}
 				]
 			}
 
@@ -304,7 +262,7 @@ Form
 		}
 	}
 
-Section
+	Section
 	{
 		title: qsTr("Output Options")
 
@@ -360,6 +318,50 @@ Section
 			}
 		}
 	}
+
+	Section
+	{
+		title: qsTr("Multigroup SEM")
+
+		Group
+		{
+			DropDown
+			{
+				id: grpvar
+				name: "group"
+				label: qsTr("Grouping Variable")
+				showVariableTypeIcon: true
+				addEmptyValue: true
+			} // No model or source: it takes all variables per default
+			Group
+			{
+				visible: grpvar.value != ""
+				id: constraints
+				title: qsTr("Equality Constraints")
+				CheckBox { id: eq_loadings; 			name: "equalLoading";				label: qsTr("Loadings")				}
+				CheckBox { id: eq_intercepts; 			name: "equalIntercept";				label: qsTr("Intercepts")			}
+				CheckBox { id: eq_residuals; 			name: "equalResidual";				label: qsTr("Residuals")			}
+				CheckBox { id: eq_residualcovariances; 	name: "equalResidualCovariance";	label: qsTr("Residual covariances")	}
+				CheckBox { id: eq_means; 				name: "equalMean";					label: qsTr("Means")				}
+				CheckBox { id: eq_thresholds; 			name: "equalThreshold";				label: qsTr("Thresholds")			}
+				CheckBox { id: eq_regressions; 			name: "equalRegression";			label: qsTr("Regressions")			}
+				CheckBox { id: eq_variances; 			name: "equalLatentVariance";		label: qsTr("Latent variances")		}
+				CheckBox { id: eq_lvcovariances; 		name: "equalLatentCovariance";		label: qsTr("Latent covariances")	}
+			}
+
+		}
+		TextArea
+		{
+			name: "freeParameters"
+			title: qsTr("Release constraints (one per line)")
+			width: multigroup.width / 2
+			height: constraints.height + grpvar.height
+			textType: JASP.TextTypeLavaan
+			visible: eq_loadings.checked || eq_intercepts.checked || eq_residuals.checked || eq_residualcovariances.checked || eq_means.checked || eq_thresholds.checked || eq_regressions.checked || eq_variances.checked || eq_lvcovariances.checked
+		}
+	}
+
+
 	Section 
 	{
 		title: qsTr("Sensitivity Analysis")
