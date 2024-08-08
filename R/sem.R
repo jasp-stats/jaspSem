@@ -20,6 +20,9 @@
 SEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
+  sink("~/Downloads/log.txt")
+  on.exit(sink(NULL))
+
   # Read dataset
   options <- .semPrepOpts(options)
 
@@ -101,11 +104,6 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
     })))
     .hasErrors(dataset[,usedvars],
                type = c("infinity"), message='default', exitAnalysisIfErrors = TRUE)
-  }
-
-  # check FIML
-  if (!options[["estimator"]] %in% c("default", "ml") && options[["naAction"]] == "fiml") {
-    modelContainer$setError(gettext("FIML missing data handling only available with ML-type estimators"))
   }
 
   # Check whether grouping variable is a grouping variable
@@ -229,9 +227,9 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 .semComputeResults <- function(modelContainer, dataset, options) {
+
   #' create result list from options
   # find reusable results
-  if (!options[["estimator"]] %in% c("default", "ml") && options[["naAction"]] == "fiml") return()
 
   oldmodels  <- modelContainer[["models"]][["object"]]
   oldresults <- modelContainer[["results"]][["object"]]
@@ -288,41 +286,40 @@ checkLavaanModel <- function(model, availableVars) {
 
     if (isTryError(fit)) {
       err <- .extractErrorMessage(fit)
-      if(err == "..constant.."){
+      if (err == "..constant..")
         err <- gettext("Invalid model specification. Did you pass a variable name as a string?")
-      }
-      if(grepl(c("no variance"), err))
+      if (grepl(c("no variance"), err))
         err <- gettext("One or more variables are constants or contain only missing values ")
 
-      if(grepl(c("categorical"), err)){
-        if(grepl("ml", err))
-          errMissingMethod <- "FIML"
-        if(grepl("two.stage", err))
-          errMissingMethod <- "Two-stage"
-        if(grepl("robust.two.stage", err))
-          errMissingMethod <- "Robust two-stage"
-        err <- gettextf("Missing data handling '%s' is not supported for categorical data,
-                        please select another method under 'Missing data handling'
-                        within the 'Estimation options' tab", errMissingMethod)
-      }
+      # if(grepl(c("categorical"), err)){
+      #   if(grepl("ml", err))
+      #     errMissingMethod <- "FIML"
+      #   if(grepl("two.stage", err))
+      #     errMissingMethod <- "Two-stage"
+      #   if(grepl("robust.two.stage", err))
+      #     errMissingMethod <- "Robust two-stage"
+      #   err <- gettextf("Missing data handling '%s' is not supported for categorical data,
+      #                   please select another method under 'Missing data handling'
+      #                   within the 'Estimation options' tab", errMissingMethod)
+      # }
 
       errmsg <- gettextf("Estimation failed Message: %s", err)
 
-      modelContainer$setError(paste0("Error in model \"", options[["models"]][[i]][["name"]], "\" - ",
+      modelContainer$setError(paste0("Error in \"", options[["models"]][[i]][["name"]], "\" - ",
                                      .decodeVarsInMessage(names(dataset), errmsg)))
       modelContainer$dependOn("models") # add dependency so everything gets updated upon model change
       break
     }
 
-    if(isFALSE(slot(fit, "optim")$converged)) {
-      errormsg <- gettextf("Estimation failed! Message: Model %s did not converge!", options[["models"]][[i]][["name"]])
+    if (isFALSE(slot(fit, "optim")$converged)) {
+      errormsg <- gettextf("Estimation failed! Message: %s did not converge!", options[["models"]][[i]][["name"]])
       modelContainer$setError(errormsg)
       modelContainer$dependOn("models")
       break
     }
 
-    if(lavaan::fitMeasures(fit, "df") < 0 ) {
-      errormsg <- gettextf("Estimation failed! Message: Model %s has negative degrees of freedom.", options[["models"]][[i]][["name"]])
+    if (lavaan::fitMeasures(fit, "df") < 0 ) {
+      errormsg <- gettextf("Estimation failed! Message: %s has negative degrees of freedom.", options[["models"]][[i]][["name"]])
       modelContainer$setError(errormsg)
       modelContainer$dependOn("models")
       break
@@ -332,6 +329,8 @@ checkLavaanModel <- function(model, availableVars) {
       fit <- lavBootstrap(fit, options[["bootstrapSamples"]])
     }
     results[[i]] <- fit
+
+
 
   }
 
@@ -388,23 +387,32 @@ checkLavaanModel <- function(model, availableVars) {
 
   # data options
   lavopts[["std.ov"]]  <- options[["standardizedVariable"]]
-  lavopts[["missing"]] <- ifelse(options[["naAction"]] == "fiml", "ml",
-                                 ifelse(options[["naAction"]] == "twoStage", "two.stage",
-                                        ifelse(options[["naAction"]] == "twoStageRobust", "robust.two.stage",
-                                               ifelse(options[["naAction"]] == "doublyRobust", "doubly.robust",
-                                                      options[["naAction"]]))))
+  lavopts[["missing"]] <- switch(options[["naAction"]],
+                                 "fiml" = "ml",
+                                 "twoStage" = "two.stage",
+                                 "twoStageRobust" = "robust.two.stage",
+                                 "doublyRobust" = "doubly.robust",
+                                 options[["naAction"]])
 
   # estimation options
   lavopts[["estimator"]]   <- options[["estimator"]]
-  lavopts[["se"]]          <- ifelse(options[["errorCalculationMethod"]] == "bootstrap", "standard", options[["errorCalculationMethod"]])
-  lavopts[["information"]] <- options[["informationMatrix"]]
-  lavopts[["test"]]        <- ifelse(options[["modelTest"]] == "satorraBentler", "satorra.bentler",
-                                     ifelse(options[["modelTest"]] == "yuanBentler", "yuan.bentler",
-                                            ifelse(options[["modelTest"]] == "meanAndVarianceAdjusted", "mean.var.adjusted",
-                                                   ifelse(options[["modelTest"]] == "scaledAndShifted", "scaled.shifted",
-                                                          ifelse(options[["modelTest"]] == "bollenStine", "bollen.stine",
-                                                                 options[["modelTest"]])))))
+  lavopts[["se"]]        <- switch(options[["errorCalculationMethod"]],
+                                   "bootstrap" = "standard",
+                                   "robust" = "robust.sem",
+                                   "robustHuberWhite" = "robust.huber.white",
+                                   options[["errorCalculationMethod"]])
 
+  lavopts[["information"]] <- options[["informationMatrix"]]
+  lavopts[["test"]]      <- switch(options[["modelTest"]],
+                                   "satorraBentler" = "Satorra.Bentler",
+                                   "yuanBentler" = "Yuan.Bentler",
+                                   "yuanBentlerMplus" = "Yuan.Bentler.Mplus",
+                                   "meanAndVarianceAdjusted" = "mean.var.adjusted",
+                                   "scaledAndShifted" = "scaled.shifted",
+                                   "bollenStine" = "Bollen.Stine",
+                                   "browneResidualAdf" = "browne.residual.adf",
+                                   "browneResidualNt" = "browne.residual.nt",
+                                   options[["modelTest"]])
   # group.equal options
   equality_constraints <- c(
     options[["equalLoading"]],
@@ -755,28 +763,24 @@ checkLavaanModel <- function(model, availableVars) {
   if(length(test) > 1)
     test <- test[[2]]
 
-  if (test != "standard") {
-    LUT <- tibble::tribble(
-      ~option,              ~name,
-      "Satorra.Bentler",    gettext("Satorra-Bentler scaled test-statistic"),
-      "Yuan.Bentler",       gettext("Yuan-Bentler scaled test-statistic"),
-      "Yuan.Bentler.Mplus", gettext("Yuan-Bentler (Mplus) scaled test-statistic"),
-      "mean.var.adjusted",  gettext("mean and variance adjusted test-statistic"),
-      "Satterthwaite",      gettext("mean and variance adjusted test-statistic"),
-      "scaled.shifted",     gettext("scaled and shifted test-statistic"),
-      "Bollen.Stine",       gettext("bootstrap (Bollen-Stine) probability value"),
-      "bootstrap",          gettext("bootstrap (Bollen-Stine) probability value"),
-      "boot",               gettext("bootstrap (Bollen-Stine) probability value")
-    )
-    testname <- LUT[test == tolower(LUT$option), "name"][[1]]
-    if (length(semResults) == 1)
-      ftext <- gettextf("Baseline tests based on %s.", testname)
-    if (length(semResults) > 1)
-      ftext <- gettextf("Baseline tests based on %s. Difference tests based on a function of two standard test-statistics.", testname)
-
-    fnote <- paste0(fnote, ftext)
-
-  }
+  # if (test != "standard") {
+  #   LUT <- tibble::tribble(
+  #     ~option,              ~name,
+  #     "Satorra.Bentler",    gettext("Satorra-Bentler scaled test-statistic"),
+  #     "Yuan.Bentler",       gettext("Yuan-Bentler scaled test-statistic"),
+  #     "Yuan.Bentler.Mplus", gettext("Yuan-Bentler (Mplus) scaled test-statistic"),
+  #     "mean.var.adjusted",  gettext("mean and variance adjusted test-statistic"),
+  #     "Satterthwaite",      gettext("mean and variance adjusted test-statistic"),
+  #     "scaled.shifted",     gettext("scaled and shifted test-statistic"),
+  #     "Bollen.Stine",       gettext("bootstrap (Bollen-Stine) probability value"),
+  #     "bootstrap",          gettext("bootstrap (Bollen-Stine) probability value"),
+  #     "boot",               gettext("bootstrap (Bollen-Stine) probability value"),
+  #     "browne.residual.adf", gettext("Browne")
+  #   )
+  #   testname <- LUT[test == tolower(LUT$option), "name"][[1]]
+  #   ftext <- gettextf("Model tests based on %s.", testname)
+  #   fittab$addFootnote(message = ftext)
+  # }
 
   if (options$estimator %in% c("dwls", "gls", "wls", "uls")) {
     fnote <- paste0(fnote, gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators"))
