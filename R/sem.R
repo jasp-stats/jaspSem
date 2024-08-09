@@ -286,14 +286,16 @@ checkLavaanModel <- function(model, availableVars) {
       fit <- try(.withWarnings(do.call(lavaan::lavaan, lav_args)))
     }
 
+
     if (isTryError(fit)) {
       err <- .extractErrorMessage(fit)
+      err <- sub("^[^:]*: ?", "", err)
       if (err == "..constant..")
         err <- gettext("Invalid model specification. Did you pass a variable name as a string?")
       if (grepl(c("no variance"), err))
-        err <- gettext("One or more variables are constants or contain only missing values ")
+        err <- gettext("One or more variables are constants or contain only missing values. ")
 
-      errmsg <- gettextf("Estimation failed Message: %s", err)
+      errmsg <- gettextf("Estimation failed. Message: %s", err)
 
       modelContainer$setError(paste0("Error in \"", options[["models"]][[i]][["name"]], "\" - ",
                                      .decodeVarsInMessage(names(dataset), errmsg)))
@@ -853,6 +855,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   if (length(warns) > 0) {
     if (length(unique(warns)) == 1) warns <- warns[1] # all warnings across models are the same
+    warns <- sub("^[^:]*: ?", "", warns)
     warns <- gsub("\n", "", warns)
     warns <- paste(warns, collapse = ".")
 
@@ -868,7 +871,9 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 .semParameters <- function(modelContainer, dataset, options, ready) {
+
   if (!is.null(modelContainer[["params"]])) return()
+  if (modelContainer$getError()) return()
 
   params <- createJaspContainer(gettext("Parameter estimates"))
   params$position <- 1
