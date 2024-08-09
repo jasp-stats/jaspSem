@@ -69,7 +69,7 @@ Form
 		RadioButton
 		{
 			value: "varianceCovariance"; label: qsTr("Variance-covariance matrix")
-			IntegerField { name: "sampleSize"; label: qsTr("Sample size"); defaultValue: 0 }
+			IntegerField { name: "sampleSize"; label: qsTr("Sample size"); defaultValue: 500 }
 		}
 	}
 
@@ -80,50 +80,6 @@ Form
 		showVariableTypeIcon: true
 		addEmptyValue: true
 	}
-
-
-	Section
-	{
-		title: qsTr("Multigroup SEM")
-		id: multigroup
-		Group
-		{
-			DropDown
-			{
-				id: grpvar
-				name: "group"
-				label: qsTr("Grouping Variable")
-				showVariableTypeIcon: true
-				addEmptyValue: true
-			} // No model or source: it takes all variables per default
-			Group
-			{
-				visible: grpvar.value != ""
-				id: constraints
-				title: qsTr("Equality Constraints")
-				CheckBox { id: eq_loadings; 			name: "equalLoading";				label: qsTr("Loadings")				}
-				CheckBox { id: eq_intercepts; 			name: "equalIntercept";				label: qsTr("Intercepts")			}
-				CheckBox { id: eq_residuals; 			name: "equalResidual";				label: qsTr("Residuals")			}
-				CheckBox { id: eq_residualcovariances; 	name: "equalResidualCovariance";	label: qsTr("Residual covariances")	}
-				CheckBox { id: eq_means; 				name: "equalMean";					label: qsTr("Means")				}
-				CheckBox { id: eq_thresholds; 			name: "equalThreshold";				label: qsTr("Thresholds")			}
-				CheckBox { id: eq_regressions; 			name: "equalRegression";			label: qsTr("Regressions")			}
-				CheckBox { id: eq_variances; 			name: "equalLatentVariance";		label: qsTr("Latent variances")		}
-				CheckBox { id: eq_lvcovariances; 		name: "equalLatentCovariance";		label: qsTr("Latent covariances")	}
-			}
-
-		}
-		TextArea
-		{
-			name: "freeParameters"
-			title: qsTr("Release constraints (one per line)")
-			width: multigroup.width / 2
-			height: constraints.height + grpvar.height
-			textType: JASP.TextTypeLavaan
-			visible: eq_loadings.checked || eq_intercepts.checked || eq_residuals.checked || eq_residualcovariances.checked || eq_means.checked || eq_thresholds.checked || eq_regressions.checked || eq_variances.checked || eq_lvcovariances.checked
-		}
-	}
-
 
 	Section
 	{
@@ -171,44 +127,102 @@ Form
 
 		Group
 		{
+			RowLayout 
+			{
+				DropDown
+				{
+					name: "estimator"
+					label: qsTr("Estimator")
+					id: estimator
+					values: [
+						{ value: "default", label: qsTr("Default")},
+						{ value: "ml",			label: qsTr("ML")			},
+						{ value: "gls",			label: qsTr("GLS")		},
+						{ value: "wls",			label: qsTr("WLS")		},
+						{ value: "uls",			label: qsTr("ULS")		},
+						{ value: "dwls",		label: qsTr("DWLS")		},
+						{ value: "pml",			label: qsTr("PML")		},
+						{ value: "mlm",			label: qsTr("MLM")		},
+						{ value: "mlmv",		label: qsTr("MLMV")		},
+						{ value: "mlmvs",		label: qsTr("MLMVS")	},
+						{ value: "mlf",			label: qsTr("MLF")		},
+						{ value: "mlr",			label: qsTr("MLR")		},
+						{ value: "wlsm",		label: qsTr("WLSM")		},
+						{ value: "wlsmv",		label: qsTr("WLSMV")	},
+						{ value: "ulsm",		label: qsTr("ULSM")		},
+						{ value: "ulsmv",		label: qsTr("ULSMV")	}
+					]
+				}
+				HelpButton
+				{
+					toolTip: 					qsTr("Click for more information")
+					helpPage:					"forQml/tooltip"
+				}
+
+			}
+			
+			DropDown
+			{
+				name: "modelTest"
+				label: qsTr("Model test")
+				values: [
+					{ value: "default", 								label: qsTr("Default")										},
+					{ value: "standard",								label: qsTr("Standard")										},
+					{ value: "satorraBentler",					label: qsTr("Satorra-Bentler")						},
+					{ value: "yuanBentler",							label: qsTr("Yuan-Bentler")								},
+					{ value: "yuanBentlerMplus",				label: qsTr("Yuan-Bentler Mplus")					},
+					{ value: "meanAndVarianceAdjusted",	label: qsTr("Mean and variance adjusted")	},
+					{ value: "scaledAndShifted",				label: qsTr("Scaled and shifted")					},
+					{ value: "bollenStine",							label: qsTr("Bootstrap (Bollen-Stine)")		}, 
+					{ value: "browneResidualAdf", 			label: qsTr("Browne residual based (ADF)")}, 
+					{ value: "browneResidualNt", 				label: qsTr("Browne residual based (NT)")	}
+				]
+			}
 
 			DropDown
 			{
 				label: qsTr("Information matrix")
 				name: "informationMatrix"
 				values: [
-					{ value: "expected", label: qsTr("Expected") },
-					{ value: "observed", label: qsTr("Observed") }
+					{ value: "default", 	 label: qsTr("Default")			},
+					{ value: "expected", 	 label: qsTr("Expected") 		},
+					{ value: "observed", 	 label: qsTr("Observed") 		},
+					{ value: "firstOrder", label: qsTr("First order") }
 				]
 			}
 
-			RadioButtonGroup
+			DropDown
 			{
-				title: qsTr("Error calculation")
+				label: qsTr("Standard errors")
 				name: "errorCalculationMethod"
-				RadioButton { value: "standard";	label: qsTr("Standard"); checked: true		}
-				RadioButton { value: "robust";		label: qsTr("Robust")						}
-				RadioButton
-				{
-					value: "bootstrap";	label: qsTr("Bootstrap")
-					IntegerField
-					{
-						name: "bootstrapSamples"
-						label: qsTr("Bootstrap samples")
-						fieldWidth: 60
-						defaultValue: 1000
-						min: 1
-					}
-					DropDown {
-                        label: qsTr("Type")
-                        name: "bootstrapCiType"
-                        values: [
-                            { label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"	},
-                            { label: qsTr("Percentile"),                value: "percentile"         		},
-                            { label: qsTr("Normal theory"),             value: "normalTheory"         		}
-                        ]
-                    }
-				}
+				id: errorCalc
+				values: [
+					{ value: "default", 	 				label: qsTr("Default")						},
+					{ value: "standard",  	 			label: qsTr("Standard") 					},
+					{ value: "robust", 	 					label: qsTr("Robust") 						},
+					{ value: "robustHuberWhite", 	label: qsTr("Robust Huber-White") },
+					{ value: "bootstrap", 				label: qsTr("Bootstrap")					}
+				]
+			}
+			IntegerField
+			{
+				visible: errorCalc.value == "bootstrap"
+				name: "bootstrapSamples"
+				label: qsTr("     Bootstrap samples")
+				fieldWidth: 60
+				defaultValue: 1000
+				min: 1
+
+			}
+			DropDown {
+				visible: errorCalc.value == "bootstrap"
+				label: qsTr("     Type")
+				name: "bootstrapCiType"
+				values: [
+						{ label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"	},
+						{ label: qsTr("Percentile"),                value: "percentile"         		},
+						{ label: qsTr("Normal theory"),             value: "normalTheory"         		}
+				]
 			}
 
 			CIField {
@@ -221,50 +235,37 @@ Form
 
 		Group
 		{
+			id: missingG
 			CheckBox{name: "standardizedVariable"; label: qsTr("Standardize variables before estimation"); checked: false}
-			DropDown
-			{
-				name: "estimator"
-				label: qsTr("Estimator")
-				values: [
-					{ value: "default",	label: qsTr("Auto") },
-					{ value: "ml",		label: qsTr("ML")	},
-					{ value: "gls",		label: qsTr("GLS")	},
-					{ value: "wls",		label: qsTr("WLS")	},
-					{ value: "uls",		label: qsTr("ULS")	},
-					{ value: "dwls",	label: qsTr("DWLS")	},
-					{ value: "pml",		label: qsTr("PML")	}
-				]
-			}
 
-			DropDown
-			{
-				name: "modelTest"
-				label: qsTr("Model test")
-				values: [
-					{ value: "default",					label: qsTr("Auto") 						},
-					{ value: "standard",				label: qsTr("Standard")						},
-					{ value: "satorraBentler",			label: qsTr("Satorra-Bentler")				},
-					{ value: "yuanBentler",				label: qsTr("Yuan-Bentler")					},
-					{ value: "meanAndVarianceAdjusted",	label: qsTr("Mean and Variance adjusted")	},
-					{ value: "scaledAndShifted",		label: qsTr("Scaled and shifted")			},
-					{ value: "bollenStine",				label: qsTr("Bootstrap (Bollen-Stine)")		}
-				]
-			}
-
+			// property var withFiml: [
+			// 		{ label: qsTr("Listwise deletion")	, value: "listwise"			},
+			// 		{ label: qsTr("FIML")				, value: "fiml"},
+			// 		{ label: qsTr("Pairwise")			, value: "pairwise"			},
+			// 		{ label: qsTr("Two-stage")			, value: "twoStage"			},
+			// 		{ label: qsTr("Robust two-stage")	, value: "twoStageRobust"	},
+			// 		{ label: qsTr("Doubly robust")		, value: "doublyRobust"		}
+			// 	]
+			// property var noFiml: [
+			// 		{ label: qsTr("Listwise deletion")	, value: "listwise"			},
+			// 		{ label: qsTr("Pairwise")			, value: "pairwise"			},
+			// 		{ label: qsTr("Two-stage")			, value: "twoStage"			},
+			// 		{ label: qsTr("Robust two-stage")	, value: "twoStageRobust"	},
+			// 		{ label: qsTr("Doubly robust")		, value: "doublyRobust"		}
+			// 	]
 			DropDown
 			{
 				name: "naAction"
 				label: qsTr("Missing data handling")
-				values:
-				[
-					{ label: qsTr("FIML")				, value: "fiml"				},
+				values: [
 					{ label: qsTr("Listwise deletion")	, value: "listwise"			},
+					{ label: qsTr("FIML")				, value: "fiml"},
 					{ label: qsTr("Pairwise")			, value: "pairwise"			},
 					{ label: qsTr("Two-stage")			, value: "twoStage"			},
 					{ label: qsTr("Robust two-stage")	, value: "twoStageRobust"	},
-					{ label: qsTr("Doubly robust")		, value: "doublyRobust"		},
+					{ label: qsTr("Doubly robust")		, value: "doublyRobust"		}
 				]
+
 			}
 
 			DropDown
@@ -281,7 +282,7 @@ Form
 		}
 	}
 
-Section
+	Section
 	{
 		title: qsTr("Output Options")
 
@@ -335,8 +336,58 @@ Section
 					}
 				}
 			}
+			CheckBox 
+			{ 
+				name: "warnings";	
+				label: qsTr("Show warnings")
+			}
+
 		}
 	}
+
+	Section
+	{
+		title: qsTr("Multigroup SEM")
+
+		Group
+		{
+			DropDown
+			{
+				id: grpvar
+				name: "group"
+				label: qsTr("Grouping Variable")
+				showVariableTypeIcon: true
+				addEmptyValue: true
+			} // No model or source: it takes all variables per default
+			Group
+			{
+				visible: grpvar.value != ""
+				id: constraints
+				title: qsTr("Equality Constraints")
+				CheckBox { id: eq_loadings; 			name: "equalLoading";				label: qsTr("Loadings")				}
+				CheckBox { id: eq_intercepts; 			name: "equalIntercept";				label: qsTr("Intercepts")			}
+				CheckBox { id: eq_residuals; 			name: "equalResidual";				label: qsTr("Residuals")			}
+				CheckBox { id: eq_residualcovariances; 	name: "equalResidualCovariance";	label: qsTr("Residual covariances")	}
+				CheckBox { id: eq_means; 				name: "equalMean";					label: qsTr("Means")				}
+				CheckBox { id: eq_thresholds; 			name: "equalThreshold";				label: qsTr("Thresholds")			}
+				CheckBox { id: eq_regressions; 			name: "equalRegression";			label: qsTr("Regressions")			}
+				CheckBox { id: eq_variances; 			name: "equalLatentVariance";		label: qsTr("Latent variances")		}
+				CheckBox { id: eq_lvcovariances; 		name: "equalLatentCovariance";		label: qsTr("Latent covariances")	}
+			}
+
+		}
+		TextArea
+		{
+			name: "freeParameters"
+			title: qsTr("Release constraints (one per line)")
+			width: multigroup.width / 2
+			height: constraints.height + grpvar.height
+			textType: JASP.TextTypeLavaan
+			visible: eq_loadings.checked || eq_intercepts.checked || eq_residuals.checked || eq_residualcovariances.checked || eq_means.checked || eq_thresholds.checked || eq_regressions.checked || eq_variances.checked || eq_lvcovariances.checked
+		}
+	}
+
+
 	Section 
 	{
 		title: qsTr("Sensitivity Analysis")
