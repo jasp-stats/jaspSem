@@ -127,22 +127,40 @@ Form
 
 		Group
 		{
-			DropDown
+			RowLayout 
 			{
-				name: "estimator"
-				label: qsTr("Estimator")
-				id: estimator
-				values: [
-					{ value: "default", label: qsTr("Default")},
-					{ value: "ml",			label: qsTr("ML")			},
-					{ value: "gls",			label: qsTr("GLS")		},
-					{ value: "wls",			label: qsTr("WLS")		},
-					{ value: "uls",			label: qsTr("ULS")		},
-					{ value: "dwls",		label: qsTr("DWLS")		},
-					{ value: "pml",			label: qsTr("PML")		}
-				]
-			}
+				DropDown
+				{
+					name: "estimator"
+					label: qsTr("Estimator")
+					id: estimator
+					values: [
+						{ value: "default", label: qsTr("Default")},
+						{ value: "ml",			label: qsTr("ML")			},
+						{ value: "gls",			label: qsTr("GLS")		},
+						{ value: "wls",			label: qsTr("WLS")		},
+						{ value: "uls",			label: qsTr("ULS")		},
+						{ value: "dwls",		label: qsTr("DWLS")		},
+						{ value: "pml",			label: qsTr("PML")		},
+						{ value: "mlm",			label: qsTr("MLM")		},
+						{ value: "mlmv",		label: qsTr("MLMV")		},
+						{ value: "mlmvs",		label: qsTr("MLMVS")	},
+						{ value: "mlf",			label: qsTr("MLF")		},
+						{ value: "mlr",			label: qsTr("MLR")		},
+						{ value: "wlsm",		label: qsTr("WLSM")		},
+						{ value: "wlsmv",		label: qsTr("WLSMV")	},
+						{ value: "ulsm",		label: qsTr("ULSM")		},
+						{ value: "ulsmv",		label: qsTr("ULSMV")	}
+					]
+				}
+				HelpButton
+				{
+					toolTip: 					qsTr("Click for more information")
+					helpPage:					"forQml/tooltip"
+				}
 
+			}
+			
 			DropDown
 			{
 				name: "modelTest"
@@ -166,8 +184,9 @@ Form
 				label: qsTr("Information matrix")
 				name: "informationMatrix"
 				values: [
-					{ value: "expected", 	 label: qsTr("Expected") },
-					{ value: "observed", 	 label: qsTr("Observed") },
+					{ value: "default", 	 label: qsTr("Default")			},
+					{ value: "expected", 	 label: qsTr("Expected") 		},
+					{ value: "observed", 	 label: qsTr("Observed") 		},
 					{ value: "firstOrder", label: qsTr("First order") }
 				]
 			}
@@ -178,10 +197,11 @@ Form
 				name: "errorCalculationMethod"
 				id: errorCalc
 				values: [
-					{ value: "standard",  	 label: qsTr("Standard") },
-					{ value: "robust", 	 label: qsTr("Robust") },
-					{ value: "robustHuberWhite", 	 label: qsTr("Robust Huber-White") },
-					{ value: "bootstrap", label: qsTr("Bootstrap")}
+					{ value: "default", 	 				label: qsTr("Default")						},
+					{ value: "standard",  	 			label: qsTr("Standard") 					},
+					{ value: "robust", 	 					label: qsTr("Robust") 						},
+					{ value: "robustHuberWhite", 	label: qsTr("Robust Huber-White") },
+					{ value: "bootstrap", 				label: qsTr("Bootstrap")					}
 				]
 			}
 			IntegerField
@@ -316,6 +336,12 @@ Form
 					}
 				}
 			}
+			CheckBox 
+			{ 
+				name: "warnings";	
+				label: qsTr("Show warnings")
+			}
+
 		}
 	}
 

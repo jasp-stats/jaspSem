@@ -14,15 +14,10 @@ results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
 
 test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-  if (jaspBase::getOS() == "windows") {
-    jaspTools::expect_equal_tables(table,
-                                   list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, 1, "Model1",
-                                        75, 0, 5, 5))
-  } else {
-    jaspTools::expect_equal_tables(table,
-                                   list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, 0, "Model1",
-                                        75, 0, 5, 5))
-  }
+
+  jaspTools::expect_equal_tables(table,
+                                 list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, "", "Model1",
+                                      75, 0, 5, 5))
 })
 
 parcont <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]]
@@ -651,17 +646,9 @@ results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
 test_that("Bootstrapping model fit table works", {
 
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-
-  if (jaspBase::getOS() == "windows") {
-    jaspTools::expect_equal_tables(table,
-                                   list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, 1, "Model1",
-                                        75, 0, 5, 5))
-  } else {
-    jaspTools::expect_equal_tables(table,
-                                   list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, 0, "Model1",
-                                        75, 0, 5, 5))
-  }
-
+  jaspTools::expect_equal_tables(table,
+                                 list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, "", "Model1",
+                                      75, 0, 5, 5))
 })
 
 # Residual covariances table results match
@@ -706,7 +693,8 @@ test_that("Bootstrapping residual variances work", {
 
 
 
-test_that("t-size RMSEA and CFI match values of original article (Katerina M. Marcoulides & Ke-Hai Yuan (2017))", {
+test_that("t-size RMSEA and CFI match values of original article (Katerina M. Marcoulides & Ke-Hai Yuan (2017)),
+          also checks vaariance-coavriance matrix input", {
   options <- jaspTools::analysisOptions("SEM")
   options$sampleSize <- 600
   options$samplingWeights <- ""
@@ -714,7 +702,7 @@ test_that("t-size RMSEA and CFI match values of original article (Katerina M. Ma
   options$informationMatrix <- "expected"
   options$estimator <- "default"
   options$modelTest <- "standard"
-  options$naAction <- "ml"
+  options$naAction <- "fiml"
   options$emulation <- "mplus"
   options$group <- ""
   options$dataType <- "varianceCovariance"
@@ -790,19 +778,11 @@ test_that("Variance-covariance input works", {
   set.seed(1)
   results <- jaspTools::runAnalysis("SEM", data, options)
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-
-  if (jaspBase::getOS() == "osx") {
-    jaspTools::expect_equal_tables(table,
-                                   list(707.570148255052, 721.47507693627, 6.66133814775094e-14, 0, "Model1",
-                                        75, 0, "", "", "", 6, 6, 1095.63355300897, 1109.53848169019,
-                                        0, 0, "Model2", 75, 1, "", -6.66133814775094e-14, 0, 6, 6))
-  } else {
-    jaspTools::expect_equal_tables(table,
-                                   list(707.570148255052, 721.47507693627, 6.66133814775094e-14, 1, "Model1",
-                                        75, 0, "", "", "", 6, 6, 1095.63355300897, 1109.53848169019,
-                                        0, 0, "Model2", 75, 1, "", -6.66133814775094e-14, 0, 6, 6))
-
-  }
+  jaspTools::expect_equal_tables(table,
+                                 list(707.570148255052, 721.47507693627, 6.66133814775094e-14, 0, "Model1",
+                                      75, "", "", "", "", 6, 6, 1095.63355300897, 1109.53848169019,
+                                      0, 0, "Model2", 75, "", "", -6.66133814775094e-14, 0, 6, 6
+                                 ))
 })
 
 

@@ -20,8 +20,8 @@
 SEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
-  sink("~/Downloads/log.txt")
-  on.exit(sink(NULL))
+  # sink("~/Downloads/log.txt")
+  # on.exit(sink(NULL))
 
   # Read dataset
   options <- .semPrepOpts(options)
@@ -37,6 +37,7 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
 
   # Output functions
   .semFitTab(jaspResults, modelContainer, dataset, options, ready)
+  .semWarningsHtml(modelContainer, dataset, options, ready)
   .semParameters(modelContainer, dataset, options, ready)
   .semAdditionalFits(modelContainer, dataset, options, ready)
   .semRsquared(modelContainer, dataset, options, ready)
@@ -258,7 +259,7 @@ checkLavaanModel <- function(model, availableVars) {
       syntaxTable <- lavaan::parTable(fit)
     }
 
-    if(nrow(syntaxTable[syntaxTable$op == ":=",]) == 0) {
+    if (nrow(syntaxTable[syntaxTable$op == ":=",]) == 0) {
       regressions <- syntaxTable[syntaxTable$op == "~",]
       if (nrow(regressions) > 0) {
         syntax <- .semEffectsSyntax(originalSyntax, syntaxTable, regressions, dataset, options)
@@ -278,10 +279,11 @@ checkLavaanModel <- function(model, availableVars) {
     }
 
     # fit the enriched model
-    fit <- try(do.call(lavaan::lavaan, lav_args))
+    fit <- try(.withWarnings(do.call(lavaan::lavaan, lav_args)))
+
     if (isTryError(fit)) { # if try-error, fit original model
       lav_args[["model"]] <- originalSyntax
-      fit <- try(do.call(lavaan::lavaan, lav_args))
+      fit <- try(.withWarnings(do.call(lavaan::lavaan, lav_args)))
     }
 
     if (isTryError(fit)) {
@@ -291,18 +293,6 @@ checkLavaanModel <- function(model, availableVars) {
       if (grepl(c("no variance"), err))
         err <- gettext("One or more variables are constants or contain only missing values ")
 
-      # if(grepl(c("categorical"), err)){
-      #   if(grepl("ml", err))
-      #     errMissingMethod <- "FIML"
-      #   if(grepl("two.stage", err))
-      #     errMissingMethod <- "Two-stage"
-      #   if(grepl("robust.two.stage", err))
-      #     errMissingMethod <- "Robust two-stage"
-      #   err <- gettextf("Missing data handling '%s' is not supported for categorical data,
-      #                   please select another method under 'Missing data handling'
-      #                   within the 'Estimation options' tab", errMissingMethod)
-      # }
-
       errmsg <- gettextf("Estimation failed Message: %s", err)
 
       modelContainer$setError(paste0("Error in \"", options[["models"]][[i]][["name"]], "\" - ",
@@ -311,14 +301,14 @@ checkLavaanModel <- function(model, availableVars) {
       break
     }
 
-    if (isFALSE(slot(fit, "optim")$converged)) {
+    if (isFALSE(slot(fit$value, "optim")$converged)) {
       errormsg <- gettextf("Estimation failed! Message: %s did not converge!", options[["models"]][[i]][["name"]])
       modelContainer$setError(errormsg)
       modelContainer$dependOn("models")
       break
     }
 
-    if (lavaan::fitMeasures(fit, "df") < 0 ) {
+    if (lavaan::fitMeasures(fit$value, "df") < 0 ) {
       errormsg <- gettextf("Estimation failed! Message: %s has negative degrees of freedom.", options[["models"]][[i]][["name"]])
       modelContainer$setError(errormsg)
       modelContainer$dependOn("models")
@@ -326,22 +316,24 @@ checkLavaanModel <- function(model, availableVars) {
     }
 
     if (options[["errorCalculationMethod"]] == "bootstrap") {
-      fit <- lavBootstrap(fit, options[["bootstrapSamples"]])
+      fit$value <- lavBootstrap(fit$value, options[["bootstrapSamples"]])
     }
     results[[i]] <- fit
-
-
-
   }
+
+  resultsOut <- lapply(results, function(x) x$value)
+  warningsOut <- lapply(results, function(x) x$warnings)
 
   # store in model container
   if (!modelContainer$getError()) {
-    modelContainer[["results"]] <- createJaspState(results)
+    modelContainer[["results"]] <- createJaspState(resultsOut)
     modelContainer[["results"]]$dependOn(optionsFromObject = modelContainer)
     modelContainer[["models"]]  <- createJaspState(options[["models"]])
     modelContainer[["models"]]$dependOn(optionsFromObject = modelContainer)
     modelContainer[["originalSyntax"]] <- createJaspState(list(syntaxTable))
     modelContainer[["originalSyntax"]]$dependOn(optionsFromObject = modelContainer)
+    modelContainer[["warnings"]] <- createJaspState(warningsOut)
+    modelContainer[["warnings"]]$dependOn(optionsFromObject = modelContainer)
   }
 
   return(results)
@@ -397,10 +389,10 @@ checkLavaanModel <- function(model, availableVars) {
   # estimation options
   lavopts[["estimator"]]   <- options[["estimator"]]
   lavopts[["se"]]        <- switch(options[["errorCalculationMethod"]],
+                                   "default" = "default",
                                    "bootstrap" = "standard",
                                    "robust" = "robust.sem",
-                                   "robustHuberWhite" = "robust.huber.white",
-                                   options[["errorCalculationMethod"]])
+                                   "robustHuberWhite" = "robust.huber.white")
 
   lavopts[["information"]] <- options[["informationMatrix"]]
   lavopts[["test"]]      <- switch(options[["modelTest"]],
@@ -650,7 +642,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (!is.null(modelContainer[["fittab"]])) return()
 
   fittab <- createJaspTable(title = gettext("Model fit"))
-  fittab$dependOn("models")
+  fittab$dependOn(c("models", "warnings"))
   fittab$position <- 0
 
   fittab$addColumnInfo(name = "Model",    title = "",                            type = "string" , combine = TRUE)
@@ -665,7 +657,7 @@ checkLavaanModel <- function(model, availableVars) {
   fittab$addColumnInfo(name = "nfree",    title = gettext("Free"),               overtitle = gettext("n(Parameters)"), type = "integer")
   fittab$addColumnInfo(name = "Chisq",    title = gettext("&#967;&sup2;"),       type = "number" ,
                        overtitle = gettext("Baseline test"))
-  fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
+  fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "number",
                        overtitle = gettext("Baseline test"))
   fittab$addColumnInfo(name = "PrChisq",  title = gettext("p"),                  type = "pvalue",
                        overtitle = gettext("Baseline test"))
@@ -673,7 +665,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (length(options[["models"]]) > 1) {
     fittab$addColumnInfo(name = "dchisq",   title = "\u0394\u03C7\u00B2", type = "number" ,
                          overtitle = gettext("Difference test"))
-    fittab$addColumnInfo(name = "ddf",      title = gettextf("%1$sdf", "\u0394"),           type = "integer",
+    fittab$addColumnInfo(name = "ddf",      title = gettextf("%1$sdf", "\u0394"),           type = "number",
                          overtitle = gettext("Difference test"))
     fittab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
                          overtitle = gettext("Difference test"))
@@ -688,24 +680,31 @@ checkLavaanModel <- function(model, availableVars) {
 
   if (modelContainer$getError()) return()
 
-  testName <- switch(options[["modelTest"]],
-                     "satorraBentler" = "satorra.bentler",
-                     "yuanBentler" = "yuan.bentler",
-                     "scaledAndShifted" = "scaled.shifted",
-                     "meanAndVarianceAdjusted" = "mean.var.adjusted",
-                     "bollenStine" = "bollen.stine",
-                     options[["modelTest"]])
-  if (testName == "default")
-    testName <- "standard"
+  # handle the warnings
+  fnote <- ""
+  warns <- unlist(sapply(semResults, function(x) x$warnings))
+  if (length(warns) > 0 && !options[["warnings"]]) {
+    fnote <- paste0(fnote, gettext("Fitting the model resulted in warnings. Check the 'Show warnings' box in the Output Options to see the warnings."))
+  }
+
+  semResults <- lapply(semResults, function(x) x$value)
+
+  # when an estimators defines a special model test, and the model test itself is defined, lavaan records two model tests,
+  # the second value records the defined model test, which should be what we want
+  testName <- ifelse(length(semResults[[1]]@Options$test) == 1,
+                     semResults[[1]]@Options$test[1],
+                     semResults[[1]]@Options$test[2])
 
   if (length(semResults) == 1) {
-    lrt <- .withWarnings(lavaan::lavTestLRT(semResults[[1]], type = "Chisq")[-1, ])
-    chiSq <- lavaan::lavInspect(semResults[[1]], what = "test")[[testName]]$stat
-    dfs <- lavaan::lavInspect(semResults[[1]], what = "test")[[testName]]$df
-    rownames(lrt$value) <- options[["models"]][[1]][["name"]]
+    lrt <- lavaan::lavTestLRT(semResults[[1]], type = "Chisq")[-1, ]
+    lavIns <- lavaan::lavInspect(semResults[[1]], what = "test")[[testName]]
+    chiSq <- lavIns$stat
+    dfs <- lavIns$df
+    pvalue <- lavIns$pvalue
+    rownames(lrt) <- options[["models"]][[1]][["name"]]
     Ns <- lavaan::lavInspect(semResults[[1]], "ntotal")
     npar <- lavaan::lavInspect(semResults[[1]], "npar")
-    nfree <- if (length(semResults[[1]]@Model@eq.constraints.K) == 0) lavaan::lavInspect(semResults[[1]], "npar") else length(semResults[[1]]@Model@eq.constraints.K[1,])
+    nfree <- semResults[[1]]@loglik$npar
   } else {
     Ns <- vapply(semResults, lavaan::lavInspect, 0, what = "ntotal")
     npar <- vapply(semResults, lavaan::lavInspect, 0, what = "npar") # without eq constraints
@@ -715,41 +714,37 @@ checkLavaanModel <- function(model, availableVars) {
     names(lrt_args) <- "object" # (the first result is object, the others ...)
     lrt_args[["model.names"]] <- vapply(options[["models"]], getElement, name = "name", "")
     lrt_args[["type"]] <- "Chisq"
-    lrt <- .withWarnings(do.call(lavaan::lavTestLRT, lrt_args))
+    lrt <- do.call(lavaan::lavTestLRT, lrt_args)
 
     chiSq <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$stat}))
     dfs <- unlist(lapply(semResults, function(x) {round(lavaan::lavInspect(x, what = "test")[[testName]]$df, 3)}))
     # because the LRT orders the models according to the df, we need to reorder this as well
     chiSq <- chiSq[order(dfs)]
+    pvalue <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$pvalue}))
+    pvalue <- pvalue[order(dfs)]
     dfs <- sort(dfs)
 
   }
 
-  dtFill <- data.frame(matrix(ncol = 0, nrow = length(rownames(lrt$value))))
-
-  dtFill[["Model"]]    <- rownames(lrt$value)
-  dtFill[["AIC"]]      <- lrt$value[["AIC"]]
-  dtFill[["BIC"]]      <- lrt$value[["BIC"]]
+  dtFill <- data.frame(matrix(ncol = 0, nrow = length(rownames(lrt))))
+  dtFill[["Model"]]    <- rownames(lrt)
+  dtFill[["AIC"]]      <- lrt[["AIC"]]
+  dtFill[["BIC"]]      <- lrt[["BIC"]]
   dtFill[["N"]]        <- Ns
   dtFill[["npar"]]     <- npar
   dtFill[["nfree"]]    <- nfree
   dtFill[["Chisq"]]    <- chiSq
   dtFill[["Df"]]       <- dfs
-  dtFill[["PrChisq"]]  <- pchisq(q = chiSq, df = dfs, lower.tail = FALSE)
+  dtFill[["PrChisq"]]  <- pvalue
+  # dtFill[["PrChisq"]]  <- pchisq(q = chiSq, df = dfs, lower.tail = FALSE)
 
   if (length(options[["models"]]) > 1) {
-    dtFill[["dchisq"]]   <- lrt$value[["Chisq diff"]]
-    dtFill[["ddf"]]      <- lrt$value[["Df diff"]]
-    dtFill[["dPrChisq"]] <- lrt$value[["Pr(>Chisq)"]]
+    dtFill[["dchisq"]]   <- lrt[["Chisq diff"]]
+    dtFill[["ddf"]]      <- lrt[["Df diff"]]
+    dtFill[["dPrChisq"]] <- lrt[["Pr(>Chisq)"]]
   }
 
-  # add warning footnote
-  fnote <- ""
-  if (!is.null(lrt$warnings)) {
-    fnote <- paste0(fnote, gsub("lavaan WARNING: ", "", lrt$warnings[[1]]$message))
-  }
-
-  if(options$naAction == "listwise"){
+  if (options$naAction == "listwise"){
     nrm <- nrow(dataset) - lavaan::lavInspect(semResults[[1]], "ntotal")
     if (nrm != 0) {
       missingFootnote <- gettextf("A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options.",
@@ -758,38 +753,39 @@ checkLavaanModel <- function(model, availableVars) {
     }
   }
 
-  # add test statistic correction footnote
-  test <- lavaan::lavInspect(semResults[[1]], "options")[["test"]]
-  if(length(test) > 1)
-    test <- test[[2]]
+# it makes sense to print the test, estimator, information, SE as a footnote if only "default" is specified
+  if (options[["modelTest"]] == "default") {
+      ftext <- gettextf("Model test is %s.", testName)
+      fnote <- paste(fnote, ftext)
+  }
 
-  # if (test != "standard") {
-  #   LUT <- tibble::tribble(
-  #     ~option,              ~name,
-  #     "Satorra.Bentler",    gettext("Satorra-Bentler scaled test-statistic"),
-  #     "Yuan.Bentler",       gettext("Yuan-Bentler scaled test-statistic"),
-  #     "Yuan.Bentler.Mplus", gettext("Yuan-Bentler (Mplus) scaled test-statistic"),
-  #     "mean.var.adjusted",  gettext("mean and variance adjusted test-statistic"),
-  #     "Satterthwaite",      gettext("mean and variance adjusted test-statistic"),
-  #     "scaled.shifted",     gettext("scaled and shifted test-statistic"),
-  #     "Bollen.Stine",       gettext("bootstrap (Bollen-Stine) probability value"),
-  #     "bootstrap",          gettext("bootstrap (Bollen-Stine) probability value"),
-  #     "boot",               gettext("bootstrap (Bollen-Stine) probability value"),
-  #     "browne.residual.adf", gettext("Browne")
-  #   )
-  #   testname <- LUT[test == tolower(LUT$option), "name"][[1]]
-  #   ftext <- gettextf("Model tests based on %s.", testname)
-  #   fittab$addFootnote(message = ftext)
-  # }
+  estimatorName <- semResults[[1]]@Options$estimator
+  if (options[["estimator"]] == "default") {
+    ftext <- gettextf("Estimator is %s.", estimatorName)
+    fnote <- paste(fnote, ftext)
+  }
 
-  if (options$estimator %in% c("dwls", "gls", "wls", "uls")) {
-    fnote <- paste0(fnote, gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators"))
+  informationName <- semResults[[1]]@Options$information[1]
+  # information has two elements one for the SEs one for the test statistic, but JASP does not distinguish
+  if (options[["informationMatrix"]] == "default") {
+    ftext <- gettextf("Information matrix used is %s.", informationName)
+    fnote <- paste(fnote, ftext)
+  }
+
+  seName <- semResults[[1]]@Options$se
+  if (options[["errorCalculationMethod"]] == "default") {
+    ftext <- gettextf("Standard errors are %s.", seName)
+    fnote <- paste(fnote, ftext)
+  }
+
+  if (!grepl("ML", estimatorName, fixed = TRUE)) {
+    fnote <- paste0(fnote, gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators."))
   }
 
   if (options[["group"]] != "") {
 
     groupNames <- semResults[[1]]@Data@group.label
-    models <- rep(rownames(lrt$value), each = length(groupNames))
+    models <- rep(rownames(lrt), each = length(groupNames))
     modelDfs <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$df}))
     ord <- match(modelDfs, sort(modelDfs))
     modelDfs <- modelDfs[ord]
@@ -812,7 +808,7 @@ checkLavaanModel <- function(model, availableVars) {
     dtFillGroup <- data.frame(matrix(ncol = 0, nrow = length(models)))
 
     dtFillGroup[["Model"]]    <- models
-    dtFillGroup[["group"]]    <- rep(groupNames, length(rownames(lrt$value)))
+    dtFillGroup[["group"]]    <- rep(groupNames, length(rownames(lrt)))
     dtFillGroup[["AIC"]]      <- c(aics)
     dtFillGroup[["BIC"]]      <- c(bics)
     dtFillGroup[["N"]]        <- c(Ns)
@@ -842,14 +838,37 @@ checkLavaanModel <- function(model, availableVars) {
 
   }
 
+
   fittab$setData(dtFill)
   fittab$addFootnote(message = fnote)
 
 }
 
+.semWarningsHtml <- function(modelContainer, dataset, options, ready) {
+
+  if (!options[["warnings"]] || !is.null(modelContainer[["warningsHtml"]])) return()
+
+  warnings <- modelContainer[["warnings"]][["object"]]
+  warns <- unlist(warnings)
+
+  if (length(warns) > 0) {
+    if (length(unique(warns)) == 1) warns <- warns[1] # all warnings across models are the same
+    warns <- gsub("\n", "", warns)
+    warns <- paste(warns, collapse = ".")
+
+    warnings <- createJaspHtml(text = gettextf("<b>Warnings:</b> %s", warns))
+
+    warnings$dependOn("warnings")
+    warnings$position <- 0.1
+
+    modelContainer[["warningsHtml"]] <- warnings
+  }
+
+  return()
+}
+
 .semParameters <- function(modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["params"]])) return()
-
 
   params <- createJaspContainer(gettext("Parameter estimates"))
   params$position <- 1
@@ -876,7 +895,6 @@ checkLavaanModel <- function(model, availableVars) {
   } else {
     pecont <- createJaspContainer(model[["name"]], initCollapsed = TRUE)
   }
-
 
   # Measurement model
   indtab <- createJaspTable(title = gettext("Factor Loadings"))
@@ -1039,7 +1057,7 @@ checkLavaanModel <- function(model, availableVars) {
   allTables <- list(indtab, regtab, lvartab, lcovtab, vartab, covtab)
 
   # Means
-  if (options[["meanStructure"]]) {
+  if (options[["meanStructure"]] || options[["naAction"]] == "fiml") {
     mutab <- createJaspTable(title = gettext("Intercepts"))
     allTables[[length(allTables) + 1]] <- mutab
 
@@ -1062,6 +1080,10 @@ checkLavaanModel <- function(model, availableVars) {
                           overtitle = gettext("Standardized"))
       mutab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
                           overtitle = gettext("Standardized"))
+    }
+
+    if (options[["naAction"]] == "fiml") {
+      mutab$addFootnote(gettext("Missing data method 'FIML' forces meanstructure."))
     }
 
     pecont[["mu"]] <- mutab
@@ -1147,8 +1169,6 @@ checkLavaanModel <- function(model, availableVars) {
   if (!is.null(model)) parentContainer[[model[["name"]]]] <- pecont
 
   if (!ready || !inherits(fit, "lavaan")) return()
-
-
 
 
   # fill tables with values
@@ -1326,7 +1346,7 @@ checkLavaanModel <- function(model, availableVars) {
 
 
   # Means
-  if (options[["meanStructure"]]) {
+  if (options[["meanStructure"]] || options[["naAction"]] == "fiml") {
     pe_mu <- pe[pe$op == "~1",]
 
     if (options[["group"]] != "")
@@ -1469,8 +1489,9 @@ checkLavaanModel <- function(model, availableVars) {
   fitin$setExpectedSize(rows = 1, cols = 2)
   fitin$addCitation("Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural Equation Models, Structural Equation Modeling: A Multidisciplinary Journal, 24:1, 148-153, DOI: 10.1080/10705511.2016.1225260")
 
+  estimatorName <- modelContainer[["results"]][["object"]][[1]]@Options$estimator
   # information criteria
-  if (!options$estimator %in% c("dwls", "gls", "wls", "uls")) {
+  if (grepl("ML", estimatorName)) {
     fitms[["incrits"]] <- fitic <- createJaspTable(gettext("Information criteria"))
     fitic$addColumnInfo(name = "index", title = "", type = "string")
     if (length(options[["models"]]) < 2) {
