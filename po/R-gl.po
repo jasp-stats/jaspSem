@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2024-05-27 16:03\n"
+"POT-Creation-Date: 2024-08-10 02:46\n"
 "PO-Revision-Date: 2024-06-10 10:24+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -642,6 +642,19 @@ msgstr ""
 "Fallou a estimación! Mensaxe: O modelo %s ten un número de graos de "
 "liberdade negativo."
 
+msgid "n(Observations)"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+#, fuzzy
+msgid "n(Parameters)"
+msgstr "Parámetro"
+
+msgid "Free"
+msgstr ""
+
 msgid "%1$sdf"
 msgstr "%1$sgl"
 
@@ -869,6 +882,63 @@ msgstr "sepc (all)"
 
 msgid "sepc (nox)"
 msgstr "sepc (nox)"
+
+msgid "Sensitivity analysis"
+msgstr ""
+
+msgid "Summary of sensitivity analysis"
+msgstr ""
+
+#, fuzzy
+msgid "Path"
+msgstr "Gráfica de rutas"
+
+#, fuzzy
+msgid "Standardized estimate"
+msgstr "Tipificado"
+
+#, fuzzy
+msgid "Original model"
+msgstr "Modelo linear"
+
+#, fuzzy
+msgid "p*"
+msgstr "p"
+
+msgid "Sensitivity model"
+msgstr ""
+
+msgid "Min"
+msgstr ""
+
+msgid "Max"
+msgstr ""
+
+msgid ""
+"Please include at least one regression path in the model to perform a "
+"sensitivity analysis."
+msgstr ""
+
+msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
+msgstr ""
+
+msgid "Performing sensitivity analysis (model: %1$s)"
+msgstr ""
+
+msgid "Sensitivity parameters that led to a change in significance"
+msgstr ""
+
+#, fuzzy
+msgid "Sensitivity parameters"
+msgstr "Parámetros definidos"
+
+#, fuzzy
+msgid "Summary of sensitivity parameters"
+msgstr "Número de parámetros libres"
+
+#, fuzzy
+msgid "Sensitivity parameter"
+msgstr "Parámetros definidos"
 
 msgid "Path diagram"
 msgstr "Diagrama de ruta"

@@ -1234,3 +1234,71 @@ msgstr ""
 msgctxt "SEM|"
 msgid "Output Options"
 msgstr ""
+
+msgctxt "SEM|"
+msgid "Sensitivity Analysis"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Run sensitivity analysis"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Search algorithm"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Ant colony optimization"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Number of ants"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Size of the solution archive"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Convergence rate threshold"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Tabu search"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Optimizer function"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "% change mean estimate"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Sd of deviance / old estimate"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Change of p-value"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Distance of p-value from alpha"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Change of RMSEA"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Distance of RMSEA from 0.05"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Significance level"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Maximum number of iterations"
+msgstr ""

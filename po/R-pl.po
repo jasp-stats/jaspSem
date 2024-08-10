@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2024-05-27 16:03\n"
+"POT-Creation-Date: 2024-08-10 02:46\n"
 "PO-Revision-Date: 2024-06-20 22:09+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-r/pl/"
@@ -596,6 +596,19 @@ msgstr ""
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr ""
 
+msgid "n(Observations)"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+#, fuzzy
+msgid "n(Parameters)"
+msgstr "Parametr"
+
+msgid "Free"
+msgstr ""
+
 msgid "%1$sdf"
 msgstr ""
 
@@ -796,6 +809,60 @@ msgid "sepc (all)"
 msgstr ""
 
 msgid "sepc (nox)"
+msgstr ""
+
+msgid "Sensitivity analysis"
+msgstr ""
+
+msgid "Summary of sensitivity analysis"
+msgstr ""
+
+#, fuzzy
+msgid "Path"
+msgstr "Wykres ścieżkowy"
+
+#, fuzzy
+msgid "Standardized estimate"
+msgstr "Standaryzowane"
+
+msgid "Original model"
+msgstr ""
+
+#, fuzzy
+msgid "p*"
+msgstr "p"
+
+msgid "Sensitivity model"
+msgstr ""
+
+msgid "Min"
+msgstr ""
+
+msgid "Max"
+msgstr ""
+
+msgid ""
+"Please include at least one regression path in the model to perform a "
+"sensitivity analysis."
+msgstr ""
+
+msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
+msgstr ""
+
+msgid "Performing sensitivity analysis (model: %1$s)"
+msgstr ""
+
+msgid "Sensitivity parameters that led to a change in significance"
+msgstr ""
+
+msgid "Sensitivity parameters"
+msgstr ""
+
+#, fuzzy
+msgid "Summary of sensitivity parameters"
+msgstr "Liczba wolnych parametrów"
+
+msgid "Sensitivity parameter"
 msgstr ""
 
 msgid "Path diagram"

@@ -2,11 +2,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2024-05-27 16:03\n"
+"POT-Creation-Date: 2024-08-10 02:46\n"
 "PO-Revision-Date: 2024-06-11 16:58+0000\n"
 "Last-Translator: Koen Derks <koen-derks@hotmail.com>\n"
-"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/>"
-"\n"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/"
+">\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -635,6 +635,19 @@ msgstr ""
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr "Schatting mislukt! Bericht: Model %s heeft negatieve vrijheidsgraden."
 
+msgid "n(Observations)"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+#, fuzzy
+msgid "n(Parameters)"
+msgstr "Parameter"
+
+msgid "Free"
+msgstr ""
+
 msgid "%1$sdf"
 msgstr "%1$sdf"
 
@@ -862,6 +875,63 @@ msgstr "sepc (all)"
 
 msgid "sepc (nox)"
 msgstr "sepc (nox)"
+
+msgid "Sensitivity analysis"
+msgstr ""
+
+msgid "Summary of sensitivity analysis"
+msgstr ""
+
+#, fuzzy
+msgid "Path"
+msgstr "Paddiagram"
+
+#, fuzzy
+msgid "Standardized estimate"
+msgstr "Gestandaardiseerd"
+
+#, fuzzy
+msgid "Original model"
+msgstr "Lineair model"
+
+#, fuzzy
+msgid "p*"
+msgstr "p"
+
+msgid "Sensitivity model"
+msgstr ""
+
+msgid "Min"
+msgstr ""
+
+msgid "Max"
+msgstr ""
+
+msgid ""
+"Please include at least one regression path in the model to perform a "
+"sensitivity analysis."
+msgstr ""
+
+msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
+msgstr ""
+
+msgid "Performing sensitivity analysis (model: %1$s)"
+msgstr ""
+
+msgid "Sensitivity parameters that led to a change in significance"
+msgstr ""
+
+#, fuzzy
+msgid "Sensitivity parameters"
+msgstr "Gedefineerde Parameters"
+
+#, fuzzy
+msgid "Summary of sensitivity parameters"
+msgstr "Aantal vrije parameters"
+
+#, fuzzy
+msgid "Sensitivity parameter"
+msgstr "Gedefineerde Parameters"
 
 msgid "Path diagram"
 msgstr "Paddiagram"

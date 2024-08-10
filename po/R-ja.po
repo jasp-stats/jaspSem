@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2024-05-27 16:03\n"
+"POT-Creation-Date: 2024-08-10 02:46\n"
 "PO-Revision-Date: 2024-07-02 18:09+0000\n"
 "Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -241,7 +241,8 @@ msgstr ""
 msgid ""
 "FIML missing value handling only available when all endogenous variables are "
 "of scale type. Ordinal endogenous variables in the model: %s"
-msgstr "FIMLによる欠測値の処理は、すべての内生変数がスケールタイプの場合にのみ使用で"
+msgstr ""
+"FIMLによる欠測値の処理は、すべての内生変数がスケールタイプの場合にのみ使用で"
 "きます。モデルに順序つき内生変数が含まれています：%s"
 
 msgid ""
@@ -619,6 +620,19 @@ msgstr ""
 msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr "推定に失敗しました! メッセージ: モデル%sの自由度は負です."
 
+msgid "n(Observations)"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+#, fuzzy
+msgid "n(Parameters)"
+msgstr "パラメータ"
+
+msgid "Free"
+msgstr ""
+
 msgid "%1$sdf"
 msgstr ""
 
@@ -820,6 +834,63 @@ msgstr "spec(all)"
 
 msgid "sepc (nox)"
 msgstr "sept(nox)"
+
+msgid "Sensitivity analysis"
+msgstr ""
+
+msgid "Summary of sensitivity analysis"
+msgstr ""
+
+#, fuzzy
+msgid "Path"
+msgstr "パスプロット"
+
+#, fuzzy
+msgid "Standardized estimate"
+msgstr "標準化"
+
+#, fuzzy
+msgid "Original model"
+msgstr "線形勾配"
+
+#, fuzzy
+msgid "p*"
+msgstr "p"
+
+msgid "Sensitivity model"
+msgstr ""
+
+msgid "Min"
+msgstr ""
+
+msgid "Max"
+msgstr ""
+
+msgid ""
+"Please include at least one regression path in the model to perform a "
+"sensitivity analysis."
+msgstr ""
+
+msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
+msgstr ""
+
+msgid "Performing sensitivity analysis (model: %1$s)"
+msgstr ""
+
+msgid "Sensitivity parameters that led to a change in significance"
+msgstr ""
+
+#, fuzzy
+msgid "Sensitivity parameters"
+msgstr "定義されたパラメータ"
+
+#, fuzzy
+msgid "Summary of sensitivity parameters"
+msgstr "自由パラメーターの数"
+
+#, fuzzy
+msgid "Sensitivity parameter"
+msgstr "定義されたパラメータ"
 
 msgid "Path diagram"
 msgstr "パス図"
