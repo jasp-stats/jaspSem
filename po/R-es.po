@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
 "POT-Creation-Date: 2024-08-10 02:46\n"
-"PO-Revision-Date: 2024-06-10 10:24+0000\n"
+"PO-Revision-Date: 2024-08-10 09:22+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "es/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6-dev\n"
+"X-Generator: Weblate 5.7-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "El modelo no se pudo estimar debido a la no-convergencia."
@@ -637,17 +637,16 @@ msgstr ""
 "libertad negativo."
 
 msgid "n(Observations)"
-msgstr ""
+msgstr "n(Observaciones)"
 
 msgid "Total"
-msgstr ""
+msgstr "Total"
 
-#, fuzzy
 msgid "n(Parameters)"
-msgstr "Parámetro"
+msgstr "n(Parámetros)"
 
 msgid "Free"
-msgstr ""
+msgstr "Libres"
 
 msgid "%1$sdf"
 msgstr "%1$sgl"
@@ -881,61 +880,56 @@ msgid "sepc (nox)"
 msgstr "sepc (nox)"
 
 msgid "Sensitivity analysis"
-msgstr ""
+msgstr "Análisis de Sensibilidad"
 
 msgid "Summary of sensitivity analysis"
-msgstr ""
+msgstr "Resumen del análisis de Sensibilidad"
 
-#, fuzzy
 msgid "Path"
-msgstr "Gráfico de rutas"
+msgstr "Ruta"
 
-#, fuzzy
 msgid "Standardized estimate"
-msgstr "Tipificado"
+msgstr "Estimación tipificada"
 
-#, fuzzy
 msgid "Original model"
-msgstr "Modelo lineal"
+msgstr "Modelo inicial"
 
-#, fuzzy
 msgid "p*"
-msgstr "p"
+msgstr "p*"
 
 msgid "Sensitivity model"
-msgstr ""
+msgstr "Modelo de Sensibilidad"
 
 msgid "Min"
-msgstr ""
+msgstr "Mín"
 
 msgid "Max"
-msgstr ""
+msgstr "Máx"
 
 msgid ""
 "Please include at least one regression path in the model to perform a "
 "sensitivity analysis."
 msgstr ""
+"Por favor, incluya al menos una ruta de regresión en el modelo para realizar "
+"el análisis de sensibilidad."
 
 msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
-msgstr ""
+msgstr "Realizando el análisis de sensibilidad (modelo: %1$s, grupo: %2$s)"
 
 msgid "Performing sensitivity analysis (model: %1$s)"
-msgstr ""
+msgstr "Realizando el análisis de sensibilidad (modelo: %1$s)"
 
 msgid "Sensitivity parameters that led to a change in significance"
-msgstr ""
+msgstr "Parámetros de Sensibilidad que llevaron a un cambio en la significación"
 
-#, fuzzy
 msgid "Sensitivity parameters"
-msgstr "Parámetros definidos"
+msgstr "Parámetros de Sensibilidad"
 
-#, fuzzy
 msgid "Summary of sensitivity parameters"
-msgstr "Número de parámetros libres"
+msgstr "Resumen de los parámetros de Sensibilidad"
 
-#, fuzzy
 msgid "Sensitivity parameter"
-msgstr "Parámetros definidos"
+msgstr "Parámetro de Sensibilidad"
 
 msgid "Path diagram"
 msgstr "Diagrama de ruta"
