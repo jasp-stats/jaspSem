@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2024-08-11 11:09+0000\n"
+"Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
+"de/>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.7-dev\n"
 "X-Language: de\n"
 "X-Source-Language: American English\n"
 "X-Qt-Contexts: true\n"
@@ -1180,12 +1186,10 @@ msgctxt "PLSSEM|"
 msgid "Implied indicator correlations"
 msgstr "Implizite Indikator-Korrelationen"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Observed construct correlations"
 msgstr "Beobachtete Konstrukt-Korrelationen"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Implied construct correlations"
 msgstr "Implizierte Konstrukt-Korrelationen"
@@ -1268,68 +1272,75 @@ msgstr "Ausgabeoptionen"
 
 msgctxt "SEM|"
 msgid "Sensitivity Analysis"
-msgstr ""
+msgstr "Sensitivitätsanalyse"
 
 msgctxt "SEM|"
 msgid "Run sensitivity analysis"
-msgstr ""
+msgstr "Sensitivitätsanalyse durchführen"
 
 msgctxt "SEM|"
 msgid "Search algorithm"
-msgstr ""
+msgstr "Suchalgorithmus"
 
 msgctxt "SEM|"
 msgid "Ant colony optimization"
-msgstr ""
+msgstr "Ameisenkolonie-Optimierung"
 
 msgctxt "SEM|"
 msgid "Number of ants"
-msgstr ""
+msgstr "Anzahl der Ameisen"
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Size of the solution archive"
-msgstr ""
+msgstr "Größe des Lösungsarchivs"
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Convergence rate threshold"
-msgstr ""
+msgstr "Konvergenz-Raten-Schwellwert"
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Tabu search"
-msgstr ""
+msgstr "Tabu-Suche"
 
 msgctxt "SEM|"
 msgid "Optimizer function"
-msgstr ""
+msgstr "Optimierungsfunktion"
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "% change mean estimate"
-msgstr ""
+msgstr "% Änderung mittlerer Schätzung"
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Sd of deviance / old estimate"
-msgstr ""
+msgstr "Sd der Devianz / alte Schätzung"
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Change of p-value"
-msgstr ""
+msgstr "Änderung des p-Werts"
 
 msgctxt "SEM|"
 msgid "Distance of p-value from alpha"
-msgstr ""
+msgstr "Distanz des p-Werts von Alpha"
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Change of RMSEA"
-msgstr ""
+msgstr "Änderung des RMSEA"
 
 msgctxt "SEM|"
 msgid "Distance of RMSEA from 0.05"
-msgstr ""
+msgstr "Distanz des RMSEA von 0.05"
 
 msgctxt "SEM|"
 msgid "Significance level"
-msgstr ""
+msgstr "Signifikanzniveau"
 
 msgctxt "SEM|"
 msgid "Maximum number of iterations"
-msgstr ""
+msgstr "Maximale Anzahl von Iterationen"
