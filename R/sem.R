@@ -403,12 +403,12 @@ checkLavaanModel <- function(model, availableVars) {
 
   lavopts[["information"]] <- options[["informationMatrix"]]
   lavopts[["test"]]      <- switch(options[["modelTest"]],
-                                   "satorraBentler" = "Satorra.Bentler",
-                                   "yuanBentler" = "Yuan.Bentler",
-                                   "yuanBentlerMplus" = "Yuan.Bentler.Mplus",
+                                   "satorraBentler" = "satorra.bentler",
+                                   "yuanBentler" = "yuan.bentler",
+                                   "yuanBentlerMplus" = "yuan.bentler.mplus",
                                    "meanAndVarianceAdjusted" = "mean.var.adjusted",
                                    "scaledAndShifted" = "scaled.shifted",
-                                   "bollenStine" = "Bollen.Stine",
+                                   "bollenStine" = "bollen.stine",
                                    "browneResidualAdf" = "browne.residual.adf",
                                    "browneResidualNt" = "browne.residual.nt",
                                    options[["modelTest"]])
@@ -669,11 +669,9 @@ checkLavaanModel <- function(model, availableVars) {
     fnote <- gettextf("%sFitting the model resulted in warnings. Check the 'Show warnings' box in the Output Options to see the warnings. ", fnote)
   }
 
-  # when an estimators defines a special model test, and the model test itself is defined, lavaan records two model tests,
-  # the second value records the defined model test, which should be what we want
-  testName <- ifelse(length(semResults[[1]]@Options$test) == 1,
-                     semResults[[1]]@Options$test[1],
-                     semResults[[1]]@Options$test[2])
+  # the way lavaan exports the name of the test is a bit weird, so we get the test option from:
+  testName <- .semOptionsToLavOptions(options, dataset)[["test"]]
+  if (testName == "default") testName <- semResults[[1]]@Options$test
 
   if (length(semResults) == 1) {
     lrt <- lavaan::lavTestLRT(semResults[[1]], type = "Chisq")[-1, ]
@@ -1522,8 +1520,12 @@ checkLavaanModel <- function(model, availableVars) {
     }
   }
 
+  # the way lavaan exports the name of the test is a bit weird, so we get the test option from:
+  testName <- .semOptionsToLavOptions(options, dataset)[["test"]]
+  if (testName == "default") testName <- semResults[[1]]@Options$test
 
-  fmli <- lapply(modelContainer[["results"]][["object"]], .computeFitMeasures)
+  fmli <- lapply(modelContainer[["results"]][["object"]],
+                 function(x) .computeFitMeasures(fit = x, standard = (testName == "standard")))
 
   indexStrings <- c(gettext("Comparative Fit Index (CFI)"),
                     gettext("Tucker-Lewis Index (TLI)"),
@@ -1555,10 +1557,8 @@ checkLavaanModel <- function(model, availableVars) {
                       gettext("Sample-size adjusted Bayesian (SSABIC)"))
   }
   fitinds[["index"]] <- indexStrings
+
   fnote <- ""
-  testName <- ifelse(length(modelContainer[["results"]][["object"]][[1]]@Options$test) == 1,
-                     modelContainer[["results"]][["object"]][[1]]@Options$test[1],
-                     modelContainer[["results"]][["object"]][[1]]@Options$test[2])
   if (testName != "standard") {
     fnote <- gettextf("%s Fit indices are based on the scaled test statistic.", fnote)
   }
@@ -2848,15 +2848,11 @@ checkLavaanModel <- function(model, availableVars) {
   return(indirect)
 }
 
-.computeFitMeasures <- function(fit, alpha = 0.05) {
+.computeFitMeasures <- function(fit, alpha = 0.05, standard = TRUE) {
 
   fm <- lavaan::fitMeasures(fit, fit.measures = "all")
 
-  # if the model test is not standard report the scaled values of the fit measures
-  testName <- ifelse(length(fit@Options$test) == 1,
-                     fit@Options$test[1],
-                     fit@Options$test[2])
-  if (testName != "standard") {
+  if (!standard) {
     fm[c("chisq", "df", "baseline.chisq", "baseline.df", "cfi", "tli", "nnfi", "nfi", "rfi", "ifi", "rni", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue")] <- fm[c("chisq.scaled", "df.scaled", "baseline.chisq.scaled", "baseline.df.scaled", "cfi.scaled", "tli.scaled", "nnfi.scaled", "nfi.scaled",  "rfi.scaled", "ifi.scaled", "rni.scaled", "rmsea.scaled", "rmsea.ci.lower.scaled", "rmsea.ci.upper.scaled", "rmsea.pvalue.scaled")]
     fm["pnfi"] <- NA
   }
@@ -2907,3 +2903,15 @@ checkLavaanModel <- function(model, availableVars) {
 
   return(fm)
 }
+
+
+# .optionsForOutput <- function() {
+#
+#   testNames <- data.frame(lavNames = c("standard", "satorra.bentler", "yuan.bentler", "yuan.bentler.mplus", "mean.var.adjusted", "scaled.shifted", "bollen.stine", "browne.residual.adf", "browne.residual.nt"),
+#                           jaspNames = c("Standard", "Satorra-Bentler", "Yuan-Bentler", "Yuan-Bentler Mplus", "mean and variance-adjusted", "Scaled and shifted", "Bootstrap (Bollen-Stine)", "Browne residual based (ADF)", "Browne residual based (NT)"),
+#                           stringsAsFactors = FALSE)
+#
+#   seNames <- data.frame(lavNames = c("standard", "robust.sem", "robust.huber.white"))
+#   return(testNames)
+#
+# }

@@ -17,3 +17,5 @@ Some of the estimators come with options that are set in the background and may 
 	- WLSMV: implies DWLS with mean and var adjusted test and robust se
 	- ULSM: implies ULS with scaled test and robust se
 	- ULSMV: implies ULS with mean-var adjusted test and robust se
+
+- Note: If you specify "Model test" or "Standard errors" the corresponding options set by the estimators in the background will be overwritten
