@@ -156,7 +156,7 @@ Form
 				HelpButton
 				{
 					toolTip: 					qsTr("Click for more information")
-					helpPage:					"forQml/tooltip"
+					helpPage:					"forQml/tooltipEstimators"
 				}
 
 			}
@@ -271,9 +271,9 @@ Form
 			DropDown
 			{
 				name: "emulation"
-				label: qsTr("Emulation")
+				label: qsTr("Mimic")
 				values: [
-					{ value: "lavaan",	label: qsTr("None") 	},
+					{ value: "lavaan",	label: qsTr("Lavaan") 	},
 					{ value: "mplus",	label: qsTr("Mplus") 	},
 					{ value: "eqs",		label: qsTr("EQS") 		}
 				]
@@ -288,7 +288,7 @@ Form
 
 		Group
 		{
-			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures")				}
+			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures") }
 			CheckBox { name: "rSquared";				label: qsTr("R-squared")							}
 			CheckBox { name: "ave";						label: qsTr("Average variance extracted (AVE)")		}
 			CheckBox { name: "htmt";					label: qsTr("Heterotrait-monotrait ratio (HTMT)")	}

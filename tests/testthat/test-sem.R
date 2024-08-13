@@ -692,66 +692,69 @@ test_that("Bootstrapping residual variances work", {
 })
 
 
+# t-size RMSEA and CFI match values of original article (Katerina M. Marcoulides & Ke-Hai Yuan (2017)),
+# also checks variance-covariance matrix input
 
-test_that("t-size RMSEA and CFI match values of original article (Katerina M. Marcoulides & Ke-Hai Yuan (2017)),
-          also checks vaariance-coavriance matrix input", {
-  options <- jaspTools::analysisOptions("SEM")
-  options$sampleSize <- 600
-  options$samplingWeights <- ""
-  options$additionalFitMeasures <- TRUE
-  options$informationMatrix <- "expected"
-  options$estimator <- "default"
-  options$modelTest <- "standard"
-  options$naAction <- "fiml"
-  options$emulation <- "mplus"
-  options$group <- ""
-  options$dataType <- "varianceCovariance"
-  options$models <- list(list(name = "Model1", syntax = list(model = "factor1 =~ V1 + V2 + V3 + V4 + V5 + V6 + V7\n factor2 =~ V8 + V9 + V10 + V11 + V12",
-                                                             columns = c("V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12"))))
-  set.seed(1)
-  dataset <- structure(list(V1 = c(1.321, 0.443, 0.283, 0.379, 0.462, 0.316, 0.392, 0.404, 0.398, 0.313, 0.374, 0.381),
-                            V2 = c(0.443, 1.41, 0.507, 0.526, 0.466, 0.392, 0.404, 0.342, 0.493, 0.423, 0.448, 0.486),
-                            V3 = c(0.283, 0.507, 1.485, 0.542, 0.411, 0.37, 0.352, 0.389, 0.437, 0.372, 0.359, 0.387),
-                            V4 = c(0.379, 0.526, 0.542, 1.547, 0.527, 0.418, 0.481, 0.449, 0.45, 0.379, 0.368, 0.359),
-                            V5 = c(0.462, 0.466, 0.411, 0.527, 1.524, 0.496, 0.478, 0.426, 0.447, 0.398, 0.348, 0.37),
-                            V6 = c(0.316, 0.392, 0.37, 0.418, 0.496, 1.441, 0.387, 0.391, 0.48, 0.3, 0.404, 0.438),
-                            V7 = c(0.392, 0.404, 0.352, 0.481, 0.478, 0.387, 1.422, 0.405, 0.412, 0.351, 0.335, 0.371),
-                            V8 = c(0.404, 0.342, 0.389, 0.449, 0.426, 0.391, 0.405, 1.566, 0.657, 0.538, 0.591, 0.556),
-                            V9 = c(0.398,0.493, 0.437, 0.45, 0.447, 0.48, 0.412, 0.657, 1.646, 0.599, 0.608, 0.69),
-                            V10 = c(0.313, 0.423, 0.372, 0.379, 0.398, 0.3, 0.351, 0.538, 0.599, 1.675, 0.659, 0.529),
-                            V11 = c(0.374, 0.448, 0.359, 0.368, 0.348, 0.404, 0.335, 0.591, 0.608, 0.659, 1.63, 0.64),
-                            V12 = c(0.381, 0.486, 0.387, 0.359, 0.37, 0.438, 0.371, 0.556, 0.69, 0.529, 0.64, 1.673)),
-                       class = "data.frame", row.names = c("V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12"))
-  results <- jaspTools::runAnalysis("SEM", dataset, options)
+options <- jaspTools::analysisOptions("SEM")
+options$sampleSize <- 600
+options$samplingWeights <- ""
+options$additionalFitMeasures <- TRUE
+options$informationMatrix <- "expected"
+options$estimator <- "default"
+options$modelTest <- "standard"
+options$naAction <- "fiml"
+options$emulation <- "mplus"
+options$group <- ""
+options$dataType <- "varianceCovariance"
+options$models <- list(list(name = "Model1", syntax = list(model = "factor1 =~ V1 + V2 + V3 + V4 + V5 + V6 + V7\n factor2 =~ V8 + V9 + V10 + V11 + V12",
+                                                           columns = c("V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12"))))
+set.seed(1)
+dataset <- structure(list(V1 = c(1.321, 0.443, 0.283, 0.379, 0.462, 0.316, 0.392, 0.404, 0.398, 0.313, 0.374, 0.381),
+                          V2 = c(0.443, 1.41, 0.507, 0.526, 0.466, 0.392, 0.404, 0.342, 0.493, 0.423, 0.448, 0.486),
+                          V3 = c(0.283, 0.507, 1.485, 0.542, 0.411, 0.37, 0.352, 0.389, 0.437, 0.372, 0.359, 0.387),
+                          V4 = c(0.379, 0.526, 0.542, 1.547, 0.527, 0.418, 0.481, 0.449, 0.45, 0.379, 0.368, 0.359),
+                          V5 = c(0.462, 0.466, 0.411, 0.527, 1.524, 0.496, 0.478, 0.426, 0.447, 0.398, 0.348, 0.37),
+                          V6 = c(0.316, 0.392, 0.37, 0.418, 0.496, 1.441, 0.387, 0.391, 0.48, 0.3, 0.404, 0.438),
+                          V7 = c(0.392, 0.404, 0.352, 0.481, 0.478, 0.387, 1.422, 0.405, 0.412, 0.351, 0.335, 0.371),
+                          V8 = c(0.404, 0.342, 0.389, 0.449, 0.426, 0.391, 0.405, 1.566, 0.657, 0.538, 0.591, 0.556),
+                          V9 = c(0.398,0.493, 0.437, 0.45, 0.447, 0.48, 0.412, 0.657, 1.646, 0.599, 0.608, 0.69),
+                          V10 = c(0.313, 0.423, 0.372, 0.379, 0.398, 0.3, 0.351, 0.538, 0.599, 1.675, 0.659, 0.529),
+                          V11 = c(0.374, 0.448, 0.359, 0.368, 0.348, 0.404, 0.335, 0.591, 0.608, 0.659, 1.63, 0.64),
+                          V12 = c(0.381, 0.486, 0.387, 0.359, 0.37, 0.438, 0.371, 0.556, 0.69, 0.529, 0.64, 1.673)),
+                     class = "data.frame", row.names = c("V1", "V2", "V3", "V4", "V5", "V6", "V7", "V8", "V9", "V10", "V11", "V12"))
+results <- jaspTools::runAnalysis("SEM", dataset, options)
 
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_incrits"]][["data"]]
+
+test_that("Fit indices table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_fitMeasures"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list("Log-likelihood", -10988.8301074082, "Number of free parameters",
+                                 list("Comparative Fit Index (CFI)", 0.996320596799013, "Tucker-Lewis Index (TLI)",
+                                      0.995418101674243, "Bentler-Bonett Non-normed Fit Index (NNFI)",
+                                      0.995418101674243, "Bentler-Bonett Normed Fit Index (NFI)",
+                                      0.961983689254564, "Parsimony Normed Fit Index (PNFI)", 0.772502053492302,
+                                      "Bollen's Relative Fit Index (RFI)", 0.952658933788703, "Bollen's Incremental Fit Index (IFI)",
+                                      0.99635284058013, "Relative Noncentrality Index (RNI)", 0.996320596799013,
+                                      "Root mean square error of approximation (RMSEA)", 0.0130437119174326,
+                                      "RMSEA 90%% CI lower bound", 0, "RMSEA 90%% CI upper bound",
+                                      0.0297980428059356, "RMSEA p-value", 0.999994986450328, "Standardized root mean square residual (SRMR)",
+                                      0.0253510370222869, "Hoelter's critical N (<unicode> = .05)",
+                                      730.254899917344, "Hoelter's critical N (<unicode> = .01)",
+                                      821.1621871771, "Goodness of fit index (GFI)", 0.984016681546699,
+                                      "McDonald fit index (MFI)", 0.99550148064049, "Expected cross validation index (ECVI)",
+                                      0.18068400295767, "Log-likelihood", -10988.8301074082, "Number of free parameters",
                                       25, "Akaike (AIC)", 22027.6602148165, "Bayesian (BIC)", 22137.5834561969,
-                                      "Sample-size adjusted Bayesian (SSABIC)", 22058.2153051905))
-
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_indices"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list("Comparative Fit Index (CFI)", 0.996320596799055, "T-size CFI",
-                                      0.974924004613834, "Tucker-Lewis Index (TLI)", 0.995418101674295,
-                                      "Bentler-Bonett Non-normed Fit Index (NNFI)", 0.995418101674295,
-                                      "Bentler-Bonett Normed Fit Index (NFI)", 0.961983689254605,
-                                      "Parsimony Normed Fit Index (PNFI)", 0.772502053492334, "Bollen's Relative Fit Index (RFI)",
-                                      0.952658933788753, "Bollen's Incremental Fit Index (IFI)", 0.996352840580171,
-                                      "Relative Noncentrality Index (RNI)", 0.996320596799055))
-
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_others"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list("Root mean square error of approximation (RMSEA)", 0.0130437119173581,
-                                      "RMSEA 90% CI lower bound", 0, "RMSEA 90% CI upper bound", 0.0297980428058939,
-                                      "RMSEA p-value", 0.999994986450328, "T-size RMSEA", 0.029823208611982,
-                                      "Standardized root mean square residual (SRMR)", 0.0253510370222869,
-                                      "Hoelter's critical N (<unicode> = .05)", 730.254899918116,
-                                      "Hoelter's critical N (<unicode> = .01)", 821.162187177968,
-                                      "Goodness of fit index (GFI)", 0.984016681585093, "McDonald fit index (MFI)",
-                                      0.995501480640541, "Expected cross validation index (ECVI)",
-                                      0.180684002957667))
+                                      "Sample-size adjusted Bayesian (SSABIC)", 22058.2153051905
+                                 ))
 })
+
+test_that("T-size fit indices table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]][["modelContainer_addfit_fitTSize"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(0.974924004613771, "Estimate", 0.0298232086120238, 0.86665680157994,
+                                      "Poor-fair limit", 0.0894318589913011, 0.927136160819729, "Fair-close limit",
+                                      0.0604540069726537))
+})
+
 
 
 test_that("Variance-covariance input works", {

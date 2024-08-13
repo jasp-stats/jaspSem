@@ -229,20 +229,25 @@ checkLavaanModel <- function(model, availableVars) {
 
 .semComputeResults <- function(modelContainer, dataset, options) {
 
-  #' create result list from options
   # find reusable results
 
   oldmodels  <- modelContainer[["models"]][["object"]]
   oldresults <- modelContainer[["results"]][["object"]]
+  oldwarnings <- modelContainer[["warnings"]][["object"]]
   reuse <- match(options[["models"]], oldmodels)
   if (identical(reuse, seq_along(reuse))) return(oldresults) # reuse everything
 
   # create results list
   results <- vector("list", length(options[["models"]]))
+  warnings <- vector("list", length(options[["models"]]))
+
   if (any(!is.na(reuse))) {
     # where possible, prefill results with old results
     results[seq_along(reuse)] <- oldresults[reuse]
+    # in order to avoid assigning NULL in some cases
+    warnings[seq_along(reuse)] <- ifelse(is.null(oldwarnings[reuse]), list(NULL), oldwarnings[reuse])
   }
+
   # generate lavaan options list
   lavopts <- .semOptionsToLavOptions(options, dataset)
 
@@ -320,21 +325,21 @@ checkLavaanModel <- function(model, availableVars) {
     if (options[["errorCalculationMethod"]] == "bootstrap") {
       fit$value <- lavBootstrap(fit$value, options[["bootstrapSamples"]])
     }
-    results[[i]] <- fit
-  }
 
-  resultsOut <- lapply(results, function(x) x$value)
-  warningsOut <- lapply(results, function(x) x$warnings)
+    results[[i]] <- fit$value
+    # in order to avoid assigning NULL in some cases
+    warnings[i] <- ifelse(is.null(fit$warnings), list(NULL), fit$warnings)
+  }
 
   # store in model container
   if (!modelContainer$getError()) {
-    modelContainer[["results"]] <- createJaspState(resultsOut)
+    modelContainer[["results"]] <- createJaspState(results)
     modelContainer[["results"]]$dependOn(optionsFromObject = modelContainer)
     modelContainer[["models"]]  <- createJaspState(options[["models"]])
     modelContainer[["models"]]$dependOn(optionsFromObject = modelContainer)
     modelContainer[["originalSyntax"]] <- createJaspState(list(syntaxTable))
     modelContainer[["originalSyntax"]]$dependOn(optionsFromObject = modelContainer)
-    modelContainer[["warnings"]] <- createJaspState(warningsOut)
+    modelContainer[["warnings"]] <- createJaspState(warnings)
     modelContainer[["warnings"]]$dependOn(optionsFromObject = modelContainer)
   }
 
@@ -515,20 +520,14 @@ checkLavaanModel <- function(model, availableVars) {
       }
     }
 
-    create_group_vector <- function(letter, n) {
-      groups <- paste(letter, 1:n, sep="")
-      groups <- paste0(groups, collapse = ", ")
-      groups <- paste0("c(", groups, ")")
-      return(groups)
-    }
 
     if(is.null(labelsLetters)) {
       for (label in 1:nrow(regressions)) {
-        regressions[label, "label"] <- create_group_vector(letters[label], groupLevels)
+        regressions[label, "label"] <- .create_group_vector(letters[label], groupLevels)
       }
     } else {
       for (label in seq_along(labelsLetters)) {
-        regressions[label, "label"] <- create_group_vector(labelsLetters[label], groupLevels)
+        regressions[label, "label"] <- .create_group_vector(labelsLetters[label], groupLevels)
       }
     }
   }
@@ -552,33 +551,12 @@ checkLavaanModel <- function(model, availableVars) {
     regressions <- list(regressions)
   }
 
-  get_indirect_effects <- function(df, current_indirect = "", current_predictor = "", idx){
-    outcome <- df$lhs
-    predictor <- df$rhs
-    label <- df$label
-    indirect <- c()
-
-    if (current_predictor == "") {
-      current_predictor <- outcome[idx]
-      current_indirect <- label[idx]
-    }
-
-    for (row in 1:nrow(df)){
-      if (current_predictor == predictor[row]){
-        indirect_effect <- paste0(current_indirect, "*", label[row])
-        indirect <- c(indirect, indirect_effect)
-        indirect <- c(indirect, get_indirect_effects(df, indirect_effect, outcome[row]))
-      }
-    }
-
-    return(indirect)
-  }
 
   for (group in seq_along(groups)) {
     # enrich model
     indirect_effects <- list()
     for (idx in 1:nrow(regressions[[group]])) {
-      indirect_effects[[idx]] <- get_indirect_effects(regressions[[group]], idx = idx)
+      indirect_effects[[idx]] <- .get_indirect_effects(regressions[[group]], idx = idx)
     }
     indirect_effects <- unlist(indirect_effects)
     indirect_effects_with_parentheses <- unlist(lapply(indirect_effects, function(x) {
@@ -641,6 +619,7 @@ checkLavaanModel <- function(model, availableVars) {
 # output functions
 
 .semFitTab <- function(jaspResults, modelContainer, dataset, options, ready) {
+
   if (!is.null(modelContainer[["fittab"]])) return()
 
   fittab <- createJaspTable(title = gettext("Model fit"))
@@ -684,12 +663,11 @@ checkLavaanModel <- function(model, availableVars) {
 
   # handle the warnings
   fnote <- ""
-  warns <- unlist(sapply(semResults, function(x) x$warnings))
-  if (length(warns) > 0 && !options[["warnings"]]) {
-    fnote <- paste0(fnote, gettext("Fitting the model resulted in warnings. Check the 'Show warnings' box in the Output Options to see the warnings."))
-  }
 
-  semResults <- lapply(semResults, function(x) x$value)
+  warns <- unlist(modelContainer[["warnings"]][["object"]])
+  if (length(warns) > 0 && !options[["warnings"]]) {
+    fnote <- gettextf("%sFitting the model resulted in warnings. Check the 'Show warnings' box in the Output Options to see the warnings. ", fnote)
+  }
 
   # when an estimators defines a special model test, and the model test itself is defined, lavaan records two model tests,
   # the second value records the defined model test, which should be what we want
@@ -713,7 +691,7 @@ checkLavaanModel <- function(model, availableVars) {
     nfree <- sapply(semResults, function(x) x@loglik$npar) # with eq constraints
 
     lrt_args <- semResults
-    names(lrt_args) <- "object" # (the first result is object, the others ...)
+    names(lrt_args) <- "object" # (the first result is object, the others NA, so rename)
     lrt_args[["model.names"]] <- vapply(options[["models"]], getElement, name = "name", "")
     lrt_args[["type"]] <- "Chisq"
     lrt <- do.call(lavaan::lavTestLRT, lrt_args)
@@ -746,31 +724,31 @@ checkLavaanModel <- function(model, availableVars) {
     dtFill[["dPrChisq"]] <- lrt[["Pr(>Chisq)"]]
   }
 
+
   if (options$naAction == "listwise"){
     nrm <- nrow(dataset) - lavaan::lavInspect(semResults[[1]], "ntotal")
     if (nrm != 0) {
-      missingFootnote <- gettextf("A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options.",
-                                  nrm)
+      missingFootnote <- gettextf("A total of %g cases were removed due to missing values.", nrm)
       fnote <- paste0(fnote, missingFootnote)
     }
   }
 
 # it makes sense to print the test, estimator, information, SE as a footnote if only "default" is specified
-  if (options[["modelTest"]] == "default") {
-      ftext <- gettextf("Model test is %s.", testName)
-      fnote <- paste(fnote, ftext)
-  }
-
   estimatorName <- semResults[[1]]@Options$estimator
   if (options[["estimator"]] == "default") {
     ftext <- gettextf("Estimator is %s.", estimatorName)
     fnote <- paste(fnote, ftext)
   }
 
+  if (options[["modelTest"]] == "default") {
+      ftext <- gettextf("Model test is %s.", testName)
+      fnote <- paste(fnote, ftext)
+  }
+
   informationName <- semResults[[1]]@Options$information[1]
   # information has two elements one for the SEs one for the test statistic, but JASP does not distinguish
   if (options[["informationMatrix"]] == "default") {
-    ftext <- gettextf("Information matrix used is %s.", informationName)
+    ftext <- gettextf("Information matrix is %s.", informationName)
     fnote <- paste(fnote, ftext)
   }
 
@@ -781,7 +759,7 @@ checkLavaanModel <- function(model, availableVars) {
   }
 
   if (!grepl("ML", estimatorName, fixed = TRUE)) {
-    fnote <- paste0(fnote, gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators."))
+    fnote <- gettextf("%s The AIC, BIC and additional information criteria are only available with ML-type estimators.", fnote)
   }
 
   if (options[["group"]] != "") {
@@ -849,6 +827,8 @@ checkLavaanModel <- function(model, availableVars) {
 .semWarningsHtml <- function(modelContainer, dataset, options, ready) {
 
   if (!options[["warnings"]] || !is.null(modelContainer[["warningsHtml"]])) return()
+
+  if (!ready || modelContainer$getError()) return()
 
   warnings <- modelContainer[["warnings"]][["object"]]
   warns <- unlist(warnings)
@@ -954,6 +934,7 @@ checkLavaanModel <- function(model, availableVars) {
   }
 
   pecont[["reg"]] <- regtab
+
 
   # Latent variances
   lvartab <- createJaspTable(title = gettext("Factor variances"))
@@ -1062,7 +1043,11 @@ checkLavaanModel <- function(model, availableVars) {
   allTables <- list(indtab, regtab, lvartab, lcovtab, vartab, covtab)
 
   # Means
-  if (options[["meanStructure"]] || options[["naAction"]] == "fiml") {
+
+  if (options[["meanStructure"]] || options[["naAction"]] == "fiml" ||
+      # check for categorical variables, cause that means we get thresholds for the categorical variables, and intercepts for the remaining non-categorical
+      (fit@Options$categorical && !all(sapply(dataset, is.ordered)))) {
+
     mutab <- createJaspTable(title = gettext("Intercepts"))
     allTables[[length(allTables) + 1]] <- mutab
 
@@ -1087,15 +1072,36 @@ checkLavaanModel <- function(model, availableVars) {
                           overtitle = gettext("Standardized"))
     }
 
-    if (options[["naAction"]] == "fiml") {
+    if (options[["naAction"]] == "fiml" && !fit@Options$categorical) {
       mutab$addFootnote(gettext("Missing data method 'FIML' forces meanstructure."))
     }
 
     pecont[["mu"]] <- mutab
   }
 
+  # thresholds
+  if (fit@Options$categorical) {
+    thrtab <- createJaspTable(title = gettext("Thresholds"))
+
+    if (options[["group"]] != "")
+      thrtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+
+    thrtab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string", combine = TRUE)
+    thrtab$addColumnInfo(name = "rhs",      title = gettext("Threshold"),  type = "string")
+    thrtab$addColumnInfo(name = "label",    title = "",                    type = "string")
+    thrtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+    thrtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
+    thrtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
+    thrtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+    thrtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+    thrtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+    pecont[["thr"]] <- thrtab
+  }
+
   originalSyntaxTable <- modelContainer[["originalSyntax"]][["object"]][[1]]
-  if(nrow(originalSyntaxTable[originalSyntaxTable$op == ":=",]) > 0) {
+  if (nrow(originalSyntaxTable[originalSyntaxTable$op == ":=",]) > 0) {
     deftab <- createJaspTable(title = gettext("Defined parameters"))
     allTables[[length(allTables) + 1]] <- deftab
 
@@ -1174,7 +1180,6 @@ checkLavaanModel <- function(model, availableVars) {
   if (!is.null(model)) parentContainer[[model[["name"]]]] <- pecont
 
   if (!ready || !inherits(fit, "lavaan")) return()
-
 
   # fill tables with values
   lvnames <- lavaan::lavNames(fit, "lv")
@@ -1351,7 +1356,8 @@ checkLavaanModel <- function(model, availableVars) {
 
 
   # Means
-  if (options[["meanStructure"]] || options[["naAction"]] == "fiml") {
+  if (options[["meanStructure"]] || options[["naAction"]] == "fiml" ||
+      (fit@Options$categorical && !all(sapply(dataset, is.ordered)))) {
     pe_mu <- pe[pe$op == "~1",]
 
     if (options[["group"]] != "")
@@ -1372,6 +1378,24 @@ checkLavaanModel <- function(model, availableVars) {
       if (hasStdNox)
         mutab[["std.nox"]] <- pe_mu[["std.nox"]]
     }
+  }
+
+  #Thresholds
+  if (fit@Options$categorical) {
+    pe_thr <- pe[pe$op == "|",]
+    if (nrow(pe_thr) == 0) pecont[["thr"]] <- NULL # remove if no estimates
+    if (options[["group"]] != "")
+      thrtab[["group"]] <- pe_thr[["groupname"]]
+
+    thrtab[["lhs"]]      <- pe_thr[["lhs"]]
+    thrtab[["rhs"]]      <- pe_thr[["rhs"]]
+    thrtab[["label"]]    <- pe_thr[["label"]]
+    thrtab[["est"]]      <- if (options[["standardizedEstimate"]]) pe_thr[["est.std"]] else pe_thr[["est"]]
+    thrtab[["se"]]       <- pe_thr[["se"]]
+    thrtab[["z"]]        <- pe_thr[["z"]]
+    thrtab[["pvalue"]]   <- pe_thr[["pvalue"]]
+    thrtab[["ci.lower"]] <- pe_thr[["ci.lower"]]
+    thrtab[["ci.upper"]] <- pe_thr[["ci.upper"]]
   }
 
   # defined parameters
@@ -1475,215 +1499,131 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 .semAdditionalFits <- function(modelContainer, dataset, options, ready) {
+
   if (!options[["additionalFitMeasures"]] || !is.null(modelContainer[["addfit"]])) return()
-
-  fitms <- createJaspContainer(gettext("Additional fit measures"))
-  fitms$dependOn(c("additionalFitMeasures", "models"))
-  fitms$position <- 0.5
-
-  # Fit indices
-  fitms[["indices"]] <- fitin <- createJaspTable(gettext("Fit indices"))
-  fitin$addColumnInfo(name = "index", title = gettext("Index"), type = "string")
-  if (length(options[["models"]]) < 2) {
-    fitin$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
-  } else {
-    for (i in seq_along(options[["models"]])) {
-      fitin$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["name"]], type = "number")
-    }
-  }
-  fitin$setExpectedSize(rows = 1, cols = 2)
-  fitin$addCitation("Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural Equation Models, Structural Equation Modeling: A Multidisciplinary Journal, 24:1, 148-153, DOI: 10.1080/10705511.2016.1225260")
-
-  estimatorName <- modelContainer[["results"]][["object"]][[1]]@Options$estimator
-  # information criteria
-  if (grepl("ML", estimatorName)) {
-    fitms[["incrits"]] <- fitic <- createJaspTable(gettext("Information criteria"))
-    fitic$addColumnInfo(name = "index", title = "", type = "string")
-    if (length(options[["models"]]) < 2) {
-      fitic$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
-    } else {
-      for (i in seq_along(options[["models"]])) {
-        fitic$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["name"]], type = "number")
-      }
-    }
-    fitic$setExpectedSize(rows = 1, cols = 2)
-  }
-
-
-
-  # other fit measures
-  fitms[["others"]] <- fitot <- createJaspTable(gettext("Other fit measures"))
-  fitot$addColumnInfo(name = "index", title = gettext("Metric"), type = "string")
-  if (length(options[["models"]]) < 2) {
-    fitot$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
-  } else {
-    for (i in seq_along(options[["models"]])) {
-      fitot$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["name"]], type = "number")
-    }
-  }
-  fitot$setExpectedSize(rows = 1, cols = 2)
-  fitot$addCitation("Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural Equation Models, Structural Equation Modeling: A Multidisciplinary Journal, 24:1, 148-153, DOI: 10.1080/10705511.2016.1225260")
-
-  modelContainer[["addfit"]] <- fitms
 
   if (!ready || modelContainer$getError()) return()
 
-  # actually compute the fit measures
-
-  .fitMeasures <- function(fit, alpha = 0.05) {
-    fm <- lavaan::fitMeasures(fit, fit.measures = "all")
-
-    ncp_chi2 <- function(alpha, chisqModel, df){
-      z <- qnorm(1-alpha)
-      z2 <- z*z
-      z3 <- z2*z
-      z4 <- z3*z
-      z5 <- z4*z
-      sig2 <- 2*(2*chisqModel-df+2)
-      sig <- sqrt(sig2)
-      sig3 <- sig*sig2
-      sig4 <- sig2*sig2
-      sig5 <- sig4*sig
-      sig6 <- sig2*sig4
-
-      delta <- chisqModel-df+2+sig*(z+(z2-1)/sig-z/sig2 + 2*(df-1)*(z2-1)/(3*sig3)
-                                    +( -(df-1)*(4*z3-z)/6+(df-2)*z/2 )/sig4
-                                    +4*(df-1)*(3*z4+2*z2-11)/(15*sig5)
-                                    +(-(df-1)*(96*z5+164*z3-767*z)/90-4*(df-1)*(df-2)*(2*z3-5*z)/9+(df-2)*z/2)/sig6
-      )
-      delta <- max(delta,0)
-      return(delta)
-    }
-
-    chisqModel <- c(fm["chisq"], use.names = FALSE)
-    chisqBaseline <- c(fm["baseline.chisq"], use.names = FALSE)
-    df <- c(fm["df"], use.names = FALSE)
-    dfBaseline <- c(fm["baseline.df"], use.names = FALSE)
-    n <- lavaan::lavInspect(fit, what = "ntotal")
-
-    delta_t <- ncp_chi2(alpha, chisqModel, df)
-    rmsea_t <- sqrt(delta_t / (df*(n-1)))
-
-    delta_t <- ncp_chi2(alpha/2, chisqModel, df)
-    delta_bt <- ncp_chi2(1-alpha/2, chisqBaseline, dfBaseline)
-    cfi_t <- 1 - max(delta_t, 0) / max(delta_t, delta_bt, 0)
-
-    rmsea_e05 <- exp(2.06034 - 0.62974*log(df) + 0.02512*log(df)*log(df) - 0.98388*log(n-1) + 0.05442*log(n-1)*log(n-1) - 0.00005188*(n-1) + 0.05260*log(df)*log(n-1))
-    rmsea_e08 <- exp(2.84129 - 0.54809*log(df) + 0.02296*log(df)*log(df) - 0.76005*log(n-1) + 0.10229*log(n-1)*log(n-1) - 1.11167*((n-1)^.2) + 0.04845*log(df)*log(n-1))
-
-    cfi_e90 <- 1 - exp(5.96633 - .40425*log(df) + .01384*((log(df))^2) - .00411*((log(dfBaseline))^2) - 1.20242*log(n-1) + .18763*((log(n-1))^2) - 2.06704*((n-1)^(1/5)) + .05245*log(df)*log(n-1) - .01533*log(dfBaseline)*log(n-1))
-    cfi_e95 <- 1 - exp(4.12132 - .46285*log(df) + .52478*(df^(1/5)) - .31832*((dfBaseline)^(1/5)) - 1.74422*log(n-1) + .13042*((log(n-1))^2) - .02360*((n-1)^(1/2)) + .04215*log(df)*log(n-1))
-
-
-    fm <- c(fm, rmsea.t = rmsea_t, cfi.t = cfi_t, rmsea.t.e05 = rmsea_e05, rmsea.t.e08 = rmsea_e08, cfi.t.e90 = cfi_e90, cfi.t.e95 = cfi_e95)
-
-    return(fm)
-  }
-
-  fmli <- lapply(modelContainer[["results"]][["object"]], .fitMeasures)
+  fitContainer <- createJaspContainer(gettext("Additional Fit Measures"))
+  fitContainer$dependOn(c("additionalFitMeasures", "models"))
+  fitContainer$position <- 0.5
+  modelContainer[["addfit"]] <- fitContainer
 
   # Fit indices
-  cfi_t_footnote <- ""
-  fitin[["index"]] <- c(
-    gettext("Comparative Fit Index (CFI)"),
-    gettext("T-size CFI"),
-    gettext("Tucker-Lewis Index (TLI)"),
-    gettext("Bentler-Bonett Non-normed Fit Index (NNFI)"),
-    gettext("Bentler-Bonett Normed Fit Index (NFI)"),
-    gettext("Parsimony Normed Fit Index (PNFI)"),
-    gettext("Bollen's Relative Fit Index (RFI)"),
-    gettext("Bollen's Incremental Fit Index (IFI)"),
-    gettext("Relative Noncentrality Index (RNI)")
-  )
-  if (length(options[["models"]]) == 1) {
-    fitin[["value"]] <- fmli[[1]][c("cfi", "cfi.t", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
-    cfi_t_footnote <- paste0(cfi_t_footnote,
-                             gettextf("T-size CFI is computed for <i>%1$s = 0.05</i>. The T-size equivalents of the
-                                      conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are <b>poor
-                                      < %2$s < fair < %3$s < close</b> for model: %4$s.", "\u03B1",
-                                      round(fmli[[1]]["cfi.t.e90"], 3),
-                                      round(fmli[[1]]["cfi.t.e95"], 3),
-                                      options[["models"]][[1]][["name"]]))
-    fitin$addFootnote(cfi_t_footnote)
+  fitinds <- createJaspTable(gettext("Fit indices"))
+  fitContainer[["fitMeasures"]] <- fitinds
+
+  fitinds$addColumnInfo(name = "index", title = gettext("Index"), type = "string")
+  if (length(options[["models"]]) < 2) {
+    fitinds$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
   } else {
     for (i in seq_along(options[["models"]])) {
-      fitin[[paste0("value_", i)]] <- fmli[[i]][c("cfi", "cfi.t", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
-
-      cfi_t_footnote <- paste0(cfi_t_footnote,
-                               gettextf(" The T-size equivalents of the conventional CFI cut-off values
-                                        (poor < 0.90 < fair < 0.95 < close) are <b>poor < %1$s < fair < %2$s <
-                                        close</b> for model: %3$s.",
-                                        round(fmli[[i]]["cfi.t.e90"], 3),
-                                        round(fmli[[i]]["cfi.t.e95"], 3),
-                                        options[["models"]][[i]][["name"]]))
-
+      fitinds$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["name"]], type = "number")
     }
-    fitin$addFootnote(cfi_t_footnote)
   }
+
+
+  fmli <- lapply(modelContainer[["results"]][["object"]], .computeFitMeasures)
+
+  indexStrings <- c(gettext("Comparative Fit Index (CFI)"),
+                    gettext("Tucker-Lewis Index (TLI)"),
+                    gettext("Bentler-Bonett Non-normed Fit Index (NNFI)"),
+                    gettext("Bentler-Bonett Normed Fit Index (NFI)"),
+                    gettext("Parsimony Normed Fit Index (PNFI)"),
+                    gettext("Bollen's Relative Fit Index (RFI)"),
+                    gettext("Bollen's Incremental Fit Index (IFI)"),
+                    gettext("Relative Noncentrality Index (RNI)"),
+                    gettext("Root mean square error of approximation (RMSEA)"),
+                    gettext("RMSEA 90%% CI lower bound"),
+                    gettext("RMSEA 90%% CI upper bound"),
+                    gettext("RMSEA p-value"),
+                    gettext("Standardized root mean square residual (SRMR)"),
+                    gettextf("Hoelter's critical N (%s = .05)","\u03B1"),
+                    gettextf("Hoelter's critical N (%s = .01)","\u03B1"),
+                    gettext("Goodness of fit index (GFI)"),
+                    gettext("McDonald fit index (MFI)"),
+                    gettext("Expected cross validation index (ECVI)"))
 
   # information criteria
-  if (!options$estimator %in% c("dwls", "gls", "wls", "uls")) {
-    fitic[["index"]] <- c(
-      gettext("Log-likelihood"),
-      gettext("Number of free parameters"),
-      gettext("Akaike (AIC)"),
-      gettext("Bayesian (BIC)"),
-      gettext("Sample-size adjusted Bayesian (SSABIC)")
-    )
-
-    if (length(options[["models"]]) == 1) {
-      fitic[["value"]] <- fmli[[1]][c("logl", "npar", "aic", "bic", "bic2")]
-    } else {
-      for (i in seq_along(options[["models"]])) {
-        fitic[[paste0("value_", i)]] <- fmli[[i]][c("logl", "npar", "aic", "bic", "bic2")]
-      }
-    }
+  estimatorName <- modelContainer[["results"]][["object"]][[1]]@Options$estimator
+  if (grepl("ML", estimatorName)) {
+    indexStrings <- c(indexStrings,
+                      gettext("Log-likelihood"),
+                      gettext("Number of free parameters"),
+                      gettext("Akaike (AIC)"),
+                      gettext("Bayesian (BIC)"),
+                      gettext("Sample-size adjusted Bayesian (SSABIC)"))
+  }
+  fitinds[["index"]] <- indexStrings
+  fnote <- ""
+  testName <- ifelse(length(modelContainer[["results"]][["object"]][[1]]@Options$test) == 1,
+                     modelContainer[["results"]][["object"]][[1]]@Options$test[1],
+                     modelContainer[["results"]][["object"]][[1]]@Options$test[2])
+  if (testName != "standard") {
+    fnote <- gettextf("%s Fit indices are based on the scaled test statistic.", fnote)
   }
 
+  estimateNames <- c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni",
+                     "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
+                     "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")
+  if (grepl("ML", estimatorName)) {
+    estimateNames <- c(estimateNames, "logl", "npar", "aic", "bic", "bic2")
+  }
 
-  # other fitmeasures
-  rmsea_t_footnote <- ""
-  fitot[["index"]] <- c(
-    gettext("Root mean square error of approximation (RMSEA)"),
-    gettextf("RMSEA 90%% CI lower bound"),
-    gettextf("RMSEA 90%% CI upper bound"),
-    gettext("RMSEA p-value"),
-    gettext("T-size RMSEA"),
-    gettext("Standardized root mean square residual (SRMR)"),
-    gettextf("Hoelter's critical N (%s = .05)","\u03B1"),
-    gettextf("Hoelter's critical N (%s = .01)","\u03B1"),
-    gettext("Goodness of fit index (GFI)"),
-    gettext("McDonald fit index (MFI)"),
-    gettext("Expected cross validation index (ECVI)")
-  )
   if (length(options[["models"]]) == 1) {
-    fitot[["value"]] <- fmli[[1]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue", "rmsea.t",
-                                    "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
-    rmsea_t_footnote <- paste0(rmsea_t_footnote,
-                               gettextf("T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents of the
-                                        conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are
-                                        <b>close < %2$s < fair < %3$s < poor</b> for model: %4$s.", "\u03B1",
-                                        round(fmli[[1]]["rmsea.t.e05"], 3),
-                                        round(fmli[[1]]["rmsea.t.e08"], 3),
-                                        options[["models"]][[1]][["name"]]))
-    fitot$addFootnote(rmsea_t_footnote)
+    estimates <- fmli[[1]][estimateNames]
+
+    fitinds[["value"]] <- estimates
+
   } else {
     for (i in seq_along(options[["models"]])) {
-      fitot[[paste0("value_", i)]] <- fmli[[i]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue", "rmsea.t",
-                                                  "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
-
-      rmsea_t_footnote <- paste0(rmsea_t_footnote,
-                                 gettextf(" The T-size equivalents of the conventional RMSEA cut-off values
-                                          (close < 0.05 < fair < 0.08 < poor) are <b>close < %1$s < fair < %2$s
-                                          < poor</b> for model: %3$s.",
-                                          round(fmli[[i]]["rmsea.t.e05"], 3),
-                                          round(fmli[[i]]["rmsea.t.e08"], 3),
-                                          options[["models"]][[i]][["name"]]))
-
+      fitinds[[paste0("value_", i)]] <- fmli[[i]][estimateNames]
     }
-    fitot$addFootnote(rmsea_t_footnote)
   }
+
+  fitinds$addFootnote(fnote)
+
+  # a table only with the T-size stuff
+  ftsize <- createJaspTable(gettext("T-size fit indices"))
+  ftsize$addCitation(gettext("Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural Equation Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), 148-153, https://doi.org/10.1080/10705511.2016.1225260"))
+  fitContainer[["fitTSize"]] <- ftsize
+
+  ftsize$addColumnInfo(name = "col1", title = "", type = "string")
+  ftsize[["col1"]] <- c(gettext("Estimate"), gettext("Poor-fair limit"), gettext("Fair-close limit"))
+
+  if (length(options[["models"]]) < 2) {
+    ftsize$addColumnInfo(name = "cfi", title = gettext("CFI"), type = "number")
+    ftsize$addColumnInfo(name = "rmsea", title = gettext("RMSEA"), type = "number")
+
+    ftsize[["cfi"]] <- fmli[[1]][c("cfi.t", "cfi.t.e90", "cfi.t.e95")]
+    ftsize[["rmsea"]] <- fmli[[1]][c("rmsea.t", "rmsea.t.e08", "rmsea.t.e05")]
+
+
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      ftsize$addColumnInfo(name = paste0("cfi", i), title = gettext("CFI"), type = "number", overtitle = options[["models"]][[i]][["name"]])
+      ftsize$addColumnInfo(name = paste0("rmsea", i), title = gettext("RMSEA"), type = "number", overtitle = options[["models"]][[i]][["name"]])
+
+      ftsize[[paste0("cfi", i)]] <- fmli[[i]][c("cfi.t", "cfi.t.e90", "cfi.t.e95")]
+      ftsize[[paste0("rmsea", i)]] <- fmli[[i]][c("rmsea.t", "rmsea.t.e08", "rmsea.t.e05")]
+    }
+  }
+
+
+  # TODO
+  ftsize$addFootnote(gettextf("T-size statistics are computed for <i>%s = 0.05</i>.", "\u03B1"))
+
+  # fnote <- gettextf("%1$s For %2$s, the T-size CFI cutoff values are: poor < %3$s < fair < %4$s < close and the T-size RMSEA cutoff values are: close < %5$s < fair < %6$s < poor.",
+  #                   fnote,
+  #                   options[["models"]][[1]][["name"]],
+  #                   round(fmli[[1]]["cfi.t.e90"], 3),
+  #                   round(fmli[[1]]["cfi.t.e95"], 3),
+  #                   round(fmli[[1]]["rmsea.t.e05"], 3),
+  #                   round(fmli[[1]]["rmsea.t.e08"], 3))
+
+  return()
 }
+
 
 .semRsquared <- function(modelContainer, dataset, options, ready) {
   if (!options[["rSquared"]] || !is.null(modelContainer[["rsquared"]])) return()
@@ -2875,4 +2815,95 @@ checkLavaanModel <- function(model, availableVars) {
       plt[[level_names[i]]]$plotObject <- pp[[i]]
     }
   }
+}
+
+
+.create_group_vector <- function(letter, n) {
+  groups <- paste(letter, 1:n, sep="")
+  groups <- paste0(groups, collapse = ", ")
+  groups <- paste0("c(", groups, ")")
+  return(groups)
+}
+
+
+.get_indirect_effects <- function(df, current_indirect = "", current_predictor = "", idx){
+  outcome <- df$lhs
+  predictor <- df$rhs
+  label <- df$label
+  indirect <- c()
+
+  if (current_predictor == "") {
+    current_predictor <- outcome[idx]
+    current_indirect <- label[idx]
+  }
+
+  for (row in 1:nrow(df)){
+    if (current_predictor == predictor[row]){
+      indirect_effect <- paste0(current_indirect, "*", label[row])
+      indirect <- c(indirect, indirect_effect)
+      indirect <- c(indirect, .get_indirect_effects(df, indirect_effect, outcome[row]))
+    }
+  }
+
+  return(indirect)
+}
+
+.computeFitMeasures <- function(fit, alpha = 0.05) {
+
+  fm <- lavaan::fitMeasures(fit, fit.measures = "all")
+
+  # if the model test is not standard report the scaled values of the fit measures
+  testName <- ifelse(length(fit@Options$test) == 1,
+                     fit@Options$test[1],
+                     fit@Options$test[2])
+  if (testName != "standard") {
+    fm[c("chisq", "df", "baseline.chisq", "baseline.df", "cfi", "tli", "nnfi", "nfi", "rfi", "ifi", "rni", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue")] <- fm[c("chisq.scaled", "df.scaled", "baseline.chisq.scaled", "baseline.df.scaled", "cfi.scaled", "tli.scaled", "nnfi.scaled", "nfi.scaled",  "rfi.scaled", "ifi.scaled", "rni.scaled", "rmsea.scaled", "rmsea.ci.lower.scaled", "rmsea.ci.upper.scaled", "rmsea.pvalue.scaled")]
+    fm["pnfi"] <- NA
+  }
+
+  ncp_chi2 <- function(alpha, chisqModel, df){
+    z <- qnorm(1-alpha)
+    z2 <- z*z
+    z3 <- z2*z
+    z4 <- z3*z
+    z5 <- z4*z
+    sig2 <- 2*(2*chisqModel-df+2)
+    sig <- sqrt(sig2)
+    sig3 <- sig*sig2
+    sig4 <- sig2*sig2
+    sig5 <- sig4*sig
+    sig6 <- sig2*sig4
+
+    delta <- chisqModel-df+2+sig*(z+(z2-1)/sig-z/sig2 + 2*(df-1)*(z2-1)/(3*sig3)
+                                  +( -(df-1)*(4*z3-z)/6+(df-2)*z/2 )/sig4
+                                  +4*(df-1)*(3*z4+2*z2-11)/(15*sig5)
+                                  +(-(df-1)*(96*z5+164*z3-767*z)/90-4*(df-1)*(df-2)*(2*z3-5*z)/9+(df-2)*z/2)/sig6
+    )
+    delta <- max(delta,0)
+    return(delta)
+  }
+
+  chisqModel <- c(fm["chisq"], use.names = FALSE)
+  chisqBaseline <- c(fm["baseline.chisq"], use.names = FALSE)
+  df <- c(fm["df"], use.names = FALSE)
+  dfBaseline <- c(fm["baseline.df"], use.names = FALSE)
+  n <- lavaan::lavInspect(fit, what = "ntotal")
+
+  delta_t <- ncp_chi2(alpha, chisqModel, df)
+  rmsea_t <- sqrt(delta_t / (df*(n-1)))
+
+  delta_t <- ncp_chi2(alpha/2, chisqModel, df)
+  delta_bt <- ncp_chi2(1-alpha/2, chisqBaseline, dfBaseline)
+  cfi_t <- 1 - max(delta_t, 0) / max(delta_t, delta_bt, 0)
+
+  rmsea_e05 <- exp(2.06034 - 0.62974*log(df) + 0.02512*log(df)*log(df) - 0.98388*log(n-1) + 0.05442*log(n-1)*log(n-1) - 0.00005188*(n-1) + 0.05260*log(df)*log(n-1))
+  rmsea_e08 <- exp(2.84129 - 0.54809*log(df) + 0.02296*log(df)*log(df) - 0.76005*log(n-1) + 0.10229*log(n-1)*log(n-1) - 1.11167*((n-1)^.2) + 0.04845*log(df)*log(n-1))
+
+  cfi_e90 <- 1 - exp(5.96633 - .40425*log(df) + .01384*((log(df))^2) - .00411*((log(dfBaseline))^2) - 1.20242*log(n-1) + .18763*((log(n-1))^2) - 2.06704*((n-1)^(1/5)) + .05245*log(df)*log(n-1) - .01533*log(dfBaseline)*log(n-1))
+  cfi_e95 <- 1 - exp(4.12132 - .46285*log(df) + .52478*(df^(1/5)) - .31832*((dfBaseline)^(1/5)) - 1.74422*log(n-1) + .13042*((log(n-1))^2) - .02360*((n-1)^(1/2)) + .04215*log(df)*log(n-1))
+
+
+  fm <- c(fm, rmsea.t = rmsea_t, cfi.t = cfi_t, rmsea.t.e05 = rmsea_e05, rmsea.t.e08 = rmsea_e08, cfi.t.e90 = cfi_e90, cfi.t.e95 = cfi_e95)
+
+  return(fm)
 }
