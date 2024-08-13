@@ -301,7 +301,17 @@ Form
 		}
 		Group
 		{
-			CheckBox{name: "standardizedEstimate"; label: qsTr("Standardized estimates"); checked: false}
+			CheckBox
+			{
+				name: "standardizedEstimate"; label: qsTr("Standardized estimates");
+				RadioButtonGroup
+				{
+						name: "standardizedEstimateType"
+						RadioButton { value: "all"; 	label: qsTr("All"); checked: true	}
+						RadioButton { value: "latents"; label: qsTr("Latents")	}
+						RadioButton { value: "nox"; 	label: qsTr("Except exogenous covariates")		}
+				}
+			}
 			CheckBox
 			{
 				name: "pathPlot";

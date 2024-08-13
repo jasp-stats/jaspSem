@@ -154,6 +154,15 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
       return()
     }
   }
+
+  # check if standardized estimates are required but standard errors are bootstrapped, that does not work yet,
+  # because the CIs are not really available in lavaan
+  if (options[["standardizedEstimate"]] && options[["errorCalculationMethod"]] == "bootstrap") {
+    .quitAnalysis(gettext("Standardized estimates are not available when bootstrapping is used for standard error calculation."))
+    return()
+  }
+
+  return()
 }
 
 checkLavaanModel <- function(model, availableVars) {
@@ -863,7 +872,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   params <- createJaspContainer(gettext("Parameter estimates"))
   params$position <- 1
-  params$dependOn(c("ciLevel", "bootstrapCiType", "standardizedEstimate", "models"))
+  params$dependOn(c("ciLevel", "bootstrapCiType", "standardizedEstimate", "models", "standardizedEstimateType"))
 
   modelContainer[["params"]] <- params
 
@@ -887,6 +896,8 @@ checkLavaanModel <- function(model, availableVars) {
     pecont <- createJaspContainer(model[["name"]], initCollapsed = TRUE)
   }
 
+  estTitle <- ifelse(options[["standardizedEstimate"]], gettext("Std. estimate"), gettext("Estimate"))
+
   # Measurement model
   indtab <- createJaspTable(title = gettext("Factor Loadings"))
 
@@ -896,21 +907,14 @@ checkLavaanModel <- function(model, availableVars) {
   indtab$addColumnInfo(name = "lhs",      title = gettext("Latent"),     type = "string", combine = TRUE)
   indtab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
   indtab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  indtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
-  indtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
+  indtab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
+  indtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number")
   indtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   indtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   indtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   indtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-  if (options[["standardizedEstimate"]]) {
-    indtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                         overtitle = gettext("Standardized"))
-    indtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                         overtitle = gettext("Standardized"))
-  }
 
   pecont[["ind"]] <- indtab
 
@@ -923,7 +927,7 @@ checkLavaanModel <- function(model, availableVars) {
   regtab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),    type = "string", combine = TRUE)
   regtab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string")
   regtab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  regtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+  regtab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
   regtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
   regtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   regtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
@@ -931,13 +935,6 @@ checkLavaanModel <- function(model, availableVars) {
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   regtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-  if (options[["standardizedEstimate"]]) {
-    regtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                         overtitle = gettext("Standardized"))
-    regtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                         overtitle = gettext("Standardized"))
-  }
 
   pecont[["reg"]] <- regtab
 
@@ -950,7 +947,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   lvartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
   lvartab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  lvartab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+  lvartab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
   lvartab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
   lvartab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   lvartab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
@@ -958,13 +955,6 @@ checkLavaanModel <- function(model, availableVars) {
                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   lvartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-  if (options[["standardizedEstimate"]]) {
-    lvartab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                          overtitle = gettext("Standardized"))
-    lvartab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                          overtitle = gettext("Standardized"))
-  }
 
   pecont[["lvar"]] <- lvartab
 
@@ -976,7 +966,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   lcovtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
   lcovtab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  lcovtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+  lcovtab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
   lcovtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
   lcovtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   lcovtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
@@ -984,13 +974,6 @@ checkLavaanModel <- function(model, availableVars) {
                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   lcovtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-  if (options[["standardizedEstimate"]]) {
-    lcovtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                          overtitle = gettext("Standardized"))
-    lcovtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                          overtitle = gettext("Standardized"))
-  }
 
   pecont[["lcov"]] <- lcovtab
 
@@ -1002,7 +985,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   vartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
   vartab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  vartab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+  vartab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
   vartab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
   vartab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   vartab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
@@ -1010,13 +993,6 @@ checkLavaanModel <- function(model, availableVars) {
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   vartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-  if (options[["standardizedEstimate"]]) {
-    vartab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                         overtitle = gettext("Standardized"))
-    vartab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                         overtitle = gettext("Standardized"))
-  }
 
   pecont[["var"]] <- vartab
 
@@ -1028,7 +1004,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   covtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
   covtab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  covtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+  covtab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
   covtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
   covtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   covtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
@@ -1037,19 +1013,11 @@ checkLavaanModel <- function(model, availableVars) {
   covtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  if (options[["standardizedEstimate"]]) {
-    covtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                         overtitle = gettext("Standardized"))
-    covtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                         overtitle = gettext("Standardized"))
-  }
-
   pecont[["cov"]] <- covtab
 
   allTables <- list(indtab, regtab, lvartab, lcovtab, vartab, covtab)
 
   # Means
-
   if (options[["meanStructure"]] || options[["naAction"]] == "fiml" ||
       # check for categorical variables, cause that means we get thresholds for the categorical variables, and intercepts for the remaining non-categorical
       (fit@Options$categorical && !all(sapply(dataset, is.ordered)))) {
@@ -1062,7 +1030,7 @@ checkLavaanModel <- function(model, availableVars) {
 
     mutab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
     mutab$addColumnInfo(name = "label",    title = "",                    type = "string")
-    mutab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+    mutab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
     mutab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
     mutab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     mutab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
@@ -1070,13 +1038,6 @@ checkLavaanModel <- function(model, availableVars) {
                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
     mutab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-    if (options[["standardizedEstimate"]]) {
-      mutab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                          overtitle = gettext("Standardized"))
-      mutab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                          overtitle = gettext("Standardized"))
-    }
 
     if (options[["naAction"]] == "fiml" && !fit@Options$categorical) {
       mutab$addFootnote(gettext("Missing data method 'FIML' forces meanstructure."))
@@ -1095,7 +1056,7 @@ checkLavaanModel <- function(model, availableVars) {
     thrtab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string", combine = TRUE)
     thrtab$addColumnInfo(name = "rhs",      title = gettext("Threshold"),  type = "string")
     thrtab$addColumnInfo(name = "label",    title = "",                    type = "string")
-    thrtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+    thrtab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
     thrtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
     thrtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     thrtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
@@ -1112,7 +1073,7 @@ checkLavaanModel <- function(model, availableVars) {
     allTables[[length(allTables) + 1]] <- deftab
 
     deftab$addColumnInfo(name = "lhs",      title = gettext("Name"),       type = "string")
-    deftab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+    deftab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
     deftab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
     deftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     deftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
@@ -1120,13 +1081,6 @@ checkLavaanModel <- function(model, availableVars) {
                          overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
     deftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                          overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-    if (options[["standardizedEstimate"]]) {
-      deftab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                           overtitle = gettext("Standardized"))
-      deftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                           overtitle = gettext("Standardized"))
-    }
 
     pecont[["def"]] <- deftab
   } else {
@@ -1137,7 +1091,7 @@ checkLavaanModel <- function(model, availableVars) {
       indefftab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
     indefftab$addColumnInfo(name = "path",     title = "",                    type = "string")
-    indefftab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+    indefftab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
     indefftab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
     indefftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     indefftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
@@ -1145,13 +1099,6 @@ checkLavaanModel <- function(model, availableVars) {
                          overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
     indefftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                          overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-    if (options[["standardizedEstimate"]]) {
-      indefftab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                           overtitle = gettext("Standardized"))
-      indefftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                           overtitle = gettext("Standardized"))
-    }
 
     pecont[["indeff"]] <- indefftab
 
@@ -1162,7 +1109,7 @@ checkLavaanModel <- function(model, availableVars) {
       totefftab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
     totefftab$addColumnInfo(name = "path",     title = "",                    type = "string")
-    totefftab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+    totefftab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
     totefftab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
     totefftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     totefftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
@@ -1170,13 +1117,6 @@ checkLavaanModel <- function(model, availableVars) {
                             overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
     totefftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                             overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-    if (options[["standardizedEstimate"]]) {
-      totefftab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                              overtitle = gettext("Standardized"))
-      totefftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                              overtitle = gettext("Standardized"))
-    }
 
     pecont[["toteff"]] <- totefftab
   }
@@ -1187,7 +1127,9 @@ checkLavaanModel <- function(model, availableVars) {
 
   if (!ready || !inherits(fit, "lavaan")) return()
 
+
   # fill tables with values
+
   lvnames <- lavaan::lavNames(fit, "lv")
   ovnames <- lavaan::lavNames(fit, "ov")
 
@@ -1195,18 +1137,24 @@ checkLavaanModel <- function(model, availableVars) {
                             ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
                                    "norm"))
 
-  pe <- lavaan::parameterestimates(fit, standardized = TRUE, level = options[["ciLevel"]],
-                                   boot.ci.type = bootstrapCiType)
-  pe <- lavaan::lavMatrixRepresentation(lavaan::lav_partable_complete(pe))
-
-  # the standardized value "std.nox" is conditionally present since lavaan 0.6-18 (see https://lavaan.ugent.be/history/dot6.html)
-  # if it exists, add the column info and the column values.
-  hasStdNox <- "std.nox" %in% colnames(pe)
-  if (hasStdNox) {
-    lapply(allTables, function(table) {
-      table$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number", overtitle = gettext("Standardized"))
-    })
+  if (!options[["standardizedEstimate"]]) {
+    pe <- lavaan::parameterestimates(fit, level = options[["ciLevel"]],
+                                     boot.ci.type = bootstrapCiType)
+    pe <- lavaan::lavMatrixRepresentation(lavaan::lav_partable_complete(pe))
+  } else {
+    type <- switch(options[["standardizedEstimateType"]],
+                   "all" = "std.all",
+                   "latents" = "std.lv",
+                   "nox" = "std.nox")
+    pe <- lavaan::standardizedSolution(fit, level = options[["ciLevel"]], type = type)
+    pe <- lavaan::lavMatrixRepresentation(lavaan::lav_partable_complete(pe))
+    colnames(pe)[colnames(pe) == "est.std"] <- "est"
   }
+
+  # TODO: bootstrap standardized CI:
+  #' Do we want the standardization to happen for the fit of each bootstrap sample and then save the std coeffs?
+  #' Or do we want to save all the unstd coeffs from the bootstrap, and after summarizing them with mean
+  #' and se and such standardize them?
 
   if (options[["group"]] != "")  {
     pe[pe[["op"]] != ":=", "groupname"] <- lavaan::lavInspect(fit, "group.label")[pe[["group"]]]
@@ -1232,13 +1180,6 @@ checkLavaanModel <- function(model, availableVars) {
   indtab[["ci.lower"]] <- pe_ind[["ci.lower"]]
   indtab[["ci.upper"]] <- pe_ind[["ci.upper"]]
 
-  if (options[["standardizedEstimate"]]) {
-    indtab[["std.all"]] <- pe_ind[["std.all"]]
-    indtab[["std.lv"]]  <- pe_ind[["std.lv"]]
-    if (hasStdNox)
-      indtab[["std.nox"]] <- pe_ind[["std.nox"]]
-  }
-
   # Structural model
   # coefficients
   pe_reg <- pe[pe$op == "~",]
@@ -1259,13 +1200,6 @@ checkLavaanModel <- function(model, availableVars) {
   regtab[["ci.lower"]] <- pe_reg[["ci.lower"]]
   regtab[["ci.upper"]] <- pe_reg[["ci.upper"]]
 
-  if (options[["standardizedEstimate"]]) {
-    regtab[["std.all"]] <- pe_reg[["std.all"]]
-    regtab[["std.lv"]]  <- pe_reg[["std.lv"]]
-    if (hasStdNox)
-      regtab[["std.nox"]] <- pe_reg[["std.nox"]]
-  }
-
   # Latent variances
   pe_lvar <- pe[pe$op == "~~" & pe$lhs %in% lvnames & pe$lhs == pe$rhs,]
   if (nrow(pe_lvar) == 0) pecont[["lvar"]] <- NULL # remove if no estimates
@@ -1283,13 +1217,6 @@ checkLavaanModel <- function(model, availableVars) {
   lvartab[["ci.lower"]] <- pe_lvar[["ci.lower"]]
   lvartab[["ci.upper"]] <- pe_lvar[["ci.upper"]]
 
-  if (options[["standardizedEstimate"]]) {
-    lvartab[["std.all"]] <- pe_lvar[["std.all"]]
-    lvartab[["std.lv"]]  <- pe_lvar[["std.lv"]]
-    if (hasStdNox)
-      lvartab[["std.nox"]] <- pe_lvar[["std.nox"]]
-  }
-
   # Latent covariances
   pe_lcov <- pe[pe$op == "~~" & pe$lhs %in% lvnames & pe$rhs %in% lvnames & pe$lhs != pe$rhs,]
   if (nrow(pe_lcov) == 0) pecont[["lcov"]] <- NULL # remove if no estimates
@@ -1306,12 +1233,6 @@ checkLavaanModel <- function(model, availableVars) {
   lcovtab[["ci.lower"]] <- pe_lcov[["ci.lower"]]
   lcovtab[["ci.upper"]] <- pe_lcov[["ci.upper"]]
 
-  if (options[["standardizedEstimate"]]) {
-    lcovtab[["std.all"]] <- pe_lcov[["std.all"]]
-    lcovtab[["std.lv"]]  <- pe_lcov[["std.lv"]]
-    if (hasStdNox)
-      lcovtab[["std.nox"]] <- pe_lcov[["std.nox"]]
-  }
 
   # Residual variances
   pe_var <- pe[pe$op == "~~" & pe$lhs %in% ovnames & pe$lhs == pe$rhs,]
@@ -1330,13 +1251,6 @@ checkLavaanModel <- function(model, availableVars) {
   vartab[["ci.lower"]] <- pe_var[["ci.lower"]]
   vartab[["ci.upper"]] <- pe_var[["ci.upper"]]
 
-  if (options[["standardizedEstimate"]]) {
-    vartab[["std.all"]] <- pe_var[["std.all"]]
-    vartab[["std.lv"]]  <- pe_var[["std.lv"]]
-    if (hasStdNox)
-      vartab[["std.nox"]] <- pe_var[["std.nox"]]
-  }
-
   # Residual covariances
   pe_cov <- pe[pe$op == "~~" & pe$lhs %in% ovnames & pe$rhs %in% ovnames & pe$lhs != pe$rhs,]
   if (nrow(pe_cov) == 0) pecont[["cov"]] <- NULL # remove if no estimates
@@ -1352,13 +1266,6 @@ checkLavaanModel <- function(model, availableVars) {
   covtab[["pvalue"]]   <- pe_cov[["pvalue"]]
   covtab[["ci.lower"]] <- pe_cov[["ci.lower"]]
   covtab[["ci.upper"]] <- pe_cov[["ci.upper"]]
-
-  if (options[["standardizedEstimate"]]) {
-    covtab[["std.all"]] <- pe_cov[["std.all"]]
-    covtab[["std.lv"]]  <- pe_cov[["std.lv"]]
-    if (hasStdNox)
-      covtab[["std.nox"]] <- pe_cov[["std.nox"]]
-  }
 
 
   # Means
@@ -1378,12 +1285,6 @@ checkLavaanModel <- function(model, availableVars) {
     mutab[["ci.lower"]] <- pe_mu[["ci.lower"]]
     mutab[["ci.upper"]] <- pe_mu[["ci.upper"]]
 
-    if (options[["standardizedEstimate"]]) {
-      mutab[["std.all"]] <- pe_mu[["std.all"]]
-      mutab[["std.lv"]]  <- pe_mu[["std.lv"]]
-      if (hasStdNox)
-        mutab[["std.nox"]] <- pe_mu[["std.nox"]]
-    }
   }
 
   #Thresholds
@@ -1396,7 +1297,7 @@ checkLavaanModel <- function(model, availableVars) {
     thrtab[["lhs"]]      <- pe_thr[["lhs"]]
     thrtab[["rhs"]]      <- pe_thr[["rhs"]]
     thrtab[["label"]]    <- pe_thr[["label"]]
-    thrtab[["est"]]      <- if (options[["standardizedEstimate"]]) pe_thr[["est.std"]] else pe_thr[["est"]]
+    thrtab[["est"]]      <- pe_thr[["est"]]
     thrtab[["se"]]       <- pe_thr[["se"]]
     thrtab[["z"]]        <- pe_thr[["z"]]
     thrtab[["pvalue"]]   <- pe_thr[["pvalue"]]
@@ -1417,11 +1318,6 @@ checkLavaanModel <- function(model, availableVars) {
     deftab[["ci.lower"]] <- pe_def[["ci.lower"]]
     deftab[["ci.upper"]] <- pe_def[["ci.upper"]]
 
-    if (options[["standardizedEstimate"]]) {
-      deftab[["std.all"]] <- pe_def[["std.all"]]
-      deftab[["std.lv"]]  <- pe_def[["std.lv"]]
-      deftab[["std.nox"]] <- pe_def[["std.nox"]]
-    }
   } else {
     pe_eff <- pe[pe$op == ":=",]
     pe_toteff <- subset(pe_eff, substring(lhs, 1, nchar("total_")) == "total_")
@@ -1459,13 +1355,6 @@ checkLavaanModel <- function(model, availableVars) {
     totefftab[["ci.lower"]] <- pe_toteff$ci.lower
     totefftab[["ci.upper"]] <- pe_toteff$ci.upper
 
-    if (options[["standardizedEstimate"]]) {
-      totefftab[["std.all"]] <- pe_toteff[["std.all"]]
-      totefftab[["std.lv"]]  <- pe_toteff[["std.lv"]]
-      if (hasStdNox)
-        totefftab[["std.nox"]] <- pe_toteff[["std.nox"]]
-    }
-
     pe_indeff <- subset(pe_eff, substring(lhs, 1, nchar("total_")) != "total_")
     if (nrow(pe_indeff) == 0) {
       pecont[["indeff"]] <- NULL
@@ -1494,12 +1383,6 @@ checkLavaanModel <- function(model, availableVars) {
       indefftab[["ci.lower"]] <- pe_indeff$ci.lower
       indefftab[["ci.upper"]] <- pe_indeff$ci.upper
 
-      if (options[["standardizedEstimate"]]) {
-        indefftab[["std.all"]] <- pe_indeff[["std.all"]]
-        indefftab[["std.lv"]]  <- pe_indeff[["std.lv"]]
-        if (hasStdNox)
-          indefftab[["std.nox"]] <- pe_indeff[["std.nox"]]
-      }
     }
   }
 }
@@ -1544,8 +1427,8 @@ checkLavaanModel <- function(model, availableVars) {
                     gettext("Bollen's Incremental Fit Index (IFI)"),
                     gettext("Relative Noncentrality Index (RNI)"),
                     gettext("Root mean square error of approximation (RMSEA)"),
-                    gettext("RMSEA 90%% CI lower bound"),
-                    gettext("RMSEA 90%% CI upper bound"),
+                    gettextf("RMSEA 90%% CI lower bound"),
+                    gettextf("RMSEA 90%% CI upper bound"),
                     gettext("RMSEA p-value"),
                     gettext("Standardized root mean square residual (SRMR)"),
                     gettextf("Hoelter's critical N (%s = .05)","\u03B1"),
