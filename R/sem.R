@@ -20,8 +20,8 @@
 SEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
-  # sink("~/Downloads/log.txt")
-  # on.exit(sink(NULL))
+  sink("~/Downloads/log.txt")
+  on.exit(sink(NULL))
 
   # Read dataset
   options <- .semPrepOpts(options)
@@ -1982,12 +1982,17 @@ checkLavaanModel <- function(model, availableVars) {
 
 
   if (!all(sapply(dataset[, varNames, drop = FALSE], is.numeric))) {
-    mardiatab$setError(gettext("Not all used variables are numeric. Mardia's coefficients not available."))
+    mardiatab$setError(gettext("Not all used variables are continuous Mardia's coefficients not available."))
     return()
   }
 
-  mardiaSkew <- unname(semTools:::mardiaSkew(dataset[, varNames]))
-  mardiaKurtosis <- unname(semTools:::mardiaKurtosis(dataset[, varNames]))
+  dt <- dataset[, varNames]
+  # it seems semTools does not handle missings appropriately
+  dt <- na.omit(dt)
+  mardiaSkew <- unname(semTools:::mardiaSkew(dt))
+  mardiaKurtosis <- unname(semTools:::mardiaKurtosis(dt))
+
+  print(mardiaSkew)
   mardiatab$addRows(
     data.frame(Type        = gettext("Skewness"),
                Coefficient = mardiaSkew[1],
@@ -2057,14 +2062,14 @@ checkLavaanModel <- function(model, availableVars) {
     }
 
     if (options[["residualCovariance"]]) {
-      rctab <- createJaspTable("Residual covariance matrix")
+      rctab <- createJaspTable("Residuals covariance matrix")
       rctab$dependOn("residualCovariance")
       rctab$position <- 3
       cocont[["residual"]] <- rctab
     }
 
     if (options[["standardizedResidual"]]) {
-      srtab <- createJaspTable("Standardized residuals matrix")
+      srtab <- createJaspTable("Standardized residuals covariance matrix")
       srtab$dependOn("standardizedResidual")
       srtab$position <- 4
       cocont[["stdres"]] <- srtab
@@ -2089,14 +2094,14 @@ checkLavaanModel <- function(model, availableVars) {
     }
 
     if (options[["residualCovariance"]]) {
-      rccont <- createJaspContainer("Residual covariance matrix", initCollapsed = TRUE)
+      rccont <- createJaspContainer("Residuals covariance matrix", initCollapsed = TRUE)
       rccont$dependOn("residualCovariance")
       rccont$position <- 3
       cocont[["residual"]] <- rccont
     }
 
     if (options[["standardizedResidual"]]) {
-      srcont <- createJaspContainer("Standardized residuals matrix", initCollapsed = TRUE)
+      srcont <- createJaspContainer("Standardized residuals covariance matrix", initCollapsed = TRUE)
       srcont$dependOn("standardizedResidual")
       srcont$position <- 4
       cocont[["stdres"]] <- srcont
