@@ -99,9 +99,9 @@ Form
 				]
 			}
 			CheckBox { name: "meanStructure";					label: qsTr("Include mean structure") ; checked: eq_intercepts.checked || eq_means.checked || eq_thresholds.checked
-				CheckBox { name: "latentInterceptFixedToZero";		label: qsTr("Fix latent means to zero"); checked: !eq_means.checked }
-				CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Fix manifest intercepts to zero"); }
-				CheckBox { name: "manifestMeanFixedToZero";		label: qsTr("Fix mean of manifest intercepts to zero")}
+			CheckBox { name: "latentInterceptFixedToZero";		label: qsTr("Fix latent means to zero"); checked: !eq_means.checked }
+			CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Fix manifest intercepts to zero"); }
+			CheckBox { name: "manifestMeanFixedToZero";		label: qsTr("Fix mean of manifest intercepts to zero")}
 			}
 			
 			CheckBox { name: "orthogonal";						label: qsTr("Assume factors uncorrelated")						}
@@ -141,6 +141,7 @@ Form
 						{ value: "wls",			label: qsTr("WLS")		},
 						{ value: "uls",			label: qsTr("ULS")		},
 						{ value: "dwls",		label: qsTr("DWLS")		},
+						{ value: "dls",		  label: qsTr("DLS")		},
 						{ value: "pml",			label: qsTr("PML")		},
 						{ value: "mlm",			label: qsTr("MLM")		},
 						{ value: "mlmv",		label: qsTr("MLMV")		},
@@ -212,7 +213,6 @@ Form
 				fieldWidth: 60
 				defaultValue: 1000
 				min: 1
-
 			}
 			DropDown {
 				visible: errorCalc.value == "bootstrap"
@@ -368,7 +368,7 @@ Form
 				label: qsTr("Grouping Variable")
 				showVariableTypeIcon: true
 				addEmptyValue: true
-			} // No model or source: it takes all variables per default
+			}
 			Group
 			{
 				visible: grpvar.value != ""
@@ -383,18 +383,19 @@ Form
 				CheckBox { id: eq_regressions; 			name: "equalRegression";			label: qsTr("Regressions")			}
 				CheckBox { id: eq_variances; 			name: "equalLatentVariance";		label: qsTr("Latent variances")		}
 				CheckBox { id: eq_lvcovariances; 		name: "equalLatentCovariance";		label: qsTr("Latent covariances")	}
-			}
+			} // No model or source: it takes all variables per default
+		}	
 
-		}
 		TextArea
 		{
 			name: "freeParameters"
 			title: qsTr("Release constraints (one per line)")
-			width: multigroup.width / 2
+			width: 250
 			height: constraints.height + grpvar.height
 			textType: JASP.TextTypeLavaan
 			visible: eq_loadings.checked || eq_intercepts.checked || eq_residuals.checked || eq_residualcovariances.checked || eq_means.checked || eq_thresholds.checked || eq_regressions.checked || eq_variances.checked || eq_lvcovariances.checked
 		}
+		
 	}
 
 

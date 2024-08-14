@@ -20,8 +20,8 @@
 SEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
-  sink("~/Downloads/log.txt")
-  on.exit(sink(NULL))
+  # sink("~/Downloads/log.txt")
+  # on.exit(sink(NULL))
 
   # Read dataset
   options <- .semPrepOpts(options)
@@ -870,7 +870,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (!is.null(modelContainer[["params"]])) return()
   if (modelContainer$getError()) return()
 
-  params <- createJaspContainer(gettext("Parameter estimates"))
+  params <- createJaspContainer(gettext("Parameter Estimates"))
   params$position <- 1
   params$dependOn(c("ciLevel", "bootstrapCiType", "standardizedEstimate", "models", "standardizedEstimateType"))
 
@@ -912,9 +912,9 @@ checkLavaanModel <- function(model, availableVars) {
   indtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   indtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   indtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
   indtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
   pecont[["ind"]] <- indtab
 
@@ -932,9 +932,9 @@ checkLavaanModel <- function(model, availableVars) {
   regtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   regtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   regtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
   regtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
   pecont[["reg"]] <- regtab
 
@@ -952,9 +952,9 @@ checkLavaanModel <- function(model, availableVars) {
   lvartab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   lvartab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   lvartab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
   lvartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
   pecont[["lvar"]] <- lvartab
 
@@ -971,9 +971,9 @@ checkLavaanModel <- function(model, availableVars) {
   lcovtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   lcovtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   lcovtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
   lcovtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
   pecont[["lcov"]] <- lcovtab
 
@@ -990,9 +990,9 @@ checkLavaanModel <- function(model, availableVars) {
   vartab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   vartab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   vartab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
   vartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
   pecont[["var"]] <- vartab
 
@@ -1009,9 +1009,9 @@ checkLavaanModel <- function(model, availableVars) {
   covtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   covtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   covtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
   covtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
   pecont[["cov"]] <- covtab
 
@@ -1035,9 +1035,9 @@ checkLavaanModel <- function(model, availableVars) {
     mutab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     mutab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
     mutab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
     mutab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
     if (options[["naAction"]] == "fiml" && !fit@Options$categorical) {
       mutab$addFootnote(gettext("Missing data method 'FIML' forces meanstructure."))
@@ -1061,9 +1061,9 @@ checkLavaanModel <- function(model, availableVars) {
     thrtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     thrtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
     thrtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                         overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
     thrtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                         overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
     pecont[["thr"]] <- thrtab
   }
 
@@ -1078,9 +1078,9 @@ checkLavaanModel <- function(model, availableVars) {
     deftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     deftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
     deftab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                         overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
     deftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                         overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
     pecont[["def"]] <- deftab
   } else {
@@ -1096,9 +1096,9 @@ checkLavaanModel <- function(model, availableVars) {
     indefftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     indefftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
     indefftab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                         overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
     indefftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                         overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
     pecont[["indeff"]] <- indefftab
 
@@ -1114,9 +1114,9 @@ checkLavaanModel <- function(model, availableVars) {
     totefftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     totefftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
     totefftab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                            overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                            overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
     totefftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                            overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                            overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
     pecont[["toteff"]] <- totefftab
   }
@@ -1413,7 +1413,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   # the way lavaan exports the name of the test is a bit weird, so we get the test option from:
   testName <- .semOptionsToLavOptions(options, dataset)[["test"]]
-  if (testName == "default") testName <- semResults[[1]]@Options$test
+  if (testName == "default") testName <- modelContainer[["results"]][["object"]][[1]]@Options$test
 
   fmli <- lapply(modelContainer[["results"]][["object"]],
                  function(x) .computeFitMeasures(fit = x, standard = (testName == "standard")))
@@ -1875,7 +1875,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (length(options[["models"]]) < 2) {
     .semHtmtTables(modelContainer[["results"]][["object"]][[1]], NULL, htmt, options, ready, dataset)
   } else {
-    htmt$title <- gettext("Heterotrait-monotrait ratio")
+    htmt$title <- gettext("Heterotrait-Monotrait Ratio")
 
     for (i in seq_along(options[["models"]])) {
       fit <- modelContainer[["results"]][["object"]][[i]]
