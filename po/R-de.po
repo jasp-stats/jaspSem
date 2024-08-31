@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2024-08-10 02:46\n"
-"PO-Revision-Date: 2024-08-11 11:09+0000\n"
+"PO-Revision-Date: 2024-08-29 07:09+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 5.7-dev\n"
+"X-Generator: Weblate 5.7.1-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "Das Modell konnte nicht geschätzt werden durch fehlende Konvergenz."
@@ -639,16 +639,16 @@ msgstr ""
 "Schätzung fehlgeschlagen! Meldung: Modell %s hat negative Freiheitsgrade."
 
 msgid "n(Observations)"
-msgstr ""
+msgstr "n(Beobachtungen)"
 
 msgid "Total"
-msgstr ""
+msgstr "Gesamt"
 
 msgid "n(Parameters)"
 msgstr "n(Parameter)"
 
 msgid "Free"
-msgstr ""
+msgstr "Frei"
 
 msgid "%1$sdf"
 msgstr "%1$sdf"
@@ -882,11 +882,13 @@ msgstr "sepc (all)"
 msgid "sepc (nox)"
 msgstr "sepc (all)"
 
+#, fuzzy
 msgid "Sensitivity analysis"
-msgstr ""
+msgstr "Sensitivitätsanalyse"
 
+#, fuzzy
 msgid "Summary of sensitivity analysis"
-msgstr ""
+msgstr "Zusammenfassung der Sensitivitätsanalyse"
 
 msgid "Path"
 msgstr "Pfad"
@@ -900,28 +902,35 @@ msgstr "Originalmodell"
 msgid "p*"
 msgstr "p*"
 
+#, fuzzy
 msgid "Sensitivity model"
-msgstr ""
+msgstr "Sensitivitätsmodell"
 
 msgid "Min"
-msgstr ""
+msgstr "Min"
 
 msgid "Max"
-msgstr ""
+msgstr "Max"
 
+#, fuzzy
 msgid ""
 "Please include at least one regression path in the model to perform a "
 "sensitivity analysis."
 msgstr ""
+"Bitte schließen Sie mindestens einen Regressionspfad ins Modell ein, um eine "
+"Sensitivitätsanalyse durchzuführen."
 
+#, fuzzy
 msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
-msgstr ""
+msgstr "Durchführung der Sensitivitätsanalyse (Modell: %1$s, Gruppe: %2$s)"
 
+#, fuzzy
 msgid "Performing sensitivity analysis (model: %1$s)"
-msgstr ""
+msgstr "Durchführung Sensitivitätsanalyse (Modell: %1$s)"
 
 msgid "Sensitivity parameters that led to a change in significance"
 msgstr ""
+"Sensitivitätsparameter, die zu einer Änderung der Signifikanz geführt haben"
 
 msgid "Sensitivity parameters"
 msgstr "Sensitivitätsparameter"
