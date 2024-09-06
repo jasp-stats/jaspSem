@@ -28,7 +28,7 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL) 
   #                  "<em>Note.</em>")
 
 
-  coef_with_callback <- function(lav_object) {
+  coefWithCallback <- function(lav_object) {
     # Progress bar is ticked every time coef() is evaluated, which happens once on the main object:
     # https://github.com/yrosseel/lavaan/blob/77a568a574e4113245e2f6aff1d7c3120a26dd90/R/lav_bootstrap.R#L107
     # and then every time on a successful bootstrap:
@@ -39,7 +39,7 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL) 
     return(lavaan::coef(lav_object))
   }
 
-  coef_with_callback_std <- function(lav_object, typeStd) {
+  coefWithCallbackStd <- function(lav_object, typeStd) {
     std <- lavaan::standardizedSolution(lav_object, type = typeStd)
     out <- std$est.std
 
@@ -51,9 +51,9 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL) 
   startProgressbar(samples + 1)
 
   if (!standard) {
-    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coef_with_callback)
+    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallback)
   } else {
-    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coef_with_callback_std, typeStd = typeStd)
+    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallbackStd, typeStd = typeStd)
   }
 
   # Add the bootstrap samples to the fit object
@@ -61,9 +61,9 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL) 
   fit@Options$se <- "bootstrap"
 
   # exclude error bootstrap runs
-  err_id <- attr(fit@boot$coef, "error.idx")
-  if (length(err_id) > 0L) {
-    fit@boot$coef <- fit@boot$coef[-err_id, , drop = FALSE]
+  errId <- attr(fit@boot$coef, "error.idx")
+  if (length(errId) > 0L) {
+    fit@boot$coef <- fit@boot$coef[-errId, , drop = FALSE]
   }
 
   # we actually need the SEs from the bootstrap not the SEs from ML or something

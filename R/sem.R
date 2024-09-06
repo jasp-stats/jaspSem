@@ -14,7 +14,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
 SEMInternal <- function(jaspResults, dataset, options, ...) {
@@ -264,7 +264,7 @@ checkLavaanModel <- function(model, availableVars) {
     if (!is.null(results[[i]])) next # existing model is reused
 
     # create options
-    lav_args <- lavopts
+    lavArgs <- lavopts
     originalSyntax   <- .semTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
     if(options[["group"]] == "")
       syntaxTable <- lavaan::lavaanify(originalSyntax)
@@ -281,31 +281,31 @@ checkLavaanModel <- function(model, availableVars) {
     }
 
     if (exists("syntax")) {
-      lav_args[["model"]] <- syntax
+      lavArgs[["model"]] <- syntax
     } else {
-      lav_args[["model"]] <- originalSyntax
+      lavArgs[["model"]] <- originalSyntax
     }
     if (options[["dataType"]] == "raw") {
       if (options[["standardizedVariable"]]) {
         dataset <- scale(dataset)
       }
-      lav_args[["data"]] <- dataset
+      lavArgs[["data"]] <- dataset
 
     } else {
-      cov_mat <- .semDataCovariance(dataset, options[["models"]][[i]][["syntax"]])
+      covMat <- .semDataCovariance(dataset, options[["models"]][[i]][["syntax"]])
       if (options[["standardizedVariable"]]) {
-        cov_mat <- stats::cov2cor(cov_mat)
+        covMat <- stats::cov2cor(covMat)
       }
-      lav_args[["sample.cov"]] <- cov_mat
-      lav_args[["sample.nobs"]] <- options[["sampleSize"]]
+      lavArgs[["sample.cov"]] <- covMat
+      lavArgs[["sample.nobs"]] <- options[["sampleSize"]]
     }
 
     # fit the enriched model
-    fit <- try(.withWarnings(do.call(lavaan::lavaan, lav_args)))
+    fit <- try(.withWarnings(do.call(lavaan::lavaan, lavArgs)))
 
     if (isTryError(fit)) { # if try-error, fit original model
-      lav_args[["model"]] <- originalSyntax
-      fit <- try(.withWarnings(do.call(lavaan::lavaan, lav_args)))
+      lavArgs[["model"]] <- originalSyntax
+      fit <- try(.withWarnings(do.call(lavaan::lavaan, lavArgs)))
     }
 
 
@@ -759,25 +759,41 @@ checkLavaanModel <- function(model, availableVars) {
 # it makes sense to print the test, estimator, information, SE as a footnote if only "default" is specified
   estimatorName <- semResults[[1]]@Options$estimator
   if (options[["estimator"]] == "default") {
-    ftext <- gettextf("Estimator is %s.", estimatorName)
+    ftext <- gettextf("Estimator is %s.", toupper(estimatorName))
     fnote <- paste(fnote, ftext)
   }
 
+  outNames <- .optionsForOutput()
   if (options[["modelTest"]] == "default") {
-      ftext <- gettextf("Model test is %s.", testName)
+      if (testName %in% outNames$lavNames) {
+        name <- outNames$jaspNames[outNames$lavNames == testName]
+      } else {
+        name <- testName
+      }
+      ftext <- gettextf("Model test is %s.", name)
       fnote <- paste(fnote, ftext)
   }
 
   informationName <- semResults[[1]]@Options$information[1]
   # information has two elements one for the SEs one for the test statistic, but JASP does not distinguish
   if (options[["informationMatrix"]] == "default") {
-    ftext <- gettextf("Information matrix is %s.", informationName)
+    if (informationName %in% outNames$lavNames) {
+      name <- outNames$jaspNames[outNames$lavNames == informationName]
+    } else {
+      name <- informationName
+    }
+    ftext <- gettextf("Information matrix is %s.", name)
     fnote <- paste(fnote, ftext)
   }
 
   seName <- semResults[[1]]@Options$se
   if (options[["errorCalculationMethod"]] == "default") {
-    ftext <- gettextf("Standard errors are %s.", seName)
+    if (seName %in% outNames$lavNames) {
+      name <- outNames$jaspNames[outNames$lavNames == seName]
+    } else {
+      name <- seName
+    }
+    ftext <- gettextf("Standard errors are %s.", name)
     fnote <- paste(fnote, ftext)
   }
 
@@ -2815,13 +2831,17 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 
-# .optionsForOutput <- function() {
-#
-#   testNames <- data.frame(lavNames = c("standard", "satorra.bentler", "yuan.bentler", "yuan.bentler.mplus", "mean.var.adjusted", "scaled.shifted", "bollen.stine", "browne.residual.adf", "browne.residual.nt"),
-#                           jaspNames = c("Standard", "Satorra-Bentler", "Yuan-Bentler", "Yuan-Bentler Mplus", "mean and variance-adjusted", "Scaled and shifted", "Bootstrap (Bollen-Stine)", "Browne residual based (ADF)", "Browne residual based (NT)"),
-#                           stringsAsFactors = FALSE)
-#
-#   seNames <- data.frame(lavNames = c("standard", "robust.sem", "robust.huber.white"))
-#   return(testNames)
-#
-# }
+.optionsForOutput <- function() {
+
+  outNames <- data.frame(lavNames = c("satorra.bentler", "yuan.bentler",
+                                      "yuan.bentler.mplus", "mean.var.adjusted", "scaled.shifted",
+                                      "bollen.stine", "browne.residual.adf", "browne.residual.nt",
+                                      "robust.sem", "robust.huber.white", "first.order"),
+                         jaspNames = gettext("Satorra-Bentler", "Yuan-Bentler", "Yuan-Bentler Mplus",
+                                       "mean and variance-adjusted", "scaled and shifted", "bootstrap (Bollen-Stine)",
+                                       "Browne residual based (ADF)", "Browne residual based (NT)",
+                                       "robust", "robust Huber-White", "first-order"),
+                         stringsAsFactors = FALSE)
+
+  return(outNames)
+}
