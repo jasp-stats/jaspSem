@@ -35,7 +35,6 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL) 
     # https://github.com/yrosseel/lavaan/blob/77a568a574e4113245e2f6aff1d7c3120a26dd90/R/lav_bootstrap.R#L375
     # i.e., samples + 1 times
     progressbarTick()
-
     return(lavaan::coef(lav_object))
   }
 
@@ -66,7 +65,7 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL) 
     fit@boot$coef <- fit@boot$coef[-errId, , drop = FALSE]
   }
 
-  # we actually need the SEs from the bootstrap not the SEs from ML or something
+  # we actually need the SEs from the bootstrap not the SEs from ML or some other estimator
   N <- nrow(fit@boot$coef)
 
   # we multiply the var by (n-1)/n because lavaan actually uses n for the variance instead of n-1
@@ -81,7 +80,6 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL) 
     std <- lavaan::standardizedSolution(fit, type = typeStd)
     fit@ParTable$est <- std$est.std
   }
-
 
   return(fit)
 }

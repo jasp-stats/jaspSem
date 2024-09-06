@@ -220,3 +220,56 @@ test_that("Total effects table results match", {
                                       "<unicode>", 0.102761008345243, "contNormal", 0.103237850067971,
                                       1.63161314013793))
 })
+
+
+# bootstrapped mediation analysis works with standardized CI
+options                  <- jaspTools::analysisOptions("MediationAnalysis")
+options$predictors       <- "contcor1"
+options$mediators        <- "contcor2"
+options$outcomes         <- "contNormal"
+options$standardizedEstimate <- TRUE
+options$emulation        <- "lavaan"
+options$estimator        <- "ml"
+options$errorCalculationMethod   <- "bootstrap"
+options$bootstrapSamples <- 100
+options$bootstrapCiType  <- "percentile"
+options$naAction         <- "fiml"
+
+set.seed(1)
+results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options, makeTests = F)
+
+test_that("Direct effects table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(0.00203607928291166, 0.515217977105027, 0.246415337256947, "contcor1",
+                                      "<unicode>", 0.0454269308884425, "contNormal", 0.123165817830769,
+                                      2.0006795846192))
+})
+
+test_that("Indirect effects table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_ind"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-0.285927353530278, 0.072679544829816, -0.085383409360225, "contcor2",
+                                      "<unicode>", "<unicode>", 0.323289823674984, 0.086444958200602,
+                                      "contcor1", "contNormal", -0.987719945009244))
+})
+
+test_that("Path coefficients table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_path"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-0.423032428335729, 0.125618203679588, -0.129957536543631, "contcor2",
+                                      "<unicode>", 0.299640536185824, "contNormal", 0.12529595637462,
+                                      -1.03720455395283, 0.00203607928291166, 0.515217977105027, 0.246415337256947,
+                                      "contcor1", "<unicode>", 0.0454269308884425, "contNormal", 0.123165817830769,
+                                      2.0006795846192, 0.514802944243485, 0.794776932027742, 0.657010063679986,
+                                      "contcor1", "<unicode>", 0, "contcor2", 0.0623901955114432,
+                                      10.5306620422352))
+})
+
+test_that("Total effects table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_tot"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-0.0364757008466789, 0.347861388237319, 0.161031927896722, "contcor1",
+                                      "<unicode>", 0.0988448047762278, "contNormal", 0.0975667259740126,
+                                      1.65047997961533))
+})

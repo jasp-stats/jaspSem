@@ -91,7 +91,7 @@ Form
                         text: qsTr("Replications")
                         name: "bootstrapSamples"
                         defaultValue: 1000
-                        min: 500
+                        min: 200
                         max: 100000
                     }
                     DropDown {
@@ -130,9 +130,9 @@ Form
                 RadioButton { text: qsTr("Exclude cases listwise")              ; name: "listwise"             }
             }
             RadioButtonGroup {
-                title: qsTr("Emulation")
+                title: qsTr("Mimic")
                 name: "emulation"
-                RadioButton { text: qsTr("None")  ; name: "lavaan"  ; checked: true }
+                RadioButton { text: qsTr("Lavaan")  ; name: "lavaan"  ; checked: true }
                 RadioButton { text: qsTr("Mplus") ; name: "mplus" }
                 RadioButton { text: qsTr("EQS")   ; name: "eqs"   }
             }
@@ -142,7 +142,7 @@ Form
             RadioButtonGroup {
                 title: qsTr("Estimator")
                 name: "estimator"
-                RadioButton { text: qsTr("Auto") ; name: "default"; checked: true }
+                RadioButton { text: qsTr("Default") ; name: "default"; checked: true }
                 RadioButton { text: qsTr("ML")   ; name: "ml"       }
                 RadioButton { text: qsTr("GLS")  ; name: "gls"      }
                 RadioButton { text: qsTr("WLS")  ; name: "wls"      }
