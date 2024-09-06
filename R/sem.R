@@ -411,12 +411,14 @@ checkLavaanModel <- function(model, availableVars) {
 
   # data options
   lavopts[["std.ov"]]  <- options[["standardizedVariable"]]
-  lavopts[["missing"]] <- switch(options[["naAction"]],
-                                 "fiml" = "ml",
-                                 "twoStage" = "two.stage",
-                                 "twoStageRobust" = "robust.two.stage",
-                                 "doublyRobust" = "doubly.robust",
-                                 options[["naAction"]])
+  if (anyNA(dataset)) {
+    lavopts[["missing"]] <- switch(options[["naAction"]],
+                                   "fiml" = "ml",
+                                   "twoStage" = "two.stage",
+                                   "twoStageRobust" = "robust.two.stage",
+                                   "doublyRobust" = "doubly.robust",
+                                   options[["naAction"]])
+  }
 
   # estimation options
   lavopts[["estimator"]]   <- options[["estimator"]]

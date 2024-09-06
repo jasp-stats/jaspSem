@@ -9,15 +9,14 @@ options$samplingWeights   <- ""
 options$informationMatrix <- "expected"
 options$naAction          <- "fiml"
 options$modelTest         <- "standard"
-results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
+results <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
 
 
 test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-
   jaspTools::expect_equal_tables(table,
-                                 list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, "", "Model1",
-                                      75, 0, 5, 5))
+                                 list(46.1563554263454, 55.4263078804906, 6.66133814775094e-14, 0, "Model1",
+                                      75, "", 4, 4))
 })
 
 parcont <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]]
@@ -611,8 +610,8 @@ test_that("Bootstrapping model fit table works", {
 
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(48.156355426345, 59.7437959940266, 9.99200722162641e-14, "", "Model1",
-                                      75, 0, 5, 5))
+                                 list(46.1563554263454, 55.4263078804906, 9.99200722162641e-14, "", "Model1",
+                                      75, 0, 4, 4))
 })
 
 test_that("Residual covariances table results match", {

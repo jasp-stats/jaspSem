@@ -159,7 +159,6 @@ Form
 					toolTip: 					qsTr("Click for more information")
 					helpPage:					"forQml/tooltipEstimators"
 				}
-
 			}
 			
 			DropDown
@@ -258,8 +257,8 @@ Form
 				name: "naAction"
 				label: qsTr("Missing data handling")
 				values: [
-					{ label: qsTr("Listwise deletion")	, value: "listwise"			},
 					{ label: qsTr("FIML")				, value: "fiml"},
+					{ label: qsTr("Listwise deletion")	, value: "listwise"			},
 					{ label: qsTr("Pairwise")			, value: "pairwise"			},
 					{ label: qsTr("Two-stage")			, value: "twoStage"			},
 					{ label: qsTr("Robust two-stage")	, value: "twoStageRobust"	},
