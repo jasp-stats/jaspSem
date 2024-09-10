@@ -15,9 +15,12 @@
 // License along with this program.  If not, see
 // <http://www.gnu.org/licenses/>.
 //
-import QtQuick          2.8
-import QtQuick.Layouts  1.3
-import JASP.Controls    1.0
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls 
+import JASP.Controls
+import JASP
+import "./common" as Common
 
 
 
@@ -45,94 +48,43 @@ Form
 
 	Section
 	{
-        title: qsTr("Options")
-
+    title: qsTr("Options")
 		Group
-        {
-            CheckBox { label: qsTr("Standardized estimates")    ; name: "standardizedEstimate" }
-            CheckBox { label: qsTr("Lavaan syntax")             ; name: "syntax" }
-            CheckBox { label: qsTr("R-squared")                 ; name: "rSquared" }
-            CheckBox { label: qsTr("Additional fit measures")   ; name: "additionalFitMeasures" }
-        }
+		{
+			CheckBox
+			{
+				name: "standardizedEstimate"; label: qsTr("Standardized estimates");
+				RadioButtonGroup
+				{
+						name: "standardizedEstimateType"
+						RadioButton { value: "all"; 	label: qsTr("All"); checked: true	}
+						RadioButton { value: "latents"; label: qsTr("Latents")	}
+						RadioButton { value: "nox"; 	label: qsTr("Except exogenous covariates")		}
+				}
+			}
+			CheckBox { label: qsTr("Lavaan syntax")             ; name: "syntax" }
+			CheckBox { label: qsTr("R-squared")                 ; name: "rSquared" }
+			CheckBox { label: qsTr("Additional fit measures")   ; name: "additionalFitMeasures" }
+		}
 
-		Group
-        {
-            CIField {
-                text: qsTr("Confidence intervals")
-                name: "ciLevel"
-            }
-            RadioButtonGroup {
-                title: qsTr("Method")
-                name: "errorCalculationMethod"
-                RadioButton { text: qsTr("Standard")  ; name: "standard" ; checked: true }
-                RadioButton { text: qsTr("Robust")    ; name: "robust" }
-                RadioButton {
-                    text: qsTr("Bootstrap")
-                    name: "bootstrap"
-                    IntegerField {
-                        text: qsTr("Replications")
-                        name: "bootstrapSamples"
-                        defaultValue: 1000
-                        min: 500
-                        max: 100000
-                    }
-                    DropDown {
-                        label: qsTr("Type")
-                        name: "bootstrapCiType"
-                        values: [
-                            { label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"   },
-                            { label: qsTr("Percentile"),                value: "percentile"         },
-                            { label: qsTr("Normal theory"),             value: "normalTheory"         }
-                        ]
-                    }
-                }
-            }
-        }
-    }
+		Common.ErrorCalculation{}
 
-	Section {
-        text: qsTr("Plots")
-        CheckBox { 
-            text:   qsTr("Model plot")
-            name:   "pathPlot"
-            id:     pathPlot 
-            CheckBox { text: qsTr("Parameter estimates") ; name: "pathPlotParameter" }
-            CheckBox { text: qsTr("Legend") ; name: "pathPlotLegend" }
-        }
-    }
+  }
+
+	Section 
+	{
+		text: qsTr("Plots")
+		CheckBox 
+		{ 
+			text:   qsTr("Model plot")
+			name:   "pathPlot"
+			id:     pathPlot 
+			CheckBox { text: qsTr("Parameter estimates") ; name: "pathPlotParameter" }
+			CheckBox { text: qsTr("Legend") ; name: "pathPlotLegend" }
+		}
+  }
     
-	Section {
-        text: qsTr("Advanced")
-		Group {
-            Layout.fillWidth: true
-            RadioButtonGroup {
-                title: qsTr("Missing value handling")
-                name: "naAction"
-                RadioButton { text: qsTr("Full Information Maximum Likelihood") ; name: "fiml" ; checked: true }
-                RadioButton { text: qsTr("Exclude cases listwise")              ; name: "listwise"             }
-            }
-            RadioButtonGroup {
-                title: qsTr("Emulation")
-                name: "emulation"
-                RadioButton { text: qsTr("None")  ; name: "lavaan"  ; checked: true }
-                RadioButton { text: qsTr("Mplus") ; name: "mplus" }
-                RadioButton { text: qsTr("EQS")   ; name: "eqs"   }
-            }
-        }
-		Group {
-            Layout.fillWidth: true
-            RadioButtonGroup {
-                title: qsTr("Estimator")
-                name: "estimator"
-                RadioButton { text: qsTr("Auto") ; name: "default"; checked: true }
-                RadioButton { text: qsTr("ML")   ; name: "ml"       }
-                RadioButton { text: qsTr("GLS")  ; name: "gls"      }
-                RadioButton { text: qsTr("WLS")  ; name: "wls"      }
-                RadioButton { text: qsTr("ULS")  ; name: "uls"      }
-                RadioButton { text: qsTr("DWLS") ; name: "dwls"     }
-            }
-        }
-    }
+	Common.Advanced{}
     
 }
 

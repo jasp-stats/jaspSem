@@ -1,4 +1,4 @@
-context("Partial Least Squares Structural Equation Modeling")
+context("PLS-SEM")
 
 # basic PLS SEM works
 options <- jaspTools::analysisOptions("PLSSEM")

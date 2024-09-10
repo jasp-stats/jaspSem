@@ -153,13 +153,6 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
     }
   }
 
-  # # check if standardized estimates are required but standard errors are bootstrapped, that does not work yet,
-  # # because the CIs are not really available in lavaan
-  # if (options[["standardizedEstimate"]] && options[["errorCalculationMethod"]] == "bootstrap") {
-  #   .quitAnalysis(gettext("Standardized estimates are not available when bootstrapping is used for standard error calculation."))
-  #   return()
-  # }
-
   return()
 }
 
@@ -2022,7 +2015,6 @@ checkLavaanModel <- function(model, availableVars) {
   mardiaSkew <- unname(semTools:::mardiaSkew(dt))
   mardiaKurtosis <- unname(semTools:::mardiaKurtosis(dt))
 
-  print(mardiaSkew)
   mardiatab$addRows(
     data.frame(Type        = gettext("Skewness"),
                Coefficient = mardiaSkew[1],

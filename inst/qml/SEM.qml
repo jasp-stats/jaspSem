@@ -15,11 +15,12 @@
 // License along with this program.  If not, see
 // <http://www.gnu.org/licenses/>.
 //
-import QtQuick			2.8
-import QtQuick.Layouts	1.3
-import QtQuick.Controls 2.12
-import JASP.Controls	1.0
-import JASP				1.0
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls 
+import JASP.Controls
+import JASP
+import "./common" as Common
 
 Form
 {
@@ -237,27 +238,12 @@ Form
 			id: missingG
 			CheckBox{name: "standardizedVariable"; label: qsTr("Standardize variables before estimation"); checked: false}
 
-			// property var withFiml: [
-			// 		{ label: qsTr("Listwise deletion")	, value: "listwise"			},
-			// 		{ label: qsTr("FIML")				, value: "fiml"},
-			// 		{ label: qsTr("Pairwise")			, value: "pairwise"			},
-			// 		{ label: qsTr("Two-stage")			, value: "twoStage"			},
-			// 		{ label: qsTr("Robust two-stage")	, value: "twoStageRobust"	},
-			// 		{ label: qsTr("Doubly robust")		, value: "doublyRobust"		}
-			// 	]
-			// property var noFiml: [
-			// 		{ label: qsTr("Listwise deletion")	, value: "listwise"			},
-			// 		{ label: qsTr("Pairwise")			, value: "pairwise"			},
-			// 		{ label: qsTr("Two-stage")			, value: "twoStage"			},
-			// 		{ label: qsTr("Robust two-stage")	, value: "twoStageRobust"	},
-			// 		{ label: qsTr("Doubly robust")		, value: "doublyRobust"		}
-			// 	]
 			DropDown
 			{
 				name: "naAction"
 				label: qsTr("Missing data handling")
 				values: [
-					{ label: qsTr("FIML")				, value: "fiml"},
+					{ label: qsTr("(FI)ML)")				, value: "fiml"},
 					{ label: qsTr("Listwise deletion")	, value: "listwise"			},
 					{ label: qsTr("Pairwise")			, value: "pairwise"			},
 					{ label: qsTr("Two-stage")			, value: "twoStage"			},
@@ -298,8 +284,10 @@ Form
 			CheckBox { name: "residualCovariance";		label: qsTr("Residual covariances")					}
 			CheckBox { name: "standardizedResidual"; 	label: qsTr("Standardized residuals")				}
 		}
+
 		Group
 		{
+
 			CheckBox
 			{
 				name: "standardizedEstimate"; label: qsTr("Standardized estimates");

@@ -19,14 +19,6 @@
 # Function commonly used in the various procedures within the SEM module
 
 lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL) {
-  # Run bootstrap, track progress with progress bar
-  # Notes: faulty runs are simply ignored
-  # recommended: add a warning if not all boot samples are successful
-  # fit <- lavBootstrap(fit, samples = 1000)
-  # if (nrow(fit@boot$coef) < 1000)
-  #  tab$addFootnote(gettextf("Not all bootstrap samples were successful: CI based on %.0f samples.", nrow(fit@boot$coef)),
-  #                  "<em>Note.</em>")
-
 
   coefWithCallback <- function(lav_object) {
     # Progress bar is ticked every time coef() is evaluated, which happens once on the main object:
@@ -588,5 +580,65 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL) 
   }
   return(list(best.param = best.param, best.obj = best.obj,
               model.history = do.call(rbind, model.history)))
+}
+
+
+.additionalFitTables <- function(modelContainer, dataset, options, ready) {
+
+  fitinds <- createJaspTable(gettext("Fit indices"))
+  fitinds$dependOn("additionalFitMeasures")
+
+  fitinds$addColumnInfo(name = "index", title = gettext("Index"), type = "string")
+  fitinds$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
+
+  if (!ready || modelContainer$getError()) return(fitinds)
+
+  # actually compute the fit measures
+  fit <- modelContainer[["model"]][["object"]]
+  fm <- lavaan::fitmeasures(fit)
+  indexStrings <- c(gettext("Comparative Fit Index (CFI)"),
+                    gettext("Tucker-Lewis Index (TLI)"),
+                    gettext("Bentler-Bonett Non-normed Fit Index (NNFI)"),
+                    gettext("Bentler-Bonett Normed Fit Index (NFI)"),
+                    gettext("Parsimony Normed Fit Index (PNFI)"),
+                    gettext("Bollen's Relative Fit Index (RFI)"),
+                    gettext("Bollen's Incremental Fit Index (IFI)"),
+                    gettext("Relative Noncentrality Index (RNI)"),
+                    gettext("Root mean square error of approximation (RMSEA)"),
+                    gettextf("RMSEA 90%% CI lower bound"),
+                    gettextf("RMSEA 90%% CI upper bound"),
+                    gettext("RMSEA p-value"),
+                    gettext("Standardized root mean square residual (SRMR)"),
+                    gettextf("Hoelter's critical N (%s = .05)","\u03B1"),
+                    gettextf("Hoelter's critical N (%s = .01)","\u03B1"),
+                    gettext("Goodness of fit index (GFI)"),
+                    gettext("McDonald fit index (MFI)"),
+                    gettext("Expected cross validation index (ECVI)"))
+
+  # information criteria
+  estimatorName <- fit@Options$estimator
+  if (grepl("ML", estimatorName)) {
+    indexStrings <- c(indexStrings,
+                      gettext("Log-likelihood"),
+                      gettext("Number of free parameters"),
+                      gettext("Akaike (AIC)"),
+                      gettext("Bayesian (BIC)"),
+                      gettext("Sample-size adjusted Bayesian (SSABIC)"))
+  }
+
+  fitinds[["index"]] <- indexStrings
+
+  estimateNames <- c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni",
+                     "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
+                     "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")
+  if (grepl("ML", estimatorName)) {
+    estimateNames <- c(estimateNames, "logl", "npar", "aic", "bic", "bic2")
+  }
+
+  estimates <- fm[estimateNames]
+
+  fitinds[["value"]] <- estimates
+
+  return(fitinds)
 }
 

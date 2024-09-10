@@ -8,8 +8,9 @@ test_that("Simple mediation analysis works", {
   options$emulation              <- "lavaan"
   options$estimator              <- "ml"
   options$errorCalculationMethod <- "standard"
+  options$ciLevel                <- 0.95
   options$naAction               <- "fiml"
-  results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
+  results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options)
 
   dir_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
   ind_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_ind"]][["data"]]
@@ -53,6 +54,7 @@ test_that("Categorical confounders work", {
   options$emulation      <- "lavaan"
   options$estimator      <- "ml"
   options$errorCalculationMethod <- "standard"
+  options$ciLevel                <- 0.95
   options$naAction       <- "fiml"
   results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
 
@@ -74,6 +76,7 @@ test_that("Multiple mediation with missing values works", {
   options$emulation      <- "lavaan"
   options$estimator      <- "ml"
   options$errorCalculationMethod <- "standard"
+  options$ciLevel                <- 0.95
   options$naAction       <- "fiml"
   results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
 
@@ -178,6 +181,7 @@ options$outcomes         <- "contNormal"
 options$emulation        <- "lavaan"
 options$estimator        <- "ml"
 options$errorCalculationMethod   <- "bootstrap"
+options$ciLevel                <- 0.95
 options$bootstrapSamples <- 100
 options$bootstrapCiType  <- "percentileBiasCorrected"
 options$naAction         <- "fiml"
@@ -228,11 +232,13 @@ options$predictors       <- "contcor1"
 options$mediators        <- "contcor2"
 options$outcomes         <- "contNormal"
 options$standardizedEstimate <- TRUE
+options$standardizedEstimateType <- "all"
 options$emulation        <- "lavaan"
 options$estimator        <- "ml"
 options$errorCalculationMethod   <- "bootstrap"
 options$bootstrapSamples <- 100
 options$bootstrapCiType  <- "percentile"
+options$ciLevel                <- 0.95
 options$naAction         <- "fiml"
 
 set.seed(1)

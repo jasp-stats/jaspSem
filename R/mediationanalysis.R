@@ -47,13 +47,6 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 .medCheckErrors <- function(dataset, options) {
   if (length(options$outcomes) == 0 || length(options$mediators) == 0 || length(options$predictors) == 0) return(FALSE)
 
-  # Check for missing value handling
-  if (anyNA(dataset)) {
-    if (options$estimator %in% c("gls", "wls", "uls", "dwls") && options$naAction == "fiml")
-      jaspBase:::.quitAnalysis(gettext("FIML only available with ML-type estimators."))
-  }
-
-
   # Exogenous variables can be binary or continuous
   exo <- ifelse(length(options$confounds) > 0, options$confounds, options$predictors)
   # Endogenous variables need to be scale or ordinal
@@ -89,7 +82,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
       admissible <- vapply(endo, function(endo_var) {
         var <- na.omit(dataset[[endo_var]])
-        if (is.ordered(var) && options$naAction == "fiml") {
+        if (is.ordered(var) && anyNA(dataset) && options$naAction == "fiml") {
           return(FALSE)
         }
         return(TRUE)
@@ -111,6 +104,8 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 # Results functions ----
 
 .medComputeResults <- function(modelContainer, dataset, options, ready) {
+
+  miss <- if (anyNA(dataset)) options[["naAction"]] else "listwise"
   medResult <- try(lavaan::sem(
     model           = .medToLavMod(options),
     data            = dataset,
@@ -119,7 +114,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
     fixed.x         = !options$standardizedEstimate,
     mimic           = options$emulation,
     estimator       = options$estimator,
-    missing         = options$naAction
+    missing         = miss
   ))
 
   if (inherits(medResult, "try-error")) {
@@ -128,9 +123,13 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   }
 
   if (options$errorCalculationMethod == "bootstrap") {
+    type <- switch(options[["standardizedEstimateType"]],
+                   "all" = "std.all",
+                   "latents" = "std.lv",
+                   "nox" = "std.nox")
     medResult <- lavBootstrap(medResult, samples = options[["bootstrapSamples"]],
                               standard = options[["standardizedEstimate"]],
-                              typeStd = "std.all")
+                              typeStd = type)
   }
 
   modelContainer[["model"]] <- createJaspState(medResult)
@@ -254,9 +253,9 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   } else {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c(
-      "predictors", "mediators", "outcomes", "confounds", "includemeanstructure",
+      "predictors", "mediators", "outcomes", "confounds",
       "bootstrapSamples", "fixManifestInterceptsToZero", "emulation", "errorCalculationMethod", "estimator",
-      "standardizedEstimate", "naAction")
+      "standardizedEstimate", "naAction", "standardizedEstimateType")
     )
     jaspResults[["modelContainer"]] <- modelContainer
   }
@@ -279,7 +278,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   dirtab$addColumnInfo(name = "op",       title = "",                    type = "string")
   dirtab$addColumnInfo(name = "rhs",      title = "",                    type = "string")
   dirtab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
-  dirtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  dirtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
   dirtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   dirtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   dirtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -299,7 +298,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   indtab$addColumnInfo(name = "op2",      title = "",                    type = "string")
   indtab$addColumnInfo(name = "y",        title = "",                    type = "string")
   indtab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
-  indtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  indtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
   indtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   indtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   indtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -316,7 +315,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   tottab$addColumnInfo(name = "op",       title = "",                    type = "string")
   tottab$addColumnInfo(name = "rhs",      title = "",                    type = "string")
   tottab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
-  tottab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  tottab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
   tottab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   tottab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   tottab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -340,19 +339,25 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
                             ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
                                    "norm"))
 
-  fit <- modelContainer[["model"]][["object"]]
-
   #' we need the second option in the if statement because when we require standardized estimates and bootstrapped CIs
   #' the standardization happens in each bootstrap run and the standardized estimates replace the regular raw estimates
   #' in the fit object, and we only need to call parameterEstimates
+
+  fit <- modelContainer[["model"]][["object"]]
+
   if (!options[["standardizedEstimate"]] ||
       (options[["standardizedEstimate"]] && options[["errorCalculationMethod"]] == "bootstrap")) {
     pe <- lavaan::parameterestimates(fit, level = options[["ciLevel"]],
                                      boot.ci.type = bootstrapCiType)
 
   } else {
-    pe <- lavaan::standardizedSolution(fit, level = options[["ciLevel"]], type = "std.all")
+    type <- switch(options[["standardizedEstimateType"]],
+                   "all" = "std.all",
+                   "latents" = "std.lv",
+                   "nox" = "std.nox")
+    pe <- lavaan::standardizedSolution(fit, level = options[["ciLevel"]], type = type)
     colnames(pe)[colnames(pe) == "est.std"] <- "est"
+
   }
 
   # Fill direct effects
@@ -426,7 +431,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   ttitab$addColumnInfo(name = "op",       title = "",                    type = "string")
   ttitab$addColumnInfo(name = "rhs",      title = "",                    type = "string")
   ttitab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
-  ttitab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  ttitab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
   ttitab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   ttitab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   ttitab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -485,7 +490,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   restab$addColumnInfo(name = "op",       title = "",                    type = "string")
   restab$addColumnInfo(name = "rhs",      title = "",                    type = "string")
   restab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
-  restab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  restab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
   restab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   restab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   restab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -541,7 +546,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   pathtab$addColumnInfo(name = "op",       title = "",                    type = "string")
   pathtab$addColumnInfo(name = "rhs",      title = "",                    type = "string")
   pathtab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
-  pathtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  pathtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
   pathtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   pathtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   pathtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
