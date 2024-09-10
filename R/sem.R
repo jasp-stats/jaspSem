@@ -2003,13 +2003,17 @@ checkLavaanModel <- function(model, availableVars) {
       gettext("Multivariate skewness and kurtosis calculated for observed variables from all models.")
     )
 
-
   if (!all(sapply(dataset[, varNames, drop = FALSE], is.numeric))) {
-    mardiatab$setError(gettext("Not all used variables are continuous Mardia's coefficients not available."))
+    mardiatab$setError(gettext("Not all used variables are continuous: Mardia's coefficients not available."))
     return()
   }
 
   dt <- dataset[, varNames]
+
+  if (isTryError(try(solve(cov(dt))))) {
+    mardiatab$setError(gettext("The data covariance matrix could not be inverted: Mardia's coefficients not available. "))
+    return()
+  }
   # it seems semTools does not handle missings appropriately
   dt <- na.omit(dt)
   mardiaSkew <- unname(semTools:::mardiaSkew(dt))
