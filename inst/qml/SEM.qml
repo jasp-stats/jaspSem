@@ -20,7 +20,6 @@ import QtQuick.Layouts
 import QtQuick.Controls 
 import JASP.Controls
 import JASP
-import "./common" as Common
 
 Form
 {
@@ -99,10 +98,13 @@ Form
 					{ label: qsTr("None")				, value: "none"				}
 				]
 			}
-			CheckBox { name: "meanStructure";					label: qsTr("Include mean structure") ; checked: eq_intercepts.checked || eq_means.checked || eq_thresholds.checked
-			CheckBox { name: "latentInterceptFixedToZero";		label: qsTr("Fix latent means to zero"); checked: !eq_means.checked }
-			CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Fix manifest intercepts to zero") }
-			CheckBox { name: "manifestMeanFixedToZero";		label: qsTr("Fix mean of manifest intercepts to zero")}
+			CheckBox 
+			{ name: "meanStructure"
+				label: qsTr("Mean structure")
+				checked: eq_intercepts.checked || eq_means.checked || eq_thresholds.checked
+				CheckBox { name: "latentInterceptFixedToZero";		label: qsTr("Latent means fixed to zero"); checked: !eq_means.checked }
+				CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Manifest intercepts fixed to zero") 											}
+				CheckBox { name: "manifestMeanFixedToZero";				label: qsTr("Mean of manifest intercepts fixed to zero")							}
 			}
 			
 			CheckBox { name: "orthogonal";						label: qsTr("Assume factors uncorrelated")						}
@@ -111,14 +113,14 @@ Form
 		Group
 		{
 
-			CheckBox { name: "exogenousCovariateFixed";			label: qsTr("Fix exogenous covariates"); 		checked: true	}
-			CheckBox { name: "residualSingleIndicatorOmitted";	label: qsTr("Omit residual single indicator");	checked: true	}
-			CheckBox { name: "residualVariance";				label: qsTr("Include residual variances");		checked: true	}
-			CheckBox { name: "exogenousLatentCorrelation";		label: qsTr("Correlate exogenous latents");		checked: true	}
-			CheckBox { name: "dependentCorrelation";			label: qsTr("Correlate dependent variables");	checked: true	}
-			CheckBox { name: "threshold";						label: qsTr("Add thresholds");					checked: true	}
-			CheckBox { name: "scalingParameter";				label: qsTr("Add scaling parameters");			checked: true	}
-			CheckBox { name: "efaConstrained";					label: qsTr("Constrain EFA blocks");			checked: true	}
+			CheckBox { name: "exogenousCovariateFixed";					label: qsTr("Exogenous covariate(s) fixed"); 			checked: true	}
+			CheckBox { name: "residualSingleIndicatorOmitted";	label: qsTr("Residual single indicator omitted");	checked: true	}
+			CheckBox { name: "residualVariance";								label: qsTr("Residual variances included");				checked: true	}
+			CheckBox { name: "exogenousLatentCorrelation";			label: qsTr("Exogenous latents correlated");			checked: true	}
+			CheckBox { name: "dependentCorrelation";						label: qsTr("Dependent variables correlated");		checked: true	}
+			CheckBox { name: "threshold";												label: qsTr("Thresholds");												checked: true	}
+			CheckBox { name: "scalingParameter";								label: qsTr("Scaling parameters");								checked: true	}
+			CheckBox { name: "efaConstrained";									label: qsTr("EFA blocks constrained");						checked: true	}
 		}
 	}
 
@@ -287,7 +289,6 @@ Form
 
 		Group
 		{
-
 			CheckBox
 			{
 				name: "standardizedEstimate"; label: qsTr("Standardized estimates");
