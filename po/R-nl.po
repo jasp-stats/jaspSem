@@ -3,16 +3,16 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2024-08-10 02:46\n"
-"PO-Revision-Date: 2024-06-11 16:58+0000\n"
+"PO-Revision-Date: 2024-09-15 09:32+0000\n"
 "Last-Translator: Koen Derks <koen-derks@hotmail.com>\n"
-"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/"
-">\n"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/>"
+"\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 5.6-dev\n"
+"X-Generator: Weblate 5.8-dev\n"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "Het model kon niet worden geschat door niet-convergentie."
@@ -636,17 +636,16 @@ msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
 msgstr "Schatting mislukt! Bericht: Model %s heeft negatieve vrijheidsgraden."
 
 msgid "n(Observations)"
-msgstr ""
+msgstr "n(Observaties)"
 
 msgid "Total"
-msgstr ""
+msgstr "Totaal"
 
-#, fuzzy
 msgid "n(Parameters)"
-msgstr "Parameter"
+msgstr "n(Parameters)"
 
 msgid "Free"
-msgstr ""
+msgstr "Vrij"
 
 msgid "%1$sdf"
 msgstr "%1$sdf"
@@ -877,61 +876,57 @@ msgid "sepc (nox)"
 msgstr "sepc (nox)"
 
 msgid "Sensitivity analysis"
-msgstr ""
+msgstr "Gevoeligheidsanalyse"
 
 msgid "Summary of sensitivity analysis"
-msgstr ""
+msgstr "Samenvatting van gevoeligheidsanalyse"
 
-#, fuzzy
 msgid "Path"
-msgstr "Paddiagram"
+msgstr "Pad"
 
-#, fuzzy
 msgid "Standardized estimate"
-msgstr "Gestandaardiseerd"
+msgstr "Gestandaardiseerde schatting"
 
-#, fuzzy
 msgid "Original model"
-msgstr "Lineair model"
+msgstr "Origineel model"
 
-#, fuzzy
 msgid "p*"
-msgstr "p"
+msgstr "p*"
 
 msgid "Sensitivity model"
-msgstr ""
+msgstr "Gevoeligheid model"
 
 msgid "Min"
-msgstr ""
+msgstr "Min"
 
 msgid "Max"
-msgstr ""
+msgstr "Max"
 
 msgid ""
 "Please include at least one regression path in the model to perform a "
 "sensitivity analysis."
 msgstr ""
+"Neem ten minste één regressiepad op in het model om een gevoeligheidsanalyse "
+"uit te voeren."
 
 msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
-msgstr ""
+msgstr "Gevoeligheidsanalyse uitvoeren (model: %1$s, groep: %2$s)"
 
 msgid "Performing sensitivity analysis (model: %1$s)"
-msgstr ""
+msgstr "Gevoeligheidsanalyse uitvoeren (model: %1$s)"
 
 msgid "Sensitivity parameters that led to a change in significance"
 msgstr ""
+"Gevoeligheids-parameters die leidden tot een verandering in significantie"
 
-#, fuzzy
 msgid "Sensitivity parameters"
-msgstr "Gedefineerde Parameters"
+msgstr "Gevoeligheids-parameters"
 
-#, fuzzy
 msgid "Summary of sensitivity parameters"
-msgstr "Aantal vrije parameters"
+msgstr "Samenvatting van gevoeligheids-parameters"
 
-#, fuzzy
 msgid "Sensitivity parameter"
-msgstr "Gedefineerde Parameters"
+msgstr "Gevoeligheids-parameter"
 
 msgid "Path diagram"
 msgstr "Paddiagram"
