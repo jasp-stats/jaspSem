@@ -220,7 +220,8 @@ checkLavaanModel <- function(model, availableVars) {
                               "dependentCorrelation", "threshold", "scalingParameter", "efaConstrained", "standardizedVariable", "naAction", "estimator", "modelTest",
                               "errorCalculationMethod", "informationMatrix", "emulation", "group", "equalLoading", "equalIntercept",
                               "equalResidual", "equalResidualCovariance", "equalMean", "equalThreshold", "equalRegression",
-                              "equalLatentVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters", "manifestMeanFixedToZero"))
+                              "equalLatentVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters", "manifestMeanFixedToZero",
+                              "bootstrapSamplesBollenStine"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -249,13 +250,13 @@ checkLavaanModel <- function(model, availableVars) {
   }
 
   # generate lavaan options list
-  lavopts <- .semOptionsToLavOptions(options, dataset)
+  lavOptions <- .semOptionsToLavOptions(options, dataset)
 
   for (i in seq_along(results)) {
     if (!is.null(results[[i]])) next # existing model is reused
 
     # create options
-    lavArgs <- lavopts
+    lavArgs <- lavOptions
     originalSyntax   <- .semTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
     if(options[["group"]] == "")
       syntaxTable <- lavaan::lavaanify(originalSyntax)
@@ -378,32 +379,32 @@ checkLavaanModel <- function(model, availableVars) {
 .semOptionsToLavOptions <- function(options, dataset) {
   #' mapping the QML options from JASP to lavaan options
   #' see ?lavOptions for documentation
-  lavopts <- lavaan::lavOptions()
+  lavOptions <- lavaan::lavOptions()
 
-  lavopts[["mimic"]] <- options[["emulation"]]
+  lavOptions[["mimic"]] <- options[["emulation"]]
 
   # model features
-  lavopts[["meanstructure"]]   <- options[["meanStructure"]]
-  lavopts[["int.ov.free"]]     <- !options[["manifestInterceptFixedToZero"]]
-  lavopts[["int.lv.free"]]     <- !options[["latentInterceptFixedToZero"]]
-  lavopts[["fixed.x"]]         <- options[["exogenousCovariateFixed"]]
-  lavopts[["orthogonal"]]      <- options[["orthogonal"]]
-  lavopts[["std.lv"]]          <- options[["factorScaling"]] == "factorVariance"
-  lavopts[["effect.coding"]]   <- ifelse(options[["factorScaling"]] == "effectCoding", TRUE,
+  lavOptions[["meanstructure"]]   <- options[["meanStructure"]]
+  lavOptions[["int.ov.free"]]     <- !options[["manifestInterceptFixedToZero"]]
+  lavOptions[["int.lv.free"]]     <- !options[["latentInterceptFixedToZero"]]
+  lavOptions[["fixed.x"]]         <- options[["exogenousCovariateFixed"]]
+  lavOptions[["orthogonal"]]      <- options[["orthogonal"]]
+  lavOptions[["std.lv"]]          <- options[["factorScaling"]] == "factorVariance"
+  lavOptions[["effect.coding"]]   <- ifelse(options[["factorScaling"]] == "effectCoding", TRUE,
                                          ifelse(options[["manifestMeanFixedToZero"]], "intercepts", FALSE))
-  lavopts[["auto.fix.first"]]  <- options[["factorScaling"]] == "factorLoading"
-  lavopts[["auto.fix.single"]] <- options[["residualSingleIndicatorOmitted"]]
-  lavopts[["auto.var"]]        <- options[["residualVariance"]]
-  lavopts[["auto.cov.lv.x"]]   <- options[["exogenousLatentCorrelation"]]
-  lavopts[["auto.cov.y"]]      <- options[["dependentCorrelation"]]
-  lavopts[["auto.th"]]         <- options[["threshold"]]
-  lavopts[["auto.delta"]]      <- options[["scalingParameter"]]
-  lavopts[["auto.efa"]]        <- options[["efaConstrained"]]
+  lavOptions[["auto.fix.first"]]  <- options[["factorScaling"]] == "factorLoading"
+  lavOptions[["auto.fix.single"]] <- options[["residualSingleIndicatorOmitted"]]
+  lavOptions[["auto.var"]]        <- options[["residualVariance"]]
+  lavOptions[["auto.cov.lv.x"]]   <- options[["exogenousLatentCorrelation"]]
+  lavOptions[["auto.cov.y"]]      <- options[["dependentCorrelation"]]
+  lavOptions[["auto.th"]]         <- options[["threshold"]]
+  lavOptions[["auto.delta"]]      <- options[["scalingParameter"]]
+  lavOptions[["auto.efa"]]        <- options[["efaConstrained"]]
 
   # data options
-  lavopts[["std.ov"]]  <- options[["standardizedVariable"]]
+  lavOptions[["std.ov"]]  <- options[["standardizedVariable"]]
   if (anyNA(dataset)) {
-    lavopts[["missing"]] <- switch(options[["naAction"]],
+    lavOptions[["missing"]] <- switch(options[["naAction"]],
                                    "fiml" = "ml",
                                    "twoStage" = "two.stage",
                                    "twoStageRobust" = "robust.two.stage",
@@ -412,15 +413,15 @@ checkLavaanModel <- function(model, availableVars) {
   }
 
   # estimation options
-  lavopts[["estimator"]]   <- options[["estimator"]]
-  lavopts[["se"]]        <- switch(options[["errorCalculationMethod"]],
+  lavOptions[["estimator"]]   <- options[["estimator"]]
+  lavOptions[["se"]]        <- switch(options[["errorCalculationMethod"]],
                                    "default" = "default",
                                    "bootstrap" = "standard",
                                    "robust" = "robust.sem",
                                    "robustHuberWhite" = "robust.huber.white")
 
-  lavopts[["information"]] <- options[["informationMatrix"]]
-  lavopts[["test"]]      <- switch(options[["modelTest"]],
+  lavOptions[["information"]] <- options[["informationMatrix"]]
+  lavOptions[["test"]]      <- switch(options[["modelTest"]],
                                    "satorraBentler" = "satorra.bentler",
                                    "yuanBentler" = "yuan.bentler",
                                    "yuanBentlerMplus" = "yuan.bentler.mplus",
@@ -430,6 +431,9 @@ checkLavaanModel <- function(model, availableVars) {
                                    "browneResidualAdf" = "browne.residual.adf",
                                    "browneResidualNt" = "browne.residual.nt",
                                    options[["modelTest"]])
+  if (options[["modelTest"]] == "bollen.stine") {
+    lavOptions[["bootstrap"]] <- options[["bootstrapSamplesBollenStine"]]
+  }
   # group.equal options
   equality_constraints <- c(
     options[["equalLoading"]],
@@ -445,27 +449,27 @@ checkLavaanModel <- function(model, availableVars) {
 
 
   if (any(equality_constraints)) {
-    lavopts[["group.equal"]] <- c("loadings", "intercepts", "means", "thresholds", "regressions", "residuals",
+    lavOptions[["group.equal"]] <- c("loadings", "intercepts", "means", "thresholds", "regressions", "residuals",
                                   "residual.covariances", "lv.variances", "lv.covariances")[equality_constraints]
   }
 
   if (options[["freeParameters"]][1] != ""){
     splitted <- strsplit(options[["freeParameters"]][["model"]], "[\\n,;]+", perl = TRUE)[[1]]
-    lavopts[["group.partial"]] <-  splitted
+    lavOptions[["group.partial"]] <-  splitted
   }
 
   # group variable
   if (options[["group"]] != "") {
-    lavopts[["group"]] <- options[["group"]]
+    lavOptions[["group"]] <- options[["group"]]
   }
 
   # sampling weights
   if (options[["samplingWeights"]] != "") {
-    lavopts[["sampling.weights"]] <- options[["samplingWeights"]]
+    lavOptions[["sampling.weights"]] <- options[["samplingWeights"]]
   }
 
 
-  return(lavopts)
+  return(lavOptions)
 }
 
 .semTranslateModel <- function(syntax, dataset) {
@@ -1921,7 +1925,7 @@ checkLavaanModel <- function(model, availableVars) {
   htmtcont[["htmttab"]] <- htmttab
 
   if (options[["group"]] == "") {
-    lavopts <- .semOptionsToLavOptions(options, dataset)
+    lavOptions <- .semOptionsToLavOptions(options, dataset)
     lavmodel <- ifelse(is.null(model), .semTranslateModel(options[["models"]][[1]][["syntax"]], dataset), .semTranslateModel(model[["syntax"]], dataset))
 
     parTable <- lavaan::lavaanify(lavmodel)
@@ -1930,9 +1934,9 @@ checkLavaanModel <- function(model, availableVars) {
     lavmodel <- parTable[!parTable$lhs %in% higherOrder, ]
 
     if (options[["dataType"]] == "raw") {
-      htmt_result <- semTools::htmt(model = lavmodel, data = dataset, missing = lavopts[["missing"]])
+      htmt_result <- semTools::htmt(model = lavmodel, data = dataset, missing = lavOptions[["missing"]])
     } else {
-      htmt_result <- semTools::htmt(model = lavmodel, sample.cov = .semDataCovariance(dataset, model), missing = lavopts[["missing"]])
+      htmt_result <- semTools::htmt(model = lavmodel, sample.cov = .semDataCovariance(dataset, model), missing = lavOptions[["missing"]])
     }
     htmt_result[upper.tri(htmt_result)] <- NA
 
@@ -1944,7 +1948,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   } else {
 
-    lavopts <- .semOptionsToLavOptions(options, dataset)
+    lavOptions <- .semOptionsToLavOptions(options, dataset)
     lavmodel <- ifelse(is.null(model), .semTranslateModel(options[["models"]][[1]][["syntax"]], dataset), .semTranslateModel(model[["syntax"]], dataset))
 
     parTable <- lavaan::lavaanify(lavmodel)
@@ -1964,7 +1968,7 @@ checkLavaanModel <- function(model, availableVars) {
 
       dataset_per_group <- dataset[dataset[, options[["group"]]] == group, ]
 
-      htmt_result <- semTools::htmt(model = lavmodel, data = dataset_per_group, missing = lavopts[["missing"]])
+      htmt_result <- semTools::htmt(model = lavmodel, data = dataset_per_group, missing = lavOptions[["missing"]])
       htmt_result[upper.tri(htmt_result)] <- NA
       groupCol <- data.frame(group = c(group, rep(NA, nrow(htmt_result) - 1)))
       htmtFill <- cbind(groupCol, as.data.frame(htmt_result))

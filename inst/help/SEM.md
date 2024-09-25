@@ -67,7 +67,7 @@ Here, users specify their model here in `lavaan` syntax using the names of the v
   - Yuan-Bentler Mplus: asymptotically equal to Yuan-Bentler scaled test statistic
   - Mean and variance adjusted: test statistic, also called "Satterthwaite"
   - Scaled and shifted: test statistic
-  - Bootstrap (Bollen-Stine): The Bollen-Stine bootstrap is used to compute the bootstrap probability value of the (regular) test statistic.
+  - Bootstrap (Bollen-Stine): The Bollen-Stine bootstrap is used to compute the bootstrap probability value of the (regular) test statistic. If chosen, a field with the number of bootstrap samples appears.
   - Browne residual based (ADF): Browne's residual-based test statistic using ADF (asymptocially distribution free) theory is computed.
   - Browne residual based (NT): Browne's residual-based test statistic using normal theory is computed.
 

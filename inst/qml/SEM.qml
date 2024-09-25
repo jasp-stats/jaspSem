@@ -167,6 +167,7 @@ Form
 			DropDown
 			{
 				name: "modelTest"
+				id: modTest
 				label: qsTr("Model test")
 				values: [
 					{ value: "default", 								label: qsTr("Default")										},
@@ -180,6 +181,16 @@ Form
 					{ value: "browneResidualAdf", 			label: qsTr("Browne residual based (ADF)")}, 
 					{ value: "browneResidualNt", 				label: qsTr("Browne residual based (NT)")	}
 				]
+			}
+
+			IntegerField
+			{
+				visible: modTest.value == "bollenStine"
+				name: "bootstrapSamplesBollenStine"
+				label: qsTr("     Bootstrap samples")
+				fieldWidth: 60
+				defaultValue: 1000
+				min: 1
 			}
 
 			DropDown
@@ -245,12 +256,12 @@ Form
 				name: "naAction"
 				label: qsTr("Missing data handling")
 				values: [
-					{ label: qsTr("(FI)ML)")				, value: "fiml"},
-					{ label: qsTr("Listwise deletion")	, value: "listwise"			},
-					{ label: qsTr("Pairwise")			, value: "pairwise"			},
-					{ label: qsTr("Two-stage")			, value: "twoStage"			},
-					{ label: qsTr("Robust two-stage")	, value: "twoStageRobust"	},
-					{ label: qsTr("Doubly robust")		, value: "doublyRobust"		}
+					{ label: qsTr("(FI)ML"), 						value: "fiml"						},
+					{ label: qsTr("Listwise deletion"), value: "listwise"				},
+					{ label: qsTr("Pairwise"), 					value: "pairwise"				},
+					{ label: qsTr("Two-stage"), 				value: "twoStage"				},
+					{ label: qsTr("Robust two-stage"), 	value: "twoStageRobust"	},
+					{ label: qsTr("Doubly robust"), 		value: "doublyRobust"		}
 				]
 
 			}
