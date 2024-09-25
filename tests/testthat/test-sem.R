@@ -615,44 +615,47 @@ test_that("Bootstrapping model fit table works", {
                                       75, 0, 5, 5))
 })
 
-# Residual covariances table results match
-test_that("Bootstrapping residual covariances work", {
+test_that("Residual covariances table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_cov"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(1.782009228184, 1.782009228184, 1.782009228184, "", "x2 - x3",
+                                 list(1.78200922818399, 1.78200922818399, 1.78200922818399, "", "x2 - x3",
                                       "", 0, "", 1.2564136096, 1.2564136096, 1.2564136096, "", "x2 - y1",
-                                      "", 0, "", 0.899301179999998, 0.899301179999998, 0.899301179999998,
-                                      "", "x3 - y1", "", 0, ""),
-                                 label = "Residual covariances table results match")
+                                      "", 0, "", 0.899301179999995, 0.899301179999995, 0.899301179999995,
+                                      "", "x3 - y1", "", 0, ""))
 })
 
-
-# Regression coefficients table results match
-test_that("Bootstrapping regression coefficients work", {
+test_that("Regression coefficients table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_reg"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.249609316197927, 0.447867152439518, 0.355178154406208, "x1",
-                                      3.13082892944294e-14, "x2", 0.0467810932812294, 7.59234403247094,
-                                      -0.0367153099343007, 0.19997796482335, 0.0779182667327594, "x1",
-                                      0.112759784761359, "x3", 0.0491315895805092, 1.58590974560428,
-                                      0.00301905711375345, 0.056769954444189, 0.0306885894512192,
-                                      "x1", 0.0358943944804584, "y1", 0.014626696431825, 2.09812171834281
-                                 ),
-                                 label = "Regression coefficients table results match")
+                                 list(0.24960931619795, 0.447867152439228, 0.355178159312481, "x1",
+                                      4.22839541158737e-12, "x2", 0.051257217491476, 6.92932969628222,
+                                      -0.0367153099339115, 0.199977964917624, 0.0779182588187343,
+                                      "x1", 0.152733815036115, "x3", 0.0544905227320188, 1.42994148178632,
+                                      0.00301905711375213, 0.0567699544441715, 0.0306885890333793,
+                                      "x1", 0.0306723196916876, "y1", 0.0141991468224129, 2.16129809890678
+                                 ))
 })
 
+test_that("Total effects table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_toteff"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(0.24960931619795, 0.447867152439228, 0.355178159312481, " x2 <unicode> x1",
+                                      3.13082892944294e-14, 0.046781092952712, 7.59234419066496, -0.0367153099339115,
+                                      0.199977964917624, 0.0779182588187343, " x3 <unicode> x1", 0.112759818779606,
+                                      0.0491315892354857, 1.5859095956631, 0.00301905711375213, 0.0567699544441715,
+                                      0.0306885890333793, " y1 <unicode> x1", 0.0358943957021149,
+                                      0.0146266963291098, 2.09812170450981))
+})
 
-# Residual variances table results match
-test_that("Bootstrapping residual variances work", {
+test_that("Residual variances table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_var"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.0579281075433616, 0.121472727074924, "x1", 0.097380852992327,
-                                      "", "x1", 9.14129882900738e-10, 0.0159022267032121, 6.12372435695794,
+                                 list(0.0579281075433116, 0.121472727075618, "x1", 0.0973808537831735,
+                                      "", "x1", 4.33176605696417e-10, 0.0156019590066371, 6.24157862110443,
                                       2.25167664969695, 2.25167664969695, "x2", 2.25167664969695,
-                                      "", "x2", "", 0, "", 1.94967853807201, 1.94967853807201, "x3",
-                                      1.94967853807201, "", "x3", "", 0, "", 6.78685155555555, 6.78685155555555,
-                                      "y1", 6.78685155555555, "", "y1", "", 0, ""),
-                                 label = "Residual variances table results match")
+                                      "", "x2", "", 0, "", 1.949678538072, 1.949678538072, "x3", 1.949678538072,
+                                      "", "x3", "", 0, "", 6.78685155555556, 6.78685155555556, "y1",
+                                      6.78685155555556, "", "y1", "", 0, ""))
 })
 
 

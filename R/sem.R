@@ -155,12 +155,12 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
     }
   }
 
-  # check if standardized estimates are required but standard errors are bootstrapped, that does not work yet,
-  # because the CIs are not really available in lavaan
-  if (options[["standardizedEstimate"]] && options[["errorCalculationMethod"]] == "bootstrap") {
-    .quitAnalysis(gettext("Standardized estimates are not available when bootstrapping is used for standard error calculation."))
-    return()
-  }
+  # # check if standardized estimates are required but standard errors are bootstrapped, that does not work yet,
+  # # because the CIs are not really available in lavaan
+  # if (options[["standardizedEstimate"]] && options[["errorCalculationMethod"]] == "bootstrap") {
+  #   .quitAnalysis(gettext("Standardized estimates are not available when bootstrapping is used for standard error calculation."))
+  #   return()
+  # }
 
   return()
 }
@@ -340,7 +340,15 @@ checkLavaanModel <- function(model, availableVars) {
     }
 
     if (options[["errorCalculationMethod"]] == "bootstrap") {
-      fit$value <- lavBootstrap(fit$value, options[["bootstrapSamples"]])
+      type <- switch(options[["standardizedEstimateType"]],
+                     "all" = "std.all",
+                     "latents" = "std.lv",
+                     "nox" = "std.nox")
+      fit$value <- lavBootstrap(fit$value, samples = options[["bootstrapSamples"]],
+                                standard = options[["standardizedEstimate"]],
+                                typeStd = type)
+      modelContainer$dependOn(optionsFromObject = modelContainer,
+                              options = c("bootstrapSamples", "standardizedEstimate", "standardizedEstimateType"))
     }
 
     results[[i]] <- fit$value
@@ -1137,10 +1145,15 @@ checkLavaanModel <- function(model, availableVars) {
                             ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
                                    "norm"))
 
-  if (!options[["standardizedEstimate"]]) {
+  #' we need the second option in the if statement because when we require standardized estimates and bootstrapped CIs
+  #' the standardization happens in each bootstrap run and the standardized estimates replace the regular raw estimates
+  #' in the fit object, and we only need to call parameterEstimates
+  if (!options[["standardizedEstimate"]] ||
+      (options[["standardizedEstimate"]] && options[["errorCalculationMethod"]] == "bootstrap")) {
     pe <- lavaan::parameterestimates(fit, level = options[["ciLevel"]],
                                      boot.ci.type = bootstrapCiType)
     pe <- lavaan::lavMatrixRepresentation(lavaan::lav_partable_complete(pe))
+
   } else {
     type <- switch(options[["standardizedEstimateType"]],
                    "all" = "std.all",
@@ -1149,6 +1162,7 @@ checkLavaanModel <- function(model, availableVars) {
     pe <- lavaan::standardizedSolution(fit, level = options[["ciLevel"]], type = type)
     pe <- lavaan::lavMatrixRepresentation(lavaan::lav_partable_complete(pe))
     colnames(pe)[colnames(pe) == "est.std"] <- "est"
+
   }
 
   # TODO: bootstrap standardized CI:

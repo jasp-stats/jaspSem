@@ -293,11 +293,11 @@ Form
 			CheckBox { name: "ave";						label: qsTr("Average variance extracted (AVE)")		}
 			CheckBox { name: "htmt";					label: qsTr("Heterotrait-monotrait ratio (HTMT)")	}
 			CheckBox { name: "reliability";				label: qsTr("Reliability measures")					}
+			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient")					}
 			CheckBox { name: "observedCovariance";		label: qsTr("Observed covariances")					}
 			CheckBox { name: "impliedCovariance";		label: qsTr("Implied covariances")					}
 			CheckBox { name: "residualCovariance";		label: qsTr("Residual covariances")					}
 			CheckBox { name: "standardizedResidual"; 	label: qsTr("Standardized residuals")				}
-			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient")					}
 		}
 		Group
 		{
@@ -429,7 +429,7 @@ Form
 				values:
 				[
 					{ label: qsTr("% change mean estimate")			, value: "percentChangeMeanEstimate"	},
-					{ label: qsTr("Sd of deviance / old estimate")	, value: "sdOfDeviance"					},
+					{ label: qsTr("SD of deviance / old estimate")	, value: "sdOfDeviance"					},
 					{ label: qsTr("Change of p-value")				, value: "changeOfPvalue"				},
 					{ label: qsTr("Distance of p-value from alpha")	, value: "distanceOfPvalue"				},
 					{ label: qsTr("Change of RMSEA")				, value: "changeOfRmsea"				},
