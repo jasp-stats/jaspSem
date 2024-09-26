@@ -18,6 +18,7 @@
 MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
+
   # Read dataset
   dataset <- .medReadData(dataset, options)
   ready   <- .medCheckErrors(dataset, options)
@@ -45,10 +46,6 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
 .medCheckErrors <- function(dataset, options) {
   if (length(options$outcomes) == 0 || length(options$mediators) == 0 || length(options$predictors) == 0) return(FALSE)
-
-  # Check for missing value handling
-  if (options$estimator %in% c("gls", "wls", "uls", "dwls") && options$naAction == "fiml")
-    jaspBase:::.quitAnalysis(gettext("FIML only available with ML-type estimators."))
 
   # Exogenous variables can be binary or continuous
   exo <- ifelse(length(options$confounds) > 0, options$confounds, options$predictors)
@@ -85,7 +82,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
       admissible <- vapply(endo, function(endo_var) {
         var <- na.omit(dataset[[endo_var]])
-        if (is.ordered(var) && options$naAction == "fiml") {
+        if (is.ordered(var) && anyNA(dataset) && options$naAction == "fiml") {
           return(FALSE)
         }
         return(TRUE)
@@ -107,14 +104,17 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 # Results functions ----
 
 .medComputeResults <- function(modelContainer, dataset, options, ready) {
+
+  miss <- if (anyNA(dataset)) options[["naAction"]] else "listwise"
   medResult <- try(lavaan::sem(
     model           = .medToLavMod(options),
     data            = dataset,
     se              = ifelse(options$errorCalculationMethod == "bootstrap", "standard", options$errorCalculationMethod),
+    std.ov          = options$standardizedEstimate,
+    fixed.x         = !options$standardizedEstimate,
     mimic           = options$emulation,
     estimator       = options$estimator,
-    std.ov          = options$standardizedEstimate,
-    missing         = options$naAction
+    missing         = miss
   ))
 
   if (inherits(medResult, "try-error")) {
@@ -123,7 +123,13 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   }
 
   if (options$errorCalculationMethod == "bootstrap") {
-    medResult <- lavBootstrap(medResult, options$bootstrapSamples)
+    type <- switch(options[["standardizedEstimateType"]],
+                   "all" = "std.all",
+                   "latents" = "std.lv",
+                   "nox" = "std.nox")
+    medResult <- lavBootstrap(medResult, samples = options[["bootstrapSamples"]],
+                              standard = options[["standardizedEstimate"]],
+                              typeStd = type)
   }
 
   modelContainer[["model"]] <- createJaspState(medResult)
@@ -247,9 +253,9 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   } else {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c(
-      "predictors", "mediators", "outcomes", "confounds", "includemeanstructure",
+      "predictors", "mediators", "outcomes", "confounds",
       "bootstrapSamples", "fixManifestInterceptsToZero", "emulation", "errorCalculationMethod", "estimator",
-      "standardizedEstimate", "naAction")
+      "standardizedEstimate", "naAction", "standardizedEstimateType")
     )
     jaspResults[["modelContainer"]] <- modelContainer
   }
@@ -263,14 +269,16 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   pecont$dependOn(options = c("ciLevel", "bootstrapCiType"))
   pecont$position <- 0
 
+  estTitle <- ifelse(options[["standardizedEstimate"]], gettext("Std. estimate"), gettext("Estimate"))
+
   ## direct effects
   dirtab <- createJaspTable(title = gettext("Direct effects"))
 
   dirtab$addColumnInfo(name = "lhs",      title = "",                    type = "string")
   dirtab$addColumnInfo(name = "op",       title = "",                    type = "string")
   dirtab$addColumnInfo(name = "rhs",      title = "",                    type = "string")
-  dirtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
-  dirtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  dirtab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
+  dirtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
   dirtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   dirtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   dirtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -289,8 +297,8 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   indtab$addColumnInfo(name = "m",        title = "",                    type = "string")
   indtab$addColumnInfo(name = "op2",      title = "",                    type = "string")
   indtab$addColumnInfo(name = "y",        title = "",                    type = "string")
-  indtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
-  indtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  indtab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
+  indtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
   indtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   indtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   indtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -306,8 +314,8 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   tottab$addColumnInfo(name = "lhs",      title = "",                    type = "string")
   tottab$addColumnInfo(name = "op",       title = "",                    type = "string")
   tottab$addColumnInfo(name = "rhs",      title = "",                    type = "string")
-  tottab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
-  tottab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  tottab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
+  tottab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
   tottab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   tottab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   tottab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -331,8 +339,26 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
                             ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
                                    "norm"))
 
-  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]], boot.ci.type = bootstrapCiType,
-                                   level = options$ciLevel)
+  #' we need the second option in the if statement because when we require standardized estimates and bootstrapped CIs
+  #' the standardization happens in each bootstrap run and the standardized estimates replace the regular raw estimates
+  #' in the fit object, and we only need to call parameterEstimates
+
+  fit <- modelContainer[["model"]][["object"]]
+
+  if (!options[["standardizedEstimate"]] ||
+      (options[["standardizedEstimate"]] && options[["errorCalculationMethod"]] == "bootstrap")) {
+    pe <- lavaan::parameterestimates(fit, level = options[["ciLevel"]],
+                                     boot.ci.type = bootstrapCiType)
+
+  } else {
+    type <- switch(options[["standardizedEstimateType"]],
+                   "all" = "std.all",
+                   "latents" = "std.lv",
+                   "nox" = "std.nox")
+    pe <- lavaan::standardizedSolution(fit, level = options[["ciLevel"]], type = type)
+    colnames(pe)[colnames(pe) == "est.std"] <- "est"
+
+  }
 
   # Fill direct effects
   pe_dir <- pe[substr(pe$label, 1, 1) == "c", ]
@@ -399,11 +425,13 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   ttitab <- createJaspTable(title = gettext("Total indirect effects"))
   ttitab$dependOn("totalIndirectEffect")
 
+  estTitle <- ifelse(options[["standardizedEstimate"]], gettext("Std. estimate"), gettext("Estimate"))
+
   ttitab$addColumnInfo(name = "lhs",      title = "",                    type = "string")
   ttitab$addColumnInfo(name = "op",       title = "",                    type = "string")
   ttitab$addColumnInfo(name = "rhs",      title = "",                    type = "string")
-  ttitab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
-  ttitab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  ttitab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
+  ttitab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
   ttitab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   ttitab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   ttitab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -420,9 +448,16 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   bootstrapCiType <- ifelse(options[["bootstrapCiType"]] == "percentileBiasCorrected", "bca.simple",
                             ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
                                    "norm"))
+  fit <- modelContainer[["model"]][["object"]]
+  if (!options[["standardizedEstimate"]] ||
+      (options[["standardizedEstimate"]] && options[["errorCalculationMethod"]] == "bootstrap")) {
+    pe <- lavaan::parameterestimates(fit, level = options[["ciLevel"]],
+                                     boot.ci.type = bootstrapCiType)
+  } else {
+    pe <- lavaan::standardizedSolution(fit, level = options[["ciLevel"]], type = "std.all")
+    colnames(pe)[colnames(pe) == "est.std"] <- "est"
+  }
 
-  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]], boot.ci.type = bootstrapCiType,
-                                   level = options$ciLevel)
 
   pe_tti <- pe[pe$op == ":=" & substr(pe$lhs, 1, 3) == "ind" & vapply(gregexpr("_", pe$lhs), length, 1) == 2,]
   # get predictors, outcome combinations
@@ -449,11 +484,13 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   restab <- createJaspTable(title = gettext("Residual covariances"))
   restab$dependOn("residualCovariance")
 
+  estTitle <- ifelse(options[["standardizedEstimate"]], gettext("Std. estimate"), gettext("Estimate"))
+
   restab$addColumnInfo(name = "lhs",      title = "",                    type = "string")
   restab$addColumnInfo(name = "op",       title = "",                    type = "string")
   restab$addColumnInfo(name = "rhs",      title = "",                    type = "string")
-  restab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
-  restab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  restab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
+  restab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
   restab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   restab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   restab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -470,9 +507,15 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   bootstrapCiType <- ifelse(options[["bootstrapCiType"]] == "percentileBiasCorrected", "bca.simple",
                             ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
                                    "norm"))
-
-  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]], boot.ci.type = bootstrapCiType,
-                                   level = options$ciLevel)
+  fit <- modelContainer[["model"]][["object"]]
+  if (!options[["standardizedEstimate"]] ||
+      (options[["standardizedEstimate"]] && options[["errorCalculationMethod"]] == "bootstrap")) {
+    pe <- lavaan::parameterestimates(fit, level = options[["ciLevel"]],
+                                     boot.ci.type = bootstrapCiType)
+  } else {
+    pe <- lavaan::standardizedSolution(fit, level = options[["ciLevel"]], type = "std.all")
+    colnames(pe)[colnames(pe) == "est.std"] <- "est"
+  }
 
   pe_res <- pe[pe$op == "~~" &
                  pe$lhs != pe$rhs &
@@ -497,11 +540,13 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   pathtab <- createJaspTable(title = gettext("Path coefficients"))
   pathtab$dependOn("pathCoefficient")
 
+  estTitle <- ifelse(options[["standardizedEstimate"]], gettext("Std. estimate"), gettext("Estimate"))
+
   pathtab$addColumnInfo(name = "lhs",      title = "",                    type = "string")
   pathtab$addColumnInfo(name = "op",       title = "",                    type = "string")
   pathtab$addColumnInfo(name = "rhs",      title = "",                    type = "string")
-  pathtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
-  pathtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  pathtab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
+  pathtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
   pathtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   pathtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   pathtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -518,9 +563,15 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   bootstrapCiType <- ifelse(options[["bootstrapCiType"]] == "percentileBiasCorrected", "bca.simple",
                             ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
                                    "norm"))
-
-  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]], boot.ci.type = bootstrapCiType,
-                                   level = options$ciLevel)
+  fit <- modelContainer[["model"]][["object"]]
+  if (!options[["standardizedEstimate"]] ||
+      (options[["standardizedEstimate"]] && options[["errorCalculationMethod"]] == "bootstrap")) {
+    pe <- lavaan::parameterestimates(fit, level = options[["ciLevel"]],
+                                     boot.ci.type = bootstrapCiType)
+  } else {
+    pe <- lavaan::standardizedSolution(fit, level = options[["ciLevel"]], type = "std.all")
+    colnames(pe)[colnames(pe) == "est.std"] <- "est"
+  }
 
   pe_path <- pe[pe$op == "~",]
 
@@ -537,40 +588,18 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 }
 
 .medFootMessage <- function(modelContainer, options) {
-  # Create the footnote message
-  se_type <- switch(options$errorCalculationMethod,
-    "bootstrap" = gettext("Delta method"),
-    "standard"  = gettext("Delta method"),
-    "default"   = gettext("Delta method"),
-    "robust"    = gettext("Robust")
-  )
-  ci_type <- switch(options$errorCalculationMethod,
-    "bootstrap" = switch(options$bootstrapCiType,
-      "percentile"              = gettext("percentile bootstrap"),
-      "normalTheory"            = gettext("normal theory bootstrap"),
-      "percentileBiasCorrected" = gettext("bias-corrected percentile bootstrap")
-    ),
-    "standard"  = gettext("normal theory"),
-    "default"   = gettext("normal theory"),
-    "robust"    = gettext("robust")
-  )
 
   if (is.null(modelContainer[["model"]][["object"]])) {
-    return(gettextf("%1$s standard errors, %2$s confidence intervals.", se_type, ci_type))
+    return("")
   } else {
+    fnote <- ""
     fit <- modelContainer[["model"]][["object"]]
-    if (options$errorCalculationMethod == "bootstrap" && nrow(fit@boot[["coef"]]) < options$bootstrapSamples) {
-      return(gettextf(
-        "%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all bootstrap samples were successful: CI based on %4$.0f samples.",
-        se_type, ci_type, fit@Options$estimator, nrow(fit@boot[["coef"]])
-      ))
-    } else {
-      return(gettextf(
-        "%1$s standard errors, %2$s confidence intervals, %3$s estimator.",
-        se_type, ci_type, fit@Options$estimator
-      ))
-    }
+    if (options[["estimator"]] == "default")
+      fnote <- gettextf("Estimator is %s.", fit@Options$estimator)
+    if (options$errorCalculationMethod == "bootstrap" && nrow(fit@boot[["coef"]]) < options$bootstrapSamples)
+      fnote <- gettextf("%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples.", fnote, nrow(fit@boot[["coef"]]))
   }
+  return(fnote)
 }
 
 .medRsquared <- function(modelContainer, options, ready) {
@@ -641,7 +670,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
     layout         = rbind(deps_l, medi_l, pred_l, conf_l),
     intercepts     = FALSE,
     reorder        = FALSE,
-    whatLabels     = ifelse(options$pathPlotParameter, "par", "name"),
+    whatLabels     = ifelse(options$pathPlotParameter, ifelse(options[["standardizedEstimate"]], "std", "par"), "name"),
     edge.color     = "black",
     color          = list(lat = "#EAEAEA", man = "#EAEAEA", int = "#FFFFFF"),
     border.width   = 1.5,

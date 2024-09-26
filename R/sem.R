@@ -14,11 +14,12 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 
 SEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
+
 
   # Read dataset
   options <- .semPrepOpts(options)
@@ -34,6 +35,7 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
 
   # Output functions
   .semFitTab(jaspResults, modelContainer, dataset, options, ready)
+  .semWarningsHtml(modelContainer, dataset, options, ready)
   .semParameters(modelContainer, dataset, options, ready)
   .semAdditionalFits(modelContainer, dataset, options, ready)
   .semRsquared(modelContainer, dataset, options, ready)
@@ -103,11 +105,6 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
                type = c("infinity"), message='default', exitAnalysisIfErrors = TRUE)
   }
 
-  # check FIML
-  if (!options[["estimator"]] %in% c("default", "ml") && options[["naAction"]] == "fiml") {
-    modelContainer$setError(gettext("FIML missing data handling only available with ML-type estimators"))
-  }
-
   # Check whether grouping variable is a grouping variable
   if (options[["group"]] != "") {
     groupfac <- factor(dataset[[options[["group"]]]])
@@ -155,6 +152,8 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
       return()
     }
   }
+
+  return()
 }
 
 checkLavaanModel <- function(model, availableVars) {
@@ -221,7 +220,8 @@ checkLavaanModel <- function(model, availableVars) {
                               "dependentCorrelation", "threshold", "scalingParameter", "efaConstrained", "standardizedVariable", "naAction", "estimator", "modelTest",
                               "errorCalculationMethod", "informationMatrix", "emulation", "group", "equalLoading", "equalIntercept",
                               "equalResidual", "equalResidualCovariance", "equalMean", "equalThreshold", "equalRegression",
-                              "equalLatentVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters", "manifestMeanFixedToZero"))
+                              "equalLatentVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters", "manifestMeanFixedToZero",
+                              "bootstrapSamplesBollenStine"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -229,29 +229,34 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 .semComputeResults <- function(modelContainer, dataset, options) {
-  #' create result list from options
+
   # find reusable results
-  if (!options[["estimator"]] %in% c("default", "ml") && options[["naAction"]] == "fiml") return()
 
   oldmodels  <- modelContainer[["models"]][["object"]]
   oldresults <- modelContainer[["results"]][["object"]]
+  oldwarnings <- modelContainer[["warnings"]][["object"]]
   reuse <- match(options[["models"]], oldmodels)
   if (identical(reuse, seq_along(reuse))) return(oldresults) # reuse everything
 
   # create results list
   results <- vector("list", length(options[["models"]]))
+  warnings <- vector("list", length(options[["models"]]))
+
   if (any(!is.na(reuse))) {
     # where possible, prefill results with old results
     results[seq_along(reuse)] <- oldresults[reuse]
+    # in order to avoid assigning NULL in some cases
+    warnings[seq_along(reuse)] <- ifelse(is.null(oldwarnings[reuse]), list(NULL), oldwarnings[reuse])
   }
+
   # generate lavaan options list
-  lavopts <- .semOptionsToLavOptions(options, dataset)
+  lavOptions <- .semOptionsToLavOptions(options, dataset)
 
   for (i in seq_along(results)) {
     if (!is.null(results[[i]])) next # existing model is reused
 
     # create options
-    lav_args <- lavopts
+    lavArgs <- lavOptions
     originalSyntax   <- .semTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
     if(options[["group"]] == "")
       syntaxTable <- lavaan::lavaanify(originalSyntax)
@@ -260,7 +265,7 @@ checkLavaanModel <- function(model, availableVars) {
       syntaxTable <- lavaan::parTable(fit)
     }
 
-    if(nrow(syntaxTable[syntaxTable$op == ":=",]) == 0) {
+    if (nrow(syntaxTable[syntaxTable$op == ":=",]) == 0) {
       regressions <- syntaxTable[syntaxTable$op == "~",]
       if (nrow(regressions) > 0) {
         syntax <- .semEffectsSyntax(originalSyntax, syntaxTable, regressions, dataset, options)
@@ -268,71 +273,79 @@ checkLavaanModel <- function(model, availableVars) {
     }
 
     if (exists("syntax")) {
-      lav_args[["model"]] <- syntax
+      lavArgs[["model"]] <- syntax
     } else {
-      lav_args[["model"]] <- originalSyntax
+      lavArgs[["model"]] <- originalSyntax
     }
     if (options[["dataType"]] == "raw") {
-      lav_args[["data"]]  <- dataset
+      if (options[["standardizedVariable"]]) {
+        dataset <- scale(dataset)
+      }
+      lavArgs[["data"]] <- dataset
+
     } else {
-      lav_args[["sample.cov"]] <- .semDataCovariance(dataset, options[["models"]][[i]][["syntax"]])
-      lav_args[["sample.nobs"]] <- options[["sampleSize"]]
+      covMat <- .semDataCovariance(dataset, options[["models"]][[i]][["syntax"]])
+      if (options[["standardizedVariable"]]) {
+        covMat <- stats::cov2cor(covMat)
+      }
+      lavArgs[["sample.cov"]] <- covMat
+      lavArgs[["sample.nobs"]] <- options[["sampleSize"]]
     }
 
     # fit the enriched model
-    fit <- try(do.call(lavaan::lavaan, lav_args))
+    fit <- try(.withWarnings(do.call(lavaan::lavaan, lavArgs)))
+
     if (isTryError(fit)) { # if try-error, fit original model
-      lav_args[["model"]] <- originalSyntax
-      fit <- try(do.call(lavaan::lavaan, lav_args))
+      lavArgs[["model"]] <- originalSyntax
+      fit <- try(.withWarnings(do.call(lavaan::lavaan, lavArgs)))
     }
+
 
     if (isTryError(fit)) {
       err <- .extractErrorMessage(fit)
-      if(err == "..constant.."){
+      err <- sub("^[^:]*: ?", "", err)
+      if (err == "..constant..")
         err <- gettext("Invalid model specification. Did you pass a variable name as a string?")
-      }
-      if(grepl(c("no variance"), err))
-        err <- gettext("One or more variables are constants or contain only missing values ")
+      if (grepl(c("no variance"), err))
+        err <- gettext("One or more variables are constants or contain only missing values. ")
 
-      if(grepl(c("categorical"), err)){
-        if(grepl("ml", err))
-          errMissingMethod <- "FIML"
-        if(grepl("two.stage", err))
-          errMissingMethod <- "Two-stage"
-        if(grepl("robust.two.stage", err))
-          errMissingMethod <- "Robust two-stage"
-        err <- gettextf("Missing data handling '%s' is not supported for categorical data,
-                        please select another method under 'Missing data handling'
-                        within the 'Estimation options' tab", errMissingMethod)
-      }
+      errmsg <- gettextf("Estimation failed. Message: %s", err)
 
-      errmsg <- gettextf("Estimation failed Message: %s", err)
-
-      modelContainer$setError(paste0("Error in model \"", options[["models"]][[i]][["name"]], "\" - ",
+      modelContainer$setError(paste0("Error in \"", options[["models"]][[i]][["name"]], "\" - ",
                                      .decodeVarsInMessage(names(dataset), errmsg)))
       modelContainer$dependOn("models") # add dependency so everything gets updated upon model change
       break
     }
 
-    if(isFALSE(slot(fit, "optim")$converged)) {
-      errormsg <- gettextf("Estimation failed! Message: Model %s did not converge!", options[["models"]][[i]][["name"]])
+    if (isFALSE(slot(fit$value, "optim")$converged)) {
+      errormsg <- gettextf("Estimation failed! Message: %s did not converge!", options[["models"]][[i]][["name"]])
       modelContainer$setError(errormsg)
       modelContainer$dependOn("models")
       break
     }
 
-    if(lavaan::fitMeasures(fit, "df") < 0 ) {
-      errormsg <- gettextf("Estimation failed! Message: Model %s has negative degrees of freedom.", options[["models"]][[i]][["name"]])
+    if (lavaan::fitMeasures(fit$value, "df") < 0 ) {
+      errormsg <- gettextf("Estimation failed! Message: %s has negative degrees of freedom.", options[["models"]][[i]][["name"]])
       modelContainer$setError(errormsg)
       modelContainer$dependOn("models")
       break
     }
 
     if (options[["errorCalculationMethod"]] == "bootstrap") {
-      fit <- lavBootstrap(fit, options[["bootstrapSamples"]])
+      type <- switch(options[["standardizedEstimateType"]],
+                     "all" = "std.all",
+                     "latents" = "std.lv",
+                     "nox" = "std.nox")
+      fit$value <- lavBootstrap(fit$value, samples = options[["bootstrapSamples"]],
+                                standard = options[["standardizedEstimate"]],
+                                typeStd = type)
+      modelContainer$dependOn(optionsFromObject = modelContainer,
+                              options = c("bootstrapSamples", "standardizedEstimate", "standardizedEstimateType"))
     }
-    results[[i]] <- fit
 
+    results[[i]] <- fit$value
+    # in order to avoid assigning NULL in some cases
+    warnings[i] <- ifelse(is.null(fit$warnings), list(NULL), fit$warnings)
   }
 
   # store in model container
@@ -343,6 +356,8 @@ checkLavaanModel <- function(model, availableVars) {
     modelContainer[["models"]]$dependOn(optionsFromObject = modelContainer)
     modelContainer[["originalSyntax"]] <- createJaspState(list(syntaxTable))
     modelContainer[["originalSyntax"]]$dependOn(optionsFromObject = modelContainer)
+    modelContainer[["warnings"]] <- createJaspState(warnings)
+    modelContainer[["warnings"]]$dependOn(optionsFromObject = modelContainer)
   }
 
   return(results)
@@ -364,47 +379,61 @@ checkLavaanModel <- function(model, availableVars) {
 .semOptionsToLavOptions <- function(options, dataset) {
   #' mapping the QML options from JASP to lavaan options
   #' see ?lavOptions for documentation
-  lavopts <- lavaan::lavOptions()
+  lavOptions <- lavaan::lavOptions()
 
-  lavopts[["mimic"]] <- options[["emulation"]]
+  lavOptions[["mimic"]] <- options[["emulation"]]
 
   # model features
-  lavopts[["meanstructure"]]   <- options[["meanStructure"]]
-  lavopts[["int.ov.free"]]     <- !options[["manifestInterceptFixedToZero"]]
-  lavopts[["int.lv.free"]]     <- !options[["latentInterceptFixedToZero"]]
-  lavopts[["fixed.x"]]         <- options[["exogenousCovariateFixed"]]
-  lavopts[["orthogonal"]]      <- options[["orthogonal"]]
-  lavopts[["std.lv"]]          <- options[["factorScaling"]] == "factorVariance"
-  lavopts[["effect.coding"]]   <- ifelse(options[["factorScaling"]] == "effectCoding", TRUE,
+  lavOptions[["meanstructure"]]   <- options[["meanStructure"]]
+  lavOptions[["int.ov.free"]]     <- !options[["manifestInterceptFixedToZero"]]
+  lavOptions[["int.lv.free"]]     <- !options[["latentInterceptFixedToZero"]]
+  lavOptions[["fixed.x"]]         <- options[["exogenousCovariateFixed"]]
+  lavOptions[["orthogonal"]]      <- options[["orthogonal"]]
+  lavOptions[["std.lv"]]          <- options[["factorScaling"]] == "factorVariance"
+  lavOptions[["effect.coding"]]   <- ifelse(options[["factorScaling"]] == "effectCoding", TRUE,
                                          ifelse(options[["manifestMeanFixedToZero"]], "intercepts", FALSE))
-  lavopts[["auto.fix.first"]]  <- options[["factorScaling"]] == "factorLoading"
-  lavopts[["auto.fix.single"]] <- options[["residualSingleIndicatorOmitted"]]
-  lavopts[["auto.var"]]        <- options[["residualVariance"]]
-  lavopts[["auto.cov.lv.x"]]   <- options[["exogenousLatentCorrelation"]]
-  lavopts[["auto.cov.y"]]      <- options[["dependentCorrelation"]]
-  lavopts[["auto.th"]]         <- options[["threshold"]]
-  lavopts[["auto.delta"]]      <- options[["scalingParameter"]]
-  lavopts[["auto.efa"]]        <- options[["efaConstrained"]]
+  lavOptions[["auto.fix.first"]]  <- options[["factorScaling"]] == "factorLoading"
+  lavOptions[["auto.fix.single"]] <- options[["residualSingleIndicatorOmitted"]]
+  lavOptions[["auto.var"]]        <- options[["residualVariance"]]
+  lavOptions[["auto.cov.lv.x"]]   <- options[["exogenousLatentCorrelation"]]
+  lavOptions[["auto.cov.y"]]      <- options[["dependentCorrelation"]]
+  lavOptions[["auto.th"]]         <- options[["threshold"]]
+  lavOptions[["auto.delta"]]      <- options[["scalingParameter"]]
+  lavOptions[["auto.efa"]]        <- options[["efaConstrained"]]
 
   # data options
-  lavopts[["std.ov"]]  <- options[["standardizedVariable"]]
-  lavopts[["missing"]] <- ifelse(options[["naAction"]] == "fiml", "ml",
-                                 ifelse(options[["naAction"]] == "twoStage", "two.stage",
-                                        ifelse(options[["naAction"]] == "twoStageRobust", "robust.two.stage",
-                                               ifelse(options[["naAction"]] == "doublyRobust", "doubly.robust",
-                                                      options[["naAction"]]))))
+  lavOptions[["std.ov"]]  <- options[["standardizedVariable"]]
+  if (anyNA(dataset)) {
+    lavOptions[["missing"]] <- switch(options[["naAction"]],
+                                   "fiml" = "ml",
+                                   "twoStage" = "two.stage",
+                                   "twoStageRobust" = "robust.two.stage",
+                                   "doublyRobust" = "doubly.robust",
+                                   options[["naAction"]])
+  }
 
   # estimation options
-  lavopts[["estimator"]]   <- options[["estimator"]]
-  lavopts[["se"]]          <- ifelse(options[["errorCalculationMethod"]] == "bootstrap", "standard", options[["errorCalculationMethod"]])
-  lavopts[["information"]] <- options[["informationMatrix"]]
-  lavopts[["test"]]        <- ifelse(options[["modelTest"]] == "satorraBentler", "satorra.bentler",
-                                     ifelse(options[["modelTest"]] == "yuanBentler", "yuan.bentler",
-                                            ifelse(options[["modelTest"]] == "meanAndVarianceAdjusted", "mean.var.adjusted",
-                                                   ifelse(options[["modelTest"]] == "scaledAndShifted", "scaled.shifted",
-                                                          ifelse(options[["modelTest"]] == "bollenStine", "bollen.stine",
-                                                                 options[["modelTest"]])))))
+  lavOptions[["estimator"]]   <- options[["estimator"]]
+  lavOptions[["se"]]        <- switch(options[["errorCalculationMethod"]],
+                                   "default" = "default",
+                                   "bootstrap" = "standard",
+                                   "robust" = "robust.sem",
+                                   "robustHuberWhite" = "robust.huber.white")
 
+  lavOptions[["information"]] <- options[["informationMatrix"]]
+  lavOptions[["test"]]      <- switch(options[["modelTest"]],
+                                   "satorraBentler" = "satorra.bentler",
+                                   "yuanBentler" = "yuan.bentler",
+                                   "yuanBentlerMplus" = "yuan.bentler.mplus",
+                                   "meanAndVarianceAdjusted" = "mean.var.adjusted",
+                                   "scaledAndShifted" = "scaled.shifted",
+                                   "bollenStine" = "bollen.stine",
+                                   "browneResidualAdf" = "browne.residual.adf",
+                                   "browneResidualNt" = "browne.residual.nt",
+                                   options[["modelTest"]])
+  if (options[["modelTest"]] == "bollen.stine") {
+    lavOptions[["bootstrap"]] <- options[["bootstrapSamplesBollenStine"]]
+  }
   # group.equal options
   equality_constraints <- c(
     options[["equalLoading"]],
@@ -420,27 +449,27 @@ checkLavaanModel <- function(model, availableVars) {
 
 
   if (any(equality_constraints)) {
-    lavopts[["group.equal"]] <- c("loadings", "intercepts", "means", "thresholds", "regressions", "residuals",
+    lavOptions[["group.equal"]] <- c("loadings", "intercepts", "means", "thresholds", "regressions", "residuals",
                                   "residual.covariances", "lv.variances", "lv.covariances")[equality_constraints]
   }
 
   if (options[["freeParameters"]][1] != ""){
     splitted <- strsplit(options[["freeParameters"]][["model"]], "[\\n,;]+", perl = TRUE)[[1]]
-    lavopts[["group.partial"]] <-  splitted
+    lavOptions[["group.partial"]] <-  splitted
   }
 
   # group variable
   if (options[["group"]] != "") {
-    lavopts[["group"]] <- options[["group"]]
+    lavOptions[["group"]] <- options[["group"]]
   }
 
   # sampling weights
   if (options[["samplingWeights"]] != "") {
-    lavopts[["sampling.weights"]] <- options[["samplingWeights"]]
+    lavOptions[["sampling.weights"]] <- options[["samplingWeights"]]
   }
 
 
-  return(lavopts)
+  return(lavOptions)
 }
 
 .semTranslateModel <- function(syntax, dataset) {
@@ -513,20 +542,14 @@ checkLavaanModel <- function(model, availableVars) {
       }
     }
 
-    create_group_vector <- function(letter, n) {
-      groups <- paste(letter, 1:n, sep="")
-      groups <- paste0(groups, collapse = ", ")
-      groups <- paste0("c(", groups, ")")
-      return(groups)
-    }
 
     if(is.null(labelsLetters)) {
       for (label in 1:nrow(regressions)) {
-        regressions[label, "label"] <- create_group_vector(letters[label], groupLevels)
+        regressions[label, "label"] <- .create_group_vector(letters[label], groupLevels)
       }
     } else {
       for (label in seq_along(labelsLetters)) {
-        regressions[label, "label"] <- create_group_vector(labelsLetters[label], groupLevels)
+        regressions[label, "label"] <- .create_group_vector(labelsLetters[label], groupLevels)
       }
     }
   }
@@ -550,33 +573,12 @@ checkLavaanModel <- function(model, availableVars) {
     regressions <- list(regressions)
   }
 
-  get_indirect_effects <- function(df, current_indirect = "", current_predictor = "", idx){
-    outcome <- df$lhs
-    predictor <- df$rhs
-    label <- df$label
-    indirect <- c()
-
-    if (current_predictor == "") {
-      current_predictor <- outcome[idx]
-      current_indirect <- label[idx]
-    }
-
-    for (row in 1:nrow(df)){
-      if (current_predictor == predictor[row]){
-        indirect_effect <- paste0(current_indirect, "*", label[row])
-        indirect <- c(indirect, indirect_effect)
-        indirect <- c(indirect, get_indirect_effects(df, indirect_effect, outcome[row]))
-      }
-    }
-
-    return(indirect)
-  }
 
   for (group in seq_along(groups)) {
     # enrich model
     indirect_effects <- list()
     for (idx in 1:nrow(regressions[[group]])) {
-      indirect_effects[[idx]] <- get_indirect_effects(regressions[[group]], idx = idx)
+      indirect_effects[[idx]] <- .get_indirect_effects(regressions[[group]], idx = idx)
     }
     indirect_effects <- unlist(indirect_effects)
     indirect_effects_with_parentheses <- unlist(lapply(indirect_effects, function(x) {
@@ -639,10 +641,11 @@ checkLavaanModel <- function(model, availableVars) {
 # output functions
 
 .semFitTab <- function(jaspResults, modelContainer, dataset, options, ready) {
+
   if (!is.null(modelContainer[["fittab"]])) return()
 
   fittab <- createJaspTable(title = gettext("Model fit"))
-  fittab$dependOn("models")
+  fittab$dependOn(c("models", "warnings"))
   fittab$position <- 0
 
   fittab$addColumnInfo(name = "Model",    title = "",                            type = "string" , combine = TRUE)
@@ -657,7 +660,7 @@ checkLavaanModel <- function(model, availableVars) {
   fittab$addColumnInfo(name = "nfree",    title = gettext("Free"),               overtitle = gettext("n(Parameters)"), type = "integer")
   fittab$addColumnInfo(name = "Chisq",    title = gettext("&#967;&sup2;"),       type = "number" ,
                        overtitle = gettext("Baseline test"))
-  fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
+  fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "number",
                        overtitle = gettext("Baseline test"))
   fittab$addColumnInfo(name = "PrChisq",  title = gettext("p"),                  type = "pvalue",
                        overtitle = gettext("Baseline test"))
@@ -665,7 +668,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (length(options[["models"]]) > 1) {
     fittab$addColumnInfo(name = "dchisq",   title = "\u0394\u03C7\u00B2", type = "number" ,
                          overtitle = gettext("Difference test"))
-    fittab$addColumnInfo(name = "ddf",      title = gettextf("%1$sdf", "\u0394"),           type = "integer",
+    fittab$addColumnInfo(name = "ddf",      title = gettextf("%1$sdf", "\u0394"),           type = "number",
                          overtitle = gettext("Difference test"))
     fittab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
                          overtitle = gettext("Difference test"))
@@ -680,112 +683,125 @@ checkLavaanModel <- function(model, availableVars) {
 
   if (modelContainer$getError()) return()
 
-  testName <- switch(options[["modelTest"]],
-                     "satorraBentler" = "satorra.bentler",
-                     "yuanBentler" = "yuan.bentler",
-                     "scaledAndShifted" = "scaled.shifted",
-                     "meanAndVarianceAdjusted" = "mean.var.adjusted",
-                     "bollenStine" = "bollen.stine",
-                     options[["modelTest"]])
-  if (testName == "default")
-    testName <- "standard"
+  # handle the warnings
+  fnote <- ""
+
+  warns <- unlist(modelContainer[["warnings"]][["object"]])
+  if (length(warns) > 0 && !options[["warnings"]]) {
+    fnote <- gettextf("%sFitting the model resulted in warnings. Check the 'Show warnings' box in the Output Options to see the warnings. ", fnote)
+  }
+
+  # the way lavaan exports the name of the test is a bit weird, so we get the test option from:
+  testName <- .semOptionsToLavOptions(options, dataset)[["test"]]
+  if (testName == "default") testName <- semResults[[1]]@Options$test
 
   if (length(semResults) == 1) {
-    lrt <- .withWarnings(lavaan::lavTestLRT(semResults[[1]], type = "Chisq")[-1, ])
-    chiSq <- lavaan::lavInspect(semResults[[1]], what = "test")[[testName]]$stat
-    dfs <- lavaan::lavInspect(semResults[[1]], what = "test")[[testName]]$df
-    rownames(lrt$value) <- options[["models"]][[1]][["name"]]
+    lrt <- lavaan::lavTestLRT(semResults[[1]], type = "Chisq")[-1, ]
+    lavIns <- lavaan::lavInspect(semResults[[1]], what = "test")[[testName]]
+    chiSq <- lavIns$stat
+    dfs <- lavIns$df
+    pvalue <- lavIns$pvalue
+    rownames(lrt) <- options[["models"]][[1]][["name"]]
     Ns <- lavaan::lavInspect(semResults[[1]], "ntotal")
     npar <- lavaan::lavInspect(semResults[[1]], "npar")
-    nfree <- if (length(semResults[[1]]@Model@eq.constraints.K) == 0) lavaan::lavInspect(semResults[[1]], "npar") else length(semResults[[1]]@Model@eq.constraints.K[1,])
+    nfree <- semResults[[1]]@loglik$npar
   } else {
     Ns <- vapply(semResults, lavaan::lavInspect, 0, what = "ntotal")
     npar <- vapply(semResults, lavaan::lavInspect, 0, what = "npar") # without eq constraints
     nfree <- sapply(semResults, function(x) x@loglik$npar) # with eq constraints
 
     lrt_args <- semResults
-    names(lrt_args) <- "object" # (the first result is object, the others ...)
+    names(lrt_args) <- "object" # (the first result is object, the others NA, so rename)
     lrt_args[["model.names"]] <- vapply(options[["models"]], getElement, name = "name", "")
     lrt_args[["type"]] <- "Chisq"
-    lrt <- .withWarnings(do.call(lavaan::lavTestLRT, lrt_args))
+    lrt <- do.call(lavaan::lavTestLRT, lrt_args)
 
     chiSq <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$stat}))
     dfs <- unlist(lapply(semResults, function(x) {round(lavaan::lavInspect(x, what = "test")[[testName]]$df, 3)}))
     # because the LRT orders the models according to the df, we need to reorder this as well
     chiSq <- chiSq[order(dfs)]
+    pvalue <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$pvalue}))
+    pvalue <- pvalue[order(dfs)]
     dfs <- sort(dfs)
 
   }
 
-  dtFill <- data.frame(matrix(ncol = 0, nrow = length(rownames(lrt$value))))
-
-  dtFill[["Model"]]    <- rownames(lrt$value)
-  dtFill[["AIC"]]      <- lrt$value[["AIC"]]
-  dtFill[["BIC"]]      <- lrt$value[["BIC"]]
+  dtFill <- data.frame(matrix(ncol = 0, nrow = length(rownames(lrt))))
+  dtFill[["Model"]]    <- rownames(lrt)
+  dtFill[["AIC"]]      <- lrt[["AIC"]]
+  dtFill[["BIC"]]      <- lrt[["BIC"]]
   dtFill[["N"]]        <- Ns
   dtFill[["npar"]]     <- npar
   dtFill[["nfree"]]    <- nfree
   dtFill[["Chisq"]]    <- chiSq
   dtFill[["Df"]]       <- dfs
-  dtFill[["PrChisq"]]  <- pchisq(q = chiSq, df = dfs, lower.tail = FALSE)
+  dtFill[["PrChisq"]]  <- pvalue
+  # dtFill[["PrChisq"]]  <- pchisq(q = chiSq, df = dfs, lower.tail = FALSE)
 
   if (length(options[["models"]]) > 1) {
-    dtFill[["dchisq"]]   <- lrt$value[["Chisq diff"]]
-    dtFill[["ddf"]]      <- lrt$value[["Df diff"]]
-    dtFill[["dPrChisq"]] <- lrt$value[["Pr(>Chisq)"]]
+    dtFill[["dchisq"]]   <- lrt[["Chisq diff"]]
+    dtFill[["ddf"]]      <- lrt[["Df diff"]]
+    dtFill[["dPrChisq"]] <- lrt[["Pr(>Chisq)"]]
   }
 
-  # add warning footnote
-  fnote <- ""
-  if (!is.null(lrt$warnings)) {
-    fnote <- paste0(fnote, gsub("lavaan WARNING: ", "", lrt$warnings[[1]]$message))
-  }
 
-  if(options$naAction == "listwise"){
+  if (options$naAction == "listwise"){
     nrm <- nrow(dataset) - lavaan::lavInspect(semResults[[1]], "ntotal")
     if (nrm != 0) {
-      missingFootnote <- gettextf("A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options.",
-                                  nrm)
+      missingFootnote <- gettextf("A total of %g cases were removed due to missing values.", nrm)
       fnote <- paste0(fnote, missingFootnote)
     }
   }
 
-  # add test statistic correction footnote
-  test <- lavaan::lavInspect(semResults[[1]], "options")[["test"]]
-  if(length(test) > 1)
-    test <- test[[2]]
-
-  if (test != "standard") {
-    LUT <- tibble::tribble(
-      ~option,              ~name,
-      "Satorra.Bentler",    gettext("Satorra-Bentler scaled test-statistic"),
-      "Yuan.Bentler",       gettext("Yuan-Bentler scaled test-statistic"),
-      "Yuan.Bentler.Mplus", gettext("Yuan-Bentler (Mplus) scaled test-statistic"),
-      "mean.var.adjusted",  gettext("mean and variance adjusted test-statistic"),
-      "Satterthwaite",      gettext("mean and variance adjusted test-statistic"),
-      "scaled.shifted",     gettext("scaled and shifted test-statistic"),
-      "Bollen.Stine",       gettext("bootstrap (Bollen-Stine) probability value"),
-      "bootstrap",          gettext("bootstrap (Bollen-Stine) probability value"),
-      "boot",               gettext("bootstrap (Bollen-Stine) probability value")
-    )
-    testname <- LUT[test == tolower(LUT$option), "name"][[1]]
-    if (length(semResults) == 1)
-      ftext <- gettextf("Baseline tests based on %s.", testname)
-    if (length(semResults) > 1)
-      ftext <- gettextf("Baseline tests based on %s. Difference tests based on a function of two standard test-statistics.", testname)
-
-    fnote <- paste0(fnote, ftext)
-
+# it makes sense to print the test, estimator, information, SE as a footnote if only "default" is specified
+  estimatorName <- semResults[[1]]@Options$estimator
+  if (options[["estimator"]] == "default") {
+    ftext <- gettextf("Estimator is %s.", toupper(estimatorName))
+    fnote <- paste(fnote, ftext)
   }
 
-  if (options$estimator %in% c("dwls", "gls", "wls", "uls")) {
-    fnote <- paste0(fnote, gettext("The AIC, BIC and additional information criteria are only available with ML-type estimators"))
+  outNames <- .optionsForOutput()
+  if (options[["modelTest"]] == "default") {
+      if (testName %in% outNames$lavNames) {
+        name <- outNames$jaspNames[outNames$lavNames == testName]
+      } else {
+        name <- testName
+      }
+      ftext <- gettextf("Model test is %s.", name)
+      fnote <- paste(fnote, ftext)
+  }
+
+  informationName <- semResults[[1]]@Options$information[1]
+  # information has two elements one for the SEs one for the test statistic, but JASP does not distinguish
+  if (options[["informationMatrix"]] == "default") {
+    if (informationName %in% outNames$lavNames) {
+      name <- outNames$jaspNames[outNames$lavNames == informationName]
+    } else {
+      name <- informationName
+    }
+    ftext <- gettextf("Information matrix is %s.", name)
+    fnote <- paste(fnote, ftext)
+  }
+
+  seName <- semResults[[1]]@Options$se
+  if (options[["errorCalculationMethod"]] == "default") {
+    if (seName %in% outNames$lavNames) {
+      name <- outNames$jaspNames[outNames$lavNames == seName]
+    } else {
+      name <- seName
+    }
+    ftext <- gettextf("Standard errors are %s.", name)
+    fnote <- paste(fnote, ftext)
+  }
+
+  if (!grepl("ML", estimatorName, fixed = TRUE)) {
+    fnote <- gettextf("%s The AIC, BIC and additional information criteria are only available with ML-type estimators.", fnote)
   }
 
   if (options[["group"]] != "") {
 
     groupNames <- semResults[[1]]@Data@group.label
-    models <- rep(rownames(lrt$value), each = length(groupNames))
+    models <- rep(rownames(lrt), each = length(groupNames))
     modelDfs <- unlist(lapply(semResults, function(x) {lavaan::lavInspect(x, what = "test")[[testName]]$df}))
     ord <- match(modelDfs, sort(modelDfs))
     modelDfs <- modelDfs[ord]
@@ -808,7 +824,7 @@ checkLavaanModel <- function(model, availableVars) {
     dtFillGroup <- data.frame(matrix(ncol = 0, nrow = length(models)))
 
     dtFillGroup[["Model"]]    <- models
-    dtFillGroup[["group"]]    <- rep(groupNames, length(rownames(lrt$value)))
+    dtFillGroup[["group"]]    <- rep(groupNames, length(rownames(lrt)))
     dtFillGroup[["AIC"]]      <- c(aics)
     dtFillGroup[["BIC"]]      <- c(bics)
     dtFillGroup[["N"]]        <- c(Ns)
@@ -838,18 +854,46 @@ checkLavaanModel <- function(model, availableVars) {
 
   }
 
+
   fittab$setData(dtFill)
   fittab$addFootnote(message = fnote)
 
 }
 
+.semWarningsHtml <- function(modelContainer, dataset, options, ready) {
+
+  if (!options[["warnings"]] || !is.null(modelContainer[["warningsHtml"]])) return()
+
+  if (!ready || modelContainer$getError()) return()
+
+  warnings <- modelContainer[["warnings"]][["object"]]
+  warns <- unlist(warnings)
+
+  if (length(warns) > 0) {
+    if (length(unique(warns)) == 1) warns <- warns[1] # all warnings across models are the same
+    warns <- sub("^[^:]*: ?", "", warns)
+    warns <- gsub("\n", "", warns)
+    warns <- paste(warns, collapse = ".")
+
+    warnings <- createJaspHtml(text = gettextf("<b>Warnings:</b> %s", warns))
+
+    warnings$dependOn("warnings")
+    warnings$position <- 0.1
+
+    modelContainer[["warningsHtml"]] <- warnings
+  }
+
+  return()
+}
+
 .semParameters <- function(modelContainer, dataset, options, ready) {
+
   if (!is.null(modelContainer[["params"]])) return()
+  if (modelContainer$getError()) return()
 
-
-  params <- createJaspContainer(gettext("Parameter estimates"))
+  params <- createJaspContainer(gettext("Parameter Estimates"))
   params$position <- 1
-  params$dependOn(c("ciLevel", "bootstrapCiType", "standardizedEstimate", "models"))
+  params$dependOn(c("ciLevel", "bootstrapCiType", "standardizedEstimate", "models", "standardizedEstimateType"))
 
   modelContainer[["params"]] <- params
 
@@ -873,6 +917,7 @@ checkLavaanModel <- function(model, availableVars) {
     pecont <- createJaspContainer(model[["name"]], initCollapsed = TRUE)
   }
 
+  estTitle <- ifelse(options[["standardizedEstimate"]], gettext("Std. estimate"), gettext("Estimate"))
 
   # Measurement model
   indtab <- createJaspTable(title = gettext("Factor Loadings"))
@@ -883,21 +928,14 @@ checkLavaanModel <- function(model, availableVars) {
   indtab$addColumnInfo(name = "lhs",      title = gettext("Latent"),     type = "string", combine = TRUE)
   indtab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
   indtab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  indtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
-  indtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
+  indtab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
+  indtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number")
   indtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   indtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   indtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
   indtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-  if (options[["standardizedEstimate"]]) {
-    indtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                         overtitle = gettext("Standardized"))
-    indtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                         overtitle = gettext("Standardized"))
-  }
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
   pecont[["ind"]] <- indtab
 
@@ -910,23 +948,17 @@ checkLavaanModel <- function(model, availableVars) {
   regtab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),    type = "string", combine = TRUE)
   regtab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string")
   regtab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  regtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+  regtab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
   regtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
   regtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   regtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   regtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
   regtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-  if (options[["standardizedEstimate"]]) {
-    regtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                         overtitle = gettext("Standardized"))
-    regtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                         overtitle = gettext("Standardized"))
-  }
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
   pecont[["reg"]] <- regtab
+
 
   # Latent variances
   lvartab <- createJaspTable(title = gettext("Factor variances"))
@@ -936,21 +968,14 @@ checkLavaanModel <- function(model, availableVars) {
 
   lvartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
   lvartab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  lvartab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+  lvartab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
   lvartab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
   lvartab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   lvartab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   lvartab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
   lvartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-  if (options[["standardizedEstimate"]]) {
-    lvartab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                          overtitle = gettext("Standardized"))
-    lvartab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                          overtitle = gettext("Standardized"))
-  }
+                        overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
   pecont[["lvar"]] <- lvartab
 
@@ -962,21 +987,14 @@ checkLavaanModel <- function(model, availableVars) {
 
   lcovtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
   lcovtab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  lcovtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+  lcovtab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
   lcovtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
   lcovtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   lcovtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   lcovtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
   lcovtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-  if (options[["standardizedEstimate"]]) {
-    lcovtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                          overtitle = gettext("Standardized"))
-    lcovtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                          overtitle = gettext("Standardized"))
-  }
+                        overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
   pecont[["lcov"]] <- lcovtab
 
@@ -988,21 +1006,14 @@ checkLavaanModel <- function(model, availableVars) {
 
   vartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
   vartab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  vartab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+  vartab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
   vartab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
   vartab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   vartab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   vartab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
   vartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-  if (options[["standardizedEstimate"]]) {
-    vartab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                         overtitle = gettext("Standardized"))
-    vartab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                         overtitle = gettext("Standardized"))
-  }
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
   pecont[["var"]] <- vartab
 
@@ -1014,28 +1025,24 @@ checkLavaanModel <- function(model, availableVars) {
 
   covtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
   covtab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  covtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+  covtab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
   covtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
   covtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   covtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   covtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
   covtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-  if (options[["standardizedEstimate"]]) {
-    covtab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                         overtitle = gettext("Standardized"))
-    covtab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                         overtitle = gettext("Standardized"))
-  }
+                       overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
   pecont[["cov"]] <- covtab
 
   allTables <- list(indtab, regtab, lvartab, lcovtab, vartab, covtab)
 
   # Means
-  if (options[["meanStructure"]]) {
+  if (options[["meanStructure"]] || options[["naAction"]] == "fiml" ||
+      # check for categorical variables, cause that means we get thresholds for the categorical variables, and intercepts for the remaining non-categorical
+      (fit@Options$categorical && !all(sapply(dataset, is.ordered)))) {
+
     mutab <- createJaspTable(title = gettext("Intercepts"))
     allTables[[length(allTables) + 1]] <- mutab
 
@@ -1044,46 +1051,57 @@ checkLavaanModel <- function(model, availableVars) {
 
     mutab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
     mutab$addColumnInfo(name = "label",    title = "",                    type = "string")
-    mutab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+    mutab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
     mutab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
     mutab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     mutab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
     mutab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
     mutab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
-    if (options[["standardizedEstimate"]]) {
-      mutab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                          overtitle = gettext("Standardized"))
-      mutab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                          overtitle = gettext("Standardized"))
+    if (options[["naAction"]] == "fiml" && !fit@Options$categorical) {
+      mutab$addFootnote(gettext("Missing data method 'FIML' forces meanstructure."))
     }
 
     pecont[["mu"]] <- mutab
   }
 
+  # thresholds
+  if (fit@Options$categorical) {
+    thrtab <- createJaspTable(title = gettext("Thresholds"))
+
+    if (options[["group"]] != "")
+      thrtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+
+    thrtab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string", combine = TRUE)
+    thrtab$addColumnInfo(name = "rhs",      title = gettext("Threshold"),  type = "string")
+    thrtab$addColumnInfo(name = "label",    title = "",                    type = "string")
+    thrtab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
+    thrtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
+    thrtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
+    thrtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+    thrtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                         overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
+    thrtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                         overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
+    pecont[["thr"]] <- thrtab
+  }
+
   originalSyntaxTable <- modelContainer[["originalSyntax"]][["object"]][[1]]
-  if(nrow(originalSyntaxTable[originalSyntaxTable$op == ":=",]) > 0) {
+  if (nrow(originalSyntaxTable[originalSyntaxTable$op == ":=",]) > 0) {
     deftab <- createJaspTable(title = gettext("Defined parameters"))
     allTables[[length(allTables) + 1]] <- deftab
 
     deftab$addColumnInfo(name = "lhs",      title = gettext("Name"),       type = "string")
-    deftab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+    deftab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
     deftab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
     deftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     deftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
     deftab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                         overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
     deftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-    if (options[["standardizedEstimate"]]) {
-      deftab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                           overtitle = gettext("Standardized"))
-      deftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                           overtitle = gettext("Standardized"))
-    }
+                         overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
     pecont[["def"]] <- deftab
   } else {
@@ -1094,21 +1112,14 @@ checkLavaanModel <- function(model, availableVars) {
       indefftab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
     indefftab$addColumnInfo(name = "path",     title = "",                    type = "string")
-    indefftab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+    indefftab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
     indefftab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
     indefftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     indefftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
     indefftab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                         overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
     indefftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-    if (options[["standardizedEstimate"]]) {
-      indefftab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                           overtitle = gettext("Standardized"))
-      indefftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                           overtitle = gettext("Standardized"))
-    }
+                         overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
     pecont[["indeff"]] <- indefftab
 
@@ -1119,21 +1130,14 @@ checkLavaanModel <- function(model, availableVars) {
       totefftab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
     totefftab$addColumnInfo(name = "path",     title = "",                    type = "string")
-    totefftab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+    totefftab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
     totefftab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
     totefftab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     totefftab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
     totefftab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                            overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                            overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
     totefftab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                            overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-    if (options[["standardizedEstimate"]]) {
-      totefftab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number",
-                              overtitle = gettext("Standardized"))
-      totefftab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number",
-                              overtitle = gettext("Standardized"))
-    }
+                            overtitle = gettextf("%s%% Confidence interval", options$ciLevel * 100))
 
     pecont[["toteff"]] <- totefftab
   }
@@ -1145,9 +1149,8 @@ checkLavaanModel <- function(model, availableVars) {
   if (!ready || !inherits(fit, "lavaan")) return()
 
 
-
-
   # fill tables with values
+
   lvnames <- lavaan::lavNames(fit, "lv")
   ovnames <- lavaan::lavNames(fit, "ov")
 
@@ -1155,18 +1158,30 @@ checkLavaanModel <- function(model, availableVars) {
                             ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
                                    "norm"))
 
-  pe <- lavaan::parameterestimates(fit, standardized = TRUE, level = options[["ciLevel"]],
-                                   boot.ci.type = bootstrapCiType)
-  pe <- lavaan::lavMatrixRepresentation(lavaan::lav_partable_complete(pe))
+  #' we need the second option in the if statement because when we require standardized estimates and bootstrapped CIs
+  #' the standardization happens in each bootstrap run and the standardized estimates replace the regular raw estimates
+  #' in the fit object, and we only need to call parameterEstimates
+  if (!options[["standardizedEstimate"]] ||
+      (options[["standardizedEstimate"]] && options[["errorCalculationMethod"]] == "bootstrap")) {
+    pe <- lavaan::parameterestimates(fit, level = options[["ciLevel"]],
+                                     boot.ci.type = bootstrapCiType)
+    pe <- lavaan::lavMatrixRepresentation(lavaan::lav_partable_complete(pe))
 
-  # the standardized value "std.nox" is conditionally present since lavaan 0.6-18 (see https://lavaan.ugent.be/history/dot6.html)
-  # if it exists, add the column info and the column values.
-  hasStdNox <- "std.nox" %in% colnames(pe)
-  if (hasStdNox) {
-    lapply(allTables, function(table) {
-      table$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number", overtitle = gettext("Standardized"))
-    })
+  } else {
+    type <- switch(options[["standardizedEstimateType"]],
+                   "all" = "std.all",
+                   "latents" = "std.lv",
+                   "nox" = "std.nox")
+    pe <- lavaan::standardizedSolution(fit, level = options[["ciLevel"]], type = type)
+    pe <- lavaan::lavMatrixRepresentation(lavaan::lav_partable_complete(pe))
+    colnames(pe)[colnames(pe) == "est.std"] <- "est"
+
   }
+
+  # TODO: bootstrap standardized CI:
+  #' Do we want the standardization to happen for the fit of each bootstrap sample and then save the std coeffs?
+  #' Or do we want to save all the unstd coeffs from the bootstrap, and after summarizing them with mean
+  #' and se and such standardize them?
 
   if (options[["group"]] != "")  {
     pe[pe[["op"]] != ":=", "groupname"] <- lavaan::lavInspect(fit, "group.label")[pe[["group"]]]
@@ -1192,13 +1207,6 @@ checkLavaanModel <- function(model, availableVars) {
   indtab[["ci.lower"]] <- pe_ind[["ci.lower"]]
   indtab[["ci.upper"]] <- pe_ind[["ci.upper"]]
 
-  if (options[["standardizedEstimate"]]) {
-    indtab[["std.all"]] <- pe_ind[["std.all"]]
-    indtab[["std.lv"]]  <- pe_ind[["std.lv"]]
-    if (hasStdNox)
-      indtab[["std.nox"]] <- pe_ind[["std.nox"]]
-  }
-
   # Structural model
   # coefficients
   pe_reg <- pe[pe$op == "~",]
@@ -1219,13 +1227,6 @@ checkLavaanModel <- function(model, availableVars) {
   regtab[["ci.lower"]] <- pe_reg[["ci.lower"]]
   regtab[["ci.upper"]] <- pe_reg[["ci.upper"]]
 
-  if (options[["standardizedEstimate"]]) {
-    regtab[["std.all"]] <- pe_reg[["std.all"]]
-    regtab[["std.lv"]]  <- pe_reg[["std.lv"]]
-    if (hasStdNox)
-      regtab[["std.nox"]] <- pe_reg[["std.nox"]]
-  }
-
   # Latent variances
   pe_lvar <- pe[pe$op == "~~" & pe$lhs %in% lvnames & pe$lhs == pe$rhs,]
   if (nrow(pe_lvar) == 0) pecont[["lvar"]] <- NULL # remove if no estimates
@@ -1243,13 +1244,6 @@ checkLavaanModel <- function(model, availableVars) {
   lvartab[["ci.lower"]] <- pe_lvar[["ci.lower"]]
   lvartab[["ci.upper"]] <- pe_lvar[["ci.upper"]]
 
-  if (options[["standardizedEstimate"]]) {
-    lvartab[["std.all"]] <- pe_lvar[["std.all"]]
-    lvartab[["std.lv"]]  <- pe_lvar[["std.lv"]]
-    if (hasStdNox)
-      lvartab[["std.nox"]] <- pe_lvar[["std.nox"]]
-  }
-
   # Latent covariances
   pe_lcov <- pe[pe$op == "~~" & pe$lhs %in% lvnames & pe$rhs %in% lvnames & pe$lhs != pe$rhs,]
   if (nrow(pe_lcov) == 0) pecont[["lcov"]] <- NULL # remove if no estimates
@@ -1266,12 +1260,6 @@ checkLavaanModel <- function(model, availableVars) {
   lcovtab[["ci.lower"]] <- pe_lcov[["ci.lower"]]
   lcovtab[["ci.upper"]] <- pe_lcov[["ci.upper"]]
 
-  if (options[["standardizedEstimate"]]) {
-    lcovtab[["std.all"]] <- pe_lcov[["std.all"]]
-    lcovtab[["std.lv"]]  <- pe_lcov[["std.lv"]]
-    if (hasStdNox)
-      lcovtab[["std.nox"]] <- pe_lcov[["std.nox"]]
-  }
 
   # Residual variances
   pe_var <- pe[pe$op == "~~" & pe$lhs %in% ovnames & pe$lhs == pe$rhs,]
@@ -1290,13 +1278,6 @@ checkLavaanModel <- function(model, availableVars) {
   vartab[["ci.lower"]] <- pe_var[["ci.lower"]]
   vartab[["ci.upper"]] <- pe_var[["ci.upper"]]
 
-  if (options[["standardizedEstimate"]]) {
-    vartab[["std.all"]] <- pe_var[["std.all"]]
-    vartab[["std.lv"]]  <- pe_var[["std.lv"]]
-    if (hasStdNox)
-      vartab[["std.nox"]] <- pe_var[["std.nox"]]
-  }
-
   # Residual covariances
   pe_cov <- pe[pe$op == "~~" & pe$lhs %in% ovnames & pe$rhs %in% ovnames & pe$lhs != pe$rhs,]
   if (nrow(pe_cov) == 0) pecont[["cov"]] <- NULL # remove if no estimates
@@ -1313,16 +1294,10 @@ checkLavaanModel <- function(model, availableVars) {
   covtab[["ci.lower"]] <- pe_cov[["ci.lower"]]
   covtab[["ci.upper"]] <- pe_cov[["ci.upper"]]
 
-  if (options[["standardizedEstimate"]]) {
-    covtab[["std.all"]] <- pe_cov[["std.all"]]
-    covtab[["std.lv"]]  <- pe_cov[["std.lv"]]
-    if (hasStdNox)
-      covtab[["std.nox"]] <- pe_cov[["std.nox"]]
-  }
-
 
   # Means
-  if (options[["meanStructure"]]) {
+  if (options[["meanStructure"]] || options[["naAction"]] == "fiml" ||
+      (fit@Options$categorical && !all(sapply(dataset, is.ordered)))) {
     pe_mu <- pe[pe$op == "~1",]
 
     if (options[["group"]] != "")
@@ -1337,12 +1312,24 @@ checkLavaanModel <- function(model, availableVars) {
     mutab[["ci.lower"]] <- pe_mu[["ci.lower"]]
     mutab[["ci.upper"]] <- pe_mu[["ci.upper"]]
 
-    if (options[["standardizedEstimate"]]) {
-      mutab[["std.all"]] <- pe_mu[["std.all"]]
-      mutab[["std.lv"]]  <- pe_mu[["std.lv"]]
-      if (hasStdNox)
-        mutab[["std.nox"]] <- pe_mu[["std.nox"]]
-    }
+  }
+
+  #Thresholds
+  if (fit@Options$categorical) {
+    pe_thr <- pe[pe$op == "|",]
+    if (nrow(pe_thr) == 0) pecont[["thr"]] <- NULL # remove if no estimates
+    if (options[["group"]] != "")
+      thrtab[["group"]] <- pe_thr[["groupname"]]
+
+    thrtab[["lhs"]]      <- pe_thr[["lhs"]]
+    thrtab[["rhs"]]      <- pe_thr[["rhs"]]
+    thrtab[["label"]]    <- pe_thr[["label"]]
+    thrtab[["est"]]      <- pe_thr[["est"]]
+    thrtab[["se"]]       <- pe_thr[["se"]]
+    thrtab[["z"]]        <- pe_thr[["z"]]
+    thrtab[["pvalue"]]   <- pe_thr[["pvalue"]]
+    thrtab[["ci.lower"]] <- pe_thr[["ci.lower"]]
+    thrtab[["ci.upper"]] <- pe_thr[["ci.upper"]]
   }
 
   # defined parameters
@@ -1358,11 +1345,6 @@ checkLavaanModel <- function(model, availableVars) {
     deftab[["ci.lower"]] <- pe_def[["ci.lower"]]
     deftab[["ci.upper"]] <- pe_def[["ci.upper"]]
 
-    if (options[["standardizedEstimate"]]) {
-      deftab[["std.all"]] <- pe_def[["std.all"]]
-      deftab[["std.lv"]]  <- pe_def[["std.lv"]]
-      deftab[["std.nox"]] <- pe_def[["std.nox"]]
-    }
   } else {
     pe_eff <- pe[pe$op == ":=",]
     pe_toteff <- subset(pe_eff, substring(lhs, 1, nchar("total_")) == "total_")
@@ -1400,13 +1382,6 @@ checkLavaanModel <- function(model, availableVars) {
     totefftab[["ci.lower"]] <- pe_toteff$ci.lower
     totefftab[["ci.upper"]] <- pe_toteff$ci.upper
 
-    if (options[["standardizedEstimate"]]) {
-      totefftab[["std.all"]] <- pe_toteff[["std.all"]]
-      totefftab[["std.lv"]]  <- pe_toteff[["std.lv"]]
-      if (hasStdNox)
-        totefftab[["std.nox"]] <- pe_toteff[["std.nox"]]
-    }
-
     pe_indeff <- subset(pe_eff, substring(lhs, 1, nchar("total_")) != "total_")
     if (nrow(pe_indeff) == 0) {
       pecont[["indeff"]] <- NULL
@@ -1435,225 +1410,138 @@ checkLavaanModel <- function(model, availableVars) {
       indefftab[["ci.lower"]] <- pe_indeff$ci.lower
       indefftab[["ci.upper"]] <- pe_indeff$ci.upper
 
-      if (options[["standardizedEstimate"]]) {
-        indefftab[["std.all"]] <- pe_indeff[["std.all"]]
-        indefftab[["std.lv"]]  <- pe_indeff[["std.lv"]]
-        if (hasStdNox)
-          indefftab[["std.nox"]] <- pe_indeff[["std.nox"]]
-      }
     }
   }
 }
 
 .semAdditionalFits <- function(modelContainer, dataset, options, ready) {
+
   if (!options[["additionalFitMeasures"]] || !is.null(modelContainer[["addfit"]])) return()
-
-  fitms <- createJaspContainer(gettext("Additional fit measures"))
-  fitms$dependOn(c("additionalFitMeasures", "models"))
-  fitms$position <- 0.5
-
-  # Fit indices
-  fitms[["indices"]] <- fitin <- createJaspTable(gettext("Fit indices"))
-  fitin$addColumnInfo(name = "index", title = gettext("Index"), type = "string")
-  if (length(options[["models"]]) < 2) {
-    fitin$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
-  } else {
-    for (i in seq_along(options[["models"]])) {
-      fitin$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["name"]], type = "number")
-    }
-  }
-  fitin$setExpectedSize(rows = 1, cols = 2)
-  fitin$addCitation("Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural Equation Models, Structural Equation Modeling: A Multidisciplinary Journal, 24:1, 148-153, DOI: 10.1080/10705511.2016.1225260")
-
-  # information criteria
-  if (!options$estimator %in% c("dwls", "gls", "wls", "uls")) {
-    fitms[["incrits"]] <- fitic <- createJaspTable(gettext("Information criteria"))
-    fitic$addColumnInfo(name = "index", title = "", type = "string")
-    if (length(options[["models"]]) < 2) {
-      fitic$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
-    } else {
-      for (i in seq_along(options[["models"]])) {
-        fitic$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["name"]], type = "number")
-      }
-    }
-    fitic$setExpectedSize(rows = 1, cols = 2)
-  }
-
-
-
-  # other fit measures
-  fitms[["others"]] <- fitot <- createJaspTable(gettext("Other fit measures"))
-  fitot$addColumnInfo(name = "index", title = gettext("Metric"), type = "string")
-  if (length(options[["models"]]) < 2) {
-    fitot$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
-  } else {
-    for (i in seq_along(options[["models"]])) {
-      fitot$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["name"]], type = "number")
-    }
-  }
-  fitot$setExpectedSize(rows = 1, cols = 2)
-  fitot$addCitation("Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural Equation Models, Structural Equation Modeling: A Multidisciplinary Journal, 24:1, 148-153, DOI: 10.1080/10705511.2016.1225260")
-
-  modelContainer[["addfit"]] <- fitms
 
   if (!ready || modelContainer$getError()) return()
 
-  # actually compute the fit measures
-
-  .fitMeasures <- function(fit, alpha = 0.05) {
-    fm <- lavaan::fitMeasures(fit, fit.measures = "all")
-
-    ncp_chi2 <- function(alpha, chisqModel, df){
-      z <- qnorm(1-alpha)
-      z2 <- z*z
-      z3 <- z2*z
-      z4 <- z3*z
-      z5 <- z4*z
-      sig2 <- 2*(2*chisqModel-df+2)
-      sig <- sqrt(sig2)
-      sig3 <- sig*sig2
-      sig4 <- sig2*sig2
-      sig5 <- sig4*sig
-      sig6 <- sig2*sig4
-
-      delta <- chisqModel-df+2+sig*(z+(z2-1)/sig-z/sig2 + 2*(df-1)*(z2-1)/(3*sig3)
-                                    +( -(df-1)*(4*z3-z)/6+(df-2)*z/2 )/sig4
-                                    +4*(df-1)*(3*z4+2*z2-11)/(15*sig5)
-                                    +(-(df-1)*(96*z5+164*z3-767*z)/90-4*(df-1)*(df-2)*(2*z3-5*z)/9+(df-2)*z/2)/sig6
-      )
-      delta <- max(delta,0)
-      return(delta)
-    }
-
-    chisqModel <- c(fm["chisq"], use.names = FALSE)
-    chisqBaseline <- c(fm["baseline.chisq"], use.names = FALSE)
-    df <- c(fm["df"], use.names = FALSE)
-    dfBaseline <- c(fm["baseline.df"], use.names = FALSE)
-    n <- lavaan::lavInspect(fit, what = "ntotal")
-
-    delta_t <- ncp_chi2(alpha, chisqModel, df)
-    rmsea_t <- sqrt(delta_t / (df*(n-1)))
-
-    delta_t <- ncp_chi2(alpha/2, chisqModel, df)
-    delta_bt <- ncp_chi2(1-alpha/2, chisqBaseline, dfBaseline)
-    cfi_t <- 1 - max(delta_t, 0) / max(delta_t, delta_bt, 0)
-
-    rmsea_e05 <- exp(2.06034 - 0.62974*log(df) + 0.02512*log(df)*log(df) - 0.98388*log(n-1) + 0.05442*log(n-1)*log(n-1) - 0.00005188*(n-1) + 0.05260*log(df)*log(n-1))
-    rmsea_e08 <- exp(2.84129 - 0.54809*log(df) + 0.02296*log(df)*log(df) - 0.76005*log(n-1) + 0.10229*log(n-1)*log(n-1) - 1.11167*((n-1)^.2) + 0.04845*log(df)*log(n-1))
-
-    cfi_e90 <- 1 - exp(5.96633 - .40425*log(df) + .01384*((log(df))^2) - .00411*((log(dfBaseline))^2) - 1.20242*log(n-1) + .18763*((log(n-1))^2) - 2.06704*((n-1)^(1/5)) + .05245*log(df)*log(n-1) - .01533*log(dfBaseline)*log(n-1))
-    cfi_e95 <- 1 - exp(4.12132 - .46285*log(df) + .52478*(df^(1/5)) - .31832*((dfBaseline)^(1/5)) - 1.74422*log(n-1) + .13042*((log(n-1))^2) - .02360*((n-1)^(1/2)) + .04215*log(df)*log(n-1))
-
-
-    fm <- c(fm, rmsea.t = rmsea_t, cfi.t = cfi_t, rmsea.t.e05 = rmsea_e05, rmsea.t.e08 = rmsea_e08, cfi.t.e90 = cfi_e90, cfi.t.e95 = cfi_e95)
-
-    return(fm)
-  }
-
-  fmli <- lapply(modelContainer[["results"]][["object"]], .fitMeasures)
+  fitContainer <- createJaspContainer(gettext("Additional Fit Measures"))
+  fitContainer$dependOn(c("additionalFitMeasures", "models"))
+  fitContainer$position <- 0.5
+  modelContainer[["addfit"]] <- fitContainer
 
   # Fit indices
-  cfi_t_footnote <- ""
-  fitin[["index"]] <- c(
-    gettext("Comparative Fit Index (CFI)"),
-    gettext("T-size CFI"),
-    gettext("Tucker-Lewis Index (TLI)"),
-    gettext("Bentler-Bonett Non-normed Fit Index (NNFI)"),
-    gettext("Bentler-Bonett Normed Fit Index (NFI)"),
-    gettext("Parsimony Normed Fit Index (PNFI)"),
-    gettext("Bollen's Relative Fit Index (RFI)"),
-    gettext("Bollen's Incremental Fit Index (IFI)"),
-    gettext("Relative Noncentrality Index (RNI)")
-  )
-  if (length(options[["models"]]) == 1) {
-    fitin[["value"]] <- fmli[[1]][c("cfi", "cfi.t", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
-    cfi_t_footnote <- paste0(cfi_t_footnote,
-                             gettextf("T-size CFI is computed for <i>%1$s = 0.05</i>. The T-size equivalents of the
-                                      conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are <b>poor
-                                      < %2$s < fair < %3$s < close</b> for model: %4$s.", "\u03B1",
-                                      round(fmli[[1]]["cfi.t.e90"], 3),
-                                      round(fmli[[1]]["cfi.t.e95"], 3),
-                                      options[["models"]][[1]][["name"]]))
-    fitin$addFootnote(cfi_t_footnote)
+  fitinds <- createJaspTable(gettext("Fit indices"))
+  fitContainer[["fitMeasures"]] <- fitinds
+
+  fitinds$addColumnInfo(name = "index", title = gettext("Index"), type = "string")
+  if (length(options[["models"]]) < 2) {
+    fitinds$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
   } else {
     for (i in seq_along(options[["models"]])) {
-      fitin[[paste0("value_", i)]] <- fmli[[i]][c("cfi", "cfi.t", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
-
-      cfi_t_footnote <- paste0(cfi_t_footnote,
-                               gettextf(" The T-size equivalents of the conventional CFI cut-off values
-                                        (poor < 0.90 < fair < 0.95 < close) are <b>poor < %1$s < fair < %2$s <
-                                        close</b> for model: %3$s.",
-                                        round(fmli[[i]]["cfi.t.e90"], 3),
-                                        round(fmli[[i]]["cfi.t.e95"], 3),
-                                        options[["models"]][[i]][["name"]]))
-
+      fitinds$addColumnInfo(name = paste0("value_", i), title = options[["models"]][[i]][["name"]], type = "number")
     }
-    fitin$addFootnote(cfi_t_footnote)
   }
+
+  # the way lavaan exports the name of the test is a bit weird, so we get the test option from:
+  testName <- .semOptionsToLavOptions(options, dataset)[["test"]]
+  if (testName == "default") testName <- modelContainer[["results"]][["object"]][[1]]@Options$test
+
+  fmli <- lapply(modelContainer[["results"]][["object"]],
+                 function(x) .computeFitMeasures(fit = x, standard = (testName == "standard")))
+
+  indexStrings <- c(gettext("Comparative Fit Index (CFI)"),
+                    gettext("Tucker-Lewis Index (TLI)"),
+                    gettext("Bentler-Bonett Non-normed Fit Index (NNFI)"),
+                    gettext("Bentler-Bonett Normed Fit Index (NFI)"),
+                    gettext("Parsimony Normed Fit Index (PNFI)"),
+                    gettext("Bollen's Relative Fit Index (RFI)"),
+                    gettext("Bollen's Incremental Fit Index (IFI)"),
+                    gettext("Relative Noncentrality Index (RNI)"),
+                    gettext("Root mean square error of approximation (RMSEA)"),
+                    gettextf("RMSEA 90%% CI lower bound"),
+                    gettextf("RMSEA 90%% CI upper bound"),
+                    gettext("RMSEA p-value"),
+                    gettext("Standardized root mean square residual (SRMR)"),
+                    gettextf("Hoelter's critical N (%s = .05)","\u03B1"),
+                    gettextf("Hoelter's critical N (%s = .01)","\u03B1"),
+                    gettext("Goodness of fit index (GFI)"),
+                    gettext("McDonald fit index (MFI)"),
+                    gettext("Expected cross validation index (ECVI)"))
 
   # information criteria
-  if (!options$estimator %in% c("dwls", "gls", "wls", "uls")) {
-    fitic[["index"]] <- c(
-      gettext("Log-likelihood"),
-      gettext("Number of free parameters"),
-      gettext("Akaike (AIC)"),
-      gettext("Bayesian (BIC)"),
-      gettext("Sample-size adjusted Bayesian (SSABIC)")
-    )
+  estimatorName <- modelContainer[["results"]][["object"]][[1]]@Options$estimator
+  if (grepl("ML", estimatorName)) {
+    indexStrings <- c(indexStrings,
+                      gettext("Log-likelihood"),
+                      gettext("Number of free parameters"),
+                      gettext("Akaike (AIC)"),
+                      gettext("Bayesian (BIC)"),
+                      gettext("Sample-size adjusted Bayesian (SSABIC)"))
+  }
+  fitinds[["index"]] <- indexStrings
 
-    if (length(options[["models"]]) == 1) {
-      fitic[["value"]] <- fmli[[1]][c("logl", "npar", "aic", "bic", "bic2")]
-    } else {
-      for (i in seq_along(options[["models"]])) {
-        fitic[[paste0("value_", i)]] <- fmli[[i]][c("logl", "npar", "aic", "bic", "bic2")]
-      }
-    }
+  fnote <- ""
+  if (testName != "standard") {
+    fnote <- gettextf("%s Fit indices are based on the scaled test statistic.", fnote)
   }
 
+  estimateNames <- c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni",
+                     "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
+                     "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")
+  if (grepl("ML", estimatorName)) {
+    estimateNames <- c(estimateNames, "logl", "npar", "aic", "bic", "bic2")
+  }
 
-  # other fitmeasures
-  rmsea_t_footnote <- ""
-  fitot[["index"]] <- c(
-    gettext("Root mean square error of approximation (RMSEA)"),
-    gettextf("RMSEA 90%% CI lower bound"),
-    gettextf("RMSEA 90%% CI upper bound"),
-    gettext("RMSEA p-value"),
-    gettext("T-size RMSEA"),
-    gettext("Standardized root mean square residual (SRMR)"),
-    gettextf("Hoelter's critical N (%s = .05)","\u03B1"),
-    gettextf("Hoelter's critical N (%s = .01)","\u03B1"),
-    gettext("Goodness of fit index (GFI)"),
-    gettext("McDonald fit index (MFI)"),
-    gettext("Expected cross validation index (ECVI)")
-  )
   if (length(options[["models"]]) == 1) {
-    fitot[["value"]] <- fmli[[1]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue", "rmsea.t",
-                                    "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
-    rmsea_t_footnote <- paste0(rmsea_t_footnote,
-                               gettextf("T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents of the
-                                        conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are
-                                        <b>close < %2$s < fair < %3$s < poor</b> for model: %4$s.", "\u03B1",
-                                        round(fmli[[1]]["rmsea.t.e05"], 3),
-                                        round(fmli[[1]]["rmsea.t.e08"], 3),
-                                        options[["models"]][[1]][["name"]]))
-    fitot$addFootnote(rmsea_t_footnote)
+    estimates <- fmli[[1]][estimateNames]
+
+    fitinds[["value"]] <- estimates
+
   } else {
     for (i in seq_along(options[["models"]])) {
-      fitot[[paste0("value_", i)]] <- fmli[[i]][c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue", "rmsea.t",
-                                                  "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
-
-      rmsea_t_footnote <- paste0(rmsea_t_footnote,
-                                 gettextf(" The T-size equivalents of the conventional RMSEA cut-off values
-                                          (close < 0.05 < fair < 0.08 < poor) are <b>close < %1$s < fair < %2$s
-                                          < poor</b> for model: %3$s.",
-                                          round(fmli[[i]]["rmsea.t.e05"], 3),
-                                          round(fmli[[i]]["rmsea.t.e08"], 3),
-                                          options[["models"]][[i]][["name"]]))
-
+      fitinds[[paste0("value_", i)]] <- fmli[[i]][estimateNames]
     }
-    fitot$addFootnote(rmsea_t_footnote)
   }
+
+  fitinds$addFootnote(fnote)
+
+  # a table only with the T-size stuff
+  ftsize <- createJaspTable(gettext("T-size fit indices"))
+  ftsize$addCitation(gettext("Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural Equation Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), 148-153, https://doi.org/10.1080/10705511.2016.1225260"))
+  fitContainer[["fitTSize"]] <- ftsize
+
+  ftsize$addColumnInfo(name = "col1", title = "", type = "string")
+  ftsize[["col1"]] <- c(gettext("Estimate"), gettext("Poor-fair limit"), gettext("Fair-close limit"))
+
+  if (length(options[["models"]]) < 2) {
+    ftsize$addColumnInfo(name = "cfi", title = gettext("CFI"), type = "number")
+    ftsize$addColumnInfo(name = "rmsea", title = gettext("RMSEA"), type = "number")
+
+    ftsize[["cfi"]] <- fmli[[1]][c("cfi.t", "cfi.t.e90", "cfi.t.e95")]
+    ftsize[["rmsea"]] <- fmli[[1]][c("rmsea.t", "rmsea.t.e08", "rmsea.t.e05")]
+
+
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      ftsize$addColumnInfo(name = paste0("cfi", i), title = gettext("CFI"), type = "number", overtitle = options[["models"]][[i]][["name"]])
+      ftsize$addColumnInfo(name = paste0("rmsea", i), title = gettext("RMSEA"), type = "number", overtitle = options[["models"]][[i]][["name"]])
+
+      ftsize[[paste0("cfi", i)]] <- fmli[[i]][c("cfi.t", "cfi.t.e90", "cfi.t.e95")]
+      ftsize[[paste0("rmsea", i)]] <- fmli[[i]][c("rmsea.t", "rmsea.t.e08", "rmsea.t.e05")]
+    }
+  }
+
+
+  # TODO
+  ftsize$addFootnote(gettextf("T-size statistics are computed for <i>%s = 0.05</i>.", "\u03B1"))
+
+  # fnote <- gettextf("%1$s For %2$s, the T-size CFI cutoff values are: poor < %3$s < fair < %4$s < close and the T-size RMSEA cutoff values are: close < %5$s < fair < %6$s < poor.",
+  #                   fnote,
+  #                   options[["models"]][[1]][["name"]],
+  #                   round(fmli[[1]]["cfi.t.e90"], 3),
+  #                   round(fmli[[1]]["cfi.t.e95"], 3),
+  #                   round(fmli[[1]]["rmsea.t.e05"], 3),
+  #                   round(fmli[[1]]["rmsea.t.e08"], 3))
+
+  return()
 }
+
 
 .semRsquared <- function(modelContainer, dataset, options, ready) {
   if (!options[["rSquared"]] || !is.null(modelContainer[["rsquared"]])) return()
@@ -2014,7 +1902,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (length(options[["models"]]) < 2) {
     .semHtmtTables(modelContainer[["results"]][["object"]][[1]], NULL, htmt, options, ready, dataset)
   } else {
-    htmt$title <- gettext("Heterotrait-monotrait ratio")
+    htmt$title <- gettext("Heterotrait-Monotrait Ratio")
 
     for (i in seq_along(options[["models"]])) {
       fit <- modelContainer[["results"]][["object"]][[i]]
@@ -2037,7 +1925,7 @@ checkLavaanModel <- function(model, availableVars) {
   htmtcont[["htmttab"]] <- htmttab
 
   if (options[["group"]] == "") {
-    lavopts <- .semOptionsToLavOptions(options, dataset)
+    lavOptions <- .semOptionsToLavOptions(options, dataset)
     lavmodel <- ifelse(is.null(model), .semTranslateModel(options[["models"]][[1]][["syntax"]], dataset), .semTranslateModel(model[["syntax"]], dataset))
 
     parTable <- lavaan::lavaanify(lavmodel)
@@ -2046,9 +1934,9 @@ checkLavaanModel <- function(model, availableVars) {
     lavmodel <- parTable[!parTable$lhs %in% higherOrder, ]
 
     if (options[["dataType"]] == "raw") {
-      htmt_result <- semTools::htmt(model = lavmodel, data = dataset, missing = lavopts[["missing"]])
+      htmt_result <- semTools::htmt(model = lavmodel, data = dataset, missing = lavOptions[["missing"]])
     } else {
-      htmt_result <- semTools::htmt(model = lavmodel, sample.cov = .semDataCovariance(dataset, model), missing = lavopts[["missing"]])
+      htmt_result <- semTools::htmt(model = lavmodel, sample.cov = .semDataCovariance(dataset, model), missing = lavOptions[["missing"]])
     }
     htmt_result[upper.tri(htmt_result)] <- NA
 
@@ -2060,7 +1948,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   } else {
 
-    lavopts <- .semOptionsToLavOptions(options, dataset)
+    lavOptions <- .semOptionsToLavOptions(options, dataset)
     lavmodel <- ifelse(is.null(model), .semTranslateModel(options[["models"]][[1]][["syntax"]], dataset), .semTranslateModel(model[["syntax"]], dataset))
 
     parTable <- lavaan::lavaanify(lavmodel)
@@ -2080,7 +1968,7 @@ checkLavaanModel <- function(model, availableVars) {
 
       dataset_per_group <- dataset[dataset[, options[["group"]]] == group, ]
 
-      htmt_result <- semTools::htmt(model = lavmodel, data = dataset_per_group, missing = lavopts[["missing"]])
+      htmt_result <- semTools::htmt(model = lavmodel, data = dataset_per_group, missing = lavOptions[["missing"]])
       htmt_result[upper.tri(htmt_result)] <- NA
       groupCol <- data.frame(group = c(group, rep(NA, nrow(htmt_result) - 1)))
       htmtFill <- cbind(groupCol, as.data.frame(htmt_result))
@@ -2119,14 +2007,22 @@ checkLavaanModel <- function(model, availableVars) {
       gettext("Multivariate skewness and kurtosis calculated for observed variables from all models.")
     )
 
-
   if (!all(sapply(dataset[, varNames, drop = FALSE], is.numeric))) {
-    mardiatab$setError(gettext("Not all used variables are numeric. Mardia's coefficients not available."))
+    mardiatab$setError(gettext("Not all used variables are continuous: Mardia's coefficients not available."))
     return()
   }
 
-  mardiaSkew <- unname(semTools:::mardiaSkew(dataset[, varNames]))
-  mardiaKurtosis <- unname(semTools:::mardiaKurtosis(dataset[, varNames]))
+  dt <- dataset[, varNames]
+
+  if (isTryError(try(solve(cov(dt))))) {
+    mardiatab$setError(gettext("The data covariance matrix could not be inverted: Mardia's coefficients not available. "))
+    return()
+  }
+  # it seems semTools does not handle missings appropriately
+  dt <- na.omit(dt)
+  mardiaSkew <- unname(semTools:::mardiaSkew(dt))
+  mardiaKurtosis <- unname(semTools:::mardiaKurtosis(dt))
+
   mardiatab$addRows(
     data.frame(Type        = gettext("Skewness"),
                Coefficient = mardiaSkew[1],
@@ -2196,14 +2092,14 @@ checkLavaanModel <- function(model, availableVars) {
     }
 
     if (options[["residualCovariance"]]) {
-      rctab <- createJaspTable("Residual covariance matrix")
+      rctab <- createJaspTable("Residuals covariance matrix")
       rctab$dependOn("residualCovariance")
       rctab$position <- 3
       cocont[["residual"]] <- rctab
     }
 
     if (options[["standardizedResidual"]]) {
-      srtab <- createJaspTable("Standardized residuals matrix")
+      srtab <- createJaspTable("Standardized residuals covariance matrix")
       srtab$dependOn("standardizedResidual")
       srtab$position <- 4
       cocont[["stdres"]] <- srtab
@@ -2228,14 +2124,14 @@ checkLavaanModel <- function(model, availableVars) {
     }
 
     if (options[["residualCovariance"]]) {
-      rccont <- createJaspContainer("Residual covariance matrix", initCollapsed = TRUE)
+      rccont <- createJaspContainer("Residuals covariance matrix", initCollapsed = TRUE)
       rccont$dependOn("residualCovariance")
       rccont$position <- 3
       cocont[["residual"]] <- rccont
     }
 
     if (options[["standardizedResidual"]]) {
-      srcont <- createJaspContainer("Standardized residuals matrix", initCollapsed = TRUE)
+      srcont <- createJaspContainer("Standardized residuals covariance matrix", initCollapsed = TRUE)
       srcont$dependOn("standardizedResidual")
       srcont$position <- 4
       cocont[["stdres"]] <- srcont
@@ -2845,4 +2741,107 @@ checkLavaanModel <- function(model, availableVars) {
       plt[[level_names[i]]]$plotObject <- pp[[i]]
     }
   }
+}
+
+
+.create_group_vector <- function(letter, n) {
+  groups <- paste(letter, 1:n, sep="")
+  groups <- paste0(groups, collapse = ", ")
+  groups <- paste0("c(", groups, ")")
+  return(groups)
+}
+
+
+.get_indirect_effects <- function(df, current_indirect = "", current_predictor = "", idx){
+  outcome <- df$lhs
+  predictor <- df$rhs
+  label <- df$label
+  indirect <- c()
+
+  if (current_predictor == "") {
+    current_predictor <- outcome[idx]
+    current_indirect <- label[idx]
+  }
+
+  for (row in 1:nrow(df)){
+    if (current_predictor == predictor[row]){
+      indirect_effect <- paste0(current_indirect, "*", label[row])
+      indirect <- c(indirect, indirect_effect)
+      indirect <- c(indirect, .get_indirect_effects(df, indirect_effect, outcome[row]))
+    }
+  }
+
+  return(indirect)
+}
+
+.computeFitMeasures <- function(fit, alpha = 0.05, standard = TRUE) {
+
+  fm <- lavaan::fitMeasures(fit, fit.measures = "all")
+
+  if (!standard) {
+    fm[c("chisq", "df", "baseline.chisq", "baseline.df", "cfi", "tli", "nnfi", "nfi", "rfi", "ifi", "rni", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue")] <- fm[c("chisq.scaled", "df.scaled", "baseline.chisq.scaled", "baseline.df.scaled", "cfi.scaled", "tli.scaled", "nnfi.scaled", "nfi.scaled",  "rfi.scaled", "ifi.scaled", "rni.scaled", "rmsea.scaled", "rmsea.ci.lower.scaled", "rmsea.ci.upper.scaled", "rmsea.pvalue.scaled")]
+    fm["pnfi"] <- NA
+  }
+
+  ncp_chi2 <- function(alpha, chisqModel, df){
+    z <- qnorm(1-alpha)
+    z2 <- z*z
+    z3 <- z2*z
+    z4 <- z3*z
+    z5 <- z4*z
+    sig2 <- 2*(2*chisqModel-df+2)
+    sig <- sqrt(sig2)
+    sig3 <- sig*sig2
+    sig4 <- sig2*sig2
+    sig5 <- sig4*sig
+    sig6 <- sig2*sig4
+
+    delta <- chisqModel-df+2+sig*(z+(z2-1)/sig-z/sig2 + 2*(df-1)*(z2-1)/(3*sig3)
+                                  +( -(df-1)*(4*z3-z)/6+(df-2)*z/2 )/sig4
+                                  +4*(df-1)*(3*z4+2*z2-11)/(15*sig5)
+                                  +(-(df-1)*(96*z5+164*z3-767*z)/90-4*(df-1)*(df-2)*(2*z3-5*z)/9+(df-2)*z/2)/sig6
+    )
+    delta <- max(delta,0)
+    return(delta)
+  }
+
+  chisqModel <- c(fm["chisq"], use.names = FALSE)
+  chisqBaseline <- c(fm["baseline.chisq"], use.names = FALSE)
+  df <- c(fm["df"], use.names = FALSE)
+  dfBaseline <- c(fm["baseline.df"], use.names = FALSE)
+  n <- lavaan::lavInspect(fit, what = "ntotal")
+
+  delta_t <- ncp_chi2(alpha, chisqModel, df)
+  rmsea_t <- sqrt(delta_t / (df*(n-1)))
+
+  delta_t <- ncp_chi2(alpha/2, chisqModel, df)
+  delta_bt <- ncp_chi2(1-alpha/2, chisqBaseline, dfBaseline)
+  cfi_t <- 1 - max(delta_t, 0) / max(delta_t, delta_bt, 0)
+
+  rmsea_e05 <- exp(2.06034 - 0.62974*log(df) + 0.02512*log(df)*log(df) - 0.98388*log(n-1) + 0.05442*log(n-1)*log(n-1) - 0.00005188*(n-1) + 0.05260*log(df)*log(n-1))
+  rmsea_e08 <- exp(2.84129 - 0.54809*log(df) + 0.02296*log(df)*log(df) - 0.76005*log(n-1) + 0.10229*log(n-1)*log(n-1) - 1.11167*((n-1)^.2) + 0.04845*log(df)*log(n-1))
+
+  cfi_e90 <- 1 - exp(5.96633 - .40425*log(df) + .01384*((log(df))^2) - .00411*((log(dfBaseline))^2) - 1.20242*log(n-1) + .18763*((log(n-1))^2) - 2.06704*((n-1)^(1/5)) + .05245*log(df)*log(n-1) - .01533*log(dfBaseline)*log(n-1))
+  cfi_e95 <- 1 - exp(4.12132 - .46285*log(df) + .52478*(df^(1/5)) - .31832*((dfBaseline)^(1/5)) - 1.74422*log(n-1) + .13042*((log(n-1))^2) - .02360*((n-1)^(1/2)) + .04215*log(df)*log(n-1))
+
+
+  fm <- c(fm, rmsea.t = rmsea_t, cfi.t = cfi_t, rmsea.t.e05 = rmsea_e05, rmsea.t.e08 = rmsea_e08, cfi.t.e90 = cfi_e90, cfi.t.e95 = cfi_e95)
+
+  return(fm)
+}
+
+
+.optionsForOutput <- function() {
+
+  outNames <- data.frame(lavNames = c("satorra.bentler", "yuan.bentler",
+                                      "yuan.bentler.mplus", "mean.var.adjusted", "scaled.shifted",
+                                      "bollen.stine", "browne.residual.adf", "browne.residual.nt",
+                                      "robust.sem", "robust.huber.white", "first.order"),
+                         jaspNames = gettext("Satorra-Bentler", "Yuan-Bentler", "Yuan-Bentler Mplus",
+                                       "mean and variance-adjusted", "scaled and shifted", "bootstrap (Bollen-Stine)",
+                                       "Browne residual based (ADF)", "Browne residual based (NT)",
+                                       "robust", "robust Huber-White", "first-order"),
+                         stringsAsFactors = FALSE)
+
+  return(outNames)
 }

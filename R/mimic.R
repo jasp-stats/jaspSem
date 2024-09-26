@@ -46,7 +46,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   if (length(options$indicators) < 3 || length(options$predictors) == 0) return(FALSE)
 
   # Check for missing value handling
-  if (options$estimator %in% c("gls", "wls", "uls", "dwls") && options$naAction == "fiml")
+  if (options$estimator %in% c("gls", "wls", "uls", "dwls") && anyNA(dataset) && options$naAction == "fiml")
     jaspBase:::.quitAnalysis(gettext("FIML only available with ML-type estimators."))
 
   # Exogenous variables can be binary or continuous
@@ -84,7 +84,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 
       admissible <- vapply(endo, function(endo_var) {
         var <- na.omit(dataset[[endo_var]])
-        if (is.ordered(var) && options$naAction == "fiml") {
+        if (is.ordered(var) && anyNA(dataset) && options$naAction == "fiml") {
           return(FALSE)
         }
         return(TRUE)
@@ -106,13 +106,16 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 # Results functions ----
 
 .mimicComputeResults <- function(modelContainer, dataset, options, ready) {
+
+  miss <- if (anyNA(dataset)) options[["naAction"]] else "listwise"
+
   mimicResult <- try(lavaan::sem(
     model           = .mimicToLavMod(options),
     data            = dataset,
     se              = ifelse(options$errorCalculationMethod == "bootstrap", "standard", options$errorCalculationMethod),
     mimic           = options$emulation,
     estimator       = options$estimator,
-    missing         = options$naAction,
+    missing         = miss,
     std.lv          = TRUE
   ))
 
@@ -129,7 +132,13 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   }
 
   if (options$errorCalculationMethod == "bootstrap") {
-    mimicResult <- lavBootstrap(mimicResult, options$bootstrapSamples)
+    type <- switch(options[["standardizedEstimateType"]],
+                   "all" = "std.all",
+                   "latents" = "std.lv",
+                   "nox" = "std.nox")
+    mimicResult <- lavBootstrap(mimicResult, samples = options[["bootstrapSamples"]],
+                              standard = options[["standardizedEstimate"]],
+                              typeStd = type)
   }
 
   modelContainer[["model"]] <- createJaspState(mimicResult)
@@ -175,7 +184,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
     modelContainer$dependOn(c(
       "predictors", "indicators", "includemeanstructure",
       "bootstrapSamples", "emulation", "errorCalculationMethod", "estimator",
-      "naAction")
+      "naAction", "standardizedEstimate", "standardizedEstimateType")
     )
     jaspResults[["modelContainer"]] <- modelContainer
   }
@@ -186,7 +195,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 .mimicFitTable <- function(modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["fittab"]])) return()
 
-  fittab <- createJaspTable(title = gettext("Chi Square test"))
+  fittab <- createJaspTable(title = gettext("Chi-square test"))
   fittab$position <- 0
 
   fittab$addColumnInfo(name="Model", title = "",                      type = "string")
@@ -216,90 +225,28 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 }
 
 .mimicAdditionalFit <- function(modelContainer, options, ready) {
-  if (!options$additionalFitMeasures || !is.null(modelContainer[["addfit"]])) return()
-  fitms <- createJaspContainer(gettext("Additional fit measures"))
-  fitms$dependOn("additionalFitMeasures")
-  fitms$position <- 0.75
+  if (!options[["additionalFitMeasures"]] || !is.null(modelContainer[["fitIndices"]])) return()
 
-  # Fit indices
-  fitms[["indices"]] <- fitin <- createJaspTable(gettext("Fit indices"))
-  fitin$addColumnInfo(name = "index", title = gettext("Index"), type = "string")
-  fitin$addColumnInfo(name = "value", title = gettext("Value"), type = "number", format = "sf:4;dp:3")
-  fitin$setExpectedSize(rows = 1, cols = 2)
+  fitinds <- .additionalFitTables(modelContainer, dataset, options, ready)
 
-  # information criteria
-  fitms[["incrits"]] <- fitic <- createJaspTable(gettext("Information criteria"))
-  fitic$addColumnInfo(name = "index", title = "",               type = "string")
-  fitic$addColumnInfo(name = "value", title = gettext("Value"), type = "number", format = "sf:4;dp:3")
-  fitic$setExpectedSize(rows = 1, cols = 2)
-
-  # other fit measures
-  fitms[["others"]] <- fitot <- createJaspTable(gettext("Other fit measures"))
-  fitot$addColumnInfo(name = "index", title = gettext("Metric"), type = "string")
-  fitot$addColumnInfo(name = "value", title = gettext("Value"),  type = "number", format = "sf:4;dp:3")
-  fitot$setExpectedSize(rows = 1, cols = 2)
-
-  modelContainer[["addfit"]] <- fitms
-
-  if (!ready || modelContainer$getError()) return()
-
-  # actually compute the fit measures
-  fm <- lavaan::fitmeasures(modelContainer[["model"]][["object"]])
-
-  # Fit indices
-  fitin[["index"]] <- c(
-    gettext("Comparative Fit Index (CFI)"),
-    gettext("Tucker-Lewis Index (TLI)"),
-    gettext("Bentler-Bonett Non-normed Fit Index (NNFI)"),
-    gettext("Bentler-Bonett Normed Fit Index (NFI)"),
-    gettext("Parsimony Normed Fit Index (PNFI)"),
-    gettext("Bollen's Relative Fit Index (RFI)"),
-    gettext("Bollen's Incremental Fit Index (IFI)"),
-    gettext("Relative Noncentrality Index (RNI)")
-  )
-  fitin[["value"]] <- fm[c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni")]
-
-  # information criteria
-  fitic[["index"]] <- c(
-    gettext("Log-likelihood"),
-    gettext("Number of free parameters"),
-    gettext("Akaike (AIC)"),
-    gettext("Bayesian (BIC)"),
-    gettext("Sample-size adjusted Bayesian (SSABIC)")
-  )
-  fitic[["value"]] <- fm[c("logl", "npar", "aic", "bic", "bic2")]
-
-  # other fitmeasures
-  fitot[["index"]] <- c(
-    gettext("Root mean square error of approximation (RMSEA)"),
-    gettextf("RMSEA 90%% CI lower bound"),
-    gettextf("RMSEA 90%% CI upper bound"),
-    gettext("RMSEA p-value"),
-    gettext("Standardized root mean square residual (SRMR)"),
-    gettextf("Hoelter's critical N (%s = .05)","\u03B1"),
-    gettextf("Hoelter's critical N (%s = .01)","\u03B1"),
-    gettext("Goodness of fit index (GFI)"),
-    gettext("McDonald fit index (MFI)"),
-    gettext("Expected cross validation index (ECVI)")
-  )
-  fitot[["value"]] <- fm[c("rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
-                           "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")]
-
-  return()
+  fitinds$position <- .75
+  modelContainer[["fitIndices"]] <- fitinds
 }
 
 .mimicParTable <- function(modelContainer, options, ready) {
   if (!is.null(modelContainer[["parest"]])) return()
   modelContainer[["parest"]] <- pecont <- createJaspContainer(gettext("Parameter estimates"))
-  pecont$dependOn(options = c("ciLevel", "bootstrapCiType", "standardizedEstimate"))
+  pecont$dependOn(options = c("ciLevel", "bootstrapCiType"))
   pecont$position <- 0.5
+
+  estTitle <- ifelse(options[["standardizedEstimate"]], gettext("Std. estimate"), gettext("Estimate"))
 
   ## betas
   bettab <- createJaspTable(title = gettext("Predictor coefficients"))
 
   bettab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string")
-  bettab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
-  bettab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  bettab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
+  bettab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
   bettab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   bettab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   bettab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -307,14 +254,6 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   bettab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  if (options$standardizedEstimate) {
-    bettab$addColumnInfo(name = "std.all", title = gettext("All"),  type = "number", format = "sf:4;dp:3",
-                         overtitle = gettext("Standardized"))
-    bettab$addColumnInfo(name = "std.lv",  title = gettext("LV"),   type = "number", format = "sf:4;dp:3",
-                         overtitle = gettext("Standardized"))
-    bettab$addColumnInfo(name = "std.nox", title = gettext("Endo"), type = "number", format = "sf:4;dp:3",
-                         overtitle = gettext("Standardized"))
-  }
 
   pecont[["bet"]] <- bettab
 
@@ -322,23 +261,14 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   lamtab <- createJaspTable(title = gettext("Indicator coefficients"))
 
   lamtab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
-  lamtab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number", format = "sf:4;dp:3")
-  lamtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
+  lamtab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
+  lamtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
   lamtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   lamtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   lamtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   lamtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-
-  if (options$standardizedEstimate) {
-    lamtab$addColumnInfo(name = "std.all", title = gettext("All"),    type = "number", format = "sf:4;dp:3",
-                         overtitle = gettext("Standardized"))
-    lamtab$addColumnInfo(name = "std.lv",  title = gettext("Latent"), type = "number", format = "sf:4;dp:3",
-                         overtitle = gettext("Standardized"))
-    lamtab$addColumnInfo(name = "std.nox", title = gettext("Endo"),   type = "number", format = "sf:4;dp:3",
-                         overtitle = gettext("Standardized"))
-  }
 
   pecont[["lam"]] <- lamtab
 
@@ -348,10 +278,26 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
                             ifelse(options[["bootstrapCiType"]] == "percentile", "perc",
                                    "norm"))
 
-  pe <- lavaan::parameterEstimates(modelContainer[["model"]][["object"]],
-                                   boot.ci.type = bootstrapCiType,
-                                   level = options$ciLevel,
-                                   standardized = TRUE)
+  #' we need the second option in the if statement because when we require standardized estimates and bootstrapped CIs
+  #' the standardization happens in each bootstrap run and the standardized estimates replace the regular raw estimates
+  #' in the fit object, and we only need to call parameterEstimates
+
+  fit <- modelContainer[["model"]][["object"]]
+
+  if (!options[["standardizedEstimate"]] ||
+      (options[["standardizedEstimate"]] && options[["errorCalculationMethod"]] == "bootstrap")) {
+    pe <- lavaan::parameterestimates(fit, level = options[["ciLevel"]],
+                                     boot.ci.type = bootstrapCiType)
+
+  } else {
+    type <- switch(options[["standardizedEstimateType"]],
+                   "all" = "std.all",
+                   "latents" = "std.lv",
+                   "nox" = "std.nox")
+    pe <- lavaan::standardizedSolution(fit, level = options[["ciLevel"]], type = type)
+    colnames(pe)[colnames(pe) == "est.std"] <- "est"
+
+  }
 
   pe_bet <- pe[substr(pe$label, 1, 1) == "b", ]
   bettab[["rhs"]]      <- pe_bet$rhs
@@ -362,12 +308,6 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   bettab[["ci.lower"]] <- pe_bet$ci.lower
   bettab[["ci.upper"]] <- pe_bet$ci.upper
 
-  if (options$standardizedEstimate) {
-    bettab[["std.all"]] <- pe_bet$std.all
-    bettab[["std.lv"]]  <- pe_bet$std.lv
-    bettab[["std.nox"]] <- pe_bet$std.nox
-  }
-
   pe_lam <- pe[substr(pe$label, 1, 1) == "l", ]
   lamtab[["rhs"]]      <- pe_lam$rhs
   lamtab[["est"]]      <- pe_lam$est
@@ -377,11 +317,6 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   lamtab[["ci.lower"]] <- pe_lam$ci.lower
   lamtab[["ci.upper"]] <- pe_lam$ci.upper
 
-  if (options$standardizedEstimate) {
-    lamtab[["std.all"]] <- pe_lam$std.all
-    lamtab[["std.lv"]]  <- pe_lam$std.lv
-    lamtab[["std.nox"]] <- pe_lam$std.nox
-  }
 }
 
 .mimicRsquared <- function(modelContainer, options, ready) {

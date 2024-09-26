@@ -15,25 +15,12 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# This is a temporary fix
-# TODO: remove it when R will solve this problem!
-gettextf <- function(fmt, ..., domain = NULL)  {
-  return(sprintf(gettext(fmt, domain = domain), ...))
-}
 
 # Function commonly used in the various procedures within the SEM module
 
-lavBootstrap <- function(fit, samples = 1000) {
-  # Run bootstrap, track progress with progress bar
-  # Notes: faulty runs are simply ignored
-  # recommended: add a warning if not all boot samples are successful
-  # fit <- lavBootstrap(fit, samples = 1000)
-  # if (nrow(fit@boot$coef) < 1000)
-  #  tab$addFootnote(gettextf("Not all bootstrap samples were successful: CI based on %.0f samples.", nrow(fit@boot$coef)),
-  #                  "<em>Note.</em>")
+lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL) {
 
-
-  coef_with_callback <- function(lav_object) {
+  coefWithCallback <- function(lav_object) {
     # Progress bar is ticked every time coef() is evaluated, which happens once on the main object:
     # https://github.com/yrosseel/lavaan/blob/77a568a574e4113245e2f6aff1d7c3120a26dd90/R/lav_bootstrap.R#L107
     # and then every time on a successful bootstrap:
@@ -42,13 +29,49 @@ lavBootstrap <- function(fit, samples = 1000) {
     progressbarTick()
     return(lavaan::coef(lav_object))
   }
+
+  coefWithCallbackStd <- function(lav_object, typeStd) {
+    std <- lavaan::standardizedSolution(lav_object, type = typeStd)
+    out <- std$est.std
+
+    progressbarTick()
+
+    return(out)
+  }
+
   startProgressbar(samples + 1)
 
-  bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coef_with_callback)
+  if (!standard) {
+    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallback)
+  } else {
+    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallbackStd, typeStd = typeStd)
+  }
 
   # Add the bootstrap samples to the fit object
   fit@boot       <- list(coef = bootres)
   fit@Options$se <- "bootstrap"
+
+  # exclude error bootstrap runs
+  errId <- attr(fit@boot$coef, "error.idx")
+  if (length(errId) > 0L) {
+    fit@boot$coef <- fit@boot$coef[-errId, , drop = FALSE]
+  }
+
+  # we actually need the SEs from the bootstrap not the SEs from ML or some other estimator
+  N <- nrow(fit@boot$coef)
+
+  # we multiply the var by (n-1)/n because lavaan actually uses n for the variance instead of n-1
+  if (!standard) {
+    # for unstandardized
+    fit@ParTable$se[fit@ParTable$free != 0] <- apply(fit@boot$coef, 2, sd) * sqrt((N-1)/N)
+  } else {
+    fit@ParTable$se <- apply(fit@boot$coef, 2, sd) * sqrt((N-1)/N)
+    # the standardized solution gives all estimates not only the unconstrained, so we need to change
+    # the free prameters in the partable and also change the estimate
+    fit@ParTable$free <- seq_len(ncol(fit@boot$coef))
+    std <- lavaan::standardizedSolution(fit, type = typeStd)
+    fit@ParTable$est <- std$est.std
+  }
 
   return(fit)
 }
@@ -557,5 +580,65 @@ lavBootstrap <- function(fit, samples = 1000) {
   }
   return(list(best.param = best.param, best.obj = best.obj,
               model.history = do.call(rbind, model.history)))
+}
+
+
+.additionalFitTables <- function(modelContainer, dataset, options, ready) {
+
+  fitinds <- createJaspTable(gettext("Fit indices"))
+  fitinds$dependOn("additionalFitMeasures")
+
+  fitinds$addColumnInfo(name = "index", title = gettext("Index"), type = "string")
+  fitinds$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
+
+  if (!ready || modelContainer$getError()) return(fitinds)
+
+  # actually compute the fit measures
+  fit <- modelContainer[["model"]][["object"]]
+  fm <- lavaan::fitmeasures(fit)
+  indexStrings <- c(gettext("Comparative Fit Index (CFI)"),
+                    gettext("Tucker-Lewis Index (TLI)"),
+                    gettext("Bentler-Bonett Non-normed Fit Index (NNFI)"),
+                    gettext("Bentler-Bonett Normed Fit Index (NFI)"),
+                    gettext("Parsimony Normed Fit Index (PNFI)"),
+                    gettext("Bollen's Relative Fit Index (RFI)"),
+                    gettext("Bollen's Incremental Fit Index (IFI)"),
+                    gettext("Relative Noncentrality Index (RNI)"),
+                    gettext("Root mean square error of approximation (RMSEA)"),
+                    gettextf("RMSEA 90%% CI lower bound"),
+                    gettextf("RMSEA 90%% CI upper bound"),
+                    gettext("RMSEA p-value"),
+                    gettext("Standardized root mean square residual (SRMR)"),
+                    gettextf("Hoelter's critical N (%s = .05)","\u03B1"),
+                    gettextf("Hoelter's critical N (%s = .01)","\u03B1"),
+                    gettext("Goodness of fit index (GFI)"),
+                    gettext("McDonald fit index (MFI)"),
+                    gettext("Expected cross validation index (ECVI)"))
+
+  # information criteria
+  estimatorName <- fit@Options$estimator
+  if (grepl("ML", estimatorName)) {
+    indexStrings <- c(indexStrings,
+                      gettext("Log-likelihood"),
+                      gettext("Number of free parameters"),
+                      gettext("Akaike (AIC)"),
+                      gettext("Bayesian (BIC)"),
+                      gettext("Sample-size adjusted Bayesian (SSABIC)"))
+  }
+
+  fitinds[["index"]] <- indexStrings
+
+  estimateNames <- c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni",
+                     "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue",
+                     "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")
+  if (grepl("ML", estimatorName)) {
+    estimateNames <- c(estimateNames, "logl", "npar", "aic", "bic", "bic2")
+  }
+
+  estimates <- fm[estimateNames]
+
+  fitinds[["value"]] <- estimates
+
+  return(fitinds)
 }
 

@@ -8,8 +8,9 @@ test_that("Simple mediation analysis works", {
   options$emulation              <- "lavaan"
   options$estimator              <- "ml"
   options$errorCalculationMethod <- "standard"
+  options$ciLevel                <- 0.95
   options$naAction               <- "fiml"
-  results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
+  results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options)
 
   dir_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
   ind_tab <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_ind"]][["data"]]
@@ -53,6 +54,7 @@ test_that("Categorical confounders work", {
   options$emulation      <- "lavaan"
   options$estimator      <- "ml"
   options$errorCalculationMethod <- "standard"
+  options$ciLevel                <- 0.95
   options$naAction       <- "fiml"
   results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
 
@@ -74,6 +76,7 @@ test_that("Multiple mediation with missing values works", {
   options$emulation      <- "lavaan"
   options$estimator      <- "ml"
   options$errorCalculationMethod <- "standard"
+  options$ciLevel                <- 0.95
   options$naAction       <- "fiml"
   results <- jaspTools::runAnalysis("MediationAnalysis","test.csv", options)
 
@@ -170,53 +173,109 @@ test_that("Multiple mediation with missing values works", {
 })
 
 
-test_that("Bootstrapping works", {
-  options                  <- jaspTools::analysisOptions("MediationAnalysis")
-  options$predictors       <- "contcor1"
-  options$mediators        <- "contcor2"
-  options$outcomes         <- "contNormal"
-  options$emulation        <- "lavaan"
-  options$estimator        <- "ml"
-  options$errorCalculationMethod   <- "bootstrap"
-  options$bootstrapSamples <- 100
-  options$bootstrapCiType  <- "percentileBiasCorrected"
-  options$naAction         <- "fiml"
+# bootstrapped mediation analysis works
+options                  <- jaspTools::analysisOptions("MediationAnalysis")
+options$predictors       <- "contcor1"
+options$mediators        <- "contcor2"
+options$outcomes         <- "contNormal"
+options$emulation        <- "lavaan"
+options$estimator        <- "ml"
+options$errorCalculationMethod   <- "bootstrap"
+options$ciLevel                <- 0.95
+options$bootstrapSamples <- 100
+options$bootstrapCiType  <- "percentileBiasCorrected"
+options$naAction         <- "fiml"
 
-  set.seed(1)
-  results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options)
+set.seed(1)
+results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options)
 
-  # Direct effects table results match
+test_that("Direct effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.0761400441341873, 0.671443275931252, 0.257757857221231, "contcor1",
-                                      "<unicode>", 0.0585458466298006, "contNormal", 0.136265300259528,
-                                      1.89158837011558),
-                                 label = "Direct effects table results match")
+                                 list(0.0761400441342019, 0.671443275931248, 0.257757843176866, "contcor1",
+                                      "<unicode>", 0.0589199802205698, "contNormal", 0.136467182830779,
+                                      1.88878994810415))
+})
 
-  # Indirect effects table results match
+test_that("Indirect effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_ind"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.299720825954288, 0.07329367848577, -0.0893136271813779, "contcor2",
-                                      "<unicode>", "<unicode>", 0.32161886441617, 0.0901123252539836,
-                                      "contcor1", "contNormal", -0.991136638963043),
-                                 label = "Indirect effects table results match")
+                                 list(-0.299720825954233, 0.073293678485771, -0.0893136104463747, "contcor2",
+                                      "<unicode>", "<unicode>", 0.321618931630391, 0.0901123208859354,
+                                      "contcor1", "contNormal", -0.991136501294072))
+})
 
-  # Total effects table results match
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_tot"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list(-0.00126714302931763, 0.440665080716848, 0.168444230039853, "contcor1",
-                                      "<unicode>", 0.102761018524938, "contNormal", 0.103237851474511,
-                                      1.63161309184588),
-                                 label = "Total effects table results match")
-  # Path coefficients table results match
+test_that("Path coefficients table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_path"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.475862353202891, 0.110585516049068, -0.136980438302071, "contcor2",
-                                      "<unicode>", 0.318469030743472, "contNormal", 0.137308753597124,
-                                      -0.997608926696571, 0.0761400441341873, 0.671443275931252, 0.257757844059186,
-                                      "contcor1", "<unicode>", 0.0585458547695155, "contNormal", 0.136265297698809,
-                                      1.89158830907129, 0.48165177793888, 0.754639896102569, 0.652017217213314,
-                                      "contcor1", "<unicode>", 0, "contcor2", 0.0748152807686884,
-                                      8.71502733818777),
-                                 label = "Path coefficients table results match")
+                                 list(-0.475862353202892, 0.110585521838546, -0.136980447123533, "contcor2",
+                                      "<unicode>", 0.306661780077382, "contNormal", 0.133998745278152,
+                                      -1.02225171466488, 0.0761400441342019, 0.671443275931248, 0.257757843176866,
+                                      "contcor1", "<unicode>", 0.0589199802205698, "contNormal", 0.136467182830779,
+                                      1.88878994810415, 0.481651777938874, 0.754639896102554, 0.652017220865318,
+                                      "contcor1", "<unicode>", 0, "contcor2", 0.06513006081573, 10.0110027950081
+                                 ))
+})
+
+test_that("Total effects table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_tot"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-0.00126714302930483, 0.440665080716848, 0.168444232730491, "contcor1",
+                                      "<unicode>", 0.102761008345243, "contNormal", 0.103237850067971,
+                                      1.63161314013793))
+})
+
+
+# bootstrapped mediation analysis works with standardized CI
+options                  <- jaspTools::analysisOptions("MediationAnalysis")
+options$predictors       <- "contcor1"
+options$mediators        <- "contcor2"
+options$outcomes         <- "contNormal"
+options$standardizedEstimate <- TRUE
+options$standardizedEstimateType <- "all"
+options$emulation        <- "lavaan"
+options$estimator        <- "ml"
+options$errorCalculationMethod   <- "bootstrap"
+options$bootstrapSamples <- 100
+options$bootstrapCiType  <- "percentile"
+options$ciLevel                <- 0.95
+options$naAction         <- "fiml"
+
+set.seed(1)
+results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options, makeTests = F)
+
+test_that("Direct effects table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(0.00203607928291166, 0.515217977105027, 0.246415337256947, "contcor1",
+                                      "<unicode>", 0.0454269308884425, "contNormal", 0.123165817830769,
+                                      2.0006795846192))
+})
+
+test_that("Indirect effects table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_ind"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-0.285927353530278, 0.072679544829816, -0.085383409360225, "contcor2",
+                                      "<unicode>", "<unicode>", 0.323289823674984, 0.086444958200602,
+                                      "contcor1", "contNormal", -0.987719945009244))
+})
+
+test_that("Path coefficients table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_path"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-0.423032428335729, 0.125618203679588, -0.129957536543631, "contcor2",
+                                      "<unicode>", 0.299640536185824, "contNormal", 0.12529595637462,
+                                      -1.03720455395283, 0.00203607928291166, 0.515217977105027, 0.246415337256947,
+                                      "contcor1", "<unicode>", 0.0454269308884425, "contNormal", 0.123165817830769,
+                                      2.0006795846192, 0.514802944243485, 0.794776932027742, 0.657010063679986,
+                                      "contcor1", "<unicode>", 0, "contcor2", 0.0623901955114432,
+                                      10.5306620422352))
+})
+
+test_that("Total effects table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_tot"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-0.0364757008466789, 0.347861388237319, 0.161031927896722, "contcor1",
+                                      "<unicode>", 0.0988448047762278, "contNormal", 0.0975667259740126,
+                                      1.65047997961533))
 })
