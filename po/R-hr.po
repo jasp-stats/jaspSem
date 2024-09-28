@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.19.0\n"
-"POT-Creation-Date: 2024-08-10 02:46\n"
+"POT-Creation-Date: 2024-09-28 02:53\n"
 "PO-Revision-Date: 2024-08-30 13:09+0000\n"
 "Last-Translator: Katarina Kostelić <katarina.kostelic@gmail.com>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -14,102 +14,6 @@ msgstr ""
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Generator: Weblate 5.7.1-dev\n"
 
-msgid "The model could not be estimated due to nonconvergence."
-msgstr "Nije moguće procijeniti model jer ne konvergira."
-
-msgid "The model could not be estimated: No degrees of freedom left."
-msgstr ""
-"Nije moguće procijeniti model: nije preostao niti jedan stupanj slobode."
-
-msgid "Chi-square Test"
-msgstr "Hi-kvadrat test"
-
-msgid "Baseline model"
-msgstr "Bazni model"
-
-msgid "Growth curve model"
-msgstr "Model krivulje rasta"
-
-msgid "The model is not admissible: %s"
-msgstr "Takav model nije dopušten: %s"
-
-msgid "Warning."
-msgstr "Upozorenje."
-
-msgid "Parameter estimates"
-msgstr "Procijenjeni parametri"
-
-msgid "Component"
-msgstr "Komponenta"
-
-msgid "Parameter"
-msgstr "Parametar"
-
-msgid "Estimate"
-msgstr "Procijenjena vrijednost"
-
-msgid "Std. Error"
-msgstr "Standardna pogreška"
-
-msgid "z-value"
-msgstr "z-vrijednost"
-
-msgid "p"
-msgstr "p-vrijednost"
-
-msgid "Lower"
-msgstr "donja"
-
-msgid "95%% Confidence Interval"
-msgstr "95%% interval povjerenja"
-
-msgid "Latent covariances"
-msgstr "Latentne kovarijance"
-
-msgid "LV"
-msgstr "LV"
-
-msgid "Std. Est."
-msgstr ""
-
-msgid "All"
-msgstr "Sve"
-
-msgid "No X"
-msgstr ""
-
-msgid "Predictor"
-msgstr "Prediktor"
-
-msgid "Variable"
-msgstr "Varijabla"
-
-msgid "Intercept"
-msgstr "Odsječak"
-
-msgid "Linear slope"
-msgstr "Linearni nagib"
-
-msgid "Quadratic slope"
-msgstr "Kvadratni nagib"
-
-msgid "Cubic slope"
-msgstr "Kubni nagib"
-
-msgid "Mean"
-msgstr "Prosjek"
-
-msgid "Variance"
-msgstr "Varijanca"
-
-msgid "Residual variance is negative. This may indicate model misspecification."
-msgstr ""
-"Rezidualna varijanca je negativna. To može ukazivati na pogrešnu "
-"specifikaciju modela."
-
-msgid "Additional Fit measures"
-msgstr "Dodatne mjere pristajanja ('Fit' )"
-
 msgid "Fit indices"
 msgstr "Mjere pristajanja ('Fit'-a)"
 
@@ -118,17 +22,6 @@ msgstr "Indeks"
 
 msgid "Value"
 msgstr "Vrijednost"
-
-msgid "Information criteria"
-msgstr "Informacijski kriteriji"
-
-#, fuzzy
-msgid "Other fit measures"
-msgstr "Ostale mjere pristajanja ('Fit')"
-
-#, fuzzy
-msgid "Metric"
-msgstr "Mjera"
 
 msgid "Comparative Fit Index (CFI)"
 msgstr "Komparativni indeks pristajanja (CFI)"
@@ -153,21 +46,6 @@ msgstr "Bollen's inkrementalni indeks pristajanja (IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
 msgstr "Indeks relativne necentralnosti (RNI)"
-
-msgid "Log-likelihood"
-msgstr "Log-vjerojatnost"
-
-msgid "Number of free parameters"
-msgstr "Broj slobodnih parametara"
-
-msgid "Akaike (AIC)"
-msgstr "Akaike informacijski kriterij (AIC)"
-
-msgid "Bayesian (BIC)"
-msgstr "Bajezijanski informacijski kriterij (BIC)"
-
-msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr "Bayezijanski informacijski kriterij prilagođen veličini uzorka (SSABIC)"
 
 msgid "Root mean square error of approximation (RMSEA)"
 msgstr "Korijen prosječne kvadratne pogreške aproksimacije (RMSEA)"
@@ -199,6 +77,110 @@ msgstr "McDonaldov indeks pristajanja (MFI)"
 msgid "Expected cross validation index (ECVI)"
 msgstr "Očekivani indeks unakrsne validacije (ECVI)"
 
+msgid "Log-likelihood"
+msgstr "Log-vjerojatnost"
+
+msgid "Number of free parameters"
+msgstr "Broj slobodnih parametara"
+
+msgid "Akaike (AIC)"
+msgstr "Akaike informacijski kriterij (AIC)"
+
+msgid "Bayesian (BIC)"
+msgstr "Bajezijanski informacijski kriterij (BIC)"
+
+msgid "Sample-size adjusted Bayesian (SSABIC)"
+msgstr ""
+"Bayezijanski informacijski kriterij prilagođen veličini uzorka (SSABIC)"
+
+msgid "The model could not be estimated due to nonconvergence."
+msgstr "Nije moguće procijeniti model jer ne konvergira."
+
+msgid "The model could not be estimated: No degrees of freedom left."
+msgstr ""
+"Nije moguće procijeniti model: nije preostao niti jedan stupanj slobode."
+
+#, fuzzy
+msgid "Chi-square test"
+msgstr "Hi-kvadrat test"
+
+msgid "Baseline model"
+msgstr "Bazni model"
+
+msgid "Growth curve model"
+msgstr "Model krivulje rasta"
+
+msgid "The model is not admissible: %s"
+msgstr "Takav model nije dopušten: %s"
+
+msgid "Warning."
+msgstr "Upozorenje."
+
+msgid "Parameter estimates"
+msgstr "Procijenjeni parametri"
+
+#, fuzzy
+msgid "Std. estimate"
+msgstr "Procijenjena vrijednost"
+
+msgid "Estimate"
+msgstr "Procijenjena vrijednost"
+
+msgid "Component"
+msgstr "Komponenta"
+
+msgid "Parameter"
+msgstr "Parametar"
+
+#, fuzzy
+msgid "Std. error"
+msgstr "Standardna pogreška"
+
+msgid "z-value"
+msgstr "z-vrijednost"
+
+msgid "p"
+msgstr "p-vrijednost"
+
+msgid "Lower"
+msgstr "donja"
+
+msgid "%s%% Confidence Interval"
+msgstr "%s%% Interval povjerenja"
+
+msgid "Latent covariances"
+msgstr "Latentne kovarijance"
+
+msgid "Predictor"
+msgstr "Prediktor"
+
+msgid "Variable"
+msgstr "Varijabla"
+
+msgid "Intercept"
+msgstr "Odsječak"
+
+msgid "Linear slope"
+msgstr "Linearni nagib"
+
+msgid "Quadratic slope"
+msgstr "Kvadratni nagib"
+
+msgid "Cubic slope"
+msgstr "Kubni nagib"
+
+msgid "Mean"
+msgstr "Prosjek"
+
+msgid "Variance"
+msgstr "Varijanca"
+
+msgid ""
+"Residual variance is negative. This may indicate model misspecification."
+msgstr ""
+"Rezidualna varijanca je negativna. To može ukazivati na pogrešnu "
+"specifikaciju modela."
+
 msgid "R-Squared"
 msgstr "R-kvadrat"
 
@@ -227,27 +209,33 @@ msgstr "Krivulja + varijanca"
 msgid "Curve + parameter uncertainty"
 msgstr "Krivulja + parametar neizvjesnosti"
 
-msgid "FIML only available with ML-type estimators."
-msgstr "FIML je dostupan samo uz estimatore tipa ML."
-
-msgid "Not all exogenous variables are admissible. Inadmissible exogenous variables: %s. Only binary or continuous exogenous variables allowed."
+msgid ""
+"Not all exogenous variables are admissible. Inadmissible exogenous "
+"variables: %s. Only binary or continuous exogenous variables allowed."
 msgstr ""
 "Nisu sve egzogene varijable dopuštene. Nedopustive egzogene varijable: %s. "
 "Dopuštene su samo binarne ili kontinuirane egzogene varijable."
 
-msgid "Not all endogenous variables are admissible. Inadmissible endogenous variables: %s. Only scale or ordinal endogenous variables allowed."
+msgid ""
+"Not all endogenous variables are admissible. Inadmissible endogenous "
+"variables: %s. Only scale or ordinal endogenous variables allowed."
 msgstr ""
 "Nisu sve endogene varijable dopuštene. Nedopustive endogene varijable: %s. "
 "Dopuštene su samo endogene varijable mjerene na omjernoj ili ordinalnoj "
 "ljestvici."
 
-msgid "FIML missing value handling only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s"
+msgid ""
+"FIML missing value handling only available when all endogenous variables are "
+"of scale type. Ordinal endogenous variables in the model: %s"
 msgstr ""
 "Rukovanje nedostajućim vrijednostima tipa FIML dostupno je samo kada su sve "
 "endogene varijable mjerene na omjernoj ljestvici. Endogene varijable u "
 "modelu mjerene na ordinalnoj ljestvici: %s"
 
-msgid "Estimation failed\nMessage:\n%s"
+msgid ""
+"Estimation failed\n"
+"Message:\n"
+"%s"
 msgstr ""
 "Procjena nije uspjela\n"
 "Poruka:\n"
@@ -255,9 +243,6 @@ msgstr ""
 
 msgid "Direct effects"
 msgstr "Direktni efekti"
-
-msgid "%s%% Confidence Interval"
-msgstr "%s%% Interval povjerenja"
 
 msgid "Upper"
 msgstr "Gornja"
@@ -274,53 +259,36 @@ msgstr "Rezidualne kovarijance"
 msgid "Path coefficients"
 msgstr "Koeficijenti puta"
 
-msgid "Delta method"
-msgstr "Delta metoda"
-
-msgid "Robust"
-msgstr "Robusno"
-
-msgid "percentile bootstrap"
+msgid "Estimator is %s."
 msgstr ""
 
-msgid "normal theory bootstrap"
-msgstr ""
-
-msgid "bias-corrected percentile bootstrap"
-msgstr ""
-
-msgid "normal theory"
-msgstr ""
-
-msgid "robust"
-msgstr ""
-
-msgid "%1$s standard errors, %2$s confidence intervals."
-msgstr ""
-
-msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all bootstrap samples were successful: CI based on %4$.0f samples."
-msgstr ""
-
-msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
+msgid ""
+"%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
 msgstr ""
 
 msgid "Path plot"
 msgstr ""
 
-msgid "Currently it is not possible to plot mediation models with ordinal variables. The plot could not be generated."
+msgid ""
+"Currently it is not possible to plot mediation models with ordinal "
+"variables. The plot could not be generated."
 msgstr ""
 
-msgid "The plot could not be generated. The underlying code resulted in the following error message: %s"
+msgid ""
+"The plot could not be generated. The underlying code resulted in the "
+"following error message: %s"
 msgstr ""
 
 msgid "Model syntax"
 msgstr ""
 
-msgid "Estimation failed! Message: The model did not converge. Try using a different estimator or specify an other MIMIC model."
-msgstr ""
+msgid "FIML only available with ML-type estimators."
+msgstr "FIML je dostupan samo uz estimatore tipa ML."
 
-msgid "Chi Square test"
-msgstr "Hi-kvadrat test"
+msgid ""
+"Estimation failed! Message: The model did not converge. Try using a "
+"different estimator or specify an other MIMIC model."
+msgstr ""
 
 msgid "df"
 msgstr ""
@@ -331,16 +299,7 @@ msgstr ""
 msgid "Factor model"
 msgstr ""
 
-msgid "Additional fit measures"
-msgstr ""
-
 msgid "Predictor coefficients"
-msgstr ""
-
-msgid "Standardized"
-msgstr ""
-
-msgid "Endo"
 msgstr ""
 
 msgid "Indicator coefficients"
@@ -348,9 +307,6 @@ msgstr ""
 
 msgid "Indicator"
 msgstr "Indikator"
-
-msgid "Latent"
-msgstr "Latentna"
 
 msgid "Model plot not available with ordinal variables"
 msgstr ""
@@ -397,6 +353,9 @@ msgstr ""
 msgid "Construct"
 msgstr ""
 
+msgid "Std. Error"
+msgstr "Standardna pogreška"
+
 msgid "Loadings"
 msgstr ""
 
@@ -415,10 +374,14 @@ msgstr ""
 msgid "Endogenous Indicator Prediction"
 msgstr ""
 
-msgid "The target model uses the same weighting approach as the benchmark model, please choose another benchmark."
+msgid ""
+"The target model uses the same weighting approach as the benchmark model, "
+"please choose another benchmark."
 msgstr ""
 
-msgid "For the predicted indicator scores table(s), please select a single benchmark or 'none'."
+msgid ""
+"For the predicted indicator scores table(s), please select a single "
+"benchmark or 'none'."
 msgstr ""
 
 msgid "Prediction Metrics"
@@ -463,7 +426,9 @@ msgstr ""
 msgid "Target Q2 prediction"
 msgstr ""
 
-msgid "There are not enough observations for each k-fold, try setting 'cross-validation k-folds' to a lower number"
+msgid ""
+"There are not enough observations for each k-fold, try setting 'cross-"
+"validation k-folds' to a lower number"
 msgstr ""
 
 msgid "Are all indicator variables set to 'scale'?"
@@ -544,34 +509,48 @@ msgstr ""
 msgid "Implied construct correlation matrix"
 msgstr ""
 
-msgid "FIML missing data handling only available with ML-type estimators"
-msgstr ""
-
-msgid "Mean structure can not be included when data is variance-covariance matrix"
+msgid ""
+"Mean structure can not be included when data is variance-covariance matrix"
 msgstr ""
 
 msgid "Please set the sample size!"
 msgstr ""
 
-msgid "Multiple group analysis not supported when data is variance-covariance matrix"
+msgid ""
+"Multiple group analysis not supported when data is variance-covariance matrix"
 msgstr ""
 
-msgid "Not more cases than number of variables. Is your data a variance-covariance matrix?"
+msgid ""
+"Not more cases than number of variables. Is your data a variance-covariance "
+"matrix?"
 msgstr ""
 
-msgid "When mean structure is included, at least one of the checkboxes to fix the intercepts to zero has to be checked"
+msgid ""
+"When mean structure is included, at least one of the checkboxes to fix the "
+"intercepts to zero has to be checked"
 msgstr ""
 
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr ""
 
-msgid "One or more variables are constants or contain only missing values"
+msgid "One or more variables are constants or contain only missing values."
 msgstr ""
 
-msgid "Missing data handling '%s' is not supported for categorical data,\n                        please select another method under 'Missing data handling'\n                        within the 'Estimation options' tab"
+#, fuzzy
+msgid "Estimation failed. Message: %s"
 msgstr ""
+"Procjena nije uspjela\n"
+"Poruka:\n"
+"%s"
 
-msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
+#, fuzzy
+msgid "Estimation failed! Message: %s did not converge!"
+msgstr ""
+"Procjena nije uspjela\n"
+"Poruka:\n"
+"%s"
+
+msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr ""
 
 msgid "n(Observations)"
@@ -589,41 +568,48 @@ msgstr ""
 msgid "%1$sdf"
 msgstr ""
 
-msgid "A total of %g cases were removed due to missing values. You can avoid this by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
+msgid ""
+"%sFitting the model resulted in warnings. Check the 'Show warnings' box in "
+"the Output Options to see the warnings."
 msgstr ""
 
-msgid "Satorra-Bentler scaled test-statistic"
+msgid "A total of %g cases were removed due to missing values."
 msgstr ""
 
-msgid "Yuan-Bentler scaled test-statistic"
+msgid "Model test is %s."
 msgstr ""
 
-msgid "Yuan-Bentler (Mplus) scaled test-statistic"
+#, fuzzy
+msgid "Information matrix is %s."
+msgstr "Informacijski kriteriji"
+
+msgid "Standard errors are %s."
 msgstr ""
 
-msgid "mean and variance adjusted test-statistic"
-msgstr ""
-
-msgid "scaled and shifted test-statistic"
-msgstr ""
-
-msgid "bootstrap (Bollen-Stine) probability value"
-msgstr ""
-
-msgid "Baseline tests based on %s."
-msgstr ""
-
-msgid "Baseline tests based on %s. Difference tests based on a function of two standard test-statistics."
-msgstr ""
-
-msgid "The AIC, BIC and additional information criteria are only available with ML-type estimators"
+msgid ""
+"%s The AIC, BIC and additional information criteria are only available with "
+"ML-type estimators."
 msgstr ""
 
 msgid "all"
 msgstr ""
 
+msgid "<b>Warnings:</b> %s"
+msgstr ""
+
+#, fuzzy
+msgid "Parameter Estimates"
+msgstr "Procijenjeni parametri"
+
 msgid "Factor Loadings"
 msgstr ""
+
+msgid "Latent"
+msgstr "Latentna"
+
+#, fuzzy
+msgid "%s%% Confidence interval"
+msgstr "%s%% Interval povjerenja"
 
 msgid "Regression coefficients"
 msgstr ""
@@ -643,28 +629,48 @@ msgstr ""
 msgid "Intercepts"
 msgstr ""
 
+msgid "Missing data method 'FIML' forces meanstructure."
+msgstr ""
+
+msgid "Thresholds"
+msgstr ""
+
+msgid "Threshold"
+msgstr ""
+
 msgid "Defined parameters"
 msgstr ""
 
 msgid "Name"
 msgstr ""
 
-msgid "T-size CFI"
+msgid "%s Fit indices are based on the scaled test statistic."
 msgstr ""
 
-msgid "T-size CFI is computed for <i>%1$s = 0.05</i>. The T-size equivalents of the\n                                      conventional CFI cut-off values (poor < 0.90 < fair < 0.95 < close) are <b>poor\n                                      < %2$s < fair < %3$s < close</b> for model: %4$s."
+#, fuzzy
+msgid "T-size fit indices"
+msgstr "Mjere pristajanja ('Fit'-a)"
+
+msgid ""
+"Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness "
+"of Fit: A Note on Using Equivalence Testing to Assess Structural Equation "
+"Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), "
+"148-153, https://doi.org/10.1080/10705511.2016.1225260"
 msgstr ""
 
-msgid "The T-size equivalents of the conventional CFI cut-off values\n                                        (poor < 0.90 < fair < 0.95 < close) are <b>poor < %1$s < fair < %2$s <\n                                        close</b> for model: %3$s."
+msgid "Poor-fair limit"
 msgstr ""
 
-msgid "T-size RMSEA"
+msgid "Fair-close limit"
 msgstr ""
 
-msgid "T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents of the\n                                        conventional RMSEA cut-off values (close < 0.05 < fair < 0.08 < poor) are\n                                        <b>close < %2$s < fair < %3$s < poor</b> for model: %4$s."
+msgid "CFI"
 msgstr ""
 
-msgid "The T-size equivalents of the conventional RMSEA cut-off values\n                                          (close < 0.05 < fair < 0.08 < poor) are <b>close < %1$s < fair < %2$s\n                                          < poor</b> for model: %3$s."
+msgid "RMSEA"
+msgstr ""
+
+msgid "T-size statistics are computed for <i>%s = 0.05</i>."
 msgstr ""
 
 msgid "Average variance extracted"
@@ -682,6 +688,9 @@ msgstr ""
 msgid "Coefficient ω"
 msgstr ""
 
+msgid "Heterotrait-Monotrait Ratio"
+msgstr ""
+
 msgid "Heterotrait-monotrait ratio"
 msgstr ""
 
@@ -694,10 +703,18 @@ msgstr ""
 msgid "z"
 msgstr ""
 
-msgid "Multivariate skewness and kurtosis calculated for observed variables from all models."
+msgid ""
+"Multivariate skewness and kurtosis calculated for observed variables from "
+"all models."
 msgstr ""
 
-msgid "Not all used variables are numeric. Mardia's coefficients not available."
+msgid ""
+"Not all used variables are continuous: Mardia's coefficients not available."
+msgstr ""
+
+msgid ""
+"The data covariance matrix could not be inverted: Mardia's coefficients not "
+"available."
 msgstr ""
 
 msgid "Skewness"
@@ -709,13 +726,17 @@ msgstr ""
 msgid "Covariance tables"
 msgstr ""
 
-msgid "The standardized residual covariance table is currently unavailable when the error calculation method is 'Bootstrap'"
+msgid ""
+"The standardized residual covariance table is currently unavailable when the "
+"error calculation method is 'Bootstrap'"
 msgstr ""
 
 msgid "The standardized residual covariance matrix could not be computed"
 msgstr ""
 
-msgid "The standardized residual covariance tables are currently unavailable when the error calculation method is 'Bootstrap'"
+msgid ""
+"The standardized residual covariance tables are currently unavailable when "
+"the error calculation method is 'Bootstrap'"
 msgstr ""
 
 msgid "The standardized residual covariance matrices could not be computed"
@@ -772,7 +793,9 @@ msgstr ""
 msgid "Max"
 msgstr ""
 
-msgid "Please include at least one regression path in the model to perform a sensitivity analysis."
+msgid ""
+"Please include at least one regression path in the model to perform a "
+"sensitivity analysis."
 msgstr ""
 
 msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
@@ -795,3 +818,65 @@ msgstr ""
 
 msgid "Path diagram"
 msgstr ""
+
+msgid "Satorra-Bentler"
+msgstr ""
+
+msgid "Yuan-Bentler"
+msgstr ""
+
+msgid "Yuan-Bentler Mplus"
+msgstr ""
+
+msgid "mean and variance-adjusted"
+msgstr ""
+
+msgid "scaled and shifted"
+msgstr ""
+
+msgid "bootstrap (Bollen-Stine)"
+msgstr ""
+
+msgid "Browne residual based (ADF)"
+msgstr ""
+
+msgid "Browne residual based (NT)"
+msgstr ""
+
+msgid "robust"
+msgstr ""
+
+msgid "robust Huber-White"
+msgstr ""
+
+msgid "first-order"
+msgstr ""
+
+#~ msgid "95%% Confidence Interval"
+#~ msgstr "95%% interval povjerenja"
+
+#~ msgid "LV"
+#~ msgstr "LV"
+
+#~ msgid "All"
+#~ msgstr "Sve"
+
+#~ msgid "Additional Fit measures"
+#~ msgstr "Dodatne mjere pristajanja ('Fit' )"
+
+#, fuzzy
+#~ msgid "Other fit measures"
+#~ msgstr "Ostale mjere pristajanja ('Fit')"
+
+#, fuzzy
+#~ msgid "Metric"
+#~ msgstr "Mjera"
+
+#~ msgid "Delta method"
+#~ msgstr "Delta metoda"
+
+#~ msgid "Robust"
+#~ msgstr "Robusno"
+
+#~ msgid "Chi Square test"
+#~ msgstr "Hi-kvadrat test"

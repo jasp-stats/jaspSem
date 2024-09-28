@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2024-08-10 02:46\n"
+"POT-Creation-Date: 2024-09-28 02:53\n"
 "PO-Revision-Date: 2024-04-30 07:08+0000\n"
 "Last-Translator: Cochrane <cunyikang@qq.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -13,100 +13,6 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.5.2\n"
 
-msgid "The model could not be estimated due to nonconvergence."
-msgstr "由于不收敛，该模型无法估计。"
-
-msgid "The model could not be estimated: No degrees of freedom left."
-msgstr ""
-
-msgid "Chi-square Test"
-msgstr "卡方检验"
-
-msgid "Baseline model"
-msgstr "基准模型"
-
-msgid "Growth curve model"
-msgstr "生长曲线模型"
-
-msgid "The model is not admissible: %s"
-msgstr ""
-
-msgid "Warning."
-msgstr ""
-
-msgid "Parameter estimates"
-msgstr "参数估计"
-
-msgid "Component"
-msgstr ""
-
-msgid "Parameter"
-msgstr "参数"
-
-msgid "Estimate"
-msgstr "估计"
-
-msgid "Std. Error"
-msgstr "标准误"
-
-msgid "z-value"
-msgstr "z 值"
-
-msgid "p"
-msgstr "p"
-
-msgid "Lower"
-msgstr "下界"
-
-msgid "95%% Confidence Interval"
-msgstr ""
-
-msgid "Latent covariances"
-msgstr ""
-
-msgid "LV"
-msgstr ""
-
-msgid "Std. Est."
-msgstr "标准化估计"
-
-msgid "All"
-msgstr "全部"
-
-msgid "No X"
-msgstr ""
-
-msgid "Predictor"
-msgstr ""
-
-msgid "Variable"
-msgstr "变量"
-
-msgid "Intercept"
-msgstr "截距"
-
-msgid "Linear slope"
-msgstr "一次方程斜率"
-
-msgid "Quadratic slope"
-msgstr "二次方程斜率"
-
-msgid "Cubic slope"
-msgstr "三次方程斜率"
-
-msgid "Mean"
-msgstr "均值"
-
-msgid "Variance"
-msgstr "方差"
-
-msgid ""
-"Residual variance is negative. This may indicate model misspecification."
-msgstr ""
-
-msgid "Additional Fit measures"
-msgstr ""
-
 msgid "Fit indices"
 msgstr "拟合指数"
 
@@ -114,15 +20,6 @@ msgid "Index"
 msgstr ""
 
 msgid "Value"
-msgstr ""
-
-msgid "Information criteria"
-msgstr ""
-
-msgid "Other fit measures"
-msgstr ""
-
-msgid "Metric"
 msgstr ""
 
 msgid "Comparative Fit Index (CFI)"
@@ -147,21 +44,6 @@ msgid "Bollen's Incremental Fit Index (IFI)"
 msgstr ""
 
 msgid "Relative Noncentrality Index (RNI)"
-msgstr ""
-
-msgid "Log-likelihood"
-msgstr ""
-
-msgid "Number of free parameters"
-msgstr ""
-
-msgid "Akaike (AIC)"
-msgstr ""
-
-msgid "Bayesian (BIC)"
-msgstr ""
-
-msgid "Sample-size adjusted Bayesian (SSABIC)"
 msgstr ""
 
 msgid "Root mean square error of approximation (RMSEA)"
@@ -194,6 +76,106 @@ msgstr ""
 msgid "Expected cross validation index (ECVI)"
 msgstr ""
 
+msgid "Log-likelihood"
+msgstr ""
+
+msgid "Number of free parameters"
+msgstr ""
+
+msgid "Akaike (AIC)"
+msgstr ""
+
+msgid "Bayesian (BIC)"
+msgstr ""
+
+msgid "Sample-size adjusted Bayesian (SSABIC)"
+msgstr ""
+
+msgid "The model could not be estimated due to nonconvergence."
+msgstr "由于不收敛，该模型无法估计。"
+
+msgid "The model could not be estimated: No degrees of freedom left."
+msgstr ""
+
+#, fuzzy
+msgid "Chi-square test"
+msgstr "卡方检验"
+
+msgid "Baseline model"
+msgstr "基准模型"
+
+msgid "Growth curve model"
+msgstr "生长曲线模型"
+
+msgid "The model is not admissible: %s"
+msgstr ""
+
+msgid "Warning."
+msgstr ""
+
+msgid "Parameter estimates"
+msgstr "参数估计"
+
+#, fuzzy
+msgid "Std. estimate"
+msgstr "参数估计"
+
+msgid "Estimate"
+msgstr "估计"
+
+msgid "Component"
+msgstr ""
+
+msgid "Parameter"
+msgstr "参数"
+
+#, fuzzy
+msgid "Std. error"
+msgstr "标准误"
+
+msgid "z-value"
+msgstr "z 值"
+
+msgid "p"
+msgstr "p"
+
+msgid "Lower"
+msgstr "下界"
+
+msgid "%s%% Confidence Interval"
+msgstr ""
+
+msgid "Latent covariances"
+msgstr ""
+
+msgid "Predictor"
+msgstr ""
+
+msgid "Variable"
+msgstr "变量"
+
+msgid "Intercept"
+msgstr "截距"
+
+msgid "Linear slope"
+msgstr "一次方程斜率"
+
+msgid "Quadratic slope"
+msgstr "二次方程斜率"
+
+msgid "Cubic slope"
+msgstr "三次方程斜率"
+
+msgid "Mean"
+msgstr "均值"
+
+msgid "Variance"
+msgstr "方差"
+
+msgid ""
+"Residual variance is negative. This may indicate model misspecification."
+msgstr ""
+
 msgid "R-Squared"
 msgstr ""
 
@@ -221,9 +203,6 @@ msgstr ""
 msgid "Curve + parameter uncertainty"
 msgstr ""
 
-msgid "FIML only available with ML-type estimators."
-msgstr ""
-
 msgid ""
 "Not all exogenous variables are admissible. Inadmissible exogenous "
 "variables: %s. Only binary or continuous exogenous variables allowed."
@@ -248,9 +227,6 @@ msgstr ""
 msgid "Direct effects"
 msgstr ""
 
-msgid "%s%% Confidence Interval"
-msgstr ""
-
 msgid "Upper"
 msgstr "上界"
 
@@ -266,36 +242,11 @@ msgstr ""
 msgid "Path coefficients"
 msgstr ""
 
-msgid "Delta method"
-msgstr ""
-
-msgid "Robust"
-msgstr ""
-
-msgid "percentile bootstrap"
-msgstr ""
-
-msgid "normal theory bootstrap"
-msgstr ""
-
-msgid "bias-corrected percentile bootstrap"
-msgstr ""
-
-msgid "normal theory"
-msgstr ""
-
-msgid "robust"
-msgstr ""
-
-msgid "%1$s standard errors, %2$s confidence intervals."
+msgid "Estimator is %s."
 msgstr ""
 
 msgid ""
-"%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all "
-"bootstrap samples were successful: CI based on %4$.0f samples."
-msgstr ""
-
-msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
+"%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
 msgstr ""
 
 msgid "Path plot"
@@ -314,12 +265,12 @@ msgstr ""
 msgid "Model syntax"
 msgstr ""
 
+msgid "FIML only available with ML-type estimators."
+msgstr ""
+
 msgid ""
 "Estimation failed! Message: The model did not converge. Try using a "
 "different estimator or specify an other MIMIC model."
-msgstr ""
-
-msgid "Chi Square test"
 msgstr ""
 
 msgid "df"
@@ -331,25 +282,13 @@ msgstr ""
 msgid "Factor model"
 msgstr ""
 
-msgid "Additional fit measures"
-msgstr ""
-
 msgid "Predictor coefficients"
-msgstr ""
-
-msgid "Standardized"
-msgstr ""
-
-msgid "Endo"
 msgstr ""
 
 msgid "Indicator coefficients"
 msgstr ""
 
 msgid "Indicator"
-msgstr ""
-
-msgid "Latent"
 msgstr ""
 
 msgid "Model plot not available with ordinal variables"
@@ -396,6 +335,9 @@ msgstr ""
 
 msgid "Construct"
 msgstr ""
+
+msgid "Std. Error"
+msgstr "标准误"
 
 msgid "Loadings"
 msgstr ""
@@ -550,9 +492,6 @@ msgstr ""
 msgid "Implied construct correlation matrix"
 msgstr ""
 
-msgid "FIML missing data handling only available with ML-type estimators"
-msgstr "FIML 缺失数据处理仅适用于 ML 类型的估计器"
-
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
 msgstr ""
@@ -577,17 +516,16 @@ msgstr ""
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr ""
 
-msgid "One or more variables are constants or contain only missing values"
+msgid "One or more variables are constants or contain only missing values."
 msgstr ""
 
-msgid ""
-"Missing data handling '%s' is not supported for categorical data,\n"
-"                        please select another method under 'Missing data "
-"handling'\n"
-"                        within the 'Estimation options' tab"
+msgid "Estimation failed. Message: %s"
 msgstr ""
 
-msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
+msgid "Estimation failed! Message: %s did not converge!"
+msgstr ""
+
+msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr ""
 
 msgid "n(Observations)"
@@ -607,46 +545,46 @@ msgid "%1$sdf"
 msgstr ""
 
 msgid ""
-"A total of %g cases were removed due to missing values. You can avoid this "
-"by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
+"%sFitting the model resulted in warnings. Check the 'Show warnings' box in "
+"the Output Options to see the warnings."
 msgstr ""
 
-msgid "Satorra-Bentler scaled test-statistic"
+msgid "A total of %g cases were removed due to missing values."
 msgstr ""
 
-msgid "Yuan-Bentler scaled test-statistic"
+msgid "Model test is %s."
 msgstr ""
 
-msgid "Yuan-Bentler (Mplus) scaled test-statistic"
+msgid "Information matrix is %s."
 msgstr ""
 
-msgid "mean and variance adjusted test-statistic"
+msgid "Standard errors are %s."
 msgstr ""
 
-msgid "scaled and shifted test-statistic"
-msgstr ""
-
-msgid "bootstrap (Bollen-Stine) probability value"
-msgstr ""
-
-msgid "Baseline tests based on %s."
-msgstr ""
-
+#, fuzzy
 msgid ""
-"Baseline tests based on %s. Difference tests based on a function of two "
-"standard test-statistics."
-msgstr ""
-
-msgid ""
-"The AIC, BIC and additional information criteria are only available with ML-"
-"type estimators"
-msgstr ""
+"%s The AIC, BIC and additional information criteria are only available with "
+"ML-type estimators."
+msgstr "FIML 缺失数据处理仅适用于 ML 类型的估计器"
 
 #, fuzzy
 msgid "all"
 msgstr "全部"
 
+msgid "<b>Warnings:</b> %s"
+msgstr ""
+
+#, fuzzy
+msgid "Parameter Estimates"
+msgstr "参数估计"
+
 msgid "Factor Loadings"
+msgstr ""
+
+msgid "Latent"
+msgstr ""
+
+msgid "%s%% Confidence interval"
 msgstr ""
 
 msgid "Regression coefficients"
@@ -668,48 +606,48 @@ msgstr ""
 msgid "Intercepts"
 msgstr "截距"
 
+msgid "Missing data method 'FIML' forces meanstructure."
+msgstr ""
+
+msgid "Thresholds"
+msgstr ""
+
+msgid "Threshold"
+msgstr ""
+
 msgid "Defined parameters"
 msgstr ""
 
 msgid "Name"
 msgstr ""
 
-msgid "T-size CFI"
+msgid "%s Fit indices are based on the scaled test statistic."
 msgstr ""
+
+#, fuzzy
+msgid "T-size fit indices"
+msgstr "拟合指数"
 
 msgid ""
-"T-size CFI is computed for <i>%1$s = 0.05</i>. The T-size equivalents of "
-"the\n"
-"                                      conventional CFI cut-off values (poor "
-"< 0.90 < fair < 0.95 < close) are <b>poor\n"
-"                                      < %2$s < fair < %3$s < close</b> for "
-"model: %4$s."
+"Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness "
+"of Fit: A Note on Using Equivalence Testing to Assess Structural Equation "
+"Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), "
+"148-153, https://doi.org/10.1080/10705511.2016.1225260"
 msgstr ""
 
-msgid ""
-"The T-size equivalents of the conventional CFI cut-off values\n"
-"                                        (poor < 0.90 < fair < 0.95 < close) "
-"are <b>poor < %1$s < fair < %2$s <\n"
-"                                        close</b> for model: %3$s."
+msgid "Poor-fair limit"
 msgstr ""
 
-msgid "T-size RMSEA"
+msgid "Fair-close limit"
 msgstr ""
 
-msgid ""
-"T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents of "
-"the\n"
-"                                        conventional RMSEA cut-off values "
-"(close < 0.05 < fair < 0.08 < poor) are\n"
-"                                        <b>close < %2$s < fair < %3$s < "
-"poor</b> for model: %4$s."
+msgid "CFI"
 msgstr ""
 
-msgid ""
-"The T-size equivalents of the conventional RMSEA cut-off values\n"
-"                                          (close < 0.05 < fair < 0.08 < "
-"poor) are <b>close < %1$s < fair < %2$s\n"
-"                                          < poor</b> for model: %3$s."
+msgid "RMSEA"
+msgstr ""
+
+msgid "T-size statistics are computed for <i>%s = 0.05</i>."
 msgstr ""
 
 msgid "Average variance extracted"
@@ -729,6 +667,9 @@ msgstr "系数"
 msgid "Coefficient ω"
 msgstr "系数"
 
+msgid "Heterotrait-Monotrait Ratio"
+msgstr ""
+
 msgid "Heterotrait-monotrait ratio"
 msgstr ""
 
@@ -747,7 +688,12 @@ msgid ""
 msgstr ""
 
 msgid ""
-"Not all used variables are numeric. Mardia's coefficients not available."
+"Not all used variables are continuous: Mardia's coefficients not available."
+msgstr ""
+
+msgid ""
+"The data covariance matrix could not be inverted: Mardia's coefficients not "
+"available."
 msgstr ""
 
 msgid "Skewness"
@@ -853,6 +799,45 @@ msgstr ""
 
 msgid "Path diagram"
 msgstr ""
+
+msgid "Satorra-Bentler"
+msgstr ""
+
+msgid "Yuan-Bentler"
+msgstr ""
+
+msgid "Yuan-Bentler Mplus"
+msgstr ""
+
+msgid "mean and variance-adjusted"
+msgstr ""
+
+msgid "scaled and shifted"
+msgstr ""
+
+msgid "bootstrap (Bollen-Stine)"
+msgstr ""
+
+msgid "Browne residual based (ADF)"
+msgstr ""
+
+msgid "Browne residual based (NT)"
+msgstr ""
+
+msgid "robust"
+msgstr ""
+
+msgid "robust Huber-White"
+msgstr ""
+
+msgid "first-order"
+msgstr ""
+
+#~ msgid "Std. Est."
+#~ msgstr "标准化估计"
+
+#~ msgid "All"
+#~ msgstr "全部"
 
 #~ msgid "Means"
 #~ msgstr "均值"

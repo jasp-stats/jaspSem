@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2024-08-10 02:46\n"
+"POT-Creation-Date: 2024-09-28 02:53\n"
 "PO-Revision-Date: 2024-07-02 18:09+0000\n"
 "Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -13,100 +13,6 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.7-dev\n"
 
-msgid "The model could not be estimated due to nonconvergence."
-msgstr "収束しなかったため，モデルは推定できませんでした。"
-
-msgid "The model could not be estimated: No degrees of freedom left."
-msgstr "モデルは推定できませんでした: 自由度が残っていません。"
-
-msgid "Chi-square Test"
-msgstr "カイ二乗検定"
-
-msgid "Baseline model"
-msgstr "ベースラインモデル"
-
-msgid "Growth curve model"
-msgstr "成長曲線モデル"
-
-msgid "The model is not admissible: %s"
-msgstr "モデルは許容されません :%s"
-
-msgid "Warning."
-msgstr "警告"
-
-msgid "Parameter estimates"
-msgstr "パラメータ推定"
-
-msgid "Component"
-msgstr "コンポーネント"
-
-msgid "Parameter"
-msgstr "パラメータ"
-
-msgid "Estimate"
-msgstr "推定"
-
-msgid "Std. Error"
-msgstr "標準誤差"
-
-msgid "z-value"
-msgstr "z値"
-
-msgid "p"
-msgstr "p"
-
-msgid "Lower"
-msgstr "下限"
-
-msgid "95%% Confidence Interval"
-msgstr "95%% 信頼区間"
-
-msgid "Latent covariances"
-msgstr "潜在的な共分散"
-
-msgid "LV"
-msgstr "LV"
-
-msgid "Std. Est."
-msgstr "標準化推定値"
-
-msgid "All"
-msgstr "すべて"
-
-msgid "No X"
-msgstr "外生変数は標準化しない(No X)"
-
-msgid "Predictor"
-msgstr "予測変数"
-
-msgid "Variable"
-msgstr "変数"
-
-msgid "Intercept"
-msgstr "切片"
-
-msgid "Linear slope"
-msgstr "線形勾配"
-
-msgid "Quadratic slope"
-msgstr "2次の傾き"
-
-msgid "Cubic slope"
-msgstr "3次の傾き"
-
-msgid "Mean"
-msgstr "平均値"
-
-msgid "Variance"
-msgstr "分散"
-
-msgid ""
-"Residual variance is negative. This may indicate model misspecification."
-msgstr "残差分散が負になりました。モデルの指定が間違っている可能性があります。"
-
-msgid "Additional Fit measures"
-msgstr "追加の適合度指標"
-
 msgid "Fit indices"
 msgstr "適合度指標"
 
@@ -115,15 +21,6 @@ msgstr "指標"
 
 msgid "Value"
 msgstr "値"
-
-msgid "Information criteria"
-msgstr "情報量規準"
-
-msgid "Other fit measures"
-msgstr "その他の適合度指標"
-
-msgid "Metric"
-msgstr "計量的"
 
 msgid "Comparative Fit Index (CFI)"
 msgstr "相対適合度指標(CFI)"
@@ -148,21 +45,6 @@ msgstr "Bollenのインクレメンタル適合度指標(IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
 msgstr "相対的非中心性指数(RNI)"
-
-msgid "Log-likelihood"
-msgstr "対数尤度"
-
-msgid "Number of free parameters"
-msgstr "自由パラメーターの数"
-
-msgid "Akaike (AIC)"
-msgstr "赤池情報量規準(AIC)"
-
-msgid "Bayesian (BIC)"
-msgstr "ベイズ情報量規準(BIC)"
-
-msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr "サンプルサイズ調整済みベイジアン情報量規準(SSABIC)"
 
 msgid "Root mean square error of approximation (RMSEA)"
 msgstr "近似の二乗平均平方根誤差（RMSEA）"
@@ -194,6 +76,106 @@ msgstr "マクドナルドの適合度指標(MFI)"
 msgid "Expected cross validation index (ECVI)"
 msgstr "期待される交差検証指数（ECVI）"
 
+msgid "Log-likelihood"
+msgstr "対数尤度"
+
+msgid "Number of free parameters"
+msgstr "自由パラメーターの数"
+
+msgid "Akaike (AIC)"
+msgstr "赤池情報量規準(AIC)"
+
+msgid "Bayesian (BIC)"
+msgstr "ベイズ情報量規準(BIC)"
+
+msgid "Sample-size adjusted Bayesian (SSABIC)"
+msgstr "サンプルサイズ調整済みベイジアン情報量規準(SSABIC)"
+
+msgid "The model could not be estimated due to nonconvergence."
+msgstr "収束しなかったため，モデルは推定できませんでした。"
+
+msgid "The model could not be estimated: No degrees of freedom left."
+msgstr "モデルは推定できませんでした: 自由度が残っていません。"
+
+#, fuzzy
+msgid "Chi-square test"
+msgstr "カイ二乗検定"
+
+msgid "Baseline model"
+msgstr "ベースラインモデル"
+
+msgid "Growth curve model"
+msgstr "成長曲線モデル"
+
+msgid "The model is not admissible: %s"
+msgstr "モデルは許容されません :%s"
+
+msgid "Warning."
+msgstr "警告"
+
+msgid "Parameter estimates"
+msgstr "パラメータ推定"
+
+#, fuzzy
+msgid "Std. estimate"
+msgstr "標準化"
+
+msgid "Estimate"
+msgstr "推定"
+
+msgid "Component"
+msgstr "コンポーネント"
+
+msgid "Parameter"
+msgstr "パラメータ"
+
+#, fuzzy
+msgid "Std. error"
+msgstr "標準誤差"
+
+msgid "z-value"
+msgstr "z値"
+
+msgid "p"
+msgstr "p"
+
+msgid "Lower"
+msgstr "下限"
+
+msgid "%s%% Confidence Interval"
+msgstr "%s%% 信頼区間"
+
+msgid "Latent covariances"
+msgstr "潜在的な共分散"
+
+msgid "Predictor"
+msgstr "予測変数"
+
+msgid "Variable"
+msgstr "変数"
+
+msgid "Intercept"
+msgstr "切片"
+
+msgid "Linear slope"
+msgstr "線形勾配"
+
+msgid "Quadratic slope"
+msgstr "2次の傾き"
+
+msgid "Cubic slope"
+msgstr "3次の傾き"
+
+msgid "Mean"
+msgstr "平均値"
+
+msgid "Variance"
+msgstr "分散"
+
+msgid ""
+"Residual variance is negative. This may indicate model misspecification."
+msgstr "残差分散が負になりました。モデルの指定が間違っている可能性があります。"
+
 msgid "R-Squared"
 msgstr "R二乗"
 
@@ -220,9 +202,6 @@ msgstr "曲線 + 分散"
 
 msgid "Curve + parameter uncertainty"
 msgstr "曲線 + パラメータの不確実性"
-
-msgid "FIML only available with ML-type estimators."
-msgstr "FIMLは、MLタイプの推定量でのみ使用できます。"
 
 msgid ""
 "Not all exogenous variables are admissible. Inadmissible exogenous "
@@ -257,9 +236,6 @@ msgstr ""
 msgid "Direct effects"
 msgstr "直接効果"
 
-msgid "%s%% Confidence Interval"
-msgstr "%s%% 信頼区間"
-
 msgid "Upper"
 msgstr "上限"
 
@@ -275,39 +251,16 @@ msgstr "残差共分散"
 msgid "Path coefficients"
 msgstr "パス係数"
 
-msgid "Delta method"
-msgstr "デルタ法"
+#, fuzzy
+msgid "Estimator is %s."
+msgstr "推定失敗 :%s"
 
-msgid "Robust"
-msgstr "ロバスト"
-
-msgid "percentile bootstrap"
-msgstr "パーセンタイル ブートストラップ"
-
-msgid "normal theory bootstrap"
-msgstr "正規理論のブートストラップ"
-
-msgid "bias-corrected percentile bootstrap"
-msgstr "バイアス補正パーセンタイル ブートストラップ"
-
-msgid "normal theory"
-msgstr "正規理論"
-
-msgid "robust"
-msgstr "ロバスト"
-
-msgid "%1$s standard errors, %2$s confidence intervals."
-msgstr "%1$s の標準誤差、%2$s の信頼区間。"
-
+#, fuzzy
 msgid ""
-"%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all "
-"bootstrap samples were successful: CI based on %4$.0f samples."
+"%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
 msgstr ""
 "%1$s の標準誤差，%2$sの信用区間，%3$sの推定法。注意: 全てのブートストラップサ"
 "ンプルが成功したわけではありません。 Clはサンプルの%4$.0f に基づいています。"
-
-msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
-msgstr "%1$s 標準誤差，%2$s 信頼区間，%3$s 推定法。"
 
 msgid "Path plot"
 msgstr "パスプロット"
@@ -325,13 +278,13 @@ msgstr ""
 msgid "Model syntax"
 msgstr "モデルのシンタックス"
 
+msgid "FIML only available with ML-type estimators."
+msgstr "FIMLは、MLタイプの推定量でのみ使用できます。"
+
 msgid ""
 "Estimation failed! Message: The model did not converge. Try using a "
 "different estimator or specify an other MIMIC model."
 msgstr ""
-
-msgid "Chi Square test"
-msgstr "カイ二乗検定"
 
 msgid "df"
 msgstr "df"
@@ -342,26 +295,14 @@ msgstr "&#967;2&sup2;"
 msgid "Factor model"
 msgstr "因子モデル"
 
-msgid "Additional fit measures"
-msgstr "追加の適合度指標"
-
 msgid "Predictor coefficients"
 msgstr "予測係数"
-
-msgid "Standardized"
-msgstr "標準化"
-
-msgid "Endo"
-msgstr "Endo"
 
 msgid "Indicator coefficients"
 msgstr "指標係数"
 
 msgid "Indicator"
 msgstr "指標"
-
-msgid "Latent"
-msgstr "潜在"
 
 msgid "Model plot not available with ordinal variables"
 msgstr "順序変数ではモデルプロットを使用できません"
@@ -407,6 +348,9 @@ msgstr "ウェイト"
 
 msgid "Construct"
 msgstr ""
+
+msgid "Std. Error"
+msgstr "標準誤差"
 
 #, fuzzy
 msgid "Loadings"
@@ -579,9 +523,6 @@ msgstr ""
 msgid "Implied construct correlation matrix"
 msgstr "モデル共分散行列"
 
-msgid "FIML missing data handling only available with ML-type estimators"
-msgstr "FIML の欠損値処理は，ML タイプの推定法でのみ使用可能です"
-
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
 msgstr "データが分散-共分散行列の時は平均構造を含めることができません"
@@ -607,17 +548,19 @@ msgstr ""
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr "モデル指定が無効です。変数名を文字列で渡していませんか？"
 
-msgid "One or more variables are constants or contain only missing values"
+msgid "One or more variables are constants or contain only missing values."
 msgstr ""
 
-msgid ""
-"Missing data handling '%s' is not supported for categorical data,\n"
-"                        please select another method under 'Missing data "
-"handling'\n"
-"                        within the 'Estimation options' tab"
-msgstr ""
+#, fuzzy
+msgid "Estimation failed. Message: %s"
+msgstr "推定失敗 :%s"
 
-msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
+#, fuzzy
+msgid "Estimation failed! Message: %s did not converge!"
+msgstr "推定に失敗しました! メッセージ: モデル %s が収束しませんでした!"
+
+#, fuzzy
+msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr "推定に失敗しました! メッセージ: モデル%sの自由度は負です."
 
 msgid "n(Observations)"
@@ -636,52 +579,50 @@ msgstr ""
 msgid "%1$sdf"
 msgstr ""
 
-#, fuzzy
 msgid ""
-"A total of %g cases were removed due to missing values. You can avoid this "
-"by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
+"%sFitting the model resulted in warnings. Check the 'Show warnings' box in "
+"the Output Options to see the warnings."
 msgstr ""
-"欠損値のために合計 %g のケースが削除されました. 推定オプションの「欠損データ"
-"の取り扱い」で「FIML」を選択することで、これを回避することができます."
 
-msgid "Satorra-Bentler scaled test-statistic"
-msgstr "Satorra-Bentlerでスケーリングされた検定統計量"
+msgid "A total of %g cases were removed due to missing values."
+msgstr ""
 
-msgid "Yuan-Bentler scaled test-statistic"
-msgstr "Yuan-Bentlerでスケール化された検定統計量"
+msgid "Model test is %s."
+msgstr ""
 
-msgid "Yuan-Bentler (Mplus) scaled test-statistic"
-msgstr "Yuan-Bentler(M plus)のスケール化検定統計量"
+#, fuzzy
+msgid "Information matrix is %s."
+msgstr "情報量規準"
 
-msgid "mean and variance adjusted test-statistic"
-msgstr "平均および分散調整済み検定統計量"
-
-msgid "scaled and shifted test-statistic"
-msgstr "スケーリングおよびシフトされた検定統計量"
-
-msgid "bootstrap (Bollen-Stine) probability value"
-msgstr "ブートストラップ（Bollen-Stine）確率値"
-
-msgid "Baseline tests based on %s."
-msgstr "%s に基づくベースラインテスト"
-
-msgid ""
-"Baseline tests based on %s. Difference tests based on a function of two "
-"standard test-statistics."
+msgid "Standard errors are %s."
 msgstr ""
 
 #, fuzzy
 msgid ""
-"The AIC, BIC and additional information criteria are only available with ML-"
-"type estimators"
+"%s The AIC, BIC and additional information criteria are only available with "
+"ML-type estimators."
 msgstr "FIML の欠損値処理は，ML タイプの推定法でのみ使用可能です"
 
 #, fuzzy
 msgid "all"
 msgstr "すべて"
 
+msgid "<b>Warnings:</b> %s"
+msgstr ""
+
+#, fuzzy
+msgid "Parameter Estimates"
+msgstr "パラメータ推定"
+
 msgid "Factor Loadings"
 msgstr "因子負荷量"
+
+msgid "Latent"
+msgstr "潜在"
+
+#, fuzzy
+msgid "%s%% Confidence interval"
+msgstr "%s%% 信頼区間"
 
 msgid "Regression coefficients"
 msgstr "回帰係数"
@@ -702,48 +643,49 @@ msgstr "残差分散"
 msgid "Intercepts"
 msgstr "切片"
 
+msgid "Missing data method 'FIML' forces meanstructure."
+msgstr ""
+
+msgid "Thresholds"
+msgstr ""
+
+msgid "Threshold"
+msgstr ""
+
 msgid "Defined parameters"
 msgstr "定義されたパラメータ"
 
 msgid "Name"
 msgstr "名前"
 
-msgid "T-size CFI"
-msgstr ""
+#, fuzzy
+msgid "%s Fit indices are based on the scaled test statistic."
+msgstr "Satorra-Bentlerでスケーリングされた検定統計量"
+
+#, fuzzy
+msgid "T-size fit indices"
+msgstr "適合度指標"
 
 msgid ""
-"T-size CFI is computed for <i>%1$s = 0.05</i>. The T-size equivalents of "
-"the\n"
-"                                      conventional CFI cut-off values (poor "
-"< 0.90 < fair < 0.95 < close) are <b>poor\n"
-"                                      < %2$s < fair < %3$s < close</b> for "
-"model: %4$s."
+"Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness "
+"of Fit: A Note on Using Equivalence Testing to Assess Structural Equation "
+"Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), "
+"148-153, https://doi.org/10.1080/10705511.2016.1225260"
 msgstr ""
 
-msgid ""
-"The T-size equivalents of the conventional CFI cut-off values\n"
-"                                        (poor < 0.90 < fair < 0.95 < close) "
-"are <b>poor < %1$s < fair < %2$s <\n"
-"                                        close</b> for model: %3$s."
+msgid "Poor-fair limit"
 msgstr ""
 
-msgid "T-size RMSEA"
+msgid "Fair-close limit"
 msgstr ""
 
-msgid ""
-"T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents of "
-"the\n"
-"                                        conventional RMSEA cut-off values "
-"(close < 0.05 < fair < 0.08 < poor) are\n"
-"                                        <b>close < %2$s < fair < %3$s < "
-"poor</b> for model: %4$s."
+msgid "CFI"
 msgstr ""
 
-msgid ""
-"The T-size equivalents of the conventional RMSEA cut-off values\n"
-"                                          (close < 0.05 < fair < 0.08 < "
-"poor) are <b>close < %1$s < fair < %2$s\n"
-"                                          < poor</b> for model: %3$s."
+msgid "RMSEA"
+msgstr ""
+
+msgid "T-size statistics are computed for <i>%s = 0.05</i>."
 msgstr ""
 
 msgid "Average variance extracted"
@@ -763,6 +705,10 @@ msgstr "係数"
 msgid "Coefficient ω"
 msgstr "係数"
 
+#, fuzzy
+msgid "Heterotrait-Monotrait Ratio"
+msgstr "Heterotrait-monotrait 比"
+
 msgid "Heterotrait-monotrait ratio"
 msgstr "Heterotrait-monotrait 比"
 
@@ -780,8 +726,17 @@ msgid ""
 "all models."
 msgstr "すべてのモデルから観測変数に対して計算された多変量歪度と尖度。"
 
+#, fuzzy
 msgid ""
-"Not all used variables are numeric. Mardia's coefficients not available."
+"Not all used variables are continuous: Mardia's coefficients not available."
+msgstr ""
+"いくつかの使用された変数は数値ではありません。マルディアの係数は利用できませ"
+"ん。"
+
+#, fuzzy
+msgid ""
+"The data covariance matrix could not be inverted: Mardia's coefficients not "
+"available."
 msgstr ""
 "いくつかの使用された変数は数値ではありません。マルディアの係数は利用できませ"
 "ん。"
@@ -894,6 +849,121 @@ msgstr "定義されたパラメータ"
 
 msgid "Path diagram"
 msgstr "パス図"
+
+msgid "Satorra-Bentler"
+msgstr ""
+
+msgid "Yuan-Bentler"
+msgstr ""
+
+#, fuzzy
+msgid "Yuan-Bentler Mplus"
+msgstr "Yuan-Bentler(M plus)のスケール化検定統計量"
+
+#, fuzzy
+msgid "mean and variance-adjusted"
+msgstr "平均および分散調整済み検定統計量"
+
+#, fuzzy
+msgid "scaled and shifted"
+msgstr "スケーリングおよびシフトされた検定統計量"
+
+#, fuzzy
+msgid "bootstrap (Bollen-Stine)"
+msgstr "ブートストラップ（Bollen-Stine）確率値"
+
+msgid "Browne residual based (ADF)"
+msgstr ""
+
+msgid "Browne residual based (NT)"
+msgstr ""
+
+msgid "robust"
+msgstr "ロバスト"
+
+msgid "robust Huber-White"
+msgstr ""
+
+msgid "first-order"
+msgstr ""
+
+#~ msgid "95%% Confidence Interval"
+#~ msgstr "95%% 信頼区間"
+
+#~ msgid "LV"
+#~ msgstr "LV"
+
+#~ msgid "Std. Est."
+#~ msgstr "標準化推定値"
+
+#~ msgid "All"
+#~ msgstr "すべて"
+
+#~ msgid "No X"
+#~ msgstr "外生変数は標準化しない(No X)"
+
+#~ msgid "Additional Fit measures"
+#~ msgstr "追加の適合度指標"
+
+#~ msgid "Other fit measures"
+#~ msgstr "その他の適合度指標"
+
+#~ msgid "Metric"
+#~ msgstr "計量的"
+
+#~ msgid "Delta method"
+#~ msgstr "デルタ法"
+
+#~ msgid "Robust"
+#~ msgstr "ロバスト"
+
+#~ msgid "percentile bootstrap"
+#~ msgstr "パーセンタイル ブートストラップ"
+
+#~ msgid "normal theory bootstrap"
+#~ msgstr "正規理論のブートストラップ"
+
+#~ msgid "bias-corrected percentile bootstrap"
+#~ msgstr "バイアス補正パーセンタイル ブートストラップ"
+
+#~ msgid "normal theory"
+#~ msgstr "正規理論"
+
+#~ msgid "%1$s standard errors, %2$s confidence intervals."
+#~ msgstr "%1$s の標準誤差、%2$s の信頼区間。"
+
+#~ msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
+#~ msgstr "%1$s 標準誤差，%2$s 信頼区間，%3$s 推定法。"
+
+#~ msgid "Chi Square test"
+#~ msgstr "カイ二乗検定"
+
+#~ msgid "Additional fit measures"
+#~ msgstr "追加の適合度指標"
+
+#~ msgid "Standardized"
+#~ msgstr "標準化"
+
+#~ msgid "Endo"
+#~ msgstr "Endo"
+
+#~ msgid "FIML missing data handling only available with ML-type estimators"
+#~ msgstr "FIML の欠損値処理は，ML タイプの推定法でのみ使用可能です"
+
+#, fuzzy
+#~ msgid ""
+#~ "A total of %g cases were removed due to missing values. You can avoid "
+#~ "this by choosing 'FIML' under 'Missing Data Handling' in the Estimation "
+#~ "options."
+#~ msgstr ""
+#~ "欠損値のために合計 %g のケースが削除されました. 推定オプションの「欠損デー"
+#~ "タの取り扱い」で「FIML」を選択することで、これを回避することができます."
+
+#~ msgid "Yuan-Bentler scaled test-statistic"
+#~ msgstr "Yuan-Bentlerでスケール化された検定統計量"
+
+#~ msgid "Baseline tests based on %s."
+#~ msgstr "%s に基づくベースラインテスト"
 
 #~ msgid "&#916;&#967;&sup2;"
 #~ msgstr "&#916;2&#967;3&sup2;"

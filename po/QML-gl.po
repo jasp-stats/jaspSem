@@ -13,16 +13,8 @@ msgid "Background confounders"
 msgstr "Factores perturbadores de fondo"
 
 msgctxt "MediationAnalysis|"
-msgid "Normal theory"
-msgstr "Teoría Normal"
-
-msgctxt "MediationAnalysis|"
 msgid "Lavaan syntax"
 msgstr "Sintaxe Lavaan"
-
-msgctxt "MediationAnalysis|"
-msgid "Full Information Maximum Likelihood"
-msgstr "Máxima-Verosimilitude con Información Completa"
 
 msgctxt "MediationAnalysis|"
 msgid "Outcome"
@@ -33,14 +25,6 @@ msgid "Parameter estimates"
 msgstr "Estimacións dos parámetros"
 
 msgctxt "MediationAnalysis|"
-msgid "Percentile"
-msgstr "Percentil"
-
-msgctxt "MediationAnalysis|"
-msgid "Missing value handling"
-msgstr "Manexo de valores ausentes"
-
-msgctxt "MediationAnalysis|"
 msgid "Additional parameter estimates"
 msgstr "Estimacións dos parámetros adicionais"
 
@@ -49,16 +33,8 @@ msgid "Mediators"
 msgstr "Mediadores"
 
 msgctxt "MediationAnalysis|"
-msgid "Replications"
-msgstr "Réplicas"
-
-msgctxt "MediationAnalysis|"
 msgid "Total indirect effects"
 msgstr "Efectos indirectos totais"
-
-msgctxt "MediationAnalysis|"
-msgid "Bias-corrected percentile"
-msgstr "Percentil con nesgo corrixido"
 
 msgctxt "MediationAnalysis|"
 msgid "Standardized estimates"
@@ -102,10 +78,6 @@ msgid "Timings"
 msgstr "Instantes"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Model Options"
-msgstr "Opcións do Modelo"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Growth curve shape"
 msgstr "Forma da curva de crecemento"
 
@@ -132,10 +104,6 @@ msgstr "Curva latente covariante"
 msgctxt "LatentGrowthCurve|"
 msgid "Additional Output"
 msgstr "Saída Adicional de Resultados"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Additional Fit Measures"
-msgstr "Medidas Adicionais de Axuste"
 
 msgctxt "LatentGrowthCurve|"
 msgid "R-Squared"
@@ -180,94 +148,6 @@ msgstr "Amosar os parámetros"
 msgctxt "LatentGrowthCurve|"
 msgid "Show means"
 msgstr "Amosar as medias"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Advanced"
-msgstr "Avanzado"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Emulation"
-msgstr "Emulación"
-
-msgctxt "LatentGrowthCurve|"
-msgid "None"
-msgstr "Ningún"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Mplus"
-msgstr "Mplus"
-
-msgctxt "LatentGrowthCurve|"
-msgid "EQS"
-msgstr "EQS"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Missing value handling"
-msgstr "Manexo de valores ausentes"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Full Information Maximum Likelihood"
-msgstr "Máxima-Verosimilitude con Información Completa"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Exclude cases listwise"
-msgstr "Excluír casos segundo a lista"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Error calculation"
-msgstr "Cálculo do erro"
-
-msgctxt "LatentGrowthCurve|"
-msgid "CI width"
-msgstr "Largo do IC"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Method"
-msgstr "Método"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Standard"
-msgstr "Típico"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Robust"
-msgstr "Robusto"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Bootstrap CI"
-msgstr "IC Bootstrap"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Bootstrap samples"
-msgstr "Mostras de Bootstrap"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Estimator"
-msgstr "Estimador"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Auto"
-msgstr "Auto"
-
-msgctxt "LatentGrowthCurve|"
-msgid "ML"
-msgstr "MV"
-
-msgctxt "LatentGrowthCurve|"
-msgid "GLS"
-msgstr "MCX (GLS)"
-
-msgctxt "LatentGrowthCurve|"
-msgid "WLS"
-msgstr "MCP (WLS)"
-
-msgctxt "LatentGrowthCurve|"
-msgid "ULS"
-msgstr "MCSP (ULS)"
-
-msgctxt "LatentGrowthCurve|"
-msgid "DWLS"
-msgstr "MCPD (DWLS)"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Options"
@@ -330,30 +210,6 @@ msgid "Residual covariances"
 msgstr "Covarianzas dos erros"
 
 msgctxt "MediationAnalysis|"
-msgid "Confidence intervals"
-msgstr "Intervalos de confianza"
-
-msgctxt "MediationAnalysis|"
-msgid "Method"
-msgstr "Método"
-
-msgctxt "MediationAnalysis|"
-msgid "Standard"
-msgstr "Típico"
-
-msgctxt "MediationAnalysis|"
-msgid "Robust"
-msgstr "Robusto"
-
-msgctxt "MediationAnalysis|"
-msgid "Bootstrap"
-msgstr "Bootstrap"
-
-msgctxt "MediationAnalysis|"
-msgid "Type"
-msgstr "Tipo"
-
-msgctxt "MediationAnalysis|"
 msgid "Plots"
 msgstr "Gráficas"
 
@@ -364,58 +220,6 @@ msgstr "Gráfica do modelo"
 msgctxt "MediationAnalysis|"
 msgid "Legend"
 msgstr "Lenda"
-
-msgctxt "MediationAnalysis|"
-msgid "Advanced"
-msgstr "Avanzado"
-
-msgctxt "MediationAnalysis|"
-msgid "Exclude cases listwise"
-msgstr "Excluír casos segundo a lista"
-
-msgctxt "MediationAnalysis|"
-msgid "Emulation"
-msgstr "Emulación"
-
-msgctxt "MediationAnalysis|"
-msgid "None"
-msgstr "Ningún"
-
-msgctxt "MediationAnalysis|"
-msgid "Mplus"
-msgstr "Mplus"
-
-msgctxt "MediationAnalysis|"
-msgid "EQS"
-msgstr "EQS"
-
-msgctxt "MediationAnalysis|"
-msgid "Estimator"
-msgstr "Estimador"
-
-msgctxt "MediationAnalysis|"
-msgid "Auto"
-msgstr "Auto"
-
-msgctxt "MediationAnalysis|"
-msgid "ML"
-msgstr "MV"
-
-msgctxt "MediationAnalysis|"
-msgid "GLS"
-msgstr "MCX (GLS)"
-
-msgctxt "MediationAnalysis|"
-msgid "WLS"
-msgstr "MCP (WLS)"
-
-msgctxt "MediationAnalysis|"
-msgid "ULS"
-msgstr "MCSP (ULS)"
-
-msgctxt "MediationAnalysis|"
-msgid "DWLS"
-msgstr "MCPD (DWLS)"
 
 msgctxt "Mimic|"
 msgid "Indicators"
@@ -446,46 +250,6 @@ msgid "Additional fit measures"
 msgstr "Medidas adicionais de axuste"
 
 msgctxt "Mimic|"
-msgid "Confidence intervals"
-msgstr "Intervalos de confianza"
-
-msgctxt "Mimic|"
-msgid "Method"
-msgstr "Método"
-
-msgctxt "Mimic|"
-msgid "Standard"
-msgstr "Típico"
-
-msgctxt "Mimic|"
-msgid "Robust"
-msgstr "Robusto"
-
-msgctxt "Mimic|"
-msgid "Bootstrap"
-msgstr "Bootstrap"
-
-msgctxt "Mimic|"
-msgid "Replications"
-msgstr "Réplicas"
-
-msgctxt "Mimic|"
-msgid "Type"
-msgstr "Tipo"
-
-msgctxt "Mimic|"
-msgid "Bias-corrected percentile"
-msgstr "Percentil con nesgo corrixido"
-
-msgctxt "Mimic|"
-msgid "Percentile"
-msgstr "Percentil"
-
-msgctxt "Mimic|"
-msgid "Normal theory"
-msgstr "Teoría Normal"
-
-msgctxt "Mimic|"
 msgid "Plots"
 msgstr "Gráficas"
 
@@ -500,66 +264,6 @@ msgstr "Estimacións dos parámetros"
 msgctxt "Mimic|"
 msgid "Legend"
 msgstr "Lenda"
-
-msgctxt "Mimic|"
-msgid "Advanced"
-msgstr "Avanzado"
-
-msgctxt "Mimic|"
-msgid "Missing value handling"
-msgstr "Manexo de valores ausentes"
-
-msgctxt "Mimic|"
-msgid "Full Information Maximum Likelihood"
-msgstr "Máxima-Verosimilitude con Información Completa"
-
-msgctxt "Mimic|"
-msgid "Exclude cases listwise"
-msgstr "Excluír casos segundo a lista"
-
-msgctxt "Mimic|"
-msgid "Emulation"
-msgstr "Emulación"
-
-msgctxt "Mimic|"
-msgid "None"
-msgstr "Ningún"
-
-msgctxt "Mimic|"
-msgid "Mplus"
-msgstr "Mplus"
-
-msgctxt "Mimic|"
-msgid "EQS"
-msgstr "EQS"
-
-msgctxt "Mimic|"
-msgid "Estimator"
-msgstr "Estimador"
-
-msgctxt "Mimic|"
-msgid "Auto"
-msgstr "Auto"
-
-msgctxt "Mimic|"
-msgid "ML"
-msgstr "MV"
-
-msgctxt "Mimic|"
-msgid "GLS"
-msgstr "MCX (GLS)"
-
-msgctxt "Mimic|"
-msgid "WLS"
-msgstr "MCP (WLS)"
-
-msgctxt "Mimic|"
-msgid "ULS"
-msgstr "MCSP (ULS)"
-
-msgctxt "Mimic|"
-msgid "DWLS"
-msgstr "MCPD (DWLS)"
 
 msgctxt "SEM|"
 msgid "Model 1"
@@ -666,48 +370,8 @@ msgid "None"
 msgstr "Ningún"
 
 msgctxt "SEM|"
-msgid "Include mean structure"
-msgstr "Incluír a estrutura media"
-
-msgctxt "SEM|"
-msgid "Fix manifest intercepts to zero"
-msgstr "Fixar en 0, as ordenadas na orixe declaradas"
-
-msgctxt "SEM|"
 msgid "Assume factors uncorrelated"
 msgstr "Supoñer factores incorrelacionados"
-
-msgctxt "SEM|"
-msgid "Fix exogenous covariates"
-msgstr "Fixar as covariantes esóxenas"
-
-msgctxt "SEM|"
-msgid "Omit residual single indicator"
-msgstr "Omitir o índice único de erro"
-
-msgctxt "SEM|"
-msgid "Include residual variances"
-msgstr "Incluír as varianzas dos erros"
-
-msgctxt "SEM|"
-msgid "Correlate exogenous latents"
-msgstr "Correlacionar variables latentes esóxenas"
-
-msgctxt "SEM|"
-msgid "Correlate dependent variables"
-msgstr "Correlacionar variables dependentes"
-
-msgctxt "SEM|"
-msgid "Add thresholds"
-msgstr "Engadir limiares"
-
-msgctxt "SEM|"
-msgid "Add scaling parameters"
-msgstr "Engadir parámetros de escala"
-
-msgctxt "SEM|"
-msgid "Constrain EFA blocks"
-msgstr "Restrinxir os bloques EFA"
 
 msgctxt "SEM|"
 msgid "Information matrix"
@@ -722,10 +386,6 @@ msgid "Observed"
 msgstr "Observado"
 
 msgctxt "SEM|"
-msgid "Error calculation"
-msgstr "Cálculo do erro"
-
-msgctxt "SEM|"
 msgid "Standard"
 msgstr "Típico"
 
@@ -736,14 +396,6 @@ msgstr "Robusto"
 msgctxt "SEM|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
-
-msgctxt "SEM|"
-msgid "Bootstrap samples"
-msgstr "Mostras de Bootstrap"
-
-msgctxt "SEM|"
-msgid "Type"
-msgstr "Tipo"
 
 msgctxt "SEM|"
 msgid "Bias-corrected percentile"
@@ -768,10 +420,6 @@ msgstr "Tipificar as variables antes da estimación"
 msgctxt "SEM|"
 msgid "Estimator"
 msgstr "Estimador"
-
-msgctxt "SEM|"
-msgid "Auto"
-msgstr "Auto"
 
 msgctxt "SEM|"
 msgid "ML"
@@ -810,10 +458,6 @@ msgid "Yuan-Bentler"
 msgstr "Yuan-Bentler"
 
 msgctxt "SEM|"
-msgid "Mean and Variance adjusted"
-msgstr "Media e Varianza axustadas"
-
-msgctxt "SEM|"
 msgid "Scaled and shifted"
 msgstr "Escalada e desprazada"
 
@@ -824,10 +468,6 @@ msgstr "Bootstrap (Bollen-Stine)"
 msgctxt "SEM|"
 msgid "Missing data handling"
 msgstr "Manexo de datos ausentes"
-
-msgctxt "SEM|"
-msgid "FIML"
-msgstr "MVIC (FIML)"
 
 msgctxt "SEM|"
 msgid "Listwise deletion"
@@ -848,10 +488,6 @@ msgstr "Dúas etapas robusto"
 msgctxt "SEM|"
 msgid "Doubly robust"
 msgstr "Dobre robusto"
-
-msgctxt "SEM|"
-msgid "Emulation"
-msgstr "Emulación"
 
 msgctxt "SEM|"
 msgid "Mplus"
@@ -1214,10 +850,6 @@ msgid "Jackknife"
 msgstr "Jackknife"
 
 msgctxt "SEM|"
-msgid "Fix mean of manifest intercepts to zero"
-msgstr "Fixar a media das ordenadas na orixe declaradas en cero"
-
-msgctxt "SEM|"
 msgid "Average variance extracted (AVE)"
 msgstr "Varianza media extraída (VME, AVE)"
 
@@ -1232,10 +864,6 @@ msgstr "Medidas de Fiabilidade"
 msgctxt "SEM|"
 msgid "Thresholds"
 msgstr "Limiares"
-
-msgctxt "SEM|"
-msgid "Fix latent means to zero"
-msgstr "Fixar as medias latentes en cero"
 
 msgctxt "SEM|"
 msgid "Estimation Options"
@@ -1286,10 +914,6 @@ msgid "% change mean estimate"
 msgstr "Estimación media da % cambio"
 
 msgctxt "SEM|"
-msgid "Sd of deviance / old estimate"
-msgstr "DP do desvío / estimación anterior"
-
-msgctxt "SEM|"
 msgid "Change of p-value"
 msgstr "Cambio no valor p"
 
@@ -1312,3 +936,333 @@ msgstr "Nivel de significación"
 msgctxt "SEM|"
 msgid "Maximum number of iterations"
 msgstr "Número máximo de iteracións"
+
+#, fuzzy
+msgctxt "Advanced|"
+msgid "Advanced"
+msgstr "Avanzado"
+
+#, fuzzy
+msgctxt "Advanced|"
+msgid "Missing value handling"
+msgstr "Manexo de valores ausentes"
+
+msgctxt "Advanced|"
+msgid "(FI)ML"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Listwise"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Mimic"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Lavaan"
+msgstr ""
+
+#, fuzzy
+msgctxt "Advanced|"
+msgid "Mplus"
+msgstr "Mplus"
+
+#, fuzzy
+msgctxt "Advanced|"
+msgid "EQS"
+msgstr "EQS"
+
+#, fuzzy
+msgctxt "Advanced|"
+msgid "Estimator"
+msgstr "Estimador"
+
+msgctxt "Advanced|"
+msgid "Default"
+msgstr ""
+
+#, fuzzy
+msgctxt "Advanced|"
+msgid "ML"
+msgstr "MV"
+
+#, fuzzy
+msgctxt "Advanced|"
+msgid "GLS"
+msgstr "MCX (GLS)"
+
+#, fuzzy
+msgctxt "Advanced|"
+msgid "WLS"
+msgstr "MCP (WLS)"
+
+#, fuzzy
+msgctxt "Advanced|"
+msgid "ULS"
+msgstr "MCSP (ULS)"
+
+#, fuzzy
+msgctxt "Advanced|"
+msgid "DWLS"
+msgstr "MCPD (DWLS)"
+
+#, fuzzy
+msgctxt "ErrorCalculation|"
+msgid "Confidence intervals"
+msgstr "Intervalos de confianza"
+
+#, fuzzy
+msgctxt "ErrorCalculation|"
+msgid "Method"
+msgstr "Método"
+
+#, fuzzy
+msgctxt "ErrorCalculation|"
+msgid "Standard"
+msgstr "Típico"
+
+#, fuzzy
+msgctxt "ErrorCalculation|"
+msgid "Robust"
+msgstr "Robusto"
+
+#, fuzzy
+msgctxt "ErrorCalculation|"
+msgid "Bootstrap"
+msgstr "Bootstrap"
+
+#, fuzzy
+msgctxt "ErrorCalculation|"
+msgid "Replications"
+msgstr "Réplicas"
+
+#, fuzzy
+msgctxt "ErrorCalculation|"
+msgid "Type"
+msgstr "Tipo"
+
+#, fuzzy
+msgctxt "ErrorCalculation|"
+msgid "Bias-corrected percentile"
+msgstr "Percentil con nesgo corrixido"
+
+#, fuzzy
+msgctxt "ErrorCalculation|"
+msgid "Percentile"
+msgstr "Percentil"
+
+#, fuzzy
+msgctxt "ErrorCalculation|"
+msgid "Normal theory"
+msgstr "Teoría Normal"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Estimation Options"
+msgstr "Opcións da estimación"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Additional fit measures"
+msgstr "Medidas adicionais de axuste"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "All"
+msgstr "Todo"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Latents"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Except exogenous covariates"
+msgstr ""
+
+#, fuzzy
+msgctxt "MediationAnalysis|"
+msgid "All"
+msgstr "Todo"
+
+msgctxt "MediationAnalysis|"
+msgid "Latents"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Except exogenous covariates"
+msgstr ""
+
+#, fuzzy
+msgctxt "Mimic|"
+msgid "All"
+msgstr "Todo"
+
+msgctxt "Mimic|"
+msgid "Latents"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Except exogenous covariates"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Mean structure"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Latent means fixed to zero"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Manifest intercepts fixed to zero"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Mean of manifest intercepts fixed to zero"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Exogenous covariate(s) fixed"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Residual single indicator omitted"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Residual variances included"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Exogenous latents correlated"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Dependent variables correlated"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Scaling parameters"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "EFA blocks constrained"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Default"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "DLS"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "MLM"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "MLMV"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "MLMVS"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "MLF"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "MLR"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "WLSM"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "WLSMV"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "ULSM"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "ULSMV"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Click for more information"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Yuan-Bentler Mplus"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Mean and variance adjusted"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Browne residual based (ADF)"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Browne residual based (NT)"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "     Bootstrap samples"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "First order"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Standard errors"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Robust Huber-White"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "     Type"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "(FI)ML"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Mimic"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Lavaan"
+msgstr ""
+
+#, fuzzy
+msgctxt "SEM|"
+msgid "All"
+msgstr "Todo"
+
+msgctxt "SEM|"
+msgid "Latents"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Except exogenous covariates"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Show warnings"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "SD of deviance / old estimate"
+msgstr ""

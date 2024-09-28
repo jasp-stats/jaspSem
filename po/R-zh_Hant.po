@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2024-08-10 02:46\n"
+"POT-Creation-Date: 2024-09-28 02:53\n"
 "PO-Revision-Date: 2023-12-16 01:08+0000\n"
 "Last-Translator: Ginger Shu-Ying Yeh <gingershuying@gmail.com>\n"
 "Language-Team: Chinese (Traditional) <https://hosted.weblate.org/projects/"
@@ -13,100 +13,6 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 5.3\n"
 
-msgid "The model could not be estimated due to nonconvergence."
-msgstr "此模型無法估計: 迭代結果無法聚合"
-
-msgid "The model could not be estimated: No degrees of freedom left."
-msgstr "此模型無法估計: 自由度不足"
-
-msgid "Chi-square Test"
-msgstr "卡方考驗"
-
-msgid "Baseline model"
-msgstr "基準模型"
-
-msgid "Growth curve model"
-msgstr "成長曲線模型"
-
-msgid "The model is not admissible: %s"
-msgstr "此模型無法執行: %s"
-
-msgid "Warning."
-msgstr "警告."
-
-msgid "Parameter estimates"
-msgstr "參數估計值"
-
-msgid "Component"
-msgstr "成分"
-
-msgid "Parameter"
-msgstr "參數"
-
-msgid "Estimate"
-msgstr "估計"
-
-msgid "Std. Error"
-msgstr "標準誤"
-
-msgid "z-value"
-msgstr "z 值"
-
-msgid "p"
-msgstr "p"
-
-msgid "Lower"
-msgstr "下界"
-
-msgid "95%% Confidence Interval"
-msgstr "95%% 信賴區間"
-
-msgid "Latent covariances"
-msgstr "潛在共變數"
-
-msgid "LV"
-msgstr "潛在變數"
-
-msgid "Std. Est."
-msgstr "標準化估計值"
-
-msgid "All"
-msgstr "所有"
-
-msgid "No X"
-msgstr "X 不標準化"
-
-msgid "Predictor"
-msgstr "預測變項"
-
-msgid "Variable"
-msgstr "變數"
-
-msgid "Intercept"
-msgstr "截距"
-
-msgid "Linear slope"
-msgstr "線性斜率"
-
-msgid "Quadratic slope"
-msgstr "二次斜率"
-
-msgid "Cubic slope"
-msgstr "三次斜率"
-
-msgid "Mean"
-msgstr "平均數"
-
-msgid "Variance"
-msgstr "變異數"
-
-msgid ""
-"Residual variance is negative. This may indicate model misspecification."
-msgstr "殘差變異數為負值,此模型可能設定有誤."
-
-msgid "Additional Fit measures"
-msgstr "其他適配指標"
-
 msgid "Fit indices"
 msgstr "適配指標"
 
@@ -115,15 +21,6 @@ msgstr "指標"
 
 msgid "Value"
 msgstr "值"
-
-msgid "Information criteria"
-msgstr "資訊準則"
-
-msgid "Other fit measures"
-msgstr "其他適配指標"
-
-msgid "Metric"
-msgstr "量尺"
 
 msgid "Comparative Fit Index (CFI)"
 msgstr "比較適配指標 (CFI)"
@@ -148,21 +45,6 @@ msgstr "增加適配指標 (IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
 msgstr "相對非中心配適指標  (RNI)"
-
-msgid "Log-likelihood"
-msgstr "對數概度"
-
-msgid "Number of free parameters"
-msgstr "自由估計參數個數"
-
-msgid "Akaike (AIC)"
-msgstr "赤池資訊量準則"
-
-msgid "Bayesian (BIC)"
-msgstr "貝氏資訊量準則 (BIC)"
-
-msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr "依照樣本大小校正之貝氏資訊量準則 (SSABIC)"
 
 msgid "Root mean square error of approximation (RMSEA)"
 msgstr "標準化均方根殘差值"
@@ -194,6 +76,106 @@ msgstr "McDonald 適配指標 (IFI)"
 msgid "Expected cross validation index (ECVI)"
 msgstr "Expected cross validation index (EVCI)"
 
+msgid "Log-likelihood"
+msgstr "對數概度"
+
+msgid "Number of free parameters"
+msgstr "自由估計參數個數"
+
+msgid "Akaike (AIC)"
+msgstr "赤池資訊量準則"
+
+msgid "Bayesian (BIC)"
+msgstr "貝氏資訊量準則 (BIC)"
+
+msgid "Sample-size adjusted Bayesian (SSABIC)"
+msgstr "依照樣本大小校正之貝氏資訊量準則 (SSABIC)"
+
+msgid "The model could not be estimated due to nonconvergence."
+msgstr "此模型無法估計: 迭代結果無法聚合"
+
+msgid "The model could not be estimated: No degrees of freedom left."
+msgstr "此模型無法估計: 自由度不足"
+
+#, fuzzy
+msgid "Chi-square test"
+msgstr "卡方考驗"
+
+msgid "Baseline model"
+msgstr "基準模型"
+
+msgid "Growth curve model"
+msgstr "成長曲線模型"
+
+msgid "The model is not admissible: %s"
+msgstr "此模型無法執行: %s"
+
+msgid "Warning."
+msgstr "警告."
+
+msgid "Parameter estimates"
+msgstr "參數估計值"
+
+#, fuzzy
+msgid "Std. estimate"
+msgstr "標準化"
+
+msgid "Estimate"
+msgstr "估計"
+
+msgid "Component"
+msgstr "成分"
+
+msgid "Parameter"
+msgstr "參數"
+
+#, fuzzy
+msgid "Std. error"
+msgstr "標準誤"
+
+msgid "z-value"
+msgstr "z 值"
+
+msgid "p"
+msgstr "p"
+
+msgid "Lower"
+msgstr "下界"
+
+msgid "%s%% Confidence Interval"
+msgstr "%s%% 信賴區間"
+
+msgid "Latent covariances"
+msgstr "潛在共變數"
+
+msgid "Predictor"
+msgstr "預測變項"
+
+msgid "Variable"
+msgstr "變數"
+
+msgid "Intercept"
+msgstr "截距"
+
+msgid "Linear slope"
+msgstr "線性斜率"
+
+msgid "Quadratic slope"
+msgstr "二次斜率"
+
+msgid "Cubic slope"
+msgstr "三次斜率"
+
+msgid "Mean"
+msgstr "平均數"
+
+msgid "Variance"
+msgstr "變異數"
+
+msgid ""
+"Residual variance is negative. This may indicate model misspecification."
+msgstr "殘差變異數為負值,此模型可能設定有誤."
+
 msgid "R-Squared"
 msgstr "R平方"
 
@@ -220,9 +202,6 @@ msgstr "曲線 + 變異數"
 
 msgid "Curve + parameter uncertainty"
 msgstr "曲線 + 參數不確定性"
-
-msgid "FIML only available with ML-type estimators."
-msgstr "完全訊息最大概似法: 只限於最大概似法 (ML)類的估計法"
 
 msgid ""
 "Not all exogenous variables are admissible. Inadmissible exogenous "
@@ -253,9 +232,6 @@ msgstr ""
 msgid "Direct effects"
 msgstr "直接效果"
 
-msgid "%s%% Confidence Interval"
-msgstr "%s%% 信賴區間"
-
 msgid "Upper"
 msgstr "上界"
 
@@ -271,39 +247,16 @@ msgstr "殘差共變數"
 msgid "Path coefficients"
 msgstr "路徑係數"
 
-msgid "Delta method"
-msgstr "Delta 法"
+#, fuzzy
+msgid "Estimator is %s."
+msgstr "估計失敗。訊息:%s"
 
-msgid "Robust"
-msgstr "穩健"
-
-msgid "percentile bootstrap"
-msgstr "百分位拔靴法"
-
-msgid "normal theory bootstrap"
-msgstr "常態理論拔靴法"
-
-msgid "bias-corrected percentile bootstrap"
-msgstr "誤差修正百分位拔靴法"
-
-msgid "normal theory"
-msgstr "常態理論"
-
-msgid "robust"
-msgstr "穩健"
-
-msgid "%1$s standard errors, %2$s confidence intervals."
-msgstr "%1$s 標準誤, %2$s 信賴區間"
-
+#, fuzzy
 msgid ""
-"%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all "
-"bootstrap samples were successful: CI based on %4$.0f samples."
+"%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
 msgstr ""
 "%1$s 標準誤, %2$s 信賴區間, %3$s 估計法. NB: 並非所有拔靴法樣本模式估計都成"
 "功: 信賴區間是根據%4$.0f 的樣本分析結果所得"
-
-msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
-msgstr "%1$s 標準誤, %2$s 信賴區間, %3$s 估計法"
 
 msgid "Path plot"
 msgstr "路徑圖"
@@ -321,13 +274,13 @@ msgstr ""
 msgid "Model syntax"
 msgstr "模型語法"
 
+msgid "FIML only available with ML-type estimators."
+msgstr "完全訊息最大概似法: 只限於最大概似法 (ML)類的估計法"
+
 msgid ""
 "Estimation failed! Message: The model did not converge. Try using a "
 "different estimator or specify an other MIMIC model."
 msgstr "估計失敗！訊息：模型無法收斂。試使用其他估計法，或改用MIMIC模型。"
-
-msgid "Chi Square test"
-msgstr "卡方檢定"
 
 msgid "df"
 msgstr "自由度"
@@ -338,26 +291,14 @@ msgstr "&#967;&sup2;"
 msgid "Factor model"
 msgstr "因素模型"
 
-msgid "Additional fit measures"
-msgstr "其他適配指標"
-
 msgid "Predictor coefficients"
 msgstr "預測變數係數"
-
-msgid "Standardized"
-msgstr "標準化"
-
-msgid "Endo"
-msgstr "內生"
 
 msgid "Indicator coefficients"
 msgstr "指標係數"
 
 msgid "Indicator"
 msgstr "指標"
-
-msgid "Latent"
-msgstr "潛在"
 
 msgid "Model plot not available with ordinal variables"
 msgstr "使用次序變數分析時，無法提供模型圖"
@@ -403,6 +344,9 @@ msgstr ""
 
 msgid "Construct"
 msgstr ""
+
+msgid "Std. Error"
+msgstr "標準誤"
 
 #, fuzzy
 msgid "Loadings"
@@ -575,11 +519,6 @@ msgstr ""
 msgid "Implied construct correlation matrix"
 msgstr "模式隱含之共變數矩陣"
 
-msgid "FIML missing data handling only available with ML-type estimators"
-msgstr ""
-"只有使用最大概似法 (ML)類的估計法時，才能使用完全訊息最大概似法的方式來處理遺"
-"漏值"
-
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
 msgstr "當以變異數-共變數矩陣為資料進行分析時，無法提供平均數結構"
@@ -604,20 +543,20 @@ msgstr ""
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr "模型設定無效。是否將某變數名稱誤設為字串資料？"
 
-msgid "One or more variables are constants or contain only missing values"
+#, fuzzy
+msgid "One or more variables are constants or contain only missing values."
 msgstr "一或多個變數為常數或只有遺漏值"
 
-msgid ""
-"Missing data handling '%s' is not supported for categorical data,\n"
-"                        please select another method under 'Missing data "
-"handling'\n"
-"                        within the 'Estimation options' tab"
-msgstr ""
-"類別資料無法使用遺漏值處理方式'%s'。,\n"
-"                        請在「估計選項」選單中的\n"
-"                        「遺漏值處理」選單中選擇其他方式。"
+#, fuzzy
+msgid "Estimation failed. Message: %s"
+msgstr "估計失敗。訊息:%s"
 
-msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
+#, fuzzy
+msgid "Estimation failed! Message: %s did not converge!"
+msgstr "估計失敗。訊息:模型%s無法收斂!"
+
+#, fuzzy
+msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr "估計失敗!訊息:模型%s的自由度為負值"
 
 msgid "n(Observations)"
@@ -637,42 +576,27 @@ msgid "%1$sdf"
 msgstr ""
 
 msgid ""
-"A total of %g cases were removed due to missing values. You can avoid this "
-"by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
+"%sFitting the model resulted in warnings. Check the 'Show warnings' box in "
+"the Output Options to see the warnings."
 msgstr ""
-"基於遺漏值的原因，共移除%g筆資料。可在估計設定中的「遺漏值處理」，選擇「完全"
-"訊息最大概似法」來避免此問題。"
 
-msgid "Satorra-Bentler scaled test-statistic"
-msgstr "Satorra-Bentler量尺化檢定統計數"
+msgid "A total of %g cases were removed due to missing values."
+msgstr ""
 
-msgid "Yuan-Bentler scaled test-statistic"
-msgstr "Yuan-Bentler量尺化檢定統計數"
-
-msgid "Yuan-Bentler (Mplus) scaled test-statistic"
-msgstr "Yuan-Bentler (Mplus) 量尺化檢定統計數"
-
-msgid "mean and variance adjusted test-statistic"
-msgstr "平均數與變異數調整檢定統計數"
-
-msgid "scaled and shifted test-statistic"
-msgstr "量尺與轉變(shifted)檢定統計數"
-
-msgid "bootstrap (Bollen-Stine) probability value"
-msgstr "拔靴法(Bollen-Stine) 機率值"
+msgid "Model test is %s."
+msgstr ""
 
 #, fuzzy
-msgid "Baseline tests based on %s."
-msgstr "模型檢定基於%s."
+msgid "Information matrix is %s."
+msgstr "資訊準則"
 
-msgid ""
-"Baseline tests based on %s. Difference tests based on a function of two "
-"standard test-statistics."
+msgid "Standard errors are %s."
 msgstr ""
 
+#, fuzzy
 msgid ""
-"The AIC, BIC and additional information criteria are only available with ML-"
-"type estimators"
+"%s The AIC, BIC and additional information criteria are only available with "
+"ML-type estimators."
 msgstr ""
 "只有在使用最大概似法 (ML)類的估計法時，才提供AIC, BIC與其他訊息準則指標"
 
@@ -680,8 +604,22 @@ msgstr ""
 msgid "all"
 msgstr "所有"
 
+msgid "<b>Warnings:</b> %s"
+msgstr ""
+
+#, fuzzy
+msgid "Parameter Estimates"
+msgstr "參數估計值"
+
 msgid "Factor Loadings"
 msgstr "因素負荷量"
+
+msgid "Latent"
+msgstr "潛在"
+
+#, fuzzy
+msgid "%s%% Confidence interval"
+msgstr "%s%% 信賴區間"
 
 msgid "Regression coefficients"
 msgstr "迴歸係數"
@@ -702,48 +640,49 @@ msgstr "殘差變異數"
 msgid "Intercepts"
 msgstr "截距"
 
+msgid "Missing data method 'FIML' forces meanstructure."
+msgstr ""
+
+msgid "Thresholds"
+msgstr ""
+
+msgid "Threshold"
+msgstr ""
+
 msgid "Defined parameters"
 msgstr "變數定義"
 
 msgid "Name"
 msgstr "命名"
 
-msgid "T-size CFI"
-msgstr ""
+#, fuzzy
+msgid "%s Fit indices are based on the scaled test statistic."
+msgstr "Satorra-Bentler量尺化檢定統計數"
+
+#, fuzzy
+msgid "T-size fit indices"
+msgstr "適配指標"
 
 msgid ""
-"T-size CFI is computed for <i>%1$s = 0.05</i>. The T-size equivalents of "
-"the\n"
-"                                      conventional CFI cut-off values (poor "
-"< 0.90 < fair < 0.95 < close) are <b>poor\n"
-"                                      < %2$s < fair < %3$s < close</b> for "
-"model: %4$s."
+"Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness "
+"of Fit: A Note on Using Equivalence Testing to Assess Structural Equation "
+"Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), "
+"148-153, https://doi.org/10.1080/10705511.2016.1225260"
 msgstr ""
 
-msgid ""
-"The T-size equivalents of the conventional CFI cut-off values\n"
-"                                        (poor < 0.90 < fair < 0.95 < close) "
-"are <b>poor < %1$s < fair < %2$s <\n"
-"                                        close</b> for model: %3$s."
+msgid "Poor-fair limit"
 msgstr ""
 
-msgid "T-size RMSEA"
+msgid "Fair-close limit"
 msgstr ""
 
-msgid ""
-"T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents of "
-"the\n"
-"                                        conventional RMSEA cut-off values "
-"(close < 0.05 < fair < 0.08 < poor) are\n"
-"                                        <b>close < %2$s < fair < %3$s < "
-"poor</b> for model: %4$s."
+msgid "CFI"
 msgstr ""
 
-msgid ""
-"The T-size equivalents of the conventional RMSEA cut-off values\n"
-"                                          (close < 0.05 < fair < 0.08 < "
-"poor) are <b>close < %1$s < fair < %2$s\n"
-"                                          < poor</b> for model: %3$s."
+msgid "RMSEA"
+msgstr ""
+
+msgid "T-size statistics are computed for <i>%s = 0.05</i>."
 msgstr ""
 
 msgid "Average variance extracted"
@@ -764,6 +703,9 @@ msgstr "係數"
 msgid "Coefficient ω"
 msgstr "係數"
 
+msgid "Heterotrait-Monotrait Ratio"
+msgstr ""
+
 msgid "Heterotrait-monotrait ratio"
 msgstr ""
 
@@ -782,8 +724,15 @@ msgid ""
 "all models."
 msgstr "根據所有模型的觀察變數來計算多變數偏度與峰度"
 
+#, fuzzy
 msgid ""
-"Not all used variables are numeric. Mardia's coefficients not available."
+"Not all used variables are continuous: Mardia's coefficients not available."
+msgstr "因有非數值的變數而無法計算Mardia係數。"
+
+#, fuzzy
+msgid ""
+"The data covariance matrix could not be inverted: Mardia's coefficients not "
+"available."
 msgstr "因有非數值的變數而無法計算Mardia係數。"
 
 msgid "Skewness"
@@ -894,6 +843,133 @@ msgstr "變數定義"
 
 msgid "Path diagram"
 msgstr "路徑圖"
+
+msgid "Satorra-Bentler"
+msgstr ""
+
+msgid "Yuan-Bentler"
+msgstr ""
+
+#, fuzzy
+msgid "Yuan-Bentler Mplus"
+msgstr "Yuan-Bentler (Mplus) 量尺化檢定統計數"
+
+#, fuzzy
+msgid "mean and variance-adjusted"
+msgstr "平均數與變異數調整檢定統計數"
+
+#, fuzzy
+msgid "scaled and shifted"
+msgstr "量尺與轉變(shifted)檢定統計數"
+
+#, fuzzy
+msgid "bootstrap (Bollen-Stine)"
+msgstr "拔靴法(Bollen-Stine) 機率值"
+
+msgid "Browne residual based (ADF)"
+msgstr ""
+
+msgid "Browne residual based (NT)"
+msgstr ""
+
+msgid "robust"
+msgstr "穩健"
+
+msgid "robust Huber-White"
+msgstr ""
+
+msgid "first-order"
+msgstr ""
+
+#~ msgid "95%% Confidence Interval"
+#~ msgstr "95%% 信賴區間"
+
+#~ msgid "LV"
+#~ msgstr "潛在變數"
+
+#~ msgid "Std. Est."
+#~ msgstr "標準化估計值"
+
+#~ msgid "All"
+#~ msgstr "所有"
+
+#~ msgid "No X"
+#~ msgstr "X 不標準化"
+
+#~ msgid "Additional Fit measures"
+#~ msgstr "其他適配指標"
+
+#~ msgid "Other fit measures"
+#~ msgstr "其他適配指標"
+
+#~ msgid "Metric"
+#~ msgstr "量尺"
+
+#~ msgid "Delta method"
+#~ msgstr "Delta 法"
+
+#~ msgid "Robust"
+#~ msgstr "穩健"
+
+#~ msgid "percentile bootstrap"
+#~ msgstr "百分位拔靴法"
+
+#~ msgid "normal theory bootstrap"
+#~ msgstr "常態理論拔靴法"
+
+#~ msgid "bias-corrected percentile bootstrap"
+#~ msgstr "誤差修正百分位拔靴法"
+
+#~ msgid "normal theory"
+#~ msgstr "常態理論"
+
+#~ msgid "%1$s standard errors, %2$s confidence intervals."
+#~ msgstr "%1$s 標準誤, %2$s 信賴區間"
+
+#~ msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
+#~ msgstr "%1$s 標準誤, %2$s 信賴區間, %3$s 估計法"
+
+#~ msgid "Chi Square test"
+#~ msgstr "卡方檢定"
+
+#~ msgid "Additional fit measures"
+#~ msgstr "其他適配指標"
+
+#~ msgid "Standardized"
+#~ msgstr "標準化"
+
+#~ msgid "Endo"
+#~ msgstr "內生"
+
+#~ msgid "FIML missing data handling only available with ML-type estimators"
+#~ msgstr ""
+#~ "只有使用最大概似法 (ML)類的估計法時，才能使用完全訊息最大概似法的方式來處"
+#~ "理遺漏值"
+
+#~ msgid ""
+#~ "Missing data handling '%s' is not supported for categorical data,\n"
+#~ "                        please select another method under 'Missing data "
+#~ "handling'\n"
+#~ "                        within the 'Estimation options' tab"
+#~ msgstr ""
+#~ "類別資料無法使用遺漏值處理方式'%s'。,\n"
+#~ "                        請在「估計選項」選單中的\n"
+#~ "                        「遺漏值處理」選單中選擇其他方式。"
+
+#~ msgid ""
+#~ "A total of %g cases were removed due to missing values. You can avoid "
+#~ "this by choosing 'FIML' under 'Missing Data Handling' in the Estimation "
+#~ "options."
+#~ msgstr ""
+#~ "基於遺漏值的原因，共移除%g筆資料。可在估計設定中的「遺漏值處理」，選擇「完"
+#~ "全訊息最大概似法」來避免此問題。"
+
+#~ msgid "Yuan-Bentler scaled test-statistic"
+#~ msgstr "Yuan-Bentler量尺化檢定統計數"
+
+#, fuzzy
+#~ msgid "Baseline tests based on %s."
+#~ msgstr "模型檢定基於%s."
 
 #~ msgid "&#916;&#967;&sup2;"
 #~ msgstr "&#916;&#967;&sup2;"

@@ -2,113 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2024-08-10 02:46\n"
+"POT-Creation-Date: 2024-09-28 02:53\n"
 "PO-Revision-Date: 2024-09-15 09:32+0000\n"
 "Last-Translator: Koen Derks <koen-derks@hotmail.com>\n"
-"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/>"
-"\n"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/"
+">\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
 "X-Generator: Weblate 5.8-dev\n"
-
-msgid "The model could not be estimated due to nonconvergence."
-msgstr "Het model kon niet worden geschat door niet-convergentie."
-
-msgid "The model could not be estimated: No degrees of freedom left."
-msgstr "Het model kon niet worden geschat: Geen vrijheidsgraden over."
-
-msgid "Chi-square Test"
-msgstr "Chikwadraattoets"
-
-msgid "Baseline model"
-msgstr "Baseline model"
-
-msgid "Growth curve model"
-msgstr "Groei curve model"
-
-msgid "The model is not admissible: %s"
-msgstr "Het model is niet geoorloofd: %s"
-
-msgid "Warning."
-msgstr "Waarschuwing."
-
-msgid "Parameter estimates"
-msgstr "Parameterschattingen"
-
-msgid "Component"
-msgstr "Component"
-
-msgid "Parameter"
-msgstr "Parameter"
-
-msgid "Estimate"
-msgstr "Schatting"
-
-msgid "Std. Error"
-msgstr "Std. fout"
-
-msgid "z-value"
-msgstr "z-waarde"
-
-msgid "p"
-msgstr "p"
-
-msgid "Lower"
-msgstr "Onder"
-
-msgid "95%% Confidence Interval"
-msgstr "95%% Betrouwbaarheidsinterval"
-
-msgid "Latent covariances"
-msgstr "Latente covarianties"
-
-msgid "LV"
-msgstr "LV"
-
-msgid "Std. Est."
-msgstr "Std. Schat."
-
-msgid "All"
-msgstr "Alle"
-
-msgid "No X"
-msgstr "Geen X"
-
-msgid "Predictor"
-msgstr "Voorspeller"
-
-msgid "Variable"
-msgstr "Variabele"
-
-msgid "Intercept"
-msgstr "Intercept"
-
-msgid "Linear slope"
-msgstr "Lineaire helling"
-
-msgid "Quadratic slope"
-msgstr "Kwadratische helling"
-
-msgid "Cubic slope"
-msgstr "Kubieke helling"
-
-msgid "Mean"
-msgstr "Gemiddelde"
-
-msgid "Variance"
-msgstr "Variantie"
-
-msgid ""
-"Residual variance is negative. This may indicate model misspecification."
-msgstr ""
-"De residuele variantie is negatief. Dit kan wijzen op een verkeerde "
-"specificatie van het model."
-
-msgid "Additional Fit measures"
-msgstr "Extra fitmaten"
 
 msgid "Fit indices"
 msgstr "Pas indices"
@@ -118,15 +22,6 @@ msgstr "Index"
 
 msgid "Value"
 msgstr "Waarde"
-
-msgid "Information criteria"
-msgstr "Informatie criteria"
-
-msgid "Other fit measures"
-msgstr "Andere pasmaten"
-
-msgid "Metric"
-msgstr "Metrisch"
 
 msgid "Comparative Fit Index (CFI)"
 msgstr "Comparatieve Fit Index (CFI)"
@@ -151,21 +46,6 @@ msgstr "Bollen's incrementele Fit Index (IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
 msgstr "Relatieve Noncentraliteits Index (RNI)"
-
-msgid "Log-likelihood"
-msgstr "Log-waarschijnlijkheid"
-
-msgid "Number of free parameters"
-msgstr "Aantal vrije parameters"
-
-msgid "Akaike (AIC)"
-msgstr "Akaike (AIC)"
-
-msgid "Bayesian (BIC)"
-msgstr "Bayesiaans (BIC)"
-
-msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr "Op Steekproef-grootte bijgestelde Bayesiaanse (SSABIC)"
 
 msgid "Root mean square error of approximation (RMSEA)"
 msgstr "Wortel van de gemiddelde fout kwadraat van benadering (RMSEA)"
@@ -198,6 +78,108 @@ msgstr "McDonald fit index (MFI)"
 msgid "Expected cross validation index (ECVI)"
 msgstr "Verwachte kruisvalidatie index (ECVI)"
 
+msgid "Log-likelihood"
+msgstr "Log-waarschijnlijkheid"
+
+msgid "Number of free parameters"
+msgstr "Aantal vrije parameters"
+
+msgid "Akaike (AIC)"
+msgstr "Akaike (AIC)"
+
+msgid "Bayesian (BIC)"
+msgstr "Bayesiaans (BIC)"
+
+msgid "Sample-size adjusted Bayesian (SSABIC)"
+msgstr "Op Steekproef-grootte bijgestelde Bayesiaanse (SSABIC)"
+
+msgid "The model could not be estimated due to nonconvergence."
+msgstr "Het model kon niet worden geschat door niet-convergentie."
+
+msgid "The model could not be estimated: No degrees of freedom left."
+msgstr "Het model kon niet worden geschat: Geen vrijheidsgraden over."
+
+#, fuzzy
+msgid "Chi-square test"
+msgstr "Chikwadraattoets"
+
+msgid "Baseline model"
+msgstr "Baseline model"
+
+msgid "Growth curve model"
+msgstr "Groei curve model"
+
+msgid "The model is not admissible: %s"
+msgstr "Het model is niet geoorloofd: %s"
+
+msgid "Warning."
+msgstr "Waarschuwing."
+
+msgid "Parameter estimates"
+msgstr "Parameterschattingen"
+
+#, fuzzy
+msgid "Std. estimate"
+msgstr "Gestandaardiseerde schatting"
+
+msgid "Estimate"
+msgstr "Schatting"
+
+msgid "Component"
+msgstr "Component"
+
+msgid "Parameter"
+msgstr "Parameter"
+
+#, fuzzy
+msgid "Std. error"
+msgstr "Std. fout"
+
+msgid "z-value"
+msgstr "z-waarde"
+
+msgid "p"
+msgstr "p"
+
+msgid "Lower"
+msgstr "Onder"
+
+msgid "%s%% Confidence Interval"
+msgstr "%s%% Betrouwbaarheidsinterval"
+
+msgid "Latent covariances"
+msgstr "Latente covarianties"
+
+msgid "Predictor"
+msgstr "Voorspeller"
+
+msgid "Variable"
+msgstr "Variabele"
+
+msgid "Intercept"
+msgstr "Intercept"
+
+msgid "Linear slope"
+msgstr "Lineaire helling"
+
+msgid "Quadratic slope"
+msgstr "Kwadratische helling"
+
+msgid "Cubic slope"
+msgstr "Kubieke helling"
+
+msgid "Mean"
+msgstr "Gemiddelde"
+
+msgid "Variance"
+msgstr "Variantie"
+
+msgid ""
+"Residual variance is negative. This may indicate model misspecification."
+msgstr ""
+"De residuele variantie is negatief. Dit kan wijzen op een verkeerde "
+"specificatie van het model."
+
 msgid "R-Squared"
 msgstr "R-kwadraat"
 
@@ -224,9 +206,6 @@ msgstr "Curve + variantie"
 
 msgid "Curve + parameter uncertainty"
 msgstr "Curve + parameteronzekerheid"
-
-msgid "FIML only available with ML-type estimators."
-msgstr "FIML alleen beschikbaar met ML-type schatters."
 
 msgid ""
 "Not all exogenous variables are admissible. Inadmissible exogenous "
@@ -262,9 +241,6 @@ msgstr ""
 msgid "Direct effects"
 msgstr "Directe effecten"
 
-msgid "%s%% Confidence Interval"
-msgstr "%s%% Betrouwbaarheidsinterval"
-
 msgid "Upper"
 msgstr "Boven"
 
@@ -280,40 +256,17 @@ msgstr "Residu covarianties"
 msgid "Path coefficients"
 msgstr "Voorspeller coëfficiënten"
 
-msgid "Delta method"
-msgstr "Deltamethode"
+#, fuzzy
+msgid "Estimator is %s."
+msgstr "Schatting mislukt Melding: %s"
 
-msgid "Robust"
-msgstr "Robuust"
-
-msgid "percentile bootstrap"
-msgstr "percentiel bootstrap"
-
-msgid "normal theory bootstrap"
-msgstr "normaaltheorie bootstrap"
-
-msgid "bias-corrected percentile bootstrap"
-msgstr "Onzuiverheid-gecorrigeerde percentiel bootstrap"
-
-msgid "normal theory"
-msgstr "normaaltheorie"
-
-msgid "robust"
-msgstr "robuust"
-
-msgid "%1$s standard errors, %2$s confidence intervals."
-msgstr "%1$s standaard fouten, %2$s betrouwbaarheidsintervallen."
-
+#, fuzzy
 msgid ""
-"%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all "
-"bootstrap samples were successful: CI based on %4$.0f samples."
+"%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
 msgstr ""
 "%1$s standaardfouten, %2$s betrouwbaarheidsintervallen, %3$s schatter. NB: "
 "Niet alle bootstrap steekproeven waren succesvol: BI gebaseerd op %4$.0f "
 "steekproeven."
-
-msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
-msgstr "%1$s standaardfouten, %2$s betrouwbaarheidsintervallen, %3$s schatter."
 
 msgid "Path plot"
 msgstr "Paddiagram"
@@ -335,15 +288,15 @@ msgstr ""
 msgid "Model syntax"
 msgstr "Model syntax"
 
+msgid "FIML only available with ML-type estimators."
+msgstr "FIML alleen beschikbaar met ML-type schatters."
+
 msgid ""
 "Estimation failed! Message: The model did not converge. Try using a "
 "different estimator or specify an other MIMIC model."
 msgstr ""
 "Schatting mislukt! Bericht: Het model is niet geconvergeerd. Probeer een "
 "andere schatter te gebruiken of specificeer een ander MIMIC-model."
-
-msgid "Chi Square test"
-msgstr "Chikwadraattoets"
 
 msgid "df"
 msgstr "vg"
@@ -354,26 +307,14 @@ msgstr "&#967;&sup2;"
 msgid "Factor model"
 msgstr "Factor model"
 
-msgid "Additional fit measures"
-msgstr "Extra pasmaten"
-
 msgid "Predictor coefficients"
 msgstr "Voorspeller coëfficiënten"
-
-msgid "Standardized"
-msgstr "Gestandaardiseerd"
-
-msgid "Endo"
-msgstr "Endo"
 
 msgid "Indicator coefficients"
 msgstr "Indicator coëfficiënten"
 
 msgid "Indicator"
 msgstr "Indicator"
-
-msgid "Latent"
-msgstr "Latent"
 
 msgid "Model plot not available with ordinal variables"
 msgstr "Modelplot niet beschikbaar met ordinale variabelen"
@@ -419,6 +360,9 @@ msgstr "Gewichten"
 
 msgid "Construct"
 msgstr "Construeer"
+
+msgid "Std. Error"
+msgstr "Std. fout"
 
 msgid "Loadings"
 msgstr "Ladingen"
@@ -579,9 +523,6 @@ msgstr "Waargenomen correlatiematrix van het construct"
 msgid "Implied construct correlation matrix"
 msgstr "Geïmpliceerde construct correlatie matrix"
 
-msgid "FIML missing data handling only available with ML-type estimators"
-msgstr "FIML missende dataverwerking alleen beschikbaar met ML-type schatters"
-
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
 msgstr ""
@@ -616,23 +557,21 @@ msgstr ""
 "Ongeldige modelspecificatie. Hebt u de naam van een variabele als tekenreeks "
 "ingevoerd?"
 
-msgid "One or more variables are constants or contain only missing values"
+#, fuzzy
+msgid "One or more variables are constants or contain only missing values."
 msgstr ""
 "Een of meer variabelen zijn constanten of bevatten alleen ontbrekende waarden"
 
-msgid ""
-"Missing data handling '%s' is not supported for categorical data,\n"
-"                        please select another method under 'Missing data "
-"handling'\n"
-"                        within the 'Estimation options' tab"
-msgstr ""
-"Afhandeling van ontbrekende gegevens \"%s\" wordt niet ondersteund voor "
-"categorische gegevens,\n"
-"                        Selecteer een andere methode onder \"Afhandeling van "
-"ontbrekende gegevens\"\n"
-"                        in het tabblad \"Schattingsopties\""
+#, fuzzy
+msgid "Estimation failed. Message: %s"
+msgstr "Schatting mislukt Melding: %s"
 
-msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
+#, fuzzy
+msgid "Estimation failed! Message: %s did not converge!"
+msgstr "Schatting mislukt! Bericht: Model %s convergeert niet!"
+
+#, fuzzy
+msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr "Schatting mislukt! Bericht: Model %s heeft negatieve vrijheidsgraden."
 
 msgid "n(Observations)"
@@ -651,44 +590,27 @@ msgid "%1$sdf"
 msgstr "%1$sdf"
 
 msgid ""
-"A total of %g cases were removed due to missing values. You can avoid this "
-"by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
+"%sFitting the model resulted in warnings. Check the 'Show warnings' box in "
+"the Output Options to see the warnings."
 msgstr ""
-"In totaal werden %g gevallen verwijderd wegens ontbrekende waarden. U kunt "
-"dit vermijden door \"FIML\" te kiezen onder \"Missing Data Handling\" in de "
-"Schattingsopties."
 
-msgid "Satorra-Bentler scaled test-statistic"
-msgstr "Satorra-Bentler geschaalde test-statistiek"
-
-msgid "Yuan-Bentler scaled test-statistic"
-msgstr "Yuan-Bentler geschaalde test-statistiek"
-
-msgid "Yuan-Bentler (Mplus) scaled test-statistic"
-msgstr "Yuan-Bentler (Mplus) geschaalde test-statistiek"
-
-msgid "mean and variance adjusted test-statistic"
-msgstr "gemiddelde en variantie aangepaste teststatistiek"
-
-msgid "scaled and shifted test-statistic"
-msgstr "geschaalde en verschoven teststatistiek"
-
-msgid "bootstrap (Bollen-Stine) probability value"
-msgstr "bootstrap (Bollen-Stine) waarschijnlijkheidswaarde"
-
-msgid "Baseline tests based on %s."
-msgstr "Baseline toetsen gebaseerd op %s."
-
-msgid ""
-"Baseline tests based on %s. Difference tests based on a function of two "
-"standard test-statistics."
+msgid "A total of %g cases were removed due to missing values."
 msgstr ""
-"Baseline toetsen gebaseerd op %s. Verschiltoetsen gebaseerd op een functie "
-"van twee standaard teststatistieken."
 
+msgid "Model test is %s."
+msgstr ""
+
+#, fuzzy
+msgid "Information matrix is %s."
+msgstr "Informatie criteria"
+
+msgid "Standard errors are %s."
+msgstr ""
+
+#, fuzzy
 msgid ""
-"The AIC, BIC and additional information criteria are only available with ML-"
-"type estimators"
+"%s The AIC, BIC and additional information criteria are only available with "
+"ML-type estimators."
 msgstr ""
 "De AIC, BIC en aanvullende informatiecriteria zijn alleen beschikbaar met "
 "schatters van het ML-type"
@@ -696,8 +618,22 @@ msgstr ""
 msgid "all"
 msgstr "alle"
 
+msgid "<b>Warnings:</b> %s"
+msgstr ""
+
+#, fuzzy
+msgid "Parameter Estimates"
+msgstr "Parameterschattingen"
+
 msgid "Factor Loadings"
 msgstr "Factorladingen"
+
+msgid "Latent"
+msgstr "Latent"
+
+#, fuzzy
+msgid "%s%% Confidence interval"
+msgstr "%s%% Betrouwbaarheidsinterval"
 
 msgid "Regression coefficients"
 msgstr "Regressie Coëfficiënten"
@@ -717,69 +653,52 @@ msgstr "Residu varianties"
 msgid "Intercepts"
 msgstr "Intercepten"
 
+msgid "Missing data method 'FIML' forces meanstructure."
+msgstr ""
+
+msgid "Thresholds"
+msgstr ""
+
+msgid "Threshold"
+msgstr ""
+
 msgid "Defined parameters"
 msgstr "Gedefineerde Parameters"
 
 msgid "Name"
 msgstr "Naam"
 
-msgid "T-size CFI"
-msgstr "T-maat CFI"
+#, fuzzy
+msgid "%s Fit indices are based on the scaled test statistic."
+msgstr "Satorra-Bentler geschaalde test-statistiek"
+
+#, fuzzy
+msgid "T-size fit indices"
+msgstr "Pas indices"
 
 msgid ""
-"T-size CFI is computed for <i>%1$s = 0.05</i>. The T-size equivalents of "
-"the\n"
-"                                      conventional CFI cut-off values (poor "
-"< 0.90 < fair < 0.95 < close) are <b>poor\n"
-"                                      < %2$s < fair < %3$s < close</b> for "
-"model: %4$s."
+"Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness "
+"of Fit: A Note on Using Equivalence Testing to Assess Structural Equation "
+"Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), "
+"148-153, https://doi.org/10.1080/10705511.2016.1225260"
 msgstr ""
-"T-maat CFI wordt berekend voor <i>%1$s = 0,05</i>. De T-maat-equivalenten "
-"van de\n"
-"                                       conventionele CFI-grenswaarden "
-"(slecht < 0,90 < redelijk < 0,95 < dichtbij) zijn <b>slecht\n"
-"                                       < %2$s < redelijk < %3$s < dichtbij</"
-"b> voor model: %4$s."
 
-msgid ""
-"The T-size equivalents of the conventional CFI cut-off values\n"
-"                                        (poor < 0.90 < fair < 0.95 < close) "
-"are <b>poor < %1$s < fair < %2$s <\n"
-"                                        close</b> for model: %3$s."
+msgid "Poor-fair limit"
 msgstr ""
-"De T-maat-equivalenten van de conventionele CFI-grenswaarden\n"
-"                                         (slecht < 0,90 < redelijk < 0,95 < "
-"dichtbij) zijn <b>slecht < %1$s < redelijk < %2$s <\n"
-"                                         sluiten</b> voor model: %3$s."
 
-msgid "T-size RMSEA"
-msgstr "T-grootte RMSEA"
-
-msgid ""
-"T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents of "
-"the\n"
-"                                        conventional RMSEA cut-off values "
-"(close < 0.05 < fair < 0.08 < poor) are\n"
-"                                        <b>close < %2$s < fair < %3$s < "
-"poor</b> for model: %4$s."
+msgid "Fair-close limit"
 msgstr ""
-"T-maat RMSEA wordt berekend voor <i>%1$s = 0,05</i>. De T-maat-equivalenten "
-"van de\n"
-"                                         conventionele RMSEA-grenswaarden "
-"(dichtbij < 0,05 < redelijk < 0,08 < slecht) zijn\n"
-"                                         <b>sluiten < %2$s < redelijk < %3$s "
-"< slecht</b> voor model: %4$s."
 
-msgid ""
-"The T-size equivalents of the conventional RMSEA cut-off values\n"
-"                                          (close < 0.05 < fair < 0.08 < "
-"poor) are <b>close < %1$s < fair < %2$s\n"
-"                                          < poor</b> for model: %3$s."
+msgid "CFI"
 msgstr ""
-"De T-maat-equivalenten van de conventionele RMSEA-grenswaarden\n"
-"                                           (dichtbij < 0,05 < redelijk < "
-"0,08 < slecht) zijn <b>dichtbij < %1$s < redelijk < %2$s\n"
-"                                           <slecht</b> voor model: %3$s."
+
+#, fuzzy
+msgid "RMSEA"
+msgstr "PCA RMSE"
+
+#, fuzzy
+msgid "T-size statistics are computed for <i>%s = 0.05</i>."
+msgstr "T-size CFI wordt berekend voor <i>%s = 0,05</i>"
 
 msgid "Average variance extracted"
 msgstr "Gemiddelde geëxtraheerde variantie"
@@ -795,6 +714,10 @@ msgstr "Coëfficiënt α"
 
 msgid "Coefficient ω"
 msgstr "Coëfficiënt ω"
+
+#, fuzzy
+msgid "Heterotrait-Monotrait Ratio"
+msgstr "Heterotrait-monotrait verhouding"
 
 msgid "Heterotrait-monotrait ratio"
 msgstr "Heterotrait-monotrait verhouding"
@@ -815,8 +738,16 @@ msgstr ""
 "Multivariate scheefheid en gepiektheid berekend voor waargenomen variabelen "
 "uit alle modellen."
 
+#, fuzzy
 msgid ""
-"Not all used variables are numeric. Mardia's coefficients not available."
+"Not all used variables are continuous: Mardia's coefficients not available."
+msgstr ""
+"Niet alle variabelen zijn numeriek. Mardia's Coëfficiënten niet beschikbaar."
+
+#, fuzzy
+msgid ""
+"The data covariance matrix could not be inverted: Mardia's coefficients not "
+"available."
 msgstr ""
 "Niet alle variabelen zijn numeriek. Mardia's Coëfficiënten niet beschikbaar."
 
@@ -931,6 +862,200 @@ msgstr "Gevoeligheids-parameter"
 msgid "Path diagram"
 msgstr "Paddiagram"
 
+msgid "Satorra-Bentler"
+msgstr ""
+
+msgid "Yuan-Bentler"
+msgstr ""
+
+#, fuzzy
+msgid "Yuan-Bentler Mplus"
+msgstr "Yuan-Bentler (Mplus) geschaalde test-statistiek"
+
+#, fuzzy
+msgid "mean and variance-adjusted"
+msgstr "gemiddelde en variantie aangepaste teststatistiek"
+
+#, fuzzy
+msgid "scaled and shifted"
+msgstr "geschaalde en verschoven teststatistiek"
+
+#, fuzzy
+msgid "bootstrap (Bollen-Stine)"
+msgstr "bootstrap (Bollen-Stine) waarschijnlijkheidswaarde"
+
+msgid "Browne residual based (ADF)"
+msgstr ""
+
+msgid "Browne residual based (NT)"
+msgstr ""
+
+msgid "robust"
+msgstr "robuust"
+
+msgid "robust Huber-White"
+msgstr ""
+
+msgid "first-order"
+msgstr ""
+
+#~ msgid "95%% Confidence Interval"
+#~ msgstr "95%% Betrouwbaarheidsinterval"
+
+#~ msgid "LV"
+#~ msgstr "LV"
+
+#~ msgid "Std. Est."
+#~ msgstr "Std. Schat."
+
+#~ msgid "All"
+#~ msgstr "Alle"
+
+#~ msgid "No X"
+#~ msgstr "Geen X"
+
+#~ msgid "Additional Fit measures"
+#~ msgstr "Extra fitmaten"
+
+#~ msgid "Other fit measures"
+#~ msgstr "Andere pasmaten"
+
+#~ msgid "Metric"
+#~ msgstr "Metrisch"
+
+#~ msgid "Delta method"
+#~ msgstr "Deltamethode"
+
+#~ msgid "Robust"
+#~ msgstr "Robuust"
+
+#~ msgid "percentile bootstrap"
+#~ msgstr "percentiel bootstrap"
+
+#~ msgid "normal theory bootstrap"
+#~ msgstr "normaaltheorie bootstrap"
+
+#~ msgid "bias-corrected percentile bootstrap"
+#~ msgstr "Onzuiverheid-gecorrigeerde percentiel bootstrap"
+
+#~ msgid "normal theory"
+#~ msgstr "normaaltheorie"
+
+#~ msgid "%1$s standard errors, %2$s confidence intervals."
+#~ msgstr "%1$s standaard fouten, %2$s betrouwbaarheidsintervallen."
+
+#~ msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
+#~ msgstr ""
+#~ "%1$s standaardfouten, %2$s betrouwbaarheidsintervallen, %3$s schatter."
+
+#~ msgid "Chi Square test"
+#~ msgstr "Chikwadraattoets"
+
+#~ msgid "Additional fit measures"
+#~ msgstr "Extra pasmaten"
+
+#~ msgid "Standardized"
+#~ msgstr "Gestandaardiseerd"
+
+#~ msgid "Endo"
+#~ msgstr "Endo"
+
+#~ msgid "FIML missing data handling only available with ML-type estimators"
+#~ msgstr ""
+#~ "FIML missende dataverwerking alleen beschikbaar met ML-type schatters"
+
+#~ msgid ""
+#~ "Missing data handling '%s' is not supported for categorical data,\n"
+#~ "                        please select another method under 'Missing data "
+#~ "handling'\n"
+#~ "                        within the 'Estimation options' tab"
+#~ msgstr ""
+#~ "Afhandeling van ontbrekende gegevens \"%s\" wordt niet ondersteund voor "
+#~ "categorische gegevens,\n"
+#~ "                        Selecteer een andere methode onder \"Afhandeling "
+#~ "van ontbrekende gegevens\"\n"
+#~ "                        in het tabblad \"Schattingsopties\""
+
+#~ msgid ""
+#~ "A total of %g cases were removed due to missing values. You can avoid "
+#~ "this by choosing 'FIML' under 'Missing Data Handling' in the Estimation "
+#~ "options."
+#~ msgstr ""
+#~ "In totaal werden %g gevallen verwijderd wegens ontbrekende waarden. U "
+#~ "kunt dit vermijden door \"FIML\" te kiezen onder \"Missing Data "
+#~ "Handling\" in de Schattingsopties."
+
+#~ msgid "Yuan-Bentler scaled test-statistic"
+#~ msgstr "Yuan-Bentler geschaalde test-statistiek"
+
+#~ msgid "Baseline tests based on %s."
+#~ msgstr "Baseline toetsen gebaseerd op %s."
+
+#~ msgid ""
+#~ "Baseline tests based on %s. Difference tests based on a function of two "
+#~ "standard test-statistics."
+#~ msgstr ""
+#~ "Baseline toetsen gebaseerd op %s. Verschiltoetsen gebaseerd op een "
+#~ "functie van twee standaard teststatistieken."
+
+#~ msgid "T-size CFI"
+#~ msgstr "T-maat CFI"
+
+#~ msgid ""
+#~ "T-size CFI is computed for <i>%1$s = 0.05</i>. The T-size equivalents of "
+#~ "the\n"
+#~ "                                      conventional CFI cut-off values "
+#~ "(poor < 0.90 < fair < 0.95 < close) are <b>poor\n"
+#~ "                                      < %2$s < fair < %3$s < close</b> "
+#~ "for model: %4$s."
+#~ msgstr ""
+#~ "T-maat CFI wordt berekend voor <i>%1$s = 0,05</i>. De T-maat-equivalenten "
+#~ "van de\n"
+#~ "                                       conventionele CFI-grenswaarden "
+#~ "(slecht < 0,90 < redelijk < 0,95 < dichtbij) zijn <b>slecht\n"
+#~ "                                       < %2$s < redelijk < %3$s < "
+#~ "dichtbij</b> voor model: %4$s."
+
+#~ msgid ""
+#~ "The T-size equivalents of the conventional CFI cut-off values\n"
+#~ "                                        (poor < 0.90 < fair < 0.95 < "
+#~ "close) are <b>poor < %1$s < fair < %2$s <\n"
+#~ "                                        close</b> for model: %3$s."
+#~ msgstr ""
+#~ "De T-maat-equivalenten van de conventionele CFI-grenswaarden\n"
+#~ "                                         (slecht < 0,90 < redelijk < 0,95 "
+#~ "< dichtbij) zijn <b>slecht < %1$s < redelijk < %2$s <\n"
+#~ "                                         sluiten</b> voor model: %3$s."
+
+#~ msgid "T-size RMSEA"
+#~ msgstr "T-grootte RMSEA"
+
+#~ msgid ""
+#~ "T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents "
+#~ "of the\n"
+#~ "                                        conventional RMSEA cut-off values "
+#~ "(close < 0.05 < fair < 0.08 < poor) are\n"
+#~ "                                        <b>close < %2$s < fair < %3$s < "
+#~ "poor</b> for model: %4$s."
+#~ msgstr ""
+#~ "T-maat RMSEA wordt berekend voor <i>%1$s = 0,05</i>. De T-maat-"
+#~ "equivalenten van de\n"
+#~ "                                         conventionele RMSEA-grenswaarden "
+#~ "(dichtbij < 0,05 < redelijk < 0,08 < slecht) zijn\n"
+#~ "                                         <b>sluiten < %2$s < redelijk < "
+#~ "%3$s < slecht</b> voor model: %4$s."
+
+#~ msgid ""
+#~ "The T-size equivalents of the conventional RMSEA cut-off values\n"
+#~ "                                          (close < 0.05 < fair < 0.08 < "
+#~ "poor) are <b>close < %1$s < fair < %2$s\n"
+#~ "                                          < poor</b> for model: %3$s."
+#~ msgstr ""
+#~ "De T-maat-equivalenten van de conventionele RMSEA-grenswaarden\n"
+#~ "                                           (dichtbij < 0,05 < redelijk < "
+#~ "0,08 < slecht) zijn <b>dichtbij < %1$s < redelijk < %2$s\n"
+#~ "                                           <slecht</b> voor model: %3$s."
+
 #~ msgid "&#916;&#967;&sup2;"
 #~ msgstr "&#916;2&#967;3&sup2;"
 
@@ -939,9 +1064,6 @@ msgstr "Paddiagram"
 
 #~ msgid "Means"
 #~ msgstr "Gemiddelden"
-
-#~ msgid "T-size CFI is computed for <i>%s = 0.05</i>"
-#~ msgstr "T-size CFI wordt berekend voor <i>%s = 0,05</i>"
 
 #~ msgid "T-size RMSEA is computed for <i>%s = 0.05</i>"
 #~ msgstr "T-size RMSEA wordt berekend voor <i>%s = 0,05</i>"
