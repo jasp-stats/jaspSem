@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
 "POT-Creation-Date: 2024-09-28 02:53\n"
-"PO-Revision-Date: 2024-08-10 09:22+0000\n"
+"PO-Revision-Date: 2024-09-28 11:50+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "es/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7-dev\n"
+"X-Generator: Weblate 5.8-dev\n"
 
 msgid "Fit indices"
 msgstr "Índices de ajuste"
@@ -97,7 +97,6 @@ msgstr "El modelo no se pudo estimar debido a la no-convergencia."
 msgid "The model could not be estimated: No degrees of freedom left."
 msgstr "No se pudo estimar el modelo: No quedan grados de libertad."
 
-#, fuzzy
 msgid "Chi-square test"
 msgstr "Contraste Chi-cuadrado"
 
@@ -116,7 +115,6 @@ msgstr "Advertencia."
 msgid "Parameter estimates"
 msgstr "Estimaciones de parámetros"
 
-#, fuzzy
 msgid "Std. estimate"
 msgstr "Estimación tipificada"
 
@@ -129,7 +127,6 @@ msgstr "Componente"
 msgid "Parameter"
 msgstr "Parámetro"
 
-#, fuzzy
 msgid "Std. error"
 msgstr "Error Típico"
 
@@ -143,7 +140,7 @@ msgid "Lower"
 msgstr "Inferior"
 
 msgid "%s%% Confidence Interval"
-msgstr "%s%% Intervalo de Confianza"
+msgstr "Intervalo con %s%% de confianza"
 
 msgid "Latent covariances"
 msgstr "Covarianzas latentes"
@@ -254,16 +251,13 @@ msgstr "Covarianzas de los errores"
 msgid "Path coefficients"
 msgstr "Coeficientes de ruta"
 
-#, fuzzy
 msgid "Estimator is %s."
-msgstr "Mensaje de fallo de la estimación: %s"
+msgstr "El estimador es %s."
 
-#, fuzzy
 msgid ""
 "%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
 msgstr ""
-"%1$s errores típicos, %2$s intervalos de confianza, %3$s estimador. NB: No "
-"ha sido válidas todas las muestras del Bootstrap: IC basado en %4$.0f "
+"No han sido válidas todas las muestras del Bootstrap: IC basado en %2$.0f "
 "muestras."
 
 msgid "Path plot"
@@ -556,23 +550,19 @@ msgstr ""
 "Especificación incorrecta de modelo. ¿Has indicado un nombre de variable "
 "como cadena de texto?"
 
-#, fuzzy
 msgid "One or more variables are constants or contain only missing values."
-msgstr "Una o más variables son constantes, o contienen solo valores ausentes"
+msgstr "Una o más variables son constantes, o contienen solo valores ausentes."
 
-#, fuzzy
 msgid "Estimation failed. Message: %s"
-msgstr "Mensaje de fallo de la estimación: %s"
+msgstr "Falló la estimación. Mensaje: %s"
 
-#, fuzzy
 msgid "Estimation failed! Message: %s did not converge!"
-msgstr "¡Falló la estimación! Mensaje: ¡El modelo %s no convergió!"
+msgstr "¡Falló la estimación! Mensaje: ¡%s no convergió!"
 
-#, fuzzy
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr ""
-"¡Falló la estimación! Mensaje: El modelo %s tiene un número de grados de "
-"libertad negativo."
+"¡Falló la estimación! Mensaje: %s tiene un número de grados de libertad "
+"negativo."
 
 msgid "n(Observations)"
 msgstr "n(Observaciones)"
@@ -593,35 +583,35 @@ msgid ""
 "%sFitting the model resulted in warnings. Check the 'Show warnings' box in "
 "the Output Options to see the warnings."
 msgstr ""
+"%s El ajuste del modelo da como resultado alertas. Comprueba la caja "
+"'Mostrar alertas' en las Opciones de Salida de Resultados para ver las "
+"alertas."
 
 msgid "A total of %g cases were removed due to missing values."
-msgstr ""
+msgstr "Un total de %g casos se eliminaron debido a valores ausentes."
 
 msgid "Model test is %s."
-msgstr ""
+msgstr "El contraste del modelo es %s."
 
-#, fuzzy
 msgid "Information matrix is %s."
-msgstr "Criterios de información"
+msgstr "La matriz de información es %s."
 
 msgid "Standard errors are %s."
-msgstr ""
+msgstr "Los errores típicos son %s."
 
-#, fuzzy
 msgid ""
 "%s The AIC, BIC and additional information criteria are only available with "
 "ML-type estimators."
 msgstr ""
 "Los criterios AIC, BIC y de información adicional solo están disponibles con "
-"estimadores de tipo MV"
+"estimadores de tipo MV."
 
 msgid "all"
 msgstr "Todo"
 
 msgid "<b>Warnings:</b> %s"
-msgstr ""
+msgstr "<b>Advertencias:</b> %s"
 
-#, fuzzy
 msgid "Parameter Estimates"
 msgstr "Estimaciones de parámetros"
 
@@ -631,9 +621,8 @@ msgstr "Cargas de los Factores"
 msgid "Latent"
 msgstr "Latente"
 
-#, fuzzy
 msgid "%s%% Confidence interval"
-msgstr "%s%% Intervalo de Confianza"
+msgstr "Intervalo con %s%% de confianza"
 
 msgid "Regression coefficients"
 msgstr "Coeficientes de regresión"
@@ -654,13 +643,13 @@ msgid "Intercepts"
 msgstr "Constantes"
 
 msgid "Missing data method 'FIML' forces meanstructure."
-msgstr ""
+msgstr "El método 'MVIC' de datos ausentes fuerza la estructura media."
 
 msgid "Thresholds"
-msgstr ""
+msgstr "Umbrales"
 
 msgid "Threshold"
-msgstr ""
+msgstr "Umbral"
 
 msgid "Defined parameters"
 msgstr "Parámetros definidos"
@@ -668,13 +657,12 @@ msgstr "Parámetros definidos"
 msgid "Name"
 msgstr "Nombre"
 
-#, fuzzy
 msgid "%s Fit indices are based on the scaled test statistic."
-msgstr "Estadístico de prueba escalado de Satorra-Bentler"
+msgstr ""
+"%s Los indicadores del ajuste se basan en el estadístico de prueba escalado."
 
-#, fuzzy
 msgid "T-size fit indices"
-msgstr "Índices de ajuste"
+msgstr "Índices de ajuste de tamaño T"
 
 msgid ""
 "Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness "
@@ -682,23 +670,25 @@ msgid ""
 "Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), "
 "148-153, https://doi.org/10.1080/10705511.2016.1225260"
 msgstr ""
+"Katerina M. Marcoulides & Ke-Hai Yuan (2017): New Ways to Evaluate Goodness "
+"of Fit: A Note on Using Equivalence Testing to Assess Structural Equation "
+"Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), "
+"148-153, https://doi.org/10.1080/10705511.2016.1225260"
 
 msgid "Poor-fair limit"
-msgstr ""
+msgstr "Límite deficiente-aceptable"
 
 msgid "Fair-close limit"
-msgstr ""
+msgstr "Límite aceptable-próximo"
 
 msgid "CFI"
-msgstr ""
+msgstr "IAC (CFI)"
 
-#, fuzzy
 msgid "RMSEA"
-msgstr "RECM (RMSE) de CP (PCA)"
+msgstr "REACM (RMSEA)"
 
-#, fuzzy
 msgid "T-size statistics are computed for <i>%s = 0.05</i>."
-msgstr "El tamaño T del IAC (CFI) se calcula para <i>%s = 0.05</i>"
+msgstr "Los estadísticos de tamaño T se calculan para <i>%s = 0.05</i>."
 
 msgid "Average variance extracted"
 msgstr "Media de la varianza extraída"
@@ -715,7 +705,6 @@ msgstr "Coeficiente α"
 msgid "Coefficient ω"
 msgstr "Coeficiente ω"
 
-#, fuzzy
 msgid "Heterotrait-Monotrait Ratio"
 msgstr "Relación heterotraza-monotraza"
 
@@ -738,20 +727,18 @@ msgstr ""
 "Asimetría y curtosis multivariantes calculadas para las variables observadas "
 "de todos los modelos."
 
-#, fuzzy
 msgid ""
 "Not all used variables are continuous: Mardia's coefficients not available."
 msgstr ""
-"No todas las variables utilizadas son numéricas. El coeficiente de Mardia no "
+"No todas las variables utilizadas son continuas: el coeficiente de Mardia no "
 "está disponible."
 
-#, fuzzy
 msgid ""
 "The data covariance matrix could not be inverted: Mardia's coefficients not "
 "available."
 msgstr ""
-"No todas las variables utilizadas son numéricas. El coeficiente de Mardia no "
-"está disponible."
+"La matriz de covarianzas de los datos no se puede invertir: el coeficiente "
+"de Mardia no está disponible."
 
 msgid "Skewness"
 msgstr "Asimetría"
@@ -865,41 +852,37 @@ msgid "Path diagram"
 msgstr "Diagrama de ruta"
 
 msgid "Satorra-Bentler"
-msgstr ""
+msgstr "Satorra-Bentler"
 
 msgid "Yuan-Bentler"
-msgstr ""
+msgstr "Yuan-Bentler"
 
-#, fuzzy
 msgid "Yuan-Bentler Mplus"
 msgstr "Estadístico de prueba escalado (Mplus) de Yuan-Bentler"
 
-#, fuzzy
 msgid "mean and variance-adjusted"
-msgstr "Estadístico de prueba ajustado en media y varianza"
+msgstr "Media y varianza ajustada"
 
-#, fuzzy
 msgid "scaled and shifted"
-msgstr "Estadístico de prueba escalado y desplazado"
+msgstr "Escalada y desplazada"
 
-#, fuzzy
 msgid "bootstrap (Bollen-Stine)"
-msgstr "valor de la probabilidad de Bootstrap (Bollen-Stine)"
+msgstr "Bootstrap (Bollen-Stine)"
 
 msgid "Browne residual based (ADF)"
-msgstr ""
+msgstr "Basado en el error de Browne (ADF)"
 
 msgid "Browne residual based (NT)"
-msgstr ""
+msgstr "Basado en el error de Browne (NT)"
 
 msgid "robust"
 msgstr "robusto"
 
 msgid "robust Huber-White"
-msgstr ""
+msgstr "Huber-White robusto"
 
 msgid "first-order"
-msgstr ""
+msgstr "Primer orden"
 
 #~ msgid "95%% Confidence Interval"
 #~ msgstr "Intervalo con el 95%% de Confianza"
