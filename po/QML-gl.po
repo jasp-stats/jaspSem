@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2024-09-28 11:50+0000\n"
+"Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
+"Language-Team: Galician <https://hosted.weblate.org/projects/jasp/"
+"jaspsem-qml/gl/>\n"
+"Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.8-dev\n"
 "X-Language: gl_ES\n"
 "X-Source-Language: C\n"
 "X-Qt-Contexts: true\n"
@@ -937,332 +943,306 @@ msgctxt "SEM|"
 msgid "Maximum number of iterations"
 msgstr "Número máximo de iteracións"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Advanced"
 msgstr "Avanzado"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Missing value handling"
 msgstr "Manexo de valores ausentes"
 
 msgctxt "Advanced|"
 msgid "(FI)ML"
-msgstr ""
+msgstr "MV(IC)"
 
 msgctxt "Advanced|"
 msgid "Listwise"
-msgstr ""
+msgstr "Por lista"
 
 msgctxt "Advanced|"
 msgid "Mimic"
-msgstr ""
+msgstr "Imitar"
 
 msgctxt "Advanced|"
 msgid "Lavaan"
-msgstr ""
+msgstr "Lavaan"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Mplus"
 msgstr "Mplus"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "EQS"
 msgstr "EQS"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Estimator"
 msgstr "Estimador"
 
 msgctxt "Advanced|"
 msgid "Default"
-msgstr ""
+msgstr "Por defecto"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "ML"
 msgstr "MV"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "GLS"
 msgstr "MCX (GLS)"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "WLS"
 msgstr "MCP (WLS)"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "ULS"
 msgstr "MCSP (ULS)"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "DWLS"
 msgstr "MCPD (DWLS)"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Confidence intervals"
 msgstr "Intervalos de confianza"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Method"
 msgstr "Método"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Standard"
 msgstr "Típico"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Robust"
 msgstr "Robusto"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Replications"
 msgstr "Réplicas"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Type"
 msgstr "Tipo"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Bias-corrected percentile"
 msgstr "Percentil con nesgo corrixido"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Percentile"
 msgstr "Percentil"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Normal theory"
 msgstr "Teoría Normal"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Estimation Options"
 msgstr "Opcións da estimación"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Additional fit measures"
 msgstr "Medidas adicionais de axuste"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "All"
 msgstr "Todo"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Latents"
-msgstr ""
+msgstr "Latentes"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "Agás covariantes esóxenas"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "All"
 msgstr "Todo"
 
 msgctxt "MediationAnalysis|"
 msgid "Latents"
-msgstr ""
+msgstr "Latentes"
 
 msgctxt "MediationAnalysis|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "Agás covariantes esóxenas"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "All"
 msgstr "Todo"
 
 msgctxt "Mimic|"
 msgid "Latents"
-msgstr ""
+msgstr "Latentes"
 
 msgctxt "Mimic|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "Agás covariantes esóxenas"
 
 msgctxt "SEM|"
 msgid "Mean structure"
-msgstr ""
+msgstr "Estrutura media"
 
 msgctxt "SEM|"
 msgid "Latent means fixed to zero"
-msgstr ""
+msgstr "Medias de latentes fixadas en cero"
 
 msgctxt "SEM|"
 msgid "Manifest intercepts fixed to zero"
-msgstr ""
+msgstr "Constantes de declaradas fixadas en cero"
 
 msgctxt "SEM|"
 msgid "Mean of manifest intercepts fixed to zero"
-msgstr ""
+msgstr "Media de constantes de declaradas fixada en cero"
 
 msgctxt "SEM|"
 msgid "Exogenous covariate(s) fixed"
-msgstr ""
+msgstr "Covariante(s) esóxena(s) fixas"
 
 msgctxt "SEM|"
 msgid "Residual single indicator omitted"
-msgstr ""
+msgstr "Omitiuse o índice individual do erro"
 
 msgctxt "SEM|"
 msgid "Residual variances included"
-msgstr ""
+msgstr "Varianzas dos erros incluídas"
 
 msgctxt "SEM|"
 msgid "Exogenous latents correlated"
-msgstr ""
+msgstr "Latentes esóxenas correlacionadas"
 
 msgctxt "SEM|"
 msgid "Dependent variables correlated"
-msgstr ""
+msgstr "Variables dependentes correlacionadas"
 
 msgctxt "SEM|"
 msgid "Scaling parameters"
-msgstr ""
+msgstr "Parámetros de escalado"
 
 msgctxt "SEM|"
 msgid "EFA blocks constrained"
-msgstr ""
+msgstr "Bloques AFE restrinxidos"
 
 msgctxt "SEM|"
 msgid "Default"
-msgstr ""
+msgstr "Por defecto"
 
 msgctxt "SEM|"
 msgid "DLS"
-msgstr ""
+msgstr "MCPD(DLS)"
 
 msgctxt "SEM|"
 msgid "MLM"
-msgstr ""
+msgstr "MVM(MLM)"
 
 msgctxt "SEM|"
 msgid "MLMV"
-msgstr ""
+msgstr "MVMV(MLMV)"
 
 msgctxt "SEM|"
 msgid "MLMVS"
-msgstr ""
+msgstr "MVMVS(MLMVS)"
 
 msgctxt "SEM|"
 msgid "MLF"
-msgstr ""
+msgstr "MVPO(MLF)"
 
 msgctxt "SEM|"
 msgid "MLR"
-msgstr ""
+msgstr "MVR(MLR)"
 
 msgctxt "SEM|"
 msgid "WLSM"
-msgstr ""
+msgstr "MCPM(WLSM)"
 
 msgctxt "SEM|"
 msgid "WLSMV"
-msgstr ""
+msgstr "MCPMV(WLSMV)"
 
 msgctxt "SEM|"
 msgid "ULSM"
-msgstr ""
+msgstr "MCNPM(ULSM)"
 
 msgctxt "SEM|"
 msgid "ULSMV"
-msgstr ""
+msgstr "MCNPMV(ULSMV)"
 
 msgctxt "SEM|"
 msgid "Click for more information"
-msgstr ""
+msgstr "Fai clic para máis información"
 
 msgctxt "SEM|"
 msgid "Yuan-Bentler Mplus"
-msgstr ""
+msgstr "Estatístico de proba escalado (Mplus) de Yuan-Bentler"
 
 msgctxt "SEM|"
 msgid "Mean and variance adjusted"
-msgstr ""
+msgstr "Media e varianza axustada"
 
 msgctxt "SEM|"
 msgid "Browne residual based (ADF)"
-msgstr ""
+msgstr "Baseado no erro de Browne (ADF)"
 
 msgctxt "SEM|"
 msgid "Browne residual based (NT)"
-msgstr ""
+msgstr "Baseado no erro de Browne (NT)"
 
 msgctxt "SEM|"
 msgid "     Bootstrap samples"
-msgstr ""
+msgstr "     Mostras de Bootstrap"
 
 msgctxt "SEM|"
 msgid "First order"
-msgstr ""
+msgstr "Primeira orde"
 
 msgctxt "SEM|"
 msgid "Standard errors"
-msgstr ""
+msgstr "Erros padrón"
 
 msgctxt "SEM|"
 msgid "Robust Huber-White"
-msgstr ""
+msgstr "Huber-White robusto"
 
 msgctxt "SEM|"
 msgid "     Type"
-msgstr ""
+msgstr "     Tipo"
 
 msgctxt "SEM|"
 msgid "(FI)ML"
-msgstr ""
+msgstr "MV(IC)"
 
 msgctxt "SEM|"
 msgid "Mimic"
-msgstr ""
+msgstr "Imitar"
 
 msgctxt "SEM|"
 msgid "Lavaan"
-msgstr ""
+msgstr "Lavaan"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "All"
 msgstr "Todo"
 
 msgctxt "SEM|"
 msgid "Latents"
-msgstr ""
+msgstr "Latentes"
 
 msgctxt "SEM|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "Agás covariantes esóxenas"
 
 msgctxt "SEM|"
 msgid "Show warnings"
-msgstr ""
+msgstr "Amosar avisos"
 
 msgctxt "SEM|"
 msgid "SD of deviance / old estimate"
-msgstr ""
+msgstr "DP da desviación / estimación anterior"
