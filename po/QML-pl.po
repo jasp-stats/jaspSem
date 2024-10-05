@@ -1047,9 +1047,10 @@ msgctxt "ErrorCalculation|"
 msgid "Bias-corrected percentile"
 msgstr ""
 
+#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Percentile"
-msgstr ""
+msgstr "Percentyl"
 
 msgctxt "ErrorCalculation|"
 msgid "Normal theory"

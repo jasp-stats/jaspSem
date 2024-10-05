@@ -959,13 +959,15 @@ msgctxt "Advanced|"
 msgid "Lavaan"
 msgstr ""
 
+#, fuzzy
 msgctxt "Advanced|"
 msgid "Mplus"
-msgstr ""
+msgstr "Mplus 方式"
 
+#, fuzzy
 msgctxt "Advanced|"
 msgid "EQS"
-msgstr ""
+msgstr "EQS 方式"
 
 #, fuzzy
 msgctxt "Advanced|"
@@ -991,9 +993,10 @@ msgctxt "Advanced|"
 msgid "WLS"
 msgstr "加权最小二乘法(WLS)"
 
+#, fuzzy
 msgctxt "Advanced|"
 msgid "ULS"
-msgstr ""
+msgstr "加权最小二乘法 (ULS)"
 
 #, fuzzy
 msgctxt "Advanced|"
@@ -1010,9 +1013,10 @@ msgctxt "ErrorCalculation|"
 msgid "Method"
 msgstr "方法"
 
+#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Standard"
-msgstr ""
+msgstr "标准化"
 
 #, fuzzy
 msgctxt "ErrorCalculation|"

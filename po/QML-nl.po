@@ -1005,9 +1005,10 @@ msgctxt "Advanced|"
 msgid "DWLS"
 msgstr "DWLS"
 
+#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Confidence intervals"
-msgstr ""
+msgstr "Betrouwbaarheidsintervallen"
 
 #, fuzzy
 msgctxt "ErrorCalculation|"

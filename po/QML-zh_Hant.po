@@ -977,9 +977,10 @@ msgctxt "Advanced|"
 msgid "EQS"
 msgstr "EQS 程式"
 
+#, fuzzy
 msgctxt "Advanced|"
 msgid "Estimator"
-msgstr ""
+msgstr "估計式"
 
 msgctxt "Advanced|"
 msgid "Default"
@@ -1045,9 +1046,10 @@ msgctxt "ErrorCalculation|"
 msgid "Type"
 msgstr "類型"
 
+#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Bias-corrected percentile"
-msgstr ""
+msgstr "誤差修正百分比"
 
 #, fuzzy
 msgctxt "ErrorCalculation|"

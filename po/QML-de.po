@@ -1032,9 +1032,10 @@ msgctxt "Advanced|"
 msgid "DWLS"
 msgstr "DWLS"
 
+#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Confidence intervals"
-msgstr ""
+msgstr "Konfidenzintervalle"
 
 #, fuzzy
 msgctxt "ErrorCalculation|"
