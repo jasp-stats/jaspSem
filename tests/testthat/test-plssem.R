@@ -14,7 +14,6 @@ options$models <- list(list(name = "Model1", syntax = list(model = model, column
 options$group                     <- ""
 options$innerWeightingScheme      <- "path"
 options$convergenceCriterion      <- "absoluteDifference"
-options$correctionFactor          <- "squaredEuclidean"
 
 results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
 
@@ -60,7 +59,6 @@ test_that("Loadings table results match", {
   options$group                         <- "group"
   options$innerWeightingScheme          <- "path"
   options$convergenceCriterion          <- "absoluteDifference"
-  options$correctionFactor              <- "squaredEuclidean"
   options$additionalFitMeasures         <- TRUE
   options$rSquared                      <- TRUE
   options$mardiasCoefficient            <- TRUE
@@ -113,7 +111,6 @@ options$models <- list(list(name = "Model1", syntax = list(model = model1, colum
 options$group                         <- "group"
 options$innerWeightingScheme          <- "path"
 options$convergenceCriterion          <- "absoluteDifference"
-options$correctionFactor              <- "squaredEuclidean"
 options$additionalFitMeasures         <- TRUE
 options$rSquared                      <- TRUE
 options$mardiasCoefficient            <- TRUE
@@ -369,7 +366,6 @@ test_that("1 table results match", {
   options$group <- ""
   options$innerWeightingScheme      <- "path"
   options$convergenceCriterion      <- "absoluteDifference"
-  options$correctionFactor          <- "squaredEuclidean"
   options$setSeed                   <- TRUE
   options$seed                      <- 123
   options$errorCalculationMethod    <- "robust"
@@ -605,7 +601,6 @@ options$models <- list(list(name = "Model1", syntax = list(model = model, column
 options$group <- ""
 options$innerWeightingScheme      <- "path"
 options$convergenceCriterion      <- "absoluteDifference"
-options$correctionFactor          <- "squaredEuclidean"
 options$setSeed                   <- TRUE
 options$seed                      <- 123
 options$errorCalculationMethod    <- "robust"
@@ -736,7 +731,6 @@ model <- "
   options$group                     <- ""
   options$innerWeightingScheme      <- "path"
   options$convergenceCriterion      <- "absoluteDifference"
-  options$correctionFactor          <- "squaredEuclidean"
   options$additionalFitMeasures         <- TRUE
   options$rSquared                      <- TRUE
   options$mardiasCoefficient            <- TRUE

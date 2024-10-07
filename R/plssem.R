@@ -156,8 +156,8 @@ checkCSemModel <- function(model, availableVars) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("syntax", "correlationMatrix", "convergenceCriterion",
-                              "estimateStructural", "group", "correctionFactor", "consistentPartialLeastSquares",
+    modelContainer$dependOn(c("syntax", "convergenceCriterion",
+                              "estimateStructural", "group", "consistentPartialLeastSquares",
                               "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod",
                               "robustMethod", "bootstrapSamples", "ciLevel",
                               "setSeed", "seed", "handlingOfInadmissibles", "endogenousIndicatorPrediction",
@@ -237,12 +237,12 @@ checkCSemModel <- function(model, availableVars) {
       }
       # resample
       fit <- try(cSEM::resamplecSEMResults(.object = fit,
-                                                 .R = options[["bootstrapSamples"]],
-                                                 .user_funs = tickFunction,
-                                                 .resample_method = options[["robustMethod"]],
-                                                 .handle_inadmissibles = options[["handlingOfInadmissibles"]],
-                                                 .sign_change_option = "none",
-                                                 .seed = if (options[["setSeed"]]) options[["seed"]]))
+                                           .R = options[["bootstrapSamples"]],
+                                           .user_funs = tickFunction,
+                                           .resample_method = options[["robustMethod"]],
+                                           .handle_inadmissibles = options[["handlingOfInadmissibles"]],
+                                           .sign_change_option = "none",
+                                           .seed = if (options[["setSeed"]]) options[["seed"]]))
 
 
       if (isTryError(fit)) {
@@ -279,7 +279,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # model features
   cSemOpts[[".approach_weights"]]            <- "PLS-PM"
-  cSemOpts[[".approach_cor_robust"]]         <- if (options[["correlationMatrix"]] == "pearson") "none" else options[["correlationMatrix"]]
+  cSemOpts[[".approach_cor_robust"]]         <- "none"
   cSemOpts[[".approach_nl"]]                 <- options[["approachNonLinear"]]
   cSemOpts[[".conv_criterion"]]              <- switch(options[["convergenceCriterion"]],
                                                        "absoluteDifference" = "diff_absolute",
@@ -292,14 +292,7 @@ checkCSemModel <- function(model, availableVars) {
 
   if (options[["consistentPartialLeastSquares"]]) {
     cSemOpts[".disattenuate"] <- TRUE
-    cSemOpts[".PLS_approach_cf"] <- switch(options[["correctionFactor"]],
-                                           "squaredEuclidean" = "dist_squared_euclid",
-                                           "weightedEuclidean" = "dist_euclid_weighted",
-                                           "fisherTransformed" = "fisher_transformed",
-                                           "arithmeticMean" = "mean_arithmetic",
-                                           "geometricMean" = "mean_geometric",
-                                           "harmonicMean" = "mean_harmonic",
-                                           "geometricHarmonicMean" = "geo_of_harmonic")
+    cSemOpts[".PLS_approach_cf"] <- "dist_squared_euclid"
 
   } else {
     cSemOpts[".disattenuate"] <- FALSE

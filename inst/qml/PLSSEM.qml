@@ -46,25 +46,6 @@ Form
 		Group
 		{
 
-			CheckBox
-			{
-				name: "consistentPartialLeastSquares";		label: qsTr("Consistent partial least squares");	checked: true
-				DropDown
-				{
-					name: "correctionFactor"
-					label: qsTr("Approach correction factors")
-					values: [
-						{ value: "squaredEuclidean", 		label: qsTr("Squared Euclidean distance")	},
-						{ value: "weightedEuclidean", 		label: qsTr("Weighted Euclidean distance")	},
-						{ value: "fisherTransformed", 		label: qsTr("Fisher transformed") 			},
-						{ value: "arithmeticMean", 			label: qsTr("Arithmetic mean")				},
-						{ value: "geometricMean", 			label: qsTr("Geometric mean")				},
-						{ value: "harmonicMean", 			label: qsTr("Harmonic mean")				},
-						{ value: "geometricHarmonicMean", 	label: qsTr("Geometric-harmonic mean")		}
-					]
-				}
-			}
-
 			DropDown
 			{
 				id: grpvar
@@ -80,11 +61,57 @@ Form
 	{
 		title: qsTr("Estimation")
 
+		Group 
+		{
+			CheckBox
+			{
+				name: "consistentPartialLeastSquares";		label: qsTr("Consistent partial least squares");	checked: true
+			}
+			DropDown
+			{
+				name: "innerWeightingScheme"
+				label: qsTr("Inner weighting scheme")
+				id: approachInner
+				values: [
+					{ value: "path", 		label: qsTr("Path")			},
+					{ value: "centroid", 	label: qsTr("Centroid")		},
+					{ value: "factorial", 	label: qsTr("Factorial")	}
+				]
+			}
+
+			CheckBox
+			{
+				enabled: approachInner.currentValue != "path"
+				name: "structuralModelIgnored"
+				label: qsTr("Ignore structural model")
+			}
+
+			DropDown
+			{
+				name: "convergenceCriterion"
+				label: qsTr("Convergence criterion")
+				values: [
+					{ value: "absoluteDifference",	label: qsTr("Absolute difference")	},
+					{ value: "squaredDifference",		label: qsTr("Squared difference")	},
+					{ value: "relativeDifference",	label: qsTr("Relative difference")	}
+				]
+			}
+
+			DoubleField
+			{
+				name: "tolerance"
+				label: qsTr("Tolerance")
+				fieldWidth: 60
+				defaultValue: 1e-5
+				min: 0
+			}
+		}
+		
 		Group
 		{
+			title: qsTr("Error calculation method")
 			RadioButtonGroup
 			{
-				title: qsTr("Error calculation method")
 				name: "errorCalculationMethod"
 				id: errorCalcMethod
 				RadioButton { value: "none";		label: qsTr("None"); checked: true	}
@@ -118,63 +145,20 @@ Form
 						enabled: errorCalcMethod.value == "robust"
 					}
 				}
-
-
 			}
-
-			SetSeed {}
-		}
-
-		Group
-		{
-			
-			DropDown
-			{
-				name: "innerWeightingScheme"
-				label: qsTr("Inner weighting scheme")
-				id: approachInner
-				values: [
-					{ value: "path", 		label: qsTr("Path")			},
-					{ value: "centroid", 	label: qsTr("Centroid")		},
-					{ value: "factorial", 	label: qsTr("Factorial")	}
-				]
-			}
-
-			CheckBox
-			{
-				enabled: approachInner.currentValue != "path"
-				name: "structuralModelIgnored"
-				label: qsTr("Ignore structural model")
-			}
-
-			DropDown
-			{
-				name: "convergenceCriterion"
-				label: qsTr("Convergence criterion")
-				values: [
-					{ value: "absoluteDifference",	label: qsTr("Absolute difference")	},
-					{ value: "squaredDifference",	label: qsTr("Squared difference")	},
-					{ value: "relativeDifference",	label: qsTr("Relative difference")	}
-				]
-			}
-
 			RadioButtonGroup
 			{
-				title: qsTr("Correlation matrix")
-				name: "correlationMatrix"
-				RadioButton { value: "pearson"	; label: qsTr("Pearson"); checked: true	}
-				RadioButton { value: "spearman" ; label: qsTr("Spearman")				}
-			}
-
-			RadioButtonGroup
-			{
+				visible: errorCalcMethod.value != "none"
 				title: qsTr("Handling of inadmissibles")
 				name: "handlingOfInadmissibles"
 				RadioButton { value: "replace"; label: qsTr("Replace")	; checked: true	}
 				RadioButton { value: "ignore"; 	label: qsTr("Ignore")					}
 				RadioButton { value: "drop"; 	label: qsTr("Drop")						}
 			}
+			SetSeed {}
 		}
+
+		
 	}
 
 	Section
