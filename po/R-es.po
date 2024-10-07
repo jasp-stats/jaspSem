@@ -603,7 +603,7 @@ msgid ""
 "%s The AIC, BIC and additional information criteria are only available with "
 "ML-type estimators."
 msgstr ""
-"Los criterios AIC, BIC y de información adicional solo están disponibles con "
+"%s Los criterios AIC, BIC y de información adicional solo están disponibles con "
 "estimadores de tipo MV."
 
 msgid "all"
