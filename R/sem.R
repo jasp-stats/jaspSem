@@ -292,6 +292,7 @@ checkLavaanModel <- function(model, availableVars) {
       lavArgs[["sample.nobs"]] <- options[["sampleSize"]]
     }
 
+    # browser()
     # fit the enriched model
     fit <- try(.withWarnings(do.call(lavaan::lavaan, lavArgs)))
 

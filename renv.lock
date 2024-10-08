@@ -887,6 +887,11 @@
       "Package": "jaspBase",
       "Version": "0.19.2",
       "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteRepo": "jaspBase",
+      "RemoteUsername": "jasp-stats",
+      "RemoteSha": "4e8b1a173f3331a0ff21249c0d91a07cdc0b6d5c",
       "Requirements": [
         "cli",
         "codetools",
@@ -912,11 +917,7 @@
         "withr",
         "testthat"
       ],
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteUsername": "jasp-stats",
-      "RemoteRepo": "jaspBase",
-      "RemoteSha": "67652e03f135b8d9b7c42e353a0fe02b9fea0929"
+      "Hash": "31b3821346b2946b9f7dd2995eabb9e5"
     },
     "jaspGraphs": {
       "Package": "jaspGraphs",
@@ -937,9 +938,24 @@
       ],
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
+      "RemoteRepo": "jaspTools",
       "RemoteUsername": "jasp-stats",
-      "RemoteRepo": "jaspGraphs",
-      "RemoteSha": "5c2914842658f33a6e88d10ba90f1ee9a8a2efda"
+      "RemoteSha": "9fd59c57318c53f6f28b730a2bf26c4709c41f2a",
+      "Requirements": [
+        "archive",
+        "data.table",
+        "httr",
+        "jsonlite",
+        "lifecycle",
+        "pkgload",
+        "remotes",
+        "rjson",
+        "stringi",
+        "stringr",
+        "testthat",
+        "vdiffr"
+      ],
+      "Hash": "07bbe55883416c79fa1c27b75ceac453"
     },
     "jpeg": {
       "Package": "jpeg",
@@ -1521,7 +1537,18 @@
         "stats",
         "tools",
         "utils"
-      ]
+      ],
+      "Hash": "3ee025083e66f18db6cf27b56e23e141"
+    },
+    "renv": {
+      "Package": "renv",
+      "Version": "1.0.10",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "utils"
+      ],
+      "Hash": "d0387d5687ec933dd7587efd4cfa2d85"
     },
     "reshape2": {
       "Package": "reshape2",

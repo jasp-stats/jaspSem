@@ -724,6 +724,7 @@ test_that("T-size fit indices table results match", {
 
 
 test_that("Variance-covariance input works", {
+
   options <- jaspTools::analysisOptions("SEM")
   options$dataType          <- "varianceCovariance"
   options$sampleSize        <- 75
@@ -732,20 +733,19 @@ test_that("Variance-covariance input works", {
   options$group             <- ""
   options$samplingWeights   <- ""
   options$informationMatrix <- "expected"
-  options$naAction          <- "fiml"
+  options$naAction          <- "default"
   options$modelTest         <- "standard"
   options$models <- list(
-    list(name = "Model1", syntax = list(model = "F =~ x1 + x3 + y1", columns = c("x1", "x2", "x3"))),
+    list(name = "Model1", syntax = list(model = "F =~ x1 + x3 + y1", columns = c("x1", "x3", "y1"))),
     list(name = "Model2", syntax = list(model = "F =~ y1 + y2 + y3", columns = c("y1", "y2", "y3")))
   )
 
-  data <- read.csv("poldem_grouped.csv")
-  # data <- read.csv("tests/testthat/poldem_grouped.csv")
+  data <- read.csv(testthat::test_path("poldem_grouped.csv"))
   data <- cov(data)
   data <- as.data.frame(data)
 
   set.seed(1)
-  results <- jaspTools::runAnalysis("SEM", data, options)
+  results <- jaspTools::runAnalysis("SEM", data, options, makeTests = F)
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(707.570148255052, 721.47507693627, 6.66133814775094e-14, 0, "Model1",
