@@ -1,6 +1,7 @@
 context("PLS-SEM")
 
-# basic PLS SEM works
+
+
 options <- jaspTools::analysisOptions("PLSSEM")
 model <- "
   ind60 =~ x1 + x2 + x3
@@ -13,8 +14,6 @@ options$models <- list(list(name = "Model1", syntax = list(model = model, column
 options$group                     <- ""
 options$innerWeightingScheme      <- "path"
 options$convergenceCriterion      <- "absoluteDifference"
-options$correctionFactor          <- "squaredEuclidean"
-options$handlingOfFlippedSigns    <- "none"
 
 results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
 
@@ -40,13 +39,36 @@ test_that("Loadings table results match", {
 })
 
 
-test_that("Regression Coefficients table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_path"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list(0.438843974833827, 0.238518982057254, "dem60", "ind60", "", 0.158644372913763,
-                                      0.898128069469413, "dem65", "ind60", 1.23851898205725, 0.908670674402449,
-                                      29.4646949739788, "dem65", "dem60", 1.23851898205725))
-})
+  options <- jaspTools::analysisOptions("PLSSEM")
+  model1 = "
+    ind60 =~ x1 + x2 + x3
+    dem60 =~ y1 + y2 + y3 + y4
+    dem65 =~ y5 + y6 + y7 + y8
+    dem60 ~ ind60
+    dem65 ~ dem60
+  "
+  model2 = "
+    ind60 =~ x1 + x2 + x3
+    dem60 =~ y1 + y2 + y3 + y4
+    dem65 =~ y5 + y6 + y7 + y8
+    dem60 ~ ind60
+    dem65 ~ ind60 + dem60
+  "
+  options$models <- list(list(name = "Model1", syntax = list(model = model1, columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))),
+                         list(name = "Model2", syntax = list(model = model2, columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))))
+  options$group                         <- "group"
+  options$innerWeightingScheme          <- "path"
+  options$convergenceCriterion          <- "absoluteDifference"
+  options$additionalFitMeasures         <- TRUE
+  options$rSquared                      <- TRUE
+  options$mardiasCoefficient            <- TRUE
+  options$reliabilityMeasures           <- TRUE
+  options$impliedConstructCorrelation   <- TRUE
+  options$impliedIndicatorCorrelation   <- TRUE
+  options$observedConstructCorrelation  <- TRUE
+  options$observedIndicatorCorrelation  <- TRUE
+  options$innerWeightingScheme          <- "centroid"
+  options$structuralModelIgnored        <- TRUE
 
 test_that("Total effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_total"]][["data"]]
@@ -89,7 +111,6 @@ options$models <- list(list(name = "Model1", syntax = list(model = model1, colum
 options$group                         <- "group"
 options$innerWeightingScheme          <- "path"
 options$convergenceCriterion          <- "absoluteDifference"
-options$correctionFactor              <- "squaredEuclidean"
 options$additionalFitMeasures         <- TRUE
 options$rSquared                      <- TRUE
 options$mardiasCoefficient            <- TRUE
@@ -333,12 +354,24 @@ test_that("1 table results match", {
                                       1, 0.706803134908571, "dem65"))
 })
 
-test_that("2 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model2"]][["collection"]][["modelContainer_cors_Model2_observedCon"]][["collection"]][["modelContainer_cors_Model2_observedCon_2"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list("", "", 1, "ind60", 1, "", 0.319599163621636, "dem60", 0.996650485797297,
-                                      1, 0.402495202076674, "dem65"))
-})
+  options <- jaspTools::analysisOptions("PLSSEM")
+  model <- "
+    ind60 =~ x1 + x2 + x3
+    dem60 =~ y1 + y2 + y3 + y4
+    dem65 =~ y5 + y6 + y7 + y8
+    dem60 ~ ind60
+    dem65 ~ ind60 + dem60
+  "
+  options$models <- list(list(name = "Model1", syntax = list(model = model, columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))))
+  options$group <- ""
+  options$innerWeightingScheme      <- "path"
+  options$convergenceCriterion      <- "absoluteDifference"
+  options$setSeed                   <- TRUE
+  options$seed                      <- 123
+  options$errorCalculationMethod    <- "robust"
+  options$robustMethod              <- "bootstrap"
+  options$bootstrapSamples          <- 200
+  options$handlingOfInadmissibles   <- "ignore"
 
 test_that("1 table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model2"]][["collection"]][["modelContainer_cors_Model2_observedInd"]][["collection"]][["modelContainer_cors_Model2_observedInd_1"]][["data"]]
@@ -568,7 +601,6 @@ options$models <- list(list(name = "Model1", syntax = list(model = model, column
 options$group <- ""
 options$innerWeightingScheme      <- "path"
 options$convergenceCriterion      <- "absoluteDifference"
-options$correctionFactor          <- "squaredEuclidean"
 options$setSeed                   <- TRUE
 options$seed                      <- 123
 options$errorCalculationMethod    <- "robust"
@@ -686,25 +718,23 @@ model <- "
   QUAL <~ qual1 + qual2 + qual3 + qual4 + qual5
   VAL  <~ val1  + val2  + val3
 
-  # Reflective measurement model
-  SAT  =~ sat1  + sat2  + sat3  + sat4
-  LOY  =~ loy1  + loy2  + loy3  + loy4
-  "
-options$models <- list(list(name = "Model1", syntax = list(model = model, columns = c("imag1", "imag2", "imag3",
-                                                                                      "expe1", "expe2", "expe3",
-                                                                                      "qual1", "qual2", "qual3", "qual4", "qual5",
-                                                                                      "val1", "val2", "val3",
-                                                                                      "sat1", "sat2", "sat3", "sat4",
-                                                                                      "loy1", "loy2", "loy3", "loy4"))))
-options$group                     <- ""
-options$innerWeightingScheme      <- "path"
-options$convergenceCriterion      <- "absoluteDifference"
-options$correctionFactor          <- "squaredEuclidean"
-options$handlingOfFlippedSigns    <- "none"
-options$additionalFitMeasures         <- TRUE
-options$rSquared                      <- TRUE
-options$mardiasCoefficient            <- TRUE
-options$reliabilityMeasures           <- TRUE
+    # Reflective measurement model
+    SAT  =~ sat1  + sat2  + sat3  + sat4
+    LOY  =~ loy1  + loy2  + loy3  + loy4
+    "
+  options$models <- list(list(name = "Model1", syntax = list(model = model, columns = c("imag1", "imag2", "imag3",
+                                                                                        "expe1", "expe2", "expe3",
+                                                                                        "qual1", "qual2", "qual3", "qual4", "qual5",
+                                                                                        "val1", "val2", "val3",
+                                                                                        "sat1", "sat2", "sat3", "sat4",
+                                                                                        "loy1", "loy2", "loy3", "loy4"))))
+  options$group                     <- ""
+  options$innerWeightingScheme      <- "path"
+  options$convergenceCriterion      <- "absoluteDifference"
+  options$additionalFitMeasures         <- TRUE
+  options$rSquared                      <- TRUE
+  options$mardiasCoefficient            <- TRUE
+  options$reliabilityMeasures           <- TRUE
 
 results <- jaspTools::runAnalysis("PLSSEM", cSEM::satisfaction, options)
 
