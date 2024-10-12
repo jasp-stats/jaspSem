@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2024-09-28 02:53\n"
+"POT-Creation-Date: 2024-10-12 02:52\n"
 "PO-Revision-Date: 2024-08-29 07:09+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
@@ -522,6 +522,9 @@ msgstr "Beobachtete Konstrukt-Korrelationsmatrix"
 
 msgid "Implied construct correlation matrix"
 msgstr "Implizierte Konstrukt-Korrelationsmatrix"
+
+msgid "Column '%s' name already exists in the dataset"
+msgstr ""
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"

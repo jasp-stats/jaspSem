@@ -586,42 +586,6 @@ msgid "Ignore structural model"
 msgstr ""
 
 msgctxt "PLSSEM|"
-msgid "Disattenuate composite correlations"
-msgstr ""
-
-msgctxt "PLSSEM|"
-msgid "Approach correction factors"
-msgstr ""
-
-msgctxt "PLSSEM|"
-msgid "Squared Euclidean distance"
-msgstr "Kwadrat odległości euklidesowej"
-
-msgctxt "PLSSEM|"
-msgid "Weighted Euclidean distance"
-msgstr "Ważona odległość euklidesowa"
-
-msgctxt "PLSSEM|"
-msgid "Fisher transformed"
-msgstr ""
-
-msgctxt "PLSSEM|"
-msgid "Arithmetic mean"
-msgstr "Średnia arytmetyczna"
-
-msgctxt "PLSSEM|"
-msgid "Geometric mean"
-msgstr "Średnia geometryczna"
-
-msgctxt "PLSSEM|"
-msgid "Harmonic mean"
-msgstr "Średnia harmoniczna"
-
-msgctxt "PLSSEM|"
-msgid "Geometric-harmonic mean"
-msgstr "Średnia geometryczno-harmoniczna"
-
-msgctxt "PLSSEM|"
 msgid "Grouping Variable"
 msgstr "Zmienna grupująca"
 
@@ -650,10 +614,6 @@ msgid "Confidence intervals"
 msgstr "Przedziały ufności"
 
 msgctxt "PLSSEM|"
-msgid "Weighting approach"
-msgstr ""
-
-msgctxt "PLSSEM|"
 msgid "PLS-PM"
 msgstr "PLS-PM"
 
@@ -662,40 +622,12 @@ msgid "GSCA"
 msgstr "GSCA"
 
 msgctxt "PLSSEM|"
-msgid "SUMCORR"
-msgstr "SUMCORR"
-
-msgctxt "PLSSEM|"
 msgid "MAXVAR"
 msgstr "MAXVAR"
 
 msgctxt "PLSSEM|"
-msgid "SSQCORR"
-msgstr "SSQCORR"
-
-msgctxt "PLSSEM|"
-msgid "MINVAR"
-msgstr "MINVAR"
-
-msgctxt "PLSSEM|"
-msgid "GENVAR"
-msgstr "GENVAR"
-
-msgctxt "PLSSEM|"
 msgid "PCA"
 msgstr "Analiza głównych składowych"
-
-msgctxt "PLSSEM|"
-msgid "Unit"
-msgstr "Jednostka"
-
-msgctxt "PLSSEM|"
-msgid "Bartlett"
-msgstr "Bartlett"
-
-msgctxt "PLSSEM|"
-msgid "Regression"
-msgstr "Regresja"
 
 msgctxt "PLSSEM|"
 msgid "Inner weighting scheme"
@@ -730,18 +662,6 @@ msgid "Relative difference"
 msgstr ""
 
 msgctxt "PLSSEM|"
-msgid "Correlation matrix"
-msgstr "Macierz korelacji"
-
-msgctxt "PLSSEM|"
-msgid "Pearson"
-msgstr "Pearson"
-
-msgctxt "PLSSEM|"
-msgid "Spearman"
-msgstr "Spearman"
-
-msgctxt "PLSSEM|"
 msgid "Handling of inadmissibles"
 msgstr ""
 
@@ -756,22 +676,6 @@ msgstr "Ignoruj"
 msgctxt "PLSSEM|"
 msgid "Drop"
 msgstr "Odrzuć"
-
-msgctxt "PLSSEM|"
-msgid "Handling of flipped signs"
-msgstr ""
-
-msgctxt "PLSSEM|"
-msgid "Individual"
-msgstr "Indywidualnie"
-
-msgctxt "PLSSEM|"
-msgid "Individual re-estimation"
-msgstr ""
-
-msgctxt "PLSSEM|"
-msgid "Construct re-estimation"
-msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Output"
@@ -1263,4 +1167,16 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "SD of deviance / old estimate"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Consistent partial least squares"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Tolerance"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Add construct scores to data"
 msgstr ""

@@ -586,44 +586,6 @@ msgctxt "PLSSEM|"
 msgid "Ignore structural model"
 msgstr "Strukturmodell ignorieren"
 
-#, fuzzy
-msgctxt "PLSSEM|"
-msgid "Disattenuate composite correlations"
-msgstr "Zusammengesetzte Korrelationen abschwächen"
-
-#, fuzzy
-msgctxt "PLSSEM|"
-msgid "Approach correction factors"
-msgstr "Korrekturfaktoren für den Ansatz"
-
-msgctxt "PLSSEM|"
-msgid "Squared Euclidean distance"
-msgstr "Quadrierte Euklidische Distanz"
-
-msgctxt "PLSSEM|"
-msgid "Weighted Euclidean distance"
-msgstr "Gewichtete Euklidische Distanz"
-
-msgctxt "PLSSEM|"
-msgid "Fisher transformed"
-msgstr "Fisher-transfomiert"
-
-msgctxt "PLSSEM|"
-msgid "Arithmetic mean"
-msgstr "Arithmetischer Mittelwert"
-
-msgctxt "PLSSEM|"
-msgid "Geometric mean"
-msgstr "Geometrischer Mittelwert"
-
-msgctxt "PLSSEM|"
-msgid "Harmonic mean"
-msgstr "Harmonischer Mittelwert"
-
-msgctxt "PLSSEM|"
-msgid "Geometric-harmonic mean"
-msgstr "Geometrisch-Harmonischer Mittelwert"
-
 msgctxt "PLSSEM|"
 msgid "Grouping Variable"
 msgstr "Gruppierungsvariable"
@@ -652,10 +614,6 @@ msgctxt "PLSSEM|"
 msgid "Confidence intervals"
 msgstr "Konfidenzintervalle"
 
-msgctxt "PLSSEM|"
-msgid "Weighting approach"
-msgstr "Gewichtungs-Ansatz"
-
 #, fuzzy
 msgctxt "PLSSEM|"
 msgid "PLS-PM"
@@ -668,46 +626,13 @@ msgstr "GSCA"
 
 #, fuzzy
 msgctxt "PLSSEM|"
-msgid "SUMCORR"
-msgstr "SUMCORR"
-
-#, fuzzy
-msgctxt "PLSSEM|"
 msgid "MAXVAR"
 msgstr "MAXVAR"
 
 #, fuzzy
 msgctxt "PLSSEM|"
-msgid "SSQCORR"
-msgstr "SSQCORR"
-
-#, fuzzy
-msgctxt "PLSSEM|"
-msgid "MINVAR"
-msgstr "MINVAR"
-
-#, fuzzy
-msgctxt "PLSSEM|"
-msgid "GENVAR"
-msgstr "GENVAR"
-
-#, fuzzy
-msgctxt "PLSSEM|"
 msgid "PCA"
 msgstr "PCA"
-
-#, fuzzy
-msgctxt "PLSSEM|"
-msgid "Unit"
-msgstr "Einheit"
-
-msgctxt "PLSSEM|"
-msgid "Bartlett"
-msgstr "Bartlett"
-
-msgctxt "PLSSEM|"
-msgid "Regression"
-msgstr "Regression"
 
 #, fuzzy
 msgctxt "PLSSEM|"
@@ -742,18 +667,6 @@ msgctxt "PLSSEM|"
 msgid "Relative difference"
 msgstr "Relative Differenz"
 
-msgctxt "PLSSEM|"
-msgid "Correlation matrix"
-msgstr "Korrelationsmatrix"
-
-msgctxt "PLSSEM|"
-msgid "Pearson"
-msgstr "Pearson"
-
-msgctxt "PLSSEM|"
-msgid "Spearman"
-msgstr "Spearman"
-
 #, fuzzy
 msgctxt "PLSSEM|"
 msgid "Handling of inadmissibles"
@@ -770,23 +683,6 @@ msgstr "Ignorieren"
 msgctxt "PLSSEM|"
 msgid "Drop"
 msgstr "Ausschließen"
-
-msgctxt "PLSSEM|"
-msgid "Handling of flipped signs"
-msgstr "Umgang mit umgekehrten Vorzeichen"
-
-msgctxt "PLSSEM|"
-msgid "Individual"
-msgstr "Individuell"
-
-msgctxt "PLSSEM|"
-msgid "Individual re-estimation"
-msgstr "Individuelle Neu-Schätzung"
-
-#, fuzzy
-msgctxt "PLSSEM|"
-msgid "Construct re-estimation"
-msgstr "Konstrukt Neu-Schätzung"
 
 msgctxt "PLSSEM|"
 msgid "Output"
@@ -1290,4 +1186,16 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "SD of deviance / old estimate"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Consistent partial least squares"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Tolerance"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Add construct scores to data"
 msgstr ""

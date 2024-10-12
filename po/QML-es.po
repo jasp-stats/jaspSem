@@ -586,42 +586,6 @@ msgid "Ignore structural model"
 msgstr "Ignorar el modelo estructural"
 
 msgctxt "PLSSEM|"
-msgid "Disattenuate composite correlations"
-msgstr "Desatenuar las correlaciones compuestas"
-
-msgctxt "PLSSEM|"
-msgid "Approach correction factors"
-msgstr "Aproximar los factores de corrección"
-
-msgctxt "PLSSEM|"
-msgid "Squared Euclidean distance"
-msgstr "Distancia Euclídea cuadrada"
-
-msgctxt "PLSSEM|"
-msgid "Weighted Euclidean distance"
-msgstr "Distancia Euclídea ponderada"
-
-msgctxt "PLSSEM|"
-msgid "Fisher transformed"
-msgstr "Fisher transformada"
-
-msgctxt "PLSSEM|"
-msgid "Arithmetic mean"
-msgstr "Media aritmética"
-
-msgctxt "PLSSEM|"
-msgid "Geometric mean"
-msgstr "Media geométrica"
-
-msgctxt "PLSSEM|"
-msgid "Harmonic mean"
-msgstr "Media armónica"
-
-msgctxt "PLSSEM|"
-msgid "Geometric-harmonic mean"
-msgstr "Media geométrica-armónica"
-
-msgctxt "PLSSEM|"
 msgid "Grouping Variable"
 msgstr "Variable de Agrupación"
 
@@ -650,10 +614,6 @@ msgid "Confidence intervals"
 msgstr "Intervalos de confianza"
 
 msgctxt "PLSSEM|"
-msgid "Weighting approach"
-msgstr "Enfoque de ponderación"
-
-msgctxt "PLSSEM|"
 msgid "PLS-PM"
 msgstr "MCP-MR (PLS-PM)"
 
@@ -662,40 +622,12 @@ msgid "GSCA"
 msgstr "GSCA"
 
 msgctxt "PLSSEM|"
-msgid "SUMCORR"
-msgstr "SUMCORR"
-
-msgctxt "PLSSEM|"
 msgid "MAXVAR"
 msgstr "MAXVAR"
 
 msgctxt "PLSSEM|"
-msgid "SSQCORR"
-msgstr "SSQCORR"
-
-msgctxt "PLSSEM|"
-msgid "MINVAR"
-msgstr "MINVAR"
-
-msgctxt "PLSSEM|"
-msgid "GENVAR"
-msgstr "GENVAR"
-
-msgctxt "PLSSEM|"
 msgid "PCA"
 msgstr "CP (PCA)"
-
-msgctxt "PLSSEM|"
-msgid "Unit"
-msgstr "Unidad"
-
-msgctxt "PLSSEM|"
-msgid "Bartlett"
-msgstr "Bartlett"
-
-msgctxt "PLSSEM|"
-msgid "Regression"
-msgstr "Regresión"
 
 msgctxt "PLSSEM|"
 msgid "Inner weighting scheme"
@@ -730,18 +662,6 @@ msgid "Relative difference"
 msgstr "Diferencia relativa"
 
 msgctxt "PLSSEM|"
-msgid "Correlation matrix"
-msgstr "Matriz de correlaciones"
-
-msgctxt "PLSSEM|"
-msgid "Pearson"
-msgstr "Pearson"
-
-msgctxt "PLSSEM|"
-msgid "Spearman"
-msgstr "Spearman"
-
-msgctxt "PLSSEM|"
 msgid "Handling of inadmissibles"
 msgstr "Manejo de los no permitidos"
 
@@ -756,22 +676,6 @@ msgstr "Ignorar"
 msgctxt "PLSSEM|"
 msgid "Drop"
 msgstr "Quitar"
-
-msgctxt "PLSSEM|"
-msgid "Handling of flipped signs"
-msgstr "Manejo de los signos invertidos"
-
-msgctxt "PLSSEM|"
-msgid "Individual"
-msgstr "Individual"
-
-msgctxt "PLSSEM|"
-msgid "Individual re-estimation"
-msgstr "Reestimación individual"
-
-msgctxt "PLSSEM|"
-msgid "Construct re-estimation"
-msgstr "Reestimación de construcciones"
 
 msgctxt "PLSSEM|"
 msgid "Output"
@@ -1240,3 +1144,15 @@ msgstr "Mostrar advertencias"
 msgctxt "SEM|"
 msgid "SD of deviance / old estimate"
 msgstr "DT de la desviación / estimación anterior"
+
+msgctxt "PLSSEM|"
+msgid "Consistent partial least squares"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Tolerance"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Add construct scores to data"
+msgstr ""

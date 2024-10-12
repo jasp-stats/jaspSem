@@ -582,42 +582,6 @@ msgid "Ignore structural model"
 msgstr "忽略结构模型"
 
 msgctxt "PLSSEM|"
-msgid "Disattenuate composite correlations"
-msgstr "减弱复合相关性"
-
-msgctxt "PLSSEM|"
-msgid "Approach correction factors"
-msgstr "方法校正因子"
-
-msgctxt "PLSSEM|"
-msgid "Squared Euclidean distance"
-msgstr "平方欧氏距离"
-
-msgctxt "PLSSEM|"
-msgid "Weighted Euclidean distance"
-msgstr "加权欧氏距离"
-
-msgctxt "PLSSEM|"
-msgid "Fisher transformed"
-msgstr "应用 Fisher 变换"
-
-msgctxt "PLSSEM|"
-msgid "Arithmetic mean"
-msgstr "算术平均值"
-
-msgctxt "PLSSEM|"
-msgid "Geometric mean"
-msgstr "几何平均值"
-
-msgctxt "PLSSEM|"
-msgid "Harmonic mean"
-msgstr "调和平均值"
-
-msgctxt "PLSSEM|"
-msgid "Geometric-harmonic mean"
-msgstr "几何调和平均值"
-
-msgctxt "PLSSEM|"
 msgid "Grouping Variable"
 msgstr "分组变量"
 
@@ -646,10 +610,6 @@ msgid "Confidence intervals"
 msgstr "置信区间"
 
 msgctxt "PLSSEM|"
-msgid "Weighting approach"
-msgstr "加权方法"
-
-msgctxt "PLSSEM|"
 msgid "PLS-PM"
 msgstr "PLS-PM"
 
@@ -658,40 +618,12 @@ msgid "GSCA"
 msgstr "GSCA"
 
 msgctxt "PLSSEM|"
-msgid "SUMCORR"
-msgstr "SUMCORR"
-
-msgctxt "PLSSEM|"
 msgid "MAXVAR"
 msgstr "MAXVAR"
 
 msgctxt "PLSSEM|"
-msgid "SSQCORR"
-msgstr "SSQCORR"
-
-msgctxt "PLSSEM|"
-msgid "MINVAR"
-msgstr "MINVAR"
-
-msgctxt "PLSSEM|"
-msgid "GENVAR"
-msgstr "GENVAR"
-
-msgctxt "PLSSEM|"
 msgid "PCA"
 msgstr "主成分分析"
-
-msgctxt "PLSSEM|"
-msgid "Unit"
-msgstr "单元"
-
-msgctxt "PLSSEM|"
-msgid "Bartlett"
-msgstr "Bartlett"
-
-msgctxt "PLSSEM|"
-msgid "Regression"
-msgstr "回归"
 
 msgctxt "PLSSEM|"
 msgid "Inner weighting scheme"
@@ -726,18 +658,6 @@ msgid "Relative difference"
 msgstr "相对差异"
 
 msgctxt "PLSSEM|"
-msgid "Correlation matrix"
-msgstr "相关矩阵"
-
-msgctxt "PLSSEM|"
-msgid "Pearson"
-msgstr "Pearson"
-
-msgctxt "PLSSEM|"
-msgid "Spearman"
-msgstr "Spearman"
-
-msgctxt "PLSSEM|"
 msgid "Handling of inadmissibles"
 msgstr "对不容许的估计值的处理方式"
 
@@ -752,22 +672,6 @@ msgstr "忽略"
 msgctxt "PLSSEM|"
 msgid "Drop"
 msgstr "去除"
-
-msgctxt "PLSSEM|"
-msgid "Handling of flipped signs"
-msgstr "对翻转符号的处理方式"
-
-msgctxt "PLSSEM|"
-msgid "Individual"
-msgstr "单个"
-
-msgctxt "PLSSEM|"
-msgid "Individual re-estimation"
-msgstr "单个重新估计"
-
-msgctxt "PLSSEM|"
-msgid "Construct re-estimation"
-msgstr "构造重新估计"
 
 msgctxt "PLSSEM|"
 msgid "Output"
@@ -1261,4 +1165,16 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "SD of deviance / old estimate"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Consistent partial least squares"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Tolerance"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Add construct scores to data"
 msgstr ""

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2024-09-28 02:53\n"
+"POT-Creation-Date: 2024-10-12 02:52\n"
 "PO-Revision-Date: 2024-07-02 18:09+0000\n"
 "Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -522,6 +522,9 @@ msgstr ""
 #, fuzzy
 msgid "Implied construct correlation matrix"
 msgstr "モデル共分散行列"
+
+msgid "Column '%s' name already exists in the dataset"
+msgstr ""
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
