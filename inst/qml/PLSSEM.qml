@@ -35,7 +35,7 @@ Form
 		newItemName: qsTr("Model 1")
 		optionKey: "name"
 
-		content: TextArea { name: "syntax"; width: models.width; textType: JASP.TextTypeCSem }
+		content: TextArea { name: "syntax"; width: models.width; textType: JASP.TextTypeCSem; showLineNumber: true }
 	}
 
 	Section
