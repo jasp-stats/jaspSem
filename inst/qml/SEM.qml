@@ -57,7 +57,7 @@ Form
 		newItemName: qsTr("Model 1")
 		optionKey: "name"
 
-		content: TextArea { name: "syntax"; width: models.width; textType: JASP.TextTypeLavaan }
+		content: TextArea { name: "syntax"; width: models.width; textType: JASP.TextTypeLavaan; showLineNumber: true }
 	}
 
 	RadioButtonGroup
