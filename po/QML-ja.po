@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2024-10-25 01:15+0000\n"
+"Last-Translator: Koji Kosugi <kosugitti@gmail.com>\n"
+"Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/"
+"jaspsem-qml/ja/>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.8.2-dev\n"
 "X-Language: ja\n"
 "X-Qt-Contexts: true\n"
 
@@ -776,219 +782,195 @@ msgstr "出力オプション"
 
 msgctxt "SEM|"
 msgid "Sensitivity Analysis"
-msgstr ""
+msgstr "感度分析"
 
 msgctxt "SEM|"
 msgid "Run sensitivity analysis"
-msgstr ""
+msgstr "感度分析の実行"
 
 msgctxt "SEM|"
 msgid "Search algorithm"
-msgstr ""
+msgstr "アルゴリズム探索"
 
 msgctxt "SEM|"
 msgid "Ant colony optimization"
-msgstr ""
+msgstr "アリコロニーの最適化"
 
 msgctxt "SEM|"
 msgid "Number of ants"
-msgstr ""
+msgstr "アリの数"
 
 msgctxt "SEM|"
 msgid "Size of the solution archive"
-msgstr ""
+msgstr "解アーカイブのサイズ"
 
 msgctxt "SEM|"
 msgid "Convergence rate threshold"
-msgstr ""
+msgstr "収束比率の閾値"
 
 msgctxt "SEM|"
 msgid "Tabu search"
-msgstr ""
+msgstr "タブ探索"
 
 msgctxt "SEM|"
 msgid "Optimizer function"
-msgstr ""
+msgstr "最適化関数"
 
 msgctxt "SEM|"
 msgid "% change mean estimate"
-msgstr ""
+msgstr "% 変化平均推定値"
 
 msgctxt "SEM|"
 msgid "Change of p-value"
-msgstr ""
+msgstr "p値の変化"
 
 msgctxt "SEM|"
 msgid "Distance of p-value from alpha"
-msgstr ""
+msgstr "アルファからのp値の距離"
 
 msgctxt "SEM|"
 msgid "Change of RMSEA"
-msgstr ""
+msgstr "RMSEAの変化"
 
 msgctxt "SEM|"
 msgid "Distance of RMSEA from 0.05"
-msgstr ""
+msgstr "RMSEA0.05からの距離"
 
 msgctxt "SEM|"
 msgid "Significance level"
-msgstr ""
+msgstr "有意水準"
 
 msgctxt "SEM|"
 msgid "Maximum number of iterations"
-msgstr ""
+msgstr "反復回数の上限"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Advanced"
 msgstr "詳細"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Missing value handling"
 msgstr "欠損値の処理"
 
 msgctxt "Advanced|"
 msgid "(FI)ML"
-msgstr ""
+msgstr "(完全情報)最尤法"
 
 msgctxt "Advanced|"
 msgid "Listwise"
-msgstr ""
+msgstr "リストワイズ"
 
 msgctxt "Advanced|"
 msgid "Mimic"
-msgstr ""
+msgstr "Mimic"
 
 msgctxt "Advanced|"
 msgid "Lavaan"
-msgstr ""
+msgstr "Lavaan"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Mplus"
 msgstr "Mplus"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "EQS"
 msgstr "EQS"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Estimator"
-msgstr "推定"
+msgstr "推定量"
 
 msgctxt "Advanced|"
 msgid "Default"
-msgstr ""
+msgstr "デフォルト"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "ML"
 msgstr "最尤法"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "GLS"
 msgstr "GLS"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "WLS"
 msgstr "WLS"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "ULS"
 msgstr "ULS"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "DWLS"
 msgstr "DWLS"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Confidence intervals"
 msgstr "信頼区間"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Method"
 msgstr "方法"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Standard"
 msgstr "標準"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Robust"
 msgstr "ロバスト"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Bootstrap"
 msgstr "ブートストラップ"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Replications"
-msgstr "反復回数"
+msgstr "再現性"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Type"
 msgstr "タイプ"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Bias-corrected percentile"
 msgstr "バイアス補正したパーセンタイル"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Percentile"
 msgstr "パーセンタイル"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Normal theory"
 msgstr "正規理論"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Estimation Options"
 msgstr "推定オプション"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Additional fit measures"
 msgstr "追加の適合度指標"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "All"
 msgstr "すべて"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Latents"
-msgstr ""
+msgstr "潜在変数"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "外生変数の共分散を除く"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "All"
 msgstr "すべて"
 
 msgctxt "MediationAnalysis|"
 msgid "Latents"
-msgstr ""
+msgstr "潜在変数"
 
 msgctxt "MediationAnalysis|"
 msgid "Except exogenous covariates"
@@ -1005,177 +987,176 @@ msgstr ""
 
 msgctxt "Mimic|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "外生変数の共分散を除く"
 
 msgctxt "SEM|"
 msgid "Mean structure"
-msgstr ""
+msgstr "平均構造"
 
 msgctxt "SEM|"
 msgid "Latent means fixed to zero"
-msgstr ""
+msgstr "潜在変数の平均を0に固定"
 
 msgctxt "SEM|"
 msgid "Manifest intercepts fixed to zero"
-msgstr ""
+msgstr "観測変数の切片を0に固定"
 
 msgctxt "SEM|"
 msgid "Mean of manifest intercepts fixed to zero"
-msgstr ""
+msgstr "観測変数の切片の平均を0に固定"
 
 msgctxt "SEM|"
 msgid "Exogenous covariate(s) fixed"
-msgstr ""
+msgstr "外生変数の共分散を固定"
 
 msgctxt "SEM|"
 msgid "Residual single indicator omitted"
-msgstr ""
+msgstr "単一の指標に対する残差を省略する"
 
 msgctxt "SEM|"
 msgid "Residual variances included"
-msgstr ""
+msgstr "残差分散を含める"
 
 msgctxt "SEM|"
 msgid "Exogenous latents correlated"
-msgstr ""
+msgstr "外生変数が相関する"
 
 msgctxt "SEM|"
 msgid "Dependent variables correlated"
-msgstr ""
+msgstr "独立変数が相関する"
 
 msgctxt "SEM|"
 msgid "Scaling parameters"
-msgstr ""
+msgstr "スケーリング母数"
 
 msgctxt "SEM|"
 msgid "EFA blocks constrained"
-msgstr ""
+msgstr "EFAブロックを制約"
 
 msgctxt "SEM|"
 msgid "Default"
-msgstr ""
+msgstr "デフォルト"
 
 msgctxt "SEM|"
 msgid "DLS"
-msgstr ""
+msgstr "DLS"
 
 msgctxt "SEM|"
 msgid "MLM"
-msgstr ""
+msgstr "MLM"
 
 msgctxt "SEM|"
 msgid "MLMV"
-msgstr ""
+msgstr "MLMV"
 
 msgctxt "SEM|"
 msgid "MLMVS"
-msgstr ""
+msgstr "MLMVS"
 
 msgctxt "SEM|"
 msgid "MLF"
-msgstr ""
+msgstr "MLF"
 
 msgctxt "SEM|"
 msgid "MLR"
-msgstr ""
+msgstr "MLR"
 
 msgctxt "SEM|"
 msgid "WLSM"
-msgstr ""
+msgstr "WLSM"
 
 msgctxt "SEM|"
 msgid "WLSMV"
-msgstr ""
+msgstr "WLSMV"
 
 msgctxt "SEM|"
 msgid "ULSM"
-msgstr ""
+msgstr "ULSM"
 
 msgctxt "SEM|"
 msgid "ULSMV"
-msgstr ""
+msgstr "ULSMV"
 
 msgctxt "SEM|"
 msgid "Click for more information"
-msgstr ""
+msgstr "詳しくはクリックしてください"
 
 msgctxt "SEM|"
 msgid "Yuan-Bentler Mplus"
-msgstr ""
+msgstr "Yuan-Bentler(Mplus)"
 
 msgctxt "SEM|"
 msgid "Mean and variance adjusted"
-msgstr ""
+msgstr "平均と分散の調整"
 
 msgctxt "SEM|"
 msgid "Browne residual based (ADF)"
-msgstr ""
+msgstr "Browne残差(ADFベース)"
 
 msgctxt "SEM|"
 msgid "Browne residual based (NT)"
-msgstr ""
+msgstr "Browne残差(NTベース)"
 
 msgctxt "SEM|"
 msgid "     Bootstrap samples"
-msgstr ""
+msgstr "     ブートストラップサンプル"
 
 msgctxt "SEM|"
 msgid "First order"
-msgstr ""
+msgstr "一次"
 
 msgctxt "SEM|"
 msgid "Standard errors"
-msgstr ""
+msgstr "標準誤差"
 
 msgctxt "SEM|"
 msgid "Robust Huber-White"
-msgstr ""
+msgstr "ロバストなHuber-White"
 
 msgctxt "SEM|"
 msgid "     Type"
-msgstr ""
+msgstr "     タイプ"
 
 msgctxt "SEM|"
 msgid "(FI)ML"
-msgstr ""
+msgstr "(完全情報)最尤法"
 
 msgctxt "SEM|"
 msgid "Mimic"
-msgstr ""
+msgstr "Mimic"
 
 msgctxt "SEM|"
 msgid "Lavaan"
-msgstr ""
+msgstr "Lavaan"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "All"
 msgstr "すべて"
 
 msgctxt "SEM|"
 msgid "Latents"
-msgstr ""
+msgstr "潜在変数"
 
 msgctxt "SEM|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "外生変数の共分散を除く"
 
 msgctxt "SEM|"
 msgid "Show warnings"
-msgstr ""
+msgstr "警告を表示する"
 
 msgctxt "SEM|"
 msgid "SD of deviance / old estimate"
-msgstr ""
+msgstr "逸脱度のSD / 古い推定"
 
 msgctxt "PLSSEM|"
 msgid "Consistent partial least squares"
-msgstr ""
+msgstr "部分最小二乗法の一貫性を保つ"
 
 msgctxt "PLSSEM|"
 msgid "Tolerance"
-msgstr ""
+msgstr "許容度"
 
 msgctxt "PLSSEM|"
 msgid "Add construct scores to data"
-msgstr ""
+msgstr "構成されたアスコアをデータに追加"
