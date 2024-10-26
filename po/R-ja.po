@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
 "POT-Creation-Date: 2024-10-12 02:52\n"
-"PO-Revision-Date: 2024-07-02 18:09+0000\n"
-"Last-Translator: Daiki Hojo <dhojo.bayes@gmail.com>\n"
+"PO-Revision-Date: 2024-10-22 22:15+0000\n"
+"Last-Translator: Koji Kosugi <kosugitti@gmail.com>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "ja/>\n"
 "Language: ja\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7-dev\n"
+"X-Generator: Weblate 5.8.2-dev\n"
 
 msgid "Fit indices"
 msgstr "適合度指標"
@@ -97,7 +97,6 @@ msgstr "収束しなかったため，モデルは推定できませんでした
 msgid "The model could not be estimated: No degrees of freedom left."
 msgstr "モデルは推定できませんでした: 自由度が残っていません。"
 
-#, fuzzy
 msgid "Chi-square test"
 msgstr "カイ二乗検定"
 
@@ -116,9 +115,8 @@ msgstr "警告"
 msgid "Parameter estimates"
 msgstr "パラメータ推定"
 
-#, fuzzy
 msgid "Std. estimate"
-msgstr "標準化"
+msgstr "標準化推定値"
 
 msgid "Estimate"
 msgstr "推定"
@@ -129,7 +127,6 @@ msgstr "コンポーネント"
 msgid "Parameter"
 msgstr "パラメータ"
 
-#, fuzzy
 msgid "Std. error"
 msgstr "標準誤差"
 
@@ -251,16 +248,13 @@ msgstr "残差共分散"
 msgid "Path coefficients"
 msgstr "パス係数"
 
-#, fuzzy
 msgid "Estimator is %s."
-msgstr "推定失敗 :%s"
+msgstr "推定量 :%s"
 
-#, fuzzy
 msgid ""
 "%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
-msgstr ""
-"%1$s の標準誤差，%2$sの信用区間，%3$sの推定法。注意: 全てのブートストラップサ"
-"ンプルが成功したわけではありません。 Clはサンプルの%4$.0f に基づいています。"
+msgstr "%1$s 全てのブートストラップサンプルが成功したわけではありません。 "
+"Clはサンプルの %2$.0f に基づいています。"
 
 msgid "Path plot"
 msgstr "パスプロット"
@@ -268,12 +262,14 @@ msgstr "パスプロット"
 msgid ""
 "Currently it is not possible to plot mediation models with ordinal "
 "variables. The plot could not be generated."
-msgstr ""
+msgstr "現在、順序変数で媒介モデルをプロットすることはできません。 "
+"プロットは生成できませんでした."
 
 msgid ""
 "The plot could not be generated. The underlying code resulted in the "
 "following error message: %s"
-msgstr ""
+msgstr "プロットは生成できませんでした。 "
+"下のコードは、次のエラーメッセージを示しています: %s"
 
 msgid "Model syntax"
 msgstr "モデルのシンタックス"
@@ -284,7 +280,8 @@ msgstr "FIMLは、MLタイプの推定量でのみ使用できます。"
 msgid ""
 "Estimation failed! Message: The model did not converge. Try using a "
 "different estimator or specify an other MIMIC model."
-msgstr ""
+msgstr "推定が失敗しました! メッセージ: モデルは収束しませんでした。 "
+"別の推定法を使用するか、他の MIMIC モデルを指定してください."
 
 msgid "df"
 msgstr "df"
@@ -338,193 +335,178 @@ msgid "Difference test"
 msgstr "差分検定"
 
 msgid "WARNING! %1$s: %2$s"
-msgstr ""
+msgstr "警告! %1$s: %2$s"
 
 msgid "WARNING! %1$s, group %2$s: %3$s"
-msgstr ""
+msgstr "警告! %1$s、グループ%2$s:%3$"
 
 msgid "Weights"
 msgstr "ウェイト"
 
 msgid "Construct"
-msgstr ""
+msgstr "構成概念"
 
 msgid "Std. Error"
 msgstr "標準誤差"
 
-#, fuzzy
 msgid "Loadings"
 msgstr "因子負荷量"
 
-#, fuzzy
 msgid "Regression Coefficients"
 msgstr "回帰係数"
 
 msgid "Outcome"
 msgstr "結果変数"
 
-#, fuzzy
 msgid "Total effects"
-msgstr "総間接効果"
+msgstr "全体効果"
 
 msgid "VIF"
-msgstr ""
+msgstr "VIF"
 
 msgid "Endogenous Indicator Prediction"
-msgstr ""
+msgstr "内生観測変数の予測"
 
 msgid ""
 "The target model uses the same weighting approach as the benchmark model, "
 "please choose another benchmark."
-msgstr ""
+msgstr "モデルは、ベンチマークモデルと同じ重みづけアプローチを使用してください。別の"
+"ベンチマークを選択してください."
 
 msgid ""
 "For the predicted indicator scores table(s), please select a single "
 "benchmark or 'none'."
-msgstr ""
+msgstr "予測された観測変数のスコアテーブルを表示するには、単一のベンチマークまたは「"
+"なし」を選択してください."
 
-#, fuzzy
 msgid "Prediction Metrics"
-msgstr "予測変数"
+msgstr "予測統計量"
 
 msgid "Target MAE"
-msgstr ""
+msgstr "ターゲットのMAE"
 
-#, fuzzy
 msgid "Linear model MAE"
-msgstr "線形勾配"
+msgstr "線形モデルのMAE"
 
 msgid "PLS-PM MAE"
-msgstr ""
+msgstr "PLS-PMのMAE"
 
 msgid "GSCA MAE"
-msgstr ""
+msgstr "GSCAのMAE"
 
 msgid "PCA MAE"
-msgstr ""
+msgstr "PCAのMAE"
 
 msgid "MAXVAR MAE"
-msgstr ""
+msgstr "MAXVARのMAE"
 
 msgid "Target RMSE"
-msgstr ""
+msgstr "ターゲットのRMSE"
 
-#, fuzzy
 msgid "Linear model RMSE"
-msgstr "線形勾配"
+msgstr "線形モデルのRMSE"
 
 msgid "PLS-PM RMSE"
-msgstr ""
+msgstr "PLS-PMのRMSE"
 
 msgid "GSCA RMSE"
-msgstr ""
+msgstr "GSCAのRMSE"
 
 msgid "PCA RMSE"
-msgstr ""
+msgstr "PCAのRMSE"
 
 msgid "MAXVAR RMSE"
-msgstr ""
+msgstr "MAXVARのRMSE"
 
 msgid "Target Q2 prediction"
-msgstr ""
+msgstr "ターゲットのQ2予測"
 
 msgid ""
 "There are not enough observations for each k-fold, try setting 'cross-"
 "validation k-folds' to a lower number"
-msgstr ""
+msgstr "各k-foldに十分なデータがありません。\"cross-validation k-folds\" "
+"の数字を小さくしてください"
 
 msgid "Are all indicator variables set to 'scale'?"
-msgstr ""
+msgstr "すべての観測変数は「スケール」に設定されていますか?"
 
-#, fuzzy
 msgid "Prediction failed Message: %1$s"
 msgstr "推定失敗 :%s"
 
-#, fuzzy
 msgid "Indicator Scores"
-msgstr "指標係数"
+msgstr "観測変数のスコア"
 
 msgid "Actual scores"
-msgstr ""
+msgstr "実際のスコア"
 
-#, fuzzy
 msgid "Predicted scores"
-msgstr "予測変数"
+msgstr "予測されたスコア"
 
 msgid "Target residuals"
-msgstr ""
+msgstr "ターゲットの残差"
 
 msgid "benchmark"
-msgstr ""
+msgstr "ベンチマーク"
 
 msgid "lm"
-msgstr ""
+msgstr "線形モデル"
 
-#, fuzzy
 msgid "Linear model"
-msgstr "線形勾配"
+msgstr "線形モデル"
 
 msgid "residuals"
-msgstr ""
+msgstr "残差"
 
-#, fuzzy
 msgid "Additional Fit Measures"
 msgstr "追加の適合度指標"
 
-#, fuzzy
 msgid "Hoelter's critical N (CN)"
-msgstr "HoelterのN (%s = .05)"
+msgstr "HoelterのN基準(CN)"
 
-#, fuzzy
 msgid "Root mean square residual covariance (RMS theta)"
-msgstr "二乗平均平方根誤差(RMSEA)"
+msgstr "二乗平均平方根誤差(RMS theta)"
 
-#, fuzzy
 msgid "Goodness of Fit (GoF)"
 msgstr "適合度指標(GFI)"
 
 msgid "Geodesic distance"
-msgstr ""
+msgstr "測地距離"
 
 msgid "Squared Euclidean distance"
-msgstr ""
+msgstr "二乗ユークリッド距離"
 
 msgid "Maximum likelihood-based dinstance"
-msgstr ""
+msgstr "最尤法に基づく距離"
 
-#, fuzzy
 msgid "Reliability Measures"
-msgstr "追加の適合度指標"
+msgstr "信頼性指標"
 
 msgid "Cronbach's %s"
-msgstr ""
+msgstr "クロンバックの %s"
 
 msgid "J%1$sreskog's %2$s"
-msgstr ""
+msgstr "J%1$sreskogの %2$s"
 
 msgid "Dijkstra-Henseler's %s"
-msgstr ""
+msgstr "Dijkstra-Henselerの %s"
 
-#, fuzzy
 msgid "Correlation tables"
-msgstr "共分散表"
+msgstr "相関表"
 
 msgid "Observed indicator correlation matrix"
-msgstr ""
+msgstr "観測された変数の相関表"
 
-#, fuzzy
 msgid "Implied indicator correlation matrix"
-msgstr "モデル共分散行列"
+msgstr "推定された観測変数の相関行列"
 
 msgid "Observed construct correlation matrix"
-msgstr ""
+msgstr "観測された構成変数の相関行列"
 
-#, fuzzy
 msgid "Implied construct correlation matrix"
-msgstr "モデル共分散行列"
+msgstr "推定された構成変数の相関行列"
 
 msgid "Column '%s' name already exists in the dataset"
-msgstr ""
+msgstr "列 '%s' は既にデータセットに存在しています"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
@@ -546,76 +528,70 @@ msgstr ""
 msgid ""
 "When mean structure is included, at least one of the checkboxes to fix the "
 "intercepts to zero has to be checked"
-msgstr ""
+msgstr "平均構造が含まれている場合、チェックボックスの少なくとも1つは切片をゼロにを固"
+"定してください"
 
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr "モデル指定が無効です。変数名を文字列で渡していませんか？"
 
 msgid "One or more variables are constants or contain only missing values."
-msgstr ""
+msgstr "1つ以上の変数または構成変数が，欠損値を含んでいます."
 
-#, fuzzy
 msgid "Estimation failed. Message: %s"
 msgstr "推定失敗 :%s"
 
-#, fuzzy
 msgid "Estimation failed! Message: %s did not converge!"
 msgstr "推定に失敗しました! メッセージ: モデル %s が収束しませんでした!"
 
-#, fuzzy
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
-msgstr "推定に失敗しました! メッセージ: モデル%sの自由度は負です."
+msgstr "推定に失敗しました! メッセージ: モデル%sの自由度が負になりました."
 
 msgid "n(Observations)"
-msgstr ""
+msgstr "n(観測度数)"
 
 msgid "Total"
-msgstr ""
+msgstr "合計"
 
-#, fuzzy
 msgid "n(Parameters)"
-msgstr "パラメータ"
+msgstr "n(パラメータ)"
 
 msgid "Free"
-msgstr ""
+msgstr "自由"
 
 msgid "%1$sdf"
-msgstr ""
+msgstr "自由度 %1$s"
 
 msgid ""
 "%sFitting the model resulted in warnings. Check the 'Show warnings' box in "
 "the Output Options to see the warnings."
-msgstr ""
+msgstr "%s モデルが警告を出しました。 [出力オプション] の [警告を表示] チェック "
+"ボックスをみて，警告を確認してください."
 
 msgid "A total of %g cases were removed due to missing values."
-msgstr ""
+msgstr "値が見つからなかったため、 %g の合計が削除されました."
 
 msgid "Model test is %s."
-msgstr ""
+msgstr "モデルテストは %sです."
 
-#, fuzzy
 msgid "Information matrix is %s."
-msgstr "情報量規準"
+msgstr "情報量規準は  %s です."
 
 msgid "Standard errors are %s."
-msgstr ""
+msgstr "標準誤差は %s です."
 
-#, fuzzy
 msgid ""
 "%s The AIC, BIC and additional information criteria are only available with "
 "ML-type estimators."
-msgstr "FIML の欠損値処理は，ML タイプの推定法でのみ使用可能です"
+msgstr "%s AIC、BIC、その他の情報基準は、MLタイプの推定量を選んだ時のみ利用可能です."
 
-#, fuzzy
 msgid "all"
 msgstr "すべて"
 
 msgid "<b>Warnings:</b> %s"
-msgstr ""
+msgstr "<b> 警告:</b> %s"
 
-#, fuzzy
 msgid "Parameter Estimates"
-msgstr "パラメータ推定"
+msgstr "パラメータ推定値"
 
 msgid "Factor Loadings"
 msgstr "因子負荷量"
@@ -623,7 +599,6 @@ msgstr "因子負荷量"
 msgid "Latent"
 msgstr "潜在"
 
-#, fuzzy
 msgid "%s%% Confidence interval"
 msgstr "%s%% 信頼区間"
 
@@ -642,18 +617,17 @@ msgstr "変数"
 msgid "Residual variances"
 msgstr "残差分散"
 
-#, fuzzy
 msgid "Intercepts"
 msgstr "切片"
 
 msgid "Missing data method 'FIML' forces meanstructure."
-msgstr ""
+msgstr "欠損データに対する手法 'FIML' が平均構造に適用されました."
 
 msgid "Thresholds"
-msgstr ""
+msgstr "閾値"
 
 msgid "Threshold"
-msgstr ""
+msgstr "閾値"
 
 msgid "Defined parameters"
 msgstr "定義されたパラメータ"
@@ -661,13 +635,11 @@ msgstr "定義されたパラメータ"
 msgid "Name"
 msgstr "名前"
 
-#, fuzzy
 msgid "%s Fit indices are based on the scaled test statistic."
-msgstr "Satorra-Bentlerでスケーリングされた検定統計量"
+msgstr "%s 敵同度指標は標準化された検定統計量に基づいています"
 
-#, fuzzy
 msgid "T-size fit indices"
-msgstr "適合度指標"
+msgstr "Tサイズの適合度指標"
 
 msgid ""
 "Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness "
@@ -675,21 +647,26 @@ msgid ""
 "Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), "
 "148-153, https://doi.org/10.1080/10705511.2016.1225260"
 msgstr ""
+"出典: Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate "
+"Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural "
+"Equation Models.  Structural Equation Modeling: A Multidisciplinary Journal, "
+"24*(1), 148-153, https://doi.org/10.1080/10705511.2016.1225260https://doi."
+"org/10.1080/10705511.20161225260"
 
 msgid "Poor-fair limit"
-msgstr ""
+msgstr "Poorとfair の限界"
 
 msgid "Fair-close limit"
-msgstr ""
+msgstr "Fairとcloseの境界"
 
 msgid "CFI"
-msgstr ""
+msgstr "CFI"
 
 msgid "RMSEA"
-msgstr ""
+msgstr "RMSEA"
 
 msgid "T-size statistics are computed for <i>%s = 0.05</i>."
-msgstr ""
+msgstr "Tサイズの統計は <i>%s = 0.05</i> で計算されます."
 
 msgid "Average variance extracted"
 msgstr "平均分散抽出"
@@ -700,15 +677,12 @@ msgstr "AVE"
 msgid "Reliability"
 msgstr "信頼性"
 
-#, fuzzy
 msgid "Coefficient α"
-msgstr "係数"
+msgstr "アルファ係数"
 
-#, fuzzy
 msgid "Coefficient ω"
-msgstr "係数"
+msgstr "オメガ係数"
 
-#, fuzzy
 msgid "Heterotrait-Monotrait Ratio"
 msgstr "Heterotrait-monotrait 比"
 
@@ -729,20 +703,14 @@ msgid ""
 "all models."
 msgstr "すべてのモデルから観測変数に対して計算された多変量歪度と尖度。"
 
-#, fuzzy
 msgid ""
 "Not all used variables are continuous: Mardia's coefficients not available."
-msgstr ""
-"いくつかの使用された変数は数値ではありません。マルディアの係数は利用できませ"
-"ん。"
+msgstr "いくつかの使用された変数は数値ではありません。Mardiaの係数は利用できません。"
 
-#, fuzzy
 msgid ""
 "The data covariance matrix could not be inverted: Mardia's coefficients not "
 "available."
-msgstr ""
-"いくつかの使用された変数は数値ではありません。マルディアの係数は利用できませ"
-"ん。"
+msgstr "データ共分散行列の逆行列が計算できません。マルディアの係数は利用できません。"
 
 msgid "Skewness"
 msgstr "歪度"
@@ -756,18 +724,18 @@ msgstr "共分散表"
 msgid ""
 "The standardized residual covariance table is currently unavailable when the "
 "error calculation method is 'Bootstrap'"
-msgstr ""
+msgstr "誤差の計算方が'ブートストラップ'のときは，標準化残差共分散表が使えません."
 
 msgid "The standardized residual covariance matrix could not be computed"
-msgstr ""
+msgstr "標準化された残差共分散行列が計算できませんでした"
 
 msgid ""
 "The standardized residual covariance tables are currently unavailable when "
 "the error calculation method is 'Bootstrap'"
-msgstr ""
+msgstr "誤差の計算方法が 'Bootstrap' の場合、標準化された残差共分散表は利用できません"
 
 msgid "The standardized residual covariance matrices could not be computed"
-msgstr ""
+msgstr "標準化された残差共分散行列が計算できませんでした"
 
 msgid "Modification indices"
 msgstr "修正指数"
@@ -794,101 +762,90 @@ msgid "sepc (nox)"
 msgstr "sept(nox)"
 
 msgid "Sensitivity analysis"
-msgstr ""
+msgstr "感度分析"
 
 msgid "Summary of sensitivity analysis"
-msgstr ""
+msgstr "感度分析の要約"
 
-#, fuzzy
 msgid "Path"
-msgstr "パスプロット"
+msgstr "パス"
 
-#, fuzzy
 msgid "Standardized estimate"
-msgstr "標準化"
+msgstr "標準化推定値"
 
-#, fuzzy
 msgid "Original model"
-msgstr "線形勾配"
+msgstr "元のモデル"
 
-#, fuzzy
 msgid "p*"
-msgstr "p"
+msgstr "p*"
 
 msgid "Sensitivity model"
-msgstr ""
+msgstr "感度モデル"
 
 msgid "Min"
-msgstr ""
+msgstr "最小値"
 
 msgid "Max"
-msgstr ""
+msgstr "最大値"
 
 msgid ""
 "Please include at least one regression path in the model to perform a "
 "sensitivity analysis."
-msgstr ""
+msgstr "感度解析を行うには、モデル内に回帰のパスを1つ以上含めてください."
 
 msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
-msgstr ""
+msgstr "感度解析の実行(モデル:%1$、グループ:%2$)"
 
 msgid "Performing sensitivity analysis (model: %1$s)"
-msgstr ""
+msgstr "感度分析の実行(モデル:%1$)"
 
 msgid "Sensitivity parameters that led to a change in significance"
-msgstr ""
+msgstr "有意に変化するための感度パラメータ"
 
-#, fuzzy
 msgid "Sensitivity parameters"
-msgstr "定義されたパラメータ"
+msgstr "感度パラメータ"
 
-#, fuzzy
 msgid "Summary of sensitivity parameters"
-msgstr "自由パラメーターの数"
+msgstr "感度パラメータの要約"
 
-#, fuzzy
 msgid "Sensitivity parameter"
-msgstr "定義されたパラメータ"
+msgstr "感度パラメータ"
 
 msgid "Path diagram"
 msgstr "パス図"
 
 msgid "Satorra-Bentler"
-msgstr ""
+msgstr "Satorra-Bentler."
 
 msgid "Yuan-Bentler"
-msgstr ""
+msgstr "Yuan-Bentler"
 
-#, fuzzy
 msgid "Yuan-Bentler Mplus"
-msgstr "Yuan-Bentler(M plus)のスケール化検定統計量"
+msgstr "Yuan-Bentler(Mplus)"
 
-#, fuzzy
 msgid "mean and variance-adjusted"
-msgstr "平均および分散調整済み検定統計量"
+msgstr "平均および調整済み分散"
 
-#, fuzzy
 msgid "scaled and shifted"
-msgstr "スケーリングおよびシフトされた検定統計量"
+msgstr "スケール化と移動"
 
-#, fuzzy
 msgid "bootstrap (Bollen-Stine)"
-msgstr "ブートストラップ（Bollen-Stine）確率値"
+msgstr "ブートストラップ（Bollen-Stine）"
 
 msgid "Browne residual based (ADF)"
-msgstr ""
+msgstr "Browne残差(ADFベース)"
 
 msgid "Browne residual based (NT)"
-msgstr ""
+msgstr "Browne残差(NTベース)"
 
 msgid "robust"
 msgstr "ロバスト"
 
 msgid "robust Huber-White"
-msgstr ""
+msgstr "ロバストなHuber-White"
 
 msgid "first-order"
-msgstr ""
+msgstr "一次"
 
 #~ msgid "95%% Confidence Interval"
 #~ msgstr "95%% 信頼区間"
