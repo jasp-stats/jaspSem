@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2024-10-12 02:52\n"
-"PO-Revision-Date: 2024-11-03 09:02+0000\n"
+"PO-Revision-Date: 2024-11-04 11:00+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
@@ -129,7 +129,6 @@ msgstr "Komponente"
 msgid "Parameter"
 msgstr "Parameter"
 
-#, fuzzy
 msgid "Std. error"
 msgstr "Std.-Fehler"
 
@@ -253,17 +252,14 @@ msgstr "Residualkovarianzen"
 msgid "Path coefficients"
 msgstr "Pfadkoeffizienten"
 
-#, fuzzy
 msgid "Estimator is %s."
-msgstr "Meldung zu fehlgeschlagener Schätzung: %s"
+msgstr "Schätzer ist %s."
 
-#, fuzzy
 msgid ""
 "%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
 msgstr ""
-"%1$s Standardfehler, %2$s Konfidenzintervalle, %3$s Schätzer. Beachte: Nicht "
-"alle Bootstrap-Stichproben waren erfolgreich: KI basieren auf %4$.0f "
-"Stichproben."
+"%1$s Nicht alle Bootstrap-Stichproben waren erfolgreich: KI basieren auf %2$."
+"0f Stichproben."
 
 msgid "Path plot"
 msgstr "Pfaddiagramm"
@@ -523,7 +519,7 @@ msgid "Implied construct correlation matrix"
 msgstr "Implizierte Konstrukt-Korrelationsmatrix"
 
 msgid "Column '%s' name already exists in the dataset"
-msgstr ""
+msgstr "Spalte '%s' Name existiert bereits in dem Datensatz"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
@@ -560,23 +556,19 @@ msgstr ""
 "Ungültige Modellspezifikation. Haben Sie einen Variablennamen als "
 "Zeichenfolge übergeben?"
 
-#, fuzzy
 msgid "One or more variables are constants or contain only missing values."
 msgstr ""
-"Eine oder mehrere Variablen sind Konstanten oder enthalten nur fehlende Werte"
+"Eine oder mehrere Variablen sind Konstanten oder enthalten nur fehlende "
+"Werte."
 
-#, fuzzy
 msgid "Estimation failed. Message: %s"
-msgstr "Meldung zu fehlgeschlagener Schätzung: %s"
+msgstr "Fehlgeschlagene Schätzung. Meldung: %s"
 
-#, fuzzy
 msgid "Estimation failed! Message: %s did not converge!"
-msgstr "Schätzung fehlgeschlagen! Meldung: Modell %s ist nicht konvergiert!"
+msgstr "Schätzung fehlgeschlagen! Meldung: %s ist nicht konvergiert!"
 
-#, fuzzy
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
-msgstr ""
-"Schätzung fehlgeschlagen! Meldung: Modell %s hat negative Freiheitsgrade."
+msgstr "Schätzung fehlgeschlagen! Meldung: %s hat negative Freiheitsgrade."
 
 msgid "n(Observations)"
 msgstr "n(Beobachtungen)"
@@ -597,35 +589,35 @@ msgid ""
 "%sFitting the model resulted in warnings. Check the 'Show warnings' box in "
 "the Output Options to see the warnings."
 msgstr ""
+"%s Anpassung des Modells führte zu Warnungen. Überprüfen Sie die 'Warnungen "
+"anzeigen'-Box in den Ausgabeoptionen, um die Warnungen zu sehen."
 
 msgid "A total of %g cases were removed due to missing values."
-msgstr ""
+msgstr "Insgesamt wurden %g Fälle wegen fehlender Werte entfernt."
 
 msgid "Model test is %s."
-msgstr ""
+msgstr "Modell-Test ist %s."
 
 #, fuzzy
 msgid "Information matrix is %s."
-msgstr "Informationskriterien"
+msgstr "Informationsmatrix ist %s."
 
 msgid "Standard errors are %s."
-msgstr ""
+msgstr "Standardfehler sind %s."
 
-#, fuzzy
 msgid ""
 "%s The AIC, BIC and additional information criteria are only available with "
 "ML-type estimators."
 msgstr ""
-"Das AIC, BIC und weitere Informationskriterien sind nur bei ML-Schätzern "
-"verfügbar"
+"%s Das AIC, BIC und weitere Informationskriterien sind nur bei ML-Schätzern "
+"verfügbar."
 
 msgid "all"
 msgstr "Alle"
 
 msgid "<b>Warnings:</b> %s"
-msgstr ""
+msgstr "<b>Warnungen:</b> %s"
 
-#, fuzzy
 msgid "Parameter Estimates"
 msgstr "Parameterschätzungen"
 
@@ -635,7 +627,6 @@ msgstr "Faktorladungen"
 msgid "Latent"
 msgstr "Latent"
 
-#, fuzzy
 msgid "%s%% Confidence interval"
 msgstr "%s%% Konfidenzintervall"
 
@@ -661,10 +652,10 @@ msgid "Missing data method 'FIML' forces meanstructure."
 msgstr ""
 
 msgid "Thresholds"
-msgstr ""
+msgstr "Schwellenwerte"
 
 msgid "Threshold"
-msgstr ""
+msgstr "Schwellenwert"
 
 msgid "Defined parameters"
 msgstr "Definierte Parameter"
@@ -674,11 +665,11 @@ msgstr "Name"
 
 #, fuzzy
 msgid "%s Fit indices are based on the scaled test statistic."
-msgstr "Satorra-Bentler skalierte Test-Statistik"
+msgstr "%s Anpassungsindikatoren basieren auf der skalierten Teststatistik."
 
 #, fuzzy
 msgid "T-size fit indices"
-msgstr "Anpassungsindikatoren"
+msgstr "T-Größe Anpassungsindikatoren"
 
 msgid ""
 "Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness "
@@ -746,14 +737,15 @@ msgstr ""
 msgid ""
 "Not all used variables are continuous: Mardia's coefficients not available."
 msgstr ""
-"Nicht alle Variablen sind numerisch. Mardias Koeffizienten nicht verfügbar."
+"Nicht alle Variablen sind kontinuierlich. Mardias Koeffizienten nicht "
+"verfügbar."
 
-#, fuzzy
 msgid ""
 "The data covariance matrix could not be inverted: Mardia's coefficients not "
 "available."
 msgstr ""
-"Nicht alle Variablen sind numerisch. Mardias Koeffizienten nicht verfügbar."
+"Die Datenkovarianzmatrix konnte nicht invertiert werden: Mardias "
+"Koeffizienten sind nicht verfügbar."
 
 msgid "Skewness"
 msgstr "Schiefe"
@@ -811,11 +803,9 @@ msgstr "sepc (all)"
 msgid "sepc (nox)"
 msgstr "sepc (all)"
 
-#, fuzzy
 msgid "Sensitivity analysis"
 msgstr "Sensitivitätsanalyse"
 
-#, fuzzy
 msgid "Summary of sensitivity analysis"
 msgstr "Zusammenfassung der Sensitivitätsanalyse"
 
@@ -831,7 +821,6 @@ msgstr "Originalmodell"
 msgid "p*"
 msgstr "p*"
 
-#, fuzzy
 msgid "Sensitivity model"
 msgstr "Sensitivitätsmodell"
 
@@ -849,11 +838,9 @@ msgstr ""
 "Bitte schließen Sie mindestens einen Regressionspfad ins Modell ein, um eine "
 "Sensitivitätsanalyse durchzuführen."
 
-#, fuzzy
 msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
 msgstr "Durchführung der Sensitivitätsanalyse (Modell: %1$s, Gruppe: %2$s)"
 
-#, fuzzy
 msgid "Performing sensitivity analysis (model: %1$s)"
 msgstr "Durchführung Sensitivitätsanalyse (Modell: %1$s)"
 
@@ -874,26 +861,23 @@ msgid "Path diagram"
 msgstr "Pfaddiagramm"
 
 msgid "Satorra-Bentler"
-msgstr ""
+msgstr "Satorra-Bentler"
 
 msgid "Yuan-Bentler"
-msgstr ""
+msgstr "Yuan-Bentler"
 
-#, fuzzy
 msgid "Yuan-Bentler Mplus"
-msgstr "Yuan-Bentler (Mplus) skalierte Test-Statistik"
+msgstr "Yuan-Bentler (Mplus)"
 
 #, fuzzy
 msgid "mean and variance-adjusted"
-msgstr "Mittelwert- und Varianz-angepasste Test-Statistik"
+msgstr "Mittelwert- und Varianz-angepasst"
 
-#, fuzzy
 msgid "scaled and shifted"
-msgstr "skalierte und verschobene Test-Statistik"
+msgstr "skaliert und verschoben"
 
-#, fuzzy
 msgid "bootstrap (Bollen-Stine)"
-msgstr "Bootstrap (Bollen-Stine)-Wahrscheinlichkeitswert"
+msgstr "Bootstrap (Bollen-Stine)"
 
 msgid "Browne residual based (ADF)"
 msgstr ""
