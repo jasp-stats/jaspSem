@@ -292,7 +292,6 @@ checkLavaanModel <- function(model, availableVars) {
       lavArgs[["sample.nobs"]] <- options[["sampleSize"]]
     }
 
-    # browser()
     # fit the enriched model
     fit <- try(.withWarnings(do.call(lavaan::lavaan, lavArgs)))
 
@@ -2674,7 +2673,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   pcont <- createJaspContainer(gettext("Path diagram"))
   pcont$position <- 7
-  pcont$dependOn(c("pathPlot", "pathPlotParameter", "pathPlotLegend", "models"))
+  pcont$dependOn(c("pathPlot", "pathPlotParameter", "pathPlotLegend", "models", "pathPlotParameterStandardized"))
 
   modelContainer[["plot"]] <- pcont
 
@@ -2701,7 +2700,6 @@ checkLavaanModel <- function(model, availableVars) {
     plt <- createJaspContainer(title = modelname, initCollapsed = TRUE)
   }
 
-  plt$dependOn(c("pathPlot", "pathPlotParameter", "pathPlotLegend"))
   parentContainer[[modelname]] <- plt
 
   if (!ready || !inherits(fit, "lavaan")) return()
@@ -2711,6 +2709,14 @@ checkLavaanModel <- function(model, availableVars) {
     return()
   }
 
+  if (options[["pathPlotParameter"]])
+    if (options[["pathPlotParameterStandardized"]])
+      labels <- "std"
+    else
+      labels <- "par"
+  else
+    labels <- "name"
+
   # create a qgraph object using semplot
   po <- .lavToPlotObj(fit)
   pp <- .suppressGrDevice(semPlot::semPaths(
@@ -2718,7 +2724,7 @@ checkLavaanModel <- function(model, availableVars) {
     layout         = "tree2",
     intercepts     = FALSE,
     reorder        = FALSE,
-    whatLabels     = ifelse(options[["pathPlotParameter"]], "par", "name"),
+    whatLabels     = labels,
     edge.color     = "black",
     color          = list(lat = "#EAEAEA", man = "#EAEAEA", int = "#FFFFFF"),
     title          = FALSE,
