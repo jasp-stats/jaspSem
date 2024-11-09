@@ -320,6 +320,11 @@ Form
 					name: "pathPlotParameter"
 					text: qsTr("Show parameter estimates")
 					checked: false
+					CheckBox {
+						name: "pathPlotParameterStandardized"
+						text: qsTr("Standardized")
+						checked: false
+					}
 				}
 				CheckBox {
 					name: "pathPlotLegend"
