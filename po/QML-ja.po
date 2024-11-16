@@ -1156,3 +1156,7 @@ msgstr "許容度"
 msgctxt "PLSSEM|"
 msgid "Add construct scores to data"
 msgstr "構成されたアスコアをデータに追加"
+
+msgctxt "SEM|"
+msgid "Standardized"
+msgstr ""

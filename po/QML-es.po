@@ -1156,3 +1156,7 @@ msgstr "Tolerancia"
 msgctxt "PLSSEM|"
 msgid "Add construct scores to data"
 msgstr "Añadir puntuaciones de constructos a los datos"
+
+msgctxt "SEM|"
+msgid "Standardized"
+msgstr ""

@@ -1178,3 +1178,7 @@ msgstr ""
 msgctxt "PLSSEM|"
 msgid "Add construct scores to data"
 msgstr ""
+
+msgctxt "SEM|"
+msgid "Standardized"
+msgstr ""
