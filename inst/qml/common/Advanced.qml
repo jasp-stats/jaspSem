@@ -32,15 +32,39 @@ Section
 		RadioButtonGroup {
 			title: qsTr("Missing value handling")
 			name: "naAction"
-			RadioButton { text: qsTr("(FI)ML") ; name: "fiml" ; checked: true }
-			RadioButton { text: qsTr("Listwise")              ; name: "listwise"             }
+			info: qsTr("Select the method for handling missing data in estimation")
+			RadioButton { 
+				text: qsTr("(FI)ML") 
+				name: "fiml" 
+				checked: true 
+				info: qsTr("Use Full Information Maximum Likelihood to handle missing data")
+			}
+			RadioButton { 
+				text: qsTr("Listwise")              
+				name: "listwise"
+				info: qsTr("Exclude cases with missing data (listwise deletion)")
+			}
 		}
 		RadioButtonGroup {
 			title: qsTr("Mimic")
 			name: "emulation"
-			RadioButton { text: qsTr("Lavaan")  ; name: "lavaan"  ; checked: true }
-			RadioButton { text: qsTr("Mplus") ; name: "mplus" }
-			RadioButton { text: qsTr("EQS")   ; name: "eqs"   }
+			info: qsTr("Select the software to emulate estimation behavior")
+			RadioButton { 
+				text: qsTr("Lavaan")  
+				name: "lavaan"  
+				checked: true 
+				info: qsTr("Use Lavaan default estimation method")
+			}
+			RadioButton { 
+				text: qsTr("Mplus") 
+				name: "mplus" 
+				info: qsTr("Emulate Mplus estimation methods")
+			}
+			RadioButton { 
+				text: qsTr("EQS")   
+				name: "eqs"   
+				info: qsTr("Emulate EQS estimation methods")
+			}
 		}
   }
 	Group 
@@ -49,12 +73,38 @@ Section
 		RadioButtonGroup {
 			title: qsTr("Estimator")
 			name: "estimator"
-			RadioButton { text: qsTr("Default") ; name: "default"; checked: true }
-			RadioButton { text: qsTr("ML")   ; name: "ml"       }
-			RadioButton { text: qsTr("GLS")  ; name: "gls"      }
-			RadioButton { text: qsTr("WLS")  ; name: "wls"      }
-			RadioButton { text: qsTr("ULS")  ; name: "uls"      }
-			RadioButton { text: qsTr("DWLS") ; name: "dwls"     }
+			info: qsTr("Choose the estimator for model fitting")
+			RadioButton { 
+				text: qsTr("Default") 
+				name: "default"
+				checked: true 
+				info: qsTr("Use the default estimator based on the model and data")
+			}
+			RadioButton { 
+				text: qsTr("ML")   
+				name: "ml"
+				info: qsTr("Maximum Likelihood estimator")
+			}
+			RadioButton { 
+				text: qsTr("GLS")  
+				name: "gls"
+				info: qsTr("Generalized Least Squares estimator")
+			}
+			RadioButton { 
+				text: qsTr("WLS")  
+				name: "wls"
+				info: qsTr("Weighted Least Squares estimator")
+			}
+			RadioButton { 
+				text: qsTr("ULS")  
+				name: "uls"
+				info: qsTr("Unweighted Least Squares estimator")
+			}
+			RadioButton { 
+				text: qsTr("DWLS") 
+				name: "dwls"
+				info: qsTr("Diagonally Weighted Least Squares estimator")
+			}
 		}
   }
 }
