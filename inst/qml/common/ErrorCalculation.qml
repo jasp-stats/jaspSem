@@ -28,21 +28,34 @@ Group
 	CIField {
 			text: qsTr("Confidence intervals")
 			name: "ciLevel"
+			info: qsTr("Set the confidence level for the interval estimates")
 	}
 	RadioButtonGroup {
 		title: qsTr("Method")
 		name: "errorCalculationMethod"
-		RadioButton { text: qsTr("Standard")  ; name: "standard" ; checked: true }
-		RadioButton { text: qsTr("Robust")    ; name: "robust" }
+		info: qsTr("Select the method for calculating standard errors and confidence intervals")
+		RadioButton { 
+			text: qsTr("Standard")  
+			name: "standard" 
+			checked: true 
+			info: qsTr("Use standard maximum likelihood estimation for standard errors")
+		}
+		RadioButton { 
+			text: qsTr("Robust")    
+			name: "robust" 
+			info: qsTr("Use robust estimation for standard errors")
+		}
 		RadioButton {
 			text: qsTr("Bootstrap")
 			name: "bootstrap"
+			info: qsTr("Use bootstrap method for estimating standard errors and confidence intervals")
 			IntegerField {
 				text: qsTr("Replications")
 				name: "bootstrapSamples"
 				defaultValue: 1000
 				min: 200
 				max: 100000
+				info: qsTr("Specify the number of bootstrap samples")
 			}
 			DropDown {
 				label: qsTr("Type")
@@ -52,6 +65,7 @@ Group
 						{ label: qsTr("Percentile"),                value: "percentile"         },
 						{ label: qsTr("Normal theory"),             value: "normalTheory"         }
 				]
+				info: qsTr("Select the type of bootstrap confidence interval to compute")
 			}
 		}
 	}
