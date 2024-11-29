@@ -125,7 +125,8 @@ Form
 				name:		"exogenousCovariateConditional"
 				label:		qsTr("Condition on exogenous covariate(s)")
 				id:			cond_x
-				checked:	true
+				// Try to mimic lavaan's default setting for conditional.x
+				checked:	["wls", "dwls", "wlsm", "wlsmv"].includes(estimator.value) && errorCalc.value != "bootstrap"
 			}
 			CheckBox { name: "residualSingleIndicatorOmitted";	label: qsTr("Residual single indicator omitted");	checked: true	}
 			CheckBox { name: "residualVariance";				label: qsTr("Residual variances included");			checked: true	}
@@ -211,10 +212,10 @@ Form
 				label: qsTr("Information matrix")
 				name: "informationMatrix"
 				values: [
-					{ value: "default", 	 label: qsTr("Default")			},
-					{ value: "expected", 	 label: qsTr("Expected") 		},
-					{ value: "observed", 	 label: qsTr("Observed") 		},
-					{ value: "firstOrder", label: qsTr("First order") }
+					{ value: "default",		label: qsTr("Default")		},
+					{ value: "expected",	label: qsTr("Expected") 	},
+					{ value: "observed",	label: qsTr("Observed") 	},
+					{ value: "firstOrder",	label: qsTr("First order")	}
 				]
 			}
 
@@ -231,6 +232,7 @@ Form
 					{ value: "bootstrap", 			label: qsTr("Bootstrap")			}
 				]
 			}
+
 			IntegerField
 			{
 				visible: errorCalc.value == "bootstrap"
@@ -240,6 +242,7 @@ Form
 				defaultValue: 1000
 				min: 1
 			}
+
 			DropDown {
 				visible: errorCalc.value == "bootstrap"
 				label: qsTr("     Type")
@@ -256,6 +259,23 @@ Form
 				name: "ciLevel"
 			}
 
+			CheckBox
+			{
+				visible:	errorCalc.value == "bootstrap" || modTest.value == "bollenStine"
+				name:		"userSeed"
+				id:			user_seed
+				label:		qsTr("Set a Random Seed?")
+				checked:	false
+			}
+
+			IntegerField
+			{
+				visible:		user_seed.checked
+				label:			qsTr("Random Number Seed")
+				name:			"bootSeed"
+				defaultValue:	235711
+				min:			1
+			}
 
 		}
 

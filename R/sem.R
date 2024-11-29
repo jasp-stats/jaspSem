@@ -20,7 +20,6 @@
 SEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
-
   # Read dataset
   options <- .semPrepOpts(options)
 
@@ -348,9 +347,11 @@ checkLavaanModel <- function(model, availableVars) {
                      "all" = "std.all",
                      "latents" = "std.lv",
                      "nox" = "std.nox")
-      fit$value <- lavBootstrap(fit$value, samples = options[["bootstrapSamples"]],
+      fit$value <- lavBootstrap(fit$value,
+                                samples = options[["bootstrapSamples"]],
                                 standard = options[["standardizedEstimate"]],
-                                typeStd = type)
+                                typeStd = type,
+                                iseed = lavOptions[["iseed"]]) # lavOptions[["iseed"]] should be NULL unless options[["userSeed"]] is TRUE
       modelContainer$dependOn(optionsFromObject = modelContainer,
                               options = c("bootstrapSamples", "standardizedEstimate", "standardizedEstimateType"))
     }
@@ -481,6 +482,9 @@ checkLavaanModel <- function(model, availableVars) {
     lavOptions[["sampling.weights"]] <- options[["samplingWeights"]]
   }
 
+  if (options[["userSeed"]]) {
+    lavOptions[["iseed"]] <- options[["bootSeed"]]
+  }
 
   return(lavOptions)
 }

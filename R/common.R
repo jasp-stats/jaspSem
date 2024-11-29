@@ -18,7 +18,7 @@
 
 # Function commonly used in the various procedures within the SEM module
 
-lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL) {
+lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL, iseed = NULL) {
 
   coefWithCallback <- function(lav_object) {
     # Progress bar is ticked every time coef() is evaluated, which happens once on the main object:
@@ -42,9 +42,9 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL) 
   startProgressbar(samples + 1)
 
   if (!standard) {
-    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallback)
+    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallback, iseed = iseed)
   } else {
-    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallbackStd, typeStd = typeStd)
+    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallbackStd, typeStd = typeStd, iseed = iseed)
   }
 
   # Add the bootstrap samples to the fit object
