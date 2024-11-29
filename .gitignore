@@ -48,3 +48,7 @@ po/*~
 *.DS_Store
 Thumbs.db
 _processedLockFile.lock
+
+# Kyle's build stuff
+Makefile
+renv_build.R

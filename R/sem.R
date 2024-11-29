@@ -153,6 +153,18 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
     }
   }
 
+  # Check if we're trying to condition on random covariates
+  if (options[["exogenousCovariateConditional"]] && !options[["exogenousCovariateFixed"]]) {
+      .quitAnalysis(gettext("When conditioning estimation on exogenous covariates, the exogenous covariates must be fixed"))
+      return()
+    }
+
+  # Check if we're trying to bootstrap when conditional.x == TRUE
+  if (options[["errorCalculationMethod"]] == "bootstrap" && options[["exogenousCovariateConditional"]]) {
+    .quitAnalysis(gettext("Bootstrapped standard errors are not yet available when conditioning estimation on exogenous covariates"))
+    return()
+  }
+
   return()
 }
 
@@ -215,7 +227,7 @@ checkLavaanModel <- function(model, availableVars) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("samplingWeights", "meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero", "exogenousCovariateFixed", "orthogonal",
+    modelContainer$dependOn(c("samplingWeights", "meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero", "exogenousCovariateConditional", "exogenousCovariateFixed", "orthogonal",
                               "factorScaling", "residualSingleIndicatorOmitted", "residualVariance", "exogenousLatentCorrelation",
                               "dependentCorrelation", "threshold", "scalingParameter", "efaConstrained", "standardizedVariable", "naAction", "estimator", "modelTest",
                               "errorCalculationMethod", "informationMatrix", "emulation", "group", "equalLoading", "equalIntercept",
@@ -387,6 +399,7 @@ checkLavaanModel <- function(model, availableVars) {
   lavOptions[["meanstructure"]]   <- options[["meanStructure"]]
   lavOptions[["int.ov.free"]]     <- !options[["manifestInterceptFixedToZero"]]
   lavOptions[["int.lv.free"]]     <- !options[["latentInterceptFixedToZero"]]
+  lavOptions[["conditional.x"]]   <- options[["exogenousCovariateConditional"]]
   lavOptions[["fixed.x"]]         <- options[["exogenousCovariateFixed"]]
   lavOptions[["orthogonal"]]      <- options[["orthogonal"]]
   lavOptions[["std.lv"]]          <- options[["factorScaling"]] == "factorVariance"
