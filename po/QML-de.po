@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2024-11-25 16:00+0000\n"
+"Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
+"de/>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.9-dev\n"
 "X-Language: de\n"
 "X-Source-Language: American English\n"
 "X-Qt-Contexts: true\n"
@@ -884,7 +890,6 @@ msgctxt "Advanced|"
 msgid "Lavaan"
 msgstr ""
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Mplus"
 msgstr "Mplus"
@@ -943,12 +948,10 @@ msgctxt "ErrorCalculation|"
 msgid "Standard"
 msgstr "Standard"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Robust"
 msgstr "Robust"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
