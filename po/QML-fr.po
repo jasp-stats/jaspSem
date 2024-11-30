@@ -142,14 +142,6 @@ msgid "Correlate exogenous latents"
 msgstr ""
 
 msgctxt "LatentGrowthCurve|"
-msgid "Add thresholdds"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
-msgid "Add scalings parameters"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
 msgid "Correlate dependent variables"
 msgstr ""
 
@@ -1157,4 +1149,270 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Standardized"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Select the method for handling missing data in estimation"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Use Full Information Maximum Likelihood to handle missing data"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Exclude cases with missing data (listwise deletion)"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Select the software to emulate estimation behavior"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Use Lavaan default estimation method"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Emulate Mplus estimation methods"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Emulate EQS estimation methods"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Choose the estimator for model fitting"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Use the default estimator based on the model and data"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Maximum Likelihood estimator"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Generalized Least Squares estimator"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Weighted Least Squares estimator"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Unweighted Least Squares estimator"
+msgstr ""
+
+msgctxt "Advanced|"
+msgid "Diagonally Weighted Least Squares estimator"
+msgstr ""
+
+msgctxt "ErrorCalculation|"
+msgid "Set the confidence level for the interval estimates"
+msgstr ""
+
+msgctxt "ErrorCalculation|"
+msgid ""
+"Select the method for calculating standard errors and confidence intervals"
+msgstr ""
+
+msgctxt "ErrorCalculation|"
+msgid "Use standard maximum likelihood estimation for standard errors"
+msgstr ""
+
+msgctxt "ErrorCalculation|"
+msgid "Use robust estimation for standard errors"
+msgstr ""
+
+msgctxt "ErrorCalculation|"
+msgid ""
+"Use bootstrap method for estimating standard errors and confidence intervals"
+msgstr ""
+
+msgctxt "ErrorCalculation|"
+msgid "Specify the number of bootstrap samples"
+msgstr ""
+
+msgctxt "ErrorCalculation|"
+msgid "Select the type of bootstrap confidence interval to compute"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "List of all available variables for analysis"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Variables to include in the latent growth curve model"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Variables to use as regressors in the model"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Categorical variables acting as factors"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Time-varying covariates in the model"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Variable timing"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Specify the timing for the variable"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Options for configuring model estimation"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Select components to include in the growth curve"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include an intercept in the model"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include a linear component in the model"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include a quadratic component in the model"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include a cubic component in the model"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include covariance between latent growth components"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Options for additional output"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Display additional model fit measures"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Display R-squared values for variables"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include standardized estimates in the output"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Select the type of standardized estimates to include"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include all standardized estimates"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include standardized estimates for latent variables only"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Exclude standardized estimates for exogenous covariates"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Display the implied covariance matrix"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Display the residual covariance matrix"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Show the lavaan model syntax"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Options for generating plots"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Configure plot options for the analysis"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Select a color palette for the plots"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Generate a curve plot of the growth trajectories"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Select a categorical variable to color the curves"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Set the maximum number of lines to display in the curve plot"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Generate a path diagram of the model"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Display parameter estimates in the model plot"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Display means in the model plot"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Additional modeling options"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Omit residuals for single indicators"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include residual variances in the model"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Allow exogenous latent variables to correlate"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Add thresholds"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include thresholds in the model"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Add scaling parameters"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include scaling parameters in the model"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Allow dependent variables to correlate"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Options for multigroup latent growth curve modeling"
+msgstr ""
+
+msgctxt "LatentGrowthCurve|"
+msgid "Select a grouping variable that is ideally nominally scaled"
 msgstr ""
