@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2024 Utrecth University
+# Copyright (C) 2024 Utrecht University
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -320,7 +320,7 @@ options$errorCalculationMethod <- "bootstrap"
 options$bootstrapSamples       <- 10
 options$bootstrapCiType        <- "percentile"
 options$modelTest              <- "default"
-options$userSeed               <- TRUE
+options$userGaveSeed           <- TRUE
 options$bootSeed               <- 235711
 
 ## Estimate model is JASP:
@@ -337,7 +337,7 @@ testthat::test_that("Bootstrapped WLSMV models replicated with the same seed",
 )
 
 ## Specify the JASP options:
-options$userSeed <- FALSE
+options$userGaveSeed <- FALSE
 
 ## Estimate model is JASP:
 results1 <- suppressWarnings(

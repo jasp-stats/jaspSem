@@ -232,7 +232,7 @@ checkLavaanModel <- function(model, availableVars) {
                               "errorCalculationMethod", "informationMatrix", "emulation", "group", "equalLoading", "equalIntercept",
                               "equalResidual", "equalResidualCovariance", "equalMean", "equalThreshold", "equalRegression",
                               "equalLatentVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters", "manifestMeanFixedToZero",
-                              "bootstrapSamplesBollenStine"))
+                              "bootstrapSamplesBollenStine", "userGaveSeed", "bootSeed"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -242,11 +242,11 @@ checkLavaanModel <- function(model, availableVars) {
 .semComputeResults <- function(modelContainer, dataset, options) {
 
   # find reusable results
-
   oldmodels  <- modelContainer[["models"]][["object"]]
   oldresults <- modelContainer[["results"]][["object"]]
   oldwarnings <- modelContainer[["warnings"]][["object"]]
   reuse <- match(options[["models"]], oldmodels)
+
   if (identical(reuse, seq_along(reuse))) return(oldresults) # reuse everything
 
   # create results list
@@ -351,7 +351,7 @@ checkLavaanModel <- function(model, availableVars) {
                                 samples = options[["bootstrapSamples"]],
                                 standard = options[["standardizedEstimate"]],
                                 typeStd = type,
-                                iseed = lavOptions[["iseed"]]) # lavOptions[["iseed"]] should be NULL unless options[["userSeed"]] is TRUE
+                                iseed = lavOptions[["iseed"]]) # lavOptions[["iseed"]] should be NULL unless options[["userGaveSeed"]] is TRUE
       modelContainer$dependOn(optionsFromObject = modelContainer,
                               options = c("bootstrapSamples", "standardizedEstimate", "standardizedEstimateType"))
     }
@@ -482,7 +482,7 @@ checkLavaanModel <- function(model, availableVars) {
     lavOptions[["sampling.weights"]] <- options[["samplingWeights"]]
   }
 
-  if (options[["userSeed"]]) {
+  if (options[["userGaveSeed"]]) {
     lavOptions[["iseed"]] <- options[["bootSeed"]]
   }
 

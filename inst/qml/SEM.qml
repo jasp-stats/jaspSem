@@ -262,7 +262,7 @@ Form
 			CheckBox
 			{
 				visible:	errorCalc.value == "bootstrap" || modTest.value == "bollenStine"
-				name:		"userSeed"
+				name:		"userGaveSeed"
 				id:			user_seed
 				label:		qsTr("Set a Random Seed?")
 				checked:	false
