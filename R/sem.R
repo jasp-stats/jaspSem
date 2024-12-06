@@ -154,13 +154,13 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
 
   # Check if we're trying to condition on random covariates
   if (options[["exogenousCovariateConditional"]] && !options[["exogenousCovariateFixed"]]) {
-      .quitAnalysis(gettext("When conditioning estimation on exogenous covariates, the exogenous covariates must be fixed"))
+      .quitAnalysis(gettext("When conditioning estimation on exogenous covariates, the 'Exogenous covariate(s) fixed' box must be checked."))
       return()
     }
 
   # Check if we're trying to bootstrap when conditional.x == TRUE
   if (options[["errorCalculationMethod"]] == "bootstrap" && options[["exogenousCovariateConditional"]]) {
-    .quitAnalysis(gettext("Bootstrapped standard errors are not yet available when conditioning estimation on exogenous covariates"))
+    .quitAnalysis(gettext("Bootstrapped standard errors are not yet available when 'Condition on exogenous covariate(s)' box is checked."))
     return()
   }
 

@@ -264,18 +264,18 @@ Form
 				visible:	errorCalc.value == "bootstrap" || modTest.value == "bollenStine"
 				name:		"userGaveSeed"
 				id:			user_seed
-				label:		qsTr("Set a Random Seed?")
+				label:		qsTr("Set a random seed:")
 				checked:	false
+				childrenOnSameRow: true
+
+				IntegerField
+				{
+					name:			"bootSeed"
+					defaultValue:	1
+					min:			1
+				}
 			}
 
-			IntegerField
-			{
-				visible:		user_seed.checked
-				label:			qsTr("Random Number Seed")
-				name:			"bootSeed"
-				defaultValue:	235711
-				min:			1
-			}
 
 		}
 
