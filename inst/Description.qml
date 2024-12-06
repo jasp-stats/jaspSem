@@ -13,6 +13,7 @@ Description
 	website:		"https://github.com/jasp-stats/jaspSem/"
 	license:		"GPL (>= 2)"
 	hasWrappers:	true
+	preloadData:	false
 
 	Analysis
 	{

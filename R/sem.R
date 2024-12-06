@@ -20,7 +20,6 @@
 SEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
-
   # Read dataset
   options <- .semPrepOpts(options)
 
@@ -153,6 +152,18 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
     }
   }
 
+  # Check if we're trying to condition on random covariates
+  if (options[["exogenousCovariateConditional"]] && !options[["exogenousCovariateFixed"]]) {
+      .quitAnalysis(gettext("When conditioning estimation on exogenous covariates, the 'Exogenous covariate(s) fixed' box must be checked."))
+      return()
+    }
+
+  # Check if we're trying to bootstrap when conditional.x == TRUE
+  if (options[["errorCalculationMethod"]] == "bootstrap" && options[["exogenousCovariateConditional"]]) {
+    .quitAnalysis(gettext("Bootstrapped standard errors are not yet available when 'Condition on exogenous covariate(s)' box is checked."))
+    return()
+  }
+
   return()
 }
 
@@ -215,13 +226,13 @@ checkLavaanModel <- function(model, availableVars) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("samplingWeights", "meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero", "exogenousCovariateFixed", "orthogonal",
+    modelContainer$dependOn(c("samplingWeights", "meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero", "exogenousCovariateConditional", "exogenousCovariateFixed", "orthogonal",
                               "factorScaling", "residualSingleIndicatorOmitted", "residualVariance", "exogenousLatentCorrelation",
                               "dependentCorrelation", "threshold", "scalingParameter", "efaConstrained", "standardizedVariable", "naAction", "estimator", "modelTest",
                               "errorCalculationMethod", "informationMatrix", "emulation", "group", "equalLoading", "equalIntercept",
                               "equalResidual", "equalResidualCovariance", "equalMean", "equalThreshold", "equalRegression",
                               "equalLatentVariance", "equalLatentCovariance", "dataType", "sampleSize", "freeParameters", "manifestMeanFixedToZero",
-                              "bootstrapSamplesBollenStine"))
+                              "bootstrapSamplesBollenStine", "userGaveSeed", "bootSeed"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -231,11 +242,11 @@ checkLavaanModel <- function(model, availableVars) {
 .semComputeResults <- function(modelContainer, dataset, options) {
 
   # find reusable results
-
   oldmodels  <- modelContainer[["models"]][["object"]]
   oldresults <- modelContainer[["results"]][["object"]]
   oldwarnings <- modelContainer[["warnings"]][["object"]]
   reuse <- match(options[["models"]], oldmodels)
+
   if (identical(reuse, seq_along(reuse))) return(oldresults) # reuse everything
 
   # create results list
@@ -336,9 +347,11 @@ checkLavaanModel <- function(model, availableVars) {
                      "all" = "std.all",
                      "latents" = "std.lv",
                      "nox" = "std.nox")
-      fit$value <- lavBootstrap(fit$value, samples = options[["bootstrapSamples"]],
+      fit$value <- lavBootstrap(fit$value,
+                                samples = options[["bootstrapSamples"]],
                                 standard = options[["standardizedEstimate"]],
-                                typeStd = type)
+                                typeStd = type,
+                                iseed = lavOptions[["iseed"]]) # lavOptions[["iseed"]] should be NULL unless options[["userGaveSeed"]] is TRUE
       modelContainer$dependOn(optionsFromObject = modelContainer,
                               options = c("bootstrapSamples", "standardizedEstimate", "standardizedEstimateType"))
     }
@@ -387,6 +400,7 @@ checkLavaanModel <- function(model, availableVars) {
   lavOptions[["meanstructure"]]   <- options[["meanStructure"]]
   lavOptions[["int.ov.free"]]     <- !options[["manifestInterceptFixedToZero"]]
   lavOptions[["int.lv.free"]]     <- !options[["latentInterceptFixedToZero"]]
+  lavOptions[["conditional.x"]]   <- options[["exogenousCovariateConditional"]]
   lavOptions[["fixed.x"]]         <- options[["exogenousCovariateFixed"]]
   lavOptions[["orthogonal"]]      <- options[["orthogonal"]]
   lavOptions[["std.lv"]]          <- options[["factorScaling"]] == "factorVariance"
@@ -468,6 +482,9 @@ checkLavaanModel <- function(model, availableVars) {
     lavOptions[["sampling.weights"]] <- options[["samplingWeights"]]
   }
 
+  if (options[["userGaveSeed"]]) {
+    lavOptions[["iseed"]] <- options[["bootSeed"]]
+  }
 
   return(lavOptions)
 }

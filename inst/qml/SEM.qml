@@ -92,35 +92,49 @@ Form
 				label: qsTr("Factor scaling")
 				values:
 				[
-					{ label: qsTr("Factor loadings")	, value: "factorLoading"	},
-					{ label: qsTr("Factor variance")	, value: "factorVariance"			},
-					{ label: qsTr("Effects coding")		, value: "effectCoding"	},
-					{ label: qsTr("None")				, value: "none"				}
+					{ label: qsTr("Factor loadings"),	value: "factorLoading"	},
+					{ label: qsTr("Factor variance"),	value: "factorVariance"	},
+					{ label: qsTr("Effects coding"),	value: "effectCoding"	},
+					{ label: qsTr("None"),				value: "none"			}
 				]
 			}
 			CheckBox 
-			{ name: "meanStructure"
+			{
+				name: "meanStructure"
 				label: qsTr("Mean structure")
 				checked: eq_intercepts.checked || eq_means.checked || eq_thresholds.checked
-				CheckBox { name: "latentInterceptFixedToZero";		label: qsTr("Latent means fixed to zero"); checked: !eq_means.checked }
-				CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Manifest intercepts fixed to zero") 											}
-				CheckBox { name: "manifestMeanFixedToZero";				label: qsTr("Mean of manifest intercepts fixed to zero")							}
+				CheckBox { name: "latentInterceptFixedToZero";		label: qsTr("Latent means fixed to zero");					checked: !eq_means.checked	}
+				CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Manifest intercepts fixed to zero")										}
+				CheckBox { name: "manifestMeanFixedToZero";			label: qsTr("Mean of manifest intercepts fixed to zero")								}
 			}
 			
-			CheckBox { name: "orthogonal";						label: qsTr("Assume factors uncorrelated")						}
+			CheckBox { name: "orthogonal";	label: qsTr("Assume factors uncorrelated") }
 		}
 
 		Group
 		{
-
-			CheckBox { name: "exogenousCovariateFixed";					label: qsTr("Exogenous covariate(s) fixed"); 			checked: true	}
+			CheckBox 
+			{
+				name:		"exogenousCovariateFixed"
+				label:		qsTr("Exogenous covariate(s) fixed")
+				id:			fix_x
+				checked:	true
+			}
+			CheckBox 
+			{
+				name:		"exogenousCovariateConditional"
+				label:		qsTr("Condition on exogenous covariate(s)")
+				id:			cond_x
+				// Try to mimic lavaan's default setting for conditional.x
+				checked:	["wls", "dwls", "wlsm", "wlsmv"].includes(estimator.value) && errorCalc.value != "bootstrap"
+			}
 			CheckBox { name: "residualSingleIndicatorOmitted";	label: qsTr("Residual single indicator omitted");	checked: true	}
-			CheckBox { name: "residualVariance";								label: qsTr("Residual variances included");				checked: true	}
-			CheckBox { name: "exogenousLatentCorrelation";			label: qsTr("Exogenous latents correlated");			checked: true	}
-			CheckBox { name: "dependentCorrelation";						label: qsTr("Dependent variables correlated");		checked: true	}
-			CheckBox { name: "threshold";												label: qsTr("Thresholds");												checked: true	}
-			CheckBox { name: "scalingParameter";								label: qsTr("Scaling parameters");								checked: true	}
-			CheckBox { name: "efaConstrained";									label: qsTr("EFA blocks constrained");						checked: true	}
+			CheckBox { name: "residualVariance";				label: qsTr("Residual variances included");			checked: true	}
+			CheckBox { name: "exogenousLatentCorrelation";		label: qsTr("Exogenous latents correlated");		checked: true	}
+			CheckBox { name: "dependentCorrelation";			label: qsTr("Dependent variables correlated");		checked: true	}
+			CheckBox { name: "threshold";						label: qsTr("Thresholds");							checked: true	}
+			CheckBox { name: "scalingParameter";				label: qsTr("Scaling parameters");					checked: true	}
+			CheckBox { name: "efaConstrained";					label: qsTr("EFA blocks constrained");				checked: true	}
 		}
 	}
 
@@ -138,29 +152,29 @@ Form
 					label: qsTr("Estimator")
 					id: estimator
 					values: [
-						{ value: "default", label: qsTr("Default")},
-						{ value: "ml",			label: qsTr("ML")			},
-						{ value: "gls",			label: qsTr("GLS")		},
-						{ value: "wls",			label: qsTr("WLS")		},
-						{ value: "uls",			label: qsTr("ULS")		},
-						{ value: "dwls",		label: qsTr("DWLS")		},
-						{ value: "dls",		  label: qsTr("DLS")		},
-						{ value: "pml",			label: qsTr("PML")		},
-						{ value: "mlm",			label: qsTr("MLM")		},
-						{ value: "mlmv",		label: qsTr("MLMV")		},
-						{ value: "mlmvs",		label: qsTr("MLMVS")	},
-						{ value: "mlf",			label: qsTr("MLF")		},
-						{ value: "mlr",			label: qsTr("MLR")		},
-						{ value: "wlsm",		label: qsTr("WLSM")		},
-						{ value: "wlsmv",		label: qsTr("WLSMV")	},
-						{ value: "ulsm",		label: qsTr("ULSM")		},
-						{ value: "ulsmv",		label: qsTr("ULSMV")	}
+						{ value: "default",	label: qsTr("Default")	},
+						{ value: "ml",		label: qsTr("ML")		},
+						{ value: "gls",		label: qsTr("GLS")		},
+						{ value: "wls",		label: qsTr("WLS")		},
+						{ value: "uls",		label: qsTr("ULS")		},
+						{ value: "dwls",	label: qsTr("DWLS")		},
+						{ value: "dls",		label: qsTr("DLS")		},
+						{ value: "pml",		label: qsTr("PML")		},
+						{ value: "mlm",		label: qsTr("MLM")		},
+						{ value: "mlmv",	label: qsTr("MLMV")		},
+						{ value: "mlmvs",	label: qsTr("MLMVS")	},
+						{ value: "mlf",		label: qsTr("MLF")		},
+						{ value: "mlr",		label: qsTr("MLR")		},
+						{ value: "wlsm",	label: qsTr("WLSM")		},
+						{ value: "wlsmv",	label: qsTr("WLSMV")	},
+						{ value: "ulsm",	label: qsTr("ULSM")		},
+						{ value: "ulsmv",	label: qsTr("ULSMV")	}
 					]
 				}
 				HelpButton
 				{
-					toolTip: 					qsTr("Click for more information")
-					helpPage:					"forQml/tooltipEstimators"
+					toolTip:	qsTr("Click for more information")
+					helpPage:	"forQml/tooltipEstimators"
 				}
 			}
 			
@@ -170,16 +184,16 @@ Form
 				id: modTest
 				label: qsTr("Model test")
 				values: [
-					{ value: "default", 								label: qsTr("Default")										},
-					{ value: "standard",								label: qsTr("Standard")										},
-					{ value: "satorraBentler",					label: qsTr("Satorra-Bentler")						},
-					{ value: "yuanBentler",							label: qsTr("Yuan-Bentler")								},
-					{ value: "yuanBentlerMplus",				label: qsTr("Yuan-Bentler Mplus")					},
+					{ value: "default", 				label: qsTr("Default")						},
+					{ value: "standard",				label: qsTr("Standard")						},
+					{ value: "satorraBentler",			label: qsTr("Satorra-Bentler")				},
+					{ value: "yuanBentler",				label: qsTr("Yuan-Bentler")					},
+					{ value: "yuanBentlerMplus",		label: qsTr("Yuan-Bentler Mplus")			},
 					{ value: "meanAndVarianceAdjusted",	label: qsTr("Mean and variance adjusted")	},
-					{ value: "scaledAndShifted",				label: qsTr("Scaled and shifted")					},
-					{ value: "bollenStine",							label: qsTr("Bootstrap (Bollen-Stine)")		}, 
-					{ value: "browneResidualAdf", 			label: qsTr("Browne residual based (ADF)")}, 
-					{ value: "browneResidualNt", 				label: qsTr("Browne residual based (NT)")	}
+					{ value: "scaledAndShifted",		label: qsTr("Scaled and shifted")			},
+					{ value: "bollenStine",				label: qsTr("Bootstrap (Bollen-Stine)")		}, 
+					{ value: "browneResidualAdf", 		label: qsTr("Browne residual based (ADF)")	}, 
+					{ value: "browneResidualNt", 		label: qsTr("Browne residual based (NT)")	}
 				]
 			}
 
@@ -198,10 +212,10 @@ Form
 				label: qsTr("Information matrix")
 				name: "informationMatrix"
 				values: [
-					{ value: "default", 	 label: qsTr("Default")			},
-					{ value: "expected", 	 label: qsTr("Expected") 		},
-					{ value: "observed", 	 label: qsTr("Observed") 		},
-					{ value: "firstOrder", label: qsTr("First order") }
+					{ value: "default",		label: qsTr("Default")		},
+					{ value: "expected",	label: qsTr("Expected") 	},
+					{ value: "observed",	label: qsTr("Observed") 	},
+					{ value: "firstOrder",	label: qsTr("First order")	}
 				]
 			}
 
@@ -211,13 +225,14 @@ Form
 				name: "errorCalculationMethod"
 				id: errorCalc
 				values: [
-					{ value: "default", 	 				label: qsTr("Default")						},
-					{ value: "standard",  	 			label: qsTr("Standard") 					},
-					{ value: "robust", 	 					label: qsTr("Robust") 						},
-					{ value: "robustHuberWhite", 	label: qsTr("Robust Huber-White") },
-					{ value: "bootstrap", 				label: qsTr("Bootstrap")					}
+					{ value: "default", 	 		label: qsTr("Default")				},
+					{ value: "standard",  	 		label: qsTr("Standard") 			},
+					{ value: "robust", 	 			label: qsTr("Robust") 				},
+					{ value: "robustHuberWhite", 	label: qsTr("Robust Huber-White")	},
+					{ value: "bootstrap", 			label: qsTr("Bootstrap")			}
 				]
 			}
+
 			IntegerField
 			{
 				visible: errorCalc.value == "bootstrap"
@@ -227,20 +242,38 @@ Form
 				defaultValue: 1000
 				min: 1
 			}
+
 			DropDown {
 				visible: errorCalc.value == "bootstrap"
 				label: qsTr("     Type")
 				name: "bootstrapCiType"
 				values: [
-						{ label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"	},
-						{ label: qsTr("Percentile"),                value: "percentile"         		},
-						{ label: qsTr("Normal theory"),             value: "normalTheory"         		}
+						{ label: qsTr("Bias-corrected percentile"),	value: "percentileBiasCorrected"	},
+						{ label: qsTr("Percentile"),				value: "percentile"					},
+						{ label: qsTr("Normal theory"),				value: "normalTheory"				}
 				]
 			}
 
 			CIField {
 				text: qsTr("Confidence intervals")
 				name: "ciLevel"
+			}
+
+			CheckBox
+			{
+				visible:	errorCalc.value == "bootstrap" || modTest.value == "bollenStine"
+				name:		"userGaveSeed"
+				id:			user_seed
+				label:		qsTr("Set a random seed:")
+				checked:	false
+				childrenOnSameRow: true
+
+				IntegerField
+				{
+					name:			"bootSeed"
+					defaultValue:	1
+					min:			1
+				}
 			}
 
 
