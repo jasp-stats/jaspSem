@@ -1442,3 +1442,11 @@ msgstr ""
 msgctxt "LatentGrowthCurve|"
 msgid "Select a grouping variable that is ideally nominally scaled"
 msgstr ""
+
+msgctxt "SEM|"
+msgid "Condition on exogenous covariate(s)"
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Set a random seed:"
+msgstr ""

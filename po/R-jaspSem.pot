@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.19.2\n"
-"POT-Creation-Date: 2024-10-19 02:54\n"
+"POT-Creation-Date: 2024-12-07 02:58\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -479,6 +479,12 @@ msgid "Not more cases than number of variables. Is your data a variance-covarian
 msgstr ""
 
 msgid "When mean structure is included, at least one of the checkboxes to fix the intercepts to zero has to be checked"
+msgstr ""
+
+msgid "When conditioning estimation on exogenous covariates, the 'Exogenous covariate(s) fixed' box must be checked."
+msgstr ""
+
+msgid "Bootstrapped standard errors are not yet available when 'Condition on exogenous covariate(s)' box is checked."
 msgstr ""
 
 msgid "Invalid model specification. Did you pass a variable name as a string?"
