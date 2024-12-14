@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2024-12-14 02:56+0000\n"
+"Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
+"Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
+"de/>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.9-rc\n"
 "X-Language: de\n"
 "X-Source-Language: American English\n"
 "X-Qt-Contexts: true\n"
@@ -824,7 +830,6 @@ msgctxt "SEM|"
 msgid "% change mean estimate"
 msgstr "% Änderung mittlerer Schätzung"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Change of p-value"
 msgstr "Änderung des p-Werts"
@@ -855,7 +860,6 @@ msgctxt "Advanced|"
 msgid "Advanced"
 msgstr "Weiteres"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Missing value handling"
 msgstr "Behandlung fehlender Werte"
@@ -874,7 +878,7 @@ msgstr ""
 
 msgctxt "Advanced|"
 msgid "Lavaan"
-msgstr ""
+msgstr "Lavaan"
 
 msgctxt "Advanced|"
 msgid "Mplus"
@@ -885,14 +889,13 @@ msgctxt "Advanced|"
 msgid "EQS"
 msgstr "EQS"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Estimator"
 msgstr "Schätzer"
 
 msgctxt "Advanced|"
 msgid "Default"
-msgstr ""
+msgstr "Standard"
 
 #, fuzzy
 msgctxt "Advanced|"
@@ -924,12 +927,10 @@ msgctxt "ErrorCalculation|"
 msgid "Confidence intervals"
 msgstr "Konfidenzintervalle"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Method"
 msgstr "Methode"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Standard"
 msgstr "Standard"
@@ -942,12 +943,10 @@ msgctxt "ErrorCalculation|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Replications"
 msgstr "Wiederholungen"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Type"
 msgstr "Typ"
@@ -957,53 +956,47 @@ msgctxt "ErrorCalculation|"
 msgid "Bias-corrected percentile"
 msgstr "Bias-korrigierte Perzentile"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Percentile"
 msgstr "Perzentil"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Normal theory"
 msgstr "Normal-Theorie"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Estimation Options"
 msgstr "Schätzoptionen"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Additional fit measures"
 msgstr "Weitere Anpassungsmaße"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "All"
 msgstr "Alle"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Latents"
 msgstr "Latente"
 
+#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "Bis auf exogene Kovariaten"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "All"
 msgstr "Alle"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Latents"
 msgstr "Latente"
 
+#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "Bis auf exogene Kovariaten"
 
 msgctxt "Mimic|"
 msgid "All"
@@ -1013,13 +1006,15 @@ msgctxt "Mimic|"
 msgid "Latents"
 msgstr "Latente"
 
+#, fuzzy
 msgctxt "Mimic|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "Bis auf exogene Kovariaten"
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Mean structure"
-msgstr ""
+msgstr "Mittelwertstruktur"
 
 msgctxt "SEM|"
 msgid "Latent means fixed to zero"
@@ -1041,17 +1036,20 @@ msgctxt "SEM|"
 msgid "Residual single indicator omitted"
 msgstr ""
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Residual variances included"
-msgstr ""
+msgstr "Residualvarianzen einbezogen"
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Exogenous latents correlated"
-msgstr ""
+msgstr "Exogene Latente korreliert"
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Dependent variables correlated"
-msgstr ""
+msgstr "Abhängige Variablen korreliert"
 
 msgctxt "SEM|"
 msgid "Scaling parameters"
@@ -1063,7 +1061,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Default"
-msgstr ""
+msgstr "Standard"
 
 msgctxt "SEM|"
 msgid "DLS"
@@ -1107,11 +1105,11 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Click for more information"
-msgstr ""
+msgstr "Hier klicken für weitere Informationen"
 
 msgctxt "SEM|"
 msgid "Yuan-Bentler Mplus"
-msgstr ""
+msgstr "Yuan-Bentler Mplus"
 
 msgctxt "SEM|"
 msgid "Mean and variance adjusted"
@@ -1135,15 +1133,15 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Standard errors"
-msgstr ""
+msgstr "Standardfehler"
 
 msgctxt "SEM|"
 msgid "Robust Huber-White"
-msgstr ""
+msgstr "Robust Huber-White"
 
 msgctxt "SEM|"
 msgid "     Type"
-msgstr ""
+msgstr "     Type"
 
 msgctxt "SEM|"
 msgid "(FI)ML"
@@ -1155,25 +1153,23 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Lavaan"
-msgstr ""
+msgstr "Lavaan"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "All"
 msgstr "Alle"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Latents"
 msgstr "Latente"
 
 msgctxt "SEM|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "Bis auf exogene Kovariaten"
 
 msgctxt "SEM|"
 msgid "Show warnings"
-msgstr ""
+msgstr "Warnungen anzeigen"
 
 msgctxt "SEM|"
 msgid "SD of deviance / old estimate"
@@ -1185,7 +1181,7 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Tolerance"
-msgstr ""
+msgstr "Toleranz"
 
 msgctxt "PLSSEM|"
 msgid "Add construct scores to data"
@@ -1193,11 +1189,11 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Standardized"
-msgstr ""
+msgstr "Standardisiert"
 
 msgctxt "Advanced|"
 msgid "Select the method for handling missing data in estimation"
-msgstr ""
+msgstr "Wählen Sie die Methode zur Behandlung fehlender Daten bei Schätzung"
 
 msgctxt "Advanced|"
 msgid "Use Full Information Maximum Likelihood to handle missing data"
@@ -1205,19 +1201,19 @@ msgstr ""
 
 msgctxt "Advanced|"
 msgid "Exclude cases with missing data (listwise deletion)"
-msgstr ""
+msgstr "Ausschließen von Fällen mit fehlenden Daten (listweises Löschen)"
 
 msgctxt "Advanced|"
 msgid "Select the software to emulate estimation behavior"
-msgstr ""
+msgstr "Auswahl der Software zur Emulation des Schätzverhaltens"
 
 msgctxt "Advanced|"
 msgid "Use Lavaan default estimation method"
-msgstr ""
+msgstr "Verwendung der Lavaan-Standard-Schätzmethode"
 
 msgctxt "Advanced|"
 msgid "Emulate Mplus estimation methods"
-msgstr ""
+msgstr "Emulierung Mplus-Schätzmethoden"
 
 msgctxt "Advanced|"
 msgid "Emulate EQS estimation methods"
