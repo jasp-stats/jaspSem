@@ -2695,7 +2695,8 @@ checkLavaanModel <- function(model, availableVars) {
   modelContainer[["plot"]] <- pcont
 
   if (length(options[["models"]]) < 2) {
-    .semCreatePathPlot(modelContainer[["results"]][["object"]][[1]], NULL, pcont, options, ready)
+    fit <- modelContainer[["results"]][["object"]][[1]]
+    .semCreatePathPlot(fit, NULL, pcont, options, ready)
   } else {
 
     for (i in seq_along(options[["models"]])) {
@@ -2721,8 +2722,12 @@ checkLavaanModel <- function(model, availableVars) {
 
   if (!ready || !inherits(fit, "lavaan")) return()
 
-  if (length(lavaan::lavInspect(fit, "ordered")) > 0) {
-    plt$setError(gettext("Model plot not available with ordinal variables"))
+  # this fix is temporary until the semPlot package fixes this issue
+  if (fit@Options$conditional.x && length(fit@Data@ov.names.x[[1]]) > 0) {
+    # jsut create a plot so we can atatch the error to it
+    errorPlot <- createJaspPlot(title = modelname, width = 600, height = 400)
+    parentContainer[[modelname]] <- errorPlot
+    errorPlot$setError(gettext("Model plot not available when there is at least one exogenous covariate and the 'Exogenous covariate(s) fixed' box is checked."))
     return()
   }
 
