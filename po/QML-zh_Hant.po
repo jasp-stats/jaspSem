@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2024-12-29 08:00+0000\n"
+"PO-Revision-Date: 2025-01-02 14:00+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-qml/zh_Hant/>\n"
@@ -1156,63 +1156,63 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Standardized"
-msgstr ""
+msgstr "標準化"
 
 msgctxt "Advanced|"
 msgid "Select the method for handling missing data in estimation"
-msgstr ""
+msgstr "估計過程中，選擇處理遺漏值的方法"
 
 msgctxt "Advanced|"
 msgid "Use Full Information Maximum Likelihood to handle missing data"
-msgstr ""
+msgstr "使用FIML法處理遺漏值"
 
 msgctxt "Advanced|"
 msgid "Exclude cases with missing data (listwise deletion)"
-msgstr ""
+msgstr "整列刪除法 (listwise deletion)"
 
 msgctxt "Advanced|"
 msgid "Select the software to emulate estimation behavior"
-msgstr ""
+msgstr "選擇軟體以模擬估計行為"
 
 msgctxt "Advanced|"
 msgid "Use Lavaan default estimation method"
-msgstr ""
+msgstr "使用 Lavaan 預設的估計方法"
 
 msgctxt "Advanced|"
 msgid "Emulate Mplus estimation methods"
-msgstr ""
+msgstr "模擬 Mplus 的估計方法"
 
 msgctxt "Advanced|"
 msgid "Emulate EQS estimation methods"
-msgstr ""
+msgstr "模擬 EQS 的估計方法"
 
 msgctxt "Advanced|"
 msgid "Choose the estimator for model fitting"
-msgstr ""
+msgstr "選擇模型配適的估計方法"
 
 msgctxt "Advanced|"
 msgid "Use the default estimator based on the model and data"
-msgstr ""
+msgstr "基於模型與資料，使用預設的估計方法"
 
 msgctxt "Advanced|"
 msgid "Maximum Likelihood estimator"
-msgstr ""
+msgstr "最大概似估計法"
 
 msgctxt "Advanced|"
 msgid "Generalized Least Squares estimator"
-msgstr ""
+msgstr "廣義最小平方估計法"
 
 msgctxt "Advanced|"
 msgid "Weighted Least Squares estimator"
-msgstr ""
+msgstr "加權最小平方估計法"
 
 msgctxt "Advanced|"
 msgid "Unweighted Least Squares estimator"
-msgstr ""
+msgstr "未加權最小平方估計法"
 
 msgctxt "Advanced|"
 msgid "Diagonally Weighted Least Squares estimator"
-msgstr ""
+msgstr "對角加權最小平方估計量"
 
 msgctxt "ErrorCalculation|"
 msgid "Set the confidence level for the interval estimates"
