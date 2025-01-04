@@ -1,0 +1,779 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: jaspSem 0.19.2\n"
+"POT-Creation-Date: 2024-12-07 02:58\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: ta\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Fit indices"
+msgstr ""
+
+msgid "Index"
+msgstr ""
+
+msgid "Value"
+msgstr ""
+
+msgid "Comparative Fit Index (CFI)"
+msgstr ""
+
+msgid "Tucker-Lewis Index (TLI)"
+msgstr ""
+
+msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
+msgstr ""
+
+msgid "Bentler-Bonett Normed Fit Index (NFI)"
+msgstr ""
+
+msgid "Parsimony Normed Fit Index (PNFI)"
+msgstr ""
+
+msgid "Bollen's Relative Fit Index (RFI)"
+msgstr ""
+
+msgid "Bollen's Incremental Fit Index (IFI)"
+msgstr ""
+
+msgid "Relative Noncentrality Index (RNI)"
+msgstr ""
+
+msgid "Root mean square error of approximation (RMSEA)"
+msgstr ""
+
+msgid "RMSEA 90%% CI lower bound"
+msgstr ""
+
+msgid "RMSEA 90%% CI upper bound"
+msgstr ""
+
+msgid "RMSEA p-value"
+msgstr ""
+
+msgid "Standardized root mean square residual (SRMR)"
+msgstr ""
+
+msgid "Hoelter's critical N (%s = .05)"
+msgstr ""
+
+msgid "Hoelter's critical N (%s = .01)"
+msgstr ""
+
+msgid "Goodness of fit index (GFI)"
+msgstr ""
+
+msgid "McDonald fit index (MFI)"
+msgstr ""
+
+msgid "Expected cross validation index (ECVI)"
+msgstr ""
+
+msgid "Log-likelihood"
+msgstr ""
+
+msgid "Number of free parameters"
+msgstr ""
+
+msgid "Akaike (AIC)"
+msgstr ""
+
+msgid "Bayesian (BIC)"
+msgstr ""
+
+msgid "Sample-size adjusted Bayesian (SSABIC)"
+msgstr ""
+
+msgid "The model could not be estimated due to nonconvergence."
+msgstr ""
+
+msgid "The model could not be estimated: No degrees of freedom left."
+msgstr ""
+
+msgid "Chi-square test"
+msgstr ""
+
+msgid "Baseline model"
+msgstr ""
+
+msgid "Growth curve model"
+msgstr ""
+
+msgid "The model is not admissible: %s"
+msgstr ""
+
+msgid "Warning."
+msgstr ""
+
+msgid "Parameter estimates"
+msgstr ""
+
+msgid "Std. estimate"
+msgstr ""
+
+msgid "Estimate"
+msgstr ""
+
+msgid "Component"
+msgstr ""
+
+msgid "Parameter"
+msgstr ""
+
+msgid "Std. error"
+msgstr ""
+
+msgid "z-value"
+msgstr ""
+
+msgid "p"
+msgstr ""
+
+msgid "Lower"
+msgstr ""
+
+msgid "%s%% Confidence Interval"
+msgstr ""
+
+msgid "Latent covariances"
+msgstr ""
+
+msgid "Predictor"
+msgstr ""
+
+msgid "Variable"
+msgstr ""
+
+msgid "Intercept"
+msgstr ""
+
+msgid "Linear slope"
+msgstr ""
+
+msgid "Quadratic slope"
+msgstr ""
+
+msgid "Cubic slope"
+msgstr ""
+
+msgid "Mean"
+msgstr ""
+
+msgid "Variance"
+msgstr ""
+
+msgid "Residual variance is negative. This may indicate model misspecification."
+msgstr ""
+
+msgid "R-Squared"
+msgstr ""
+
+msgid "Implied covariance matrix"
+msgstr ""
+
+msgid "Residual covariance matrix"
+msgstr ""
+
+msgid "Curve plot"
+msgstr ""
+
+msgid "Model plot"
+msgstr ""
+
+msgid "Misfit plot"
+msgstr ""
+
+msgid "Curve + variance + uncertainty"
+msgstr ""
+
+msgid "Curve + variance"
+msgstr ""
+
+msgid "Curve + parameter uncertainty"
+msgstr ""
+
+msgid "Not all exogenous variables are admissible. Inadmissible exogenous variables: %s. Only binary or continuous exogenous variables allowed."
+msgstr ""
+
+msgid "Not all endogenous variables are admissible. Inadmissible endogenous variables: %s. Only scale or ordinal endogenous variables allowed."
+msgstr ""
+
+msgid "FIML missing value handling only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s"
+msgstr ""
+
+msgid "Estimation failed\nMessage:\n%s"
+msgstr ""
+
+msgid "Direct effects"
+msgstr ""
+
+msgid "Upper"
+msgstr ""
+
+msgid "Indirect effects"
+msgstr ""
+
+msgid "Total indirect effects"
+msgstr ""
+
+msgid "Residual covariances"
+msgstr ""
+
+msgid "Path coefficients"
+msgstr ""
+
+msgid "Estimator is %s."
+msgstr ""
+
+msgid "%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
+msgstr ""
+
+msgid "Path plot"
+msgstr ""
+
+msgid "Currently it is not possible to plot mediation models with ordinal variables. The plot could not be generated."
+msgstr ""
+
+msgid "The plot could not be generated. The underlying code resulted in the following error message: %s"
+msgstr ""
+
+msgid "Model syntax"
+msgstr ""
+
+msgid "FIML only available with ML-type estimators."
+msgstr ""
+
+msgid "Estimation failed! Message: The model did not converge. Try using a different estimator or specify an other MIMIC model."
+msgstr ""
+
+msgid "df"
+msgstr ""
+
+msgid "&#967;&sup2;"
+msgstr ""
+
+msgid "Factor model"
+msgstr ""
+
+msgid "Predictor coefficients"
+msgstr ""
+
+msgid "Indicator coefficients"
+msgstr ""
+
+msgid "Indicator"
+msgstr ""
+
+msgid "Model plot not available with ordinal variables"
+msgstr ""
+
+msgid "Grouping variable has fewer than 3 observations in group %s"
+msgstr ""
+
+msgid "Estimation failed Message: %s"
+msgstr ""
+
+msgid "Estimation failed! Message: Model %s did not converge!"
+msgstr ""
+
+msgid "Model fit"
+msgstr ""
+
+msgid "Group"
+msgstr ""
+
+msgid "AIC"
+msgstr ""
+
+msgid "BIC"
+msgstr ""
+
+msgid "n"
+msgstr ""
+
+msgid "Baseline test"
+msgstr ""
+
+msgid "Difference test"
+msgstr ""
+
+msgid "WARNING! %1$s: %2$s"
+msgstr ""
+
+msgid "WARNING! %1$s, group %2$s: %3$s"
+msgstr ""
+
+msgid "Weights"
+msgstr ""
+
+msgid "Construct"
+msgstr ""
+
+msgid "Std. Error"
+msgstr ""
+
+msgid "Loadings"
+msgstr ""
+
+msgid "Regression Coefficients"
+msgstr ""
+
+msgid "Outcome"
+msgstr ""
+
+msgid "Total effects"
+msgstr ""
+
+msgid "VIF"
+msgstr ""
+
+msgid "Endogenous Indicator Prediction"
+msgstr ""
+
+msgid "The target model uses the same weighting approach as the benchmark model, please choose another benchmark."
+msgstr ""
+
+msgid "For the predicted indicator scores table(s), please select a single benchmark or 'none'."
+msgstr ""
+
+msgid "Prediction Metrics"
+msgstr ""
+
+msgid "Target MAE"
+msgstr ""
+
+msgid "Linear model MAE"
+msgstr ""
+
+msgid "PLS-PM MAE"
+msgstr ""
+
+msgid "GSCA MAE"
+msgstr ""
+
+msgid "PCA MAE"
+msgstr ""
+
+msgid "MAXVAR MAE"
+msgstr ""
+
+msgid "Target RMSE"
+msgstr ""
+
+msgid "Linear model RMSE"
+msgstr ""
+
+msgid "PLS-PM RMSE"
+msgstr ""
+
+msgid "GSCA RMSE"
+msgstr ""
+
+msgid "PCA RMSE"
+msgstr ""
+
+msgid "MAXVAR RMSE"
+msgstr ""
+
+msgid "Target Q2 prediction"
+msgstr ""
+
+msgid "There are not enough observations for each k-fold, try setting 'cross-validation k-folds' to a lower number"
+msgstr ""
+
+msgid "Are all indicator variables set to 'scale'?"
+msgstr ""
+
+msgid "Prediction failed Message: %1$s"
+msgstr ""
+
+msgid "Indicator Scores"
+msgstr ""
+
+msgid "Actual scores"
+msgstr ""
+
+msgid "Predicted scores"
+msgstr ""
+
+msgid "Target residuals"
+msgstr ""
+
+msgid "benchmark"
+msgstr ""
+
+msgid "lm"
+msgstr ""
+
+msgid "Linear model"
+msgstr ""
+
+msgid "residuals"
+msgstr ""
+
+msgid "Additional Fit Measures"
+msgstr ""
+
+msgid "Hoelter's critical N (CN)"
+msgstr ""
+
+msgid "Root mean square residual covariance (RMS theta)"
+msgstr ""
+
+msgid "Goodness of Fit (GoF)"
+msgstr ""
+
+msgid "Geodesic distance"
+msgstr ""
+
+msgid "Squared Euclidean distance"
+msgstr ""
+
+msgid "Maximum likelihood-based dinstance"
+msgstr ""
+
+msgid "Reliability Measures"
+msgstr ""
+
+msgid "Cronbach's %s"
+msgstr ""
+
+msgid "J%1$sreskog's %2$s"
+msgstr ""
+
+msgid "Dijkstra-Henseler's %s"
+msgstr ""
+
+msgid "Correlation tables"
+msgstr ""
+
+msgid "Observed indicator correlation matrix"
+msgstr ""
+
+msgid "Implied indicator correlation matrix"
+msgstr ""
+
+msgid "Observed construct correlation matrix"
+msgstr ""
+
+msgid "Implied construct correlation matrix"
+msgstr ""
+
+msgid "Column '%s' name already exists in the dataset"
+msgstr ""
+
+msgid "Mean structure can not be included when data is variance-covariance matrix"
+msgstr ""
+
+msgid "Please set the sample size!"
+msgstr ""
+
+msgid "Multiple group analysis not supported when data is variance-covariance matrix"
+msgstr ""
+
+msgid "Not more cases than number of variables. Is your data a variance-covariance matrix?"
+msgstr ""
+
+msgid "When mean structure is included, at least one of the checkboxes to fix the intercepts to zero has to be checked"
+msgstr ""
+
+msgid "When conditioning estimation on exogenous covariates, the 'Exogenous covariate(s) fixed' box must be checked."
+msgstr ""
+
+msgid "Bootstrapped standard errors are not yet available when 'Condition on exogenous covariate(s)' box is checked."
+msgstr ""
+
+msgid "Invalid model specification. Did you pass a variable name as a string?"
+msgstr ""
+
+msgid "One or more variables are constants or contain only missing values."
+msgstr ""
+
+msgid "Estimation failed. Message: %s"
+msgstr ""
+
+msgid "Estimation failed! Message: %s did not converge!"
+msgstr ""
+
+msgid "Estimation failed! Message: %s has negative degrees of freedom."
+msgstr ""
+
+msgid "n(Observations)"
+msgstr ""
+
+msgid "Total"
+msgstr ""
+
+msgid "n(Parameters)"
+msgstr ""
+
+msgid "Free"
+msgstr ""
+
+msgid "%1$sdf"
+msgstr ""
+
+msgid "%sFitting the model resulted in warnings. Check the 'Show warnings' box in the Output Options to see the warnings."
+msgstr ""
+
+msgid "A total of %g cases were removed due to missing values."
+msgstr ""
+
+msgid "Model test is %s."
+msgstr ""
+
+msgid "Information matrix is %s."
+msgstr ""
+
+msgid "Standard errors are %s."
+msgstr ""
+
+msgid "%s The AIC, BIC and additional information criteria are only available with ML-type estimators."
+msgstr ""
+
+msgid "all"
+msgstr ""
+
+msgid "<b>Warnings:</b> %s"
+msgstr ""
+
+msgid "Parameter Estimates"
+msgstr ""
+
+msgid "Factor Loadings"
+msgstr ""
+
+msgid "Latent"
+msgstr ""
+
+msgid "%s%% Confidence interval"
+msgstr ""
+
+msgid "Regression coefficients"
+msgstr ""
+
+msgid "Factor variances"
+msgstr ""
+
+msgid "Factor covariances"
+msgstr ""
+
+msgid "Variables"
+msgstr ""
+
+msgid "Residual variances"
+msgstr ""
+
+msgid "Intercepts"
+msgstr ""
+
+msgid "Missing data method 'FIML' forces meanstructure."
+msgstr ""
+
+msgid "Thresholds"
+msgstr ""
+
+msgid "Threshold"
+msgstr ""
+
+msgid "Defined parameters"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "%s Fit indices are based on the scaled test statistic."
+msgstr ""
+
+msgid "T-size fit indices"
+msgstr ""
+
+msgid "Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural Equation Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), 148-153, https://doi.org/10.1080/10705511.2016.1225260"
+msgstr ""
+
+msgid "Poor-fair limit"
+msgstr ""
+
+msgid "Fair-close limit"
+msgstr ""
+
+msgid "CFI"
+msgstr ""
+
+msgid "RMSEA"
+msgstr ""
+
+msgid "T-size statistics are computed for <i>%s = 0.05</i>."
+msgstr ""
+
+msgid "Average variance extracted"
+msgstr ""
+
+msgid "AVE"
+msgstr ""
+
+msgid "Reliability"
+msgstr ""
+
+msgid "Coefficient α"
+msgstr ""
+
+msgid "Coefficient ω"
+msgstr ""
+
+msgid "Heterotrait-Monotrait Ratio"
+msgstr ""
+
+msgid "Heterotrait-monotrait ratio"
+msgstr ""
+
+msgid "Mardia's coefficients"
+msgstr ""
+
+msgid "Coefficient"
+msgstr ""
+
+msgid "z"
+msgstr ""
+
+msgid "Multivariate skewness and kurtosis calculated for observed variables from all models."
+msgstr ""
+
+msgid "Not all used variables are continuous: Mardia's coefficients not available."
+msgstr ""
+
+msgid "The data covariance matrix could not be inverted: Mardia's coefficients not available."
+msgstr ""
+
+msgid "Skewness"
+msgstr ""
+
+msgid "Kurtosis"
+msgstr ""
+
+msgid "Covariance tables"
+msgstr ""
+
+msgid "The standardized residual covariance table is currently unavailable when the error calculation method is 'Bootstrap'"
+msgstr ""
+
+msgid "The standardized residual covariance matrix could not be computed"
+msgstr ""
+
+msgid "The standardized residual covariance tables are currently unavailable when the error calculation method is 'Bootstrap'"
+msgstr ""
+
+msgid "The standardized residual covariance matrices could not be computed"
+msgstr ""
+
+msgid "Modification indices"
+msgstr ""
+
+msgid "Modification Indices"
+msgstr ""
+
+msgid "group"
+msgstr ""
+
+msgid "mi"
+msgstr ""
+
+msgid "epc"
+msgstr ""
+
+msgid "sepc (lv)"
+msgstr ""
+
+msgid "sepc (all)"
+msgstr ""
+
+msgid "sepc (nox)"
+msgstr ""
+
+msgid "Sensitivity analysis"
+msgstr ""
+
+msgid "Summary of sensitivity analysis"
+msgstr ""
+
+msgid "Path"
+msgstr ""
+
+msgid "Standardized estimate"
+msgstr ""
+
+msgid "Original model"
+msgstr ""
+
+msgid "p*"
+msgstr ""
+
+msgid "Sensitivity model"
+msgstr ""
+
+msgid "Min"
+msgstr ""
+
+msgid "Max"
+msgstr ""
+
+msgid "Please include at least one regression path in the model to perform a sensitivity analysis."
+msgstr ""
+
+msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
+msgstr ""
+
+msgid "Performing sensitivity analysis (model: %1$s)"
+msgstr ""
+
+msgid "Sensitivity parameters that led to a change in significance"
+msgstr ""
+
+msgid "Sensitivity parameters"
+msgstr ""
+
+msgid "Summary of sensitivity parameters"
+msgstr ""
+
+msgid "Sensitivity parameter"
+msgstr ""
+
+msgid "Path diagram"
+msgstr ""
+
+msgid "Satorra-Bentler"
+msgstr ""
+
+msgid "Yuan-Bentler"
+msgstr ""
+
+msgid "Yuan-Bentler Mplus"
+msgstr ""
+
+msgid "mean and variance-adjusted"
+msgstr ""
+
+msgid "scaled and shifted"
+msgstr ""
+
+msgid "bootstrap (Bollen-Stine)"
+msgstr ""
+
+msgid "Browne residual based (ADF)"
+msgstr ""
+
+msgid "Browne residual based (NT)"
+msgstr ""
+
+msgid "robust"
+msgstr ""
+
+msgid "robust Huber-White"
+msgstr ""
+
+msgid "first-order"
+msgstr ""
