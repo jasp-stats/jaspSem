@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
 "POT-Creation-Date: 2024-12-07 02:58\n"
-"PO-Revision-Date: 2024-12-17 14:00+0000\n"
-"Last-Translator: Changya Hu <changyahu@gmail.com>\n"
+"PO-Revision-Date: 2025-01-02 13:00+0000\n"
+"Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-r/zh_Hant/>\n"
 "Language: zh_Hant\n"
@@ -11,10 +11,10 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.9\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 msgid "Fit indices"
-msgstr "適配指標"
+msgstr "配適指標"
 
 msgid "Index"
 msgstr "指標"
@@ -23,31 +23,31 @@ msgid "Value"
 msgstr "值"
 
 msgid "Comparative Fit Index (CFI)"
-msgstr "比較適配指標 (CFI)"
+msgstr "比較配適指標 (CFI)"
 
 msgid "Tucker-Lewis Index (TLI)"
 msgstr "Tucker-Lewis Index (TLI)"
 
 msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
-msgstr "非常態適配指標 (NNFI)"
+msgstr "非規範配適指標 (NNFI)"
 
 msgid "Bentler-Bonett Normed Fit Index (NFI)"
-msgstr "常態適配指標 (NFI)"
+msgstr "規範配適指標 (NFI)"
 
 msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr "簡約常態適配指標 (PFI)"
+msgstr "精簡規範配適指標 (PNFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
-msgstr "相對適配指標 (RFI)"
+msgstr "相對配適指標 (RFI)"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
-msgstr "增加適配指標 (IFI)"
+msgstr "增量配適指標 (IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
-msgstr "相對非中心配適指標  (RNI)"
+msgstr "相對非中心性配適指標  (RNI)"
 
 msgid "Root mean square error of approximation (RMSEA)"
-msgstr "標準化均方根殘差值"
+msgstr "近似均方根誤差 (RMSEA)"
 
 msgid "RMSEA 90%% CI lower bound"
 msgstr "RMSEA 90%% 信賴區間下界"
@@ -59,31 +59,31 @@ msgid "RMSEA p-value"
 msgstr "RMSEA p值"
 
 msgid "Standardized root mean square residual (SRMR)"
-msgstr "標準化均方根殘差 (SRMR)"
+msgstr "標準化殘差均方根 (SRMR)"
 
 msgid "Hoelter's critical N (%s = .05)"
-msgstr "Hoelter 關鍵N (%s = .05)"
+msgstr "Hoelter critical N (%s = .05, CN值)"
 
 msgid "Hoelter's critical N (%s = .01)"
-msgstr "Hoelter 關鍵N (%s = .01)"
+msgstr "Hoelter critical N (%s = .01, CN值)"
 
 msgid "Goodness of fit index (GFI)"
-msgstr "適合度適配指標 (GFI)"
+msgstr "配適度指標 (GFI)"
 
 msgid "McDonald fit index (MFI)"
-msgstr "McDonald 適配指標 (IFI)"
+msgstr "McDonald 配適指標 (MFI)"
 
 msgid "Expected cross validation index (ECVI)"
-msgstr "Expected cross validation index (EVCI)"
+msgstr "期望交叉驗證指標 (EVCI)"
 
 msgid "Log-likelihood"
-msgstr "對數概度"
+msgstr "對數概似值"
 
 msgid "Number of free parameters"
 msgstr "自由估計參數個數"
 
 msgid "Akaike (AIC)"
-msgstr "赤池資訊量準則"
+msgstr "赤池資訊量準則 (AIC)"
 
 msgid "Bayesian (BIC)"
 msgstr "貝氏資訊量準則 (BIC)"
@@ -92,14 +92,13 @@ msgid "Sample-size adjusted Bayesian (SSABIC)"
 msgstr "依照樣本大小校正之貝氏資訊量準則 (SSABIC)"
 
 msgid "The model could not be estimated due to nonconvergence."
-msgstr "此模型無法估計: 迭代結果無法聚合"
+msgstr "此模型無法估計: 迭代結果無法收斂"
 
 msgid "The model could not be estimated: No degrees of freedom left."
 msgstr "此模型無法估計: 自由度不足"
 
-#, fuzzy
 msgid "Chi-square test"
-msgstr "卡方考驗"
+msgstr "卡方檢定"
 
 msgid "Baseline model"
 msgstr "基準模型"
@@ -309,7 +308,7 @@ msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr "估計失敗。訊息:模型%s無法收斂!"
 
 msgid "Model fit"
-msgstr "模型適配度"
+msgstr "模型配適度"
 
 msgid "Group"
 msgstr "群"
@@ -446,7 +445,7 @@ msgid "Target residuals"
 msgstr "目標殘差"
 
 msgid "benchmark"
-msgstr ""
+msgstr "基準模型"
 
 msgid "lm"
 msgstr ""
@@ -462,17 +461,14 @@ msgstr "殘差"
 msgid "Additional Fit Measures"
 msgstr "其他適配指標"
 
-#, fuzzy
 msgid "Hoelter's critical N (CN)"
-msgstr "Hoelter 關鍵N (%s = .05)"
+msgstr "Hoelter critical N (%s = .05, CN值)"
 
-#, fuzzy
 msgid "Root mean square residual covariance (RMS theta)"
-msgstr "標準化均方根殘差值"
+msgstr "均方根殘差共變數 (RMS theta)"
 
-#, fuzzy
 msgid "Goodness of Fit (GoF)"
-msgstr "適合度適配指標 (GFI)"
+msgstr "配適度指標 (GFI)"
 
 msgid "Geodesic distance"
 msgstr "測地距離"
@@ -484,7 +480,7 @@ msgid "Maximum likelihood-based dinstance"
 msgstr "基於最大概似估計法距離"
 
 msgid "Reliability Measures"
-msgstr "信度"
+msgstr "信度指標"
 
 msgid "Cronbach's %s"
 msgstr "Cronbach's %s"
@@ -649,10 +645,10 @@ msgid "Missing data method 'FIML' forces meanstructure."
 msgstr ""
 
 msgid "Thresholds"
-msgstr ""
+msgstr "閾限"
 
 msgid "Threshold"
-msgstr ""
+msgstr "閾限"
 
 msgid "Defined parameters"
 msgstr "變數定義"
