@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-01-09 23:00+0000\n"
+"PO-Revision-Date: 2025-01-11 02:53+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-qml/zh_Hant/>\n"
@@ -335,11 +335,11 @@ msgstr "隱藏低修正指標值"
 
 msgctxt "SEM|"
 msgid "Threshold"
-msgstr "閾限"
+msgstr "臨界值"
 
 msgctxt "SEM|"
 msgid "Model Options"
-msgstr "模式設定"
+msgstr "模型選項"
 
 msgctxt "SEM|"
 msgid "Factor scaling"
@@ -411,7 +411,7 @@ msgstr "估計前將變項標準化"
 
 msgctxt "SEM|"
 msgid "Estimator"
-msgstr "估計式"
+msgstr "估計方法"
 
 msgctxt "SEM|"
 msgid "ML"
@@ -439,7 +439,7 @@ msgstr "部分最大概似法 (PML)"
 
 msgctxt "SEM|"
 msgid "Model test"
-msgstr "模式考驗"
+msgstr "模型檢驗"
 
 msgctxt "SEM|"
 msgid "Satorra-Bentler"
@@ -564,7 +564,7 @@ msgstr "路徑係數"
 
 msgctxt "Description|"
 msgid "Partial Least Squares SEM"
-msgstr "偏最小平方 SEM"
+msgstr "PLS SEM"
 
 msgctxt "PLSSEM|"
 msgid "Model 1"
@@ -763,9 +763,8 @@ msgstr "信度指標"
 
 msgctxt "SEM|"
 msgid "Thresholds"
-msgstr "閾限"
+msgstr "臨界值"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Estimation Options"
 msgstr "估計選項"
@@ -872,7 +871,7 @@ msgstr "EQS 套裝軟體"
 
 msgctxt "Advanced|"
 msgid "Estimator"
-msgstr "估計式"
+msgstr "估計方法"
 
 msgctxt "Advanced|"
 msgid "Default"
@@ -957,7 +956,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Except exogenous covariates"
-msgstr "不包括外生共變數"
+msgstr "除外生共變數外"
 
 msgctxt "MediationAnalysis|"
 msgid "All"
@@ -969,7 +968,7 @@ msgstr "潛在變項"
 
 msgctxt "MediationAnalysis|"
 msgid "Except exogenous covariates"
-msgstr "不包括外生共變數"
+msgstr "除外生共變數外"
 
 msgctxt "Mimic|"
 msgid "All"
@@ -981,7 +980,7 @@ msgstr "潛在變項"
 
 msgctxt "Mimic|"
 msgid "Except exogenous covariates"
-msgstr "不包括外生共變數"
+msgstr "除外生共變數外"
 
 msgctxt "SEM|"
 msgid "Mean structure"
@@ -1129,11 +1128,11 @@ msgstr "所有參數"
 
 msgctxt "SEM|"
 msgid "Latents"
-msgstr "潛在變項"
+msgstr "只針對潛在變項"
 
 msgctxt "SEM|"
 msgid "Except exogenous covariates"
-msgstr "不包括外生共變數"
+msgstr "除外生共變數外"
 
 msgctxt "SEM|"
 msgid "Show warnings"
