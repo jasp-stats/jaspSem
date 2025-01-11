@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2025-01-11 02:53+0000\n"
+"Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
+"Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
+"projects/jasp/jaspsem-qml/zh_Hant/>\n"
+"Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.10-dev\n"
 "X-Language: zh_Hant\n"
 "X-Qt-Contexts: true\n"
 
@@ -329,11 +335,11 @@ msgstr "隱藏低修正指標值"
 
 msgctxt "SEM|"
 msgid "Threshold"
-msgstr "閾限"
+msgstr "臨界值"
 
 msgctxt "SEM|"
 msgid "Model Options"
-msgstr "模式設定"
+msgstr "模型選項"
 
 msgctxt "SEM|"
 msgid "Factor scaling"
@@ -405,7 +411,7 @@ msgstr "估計前將變項標準化"
 
 msgctxt "SEM|"
 msgid "Estimator"
-msgstr "估計式"
+msgstr "估計方法"
 
 msgctxt "SEM|"
 msgid "ML"
@@ -433,7 +439,7 @@ msgstr "部分最大概似法 (PML)"
 
 msgctxt "SEM|"
 msgid "Model test"
-msgstr "模式考驗"
+msgstr "模型檢驗"
 
 msgctxt "SEM|"
 msgid "Satorra-Bentler"
@@ -477,15 +483,15 @@ msgstr "雙重穩健法"
 
 msgctxt "SEM|"
 msgid "Mplus"
-msgstr "Mplus 程式"
+msgstr "Mplus 套裝軟體"
 
 msgctxt "SEM|"
 msgid "EQS"
-msgstr "EQS 程式"
+msgstr "EQS 套裝軟體"
 
 msgctxt "SEM|"
 msgid "Multigroup SEM"
-msgstr "多群體 SEM"
+msgstr "多群組結構方程模型(MGA)"
 
 msgctxt "SEM|"
 msgid "Grouping Variable"
@@ -540,9 +546,9 @@ msgid ""
 "More details about the update can be found at https://groups.google.com/g/"
 "lavaan/c/HSavF8oaW5M"
 msgstr ""
-"此分析是以舊版JASP (或動態模組)完成。目前lavaan已有更新，新版 lavaan程式對多"
-"群體分析中的恆等限制有不同的解釋。請使用者注意。詳情請參考以下網址。https://"
-"groups.google.com/g/lavaan/c/HSavF8oaW5M"
+"此分析是以舊版JASP (或動態模組)完成。目前lavaan已有更新，新版 "
+"lavaan程式對多群組分析中的恆等限制有不同的解釋。請使用者注意。詳情請參考以下"
+"網址。https://groups.google.com/g/lavaan/c/HSavF8oaW5M"
 
 msgctxt "Description|"
 msgid "MIMIC Model"
@@ -558,7 +564,7 @@ msgstr "路徑係數"
 
 msgctxt "Description|"
 msgid "Partial Least Squares SEM"
-msgstr "偏最小平方 SEM"
+msgstr "PLS SEM"
 
 msgctxt "PLSSEM|"
 msgid "Model 1"
@@ -729,7 +735,7 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "All"
-msgstr ""
+msgstr "所有參數"
 
 msgctxt "PLSSEM|"
 msgid "Show predicted scores"
@@ -757,9 +763,8 @@ msgstr "信度指標"
 
 msgctxt "SEM|"
 msgid "Thresholds"
-msgstr "閾限"
+msgstr "臨界值"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "Estimation Options"
 msgstr "估計選項"
@@ -866,7 +871,7 @@ msgstr "EQS 套裝軟體"
 
 msgctxt "Advanced|"
 msgid "Estimator"
-msgstr "估計式"
+msgstr "估計方法"
 
 msgctxt "Advanced|"
 msgid "Default"
@@ -943,7 +948,7 @@ msgstr "其他適配指標"
 
 msgctxt "LatentGrowthCurve|"
 msgid "All"
-msgstr ""
+msgstr "所有參數"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Latents"
@@ -951,31 +956,31 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "除外生共變數外"
 
 msgctxt "MediationAnalysis|"
 msgid "All"
-msgstr ""
+msgstr "所有參數"
 
 msgctxt "MediationAnalysis|"
 msgid "Latents"
-msgstr ""
+msgstr "潛在變項"
 
 msgctxt "MediationAnalysis|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "除外生共變數外"
 
 msgctxt "Mimic|"
 msgid "All"
-msgstr ""
+msgstr "所有參數"
 
 msgctxt "Mimic|"
 msgid "Latents"
-msgstr ""
+msgstr "潛在變項"
 
 msgctxt "Mimic|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "除外生共變數外"
 
 msgctxt "SEM|"
 msgid "Mean structure"
@@ -1119,23 +1124,23 @@ msgstr "Lavaan程式碼"
 
 msgctxt "SEM|"
 msgid "All"
-msgstr ""
+msgstr "所有參數"
 
 msgctxt "SEM|"
 msgid "Latents"
-msgstr ""
+msgstr "只針對潛在變項"
 
 msgctxt "SEM|"
 msgid "Except exogenous covariates"
-msgstr ""
+msgstr "除外生共變數外"
 
 msgctxt "SEM|"
 msgid "Show warnings"
-msgstr ""
+msgstr "顯示警告"
 
 msgctxt "SEM|"
 msgid "SD of deviance / old estimate"
-msgstr ""
+msgstr "離差的標準差 / 舊估計值"
 
 msgctxt "PLSSEM|"
 msgid "Consistent partial least squares"
@@ -1421,8 +1426,8 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Condition on exogenous covariate(s)"
-msgstr ""
+msgstr "控制外生共變數"
 
 msgctxt "SEM|"
 msgid "Set a random seed:"
-msgstr ""
+msgstr "設定種子："
