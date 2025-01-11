@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
 "POT-Creation-Date: 2024-12-07 02:58\n"
-"PO-Revision-Date: 2025-01-02 13:00+0000\n"
+"PO-Revision-Date: 2025-01-11 02:53+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-r/zh_Hant/>\n"
@@ -23,13 +23,13 @@ msgid "Value"
 msgstr "值"
 
 msgid "Comparative Fit Index (CFI)"
-msgstr "比較配適指標 (CFI)"
+msgstr "比較適配指標 (CFI)"
 
 msgid "Tucker-Lewis Index (TLI)"
 msgstr "Tucker-Lewis Index (TLI)"
 
 msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
-msgstr "非規範配適指標 (NNFI)"
+msgstr "非規範適配指標 (NNFI)"
 
 msgid "Bentler-Bonett Normed Fit Index (NFI)"
 msgstr "規範配適指標 (NFI)"
@@ -38,13 +38,13 @@ msgid "Parsimony Normed Fit Index (PNFI)"
 msgstr "精簡規範配適指標 (PNFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
-msgstr "相對配適指標 (RFI)"
+msgstr "相對適配指標 (RFI)"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
 msgstr "增量配適指標 (IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
-msgstr "相對非中心性配適指標  (RNI)"
+msgstr "相對非中心性配適指標 (RNI)"
 
 msgid "Root mean square error of approximation (RMSEA)"
 msgstr "近似均方根誤差 (RMSEA)"
@@ -601,9 +601,8 @@ msgid ""
 "ML-type estimators."
 msgstr "只有在使用最大概似法 (ML)類之估計法時，才提供AIC, BIC與其他訊息準則指標"
 
-#, fuzzy
 msgid "all"
-msgstr "所有"
+msgstr "所有參數"
 
 msgid "<b>Warnings:</b> %s"
 msgstr "<b>警告:</b> %s"
@@ -705,7 +704,7 @@ msgid "Coefficient ω"
 msgstr "係數"
 
 msgid "Heterotrait-Monotrait Ratio"
-msgstr ""
+msgstr "異質-單質比"
 
 msgid "Heterotrait-monotrait ratio"
 msgstr ""
@@ -774,7 +773,7 @@ msgid "mi"
 msgstr "修正指標"
 
 msgid "epc"
-msgstr "epc"
+msgstr "期望參數變動 (EPC)"
 
 msgid "sepc (lv)"
 msgstr "sepc (潛在變項)"
