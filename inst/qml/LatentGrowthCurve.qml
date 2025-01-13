@@ -17,9 +17,7 @@
 //
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls 
 import JASP.Controls
-import JASP.Widgets
 import "./common" as Common
 
 Form

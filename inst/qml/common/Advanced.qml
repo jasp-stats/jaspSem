@@ -18,10 +18,8 @@
 
 import QtQuick
 import QtQuick.Layouts
-import JASP
 import JASP.Controls
-import JASP.Widgets
-import QtQuick.Controls  as QTCONTROLS
+import JASP
 
 Section
 {
