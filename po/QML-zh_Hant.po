@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-01-12 14:00+0000\n"
+"PO-Revision-Date: 2025-01-14 13:00+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-qml/zh_Hant/>\n"
@@ -71,7 +71,7 @@ msgstr "共變之前在曲線"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Additional Output"
-msgstr "其他設定"
+msgstr "其他輸出設定"
 
 msgctxt "LatentGrowthCurve|"
 msgid "R-Squared"
@@ -187,7 +187,7 @@ msgstr "R平方"
 
 msgctxt "MediationAnalysis|"
 msgid "Additional parameter estimates"
-msgstr "其他參數估計值"
+msgstr "其他參數估計"
 
 msgctxt "MediationAnalysis|"
 msgid "Total indirect effects"
@@ -207,7 +207,7 @@ msgstr "模式圖"
 
 msgctxt "MediationAnalysis|"
 msgid "Parameter estimates"
-msgstr "參數估計值"
+msgstr "參數估計"
 
 msgctxt "MediationAnalysis|"
 msgid "Legend"
@@ -239,7 +239,7 @@ msgstr "R平方"
 
 msgctxt "Mimic|"
 msgid "Additional fit measures"
-msgstr "其他適配指標"
+msgstr "其他配適指標"
 
 msgctxt "Mimic|"
 msgid "Plots"
@@ -251,7 +251,7 @@ msgstr "模式圖"
 
 msgctxt "Mimic|"
 msgid "Parameter estimates"
-msgstr "參數估計值"
+msgstr "參數估計"
 
 msgctxt "Mimic|"
 msgid "Legend"
@@ -283,7 +283,7 @@ msgstr "樣本加權"
 
 msgctxt "SEM|"
 msgid "Additional fit measures"
-msgstr "其他適配指標"
+msgstr "其他配適指標"
 
 msgctxt "SEM|"
 msgid "R-squared"
@@ -407,7 +407,7 @@ msgstr "信賴區間"
 
 msgctxt "SEM|"
 msgid "Standardize variables before estimation"
-msgstr "估計前將變項標準化"
+msgstr "估計前對變量進行標準化"
 
 msgctxt "SEM|"
 msgid "Estimator"
@@ -439,7 +439,7 @@ msgstr "部分最大概似法 (PML)"
 
 msgctxt "SEM|"
 msgid "Model test"
-msgstr "模型檢驗"
+msgstr "模型配適檢定方法"
 
 msgctxt "SEM|"
 msgid "Satorra-Bentler"
@@ -447,11 +447,11 @@ msgstr "Satorra-Bentler 卡方"
 
 msgctxt "SEM|"
 msgid "Yuan-Bentler"
-msgstr "Yuan-Bentler 考驗"
+msgstr "Yuan-Bentler 檢定"
 
 msgctxt "SEM|"
 msgid "Scaled and shifted"
-msgstr "Scaled and shifted 考驗"
+msgstr "Scaled and shifted 檢定"
 
 msgctxt "SEM|"
 msgid "Bootstrap (Bollen-Stine)"
@@ -459,7 +459,7 @@ msgstr "(Bollen-Stine) 拔靴法"
 
 msgctxt "SEM|"
 msgid "Missing data handling"
-msgstr "遺漏值資料處理設定"
+msgstr "遺漏值處理方法"
 
 msgctxt "SEM|"
 msgid "Listwise deletion"
@@ -491,7 +491,7 @@ msgstr "EQS 套裝軟體"
 
 msgctxt "SEM|"
 msgid "Multigroup SEM"
-msgstr "多群組結構方程模型(MGA)"
+msgstr "多群組SEM (MGA SEM)"
 
 msgctxt "SEM|"
 msgid "Grouping Variable"
@@ -535,7 +535,7 @@ msgstr "取消參數設限(每行取消一個參數限制)"
 
 msgctxt "Description|"
 msgid "Evaluate latent data structures with Yves Rosseel’s lavaan program"
-msgstr "以 Yves Rosseel 的 lavaan 程式評估潛在資料模式"
+msgstr "以 Yves Rosseel 的 Lavaan 程式評估潛在資料模式"
 
 msgctxt "SEM|"
 msgid ""
@@ -679,10 +679,9 @@ msgctxt "PLSSEM|"
 msgid "R-squared"
 msgstr "R平方"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Additional fit measures"
-msgstr "其他適配指標"
+msgstr "其他配適指標"
 
 #, fuzzy
 msgctxt "PLSSEM|"
@@ -691,7 +690,7 @@ msgstr "Mardia 係數"
 
 msgctxt "PLSSEM|"
 msgid "Reliability measures"
-msgstr "信度指標"
+msgstr "信度指標(Cronbach's α 與 CR值)"
 
 msgctxt "PLSSEM|"
 msgid "Observed indicator correlations"
@@ -759,7 +758,7 @@ msgstr "異質性-單質性比 (HTMT)"
 
 msgctxt "SEM|"
 msgid "Reliability measures"
-msgstr "信度指標"
+msgstr "信度指標(Cronbach's α 與 CR值)"
 
 msgctxt "SEM|"
 msgid "Thresholds"
@@ -859,7 +858,7 @@ msgstr "模擬"
 
 msgctxt "Advanced|"
 msgid "Lavaan"
-msgstr "Lavaan程式碼"
+msgstr "Lavaan 程式碼"
 
 msgctxt "Advanced|"
 msgid "Mplus"
@@ -941,10 +940,9 @@ msgctxt "LatentGrowthCurve|"
 msgid "Estimation Options"
 msgstr "估計選項"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Additional fit measures"
-msgstr "其他適配指標"
+msgstr "其他配適指標"
 
 msgctxt "LatentGrowthCurve|"
 msgid "All"
@@ -952,7 +950,7 @@ msgstr "所有參數"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Latents"
-msgstr ""
+msgstr "潛在變數"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Except exogenous covariates"
@@ -1120,7 +1118,7 @@ msgstr "模擬"
 
 msgctxt "SEM|"
 msgid "Lavaan"
-msgstr "Lavaan程式碼"
+msgstr "Lavaan 程式碼"
 
 msgctxt "SEM|"
 msgid "All"
@@ -1342,7 +1340,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Show the lavaan model syntax"
-msgstr ""
+msgstr "顯示 Lavaan 語法"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Options for generating plots"
@@ -1382,7 +1380,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Additional modeling options"
-msgstr ""
+msgstr "其他建模選項"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Omit residuals for single indicators"
