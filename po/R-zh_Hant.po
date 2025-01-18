@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
 "POT-Creation-Date: 2024-12-07 02:58\n"
-"PO-Revision-Date: 2025-01-11 02:53+0000\n"
+"PO-Revision-Date: 2025-01-14 13:00+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-r/zh_Hant/>\n"
@@ -23,13 +23,13 @@ msgid "Value"
 msgstr "值"
 
 msgid "Comparative Fit Index (CFI)"
-msgstr "比較適配指標 (CFI)"
+msgstr "比較配適指標 (CFI)"
 
 msgid "Tucker-Lewis Index (TLI)"
 msgstr "Tucker-Lewis Index (TLI)"
 
 msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
-msgstr "非規範適配指標 (NNFI)"
+msgstr "非規範配適指標 (NNFI)"
 
 msgid "Bentler-Bonett Normed Fit Index (NFI)"
 msgstr "規範配適指標 (NFI)"
@@ -38,7 +38,7 @@ msgid "Parsimony Normed Fit Index (PNFI)"
 msgstr "精簡規範配適指標 (PNFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
-msgstr "相對適配指標 (RFI)"
+msgstr "相對配適指標 (RFI)"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
 msgstr "增量配適指標 (IFI)"
@@ -113,11 +113,10 @@ msgid "Warning."
 msgstr "警告."
 
 msgid "Parameter estimates"
-msgstr "參數估計值"
+msgstr "參數估計"
 
-#, fuzzy
 msgid "Std. estimate"
-msgstr "標準化"
+msgstr "標準化估計"
 
 msgid "Estimate"
 msgstr "估計"
@@ -323,7 +322,7 @@ msgid "n"
 msgstr "n"
 
 msgid "Baseline test"
-msgstr "基底模式檢定"
+msgstr "模型檢定"
 
 msgid "Difference test"
 msgstr "差異檢定"
@@ -457,9 +456,8 @@ msgstr "線性斜率"
 msgid "residuals"
 msgstr "殘差"
 
-#, fuzzy
 msgid "Additional Fit Measures"
-msgstr "其他適配指標"
+msgstr "其他配適指標"
 
 msgid "Hoelter's critical N (CN)"
 msgstr "Hoelter critical N (%s = .05, CN值)"
@@ -480,7 +478,7 @@ msgid "Maximum likelihood-based dinstance"
 msgstr "基於最大概似估計法距離"
 
 msgid "Reliability Measures"
-msgstr "信度指標"
+msgstr "信度指標(Cronbach's α 與 CR值)"
 
 msgid "Cronbach's %s"
 msgstr "Cronbach's %s"
@@ -563,17 +561,16 @@ msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr "估計失敗!訊息:模型%s的自由度為負值"
 
 msgid "n(Observations)"
-msgstr "n(樣本數)"
+msgstr "樣本數"
 
 msgid "Total"
-msgstr "總和"
+msgstr "總數"
 
-#, fuzzy
 msgid "n(Parameters)"
-msgstr "參數"
+msgstr "參數個數"
 
 msgid "Free"
-msgstr "自由"
+msgstr "自由參數"
 
 msgid "%1$sdf"
 msgstr "自由度"
@@ -599,7 +596,7 @@ msgstr "標準誤為 %s"
 msgid ""
 "%s The AIC, BIC and additional information criteria are only available with "
 "ML-type estimators."
-msgstr "只有在使用最大概似法 (ML)類之估計法時，才提供AIC, BIC與其他訊息準則指標"
+msgstr "只有在使用最大概似法 (ML)類之估計法時，才提供AIC, BIC與其他訊息準則指標。"
 
 msgid "all"
 msgstr "所有參數"
@@ -607,9 +604,8 @@ msgstr "所有參數"
 msgid "<b>Warnings:</b> %s"
 msgstr "<b>警告:</b> %s"
 
-#, fuzzy
 msgid "Parameter Estimates"
-msgstr "參數估計值"
+msgstr "參數估計"
 
 msgid "Factor Loadings"
 msgstr "因素負荷量"
@@ -631,12 +627,11 @@ msgid "Factor covariances"
 msgstr "因素共變數"
 
 msgid "Variables"
-msgstr "變數"
+msgstr "變項"
 
 msgid "Residual variances"
 msgstr "殘差變異數"
 
-#, fuzzy
 msgid "Intercepts"
 msgstr "截距"
 
@@ -659,9 +654,8 @@ msgstr "命名"
 msgid "%s Fit indices are based on the scaled test statistic."
 msgstr "Satorra-Bentler量尺化檢定統計數"
 
-#, fuzzy
 msgid "T-size fit indices"
-msgstr "適配指標"
+msgstr "T-size 配適指標"
 
 msgid ""
 "Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness "
@@ -691,17 +685,14 @@ msgstr ""
 msgid "AVE"
 msgstr ""
 
-#, fuzzy
 msgid "Reliability"
-msgstr "其他適配指標"
+msgstr "信度"
 
-#, fuzzy
 msgid "Coefficient α"
-msgstr "係數"
+msgstr "Cronbach's α"
 
-#, fuzzy
 msgid "Coefficient ω"
-msgstr "係數"
+msgstr "CR值"
 
 msgid "Heterotrait-Monotrait Ratio"
 msgstr "異質-單質比"
@@ -736,7 +727,7 @@ msgid ""
 msgstr "因有非數值的變數而無法計算Mardia係數。"
 
 msgid "Skewness"
-msgstr "偏度"
+msgstr "偏態"
 
 msgid "Kurtosis"
 msgstr "峰度"
