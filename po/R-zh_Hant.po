@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
 "POT-Creation-Date: 2024-12-07 02:58\n"
-"PO-Revision-Date: 2025-01-14 13:00+0000\n"
+"PO-Revision-Date: 2025-01-20 01:53+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-r/zh_Hant/>\n"
@@ -26,7 +26,7 @@ msgid "Comparative Fit Index (CFI)"
 msgstr "比較配適指標 (CFI)"
 
 msgid "Tucker-Lewis Index (TLI)"
-msgstr "Tucker-Lewis Index (TLI)"
+msgstr "Tucker-Lewis 配適指標 (TLI)"
 
 msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
 msgstr "非規範配適指標 (NNFI)"
@@ -92,10 +92,10 @@ msgid "Sample-size adjusted Bayesian (SSABIC)"
 msgstr "依照樣本大小校正之貝氏資訊量準則 (SSABIC)"
 
 msgid "The model could not be estimated due to nonconvergence."
-msgstr "此模型無法估計: 迭代結果無法收斂"
+msgstr "此模型無法估計: 迭代結果無法收斂。"
 
 msgid "The model could not be estimated: No degrees of freedom left."
-msgstr "此模型無法估計: 自由度不足"
+msgstr "此模型無法估計: 自由度不足。"
 
 msgid "Chi-square test"
 msgstr "卡方檢定"
@@ -127,7 +127,6 @@ msgstr "成分"
 msgid "Parameter"
 msgstr "參數"
 
-#, fuzzy
 msgid "Std. error"
 msgstr "標準誤"
 
@@ -214,9 +213,8 @@ msgstr "並非所有內生變數都有合理解，如：%s。只能使用連續�
 msgid ""
 "FIML missing value handling only available when all endogenous variables are "
 "of scale type. Ordinal endogenous variables in the model: %s"
-msgstr ""
-"只能在所有內生變數皆為連續變數時，才能使用完全訊息最大概似法遺漏值處理設定。"
-"模型中有以下次序內生變數：%s。"
+msgstr "只能在所有內生變數皆為連續變數時，才能使用完全訊息最大概似法遺漏值處理設定。"
+"模型中有以下次序內生變數：%s"
 
 msgid ""
 "Estimation failed\n"
@@ -246,11 +244,11 @@ msgid "Path coefficients"
 msgstr "路徑係數"
 
 msgid "Estimator is %s."
-msgstr "估計法為 %s"
+msgstr "估計法為 %s。"
 
 msgid ""
 "%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
-msgstr "%1$s 並非所有拔靴法樣本皆分析成功: 信賴區間是基於%4$.0f 的樣本分析結果"
+msgstr "%1$s 並非所有拔靴法樣本皆分析成功: 信賴區間是基於%4$.0f 的樣本分析結果。"
 
 msgid "Path plot"
 msgstr "路徑圖"
@@ -258,7 +256,7 @@ msgstr "路徑圖"
 msgid ""
 "Currently it is not possible to plot mediation models with ordinal "
 "variables. The plot could not be generated."
-msgstr "因包含次序變數而無法繪製中介模型圖，無法產生圖形"
+msgstr "因包含次序變數而無法繪製中介模型圖，無法產生圖形。"
 
 msgid ""
 "The plot could not be generated. The underlying code resulted in the "
@@ -269,7 +267,7 @@ msgid "Model syntax"
 msgstr "模型語法"
 
 msgid "FIML only available with ML-type estimators."
-msgstr "只有使用最大概似法 (ML)類估計法時才提供完全訊息最大概似法(FIML)功能"
+msgstr "只有使用最大概似法 (ML)類估計法時才提供完全訊息最大概似法(FIML)功能。"
 
 msgid ""
 "Estimation failed! Message: The model did not converge. Try using a "
@@ -280,7 +278,7 @@ msgid "df"
 msgstr "自由度"
 
 msgid "&#967;&sup2;"
-msgstr "&#967;&sup2;"
+msgstr "&#967;&sup2；"
 
 msgid "Factor model"
 msgstr "因素模型"
@@ -342,20 +340,17 @@ msgstr "構念"
 msgid "Std. Error"
 msgstr "標準誤"
 
-#, fuzzy
 msgid "Loadings"
 msgstr "因素負荷量"
 
-#, fuzzy
 msgid "Regression Coefficients"
 msgstr "迴歸係數"
 
 msgid "Outcome"
 msgstr "結果"
 
-#, fuzzy
 msgid "Total effects"
-msgstr "所有間接效果"
+msgstr "總效果"
 
 msgid "VIF"
 msgstr "變異數膨脹因子"
@@ -373,16 +368,14 @@ msgid ""
 "benchmark or 'none'."
 msgstr ""
 
-#, fuzzy
 msgid "Prediction Metrics"
-msgstr "預測變項"
+msgstr "預測指標"
 
 msgid "Target MAE"
 msgstr ""
 
-#, fuzzy
 msgid "Linear model MAE"
-msgstr "線性斜率"
+msgstr "線性模型的均絕對誤差(MAE)"
 
 msgid "PLS-PM MAE"
 msgstr ""
@@ -399,9 +392,8 @@ msgstr ""
 msgid "Target RMSE"
 msgstr ""
 
-#, fuzzy
 msgid "Linear model RMSE"
-msgstr "線性斜率"
+msgstr "線性模型的均方根誤差(RMSE)"
 
 msgid "PLS-PM RMSE"
 msgstr ""
@@ -424,15 +416,13 @@ msgid ""
 msgstr ""
 
 msgid "Are all indicator variables set to 'scale'?"
-msgstr "所有指標變數是否皆設定為連續變數"
+msgstr "所有指標變數是否皆設定為連續變數？"
 
-#, fuzzy
 msgid "Prediction failed Message: %1$s"
 msgstr "估計失敗。訊息:%s"
 
-#, fuzzy
 msgid "Indicator Scores"
-msgstr "指標係數"
+msgstr "指標得分"
 
 msgid "Actual scores"
 msgstr "實際分數"
@@ -449,9 +439,8 @@ msgstr "基準模型"
 msgid "lm"
 msgstr ""
 
-#, fuzzy
 msgid "Linear model"
-msgstr "線性斜率"
+msgstr "線性模型"
 
 msgid "residuals"
 msgstr "殘差"
@@ -489,23 +478,20 @@ msgstr ""
 msgid "Dijkstra-Henseler's %s"
 msgstr ""
 
-#, fuzzy
 msgid "Correlation tables"
-msgstr "共變數表"
+msgstr "相關係數表"
 
 msgid "Observed indicator correlation matrix"
 msgstr ""
 
-#, fuzzy
 msgid "Implied indicator correlation matrix"
-msgstr "模式隱含之共變數矩陣"
+msgstr "隱含指標的相關矩陣"
 
 msgid "Observed construct correlation matrix"
 msgstr "觀察構念相關矩陣"
 
-#, fuzzy
 msgid "Implied construct correlation matrix"
-msgstr "模式隱含之共變數矩陣"
+msgstr "隱含構面的相關矩陣"
 
 msgid "Column '%s' name already exists in the dataset"
 msgstr "資料中已有命名為'%s'之變數"
@@ -524,7 +510,7 @@ msgstr "當以變異數-共變數矩陣為資料進行分析時，無法進行�
 msgid ""
 "Not more cases than number of variables. Is your data a variance-covariance "
 "matrix?"
-msgstr "資料個數少於變數個數，是以變異數-共變數矩陣為資料進行分析嗎？"
+msgstr "資料個數少於變數個數，你是以變異數-共變數矩陣為資料進行分析嗎？"
 
 msgid ""
 "When mean structure is included, at least one of the checkboxes to fix the "
@@ -534,31 +520,27 @@ msgstr "若要估計平均數模式，至少需勾選一個截距為零之選項
 msgid ""
 "When conditioning estimation on exogenous covariates, the 'Exogenous "
 "covariate(s) fixed' box must be checked."
-msgstr "當條件估計是基於外衍共變數時，必須勾選「固定外衍共變數」"
+msgstr "當條件估計是基於外衍共變數時，必須勾選「固定外衍共變數」。"
 
 msgid ""
 "Bootstrapped standard errors are not yet available when 'Condition on "
 "exogenous covariate(s)' box is checked."
-msgstr "勾選「考量外衍共變數」時，無法提供拔靴法標準誤"
+msgstr "勾選「考量外衍共變數」時，無法提供拔靴法標準誤。"
 
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr "模型設定無效。是否將某變數名稱誤設為字串資料？"
 
-#, fuzzy
 msgid "One or more variables are constants or contain only missing values."
-msgstr "一或多個變數為常數或只有遺漏值"
+msgstr "一或多個變數為常數或只有遺漏值。"
 
-#, fuzzy
 msgid "Estimation failed. Message: %s"
 msgstr "估計失敗。訊息:%s"
 
-#, fuzzy
 msgid "Estimation failed! Message: %s did not converge!"
-msgstr "估計失敗。訊息:模型%s無法收斂!"
+msgstr "估計失敗。訊息:模型%s無法收斂！"
 
-#, fuzzy
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
-msgstr "估計失敗!訊息:模型%s的自由度為負值"
+msgstr "估計失敗!訊息:模型%s的自由度為負值。"
 
 msgid "n(Observations)"
 msgstr "樣本數"
@@ -578,20 +560,19 @@ msgstr "自由度"
 msgid ""
 "%sFitting the model resulted in warnings. Check the 'Show warnings' box in "
 "the Output Options to see the warnings."
-msgstr "擬合模型時出現警告。勾選「報表設定」中的「顯示警告」以察看警告訊息"
+msgstr "擬合模型時出現警告。勾選「報表設定」中的「顯示警告」以察看警告訊息。"
 
 msgid "A total of %g cases were removed due to missing values."
-msgstr "有 %g 筆資料因有遺漏值而未納入分析"
+msgstr "有 %g 筆資料因有遺漏值而未納入分析。"
 
 msgid "Model test is %s."
-msgstr "模型考驗為 %s"
+msgstr "模型考驗為 %s。"
 
-#, fuzzy
 msgid "Information matrix is %s."
-msgstr "資訊準則"
+msgstr "資訊矩陣為 %s。"
 
 msgid "Standard errors are %s."
-msgstr "標準誤為 %s"
+msgstr "標準誤為 %s。"
 
 msgid ""
 "%s The AIC, BIC and additional information criteria are only available with "
@@ -613,7 +594,6 @@ msgstr "因素負荷量"
 msgid "Latent"
 msgstr "潛在"
 
-#, fuzzy
 msgid "%s%% Confidence interval"
 msgstr "%s%% 信賴區間"
 
@@ -650,9 +630,8 @@ msgstr "變數定義"
 msgid "Name"
 msgstr "命名"
 
-#, fuzzy
 msgid "%s Fit indices are based on the scaled test statistic."
-msgstr "Satorra-Bentler量尺化檢定統計數"
+msgstr "%s 配適指標，將基於量尺化檢定統計數。"
 
 msgid "T-size fit indices"
 msgstr "T-size 配適指標"
@@ -680,10 +659,10 @@ msgid "T-size statistics are computed for <i>%s = 0.05</i>."
 msgstr ""
 
 msgid "Average variance extracted"
-msgstr ""
+msgstr "平均變異抽取量 (AVE)"
 
 msgid "AVE"
-msgstr ""
+msgstr "平均變異抽取量 (AVE)"
 
 msgid "Reliability"
 msgstr "信度"
@@ -698,12 +677,11 @@ msgid "Heterotrait-Monotrait Ratio"
 msgstr "異質-單質比"
 
 msgid "Heterotrait-monotrait ratio"
-msgstr ""
+msgstr "異質-單質比"
 
 msgid "Mardia's coefficients"
 msgstr "Mardia係數"
 
-#, fuzzy
 msgid "Coefficient"
 msgstr "係數"
 
@@ -713,14 +691,12 @@ msgstr "z"
 msgid ""
 "Multivariate skewness and kurtosis calculated for observed variables from "
 "all models."
-msgstr "根據所有模型的觀察變數來計算多變數偏度與峰度"
+msgstr "根據所有模型的觀察變數來計算多變數偏態與峰度。"
 
-#, fuzzy
 msgid ""
 "Not all used variables are continuous: Mardia's coefficients not available."
 msgstr "因有非數值的變數而無法計算Mardia係數。"
 
-#, fuzzy
 msgid ""
 "The data covariance matrix could not be inverted: Mardia's coefficients not "
 "available."
@@ -781,19 +757,15 @@ msgstr ""
 msgid "Summary of sensitivity analysis"
 msgstr ""
 
-#, fuzzy
 msgid "Path"
 msgstr "路徑圖"
 
-#, fuzzy
 msgid "Standardized estimate"
-msgstr "標準化"
+msgstr "標準化估計值"
 
-#, fuzzy
 msgid "Original model"
-msgstr "線性斜率"
+msgstr "原始模型"
 
-#, fuzzy
 msgid "p*"
 msgstr "p"
 
@@ -820,17 +792,14 @@ msgstr ""
 msgid "Sensitivity parameters that led to a change in significance"
 msgstr ""
 
-#, fuzzy
 msgid "Sensitivity parameters"
-msgstr "變數定義"
+msgstr "敏感性參數"
 
-#, fuzzy
 msgid "Summary of sensitivity parameters"
-msgstr "自由估計參數個數"
+msgstr "敏感性參數的摘要"
 
-#, fuzzy
 msgid "Sensitivity parameter"
-msgstr "變數定義"
+msgstr "敏感性參數"
 
 msgid "Path diagram"
 msgstr "路徑圖"
@@ -841,19 +810,15 @@ msgstr ""
 msgid "Yuan-Bentler"
 msgstr ""
 
-#, fuzzy
 msgid "Yuan-Bentler Mplus"
 msgstr "Yuan-Bentler (Mplus) 量尺化檢定統計數"
 
-#, fuzzy
 msgid "mean and variance-adjusted"
 msgstr "平均數與變異數調整檢定統計數"
 
-#, fuzzy
 msgid "scaled and shifted"
 msgstr "量尺與轉變(shifted)檢定統計數"
 
-#, fuzzy
 msgid "bootstrap (Bollen-Stine)"
 msgstr "拔靴法(Bollen-Stine) 機率值"
 
