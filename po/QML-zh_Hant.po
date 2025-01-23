@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-01-23 22:44+0000\n"
+"PO-Revision-Date: 2025-01-24 23:01+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-qml/zh_Hant/>\n"
@@ -207,7 +207,7 @@ msgstr "模型圖"
 
 msgctxt "MediationAnalysis|"
 msgid "Parameter estimates"
-msgstr "參數估計"
+msgstr "參數估計值"
 
 msgctxt "MediationAnalysis|"
 msgid "Legend"
@@ -251,7 +251,7 @@ msgstr "模型圖"
 
 msgctxt "Mimic|"
 msgid "Parameter estimates"
-msgstr "參數估計"
+msgstr "參數估計值"
 
 msgctxt "Mimic|"
 msgid "Legend"
