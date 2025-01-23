@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
 "POT-Creation-Date: 2024-12-07 02:58\n"
-"PO-Revision-Date: 2025-01-23 22:44+0000\n"
+"PO-Revision-Date: 2025-01-24 23:02+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-r/zh_Hant/>\n"
@@ -107,13 +107,13 @@ msgid "Growth curve model"
 msgstr "成長曲線模型"
 
 msgid "The model is not admissible: %s"
-msgstr "此模型無法執行: %s"
+msgstr "此模型無法執行： %s"
 
 msgid "Warning."
 msgstr "警告."
 
 msgid "Parameter estimates"
-msgstr "參數估計"
+msgstr "參數估計值"
 
 msgid "Std. estimate"
 msgstr "標準化估計"
@@ -586,7 +586,7 @@ msgid "<b>Warnings:</b> %s"
 msgstr "<b>警告:</b> %s"
 
 msgid "Parameter Estimates"
-msgstr "參數估計"
+msgstr "參數估計值"
 
 msgid "Factor Loadings"
 msgstr "因素負荷量"
