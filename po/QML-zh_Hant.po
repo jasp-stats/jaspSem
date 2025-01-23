@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-01-20 12:45+0000\n"
+"PO-Revision-Date: 2025-01-23 22:44+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-qml/zh_Hant/>\n"
@@ -83,7 +83,7 @@ msgstr "標準化估計值"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Implied covariance matrix"
-msgstr "模式隱含之共變數矩陣"
+msgstr "模型隱含之共變數矩陣"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Residual covariance matrix"
@@ -203,7 +203,7 @@ msgstr "圖"
 
 msgctxt "MediationAnalysis|"
 msgid "Model plot"
-msgstr "模式圖"
+msgstr "模型圖"
 
 msgctxt "MediationAnalysis|"
 msgid "Parameter estimates"
@@ -247,7 +247,7 @@ msgstr "圖"
 
 msgctxt "Mimic|"
 msgid "Model plot"
-msgstr "模式圖"
+msgstr "模型圖"
 
 msgctxt "Mimic|"
 msgid "Parameter estimates"
@@ -259,7 +259,7 @@ msgstr "圖例"
 
 msgctxt "SEM|"
 msgid "Model 1"
-msgstr "模式1"
+msgstr "模型1"
 
 msgctxt "SEM|"
 msgid "Data"
@@ -535,7 +535,7 @@ msgstr "取消參數設限(每行取消一個參數限制)"
 
 msgctxt "Description|"
 msgid "Evaluate latent data structures with Yves Rosseel’s lavaan program"
-msgstr "以 Yves Rosseel 的 Lavaan 程式評估潛在資料模式"
+msgstr "以 Yves Rosseel 的 Lavaan 程式評估潛在資料模型"
 
 msgctxt "SEM|"
 msgid ""
@@ -552,7 +552,7 @@ msgstr ""
 
 msgctxt "Description|"
 msgid "MIMIC Model"
-msgstr "MIMIC 模式"
+msgstr "MIMIC 模型"
 
 msgctxt "Description|"
 msgid "Latent Growth"
