@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2025-01-24 23:01+0000\n"
+"Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
+"Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
+"projects/jasp/jaspsem-qml/zh_Hant/>\n"
+"Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.10-dev\n"
 "X-Language: zh_Hant\n"
 "X-Qt-Contexts: true\n"
 
@@ -77,7 +83,7 @@ msgstr "標準化估計值"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Implied covariance matrix"
-msgstr "模式隱含之共變數矩陣"
+msgstr "模型隱含之共變數矩陣"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Residual covariance matrix"
@@ -197,11 +203,11 @@ msgstr "圖"
 
 msgctxt "MediationAnalysis|"
 msgid "Model plot"
-msgstr "模式圖"
+msgstr "模型圖"
 
 msgctxt "MediationAnalysis|"
 msgid "Parameter estimates"
-msgstr "參數估計"
+msgstr "參數估計值"
 
 msgctxt "MediationAnalysis|"
 msgid "Legend"
@@ -241,11 +247,11 @@ msgstr "圖"
 
 msgctxt "Mimic|"
 msgid "Model plot"
-msgstr "模式圖"
+msgstr "模型圖"
 
 msgctxt "Mimic|"
 msgid "Parameter estimates"
-msgstr "參數估計"
+msgstr "參數估計值"
 
 msgctxt "Mimic|"
 msgid "Legend"
@@ -253,7 +259,7 @@ msgstr "圖例"
 
 msgctxt "SEM|"
 msgid "Model 1"
-msgstr "模式1"
+msgstr "模型1"
 
 msgctxt "SEM|"
 msgid "Data"
@@ -529,7 +535,7 @@ msgstr "取消參數設限(每行取消一個參數限制)"
 
 msgctxt "Description|"
 msgid "Evaluate latent data structures with Yves Rosseel’s lavaan program"
-msgstr "以 Yves Rosseel 的 Lavaan 程式評估潛在資料模式"
+msgstr "以 Yves Rosseel 的 Lavaan 程式評估潛在資料模型"
 
 msgctxt "SEM|"
 msgid ""
@@ -546,7 +552,7 @@ msgstr ""
 
 msgctxt "Description|"
 msgid "MIMIC Model"
-msgstr "MIMIC 模式"
+msgstr "MIMIC 模型"
 
 msgctxt "Description|"
 msgid "Latent Growth"
@@ -650,25 +656,24 @@ msgstr "相對差異"
 
 msgctxt "PLSSEM|"
 msgid "Handling of inadmissibles"
-msgstr ""
+msgstr "對不合理之估計值的處理方法"
 
 msgctxt "PLSSEM|"
 msgid "Replace"
-msgstr ""
+msgstr "取代"
 
 msgctxt "PLSSEM|"
 msgid "Ignore"
-msgstr ""
+msgstr "忽略"
 
 msgctxt "PLSSEM|"
 msgid "Drop"
-msgstr ""
+msgstr "去除"
 
 msgctxt "PLSSEM|"
 msgid "Output"
-msgstr ""
+msgstr "輸出"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "R-squared"
 msgstr "R平方"
@@ -677,7 +682,6 @@ msgctxt "PLSSEM|"
 msgid "Additional fit measures"
 msgstr "其他配適指標"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Mardia's coefficient"
 msgstr "Mardia 係數"
@@ -708,7 +712,7 @@ msgstr "預測"
 
 msgctxt "PLSSEM|"
 msgid "Predict endogenous indicator scores"
-msgstr ""
+msgstr "預測內生指標的得分"
 
 msgctxt "PLSSEM|"
 msgid "Cross-validation k-folds"
@@ -720,11 +724,11 @@ msgstr "複製次數"
 
 msgctxt "PLSSEM|"
 msgid "Benchmark(s)"
-msgstr ""
+msgstr "基準"
 
 msgctxt "PLSSEM|"
 msgid "Linear model"
-msgstr ""
+msgstr "線性模型"
 
 msgctxt "PLSSEM|"
 msgid "All"
@@ -732,15 +736,15 @@ msgstr "所有參數"
 
 msgctxt "PLSSEM|"
 msgid "Show predicted scores"
-msgstr ""
+msgstr "顯示預測得分"
 
 msgctxt "PLSSEM|"
 msgid "Samples"
-msgstr ""
+msgstr "樣本"
 
 msgctxt "PLSSEM|"
 msgid "Jackknife"
-msgstr ""
+msgstr "刀切法(Jackknife)"
 
 msgctxt "SEM|"
 msgid "Average variance extracted (AVE)"
