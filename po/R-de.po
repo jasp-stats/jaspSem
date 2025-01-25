@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2024-12-07 02:58\n"
-"PO-Revision-Date: 2024-11-04 11:00+0000\n"
+"PO-Revision-Date: 2025-01-25 20:47+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 5.8.2\n"
+"X-Generator: Weblate 5.10-dev\n"
 
 msgid "Fit indices"
 msgstr "Anpassungsindikatoren"
@@ -98,7 +98,6 @@ msgstr "Das Modell konnte nicht geschätzt werden durch fehlende Konvergenz."
 msgid "The model could not be estimated: No degrees of freedom left."
 msgstr "Das Modell konnte nicht geschätzt werden: Keine Freiheitsgrade übrig."
 
-#, fuzzy
 msgid "Chi-square test"
 msgstr "Chi-Quadrat-Test"
 
@@ -687,6 +686,10 @@ msgid ""
 "Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), "
 "148-153, https://doi.org/10.1080/10705511.2016.1225260"
 msgstr ""
+"Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness "
+"of Fit: A Note on Using Equivalence Testing to Assess Structural Equation "
+"Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), "
+"148-153, https://doi.org/10.1080/10705511.2016.1225260"
 
 msgid "Poor-fair limit"
 msgstr ""
@@ -699,10 +702,11 @@ msgstr ""
 
 #, fuzzy
 msgid "RMSEA"
-msgstr "PCA RMSE"
+msgstr "RMSEA"
 
+#, fuzzy
 msgid "T-size statistics are computed for <i>%s = 0.05</i>."
-msgstr ""
+msgstr "T-Größe-Statistiken werden für <i>%s = 0,05</i> berechnet."
 
 msgid "Average variance extracted"
 msgstr "Durchschnittliche extrahierte Varianz"
@@ -743,7 +747,6 @@ msgstr ""
 "Multivariate Schiefe und Wölbung für beobachtete Variablen aus allen "
 "Modellen berechnet."
 
-#, fuzzy
 msgid ""
 "Not all used variables are continuous: Mardia's coefficients not available."
 msgstr ""
