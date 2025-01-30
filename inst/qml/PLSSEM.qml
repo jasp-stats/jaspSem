@@ -29,9 +29,7 @@ Form
 	{
 		id: models
 		name: "models"
-		maximumItems: 9
-		newItemName: qsTr("Model 1")
-		optionKey: "name"
+		maximumItems: 1
 
 		content: TextArea { name: "syntax"; width: models.width; textType: JASP.TextTypeCSem; showLineNumber: true }
 	}
@@ -131,9 +129,7 @@ Form
 								enabled: errorCalcMethod.value == "bootstrap"
 							}
 						}
-
 				}
-			}
 			RadioButtonGroup
 			{
 				visible: errorCalcMethod.value != "none"
@@ -215,7 +211,6 @@ Form
 				enabled: prediction.checked
 				RadioButton { value: "none"; 	label: qsTr("None")	; checked: true	}
 				RadioButton { value: "lm"; 		label: qsTr("Linear model")		}
-				RadioButton { value: "PLS-PM"; 	label: qsTr("PLS-PM")			}
 				RadioButton { value: "GSCA"; 	label: qsTr("GSCA")				}
 				RadioButton { value: "PCA";		label: qsTr("PCA")				}
 				RadioButton { value: "MAXVAR";	label: qsTr("MAXVAR")			}
