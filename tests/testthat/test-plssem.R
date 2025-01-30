@@ -15,14 +15,14 @@ options$group                     <- ""
 options$innerWeightingScheme      <- "path"
 options$convergenceCriterion      <- "absoluteDifference"
 
-results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
+results <- jaspTools::runAnalysis("PLSSEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
 
 
 test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(1764.23685931775, 1796.68169290726, 123.966981546523, 41, "Model1",
-                                      75, 2.86465847952851e-10))
+                                 list(1764.23685931775, 1796.68169290726, 123.966981546523, 41, 75,
+                                      2.86465847952811e-10))
 })
 
 
@@ -89,7 +89,7 @@ test_that("Weights table results match", {
 })
 
 
-# Multigroup, multimodel PLSSEM works
+# Multigroup PLSSEM works
 
 options <- jaspTools::analysisOptions("PLSSEM")
 model1 = "
@@ -99,15 +99,7 @@ model1 = "
   dem60 ~ ind60
   dem65 ~ dem60
 "
-model2 = "
-  ind60 =~ x1 + x2 + x3
-  dem60 =~ y1 + y2 + y3 + y4
-  dem65 =~ y5 + y6 + y7 + y8
-  dem60 ~ ind60
-  dem65 ~ ind60 + dem60
-"
-options$models <- list(list(name = "Model1", syntax = list(model = model1, columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))),
-                       list(name = "Model2", syntax = list(model = model2, columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))))
+options$models <- list(list(name = "Model1", syntax = list(model = model1, columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))))
 options$group                         <- "group"
 options$innerWeightingScheme          <- "path"
 options$convergenceCriterion          <- "absoluteDifference"
@@ -123,76 +115,69 @@ options$innerWeightingScheme          <- "centroid"
 options$structuralModelIgnored        <- TRUE
 options$handlingOfFlippedSigns        <- "none"
 
-results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
+results <- jaspTools::runAnalysis("PLSSEM", testthat::test_path("poldem_grouped.csv"), options, makeTest = F)
 
 test_that("Additional Fit Measures table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list("Comparative Fit Index (CFI)", 0.870519886244139, 0.682513115515104,
-                                      0.881095219345823, 0.663256961343149, "Goodness of fit index (GFI)",
-                                      0.496752300477216, 0.419309726581196, 0.496492992345079, 0.406276458556095,
-                                      "Hoelter's critical N (CN)", 24.292189653768, 16.4077818076547,
-                                      25.1370755296179, 15.5807646964114, "Bollen's Incremental Fit Index (IFI)",
-                                      0.874921175926588, 0.695397113795039, 0.885436589164564, 0.677927787927771,
-                                      "Bentler-Bonett Non-normed Fit Index (NNFI)", 0.830442708176849,
-                                      0.584243365555493, 0.840493586927323, 0.548271533509102, "Bentler-Bonett Normed Fit Index (NFI)",
-                                      0.78834486744787, 0.61479258754282, 0.799905861503856, 0.60121910111449,
-                                      "Root mean square error of approximation (RMSEA)", 0.177868578652955,
-                                      0.250582502116037, 0.172516275461992, 0.261198017900775, "Root mean square residual covariance (RMS theta)",
-                                      0.0766251796879128, 0.0795989971054803, 0.0766251796879128,
-                                      0.0795989971054803, "Standardized root mean square residual (SRMR)",
-                                      0.0943761594914447, 0.0897114551867813, 0.0633682319348557,
-                                      0.0857662455926121, "Goodness of Fit (GoF)", 0.651821788678243,
-                                      0.614476373672947, 0.669021172943273, 0.616674789196147, "Geodesic distance",
-                                      0.495814387492709, 0.623860456924759, 0.446431300714197, 0.627248478150675,
-                                      "Squared Euclidean distance", 0.587852725703404, 0.531177582654172,
-                                      0.265025166024278, 0.485486026281449, "Maximum likelihood-based dinstance",
-                                      2.4954303800916, 3.77238193053796, 2.35912536615928, 3.90530869487514
-                                 ))
+                                 list("Comparative Fit Index (CFI)", 0.87051988624414, 0.682513115515102,
+                                      "Goodness of fit index (GFI)", 0.496752300477218, 0.419309726581194,
+                                      "Hoelter's critical N (CN)", 24.2921896537681, 16.4077818076546,
+                                      "Bollen's Incremental Fit Index (IFI)", 0.874921175926589, 0.695397113795037,
+                                      "Bentler-Bonett Non-normed Fit Index (NNFI)", 0.83044270817685,
+                                      0.584243365555491, "Bentler-Bonett Normed Fit Index (NFI)",
+                                      0.788344867447871, 0.614792587542818, "Root mean square error of approximation (RMSEA)",
+                                      0.177868578652954, 0.250582502116038, "Root mean square residual covariance (RMS theta)",
+                                      0.0766251796879127, 0.0795989971054803, "Standardized root mean square residual (SRMR)",
+                                      0.0943761594914448, 0.0897114551867814, "Goodness of Fit (GoF)",
+                                      0.651821788678243, 0.614476373672947, "Geodesic distance", 0.495814387492708,
+                                      0.623860456924762, "Squared Euclidean distance", 0.587852725703405,
+                                      0.531177582654172, "Maximum likelihood-based dinstance", 2.49543038009159,
+                                      3.77238193053797))
 })
 
 test_that("1 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model1"]][["collection"]][["modelContainer_cors_Model1_impliedCon"]][["collection"]][["modelContainer_cors_Model1_impliedCon_1"]][["data"]]
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_impliedCon"]][["collection"]][["modelContainer_cors_impliedCon_1"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list("", "", 1, "ind60", 1, "", 0.521623484887408, "dem60", 0.946324373734241,
+                                 list("", "", 1, "ind60", 1, "", 0.521623484887408, "dem60", 0.94632437373424,
                                       1, 0.493625017661149, "dem65"))
 })
 
 test_that("2 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model1"]][["collection"]][["modelContainer_cors_Model1_impliedCon"]][["collection"]][["modelContainer_cors_Model1_impliedCon_2"]][["data"]]
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_impliedCon"]][["collection"]][["modelContainer_cors_impliedCon_2"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list("", "", 1, "ind60", 1, "", 0.319599163621636, "dem60", 0.996650485797297,
                                       1, 0.318528661683913, "dem65"))
 })
 
 test_that("1 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model1"]][["collection"]][["modelContainer_cors_Model1_impliedInd"]][["collection"]][["modelContainer_cors_Model1_impliedInd_1"]][["data"]]
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_impliedInd"]][["collection"]][["modelContainer_cors_impliedInd_1"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list("x1", 1, "", "", "", "", "", "", "", "", "", "", "x2", 0.96747843048152,
-                                      1, "", "", "", "", "", "", "", "", "", "x3", 0.795398510820738,
+                                      1, "", "", "", "", "", "", "", "", "", "x3", 0.795398510820737,
                                       0.825044526322995, 1, "", "", "", "", "", "", "", "", "y1",
                                       0.414839952430787, 0.430301826564834, 0.353766472998025, 1,
-                                      "", "", "", "", "", "", "", "y2", 0.415688469462733, 0.431181969440606,
+                                      "", "", "", "", "", "", "", "y2", 0.415688469462732, 0.431181969440606,
                                       0.35449006983558, 0.679493964784794, 1, "", "", "", "", "",
-                                      "", "y3", 0.310189790704042, 0.321751154245401, 0.264523095170476,
+                                      "", "y3", 0.310189790704042, 0.321751154245401, 0.264523095170475,
                                       0.507043389954196, 0.508080500651443, 1, "", "", "", "", "",
                                       "y4", 0.487291119411965, 0.50545338635573, 0.415551249650652,
                                       0.796537308724513, 0.798166552651171, 0.595597747115355, 1,
                                       "", "", "", "", "y5", 0.409464313554319, 0.424725827401921,
                                       0.349182245287324, 0.669319815905676, 0.670688848131929, 0.50047294720122,
-                                      0.786215504138801, 1, "", "", "", "y6", 0.410128144463718, 0.425414400552049,
-                                      0.349748345823468, 0.670404929229019, 0.671776180954939, 0.501284322944288,
+                                      0.786215504138802, 1, "", "", "", "y6", 0.410128144463717, 0.425414400552049,
+                                      0.349748345823468, 0.670404929229018, 0.671776180954938, 0.501284322944287,
                                       0.78749013085429, 0.738911844597158, 1, "", "", "y7", 0.390751828554134,
-                                      0.405315892490963, 0.333224645782372, 0.638731956107242, 0.640038423674865,
-                                      0.477601375229029, 0.750285521131482, 0.704002293707963, 0.705143634888086,
-                                      1, "", "y8", 0.359080400446972, 0.372464010012979, 0.306215941942183,
+                                      0.405315892490962, 0.333224645782372, 0.638731956107242, 0.640038423674865,
+                                      0.477601375229029, 0.750285521131483, 0.704002293707963, 0.705143634888086,
+                                      1, "", "y8", 0.359080400446972, 0.372464010012978, 0.306215941942183,
                                       0.586961108860151, 0.588161683913348, 0.438890570789755, 0.68947297412361,
-                                      0.646941119829514, 0.647989952408295, 0.617375964576475, 1
+                                      0.646941119829515, 0.647989952408294, 0.617375964576475, 1
                                  ))
 })
 
 test_that("2 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model1"]][["collection"]][["modelContainer_cors_Model1_impliedInd"]][["collection"]][["modelContainer_cors_Model1_impliedInd_2"]][["data"]]
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_impliedInd"]][["collection"]][["modelContainer_cors_impliedInd_2"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list("x1", 1, "", "", "", "", "", "", "", "", "", "", "x2", 0.934303505690295,
                                       1, "", "", "", "", "", "", "", "", "", "x3", 0.790093644203597,
@@ -203,342 +188,140 @@ test_that("2 table results match", {
                                       "", "y3", 0.276356957074584, 0.230437455049635, 0.194869405404459,
                                       0.661944915025775, 0.526068718762583, 1, "", "", "", "", "",
                                       "y4", 0.292904521540612, 0.244235474405422, 0.206537698768669,
-                                      0.701580523516688, 0.557568399933754, 0.707261307392206, 1,
+                                      0.701580523516689, 0.557568399933754, 0.707261307392206, 1,
                                       "", "", "", "", "y5", 0.281697230698017, 0.234890388227361,
-                                      0.19863502779628, 0.674736223076412, 0.536234378902497, 0.680199645346271,
+                                      0.198635027796279, 0.674736223076412, 0.536234378902497, 0.680199645346271,
                                       0.720928301502733, 1, "", "", "", "y6", 0.236839922943984, 0.197486575605311,
                                       0.167004498271691, 0.567291608387322, 0.450844719575288, 0.571885038383767,
-                                      0.606128086360512, 0.586860858515855, 1, "", "", "y7", 0.265705365927846,
+                                      0.606128086360512, 0.586860858515856, 1, "", "", "y7", 0.265705365927846,
                                       0.221555733445569, 0.187358578626843, 0.636431656119058, 0.505792518855538,
                                       0.641584921594313, 0.680001424521895, 0.658385956313478, 0.553544948859816,
                                       1, "", "y8", 0.306359780802382, 0.255455006325795, 0.216025494551558,
-                                      0.733809277744428, 0.583181617981122, 0.73975102181084, 0.784045465677225,
+                                      0.733809277744428, 0.583181617981121, 0.73975102181084, 0.784045465677225,
                                       0.759122709303272, 0.638240438256752, 0.716027547589889, 1
                                  ))
 })
 
 test_that("1 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model1"]][["collection"]][["modelContainer_cors_Model1_observedCon"]][["collection"]][["modelContainer_cors_Model1_observedCon_1"]][["data"]]
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_observedCon"]][["collection"]][["modelContainer_cors_observedCon_1"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list("", "", 1, "ind60", 1, "", 0.521623484887408, "dem60", 0.946324373734241,
+                                 list("", "", 1, "ind60", 1, "", 0.521623484887408, "dem60", 0.94632437373424,
                                       1, 0.706803134908571, "dem65"))
 })
 
 test_that("2 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model1"]][["collection"]][["modelContainer_cors_Model1_observedCon"]][["collection"]][["modelContainer_cors_Model1_observedCon_2"]][["data"]]
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_observedCon"]][["collection"]][["modelContainer_cors_observedCon_2"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list("", "", 1, "ind60", 1, "", 0.319599163621636, "dem60", 0.996650485797297,
                                       1, 0.402495202076674, "dem65"))
 })
 
 test_that("1 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model1"]][["collection"]][["modelContainer_cors_Model1_observedInd"]][["collection"]][["modelContainer_cors_Model1_observedInd_1"]][["data"]]
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_observedInd"]][["collection"]][["modelContainer_cors_observedInd_1"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list("x1", 1, "", "", "", "", "", "", "", "", "", "", "x2", 0.936632480597606,
                                       1, "", "", "", "", "", "", "", "", "", "x3", 0.802018898050034,
                                       0.854833155000642, 1, "", "", "", "", "", "", "", "", "y1",
-                                      0.435636471259362, 0.391654469928191, 0.297538560842895, 1,
+                                      0.435636471259361, 0.391654469928191, 0.297538560842895, 1,
                                       "", "", "", "", "", "", "", "y2", 0.36043466502006, 0.451056616923047,
                                       0.430432055900858, 0.569509025127605, 1, "", "", "", "", "",
                                       "", "y3", 0.260838300138224, 0.280074800299991, 0.172366407044565,
-                                      0.748288584237669, 0.48480803952327, 1, "", "", "", "", "",
-                                      "y4", 0.513167465417005, 0.562128880504206, 0.481034467720295,
-                                      0.735145813265753, 0.809314721714599, 0.602715178667301, 1,
-                                      "", "", "", "", "y5", 0.627963000084829, 0.624069696373029,
-                                      0.461389606907667, 0.719883881782416, 0.616544458774234, 0.573479687781101,
-                                      0.716327751121612, 1, "", "", "", "y6", 0.637698302737554, 0.609846128652746,
-                                      0.630817988447911, 0.605557177407633, 0.683075171146646, 0.419941666854649,
-                                      0.714519572050633, 0.670828718972408, 1, "", "", "y7", 0.47807714601197,
-                                      0.529238982970303, 0.405796800553948, 0.723289586336763, 0.640791591329923,
-                                      0.690259546074704, 0.747505468794052, 0.773887673838734, 0.625878964508004,
-                                      1, "", "y8", 0.543530042771138, 0.55133633247208, 0.380423995946671,
-                                      0.604109707749136, 0.59462746878102, 0.453255459490693, 0.661709559609429,
-                                      0.616519440519969, 0.738159724409321, 0.64694120177703, 1))
-})
-
-test_that("2 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model1"]][["collection"]][["modelContainer_cors_Model1_observedInd"]][["collection"]][["modelContainer_cors_Model1_observedInd_2"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list("x1", 1, "", "", "", "", "", "", "", "", "", "", "x2", 0.844462190171461,
-                                      1, "", "", "", "", "", "", "", "", "", "x3", 0.759443340174928,
-                                      0.822979422277276, 1, "", "", "", "", "", "", "", "", "y1",
-                                      0.228798893771052, 0.1673627845874, 0.0990214007881648, 1, "",
-                                      "", "", "", "", "", "", "y2", 0.151047166840404, 0.100636161358447,
-                                      0.0382347032598399, 0.693912354422896, 1, "", "", "", "", "",
-                                      "", "y3", 0.402290635793068, 0.33745117598166, 0.264082997999289,
-                                      0.619129644823373, 0.430540166939625, 1, "", "", "", "", "",
-                                      "y4", 0.327744541436693, 0.265636839808341, 0.22237743313161,
-                                      0.638936855818488, 0.720332884808176, 0.625254969353847, 1,
-                                      "", "", "", "", "y5", 0.416772752181817, 0.337091821910455,
-                                      0.314973431538363, 0.7429637976105, 0.523926428253201, 0.59787191426008,
-                                      0.563485095874877, 1, "", "", "", "y6", 0.173882772345447, 0.172262926063391,
-                                      0.103940159450445, 0.757801804543029, 0.722345337319345, 0.443619436764764,
-                                      0.690021295526168, 0.519609085940291, 1, "", "", "y7", 0.32166269065689,
-                                      0.28114796998464, 0.297044976903819, 0.636140897128672, 0.539182837545081,
-                                      0.614027212992642, 0.643391219150212, 0.595245061008356, 0.606350074226451,
-                                      1, "", "y8", 0.378769176379258, 0.339666986130413, 0.33764514816292,
-                                      0.734843943897133, 0.634880950377465, 0.596867662479277, 0.813066001358268,
-                                      0.645984661389981, 0.79197242409805, 0.771299433260701, 1))
-})
-
-test_that("1 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model2"]][["collection"]][["modelContainer_cors_Model2_impliedCon"]][["collection"]][["modelContainer_cors_Model2_impliedCon_1"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list("", "", 1, "ind60", 1, "", 0.521623484887408, "dem60", 0.946324373734241,
-                                      1, 0.706803134908571, "dem65"))
-})
-
-test_that("2 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model2"]][["collection"]][["modelContainer_cors_Model2_impliedCon"]][["collection"]][["modelContainer_cors_Model2_impliedCon_2"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list("", "", 1, "ind60", 1, "", 0.319599163621636, "dem60", 0.996650485797297,
-                                      1, 0.402495202076674, "dem65"))
-})
-
-test_that("1 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model2"]][["collection"]][["modelContainer_cors_Model2_impliedInd"]][["collection"]][["modelContainer_cors_Model2_impliedInd_1"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list("x1", 1, "", "", "", "", "", "", "", "", "", "", "x2", 0.96747843048152,
-                                      1, "", "", "", "", "", "", "", "", "", "x3", 0.795398510820738,
-                                      0.825044526322995, 1, "", "", "", "", "", "", "", "", "y1",
-                                      0.414839952430787, 0.430301826564834, 0.353766472998025, 1,
-                                      "", "", "", "", "", "", "", "y2", 0.415688469462733, 0.431181969440606,
-                                      0.35449006983558, 0.679493964784794, 1, "", "", "", "", "",
-                                      "", "y3", 0.310189790704042, 0.321751154245401, 0.264523095170476,
-                                      0.507043389954196, 0.508080500651443, 1, "", "", "", "", "",
-                                      "y4", 0.487291119411965, 0.50545338635573, 0.415551249650652,
-                                      0.796537308724513, 0.798166552651171, 0.595597747115355, 1,
-                                      "", "", "", "", "y5", 0.586296581612981, 0.608148970460785,
-                                      0.49998095070804, 0.669319815905676, 0.670688848131929, 0.50047294720122,
-                                      0.786215504138801, 1, "", "", "", "y6", 0.587247096175705, 0.609134912509327,
-                                      0.500791528817545, 0.670404929229019, 0.671776180954939, 0.501284322944288,
-                                      0.78749013085429, 0.738911844597158, 1, "", "", "y7", 0.559502876701656,
-                                      0.580356613200533, 0.47713186293458, 0.638731956107242, 0.640038423674865,
-                                      0.477601375229029, 0.750285521131482, 0.704002293707963, 0.705143634888086,
-                                      1, "", "y8", 0.514153747560596, 0.533317235753447, 0.438459113659203,
-                                      0.586961108860151, 0.588161683913348, 0.438890570789755, 0.68947297412361,
-                                      0.646941119829514, 0.647989952408295, 0.617375964576475, 1
+                                      0.748288584237668, 0.48480803952327, 1, "", "", "", "", "",
+                                      "y4", 0.513167465417005, 0.562128880504207, 0.481034467720295,
+                                      0.735145813265753, 0.8093147217146, 0.602715178667301, 1, "",
+                                      "", "", "", "y5", 0.627963000084829, 0.624069696373029, 0.461389606907667,
+                                      0.719883881782416, 0.616544458774234, 0.573479687781101, 0.716327751121613,
+                                      1, "", "", "", "y6", 0.637698302737554, 0.609846128652746, 0.630817988447911,
+                                      0.605557177407632, 0.683075171146645, 0.419941666854649, 0.714519572050633,
+                                      0.670828718972408, 1, "", "", "y7", 0.47807714601197, 0.529238982970303,
+                                      0.405796800553948, 0.723289586336763, 0.640791591329923, 0.690259546074704,
+                                      0.747505468794052, 0.773887673838734, 0.625878964508004, 1,
+                                      "", "y8", 0.543530042771138, 0.55133633247208, 0.380423995946671,
+                                      0.604109707749136, 0.59462746878102, 0.453255459490693, 0.66170955960943,
+                                      0.616519440519969, 0.738159724409321, 0.646941201777031, 1
                                  ))
 })
 
 test_that("2 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model2"]][["collection"]][["modelContainer_cors_Model2_impliedInd"]][["collection"]][["modelContainer_cors_Model2_impliedInd_2"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list("x1", 1, "", "", "", "", "", "", "", "", "", "", "x2", 0.934303505690295,
-                                      1, "", "", "", "", "", "", "", "", "", "x3", 0.790093644203597,
-                                      0.658811598406884, 1, "", "", "", "", "", "", "", "", "y1",
-                                      0.274137234138764, 0.228586561518095, 0.19330419751809, 1, "",
-                                      "", "", "", "", "", "", "y2", 0.217865596146897, 0.181665025011161,
-                                      0.153625005965657, 0.521843289400442, 1, "", "", "", "", "",
-                                      "", "y3", 0.276356957074584, 0.230437455049635, 0.194869405404459,
-                                      0.661944915025775, 0.526068718762583, 1, "", "", "", "", "",
-                                      "y4", 0.292904521540612, 0.244235474405422, 0.206537698768669,
-                                      0.701580523516688, 0.557568399933754, 0.707261307392206, 1,
-                                      "", "", "", "", "y5", 0.355954730085641, 0.296809253445637,
-                                      0.250996708521339, 0.674736223076412, 0.536234378902497, 0.680199645346271,
-                                      0.720928301502733, 1, "", "", "", "y6", 0.299272700111863, 0.249545515733112,
-                                      0.211028134561658, 0.567291608387322, 0.450844719575288, 0.571885038383767,
-                                      0.606128086360512, 0.586860858515855, 1, "", "", "y7", 0.335747290013451,
-                                      0.279959483812203, 0.236747702911717, 0.636431656119058, 0.505792518855538,
-                                      0.641584921594313, 0.680001424521895, 0.658385956313478, 0.553544948859816,
-                                      1, "", "y8", 0.387118513073036, 0.322794858864632, 0.272971432534776,
-                                      0.733809277744428, 0.583181617981122, 0.73975102181084, 0.784045465677225,
-                                      0.759122709303272, 0.638240438256752, 0.716027547589889, 1
-                                 ))
-})
-
-test_that("1 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model2"]][["collection"]][["modelContainer_cors_Model2_observedCon"]][["collection"]][["modelContainer_cors_Model2_observedCon_1"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list("", "", 1, "ind60", 1, "", 0.521623484887408, "dem60", 0.946324373734241,
-                                      1, 0.706803134908571, "dem65"))
-})
-
-  options <- jaspTools::analysisOptions("PLSSEM")
-  model <- "
-    ind60 =~ x1 + x2 + x3
-    dem60 =~ y1 + y2 + y3 + y4
-    dem65 =~ y5 + y6 + y7 + y8
-    dem60 ~ ind60
-    dem65 ~ ind60 + dem60
-  "
-  options$models <- list(list(name = "Model1", syntax = list(model = model, columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))))
-  options$group <- ""
-  options$innerWeightingScheme      <- "path"
-  options$convergenceCriterion      <- "absoluteDifference"
-  options$setSeed                   <- TRUE
-  options$seed                      <- 123
-  options$errorCalculationMethod    <- "bootstrap"
-  options$bootstrapSamples          <- 200
-  options$handlingOfInadmissibles   <- "ignore"
-
-test_that("1 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model2"]][["collection"]][["modelContainer_cors_Model2_observedInd"]][["collection"]][["modelContainer_cors_Model2_observedInd_1"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list("x1", 1, "", "", "", "", "", "", "", "", "", "", "x2", 0.936632480597606,
-                                      1, "", "", "", "", "", "", "", "", "", "x3", 0.802018898050034,
-                                      0.854833155000642, 1, "", "", "", "", "", "", "", "", "y1",
-                                      0.435636471259362, 0.391654469928191, 0.297538560842895, 1,
-                                      "", "", "", "", "", "", "", "y2", 0.36043466502006, 0.451056616923047,
-                                      0.430432055900858, 0.569509025127605, 1, "", "", "", "", "",
-                                      "", "y3", 0.260838300138224, 0.280074800299991, 0.172366407044565,
-                                      0.748288584237669, 0.48480803952327, 1, "", "", "", "", "",
-                                      "y4", 0.513167465417005, 0.562128880504206, 0.481034467720295,
-                                      0.735145813265753, 0.809314721714599, 0.602715178667301, 1,
-                                      "", "", "", "", "y5", 0.627963000084829, 0.624069696373029,
-                                      0.461389606907667, 0.719883881782416, 0.616544458774234, 0.573479687781101,
-                                      0.716327751121612, 1, "", "", "", "y6", 0.637698302737554, 0.609846128652746,
-                                      0.630817988447911, 0.605557177407633, 0.683075171146646, 0.419941666854649,
-                                      0.714519572050633, 0.670828718972408, 1, "", "", "y7", 0.47807714601197,
-                                      0.529238982970303, 0.405796800553948, 0.723289586336763, 0.640791591329923,
-                                      0.690259546074704, 0.747505468794052, 0.773887673838734, 0.625878964508004,
-                                      1, "", "y8", 0.543530042771138, 0.55133633247208, 0.380423995946671,
-                                      0.604109707749136, 0.59462746878102, 0.453255459490693, 0.661709559609429,
-                                      0.616519440519969, 0.738159724409321, 0.64694120177703, 1))
-})
-
-test_that("2 table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_Model2"]][["collection"]][["modelContainer_cors_Model2_observedInd"]][["collection"]][["modelContainer_cors_Model2_observedInd_2"]][["data"]]
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_cors"]][["collection"]][["modelContainer_cors_observedInd"]][["collection"]][["modelContainer_cors_observedInd_2"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list("x1", 1, "", "", "", "", "", "", "", "", "", "", "x2", 0.844462190171461,
                                       1, "", "", "", "", "", "", "", "", "", "x3", 0.759443340174928,
                                       0.822979422277276, 1, "", "", "", "", "", "", "", "", "y1",
-                                      0.228798893771052, 0.1673627845874, 0.0990214007881648, 1, "",
+                                      0.228798893771052, 0.1673627845874, 0.0990214007881647, 1, "",
                                       "", "", "", "", "", "", "y2", 0.151047166840404, 0.100636161358447,
                                       0.0382347032598399, 0.693912354422896, 1, "", "", "", "", "",
                                       "", "y3", 0.402290635793068, 0.33745117598166, 0.264082997999289,
-                                      0.619129644823373, 0.430540166939625, 1, "", "", "", "", "",
+                                      0.619129644823373, 0.430540166939624, 1, "", "", "", "", "",
                                       "y4", 0.327744541436693, 0.265636839808341, 0.22237743313161,
                                       0.638936855818488, 0.720332884808176, 0.625254969353847, 1,
-                                      "", "", "", "", "y5", 0.416772752181817, 0.337091821910455,
+                                      "", "", "", "", "y5", 0.416772752181818, 0.337091821910455,
                                       0.314973431538363, 0.7429637976105, 0.523926428253201, 0.59787191426008,
                                       0.563485095874877, 1, "", "", "", "y6", 0.173882772345447, 0.172262926063391,
-                                      0.103940159450445, 0.757801804543029, 0.722345337319345, 0.443619436764764,
+                                      0.103940159450445, 0.757801804543029, 0.722345337319345, 0.443619436764763,
                                       0.690021295526168, 0.519609085940291, 1, "", "", "y7", 0.32166269065689,
                                       0.28114796998464, 0.297044976903819, 0.636140897128672, 0.539182837545081,
-                                      0.614027212992642, 0.643391219150212, 0.595245061008356, 0.606350074226451,
+                                      0.614027212992642, 0.643391219150212, 0.595245061008355, 0.606350074226451,
                                       1, "", "y8", 0.378769176379258, 0.339666986130413, 0.33764514816292,
                                       0.734843943897133, 0.634880950377465, 0.596867662479277, 0.813066001358268,
-                                      0.645984661389981, 0.79197242409805, 0.771299433260701, 1))
+                                      0.645984661389981, 0.791972424098051, 0.771299433260701, 1
+                                 ))
 })
 
 test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(837.114028880141, 858.055961744516, 89.8354936832977, 42, "Model1",
-                                      37, 2.50270252185835e-05, "", "", "", 1, 983.444614918989, 1004.73323499543,
-                                      139.578131429904, 42, "Model1", 38, 2.10842913855893e-12, "",
-                                      "", "", 2, 834.070743364645, 856.623594141664, 84.9285131817342,
-                                      41, "Model2", 37, 6.67910741734327e-05, 0.0267483614535254,
-                                      4.90698050156354, 1, 1, 990.495831963802, 1013.42203819997,
-                                      144.49642171038, 41, "Model2", 38, 1.86622493584378e-13, 0.0265738023190004,
-                                      4.9182902804759, 1, 2))
+                                 list(837.11402888014, 858.055961744515, 89.8354936832973, 42, 37, 2.50270252185863e-05,
+                                      1, 983.44461491899, 1004.73323499543, 139.578131429905, 42,
+                                      38, 2.10842913855844e-12, 2))
 })
 
 test_that("Mardia's coefficients table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_mardiasTable"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(330.8978096739, 26.471824773912, 286, "Skewness", 0.034786034506764,
-                                      "", "", 134.567190822067, "", "Kurtosis", 0.0308358026617131,
-                                      -2.15918518879414))
+                                 list(330.897809673901, 26.471824773912, 286, "Skewness", 0.0347860345067629,
+                                      "", "", 134.567190822067, "", "Kurtosis", 0.0308358026617142,
+                                      -2.15918518879413))
 })
 
 test_that("Loadings table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_Model1"]][["collection"]][["modelContainer_params_Model1_loading"]][["data"]]
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_loading"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(0.823472500611673, 1, "dem60", "y1", 0.825156838000137, 1, "dem60",
-                                      "y2", 0.615738096387633, 1, "dem60", "y3", 0.967290720859345,
-                                      1, "dem60", "y4", 0.85890386330431, 1, "dem65", "y5", 0.860296333694987,
+                                      "y2", 0.615738096387633, 1, "dem60", "y3", 0.967290720859346,
+                                      1, "dem60", "y4", 0.85890386330431, 1, "dem65", "y5", 0.860296333694986,
                                       1, "dem65", "y6", 0.819652028341773, 1, "dem65", "y7", 0.753217149752536,
-                                      1, "dem65", "y8", 0.965771396825359, 1, "ind60", "x1", 1.00176753387165,
-                                      1, "ind60", "x2", 0.823588805213467, 1, "ind60", "x3", 0.810325932156744,
+                                      1, "dem65", "y8", 0.965771396825358, 1, "ind60", "x1", 1.00176753387165,
+                                      1, "ind60", "x2", 0.823588805213466, 1, "ind60", "x3", 0.810325932156744,
                                       2, "dem60", "y1", 0.643991841667361, 2, "dem60", "y2", 0.816887240994446,
                                       2, "dem60", "y3", 0.865800409039581, 2, "dem60", "y4", 0.835471049666637,
                                       2, "dem65", "y5", 0.702431112065487, 2, "dem65", "y6", 0.788041616254904,
                                       2, "dem65", "y7", 0.908616414184754, 2, "dem65", "y8", 1.05852874275919,
-                                      2, "ind60", "x1", 0.882643491810074, 2, "ind60", "x2", 0.746407359845629,
+                                      2, "ind60", "x1", 0.882643491810073, 2, "ind60", "x2", 0.746407359845629,
                                       2, "ind60", "x3"))
 })
 
 test_that("Regression Coefficients table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_Model1"]][["collection"]][["modelContainer_params_Model1_path"]][["data"]]
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_path"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list("", 0.521623484887408, 0.373798211601691, 1, "dem60", "ind60",
-                                      "", 0.946324373734241, 8.57210950624007, 1, "dem65", "dem60",
+                                      "", 0.94632437373424, 8.57210950623997, 1, "dem65", "dem60",
                                       "", 0.319599163621636, 0.113763880589197, 2, "dem60", "ind60",
-                                      "", 0.996650485797297, 148.525797772344, 2, "dem65", "dem60"
+                                      "", 0.996650485797297, 148.525797772339, 2, "dem65", "dem60"
                                  ))
 })
 
-test_that("Total effects table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_Model1"]][["collection"]][["modelContainer_params_Model1_total"]][["data"]]
+test_that("Total Effects table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_total"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.521623484887408, 1, "dem60", "ind60", 0.946324373734241, 1,
-                                      "dem65", "dem60", 0.493625017661149, 1, "dem65", "ind60", 0.319599163621636,
+                                 list(0.521623484887408, 1, "dem60", "ind60", 0.94632437373424, 1, "dem65",
+                                      "dem60", 0.493625017661149, 1, "dem65", "ind60", 0.319599163621636,
                                       2, "dem60", "ind60", 0.996650485797297, 2, "dem65", "dem60",
                                       0.318528661683913, 2, "dem65", "ind60"))
 })
 
 test_that("Weights table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_Model1"]][["collection"]][["modelContainer_params_Model1_weight"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list("", 0.293345583919194, 1, "dem60", "y1", "", 0.293945595376005,
-                                      1, "dem60", "y2", "", 0.219344363402489, 1, "dem60", "y3", "",
-                                      0.344577944156403, 1, "dem60", "y4", "", 0.299325609271468,
-                                      1, "dem65", "y5", "", 0.299810881332626, 1, "dem65", "y6", "",
-                                      0.285646453876842, 1, "dem65", "y7", "", 0.2624940833262, 1,
-                                      "dem65", "y8", "", 0.36210868343402, 1, "ind60", "x1", "", 0.375605162867342,
-                                      1, "ind60", "x2", "", 0.308798395694023, 1, "ind60", "x3", "",
-                                      0.304767776148618, 2, "dem60", "y1", "", 0.242208664013051,
-                                      2, "dem60", "y2", "", 0.307235518354237, 2, "dem60", "y3", "",
-                                      0.325632013959189, 2, "dem60", "y4", "", 0.299161554411588,
-                                      2, "dem65", "y5", "", 0.251523237623159, 2, "dem65", "y6", "",
-                                      0.282178245378945, 2, "dem65", "y7", "", 0.325353103425732,
-                                      2, "dem65", "y8", "", 0.421090974654143, 2, "ind60", "x1", "",
-                                      0.351122452536932, 2, "ind60", "x2", "", 0.296926658625392,
-                                      2, "ind60", "x3"))
-})
-
-test_that("Loadings table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_Model2"]][["collection"]][["modelContainer_params_Model2_loading"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list(0.823472500611673, 1, "dem60", "y1", 0.825156838000137, 1, "dem60",
-                                      "y2", 0.615738096387633, 1, "dem60", "y3", 0.967290720859345,
-                                      1, "dem60", "y4", 0.85890386330431, 1, "dem65", "y5", 0.860296333694987,
-                                      1, "dem65", "y6", 0.819652028341773, 1, "dem65", "y7", 0.753217149752536,
-                                      1, "dem65", "y8", 0.965771396825359, 1, "ind60", "x1", 1.00176753387165,
-                                      1, "ind60", "x2", 0.823588805213467, 1, "ind60", "x3", 0.810325932156744,
-                                      2, "dem60", "y1", 0.643991841667361, 2, "dem60", "y2", 0.816887240994446,
-                                      2, "dem60", "y3", 0.865800409039581, 2, "dem60", "y4", 0.835471049666637,
-                                      2, "dem65", "y5", 0.702431112065487, 2, "dem65", "y6", 0.788041616254904,
-                                      2, "dem65", "y7", 0.908616414184754, 2, "dem65", "y8", 1.05852874275919,
-                                      2, "ind60", "x1", 0.882643491810074, 2, "ind60", "x2", 0.746407359845629,
-                                      2, "ind60", "x3"))
-})
-
-test_that("Regression Coefficients table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_Model2"]][["collection"]][["modelContainer_params_Model2_path"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list(0.521623484887408, 0.373798211601691, 1, "dem60", "ind60", "",
-                                      0.793559781478771, 10.904201061162, 1, "dem65", "dem60", 1.37379821160169,
-                                      0.292863716227124, 1.48513416976109, 1, "dem65", "ind60", 1.37379821160169,
-                                      0.319599163621636, 0.113763880589197, 2, "dem60", "ind60", "",
-                                      0.966761923616831, -720.527840366727, 2, "dem65", "dem60", 1.1137638805892,
-                                      0.0935188998674911, -6.74233722271685, 2, "dem65", "ind60",
-                                      1.1137638805892))
-})
-
-test_that("Total effects table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_Model2"]][["collection"]][["modelContainer_params_Model2_total"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list(0.521623484887408, 1, "dem60", "ind60", 0.793559781478771, 1,
-                                      "dem65", "dem60", 0.706803134908571, 1, "dem65", "ind60", 0.319599163621636,
-                                      2, "dem60", "ind60", 0.966761923616831, 2, "dem65", "dem60",
-                                      0.402495202076674, 2, "dem65", "ind60"))
-})
-
-test_that("Weights table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_Model2"]][["collection"]][["modelContainer_params_Model2_weight"]][["data"]]
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_weight"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list("", 0.293345583919194, 1, "dem60", "y1", "", 0.293945595376005,
                                       1, "dem60", "y2", "", 0.219344363402489, 1, "dem60", "y3", "",
@@ -560,31 +343,22 @@ test_that("Weights table results match", {
 test_that("Reliability Measures table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_tabReliability"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(1, 0.961000183958405, 0.961000183958405, 0.952855148987773, 0.952855148987773,
-                                      0.950346036120306, 0.950346036120306, "ind60", 1, 0.907216185107067,
-                                      0.907216185107067, 0.887320081474863, 0.887320081474863, 0.88513759231707,
-                                      0.88513759231707, "dem60", 1, 0.896551178426411, 0.896551178426411,
-                                      0.894147556309883, 0.894147556309883, 0.894174583403605, 0.894174583403605,
-                                      "dem65", 2, 0.955078330592321, 0.955078330592321, 0.93004066282504,
-                                      0.93004066282504, 0.927026758576996, 0.927026758576996, "ind60",
-                                      2, 0.875816610760396, 0.875816610760396, 0.866837550301531,
-                                      0.866837550301531, 0.867792671415489, 0.867792671415489, "dem60",
-                                      2, 0.892284153013128, 0.892284153013128, 0.884815354534642,
-                                      0.884815354534642, 0.883677432449498, 0.883677432449498, "dem65"
-                                 ))
+                                 list(1, 0.961000183958405, 0.952855148987773, 0.950346036120306, "ind60",
+                                      1, 0.907216185107068, 0.887320081474863, 0.88513759231707, "dem60",
+                                      1, 0.896551178426411, 0.894147556309882, 0.894174583403604,
+                                      "dem65", 2, 0.955078330592321, 0.93004066282504, 0.927026758576996,
+                                      "ind60", 2, 0.875816610760396, 0.866837550301532, 0.867792671415489,
+                                      "dem60", 2, 0.892284153013129, 0.884815354534642, 0.883677432449498,
+                                      "dem65"))
 })
 
 test_that("R-Squared table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_tabrsquared"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.251293661699972, 0.251293661699972, 1, 0.272091059986084, 0.272091059986084,
-                                      "dem60", 0.892544958047032, 0.955489129838819, 1, 0.895529820323504,
-                                      0.957961955958885, "dem65", 0.0772031705373062, 0.0772031705373062,
-                                      2, 0.102143625387649, 0.102143625387649, "dem60", 0.993126418363321,
-                                      1.0012312007131, 2, 0.993312190839988, 1.0011646493232, "dem65"
-                                 ))
+                                 list(0.251293661699972, 1, 0.272091059986084, "dem60", 0.892544958047031,
+                                      1, 0.895529820323502, "dem65", 0.0772031705373062, 2, 0.102143625387649,
+                                      "dem60", 0.993126418363321, 2, 0.993312190839988, "dem65"))
 })
-
 
 # Bootstrapping works
 
@@ -614,7 +388,7 @@ results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
 test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(1764.23685931775, 1796.68169290726, 123.966981546523, 41, "Model1",
+                                 list(1764.23685931775, 1796.68169290726, 123.966981546523, 41,
                                       75, 2.86465847952851e-10))
 })
 
@@ -755,7 +529,7 @@ test_that("Additional Fit Measures table results match", {
 test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(12305.9746183875, 12471.483281527, 727.561148710193, 184, "Model1",
+                                 list(12305.9746183875, 12471.483281527, 727.561148710193, 184,
                                       250, 1.10159512549514e-65))
 })
 
