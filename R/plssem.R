@@ -18,6 +18,8 @@
 PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
+  sink(file="~/Downloads/log.txt")
+on.exit(sink(NULL))
 
   options <- .plsSemPrepOpts(options)
 
@@ -124,8 +126,9 @@ checkCSemModel <- function(model, availableVars) {
   if (inherits(parsed, "try-error")) {
 
     msg <- attr(parsed, "condition")$message
+
     if (msg == "NA/NaN argument") {
-      return("Enter a model")
+      return(gettext("Enter a model"))
     }
     return(stringr::str_replace_all(msg, unvvars))
   }
@@ -139,10 +142,14 @@ checkCSemModel <- function(model, availableVars) {
     modelVarsInAvailableVars <- (modelVars %in% vvars)
     if (!all(modelVarsInAvailableVars)) {
       notRecognized <- modelVars[!modelVarsInAvailableVars]
-      return(paste("Variable(s) in model syntax not recogzed:",
-                   paste(stringr::str_replace_all(notRecognized, unvvars),
-                         collapse = ", ")))
+      return(gettextf("Variable(s) in model syntax not recognized: %s",
+                      paste(stringr::str_replace_all(notRecognized, unvvars), collapse = ", ")))
     }
+  }
+
+  # check for '~~'
+  if (grepl("~~", vmodel)) {
+    return(gettext("Using '~~' is not supported. Try '~' instead"))
   }
 
   # if checks pass, return empty string
@@ -517,7 +524,7 @@ checkCSemModel <- function(model, availableVars) {
   if (!is.null(modelContainer[["params"]])) return()
 
   # create container for parameter estimates
-  params <- createJaspContainer(gettext("Parameter estimates"))
+  params <- createJaspContainer(gettext("Parameter Estimates"))
   params$position <- 1
   params$dependOn(c("models", "ciLevel"))
 
@@ -616,7 +623,7 @@ checkCSemModel <- function(model, availableVars) {
   pecont[["path"]] <- pathTab
 
   # create total effects table
-  totalTab <- createJaspTable(title = gettext("Total effects"))
+  totalTab <- createJaspTable(title = gettext("Total Effects"))
 
   if (options[["group"]] != "")
     totalTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -1789,7 +1796,7 @@ checkCSemModel <- function(model, availableVars) {
           oictab[["rownames"]] <- rownames(oic)
         }
         nm <- colnames(oic)[i]
-        oictab$addColumnInfo(nm, title = nm, type = "pvalue")
+        oictab$addColumnInfo(nm, title = nm, type = "number")
         oictab[[nm]] <- oic[,i]
       }
     }
@@ -1805,7 +1812,7 @@ checkCSemModel <- function(model, availableVars) {
           iictab[["rownames"]] <- rownames(iic)
         }
         nm <- colnames(iic)[i]
-        iictab$addColumnInfo(nm, title = nm, type = "pvalue")
+        iictab$addColumnInfo(nm, title = nm, type = "number")
         iictab[[nm]] <- iic[,i]
       }
     }
@@ -1821,7 +1828,7 @@ checkCSemModel <- function(model, availableVars) {
           occtab[["rownames"]] <- rownames(occ)
         }
         nm <- colnames(occ)[i]
-        occtab$addColumnInfo(nm, title = nm, type = "pvalue")
+        occtab$addColumnInfo(nm, title = nm, type = "number")
         occtab[[nm]] <- occ[,i]
       }
     }
@@ -1837,7 +1844,7 @@ checkCSemModel <- function(model, availableVars) {
           icctab[["rownames"]] <- rownames(icc)
         }
         nm <- colnames(icc)[i]
-        icctab$addColumnInfo(nm, title = nm, type = "pvalue")
+        icctab$addColumnInfo(nm, title = nm, type = "number")
         icctab[[nm]] <- icc[,i]
       }
     }
@@ -1863,7 +1870,7 @@ checkCSemModel <- function(model, availableVars) {
             oiccont[[groupNames[i]]][["rownames"]] <- rownames(oic)
           }
           nm <- colnames(oic)[j]
-          oiccont[[groupNames[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
+          oiccont[[groupNames[i]]]$addColumnInfo(nm, title = nm, type = "number")
           oiccont[[groupNames[i]]][[nm]] <- oic[,j]
         }
       }
@@ -1888,7 +1895,7 @@ checkCSemModel <- function(model, availableVars) {
             iiccont[[groupNames[i]]][["rownames"]] <- rownames(iic)
           }
           nm <- colnames(iic)[j]
-          iiccont[[groupNames[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
+          iiccont[[groupNames[i]]]$addColumnInfo(nm, title = nm, type = "number")
           iiccont[[groupNames[i]]][[nm]] <- iic[,j]
         }
       }
@@ -1911,7 +1918,7 @@ checkCSemModel <- function(model, availableVars) {
             occcont[[groupNames[i]]][["rownames"]] <- rownames(occ)
           }
           nm <- colnames(occ)[j]
-          occcont[[groupNames[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
+          occcont[[groupNames[i]]]$addColumnInfo(nm, title = nm, type = "number")
           occcont[[groupNames[i]]][[nm]] <- occ[,j]
         }
       }
@@ -1936,7 +1943,7 @@ checkCSemModel <- function(model, availableVars) {
             icccont[[groupNames[i]]][["rownames"]] <- rownames(icc)
           }
           nm <- colnames(icc)[j]
-          icccont[[groupNames[i]]]$addColumnInfo(nm, title = nm, type = "pvalue")
+          icccont[[groupNames[i]]]$addColumnInfo(nm, title = nm, type = "number")
           icccont[[groupNames[i]]][[nm]] <- icc[,j]
         }
       }
