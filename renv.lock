@@ -1103,11 +1103,11 @@
       "Version": "0.19.2",
       "Source": "GitHub",
       "RemoteType": "github",
+      "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspBase",
       "RemoteRef": "master",
-      "RemoteSha": "67652e03f135b8d9b7c42e353a0fe02b9fea0929",
-      "RemoteHost": "api.github.com",
+      "RemoteSha": "cf7c84b877e1af958dd0d5b228d9a81831002bdd",
       "Requirements": [
         "R6",
         "Rcpp",
@@ -1136,18 +1136,18 @@
         "systemfonts",
         "withr"
       ],
-      "Hash": "54ff30fbbe384057dea12677bdb0de3f"
+      "Hash": "98b18ec61f0bd447d543612016111494"
     },
     "jaspGraphs": {
       "Package": "jaspGraphs",
       "Version": "0.19.2",
       "Source": "GitHub",
       "RemoteType": "github",
+      "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspGraphs",
       "RemoteRef": "master",
-      "RemoteSha": "797e38a84746e9aa0f456439b8f00f756164d82c",
-      "RemoteHost": "api.github.com",
+      "RemoteSha": "9bd1fdafc6bf6a04451f982e6c6dd9002524dbcb",
       "Requirements": [
         "R6",
         "RColorBrewer",
@@ -1160,7 +1160,7 @@
         "scales",
         "viridisLite"
       ],
-      "Hash": "35093128cffc6280d0ec4183a851a9d9"
+      "Hash": "1eacba557c12ef472e122cc9445cb134"
     },
     "jaspTools": {
       "Package": "jaspTools",
