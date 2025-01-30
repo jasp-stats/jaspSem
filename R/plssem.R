@@ -18,9 +18,6 @@
 PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
-  sink(file="~/Downloads/log.txt")
-on.exit(sink(NULL))
-
   options <- .plsSemPrepOpts(options)
 
   # Read data, check if ready
@@ -1046,8 +1043,8 @@ checkCSemModel <- function(model, availableVars) {
   }
 }
 
-.plsSemPredictionTables <- function(fit, name, parent, modelContainer, options, ready) {
 
+.plsSemPredictionTables <- function(fit, name, parent, modelContainer, options, ready) {
 
   if (is.null(name)) {
     predictcont <- parent
@@ -1114,7 +1111,7 @@ checkCSemModel <- function(model, availableVars) {
   if("MAXVAR" %in% benchmarks)
     metricstab$addColumnInfo(name = "rmseMAXVAR", title = gettext("MAXVAR RMSE"),       type = "number")
 
-  metricstab$addColumnInfo(name = "q2", title = gettext("Target Q2 prediction"), type = "number")
+  metricstab$addColumnInfo(name = "q2", title = gettext("Target Q2 Prediction"), type = "number")
 
   predictcont[["metrics"]] <- metricstab
 
@@ -1140,12 +1137,12 @@ checkCSemModel <- function(model, availableVars) {
       progressbarTick()
       prediction_list[i] <- prediction
     }
-  }
-  else if (options[["benchmark"]] == "none") {
+  } else if (options[["benchmark"]] == "none") {
     prediction <- try(cSEM::predict(fit, .handle_inadmissibles = "ignore", .cv_folds = options[["kFolds"]], .r = options[["repetitions"]]))
   } else {
     prediction <- try(cSEM::predict(fit, .handle_inadmissibles = "ignore", .benchmark = benchmarks, .cv_folds = options[["kFolds"]], .r = options[["repetitions"]]))
   }
+
   if (isTryError(prediction)) {
     err <- .extractErrorMessage(prediction)
     if(grepl("attempt to set 'colnames'", err))
@@ -1207,62 +1204,9 @@ checkCSemModel <- function(model, availableVars) {
     }
   }
 
-  #create scores table
-  if (options[["predictedScore"]]) {
-
-    scorestab <- createJaspTable(gettext("Indicator Scores"))
-
-    if (options[["group"]] != "") {
-      scorestab$addColumnInfo(name = "group",  title = gettext("Group"),  type = "string", combine = TRUE)
-      group_names <- names(prediction)
-      indicator_names <- names(prediction[[group_names[1]]][["Actual"]])
-    } else {
-      indicator_names <- names(prediction[["Actual"]])
-    }
-    for (j in indicator_names) {
-      scorestab$addColumnInfo(name = paste0("actual", j),           title = gettext("Actual scores"),                          type = "number", overtitle = gettext(j))
-      scorestab$addColumnInfo(name = paste0("prediction", j),       title = gettext("Predicted scores"),                       type = "number", overtitle = gettext(j))
-      scorestab$addColumnInfo(name = paste0("target_residuals", j), title = gettext("Target residuals"),                       type = "number", overtitle = gettext(j))
-      if (options[["benchmark"]] != "none") {
-        scorestab$addColumnInfo(name = paste0("benchmark_residuals", j), title = gettext(paste0(ifelse(options[["benchmark"]] == "lm", "Linear model", options[["benchmark"]]) , " residuals")), type = "number", overtitle = gettext(j))
-      }
-    }
-
-    predictcont[["scores"]] <- scorestab
-  }
 
   if (!is.null(name)) parent[[name]] <- predictcont
 
-  # Fill indicator scores table
-  if (options[["predictedScore"]]) {
-    if (options[["group"]] != "") {
-      group_list <- list()
-      for (i in group_names) {
-        group_i <- rep(i, length(prediction[[i]][["Actual"]][[indicator_names[1]]]))
-        group_list <- c(group_list, group_i)
-      }
-      scorestab[["group"]]          <- group_list
-      for (j in indicator_names) {
-        scorestab[[paste0("actual",j)]]               <- unlist(lapply(prediction, function(x) x[["Actual"]][[j]]))
-        scorestab[[paste0("prediction",j)]]           <- unlist(lapply(prediction, function(x) x[["Predictions_target"]][, j]))
-        scorestab[[paste0("target_residuals",j)]]     <- unlist(lapply(prediction, function(x) x[["Residuals_target"]][, j]))
-
-        if(options[["benchmark"]] != "none") {
-          scorestab[[paste0("benchmark_residuals",j)]]  <- unlist(lapply(prediction, function(x) x[["Residuals_benchmark"]][, j]))
-        }
-      }
-    } else {
-      for (j in indicator_names) {
-        scorestab[[paste0("actual",j)]]               <- prediction[["Actual"]][[j]]
-        scorestab[[paste0("prediction",j)]]           <- prediction[["Predictions_target"]][, j]
-        scorestab[[paste0("target_residuals",j)]]     <- prediction[["Residuals_target"]][, j]
-
-        if(options[["benchmark"]] != "none" && options[["benchmark"]] != "all") {
-          scorestab[[paste0("benchmark_residuals",j)]]  <- prediction[["Residuals_benchmark"]][, j]
-        }
-      }
-    }
-  }
 }
 
 # Additional Fit Measures Table
@@ -1977,26 +1921,40 @@ checkCSemModel <- function(model, availableVars) {
 
   modelNames <- sapply(models, function(x) x[["name"]])
   modelNames <- gsub(" ", "_", modelNames)
-  allNamesR <- c()
+  colNamesR <- c()
+
   # loop over the models
   for (i in seq_len(length(results))) {
-    scores <- cSEM::getConstructScores(results[[i]])$Construct_scores
 
-    # then loop over the scores
-    scoreNames <- colnames(scores)
-    for (ii in seq_len(ncol(scores))) {
+    if (options$group != "") {
+      scoresList <- cSEM::getConstructScores(results[[i]])
+      scores <- lapply(scoresList, function(x) x$Construct_scores)
+      groupLabs <- names(scoresList)
+      facNames <- colnames(scores[[1]])
+      colNamesR <- paste0(rep(groupLabs, each = ncol(scores[[1]])), "_", "CS_", facNames)
+    } else {
+      scores <- cSEM::getConstructScores(results[[i]])$Construct_scores
+      facNames <- colnames(scores)
+      colNamesR <- paste0("CS_", facNames)
+      scores <- list(scores)
+    }
 
-      colNameR <- paste0(modelNames[i], "_", scoreNames[ii])
+    z <- 1
+    for (ll in seq_len(length(scores))) {
+      for (ii in seq_len(ncol(scores[[ll]]))) {
 
-      if (jaspBase:::columnExists(colNameR) && !jaspBase:::columnIsMine(colNameR)) {
-        .quitAnalysis(gettextf("Column '%s' name already exists in the dataset", colNameR))
+        colNameR <- colNamesR[z]
+        scoresTmp <- scores[[ll]]
+        if (jaspBase:::columnExists(colNameR) && !jaspBase:::columnIsMine(colNameR)) {
+          .quitAnalysis(gettextf("Column name %s already exists in the dataset", colNameR))
+        }
+
+        container[[colNameR]] <- jaspBase::createJaspColumn(colNameR)
+        container[[colNameR]]$setScale(scoresTmp[, ii])
+
+        z <- z + 1
+
       }
-
-      container[[colNameR]] <- jaspBase::createJaspColumn(colNameR)
-      container[[colNameR]]$setScale(scores[, ii])
-
-      # save the names to keep track of all names
-      allNamesR <- c(allNamesR, colNameR)
     }
   }
 
@@ -2004,7 +1962,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # check if there are previous colNames that are not needed anymore and delete the cols
   oldNames <- jaspResults[["createdColumnNames"]][["object"]]
-  newNames <- allNamesR
+  newNames <- colNamesR[1:z]
   if (!is.null(oldNames)) {
     noMatch <- which(!(oldNames %in% newNames))
     if (length(noMatch) > 0) {
@@ -2015,7 +1973,7 @@ checkCSemModel <- function(model, availableVars) {
   }
 
   # save the created col names
-  jaspResults[["createdColumnNames"]] <- createJaspState(allNamesR)
+  jaspResults[["createdColumnNames"]] <- createJaspState(newNames)
 
 
   return()

@@ -445,4 +445,6 @@ Upgrades
 		ChangeRename {	from:	"eq_lvcovariances";				to:		"equalLatentCovariance"				}
 		ChangeRename {	from:	"group.partial";				to:		"freeParameters"					}
 	}
+
+
 }

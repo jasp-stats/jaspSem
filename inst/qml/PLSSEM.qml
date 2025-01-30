@@ -30,6 +30,8 @@ Form
 		id: models
 		name: "models"
 		maximumItems: 1
+		newItemName: qsTr("Model")
+		optionKey: "name"
 
 		content: TextArea { name: "syntax"; width: models.width; textType: JASP.TextTypeCSem; showLineNumber: true }
 	}
@@ -216,8 +218,6 @@ Form
 				RadioButton { value: "MAXVAR";	label: qsTr("MAXVAR")			}
 				RadioButton { value: "all";		label: qsTr("All")					}
 			}
-
-			CheckBox { name: "predictedScore";	label: qsTr("Show predicted scores"); enabled: prediction.checked}
 		}
 	}
 }
