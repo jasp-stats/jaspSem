@@ -368,8 +368,7 @@ test_that("1 table results match", {
   options$convergenceCriterion      <- "absoluteDifference"
   options$setSeed                   <- TRUE
   options$seed                      <- 123
-  options$errorCalculationMethod    <- "robust"
-  options$robustMethod              <- "bootstrap"
+  options$errorCalculationMethod    <- "bootstrap"
   options$bootstrapSamples          <- 200
   options$handlingOfInadmissibles   <- "ignore"
 
@@ -603,8 +602,7 @@ options$innerWeightingScheme      <- "path"
 options$convergenceCriterion      <- "absoluteDifference"
 options$setSeed                   <- TRUE
 options$seed                      <- 123
-options$errorCalculationMethod    <- "robust"
-options$robustMethod              <- "bootstrap"
+options$errorCalculationMethod    <- "bootstrap"
 options$bootstrapSamples          <- 200
 options$handlingOfInadmissibles   <- "ignore"
 options$handlingOfFlippedSigns    <- "none"

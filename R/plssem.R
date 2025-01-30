@@ -159,7 +159,7 @@ checkCSemModel <- function(model, availableVars) {
     modelContainer$dependOn(c("syntax", "convergenceCriterion",
                               "estimateStructural", "group", "consistentPartialLeastSquares",
                               "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod",
-                              "robustMethod", "bootstrapSamples", "ciLevel",
+                              "bootstrapSamples", "ciLevel",
                               "setSeed", "seed", "handlingOfInadmissibles", "endogenousIndicatorPrediction",
                               "kFolds", "repetitions", "benchmark", "predictedScore", "models"))
     jaspResults[["modelContainer"]] <- modelContainer
@@ -220,14 +220,10 @@ checkCSemModel <- function(model, availableVars) {
       break
     }
 
-    # resample if robust/ bootstrap
-    if (options[["errorCalculationMethod"]] == "robust") {
+    # resample if bootstrap
+    if (options[["errorCalculationMethod"]] == "bootstrap") {
 
-      if(options[["robustMethod"]] == "bootstrap") {
-        startProgressbar(options[["bootstrapSamples"]], "Resampling")
-      } else {
-        startProgressbar(nrow(dataset), "Resampling")
-      }
+      startProgressbar(options[["bootstrapSamples"]], "Resampling")
 
       # argument .user_funs in cSEM::resamplecSEMResults only accepts a function with .object as input and a vector as output; c(0,0) does not have any other function
       tickFunction <- function(.object)
@@ -239,7 +235,7 @@ checkCSemModel <- function(model, availableVars) {
       fit <- try(cSEM::resamplecSEMResults(.object = fit,
                                            .R = options[["bootstrapSamples"]],
                                            .user_funs = tickFunction,
-                                           .resample_method = options[["robustMethod"]],
+                                           .resample_method = "bootstrap",
                                            .handle_inadmissibles = options[["handlingOfInadmissibles"]],
                                            .sign_change_option = "none",
                                            .seed = if (options[["setSeed"]]) options[["seed"]]))
