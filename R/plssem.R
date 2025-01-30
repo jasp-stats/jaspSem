@@ -320,7 +320,7 @@ checkCSemModel <- function(model, availableVars) {
   fittab$dependOn(c("models"))
   fittab$position <- 0
 
-  fittab$addColumnInfo(name = "Model",    title = "",                            type = "string", combine = TRUE)
+  # fittab$addColumnInfo(name = "Model",    title = "",                            type = "string", combine = TRUE)
   if (options[["group"]] != "")
     fittab$addColumnInfo(name = "group",  title = gettext("Group"),              type = "string" )
   fittab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
@@ -424,7 +424,7 @@ checkCSemModel <- function(model, availableVars) {
       }
     }
 
-  fittab[["Model"]]    <- name
+  # fittab[["Model"]]    <- name
   if (options[["group"]] != "")
     fittab[["group"]]    <- group
   fittab[["AIC"]]      <- aic
