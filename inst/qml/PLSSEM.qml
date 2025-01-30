@@ -113,15 +113,7 @@ Form
 				name: "errorCalculationMethod"
 				id: errorCalcMethod
 				RadioButton { value: "none";		label: qsTr("None"); checked: true	}
-				RadioButton
-				{
-					value: "robust";
-					label: qsTr("Robust")
-					RadioButtonGroup
-					{
-						title: ""
-						name: "robustMethod"
-						RadioButton {
+				RadioButton {
 							value: "bootstrap";	label: qsTr("Bootstrap"); checked: true
 							IntegerField
 							{
@@ -132,16 +124,14 @@ Form
 								min: 1
 								// enabled: errorCalcMethod.value == "robust"
 							}
+							CIField
+							{
+								text: qsTr("Confidence intervals")
+								name: "ciLevel"
+								enabled: errorCalcMethod.value == "bootstrap"
+							}
 						}
-						RadioButton { value: "jackknife";	label: qsTr("Jackknife") }
-					}
 
-					CIField
-					{
-						text: qsTr("Confidence intervals")
-						name: "ciLevel"
-						enabled: errorCalcMethod.value == "robust"
-					}
 				}
 			}
 			RadioButtonGroup
