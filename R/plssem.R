@@ -1263,7 +1263,7 @@ checkCSemModel <- function(model, availableVars) {
     gettext("Goodness of Fit (GoF)"),
     gettext("Geodesic distance"),
     gettext("Squared Euclidean distance"),
-    gettext( "Maximum likelihood-based dinstance")
+    gettext( "Maximum likelihood-based distance")
 
 
   )
