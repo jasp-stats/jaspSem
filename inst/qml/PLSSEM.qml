@@ -103,6 +103,7 @@ Form
 				defaultValue: 1e-5
 				min: 0
 			}
+
 		}
 		
 		Group
@@ -141,8 +142,15 @@ Form
 				RadioButton { value: "ignore"; 	label: qsTr("Ignore")					}
 				RadioButton { value: "drop"; 	label: qsTr("Drop")						}
 			}
-			SetSeed {}
 		}
+		Group 
+		{
+			title: qsTr("Overall Model Fit")
+			IntegerField { name: "bollenStineBootstrapSamples"; label: qsTr("Bollen-Stine bootstrap samples"); fieldWidth: 60; defaultValue: 499; min: 100 }
+			CIField { text: qsTr("Significance level"); name: "significanceLevel"; defaultValue: 5 }
+			CheckBox { name: "saturatedStructuralModel"; label: qsTr("Saturated structural model") }
+		}
+		SetSeed {}
 
 	}
 
@@ -152,7 +160,7 @@ Form
 
 		Group
 		{
-		  CheckBox { name: "rSquared";				label: qsTr("R-squared")				}
+		  CheckBox { name: "rSquared";							label: qsTr("R-squared")				}
 			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures")	}
 			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient")		}
 			CheckBox { name: "reliabilityMeasures";		label: qsTr("Reliability measures")		}
