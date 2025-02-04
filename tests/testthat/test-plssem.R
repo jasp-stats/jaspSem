@@ -14,17 +14,17 @@ options$models <- list(list(name = "Model1", syntax = list(model = model, column
 options$group                     <- ""
 options$innerWeightingScheme      <- "path"
 options$convergenceCriterion      <- "absoluteDifference"
-
+options$setSeed <- TRUE
+options$seed <- 123
 results <- jaspTools::runAnalysis("PLSSEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
 
-
-test_that("Model fit table results match", {
+test_that("Model Fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(1764.23685931775, 1796.68169290726, 123.966981546523, 41, 75,
-                                      2.86465847952811e-10))
+                                 list(0.43026588019435, "dG", 0.295547730720455, 0.0560152218904532,
+                                      "SRMR", 0.0529946519222452, 0.207096082194422, "dL", 0.185356586735755,
+                                      1.97158372315007, "dML", 1.67522948035842))
 })
-
 
 
 test_that("Loadings table results match", {
@@ -38,37 +38,6 @@ test_that("Loadings table results match", {
                                       "y7", 0.822630667143518, "dem65", "y8"))
 })
 
-
-  options <- jaspTools::analysisOptions("PLSSEM")
-  model1 = "
-    ind60 =~ x1 + x2 + x3
-    dem60 =~ y1 + y2 + y3 + y4
-    dem65 =~ y5 + y6 + y7 + y8
-    dem60 ~ ind60
-    dem65 ~ dem60
-  "
-  model2 = "
-    ind60 =~ x1 + x2 + x3
-    dem60 =~ y1 + y2 + y3 + y4
-    dem65 =~ y5 + y6 + y7 + y8
-    dem60 ~ ind60
-    dem65 ~ ind60 + dem60
-  "
-  options$models <- list(list(name = "Model1", syntax = list(model = model1, columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))),
-                         list(name = "Model2", syntax = list(model = model2, columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))))
-  options$group                         <- "group"
-  options$innerWeightingScheme          <- "path"
-  options$convergenceCriterion          <- "absoluteDifference"
-  options$additionalFitMeasures         <- TRUE
-  options$rSquared                      <- TRUE
-  options$mardiasCoefficient            <- TRUE
-  options$reliabilityMeasures           <- TRUE
-  options$impliedConstructCorrelation   <- TRUE
-  options$impliedIndicatorCorrelation   <- TRUE
-  options$observedConstructCorrelation  <- TRUE
-  options$observedIndicatorCorrelation  <- TRUE
-  options$innerWeightingScheme          <- "centroid"
-  options$structuralModelIgnored        <- TRUE
 
 test_that("Total effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_total"]][["data"]]
@@ -132,7 +101,7 @@ test_that("Additional Fit Measures table results match", {
                                       0.0943761594914448, 0.0897114551867814, "Goodness of Fit (GoF)",
                                       0.651821788678243, 0.614476373672947, "Geodesic distance", 0.495814387492708,
                                       0.623860456924762, "Squared Euclidean distance", 0.587852725703405,
-                                      0.531177582654172, "Maximum likelihood-based dinstance", 2.49543038009159,
+                                      0.531177582654172, "Maximum likelihood-based distance", 2.49543038009159,
                                       3.77238193053797))
 })
 
@@ -268,13 +237,6 @@ test_that("2 table results match", {
                                  ))
 })
 
-test_that("Model fit table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list(837.11402888014, 858.055961744515, 89.8354936832973, 42, 37, 2.50270252185863e-05,
-                                      1, 983.44461491899, 1004.73323499543, 139.578131429905, 42,
-                                      38, 2.10842913855844e-12, 2))
-})
 
 test_that("Mardia's coefficients table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_mardiasTable"]][["data"]]
@@ -380,16 +342,18 @@ options$errorCalculationMethod    <- "bootstrap"
 options$bootstrapSamples          <- 200
 options$handlingOfInadmissibles   <- "ignore"
 options$handlingOfFlippedSigns    <- "none"
+options$setSeed <- TRUE
+options$seed <- 123
 
-set.seed(123)
-results <- jaspTools::runAnalysis("PLSSEM", "poldem_grouped.csv", options)
+results <- jaspTools::runAnalysis("PLSSEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
 
 
-test_that("Model fit table results match", {
+test_that("Model Fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(1764.23685931775, 1796.68169290726, 123.966981546523, 41,
-                                      75, 2.86465847952851e-10))
+                                 list(0.43026588019435, "dG", 0.295547730720455, 0.0560152218904532,
+                                      "SRMR", 0.0529946519222452, 0.207096082194422, "dL", 0.185356586735755,
+                                      1.97158372315007, "dML", 1.67522948035842))
 })
 
 test_that("Loadings table results match", {
@@ -494,21 +458,22 @@ model <- "
     SAT  =~ sat1  + sat2  + sat3  + sat4
     LOY  =~ loy1  + loy2  + loy3  + loy4
     "
-  options$models <- list(list(name = "Model1", syntax = list(model = model, columns = c("imag1", "imag2", "imag3",
-                                                                                        "expe1", "expe2", "expe3",
-                                                                                        "qual1", "qual2", "qual3", "qual4", "qual5",
-                                                                                        "val1", "val2", "val3",
-                                                                                        "sat1", "sat2", "sat3", "sat4",
-                                                                                        "loy1", "loy2", "loy3", "loy4"))))
-  options$group                     <- ""
-  options$innerWeightingScheme      <- "path"
-  options$convergenceCriterion      <- "absoluteDifference"
-  options$additionalFitMeasures         <- TRUE
-  options$rSquared                      <- TRUE
-  options$mardiasCoefficient            <- TRUE
-  options$reliabilityMeasures           <- TRUE
-
-results <- jaspTools::runAnalysis("PLSSEM", cSEM::satisfaction, options)
+options$models <- list(list(name = "Model1", syntax = list(model = model, columns = c("imag1", "imag2", "imag3",
+                                                                                      "expe1", "expe2", "expe3",
+                                                                                      "qual1", "qual2", "qual3", "qual4", "qual5",
+                                                                                      "val1", "val2", "val3",
+                                                                                      "sat1", "sat2", "sat3", "sat4",
+                                                                                      "loy1", "loy2", "loy3", "loy4"))))
+options$group                     <- ""
+options$innerWeightingScheme      <- "path"
+options$convergenceCriterion      <- "absoluteDifference"
+options$additionalFitMeasures         <- TRUE
+options$rSquared                      <- TRUE
+options$mardiasCoefficient            <- TRUE
+options$reliabilityMeasures           <- TRUE
+options$setSeed <- TRUE
+options$seed <- 123
+results <- jaspTools::runAnalysis("PLSSEM", cSEM::satisfaction, options, makeTests = F)
 
 test_that("Additional Fit Measures table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["data"]]
@@ -522,15 +487,16 @@ test_that("Additional Fit Measures table results match", {
                                       0.0506929896864307, "Standardized root mean square residual (SRMR)",
                                       0.0939687096223917, "Goodness of Fit (GoF)", 0.606126744677953,
                                       "Geodesic distance", 0.649343219969218, "Squared Euclidean distance",
-                                      2.23401995218863, "Maximum likelihood-based dinstance", 2.92193232413732
+                                      2.23401995218863, "Maximum likelihood-based distance", 2.92193232413732
                                  ))
 })
 
-test_that("Model fit table results match", {
+test_that("Model Fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(12305.9746183875, 12471.483281527, 727.561148710193, 184,
-                                      250, 1.10159512549514e-65))
+                                 list(0.323791481284916, "dG", 0.64934321996922, 0.0528204560328008,
+                                      "SRMR", 0.0939687096223916, 0.705870543876173, "dL", 2.23401995218863,
+                                      1.59241569142443, "dML", 2.92193232413733))
 })
 
 test_that("Mardia's coefficients table results match", {
