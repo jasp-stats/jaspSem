@@ -103,6 +103,7 @@ Form
 				defaultValue: 1e-5
 				min: 0
 			}
+
 		}
 		
 		Group
@@ -141,8 +142,9 @@ Form
 				RadioButton { value: "ignore"; 	label: qsTr("Ignore")					}
 				RadioButton { value: "drop"; 	label: qsTr("Drop")						}
 			}
-			SetSeed {}
 		}
+
+		SetSeed {}
 
 	}
 
@@ -152,8 +154,8 @@ Form
 
 		Group
 		{
-		  CheckBox { name: "rSquared";				label: qsTr("R-squared")				}
-			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures")	}
+		  CheckBox { name: "rSquared";							label: qsTr("R-squared")				}
+			CheckBox { name: "additionalFitMeasures";	label: qsTr("Fit measures")	}
 			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient")		}
 			CheckBox { name: "reliabilityMeasures";		label: qsTr("Reliability measures")		}
 		}
@@ -164,6 +166,14 @@ Form
 			CheckBox { name: "impliedIndicatorCorrelation";		label: qsTr("Implied indicator correlations")	}
 			CheckBox { name: "observedConstructCorrelation"; 	label: qsTr("Observed construct correlations")	}
 			CheckBox { name: "impliedConstructCorrelation"; 	label: qsTr("Implied construct correlations")	}
+		}
+
+		Group 
+		{
+			CheckBox { name: "overallModelFit"; label: qsTr("Overall model fit") ; id: omf}
+			IntegerField { visible:omf.checked; name: "omfBootstrapSamples"; label: qsTr("Bootstrap samples"); fieldWidth: 60; defaultValue: 499; min: 100 }
+			CIField { visible: omf.checked; text: qsTr("Significance level"); name: "omfSignificanceLevel"; defaultValue: 5 }
+			CheckBox { visible: omf.checked; name: "saturatedStructuralModel"; label: qsTr("Saturated structural model") }
 		}
 
 		CheckBox
