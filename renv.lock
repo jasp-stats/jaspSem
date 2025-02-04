@@ -40,7 +40,7 @@
     },
     "Hmisc": {
       "Package": "Hmisc",
-      "Version": "5.2-0",
+      "Version": "5.2-3",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -68,6 +68,7 @@
     "MASS": {
       "Package": "MASS",
       "Version": "7.3-65",
+      "Version": "7.3-65",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -81,6 +82,7 @@
     },
     "Matrix": {
       "Package": "Matrix",
+      "Version": "1.7-3",
       "Version": "1.7-3",
       "Source": "Repository",
       "Repository": "CRAN",
@@ -397,6 +399,7 @@
         "crayon",
         "expm",
         "future",
+        "lifecycle",
         "future.apply",
         "lavaan",
         "lifecycle",
@@ -476,6 +479,7 @@
     "cluster": {
       "Package": "cluster",
       "Version": "2.1.6",
+      "Version": "2.1.6",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -485,6 +489,7 @@
         "stats",
         "utils"
       ],
+      "Hash": "0aaa05204035dc43ea0004b9c76611dd"
       "Hash": "0aaa05204035dc43ea0004b9c76611dd"
     },
     "coda": {
@@ -541,7 +546,7 @@
     },
     "cpp11": {
       "Package": "cpp11",
-      "Version": "0.5.0",
+      "Version": "0.5.2",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -774,7 +779,7 @@
     },
     "foreign": {
       "Package": "foreign",
-      "Version": "0.8-90",
+      "Version": "0.8-88",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1029,7 +1034,7 @@
     },
     "igraph": {
       "Package": "igraph",
-      "Version": "2.1.1",
+      "Version": "2.1.4",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1066,11 +1071,11 @@
       "Version": "0.20.0",
       "Source": "GitHub",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspBase",
       "RemoteRef": "master",
-      "RemoteSha": "cf7c84b877e1af958dd0d5b228d9a81831002bdd",
+      "RemoteSha": "67652e03f135b8d9b7c42e353a0fe02b9fea0929",
+      "RemoteHost": "api.github.com",
       "Requirements": [
         "R6",
         "Rcpp",
@@ -1109,11 +1114,11 @@
       "Version": "0.20.0",
       "Source": "GitHub",
       "RemoteType": "github",
-      "RemoteHost": "api.github.com",
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspGraphs",
       "RemoteRef": "master",
-      "RemoteSha": "9bd1fdafc6bf6a04451f982e6c6dd9002524dbcb",
+      "RemoteSha": "797e38a84746e9aa0f456439b8f00f756164d82c",
+      "RemoteHost": "api.github.com",
       "Requirements": [
         "R6",
         "RColorBrewer",
@@ -1126,7 +1131,7 @@
         "scales",
         "viridisLite"
       ],
-      "Hash": "1eacba557c12ef472e122cc9445cb134"
+      "Hash": "35093128cffc6280d0ec4183a851a9d9"
     },
     "jaspTools": {
       "Package": "jaspTools",
@@ -1159,7 +1164,7 @@
     },
     "jsonlite": {
       "Package": "jsonlite",
-      "Version": "2.0.0",
+      "Version": "1.8.9",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1279,7 +1284,7 @@
     },
     "lme4": {
       "Package": "lme4",
-      "Version": "1.1-37",
+      "Version": "1.1-35.5",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1455,7 +1460,7 @@
     },
     "nlme": {
       "Package": "nlme",
-      "Version": "3.1-168",
+      "Version": "3.1-167",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1475,7 +1480,7 @@
     },
     "nnet": {
       "Package": "nnet",
-      "Version": "7.3-20",
+      "Version": "7.3-19",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1483,6 +1488,7 @@
         "stats",
         "utils"
       ],
+      "Hash": "2c797b46eea7fb58ede195bc0b1f1138"
       "Hash": "2c797b46eea7fb58ede195bc0b1f1138"
     },
     "numDeriv": {
@@ -1578,6 +1584,7 @@
       "Repository": "CRAN",
       "Requirements": [
         "cli",
+        "fansi",
         "glue",
         "lifecycle",
         "rlang",
@@ -1684,7 +1691,7 @@
     },
     "progressr": {
       "Package": "progressr",
-      "Version": "0.15.0",
+      "Version": "0.15.1",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -1907,6 +1914,7 @@
     },
     "rpart": {
       "Package": "rpart",
+      "Version": "4.1.24",
       "Version": "4.1.24",
       "Source": "Repository",
       "Repository": "CRAN",
