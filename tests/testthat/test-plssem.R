@@ -14,6 +14,7 @@ options$models <- list(list(name = "Model1", syntax = list(model = model, column
 options$group                     <- ""
 options$innerWeightingScheme      <- "path"
 options$convergenceCriterion      <- "absoluteDifference"
+options$overallModelFit <- TRUE
 options$setSeed <- TRUE
 options$seed <- 123
 results <- jaspTools::runAnalysis("PLSSEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
@@ -348,14 +349,6 @@ options$seed <- 123
 results <- jaspTools::runAnalysis("PLSSEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
 
 
-test_that("Model Fit table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list(0.43026588019435, "dG", 0.295547730720455, 0.0560152218904532,
-                                      "SRMR", 0.0529946519222452, 0.207096082194422, "dL", 0.185356586735755,
-                                      1.97158372315007, "dML", 1.67522948035842))
-})
-
 test_that("Loadings table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_loading"]][["data"]]
   jaspTools::expect_equal_tables(table,
@@ -491,13 +484,6 @@ test_that("Additional Fit Measures table results match", {
                                  ))
 })
 
-test_that("Model Fit table results match", {
-  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-  jaspTools::expect_equal_tables(table,
-                                 list(0.323791481284916, "dG", 0.64934321996922, 0.0528204560328008,
-                                      "SRMR", 0.0939687096223916, 0.705870543876173, "dL", 2.23401995218863,
-                                      1.59241569142443, "dML", 2.92193232413733))
-})
 
 test_that("Mardia's coefficients table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_mardiasTable"]][["data"]]

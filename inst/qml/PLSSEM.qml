@@ -143,13 +143,7 @@ Form
 				RadioButton { value: "drop"; 	label: qsTr("Drop")						}
 			}
 		}
-		Group 
-		{
-			title: qsTr("Overall Model Fit")
-			IntegerField { name: "bollenStineBootstrapSamples"; label: qsTr("Bollen-Stine bootstrap samples"); fieldWidth: 60; defaultValue: 499; min: 100 }
-			CIField { text: qsTr("Significance level"); name: "significanceLevel"; defaultValue: 5 }
-			CheckBox { name: "saturatedStructuralModel"; label: qsTr("Saturated structural model") }
-		}
+
 		SetSeed {}
 
 	}
@@ -172,6 +166,14 @@ Form
 			CheckBox { name: "impliedIndicatorCorrelation";		label: qsTr("Implied indicator correlations")	}
 			CheckBox { name: "observedConstructCorrelation"; 	label: qsTr("Observed construct correlations")	}
 			CheckBox { name: "impliedConstructCorrelation"; 	label: qsTr("Implied construct correlations")	}
+		}
+
+		Group 
+		{
+			CheckBox { name: "overallModelFit"; label: qsTr("Overall model fit") ; id: omf}
+			IntegerField { visible:omf.checked; name: "omfBootstrapSamples"; label: qsTr("Bootstrap samples"); fieldWidth: 60; defaultValue: 499; min: 100 }
+			CIField { visible: omf.checked; text: qsTr("Significance level"); name: "omfSignificanceLevel"; defaultValue: 5 }
+			CheckBox { visible: omf.checked; name: "saturatedStructuralModel"; label: qsTr("Saturated structural model") }
 		}
 
 		CheckBox

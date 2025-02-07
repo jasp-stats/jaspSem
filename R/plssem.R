@@ -309,29 +309,11 @@ checkCSemModel <- function(model, availableVars) {
 .plsSemFitTab <- function(modelContainer, dataset, options, ready) {
   # create model fit table
   if (!is.null(modelContainer[["fittab"]])) return()
-
-  fittab <- createJaspTable(title = gettext("Model Fit"))
-  fittab$dependOn(optionsFromObject = modelContainer,
-                  options = c("group", "bollenStineBootstrapSamples", "significanceLevel", "saturatedStructuralModel"))
-  fittab$position <- 0
-
-  if (options[["group"]] != "")
-    fittab$addColumnInfo(name = "group",  title = gettext("Group"),              type = "string", combine = TRUE)
-
-  fittab$addColumnInfo(name = "measure",  title = gettext("Distance Measure"),                type = "string" )
-  fittab$addColumnInfo(name = "statistic",      title = gettext("Test Statistic"),                type = "number" )
-  fittab$addColumnInfo(name = "critValue",      title = gettext("Critical Value"),                type = "number" )
-
-  modelContainer[["fittab"]] <- fittab
-
   if (!ready) return()
 
   # fill model fit table
   plsSemResults <- .plsSemComputeResults(modelContainer, dataset, options)
-
-  if (modelContainer$getError()) return()
-
-  # we need this for a lot of other tables
+  # we need this for a lot of other tables so we do this once here:
   results <- plsSemResults[[1]]
   msc <- .withWarnings(.computeMSC(results, dataset, options))
   #create jasp state and store msc for additional output tables
@@ -340,6 +322,20 @@ checkCSemModel <- function(model, availableVars) {
   modSelCriteria$dependOn(optionsFromObject = modelContainer)
   modSelCriteria$object <- msc
 
+  if (modelContainer$getError() || !options[["overallModelFit"]]) return()
+
+  fittab <- createJaspTable(title = gettext("Model Fit"))
+  fittab$dependOn(optionsFromObject = modelContainer,
+                  options = c("group", "omfBootstrapSamples", "omfSignificanceLevel", "saturatedStructuralModel"))
+  fittab$position <- 0
+
+  if (options[["group"]] != "")
+    fittab$addColumnInfo(name = "group",  title = gettext("Group"),              type = "string", combine = TRUE)
+
+  fittab$addColumnInfo(name = "measure",    title = gettext("Distance Measure"),                type = "string" )
+  fittab$addColumnInfo(name = "statistic",  title = gettext("Test Statistic"),                type = "number" )
+  fittab$addColumnInfo(name = "critValue",  title = gettextf("Critical Value (%s%% Quantile)", (1 - options[["omfSignificanceLevel"]]) * 100), type = "number" )
+
   vv <- cSEM::verify(plsSemResults[[1]])
   if (any(unlist(vv))) {
     fittab$setError(gettext("At least one result is inadmissible."))
@@ -347,25 +343,32 @@ checkCSemModel <- function(model, availableVars) {
   }
 
   omf <- .withWarnings(cSEM::testOMF(.object = plsSemResults[[1]],
-                                     .alpha = options[["significanceLevel"]],
-                                     .R = options[["bollenStineBootstrapSamples"]],
+                                     .alpha = options[["omfSignificanceLevel"]],
+                                     .R = options[["omfBootstrapSamples"]],
                                      .saturated = options[["saturatedStructuralModel"]],
                                      .seed = if (options[["setSeed"]]) options[["seed"]]))
   fit <- omf$value
 
   if (options[["group"]] == "") {
-    stat      <- fit$Test_statistic
+    stat <- fit$Test_statistic
     fittab[["measure"]] <- names(stat)
     fittab[["statistic"]] <- stat
     fittab[["critValue"]] <- fit$Critical_value
 
   } else {
-    stats     <- sapply(fit, function(x) x$Test_statistic)
+    stats <- sapply(fit, function(x) x$Test_statistic)
     fittab[["group"]]     <- rep(names(fit), each = nrow(stats))
     fittab[["measure"]] <- rep(rownames(stats), ncol(stats))
     fittab[["statistic"]] <- c(stats)
     fittab[["critValue"]] <- c(sapply(fit, function(x) x$Critical_value))
   }
+
+  if (options[["saturatedStructuralModel"]])
+    fittab$addFootnote(gettext("Denotes the fit of the model including a saturated structural model."))
+
+  modelContainer[["fittab"]] <- fittab
+
+  return()
 
 }
 
