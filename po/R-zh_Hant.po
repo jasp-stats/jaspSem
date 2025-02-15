@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
 "POT-Creation-Date: 2024-12-07 02:58\n"
-"PO-Revision-Date: 2025-02-07 16:20+0000\n"
-"Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
+"PO-Revision-Date: 2025-02-13 21:01+0000\n"
+"Last-Translator: 陳正昌 <chencc99@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-r/zh_Hant/>\n"
 "Language: zh_Hant\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.10-rc\n"
 
 msgid "Fit indices"
 msgstr "配適指標"
@@ -482,7 +482,7 @@ msgid "Correlation tables"
 msgstr "相關係數表"
 
 msgid "Observed indicator correlation matrix"
-msgstr ""
+msgstr "觀察指標相關矩陣"
 
 msgid "Implied indicator correlation matrix"
 msgstr "隱含指標的相關矩陣"
@@ -616,7 +616,7 @@ msgid "Intercepts"
 msgstr "截距"
 
 msgid "Missing data method 'FIML' forces meanstructure."
-msgstr ""
+msgstr "缺失資料方法 'FIML' 強制要求均值結構"
 
 msgid "Thresholds"
 msgstr "閾限"
@@ -752,10 +752,10 @@ msgid "sepc (nox)"
 msgstr "sepc (非內生變數)"
 
 msgid "Sensitivity analysis"
-msgstr ""
+msgstr "敏感度分析"
 
 msgid "Summary of sensitivity analysis"
-msgstr ""
+msgstr "敏感度分析摘要"
 
 msgid "Path"
 msgstr "路徑圖"
@@ -767,30 +767,30 @@ msgid "Original model"
 msgstr "原始模型"
 
 msgid "p*"
-msgstr "p"
+msgstr "p*"
 
 msgid "Sensitivity model"
-msgstr ""
+msgstr "敏感度模型"
 
 msgid "Min"
-msgstr ""
+msgstr "最小值"
 
 msgid "Max"
-msgstr ""
+msgstr "最大值"
 
 msgid ""
 "Please include at least one regression path in the model to perform a "
 "sensitivity analysis."
-msgstr ""
+msgstr "請在模型中包含至少一條迴歸路徑，以進行敏感度分析。"
 
 msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
-msgstr ""
+msgstr "進行敏感度分析 (模型: %1$s, 組: %2$s)"
 
 msgid "Performing sensitivity analysis (model: %1$s)"
-msgstr ""
+msgstr "進行敏感度分析 (模型: %1$s)"
 
 msgid "Sensitivity parameters that led to a change in significance"
-msgstr ""
+msgstr "導致顯著性變化的敏感度參數"
 
 msgid "Sensitivity parameters"
 msgstr "敏感性參數"
@@ -832,10 +832,10 @@ msgid "robust"
 msgstr "穩健"
 
 msgid "robust Huber-White"
-msgstr ""
+msgstr "穩健 Huber-White"
 
 msgid "first-order"
-msgstr ""
+msgstr "一階"
 
 #~ msgid "95%% Confidence Interval"
 #~ msgstr "95%% 信賴區間"
