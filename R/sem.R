@@ -1520,7 +1520,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   # a table only with the T-size stuff
   ftsize <- createJaspTable(gettext("T-size fit indices"))
-  ftsize$addCitation(gettext("Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural Equation Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), 148-153, https://doi.org/10.1080/10705511.2016.1225260"))
+  ftsize$addCitation("Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural Equation Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), 148-153, https://doi.org/10.1080/10705511.2016.1225260")
   fitContainer[["fitTSize"]] <- ftsize
 
   ftsize$addColumnInfo(name = "col1", title = "", type = "string")
