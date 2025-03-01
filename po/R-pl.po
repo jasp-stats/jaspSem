@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2024-12-07 02:58\n"
+"POT-Creation-Date: 2025-03-01 02:57\n"
 "PO-Revision-Date: 2024-06-20 22:09+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-r/pl/"
@@ -648,13 +648,6 @@ msgstr ""
 #, fuzzy
 msgid "T-size fit indices"
 msgstr "Wskaźniki dopasowania"
-
-msgid ""
-"Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness "
-"of Fit: A Note on Using Equivalence Testing to Assess Structural Equation "
-"Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), "
-"148-153, https://doi.org/10.1080/10705511.2016.1225260"
-msgstr ""
 
 msgid "Poor-fair limit"
 msgstr ""
