@@ -23,7 +23,8 @@ Imports:
   tibble,
   tidyr,
   SEMsens, 
-  jaspFactor
+  jaspFactor, 
+  mxsem
 Remotes:
   jasp-stats/jaspBase,
   jasp-stats/jaspGraphs,
