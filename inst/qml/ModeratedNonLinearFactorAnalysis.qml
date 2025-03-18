@@ -35,7 +35,7 @@ Form
 
 	Section
 	{
-		title: qsTr("Moderators")
+		title: qsTr("Moderation")
 		expanded: true
 		id: mod
 		
@@ -61,6 +61,7 @@ Form
 						CheckBox { name: "cubicEffect" }
 					}
 			}
+			CheckBox { name: "addInteractionTerms" ; checked: true; label: qsTr("Add two-way interaction terms to model") }
 		}
 
 		Group 
@@ -74,18 +75,10 @@ Form
 		Group
 		{
 			title: qsTr("Global Invariance Testing")
-			DropDown
-			{
-				name: "invarianceTesting"
-				values: [
-					{ label: qsTr("Configural") , value: "configural"},
-					{ label: qsTr("Metric")     , value: "metric"		},
-					{ label: qsTr("Scalar")     , value: "scalar"		},
-					{ label: qsTr("Strict")     , value: "strict"		}, 
-					{ label: qsTr("Structural") , value: "structural"}, 
-				]
-			}
-			CheckBox { name: "addInteractionTerms" ; checked: true ; label: qsTr("Add two-way interaction terms to model") }
+			CheckBox { name: "configuralInvariance" ; checked: true ; label: qsTr("Configural") }
+			CheckBox { name: "metricInvariance" ; checked: false ; label: qsTr("Metric") }
+			CheckBox { name: "scalarInvariance" ; checked: false ; label: qsTr("Scalar") }
+			CheckBox { name: "strictInvariance" ; checked: false ; label: qsTr("Strict") }
 		}
 		
 	}
@@ -93,7 +86,7 @@ Form
 	Section
 	{
 		id: modOpts
-		title: qsTr("Moderator Options")
+		title: qsTr("Moderation Options")
 
 		function combinePairs(values) {
 			var pairs = [];
@@ -188,17 +181,18 @@ Form
 
 	Section
 	{
-		title: qsTr("Additional Output")
+		title: qsTr("Output Options")
 		
 		Group
 		{
-			CheckBox { label: qsTr("Additional fit measures")   ; name: "fitMeasures"   }
-			CheckBox { label: qsTr("Kaiser-Meyer-Olkin (KMO) test"); name: "kaiserMeyerOlkinTest"}
-			CheckBox { label: qsTr("Bartlett's test of sphericity"); name: "bartlettTest"}
-			CheckBox { label: qsTr("R-Squared")                 ; name: "rSquared"         }
-			CheckBox { name: "ave";						label: qsTr("Average variance extracted (AVE)")		}
-			CheckBox { name: "htmt";					label: qsTr("Heterotrait-monotrait ratio (HTMT)")	}
-			CheckBox { name: "reliability";		label: qsTr("Reliability")					}
+			CheckBox { name: "parameterEstimates"; label: qsTr("Parameter estimates") }
+			// CheckBox { label: qsTr("Additional fit measures")   ; name: "fitMeasures"   }
+			// CheckBox { label: qsTr("Kaiser-Meyer-Olkin (KMO) test"); name: "kaiserMeyerOlkinTest"}
+			// CheckBox { label: qsTr("Bartlett's test of sphericity"); name: "bartlettTest"}
+			// CheckBox { label: qsTr("R-Squared")                 ; name: "rSquared"         }
+			// CheckBox { name: "ave";						label: qsTr("Average variance extracted (AVE)")		}
+			// CheckBox { name: "htmt";					label: qsTr("Heterotrait-monotrait ratio (HTMT)")	}
+			// CheckBox { name: "reliability";		label: qsTr("Reliability")					}
 		}
 
 		Group
