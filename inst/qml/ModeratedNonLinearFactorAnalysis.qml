@@ -53,10 +53,9 @@ Form
 				title: qsTr("Effects:")
 				name: "moderators"
 				id: moderators
-				rowComponentTitle: qsTr("Linear  Square  Cubic")
+				rowComponentTitle: qsTr("Square   Cubic")
 				rowComponent: RowLayout
 					{
-						CheckBox { name: "linearEffect" ; checked: true}
 						CheckBox { name: "squaredEffect" }
 						CheckBox { name: "cubicEffect" }
 					}
@@ -68,7 +67,7 @@ Form
 		{
 			title: qsTr("Assumption Check")
 			CheckBox { name: "fitPerGroup" ; checked: true ; label: qsTr("Check model fit per group"); id: fitPerGroup; enabled: moderators.columnsNames != "" }
-			IntegerField { name: "continuousVariableSplit"; label: qsTr("Split continous variables into groups:");  defaultValue: 3; enabled: fitPerGroup.checked; min: 2 }
+			IntegerField { name: "continuousVariableSplit"; label: qsTr("Split continous variables into groups:");  defaultValue: 2; enabled: fitPerGroup.checked; min: 2 }
 			CheckBox { name: "addGroupVar"; label: qsTr("Add group variable to data"); enabled: fitPerGroup.checked }
 		}
 
@@ -130,54 +129,10 @@ Form
 	Section
 	{
 		title: qsTr("Model Options")
-		columns: 1
 
-		Group
-		{
-			title: qsTr("Model Options")
-			CheckBox 
- 			{ 
- 				label: qsTr("Include mean structure")      ; 
- 				name: "meanStructure"   ; 
- 				id: meanstructure 
+		CheckBox { label: qsTr("Assume factors uncorrelated") ; name: "factorsUncorrelated"    }
 
- 				RadioButtonGroup
- 				{
- 					// ChildrenOnSameRow: true
- 					name: "interceptsFixedToZero"
- 					RadioButton { label: qsTr("Fix latent intercepts to zero") ;	value: "latent"; checked: true}
- 					RadioButton { label: qsTr("Fix manifest intercepts to zero"); value: "manifest"}
-					RadioButton { label: qsTr("Fix mean of manifest intercepts to zero"); value: "meanManifest"}
-
- 				}
- 			}
-			CheckBox { label: qsTr("Assume factors uncorrelated") ; name: "factorsUncorrelated"    }
-			CheckBox { label: qsTr("Fix exogenous covariates")    ; name: "exogenousCovariatesFixed" ; checked: true ; visible: false }
-			DropDown
-			{
-				label: qsTr("Model identification")
-				name: "modelIdentification"
-				values: [
-					{ label: qsTr("Marker variable"),	value: "markerVariable" },
-					{ label: qsTr("Factor variances"),	value: "factorVariance" },
-					{ label: qsTr("Effects coding"),	value: "effectsCoding"  }
-				]
-			}
-		}
-
-		Group
-		{
-			title: qsTr("Residual Covariances")
-			VariablesForm
-			{
-				id: rescov
-				preferredHeight: jaspTheme.smallDefaultVariablesFormHeight
-				AvailableVariablesList 		 {	name: "observedVarsForResidualCov";	source: factors.name}
-				AssignedPairsVariablesList {	name: "residualsCovarying"}
-			}
-		}
 	}
-
 
 	Section
 	{
@@ -185,14 +140,14 @@ Form
 		
 		Group
 		{
-			CheckBox { name: "parameterEstimates"; label: qsTr("Parameter estimates") }
-			// CheckBox { label: qsTr("Additional fit measures")   ; name: "fitMeasures"   }
-			// CheckBox { label: qsTr("Kaiser-Meyer-Olkin (KMO) test"); name: "kaiserMeyerOlkinTest"}
-			// CheckBox { label: qsTr("Bartlett's test of sphericity"); name: "bartlettTest"}
-			// CheckBox { label: qsTr("R-Squared")                 ; name: "rSquared"         }
-			// CheckBox { name: "ave";						label: qsTr("Average variance extracted (AVE)")		}
-			// CheckBox { name: "htmt";					label: qsTr("Heterotrait-monotrait ratio (HTMT)")	}
-			// CheckBox { name: "reliability";		label: qsTr("Reliability")					}
+			title: qsTr("Parameter Estimates")
+			CheckBox { name: "loadingEstimates"; label: qsTr("Loadings") }
+			CheckBox { name: "interceptEstimates"; label: qsTr("Intercepts") }
+			CheckBox { name: "residualVarianceEstimates"; label: qsTr("Residual variances") }
+			CheckBox { name: "factorVarianceEstimates"; label: qsTr("Factor variances") }
+			CheckBox { name: "factorMeanEstimates"; label: qsTr("Factor means") }
+			CheckBox { name: "factorCovarianceEstimates"; label: qsTr("Factor covariances") }
+
 		}
 
 		Group
@@ -213,28 +168,16 @@ Form
 		}
 	}
 
-
 	Section
 	{
 		title: qsTr("Plots")
-		Group
+
+		Group 
 		{
-			title: qsTr("Plots")
-			CheckBox
-			{
-				label: qsTr("Model plot")
-				name: "pathPlot"
-				CheckBox {
-					label: qsTr("Show parameter estimates")
-					name: "pathPlotParameter"
-					CheckBox { label: qsTr("Standardized")	; name: "pathPlotStandardized" }
-					DoubleField { label: qsTr("Font size")	; name: "pathPlotFontSize"		; defaultValue: 0.9; max: 5.0 }
-				}
-				CheckBox { label: qsTr("Show means")      	; name: "pathPlotMean"	; enabled: meanstructure.checked	}
-				CheckBox { label: qsTr("Show variances")  	; name: "pathPlotVariance"; checked: true					}
-				CheckBox { label: qsTr("Rotate plot")		; name: "pathPlotRotated"									}
-			}
+			title: qsTr("Plot Individual Parameters")
+			
 		}
+
 	}
 
 	Section
