@@ -967,7 +967,6 @@ local({
   }
   
   renv_bootstrap_validate_version_dev <- function(version, description) {
-<<<<<<< HEAD
   
     expected <- description[["RemoteSha"]]
     if (!is.character(expected))
@@ -976,16 +975,6 @@ local({
     pattern <- sprintf("^\\Q%s\\E", version)
     grepl(pattern, expected, perl = TRUE)
   
-=======
-    
-    expected <- description[["RemoteSha"]]
-    if (!is.character(expected))
-      return(FALSE)
-    
-    pattern <- sprintf("^\\Q%s\\E", version)
-    grepl(pattern, expected, perl = TRUE)
-    
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
   }
   
   renv_bootstrap_validate_version_release <- function(version, description) {
@@ -1226,7 +1215,6 @@ local({
   }
   
   renv_json_read_patterns <- function() {
-<<<<<<< HEAD
   
     list(
   
@@ -1246,46 +1234,20 @@ local({
   
     )
   
-=======
-    
-    list(
-      
-      # objects
-      list("{", "\t\n\tobject(\t\n\t"),
-      list("}", "\t\n\t)\t\n\t"),
-      
-      # arrays
-      list("[", "\t\n\tarray(\t\n\t"),
-      list("]", "\n\t\n)\n\t\n"),
-      
-      # maps
-      list(":", "\t\n\t=\t\n\t")
-      
-    )
-    
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
   }
   
   renv_json_read_envir <- function() {
   
     envir <- new.env(parent = emptyenv())
-<<<<<<< HEAD
   
     envir[["+"]] <- `+`
     envir[["-"]] <- `-`
   
-=======
-    
-    envir[["+"]] <- `+`
-    envir[["-"]] <- `-`
-    
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
     envir[["object"]] <- function(...) {
       result <- list(...)
       names(result) <- as.character(names(result))
       result
     }
-<<<<<<< HEAD
   
     envir[["array"]] <- list
   
@@ -1302,37 +1264,13 @@ local({
     # repair names if necessary
     if (!is.null(names(object))) {
   
-=======
-    
-    envir[["array"]] <- list
-    
-    envir[["true"]]  <- TRUE
-    envir[["false"]] <- FALSE
-    envir[["null"]]  <- NULL
-    
-    envir
-    
-  }
-  
-  renv_json_read_remap <- function(object, patterns) {
-    
-    # repair names if necessary
-    if (!is.null(names(object))) {
-      
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
       nms <- names(object)
       for (pattern in patterns)
         nms <- gsub(pattern[[2L]], pattern[[1L]], nms, fixed = TRUE)
       names(object) <- nms
-<<<<<<< HEAD
   
     }
   
-=======
-      
-    }
-    
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
     # repair strings if necessary
     if (is.character(object)) {
       for (pattern in patterns)
@@ -1395,9 +1333,10 @@ local({
 =======
 >>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
   
-    # fix up strings if necessary
+    # fix up strings if necessary -- do so only with reversible patterns
+    patterns <- Filter(function(pattern) pattern[[3L]], patterns)
     renv_json_read_remap(result, patterns)
-    
+  
   }
   
 
