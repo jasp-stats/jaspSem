@@ -51,6 +51,7 @@ Form
 				label: qsTr("Grouping Variable")
 				showVariableTypeIcon: true
 				addEmptyValue: true
+				allowedColumns: ["nominal"]
 			}
 		}
 	}
