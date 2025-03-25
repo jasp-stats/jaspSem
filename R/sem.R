@@ -20,11 +20,15 @@
 SEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
+
   # Read dataset
   options <- .semPrepOpts(options)
 
-  # TODO: don't read data if we aren't ready anyway...
+  saveRDS(options, "~/Downloads/options.rds")
+
   dataset <- .semReadData(dataset, options)
+  saveRDS(dataset, "~/Downloads/dataset.rds")
+
   ready   <- .semIsReady(dataset, options)
 
   modelContainer <- .semModelContainer(jaspResults)
@@ -68,7 +72,7 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
 .semReadData <- function(dataset, options) {
   if (!is.null(dataset)) return(dataset)
 
-  if(options[["dataType"]] == "raw") {
+  if (options[["dataType"]] == "raw") {
     variablesToRead <- if (options[["group"]] == "") character() else options[["group"]]
     for (model in options[["models"]])
       variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
