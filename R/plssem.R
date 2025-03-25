@@ -17,16 +17,24 @@
 
 PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
 
+  sink(file = "~/Downloads/log.txt", append = TRUE)
+  on.exit(sink(NULL), add = TRUE)
+
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
   options <- .plsSemPrepOpts(options)
 
-  # Read data, check if ready
+  # Handle data, check if ready
   dataset <- .plsSemReadData(dataset, options)
-  ready   <- .plsSemIsReady(dataset, options)
 
   saveRDS(dataset, "~/Downloads/dataset.rds")
   saveRDS(options, "~/Downloads/options.rds")
+
+  # this is for when preloadData finally works
+  # dataset <- .plsSemHandleData(dataset, options)
+
+  ready   <- .plsSemIsReady(dataset, options)
+
 
   # Store in container
   modelContainer <- .plsSemModelContainer(jaspResults)
@@ -45,7 +53,7 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   .plsSemReliabilities(modelContainer, dataset, options, ready)
   .plsSemCor(modelContainer, options, ready)
 
-  .plsAddConstructScores(jaspResults, modelContainer, options, ready)
+  .plsAddConstructScores(jaspResults, options, ready)
 }
 
 .plsSemPrepOpts <- function(options) {
@@ -54,7 +62,7 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
     newModel <- c(model[1], model[[2]])
     names(newModel)[names(newModel) == "model"] <- "syntax"
     return(newModel)
-    }
+  }
 
   options[["models"]] <- lapply(options[["models"]], fixModel)
 
@@ -63,10 +71,18 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   return(options)
 }
 
+.plsSemHandleData <- function(dataset, options) {
+
+  # listwise deletion
+  dataset <- dataset[complete.cases(dataset), ]
+  return(dataset)
+}
+
 .plsSemReadData <- function(dataset, options) {
   if (!is.null(dataset)) return(dataset)
 
   variablesToRead <- if (options[["group"]] == "") character() else options[["group"]]
+
   for (model in options[["models"]])
     variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
 
@@ -148,9 +164,35 @@ checkCSemModel <- function(model, availableVars) {
     }
   }
 
-  # check for '~~'
-  if (grepl("~~", vmodel)) {
-    return(gettext("Using '~~' is not yet supported. Try '~' instead"))
+  checkTildeTilde <- function(vmodel) {
+    # Extract all lines with "~~"
+    lines <- unlist(strsplit(vmodel, "\n"))
+    tildeLines <- grep("~~", lines, value = TRUE)
+
+    # Extract variable pairs using a regex
+    variablePairs <- lapply(tildeLines, function(line) {
+      match <- regexec("\\s*(\\w+)\\s*~~\\s*(\\w+)", line)
+      subMatch <- regmatches(line, match)[[1]]
+      if (length(subMatch) == 3) {
+        return(list(subMatch[2], subMatch[3]))
+      } else {
+        return(NULL)
+      }
+    })
+
+    # Clean up the result (remove NULLs)
+    variablePairs <- Filter(Negate(is.null), variablePairs)
+    return(variablePairs)
+  }
+
+  checkTildeTilde(vmodel)
+  tildeResult <- checkTildeTilde(vmodel)
+  if (!is.null(tildeResult)) {
+    latents <- unique(rownames(parsed$measurement))
+    for (i in seq_along(tildeResult)) {
+      if (all(unlist(tildeResult[[i]]) %in% latents))
+        return(gettext("Using '~~' is not supported for composite covariances. Try '~' instead"))
+    }
   }
 
   # if checks pass, return empty string
@@ -169,7 +211,8 @@ checkCSemModel <- function(model, availableVars) {
                               "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod",
                               "bootstrapSamples", "ciLevel",
                               "setSeed", "seed", "handlingOfInadmissibles", "endogenousIndicatorPrediction",
-                              "kFolds", "repetitions", "benchmark", "models"))
+                              "kFolds", "repetitions", "benchmark", "models"
+                              ))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -559,7 +602,7 @@ checkCSemModel <- function(model, availableVars) {
       pe[["Total_effect"]] <- list()
       pe[["Total_effect"]][["mean"]] <- summ$Effect_estimates$Total_effect$Estimate
       names(pe[["Total_effect"]][["mean"]]) <- summ$Effect_estimates$Total_effect$Name
-    } else{
+    } else {
       IdxViFB <- 0
       IdxViF <- 0
       for (i in names(summ)) {
@@ -1730,29 +1773,29 @@ checkCSemModel <- function(model, availableVars) {
 }
 
 
-.plsAddConstructScores <- function(jaspResults, modelContainer, options, ready) {
+.plsAddConstructScores <- function(jaspResults, options, ready) {
 
   if (!ready ||
       !is.null(jaspResults[["addedScoresContainer"]]) ||
-      modelContainer$getError() ||
-      !options[["addConstructScores"]])
-  {
+      jaspResults[["modelContainer"]]$getError() ||
+      !options[["addConstructScores"]]) {
+
+    # cat("===== DID NOT ENTER =====\n")
+
     return()
   }
 
-  container    <- createJaspContainer()
-  container$dependOn(optionsFromObject = modelContainer, options = "addConstructScores")
-  jaspResults[["addedScoresContainer"]] <- container
+  # cat("===== ENTER: .plsAddConstructScores() =====\n")
+  # cat("container scores: ")
+  # print(is.null(jaspResults[["addedScoresContainer"]]))
 
-  models <- modelContainer[["models"]][["object"]]
-  results <- modelContainer[["results"]][["object"]]
+  container <- createJaspContainer()
+  container$dependOn(options = "addConstructScores")
 
-  modelNames <- sapply(models, function(x) x[["name"]])
-  modelNames <- gsub(" ", "_", modelNames)
-  colNamesR <- c()
+  results <- jaspResults[["modelContainer"]][["results"]][["object"]]
 
   # loop over the models
-  for (i in seq_len(length(results))) {
+  for (i in seq_along(results)) {
 
     if (options$group != "") {
       scoresList <- cSEM::getConstructScores(results[[i]])
@@ -1768,7 +1811,7 @@ checkCSemModel <- function(model, availableVars) {
     }
 
     z <- 1
-    for (ll in seq_len(length(scores))) {
+    for (ll in seq_along(scores)) {
       for (ii in seq_len(ncol(scores[[ll]]))) {
 
         colNameR <- colNamesR[z]
@@ -1787,10 +1830,11 @@ checkCSemModel <- function(model, availableVars) {
   }
 
   jaspResults[["addedScoresContainer"]] <- container
+  # print(str(jaspResults[["addedScoresContainer"]]))
 
   # check if there are previous colNames that are not needed anymore and delete the cols
   oldNames <- jaspResults[["createdColumnNames"]][["object"]]
-  newNames <- colNamesR[1:z]
+  newNames <- colNamesR
   if (!is.null(oldNames)) {
     noMatch <- which(!(oldNames %in% newNames))
     if (length(noMatch) > 0) {
@@ -1803,6 +1847,7 @@ checkCSemModel <- function(model, availableVars) {
   # save the created col names
   jaspResults[["createdColumnNames"]] <- createJaspState(newNames)
 
+  cat("===== EXIT: .plsAddConstructScores() =====\n\n")
 
   return()
 

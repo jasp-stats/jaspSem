@@ -20,6 +20,7 @@ Description
 		title:	qsTr("Structural Equation Modeling")
 		qml:	"SEM.qml"
 		func:	"SEM"
+		preloadData: false
 	}
 
 	Analysis
@@ -27,6 +28,7 @@ Description
 		title:	qsTr("Partial Least Squares SEM")
 		qml:	"PLSSEM.qml"
 		func:	"PLSSEM"
+		preloadData: false
 	}
 
 	Analysis
