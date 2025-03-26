@@ -153,9 +153,32 @@ checkCSemModel <- function(model, availableVars) {
     }
   }
 
-  # check for '~~'
-  if (grepl("~~", vmodel)) {
-    return(gettext("Using '~~' is not yet supported. Try '~' instead"))
+  # check for '~~' in composites
+  checkTildeTilde <- function(vModel) {
+    # Regular expression to match "f1 ~~ f2" and capture the variable names f1 and f2
+    matches <- gregexpr("\\s*(\\w+)\\s*~~\\s*(\\w+)\\s*(;|$)", vModel, perl = TRUE)
+    extractedPairs <- regmatches(vModel, matches)
+
+    # Extract and return the variable pairs if found
+    if (length(unlist(extractedPairs)) > 0) {
+      variablePairs <- lapply(extractedPairs[[1]], function(x) {
+        subMatch <- regmatches(x, regexec("\\s*(\\w+)\\s*~~\\s*(\\w+)", x))
+        list(subMatch[[1]][2], subMatch[[1]][3])
+      })
+      return(variablePairs)
+    }
+    return(NULL)
+  }
+
+  vModel <- "f1 ~~f2; g~~g2; x1~x2"
+
+  tildeResult <- checkTildeTilde(vModel)
+  if (!is.null(tildeResult)) {
+    latents <- unique(rownames(parsed$measurement))
+    for (i in seq_along(tildeResult)) {
+      if (all(unlist(tildeResult[[i]]) %in% latents))
+        return(gettext("Using '~~' is not supported for composite covariances. Try '~' instead"))
+    }
   }
 
   # if checks pass, return empty string
@@ -565,7 +588,7 @@ checkCSemModel <- function(model, availableVars) {
       pe[["Total_effect"]] <- list()
       pe[["Total_effect"]][["mean"]] <- summ$Effect_estimates$Total_effect$Estimate
       names(pe[["Total_effect"]][["mean"]]) <- summ$Effect_estimates$Total_effect$Name
-    } else{
+    } else {
       IdxViFB <- 0
       IdxViF <- 0
       for (i in names(summ)) {
