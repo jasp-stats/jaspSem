@@ -141,6 +141,14 @@ Form
 		Group
 		{
 			title: qsTr("Parameter Estimates")
+			DoubleField
+			{
+				name: "alphaLevel"
+				label: qsTr("Significance level")
+				negativeValues: false
+				decimals: 4
+				defaultValue: 0.05
+			}
 			CheckBox { name: "loadingEstimates"; label: qsTr("Loadings") }
 			CheckBox { name: "interceptEstimates"; label: qsTr("Intercepts") }
 			CheckBox { name: "residualVarianceEstimates"; label: qsTr("Residual variances") }
