@@ -29,8 +29,8 @@ Form
 	{
 		id: models
 		name: "models"
-		maximumItems: 9
-		newItemName: qsTr("Model 1")
+		maximumItems: 1
+		newItemName: qsTr("Model")
 		optionKey: "name"
 
 		content: TextArea { name: "syntax"; width: models.width; textType: JASP.TextTypeCSem; showLineNumber: true }
@@ -51,6 +51,7 @@ Form
 				label: qsTr("Grouping Variable")
 				showVariableTypeIcon: true
 				addEmptyValue: true
+				allowedColumns: ["nominal"]
 			}
 		}
 	}
@@ -103,6 +104,7 @@ Form
 				defaultValue: 1e-5
 				min: 0
 			}
+
 		}
 		
 		Group
@@ -113,15 +115,7 @@ Form
 				name: "errorCalculationMethod"
 				id: errorCalcMethod
 				RadioButton { value: "none";		label: qsTr("None"); checked: true	}
-				RadioButton
-				{
-					value: "robust";
-					label: qsTr("Robust")
-					RadioButtonGroup
-					{
-						title: ""
-						name: "robustMethod"
-						RadioButton {
+				RadioButton {
 							value: "bootstrap";	label: qsTr("Bootstrap"); checked: true
 							IntegerField
 							{
@@ -132,18 +126,14 @@ Form
 								min: 1
 								// enabled: errorCalcMethod.value == "robust"
 							}
+							CIField
+							{
+								text: qsTr("Confidence intervals")
+								name: "ciLevel"
+								enabled: errorCalcMethod.value == "bootstrap"
+							}
 						}
-						RadioButton { value: "jackknife";	label: qsTr("Jackknife") }
-					}
-
-					CIField
-					{
-						text: qsTr("Confidence intervals")
-						name: "ciLevel"
-						enabled: errorCalcMethod.value == "robust"
-					}
 				}
-			}
 			RadioButtonGroup
 			{
 				visible: errorCalcMethod.value != "none"
@@ -153,10 +143,10 @@ Form
 				RadioButton { value: "ignore"; 	label: qsTr("Ignore")					}
 				RadioButton { value: "drop"; 	label: qsTr("Drop")						}
 			}
-			SetSeed {}
 		}
 
-		
+		SetSeed {}
+
 	}
 
 	Section
@@ -165,8 +155,8 @@ Form
 
 		Group
 		{
-		  CheckBox { name: "rSquared";				label: qsTr("R-squared")				}
-			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures")	}
+		  CheckBox { name: "rSquared";							label: qsTr("R-squared")				}
+			CheckBox { name: "additionalFitMeasures";	label: qsTr("Fit measures")	}
 			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient")		}
 			CheckBox { name: "reliabilityMeasures";		label: qsTr("Reliability measures")		}
 		}
@@ -177,6 +167,14 @@ Form
 			CheckBox { name: "impliedIndicatorCorrelation";		label: qsTr("Implied indicator correlations")	}
 			CheckBox { name: "observedConstructCorrelation"; 	label: qsTr("Observed construct correlations")	}
 			CheckBox { name: "impliedConstructCorrelation"; 	label: qsTr("Implied construct correlations")	}
+		}
+
+		Group 
+		{
+			CheckBox { name: "overallModelFit"; label: qsTr("Overall model fit") ; id: omf}
+			IntegerField { visible:omf.checked; name: "omfBootstrapSamples"; label: qsTr("Bootstrap samples"); fieldWidth: 60; defaultValue: 499; min: 100 }
+			CIField { visible: omf.checked; text: qsTr("Significance level"); name: "omfSignificanceLevel"; defaultValue: 5 }
+			CheckBox { visible: omf.checked; name: "saturatedStructuralModel"; label: qsTr("Saturated structural model") }
 		}
 
 		CheckBox
@@ -225,14 +223,11 @@ Form
 				enabled: prediction.checked
 				RadioButton { value: "none"; 	label: qsTr("None")	; checked: true	}
 				RadioButton { value: "lm"; 		label: qsTr("Linear model")		}
-				RadioButton { value: "PLS-PM"; 	label: qsTr("PLS-PM")			}
 				RadioButton { value: "GSCA"; 	label: qsTr("GSCA")				}
 				RadioButton { value: "PCA";		label: qsTr("PCA")				}
 				RadioButton { value: "MAXVAR";	label: qsTr("MAXVAR")			}
 				RadioButton { value: "all";		label: qsTr("All")					}
 			}
-
-			CheckBox { name: "predictedScore";	label: qsTr("Show predicted scores"); enabled: prediction.checked}
 		}
 	}
 }
