@@ -22,16 +22,16 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
-  saveRDS(options, "~/Downloads/options.rds")
-  options <- .plsSemPrepOpts(options)
 
-  # Read data, check if ready
-  saveRDS(dataset, "~/Downloads/dataset.rds")
+  options <- .plsSemPrepOpts(options)
+  saveRDS(options, "~/Downloads/options.rds")
+
+  # Handle data, check if ready
+  # dataset <- .plsSemHandleData(dataset, options)
   dataset <- .plsSemReadData(dataset, options)
   ready   <- .plsSemIsReady(dataset, options)
 
-  print(str(dataset))
-
+  saveRDS(dataset, "~/Downloads/dataset.rds")
 
   # Store in container
   modelContainer <- .plsSemModelContainer(jaspResults)
@@ -68,10 +68,18 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   return(options)
 }
 
+.plsSemHandleData <- function(dataset, options) {
+
+  # listwise deletion
+  dataset <- dataset[complete.cases(dataset), ]
+  return(dataset)
+}
+
 .plsSemReadData <- function(dataset, options) {
   if (!is.null(dataset)) return(dataset)
 
   variablesToRead <- if (options[["group"]] == "") character() else options[["group"]]
+
   for (model in options[["models"]])
     variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
 
@@ -153,9 +161,35 @@ checkCSemModel <- function(model, availableVars) {
     }
   }
 
-  # check for '~~'
-  if (grepl("~~", vmodel)) {
-    return(gettext("Using '~~' is not yet supported. Try '~' instead"))
+  checkTildeTilde <- function(vmodel) {
+    # Extract all lines with "~~"
+    lines <- unlist(strsplit(vmodel, "\n"))
+    tildeLines <- grep("~~", lines, value = TRUE)
+
+    # Extract variable pairs using a regex
+    variablePairs <- lapply(tildeLines, function(line) {
+      match <- regexec("\\s*(\\w+)\\s*~~\\s*(\\w+)", line)
+      subMatch <- regmatches(line, match)[[1]]
+      if (length(subMatch) == 3) {
+        return(list(subMatch[2], subMatch[3]))
+      } else {
+        return(NULL)
+      }
+    })
+
+    # Clean up the result (remove NULLs)
+    variablePairs <- Filter(Negate(is.null), variablePairs)
+    return(variablePairs)
+  }
+
+  checkTildeTilde(vmodel)
+  tildeResult <- checkTildeTilde(vmodel)
+  if (!is.null(tildeResult)) {
+    latents <- unique(rownames(parsed$measurement))
+    for (i in seq_along(tildeResult)) {
+      if (all(unlist(tildeResult[[i]]) %in% latents))
+        return(gettext("Using '~~' is not supported for composite covariances. Try '~' instead"))
+    }
   }
 
   # if checks pass, return empty string
@@ -565,7 +599,7 @@ checkCSemModel <- function(model, availableVars) {
       pe[["Total_effect"]] <- list()
       pe[["Total_effect"]][["mean"]] <- summ$Effect_estimates$Total_effect$Estimate
       names(pe[["Total_effect"]][["mean"]]) <- summ$Effect_estimates$Total_effect$Name
-    } else{
+    } else {
       IdxViFB <- 0
       IdxViF <- 0
       for (i in names(summ)) {
@@ -1743,14 +1777,14 @@ checkCSemModel <- function(model, availableVars) {
       jaspResults[["modelContainer"]]$getError() ||
       !options[["addConstructScores"]]) {
 
-    cat("===== DID NOT ENTER =====\n")
+    # cat("===== DID NOT ENTER =====\n")
 
     return()
   }
 
-  cat("===== ENTER: .plsAddConstructScores() =====\n")
-  cat("container scores: ")
-  print(is.null(jaspResults[["addedScoresContainer"]]))
+  # cat("===== ENTER: .plsAddConstructScores() =====\n")
+  # cat("container scores: ")
+  # print(is.null(jaspResults[["addedScoresContainer"]]))
 
   container <- createJaspContainer()
   container$dependOn(options = "addConstructScores")
