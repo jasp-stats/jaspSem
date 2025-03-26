@@ -60,10 +60,11 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     syncText$position <- 0.01
   }
 
-  saveRDS(options, file = "~/Downloads/options.rds")
-  saveRDS(dataset, file = "~/Downloads/dataset.rds")
 
   dataset <- .mnlfaHandleData(jaspResults, dataset, options, ready)
+
+  saveRDS(options, file = "~/Downloads/options.rds")
+  saveRDS(dataset, file = "~/Downloads/dataset.rds")
 
   .mnlfaCreateContainer(jaspResults, options)
   .mnlfaCheckErrors(dataset, options, ready)
@@ -313,7 +314,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     }
   }
 
-  modelObj <- .generateSyntax(factorList, moderatorNames, type = testName)
+  modelObj <- .generateSyntax(factorList, moderatorNames, type = testName, options)
 
   script <- mxsem::mxsem(model = modelObj$model, data = dataset, scale_loadings = FALSE, scale_latent_variances = FALSE)
 
@@ -422,10 +423,10 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
   invFitTable$addColumnInfo(name = "N", title = gettext("n(Parameters)"), type = "integer")
-  invFitTable$addColumnInfo(name = "df", title = gettext("df"), type = "integer")
   invFitTable$addColumnInfo(name = "AIC", title = gettext("AIC"), type = "number")
   invFitTable$addColumnInfo(name = "BIC", title = gettext("BIC"), type = "number")
-  dtFill <- data.frame(type = c(), N = c(), df = c(), AIC = c(), BIC = c())
+  invFitTable$addColumnInfo(name = "SABIC", title = gettext("SABIC"), type = "number")
+  dtFill <- data.frame(type = c(), N = c(), AIC = c(), BIC = c(), SABIC = c())
   if (length(results) > 1) {
 
     dtFill$BF <- dtFill$diffLL <- dtFill$diffdf <- dtFill$p <- c()
@@ -443,16 +444,17 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                          errmsg, names(results)[i], errTmp)
       dtAdd <- data.frame(type = names(results)[i],
                           N = NA,
-                          df = NA,
                           AIC = NA,
-                          BIC = NA)
+                          BIC = NA,
+                          SABIC = NA)
     } else {
       summ <- summary(results[[i]])
+      sabic <- .sabic(summ$BIC.Mx, summ$estimatedParameters, nrow(dataset))
       dtAdd <- data.frame(type = names(results)[i],
                           N = summ$estimatedParameters,
-                          df = summ$degreesOfFreedom,
                           AIC = summ$AIC.Mx,
-                          BIC = summ$BIC.Mx)
+                          BIC = summ$BIC.Mx,
+                          SABIC = sabic)
       if (length(results) > 1) {
         if (i == 1) {
           dtAdd$BF <- dtAdd$p <- dtAdd$diffdf <- dtAdd$diffLL <- NA
@@ -495,7 +497,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   globalParameterContainer$dependOn(optionsFromObject = jaspResults[["mainContainer"]][["invFitTable"]],
                                     options = c("loadingEstimates", "interceptEstimates", "residualVarianceEstimates",
                                             "factorVarianceEstimates", "factorMeanEstimates",
-                                            "factorCovarianceEstimates"))
+                                            "factorCovarianceEstimates", "alphaLevel"))
   jaspResults[["mainContainer"]][["globalParameterContainer"]] <- globalParameterContainer
 
   # get the mappings
@@ -533,6 +535,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   parNames <- paramTable[, "name"]
   parTypes <- paramTable[, "matrix"]
   newPars <- grepl("^new_parameters", parTypes)
+  fTitleMapping <- lapply(options[["factors"]], function(x) c(x[["name"]], x[["title"]])) # map GUI titles with internal titles
 
   if (options[["loadingEstimates"]]) {
     # Loadings
@@ -545,12 +548,16 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       cont[["loadTable"]] <- loadTable
       loadTable$addColumnInfo(name = "factor", title = gettext("Factor"), type = "string", combine = TRUE)
       loadTable$addColumnInfo(name = "indicator", title = gettext("Indicator"), type = "string", combine = TRUE)
-      loadTable$addColumnInfo(name = "moderator", title = gettext("Moderator"), type = "number")
-      loadTable$addColumnInfo(name = "param", title = gettext("Parameter"), type = "string")
+      loadTable$addColumnInfo(name = "effect", title = gettext("Effect"), type = "number")
+      # loadTable$addColumnInfo(name = "param", title = gettext("Parameter"), type = "string")
       loadTable$addColumnInfo(name = "est", title = gettext("Estimate"), type = "number")
       loadTable$addColumnInfo(name = "se", title = gettext("Std. Error"), type = "number")
+      loadTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+      loadTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                           overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
+      loadTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                           overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
 
-      fTitleMapping <- lapply(options[["factors"]], function(x) c(x[["name"]], x[["title"]]))
       loadMap <- mapResult$loadings
       loadMap <- loadMap[loadMap$loadingParameter != "fixed_1", ]
       # Replace values in the loadingsTable based on fTitleMapping
@@ -559,12 +566,16 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       }
 
       subMat <- paramTable[allLoads, ]
+      ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$alphaLevel)
       df <- data.frame(factor = loadMap$factor,
                        indicator = loadMap$variable,
-                       moderator = sub("^data.", "", loadMap$moderator),
-                       param = sub("^load_", "", loadMap$loadingCoefficient),
+                       effect = sub("^data.", "", loadMap$moderator),
+                       # param = sub("^load_", "", loadMap$loadingCoefficient),
                        est = subMat[, "Estimate"],
-                       se = subMat[, "Std.Error"])
+                       se = subMat[, "Std.Error"],
+                       pvalue = ciObj$pValue,
+                       ci.lower = ciObj$lowerBound,
+                       ci.upper = ciObj$upperBound)
       loadTable$setData(df)
     }
   }
@@ -577,19 +588,28 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       intTable <- createJaspTable(gettext("Intercepts"))
       cont[["intTable"]] <- intTable
       intTable$addColumnInfo(name = "indicator", title = gettext("Indicator"), type = "string", combine = TRUE)
-      intTable$addColumnInfo(name = "moderator", title = gettext("Moderator"), type = "number")
-      intTable$addColumnInfo(name = "param", title = gettext("Parameter"), type = "string")
+      intTable$addColumnInfo(name = "effect", title = gettext("Effect"), type = "number")
+      # intTable$addColumnInfo(name = "param", title = gettext("Parameter"), type = "string")
       intTable$addColumnInfo(name = "est", title = gettext("Estimate"), type = "number")
       intTable$addColumnInfo(name = "se", title = gettext("Std. Error"), type = "number")
+      intTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+      intTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                              overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
+      intTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                              overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
 
       intMap <- mapResult$intercepts
 
       subMat <- paramTable[intPosition, ]
+      ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$alphaLevel)
       df <- data.frame(indicator = intMap$variable,
-                       moderator = sub("^data.", "", intMap$moderator),
-                       param = sub("^int_", "", intMap$interceptCoefficient),
+                       effect = sub("^data.", "", intMap$moderator),
+                       # param = sub("^int_", "", intMap$interceptCoefficient),
                        est = subMat[, "Estimate"],
-                       se = subMat[, "Std.Error"])
+                       se = subMat[, "Std.Error"],
+                       pvalue = ciObj$pValue,
+                       ci.lower = ciObj$lowerBound,
+                       ci.upper = ciObj$upperBound)
       intTable$setData(df)
     }
   }
@@ -602,19 +622,28 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       resTable <- createJaspTable(gettext("Residual Variances"))
       cont[["resTable"]] <- resTable
       resTable$addColumnInfo(name = "indicator", title = gettext("Indicator"), type = "string", combine = TRUE)
-      resTable$addColumnInfo(name = "moderator", title = gettext("Moderator"), type = "number")
-      resTable$addColumnInfo(name = "param", title = gettext("Parameter"), type = "string")
+      resTable$addColumnInfo(name = "effect", title = gettext("Effect"), type = "number")
+      # resTable$addColumnInfo(name = "param", title = gettext("Parameter"), type = "string")
       resTable$addColumnInfo(name = "est", title = gettext("Estimate"), type = "number")
       resTable$addColumnInfo(name = "se", title = gettext("Std. Error"), type = "number")
+      resTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+      resTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                             overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
+      resTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                             overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
 
       resMap <- mapResult$residualVariances
 
       subMat <- paramTable[resPosition, ]
+      ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$alphaLevel)
       df <- data.frame(indicator = resMap$variable,
-                       moderator = sub("^data.", "", resMap$moderator),
-                       param = sub("^res_", "", resMap$residualCoefficient),
+                       effect = sub("^data.", "", resMap$moderator),
+                       # param = sub("^res_", "", resMap$residualCoefficient),
                        est = subMat[, "Estimate"],
-                       se = subMat[, "Std.Error"])
+                       se = subMat[, "Std.Error"],
+                       pvalue = ciObj$pValue,
+                       ci.lower = ciObj$lowerBound,
+                       ci.upper = ciObj$upperBound)
       resTable$setData(df)
     }
   }
@@ -626,12 +655,16 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       fvTable <- createJaspTable(gettext("Factor Variances"))
       cont[["fvTable"]] <- fvTable
       fvTable$addColumnInfo(name = "factor", title = gettext("Factor"), type = "string", combine = TRUE)
-      fvTable$addColumnInfo(name = "moderator", title = gettext("Moderator"), type = "number")
-      fvTable$addColumnInfo(name = "param", title = gettext("Parameter"), type = "string")
+      fvTable$addColumnInfo(name = "effect", title = gettext("Effect"), type = "number")
+      # fvTable$addColumnInfo(name = "param", title = gettext("Parameter"), type = "string")
       fvTable$addColumnInfo(name = "est", title = gettext("Estimate"), type = "number")
       fvTable$addColumnInfo(name = "se", title = gettext("Std. Error"), type = "number")
+      fvTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+      fvTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                             overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
+      fvTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                             overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
 
-      fTitleMapping <- lapply(options[["factors"]], function(x) c(x[["name"]], x[["title"]]))
       fvMap <- mapResult$variances
       # Replace values in the fvTable based on fTitleMapping
       for (mapping in fTitleMapping) {
@@ -639,11 +672,15 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       }
 
       subMat <- paramTable[fvPosition, ]
+      ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$alphaLevel)
       df <- data.frame(factor = fvMap$factor,
-                       moderator = sub("^data.", "", fvMap$moderator),
-                       param = sub("^var_", "", fvMap$varianceCoefficient),
+                       effect = sub("^data.", "", fvMap$moderator),
+                       # param = sub("^var_", "", fvMap$varianceCoefficient),
                        est = subMat[, "Estimate"],
-                       se = subMat[, "Std.Error"])
+                       se = subMat[, "Std.Error"],
+                       pvalue = ciObj$pValue,
+                       ci.lower = ciObj$lowerBound,
+                       ci.upper = ciObj$upperBound)
       fvTable$setData(df)
     }
   }
@@ -655,12 +692,16 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       fmTable <- createJaspTable(gettext("Factor Means"))
       cont[["fmTable"]] <- fmTable
       fmTable$addColumnInfo(name = "factor", title = gettext("Factor"), type = "string", combine = TRUE)
-      fmTable$addColumnInfo(name = "moderator", title = gettext("Moderator"), type = "number")
-      fmTable$addColumnInfo(name = "param", title = gettext("Parameter"), type = "string")
+      fmTable$addColumnInfo(name = "effect", title = gettext("Effect"), type = "number")
+      # fmTable$addColumnInfo(name = "param", title = gettext("Parameter"), type = "string")
       fmTable$addColumnInfo(name = "est", title = gettext("Estimate"), type = "number")
       fmTable$addColumnInfo(name = "se", title = gettext("Std. Error"), type = "number")
+      fmTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+      fmTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                            overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
+      fmTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                            overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
 
-      fTitleMapping <- lapply(options[["factors"]], function(x) c(x[["name"]], x[["title"]]))
       fmMap <- mapResult$means
       # Replace values in the fmTable based on fTitleMapping
       for (mapping in fTitleMapping) {
@@ -668,11 +709,15 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       }
 
       subMat <- paramTable[fmPosition, ]
+      ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$alphaLevel)
       df <- data.frame(factor = fmMap$factor,
-                       moderator = sub("^data.", "", fmMap$moderator),
-                       param = sub("^mean_", "", fmMap$meanCoefficient),
+                       effect = sub("^data.", "", fmMap$moderator),
+                       # param = sub("^mean_", "", fmMap$meanCoefficient),
                        est = subMat[, "Estimate"],
-                       se = subMat[, "Std.Error"])
+                       se = subMat[, "Std.Error"],
+                       pvalue = ciObj$pValue,
+                       ci.lower = ciObj$lowerBound,
+                       ci.upper = ciObj$upperBound)
       fmTable$setData(df)
     }
   }
@@ -683,18 +728,26 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     if (sum(covPosition) > 0) { # are factor covariances
       covTable <- createJaspTable(gettext("Factor Covariances"))
       cont[["covTable"]] <- covTable
-      covTable$addColumnInfo(name = "moderator", title = gettext("Moderator"), type = "number")
-      covTable$addColumnInfo(name = "param", title = gettext("Parameter"), type = "string")
+      covTable$addColumnInfo(name = "effect", title = gettext("Effect"), type = "number")
+      # covTable$addColumnInfo(name = "param", title = gettext("Parameter"), type = "string")
       covTable$addColumnInfo(name = "est", title = gettext("Estimate"), type = "number")
       covTable$addColumnInfo(name = "se", title = gettext("Std. Error"), type = "number")
+      covTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+      covTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                            overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
+      covTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                            overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
 
       covMap <- mapResult$covariances
-
       subMat <- paramTable[covPosition, ]
-      df <- data.frame(moderator = covMap$moderator,
-                       param = covMap$covarianceCoefficient,
+      ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$alphaLevel)
+      df <- data.frame(effect = covMap$moderator,
+                       # param = covMap$covarianceCoefficient,
                        est = subMat[, "Estimate"],
-                       se = subMat[, "Std.Error"])
+                       se = subMat[, "Std.Error"],
+                       pvalue = ciObj$pValue,
+                       ci.lower = ciObj$lowerBound,
+                       ci.upper = ciObj$upperBound)
       covTable$setData(df)
     }
   }
@@ -785,7 +838,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 }
 
 ##### HERE: When creating the syntax it might make sense to use the actual factor names, or amybe not, because they might have spaces and weird symbols.
-.generateSyntax <- function(factorList, moderators, type) {
+.generateSyntax <- function(factorList, moderators, type, options) {
 
   rmvLoadMod <- FALSE
   rmvIntMod <- FALSE
@@ -793,16 +846,19 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   factorNamesVars <- names(factorList)
   factorNamesMeans <- names(factorList)
 
+  if (type == "configural") {
+    factorNamesVars <- NULL
+    factorNamesMeans <- NULL
+  }
+
   if (type == "metric") {
     rmvLoadMod <- TRUE
-    factorNamesVars <- NULL
+    factorNamesMeans <- NULL
   }
 
   if (type == "scalar") {
     rmvLoadMod <- TRUE
     rmvIntMod <- TRUE
-    factorNamesVars <- NULL
-    factorNamesMeans <- NULL
   }
 
   if (type == "strict") {
@@ -820,9 +876,9 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   interceptsBlock <- interceptsObj$interceptsBlock
   residualsObj <- .generateResidualVariances(factorList, moderators, removeModeration = rmvResMod)
   residualsBlock <- residualsObj$residualsBlock
-  variancesObj <- .generateFactorVariances(factorList, moderators, removeModerationFor = factorNamesVars)
+  variancesObj <- .generateFactorVariances(factorList, moderators, moderate = factorNamesVars)
   variancesBlock <- variancesObj$variancesBlock
-  meansObj <- .generateFactorMeans(factorList, moderators, removeModerationFor = factorNamesMeans)
+  meansObj <- .generateFactorMeans(factorList, moderators, moderate = factorNamesMeans)
   meansBlock <- meansObj$meansBlock
 
   if (length(names(factorList)) == 2) {
@@ -852,7 +908,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                               removeModerationFor = NULL,
                               removeModerationForVariables = c(),
                               removeSpecificModeration = list(),
-                              removeModerator = NULL) {
+                              removeModerator = NULL,
+                              scaleIndicatorLoading = FALSE) {
   loadingsBlock <- gettext("# LOADINGS BLOCK \n")
   loadingsList <- list()  # Store mappings
 
@@ -888,8 +945,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       }
 
       if (removeModeration || (!is.null(removeModerationFor) && factorName %in% removeModerationFor) || var %in% removeModerationForVariables) {
-        if (i == 1) {
-          loadExpr <- paste0("1 * ", var)  # Fix marker variable
+        if (scaleIndicatorLoading && i == 1) {
+          loadExpr <- paste0("1 * ", var)
           paramName <- "fixed_1"
         } else {
           loadExpr <- var
@@ -900,7 +957,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           variable = var,
           loadingParameter = paramName,
           loadingCoefficient = NA,
-          moderator = NA
+          moderator = gettext("Baseline")
         )
         rowIndex <- rowIndex + 1
       } else {
@@ -910,7 +967,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           variable = var,
           loadingParameter = paramName,
           loadingCoefficient = paramIntercept,
-          moderator = "Intercept"
+          moderator = gettext("Baseline")
         )
         rowIndex <- rowIndex + 1
 
@@ -956,9 +1013,11 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
 .generateFactorVariances <- function(factorList,
                                      moderators,
-                                     removeModerationFor = NULL,
+                                     moderate = NULL,
                                      removeSpecificModeration = list(),
-                                     removeModerator = NULL) {
+                                     removeModerator = NULL,
+                                     scaleFactorVariance = TRUE) {
+
   variancesBlock <- gettext("# FACTOR VARIANCES BLOCK \n")
   variancesList <- list()  # Store mappings of moderators only
 
@@ -970,55 +1029,68 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   rowIndex <- 1  # Track row index
 
   for (factorName in names(factorList)) {
-    if (!is.null(removeModerationFor) && factorName %in% removeModerationFor) {
+    applyModeration <- !is.null(moderate) && factorName %in% moderate
+
+    if (!applyModeration || (scaleFactorVariance && !applyModeration)) {
+      # No moderation: scaleFactorVariance = TRUE and factor not in moderate
       variancesBlock <- paste0(variancesBlock, "  ", factorName, " ~~ 1 * ", factorName, "\n")
+      next
+    }
+
+    # Build moderation terms
+    moderatedTerms <- moderators
+    if (factorName %in% names(removeSpecificModeration)) {
+      moderatedTerms <- setdiff(moderatedTerms, paste0("data.", removeSpecificModeration[[factorName]]))
+    }
+
+    paramName <- paste0("var_", factorName)
+    paramIntercept <- paste0(paramName, "_0")
+    paramCoefs <- if (length(moderatedTerms) > 0) {
+      paste0(paramName, "_", seq_along(moderatedTerms))
     } else {
-      moderatedTerms <- moderators
-      if (factorName %in% names(removeSpecificModeration)) {
-        moderatedTerms <- setdiff(moderatedTerms, paste0("data.", removeSpecificModeration[[factorName]]))
-      }
+      character(0)
+    }
 
-      paramName <- paste0("var_", factorName)
-      paramIntercept <- paste0(paramName, "_0")
-      paramCoefs <- if (length(moderatedTerms) > 0) {
-        paste0(paramName, "_", seq_along(moderatedTerms))
-      } else {
-        character(0)
-      }
-
-      # Store mapping for intercept
+    # Only store intercept if needed
+    if (!scaleFactorVariance) {
       variancesList[[rowIndex]] <- list(
         factor = factorName,
         varianceParameter = paramName,
         varianceCoefficient = paramIntercept,
-        moderator = "Intercept"
+        moderator = gettext("Baseline")
       )
       rowIndex <- rowIndex + 1
-
-      # Store mapping for each moderator
-      if (length(paramCoefs) > 0) {
-        for (j in seq_along(moderatedTerms)) {
-          variancesList[[rowIndex]] <- list(
-            factor = factorName,
-            varianceParameter = paramName,
-            varianceCoefficient = paramCoefs[j],
-            moderator = moderatedTerms[j]
-          )
-          rowIndex <- rowIndex + 1
-        }
-      }
-
-      moderationTerms <- if (length(paramCoefs) > 0) {
-        paste0(paste0(moderatedTerms, " * ", paramCoefs), collapse = " + ")
-      } else {
-        ""
-      }
-
-      variancesBlock <- paste0(variancesBlock, "  ", factorName, " ~~ {", paramName, " := exp(", paramIntercept,
-                               ifelse(moderationTerms != "", paste0(" + ", moderationTerms), ""),
-                               ")} * ", factorName, "\n")
     }
+
+    if (length(paramCoefs) > 0) {
+      for (j in seq_along(moderatedTerms)) {
+        variancesList[[rowIndex]] <- list(
+          factor = factorName,
+          varianceParameter = paramName,
+          varianceCoefficient = paramCoefs[j],
+          moderator = moderatedTerms[j]
+        )
+        rowIndex <- rowIndex + 1
+      }
+    }
+
+    moderationTerms <- if (length(paramCoefs) > 0) {
+      paste0(paste0(moderatedTerms, " * ", paramCoefs), collapse = " + ")
+    } else {
+      ""
+    }
+
+    varianceExpression <- if (scaleFactorVariance) {
+      paste0("exp(", moderationTerms, ")")
+    } else {
+      paste0("exp(", paramIntercept,
+             ifelse(moderationTerms != "", paste0(" + ", moderationTerms), ""),
+             ")")
+    }
+
+    variancesBlock <- paste0(variancesBlock, "  ", factorName, " ~~ {", paramName, " := ", varianceExpression, "} * ", factorName, "\n")
   }
+
 
   variancesMapDf <- do.call(rbind, lapply(variancesList, as.data.frame))
 
@@ -1028,77 +1100,86 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
 .generateFactorMeans <- function(factorList,
                                  moderators,
-                                 removeModerationFor = NULL,
+                                 moderate = NULL,
                                  removeSpecificModeration = list(),
-                                 removeModerator = NULL) {
+                                 removeModerator = NULL,
+                                 fixMeanZero = TRUE) {
   meansBlock <- gettext("# FACTOR MEANS BLOCK \n")
-  meansList <- list()  # Store mappings
+  meansList <- list()
 
   moderators <- paste0("data.", moderators)
   if (!is.null(removeModerator)) {
     moderators <- setdiff(moderators, paste0("data.", removeModerator))
   }
 
-  rowIndex <- 1  # Track row index
+  rowIndex <- 1
 
   for (factorName in names(factorList)) {
-    if (!is.null(removeModerationFor) && factorName %in% removeModerationFor) {
+    applyModeration <- !is.null(moderate) && factorName %in% moderate
+
+    if (!applyModeration) {
       meansBlock <- paste0(meansBlock, "  ", factorName, " ~ 0 * 1\n")
+      next
+    }
+
+    # Apply moderation
+    moderatedTerms <- moderators
+    if (factorName %in% names(removeSpecificModeration)) {
+      moderatedTerms <- setdiff(moderatedTerms, paste0("data.", removeSpecificModeration[[factorName]]))
+    }
+
+    paramName <- paste0("mean_", factorName)
+    paramIntercept <- paste0(paramName, "_0")
+    paramCoefs <- if (length(moderatedTerms) > 0) {
+      paste0(paramName, "_", seq_along(moderatedTerms))
     } else {
-      moderatedTerms <- moderators
-      if (factorName %in% names(removeSpecificModeration)) {
-        moderatedTerms <- setdiff(moderatedTerms, paste0("data.", removeSpecificModeration[[factorName]]))
-      }
+      character(0)
+    }
 
-      paramName <- paste0("mean_", factorName)
-      paramIntercept <- paste0(paramName, "_0")
-      paramCoefs <- if (length(moderatedTerms) > 0) {
-        paste0(paramName, "_", seq_along(moderatedTerms))
-      } else {
-        character(0)
-      }
-
-      # Store intercept mapping
+    # Add intercept if not fixing to zero
+    if (!fixMeanZero) {
       meansList[[rowIndex]] <- list(
         factor = factorName,
         meanParameter = paramName,
         meanCoefficient = paramIntercept,
-        moderator = "Intercept"
+        moderator = gettext("Baseline")
       )
       rowIndex <- rowIndex + 1
-
-      # Store moderator mappings
-      if (length(paramCoefs) > 0) {
-        for (j in seq_along(moderatedTerms)) {
-          meansList[[rowIndex]] <- list(
-            factor = factorName,
-            meanParameter = paramName,
-            meanCoefficient = paramCoefs[j],
-            moderator = moderatedTerms[j]
-          )
-          rowIndex <- rowIndex + 1
-        }
-      }
-
-      moderationTerms <- if (length(paramCoefs) > 0) {
-        paste0(
-          paste0(moderatedTerms, " * ", paramCoefs),
-          collapse = " + "
-        )
-      } else {
-        ""
-      }
-
-      meansBlock <- paste0(meansBlock, "  ", factorName, " ~ {", paramName, " := ", paramIntercept,
-                           ifelse(moderationTerms != "", paste0(" + ", moderationTerms), ""), "} * 1\n")
     }
+
+    if (length(paramCoefs) > 0) {
+      for (j in seq_along(moderatedTerms)) {
+        meansList[[rowIndex]] <- list(
+          factor = factorName,
+          meanParameter = paramName,
+          meanCoefficient = paramCoefs[j],
+          moderator = moderatedTerms[j]
+        )
+        rowIndex <- rowIndex + 1
+      }
+    }
+
+    moderationTerms <- if (length(paramCoefs) > 0) {
+      paste0(paste0(moderatedTerms, " * ", paramCoefs), collapse = " + ")
+    } else {
+      ""
+    }
+
+    meanExpression <- if (fixMeanZero) {
+      paste0(moderationTerms)
+    } else {
+      paste0(paramIntercept,
+             ifelse(moderationTerms != "", paste0(" + ", moderationTerms), ""))
+    }
+
+    meansBlock <- paste0(meansBlock, "  ", factorName, " ~ {", paramName, " := ", meanExpression, "} * 1\n")
   }
 
-  # Convert list to DataFrame
   meansMapDf <- do.call(rbind, lapply(meansList, as.data.frame))
 
   return(list(meansBlock = meansBlock, meansMapDf = meansMapDf))
 }
+
 
 .generateIntercepts <- function(factorList,
                                 moderators,
@@ -1150,7 +1231,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           variable = var,
           interceptParameter = paramName,
           interceptCoefficient = paramIntercept,
-          moderator = "Intercept"
+          moderator = gettext("Baseline")
         )
         rowIndex <- rowIndex + 1
 
@@ -1238,7 +1319,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           variable = var,
           residualParameter = paramName,
           residualCoefficient = paramIntercept,
-          moderator = "Intercept"
+          moderator = gettext("Baseline")
         )
         rowIndex <- rowIndex + 1
 
@@ -1326,7 +1407,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       covarianceList[[rowIndex]] <- list(
         covarianceParameter = "rho",
         covarianceCoefficient = "rho_0",
-        moderator = "Intercept"
+        moderator = gettext("Baseline")
       )
       rowIndex <- rowIndex + 1
 
@@ -1366,3 +1447,32 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   return(list(covarianceBlock = covarianceBlock, covarianceMapDf = covarianceMapDf))
 }
+
+
+.sabic <- function(BIC, k, N) {
+
+  # Calculate the adjustment term
+  adjustment <- k * (log((N + 2) / 24) - log(N))
+
+  # Calculate and return the adjusted BIC
+  bicStar <- BIC + adjustment
+  return(bicStar)
+}
+
+.waldCi <- function(estimate, se, alpha = 0.05) {
+  zValue <- estimate / se
+  pValue <- 2 * (1 - pnorm(abs(zValue)))
+  zCrit <- qnorm(1 - alpha / 2)
+  lowerBound <- estimate - zCrit * se
+  upperBound <- estimate + zCrit * se
+
+  result <- data.frame(
+    lowerBound = lowerBound,
+    upperBound = upperBound,
+    pValue = pValue
+  )
+
+  return(result)
+}
+
+
