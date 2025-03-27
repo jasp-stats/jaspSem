@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-03-26 01:12+0000\n"
+"PO-Revision-Date: 2025-03-28 12:20+0000\n"
 "Last-Translator: Marko Bojović <bojovicmarko@outlook.com>\n"
 "Language-Team: Serbian <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "sr/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 
 msgctxt "Description|"
 msgid "SEM"
-msgstr ""
+msgstr "SEM"
 
 msgctxt "Description|"
 msgid "Structural Equation Modeling"
@@ -51,7 +51,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Intercept"
-msgstr ""
+msgstr "Пресек"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Linear"
