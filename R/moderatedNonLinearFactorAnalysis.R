@@ -97,13 +97,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (!ready) return()
 
 
-  # TODO: should these all be numeric?
-  # what about the moderator scaling?
-  vars  <- unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)
-  # convert the dataset for the vars to numeric
-  for (var in vars) {
-    dataset[[var]] <- as.numeric(as.character(dataset[[var]]))
-  }
+  # convert the whoel data to numeric
+  dataset <- as.data.frame(lapply(dataset, function(x) as.numeric(as.character(x))))
 
   # scale the continuous moderators
   mods <- unlist(lapply(options[["moderators"]], `[[`, "variable"), use.names = FALSE)
@@ -152,7 +147,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       }
     }
   }
-
 
   dataState <- createJaspState(dataset)
   dataState$dependOn(options = c("factors", "moderators", "addInteractionTerms", "squaredEffect", "cubicEffect"))
@@ -492,7 +486,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   if (length(results) == 0) return()
 
-  globalParameterContainer <- createJaspContainer(gettext("Global Invariance Parameter Estimates"), initCollapsed = TRUE)
+  globalParameterContainer <- createJaspContainer(gettext("Parameter Estimates"), initCollapsed = TRUE)
   globalParameterContainer$position <- 2
   globalParameterContainer$dependOn(optionsFromObject = jaspResults[["mainContainer"]][["invFitTable"]],
                                     options = c("loadingEstimates", "interceptEstimates", "residualVarianceEstimates",
@@ -755,13 +749,81 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   return(cont)
 }
 
-.mnlfaPrintSyntax <- function(jaspResults, dataset, options, ready, mod) {
+.mnlfaPlotContainer <- function(jaspResults, dataset, options, ready) {
+
+}
+
+.mnlfaPlotContainerHelper <- function(paramTable, nm, mapResult, options) {
+  parNames <- paramTable[, "name"]
+  parTypes <- paramTable[, "matrix"]
+  newPars <- grepl("^new_parameters", parTypes)
+  loadPosition <- grepl("^load_", parNames)
+
+  subMat <- paramTable[loadPosition, ]
+  loadMap <- mapList$loadings
+
+  modsOg <- unlist(lapply(options[["moderators"]], `[[`, "variable"), use.names = FALSE)
+  mods.types <- options[["moderators.types"]]
+
+  for (vars in unique(loadMap$variable)) {
+    vars <- unique(loadMap$variable)[4]
+    newParNames <- loadMap[loadMap$variable == vars, "loadingCoefficient"]
+    newParMods <- loadMap[loadMap$variable == vars, "moderator"]
+    newParMods <- sub("^data.", "", newParMods)
+    newParsEstimates <- subMat[subMat$name == newParNames, "Estimate"]
+    dtSub <- dataset[, mods, drop = FALSE]
+
+    tmpValues <- 0
+    for (i in seq_along(newParMods)) {
+      if (newParMods[i] == "Baseline") {
+        tmpValues <- tmpValues + newParsEstimates[i]
+      } else {
+        tmpValues <- tmpValues + newParsEstimates[i] * dataset[[newParMods[i]]]
+      }
+    }
+    dtSub[["moderatedValue"]] <- tmpValues
+
+    if (length(mods) == 1) {
+      if (mods.types == "scale") {
+        ggplot(data = dtSub,
+               aes(x = .data[[newParMods]], y = moderatedValue)) +
+          ylab("Individual Parameter Value") +
+          geom_line()
+      }
+    } else if (length(mods == 2)) {
+      if (length(unique(mods.types)) == 2) { # one moderator continuous the other nominal
+        modCont <- mods[mods.types == "scale"]
+        modNom <- mods[mods.types == "nominal"]
+        ggplot(data = dtSub,
+               aes(x = .data[[modCont]],
+                   y = moderatedValue,
+                   color = factor(.data[[modNom]]))) +
+          ylab("Individual Parameter Value") +
+          geom_line()
+
+      } else { # two continuous moderators
+        ggplot(data = dtSub,
+               aes(x = .data[[mods[1]]],
+                   y = moderatedValue,
+                   color = .data[[mods[2]]])) +
+          ylab("Individual Parameter Value for") +
+          geom_line()
+      }
+    }
+
+  }
+}
+.mnlfaPlotHelper <- function(tmpData, options) {
+
+}
+.mnlfaPrintSyntax <- function(jaspResults, dataset, options, ready) {
+  if (!is.null(jaspResults[["syntaxContainer"]])) return()
   if (!options$showSyntax) return()
   if (!ready) return()
 
   syntaxContainer <- createJaspContainer(gettext("Model Syntax"), initCollapsed = TRUE)
   syntaxContainer$dependOn(options = c("showSyntax"),
-                           optionsFromObject = jaspResults[["maincontainer"]][["globalParameterContainer"]])
+                           optionsFromObject = jaspResults[["mainContainer"]][["globalParameterContainer"]])
   jaspResults[["syntaxContainer"]] <- syntaxContainer
 
   models <- list(Configural = jaspResults[["mainContainer"]][["configuralInvModelState"]][["object"]][["model"]],
