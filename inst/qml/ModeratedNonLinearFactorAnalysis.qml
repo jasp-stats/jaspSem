@@ -247,7 +247,7 @@ Form
 		id: plots
 
 		// property var names: moderators.columnsNames
-		property var names: interactions.checked ? moderators.columnsNames.concat(modOpts.interactionPairs) : moderators.columnsNames
+		property var names: []
 		
 		TabView 
 		{
@@ -277,7 +277,9 @@ Form
 						{
 							name: "plotMod1"
 							id: plotMod1
-							values: plots.names
+							// source: [moderators]
+							source: [moderators, {values: plots.names}, {values: modOpts.interactionPairs}]
+
 							addEmptyValue: true
 						}
 						DropDown
@@ -285,7 +287,8 @@ Form
 							name: "plotMod2"
 							id: plotMod2
 							addEmptyValue: true
-							values: plots.names.filter(value => value !== plotMod1.currentValue) // Exclude selected value from the first dropdown
+							source: plotMod1
+							// source: [{id: plotMod1, discard: {values: [plotMod1.currentValue]}}]
 						}
 
 						CheckBox { name: "includePlot"; enabled: plotMod1.currentValue !== "" || plotMod2.currentValue !== "" }
