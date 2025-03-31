@@ -17,7 +17,6 @@
 
 ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
-
   sink("~/Downloads/log.txt")
   on.exit(sink(NULL))
 
@@ -62,6 +61,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
 
   dataset <- .mnlfaHandleData(jaspResults, dataset, options, ready)
+  # colnames(dataset) <- jaspBase::decodeColNames(colnames(dataset))
 
   saveRDS(options, file = "~/Downloads/options.rds")
   saveRDS(dataset, file = "~/Downloads/dataset.rds")
@@ -77,9 +77,13 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   .mnlfaCallGlobalInvarianceTests(jaspResults, dataset, options, ready)
 
   # output
+  # tables
   .mnlfaFitPerGroupTable(jaspResults, dataset, options, ready)
   .mnlfaGlobalInvarianceFitTable(jaspResults, dataset, options, ready)
   .mnlfaGlobalInvarianceParameterTables(jaspResults, dataset, options, ready)
+
+  # plots
+  .mnlfaPlotPrepare(jaspResults, dataset, options, ready)
 
   .mnlfaPrintSyntax(jaspResults, dataset, options, ready)
 
@@ -112,41 +116,43 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
   # add interactions and extra effects
-  if (length(mods) > 0) {
     # already create the interaction variables, even if we dont need them.
-    if (length(mods) > 1 && options[["addInteractionTerms"]]) {
-      inters <- combn(mods, 2)
-      for (i in 1:ncol(inters)) {
-        tmp1 <- as.numeric(as.character(dataset[[inters[1, i]]])) # needed for nominal moderators
-        tmp2 <- as.numeric(as.character(dataset[[inters[2, i]]]))
-        tmpDt <- data.frame(tmp1 * tmp2)
-        colnames(tmpDt) <- paste0(inters[1, i], "_x_", inters[2, i])
-        dataset <- cbind(dataset, tmpDt)
-      }
-    }
-
-    # add squares and cubic effects
-    squares <- sapply(options[["moderators"]], function(x) x[["squaredEffect"]])
-    if (sum(squares) > 0) {
-      squaredMods <- mods[squares]
-      for (i in 1:length(squaredMods)) {
-        tmp <- as.numeric(as.character(dataset[[squaredMods[i]]]))
-        tmpDt <- data.frame(tmp^2)
-        colnames(tmpDt) <- paste0(squaredMods[i], "_squared")
-        dataset <- cbind(dataset, tmpDt)
-      }
-    }
-    cubics <- sapply(options[["moderators"]], function(x) x[["cubicEffect"]])
-    if (sum(cubics) > 0) {
-      cubicMods <- mods[cubics]
-      for (i in 1:length(cubicMods)) {
-        tmp <- as.numeric(as.character(dataset[[cubicMods[i]]]))
-        tmpDt <- data.frame(tmp^3)
-        colnames(tmpDt) <- paste0(cubicMods[i], "_cubic")
-        dataset <- cbind(dataset, tmpDt)
-      }
+  if (length(mods) > 1 && options[["addInteractionTerms"]]) {
+    inters <- combn(mods, 2)
+    for (i in 1:ncol(inters)) {
+      tmp1 <- as.numeric(as.character(dataset[[inters[1, i]]])) # needed for nominal moderators
+      tmp2 <- as.numeric(as.character(dataset[[inters[2, i]]]))
+      tmpDt <- data.frame(tmp1 * tmp2)
+      interNames <- jaspBase::decodeColNames(c(inters[1, i], inters[2, i]))
+      colnames(tmpDt) <- paste0(interNames[1], "_x_", interNames[2])
+      dataset <- cbind(dataset, tmpDt)
     }
   }
+
+  # add squares and cubic effects
+  squares <- sapply(options[["moderators"]], function(x) x[["squaredEffect"]])
+  if (sum(squares) > 0) {
+    squaredMods <- mods[squares]
+    for (i in 1:length(squaredMods)) {
+      tmp <- as.numeric(as.character(dataset[[squaredMods[i]]]))
+      tmpDt <- data.frame(tmp^2)
+      squaredModsName <- jaspBase::decodeColNames(squaredMods[i])
+      colnames(tmpDt) <- paste0(squaredModsName, "_squared")
+      dataset <- cbind(dataset, tmpDt)
+    }
+  }
+  cubics <- sapply(options[["moderators"]], function(x) x[["cubicEffect"]])
+  if (sum(cubics) > 0) {
+    cubicMods <- mods[cubics]
+    for (i in 1:length(cubicMods)) {
+      tmp <- as.numeric(as.character(dataset[[cubicMods[i]]]))
+      tmpDt <- data.frame(tmp^3)
+      cubicModsName <- jaspBase::decodeColNames(cubicMods[i])
+      colnames(tmpDt) <- paste0(cubicModsName, "_cubic")
+      dataset <- cbind(dataset, tmpDt)
+    }
+  }
+
 
   dataState <- createJaspState(dataset)
   dataState$dependOn(options = c("factors", "moderators", "addInteractionTerms", "squaredEffect", "cubicEffect"))
@@ -291,20 +297,23 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   factorNames <- sapply(options[["factors"]], function(x) x[["name"]])
   names(factorList) <- factorNames
   moderatorNames <- moderatorsOriginal <- sapply(options[["moderators"]], function(x) x[["variable"]])
+  decodedModeratorNames <- jaspBase::decodeColNames(moderatorNames)
   if (length(moderatorNames) > 0) {
     if (length(moderatorNames) > 1 && options[["addInteractionTerms"]]) {
-      interactionTerms <- combn(moderatorNames, 2, paste, collapse = "_x_")
+      interactionTerms <- combn(decodedModeratorNames, 2, paste, collapse = "_x_")
       moderatorNames <- c(moderatorNames, interactionTerms)
     }
     squares <- sapply(options[["moderators"]], function(x) x[["squaredEffect"]])
     if (sum(squares) > 0) {
       squaredMods <- moderatorsOriginal[squares]
-      moderatorNames <- c(moderatorNames, paste0(squaredMods, "_squared"))
+      decodedSquaredMods <- jaspBase::decodeColNames(squaredMods)
+      moderatorNames <- c(moderatorNames, paste0(decodedSquaredMods, "_squared"))
     }
     cubics <- sapply(options[["moderators"]], function(x) x[["cubicEffect"]])
     if (sum(cubics) > 0) {
       cubicMods <- moderatorsOriginal[cubics]
-      moderatorNames <- c(moderatorNames, paste0(cubicMods, "_cubic"))
+      decodedCubicMods <- jaspBase::decodeColNames(cubicMods)
+      moderatorNames <- c(moderatorNames, paste0(decodedCubicMods, "_cubic"))
     }
   }
 
@@ -410,6 +419,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                   Strict = jaspResults[["mainContainer"]][["strictInvState"]][["object"]])
 
   results <- results[sapply(results, function(x) !is.null(x))]
+  saveRDS(results, "~/Downloads/results.rds")
 
   if (length(results) == 0) {
     invFitTable$addFootnote(gettext("Choose one of the global invariance tests to perform the test."))
@@ -500,6 +510,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                       Scalar = jaspResults[["mainContainer"]][["scalarInvModelState"]][["object"]][["map"]],
                       Strict = jaspResults[["mainContainer"]][["strictInvModelState"]][["object"]][["map"]])
   mapResults <- mapResults[sapply(mapResults, function(x) !is.null(x))]
+
+  saveRDS(mapResults, "~/Downloads/mapResults.rds")
 
   for (i in 1:length(results)) {
 
@@ -749,73 +761,127 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   return(cont)
 }
 
-.mnlfaPlotContainer <- function(jaspResults, dataset, options, ready) {
+.mnlfaPlotPrepare <- function(jaspResults, dataset, options, ready) {
+  if (!ready) return()
+  if (!is.null(jaspResults[["plotContainer"]])) return()
 
-}
+  plotContainer <- createJaspContainer(gettext("Parameter Plots"))
+  plotContainer$position <- 3
+  plotContainer$dependOn(optionsFromObject = jaspResults[["mainContainer"]][["globalParameterContainer"]],
+                         options = c("plotModelList"))
+  jaspResults[["plotContainer"]] <- plotContainer
 
-.mnlfaPlotContainerHelper <- function(paramTable, nm, mapResult, options) {
-  parNames <- paramTable[, "name"]
-  parTypes <- paramTable[, "matrix"]
-  newPars <- grepl("^new_parameters", parTypes)
-  loadPosition <- grepl("^load_", parNames)
+  plotModelList <- options[["plotModelList"]]
+  # only keep the elements where includePlot is true
+  filteredPlots <- .extractIncludedPlotItemsDf(plotModelList)
 
-  subMat <- paramTable[loadPosition, ]
-  loadMap <- mapList$loadings
-
-  modsOg <- unlist(lapply(options[["moderators"]], `[[`, "variable"), use.names = FALSE)
-  mods.types <- options[["moderators.types"]]
-
-  for (vars in unique(loadMap$variable)) {
-    vars <- unique(loadMap$variable)[4]
-    newParNames <- loadMap[loadMap$variable == vars, "loadingCoefficient"]
-    newParMods <- loadMap[loadMap$variable == vars, "moderator"]
-    newParMods <- sub("^data.", "", newParMods)
-    newParsEstimates <- subMat[subMat$name == newParNames, "Estimate"]
-    dtSub <- dataset[, mods, drop = FALSE]
-
-    tmpValues <- 0
-    for (i in seq_along(newParMods)) {
-      if (newParMods[i] == "Baseline") {
-        tmpValues <- tmpValues + newParsEstimates[i]
-      } else {
-        tmpValues <- tmpValues + newParsEstimates[i] * dataset[[newParMods[i]]]
-      }
-    }
-    dtSub[["moderatedValue"]] <- tmpValues
-
-    if (length(mods) == 1) {
-      if (mods.types == "scale") {
-        ggplot(data = dtSub,
-               aes(x = .data[[newParMods]], y = moderatedValue)) +
-          ylab("Individual Parameter Value") +
-          geom_line()
-      }
-    } else if (length(mods == 2)) {
-      if (length(unique(mods.types)) == 2) { # one moderator continuous the other nominal
-        modCont <- mods[mods.types == "scale"]
-        modNom <- mods[mods.types == "nominal"]
-        ggplot(data = dtSub,
-               aes(x = .data[[modCont]],
-                   y = moderatedValue,
-                   color = factor(.data[[modNom]]))) +
-          ylab("Individual Parameter Value") +
-          geom_line()
-
-      } else { # two continuous moderators
-        ggplot(data = dtSub,
-               aes(x = .data[[mods[1]]],
-                   y = moderatedValue,
-                   color = .data[[mods[2]]])) +
-          ylab("Individual Parameter Value for") +
-          geom_line()
-      }
-    }
-
+  if (is.null(filteredPlots)) {
+    return()
   }
+
+  colnames(dataset)
+
+  translatedNames <- .translatedElements()
+  for (i in 1:nrow(filteredPlots)) {
+    currentRow <- filteredPlots[i, ]
+    modelName <- currentRow$modelName
+    modelNameR <- translatedNames$rNames[translatedNames$guiNames == modelName]
+    fit <- jaspResults[["mainContainer"]][[paste0(modelNameR, "InvState")]][["object"]]
+    mapResult <- jaspResults[["mainContainer"]][[paste0(modelNameR, "InvModelState")]][["object"]][["map"]]
+    paramTable <- summary(fit)$parameters
+    parameterGroup <- currentRow$parameterGroup
+    parameterGroupR <- translatedNames$parTableNames[translatedNames$guiNames == parameterGroup]
+
+    parNames <- paramTable[, "name"]
+    parPosition <- grepl(paste0("^", parameterGroupR, "_"), parNames)
+    if (sum(parPosition) > 0) {
+      subMat <- paramTable[parPosition, ]
+      parName <- translatedNames$rNames[translatedNames$guiNames == parameterGroup]
+      map <- mapResult[[parName]]
+      subMap <- map[map$variable == currentRow$value, ]
+      currentMods <- sub("^data.", "", subMap$moderator)
+      modsForPlots <- c(currentRow$plotMod1, currentRow$plotMod2)
+      modsForPlots <- modsForPlots[modsForPlots != ""]
+      modsForPlots <- gsub(":", "_x_", modsForPlots) # for interactions
+      matchIndices <- match(modsForPlots, currentMods)
+      matchIndices <- matchIndices[!is.na(matchIndices)]
+      coefficientColumnIndex <- grep("Coefficient", colnames(subMap))
+      modEstimates <- c(subMat$Estimate[match(subMap[1, coefficientColumnIndex], subMat$name)], # Baseline
+                        subMat$Estimate[match(subMap[matchIndices, coefficientColumnIndex], subMat$name)]) # the other estimates
+
+      # print(modsForPlots)
+      # print(coefficientColumnIndex)
+      # print(matchIndices)
+      # print(modEstimates)
+      # cat("=======\n")
+
+      dtSub <- dataset[, modsForPlots, drop = FALSE]
+      outValues <- modEstimates[1] + rowSums(sweep(dtSub, 2, modEstimates[-1], `*`))
+      dtSub[["estimatedValue"]] <- outValues
+
+      if (length(modsForPlots) == 1) {
+        gg <- ggplot2::ggplot(data = dtSub,
+          ggplot2::aes(x = .data[[modsForPlots]],
+                       y = estimatedValue)) +
+          ggplot2::ylab("Individual Parameter Value") +
+          ggplot2::geom_line()
+      } else { # length is 2
+        gg <- ggplot2::ggplot(data = dtSub,
+          ggplot2::aes(x = .data[[modsForPlots[1]]],
+                       y = estimatedValue,
+                       color = .data[[modsForPlots[2]]])) +
+          ggplot2::ylab("Individual Parameter Value") +
+          ggplot2::geom_point()
+      }
+
+      plt <- createJaspPlot(gg)
+      plt$title <- gettextf("plot %s", i)
+      plotContainer[[paste0("plot", i)]] <- plt
+    }
+  }
+
+  ##### a lot to do still...:
+  #' - interactions
+  #' - scaling of the moderators: take that into account, maybe do two plots for two continous
+  #' - proper plot formatting
+  #' - dependencies
+  #' - special cases
+  #' - do the factor stuff
+
+
+    # if (length(mods) == 1) {
+    #   if (mods.types == "scale") {
+    #     ggplot(data = dtSub,
+    #            aes(x = .data[[newParMods]], y = moderatedValue)) +
+    #       ylab("Individual Parameter Value") +
+    #       geom_line()
+    #   }
+    # } else if (length(mods == 2)) {
+    #   if (length(unique(mods.types)) == 2) { # one moderator continuous the other nominal
+    #     modCont <- mods[mods.types == "scale"]
+    #     modNom <- mods[mods.types == "nominal"]
+    #     ggplot(data = dtSub,
+    #            aes(x = .data[[modCont]],
+    #                y = moderatedValue,
+    #                color = factor(.data[[modNom]]))) +
+    #       ylab("Individual Parameter Value") +
+    #       geom_line()
+    #
+    #   } else { # two continuous moderators
+    #     ggplot(data = dtSub,
+    #            aes(x = .data[[mods[1]]],
+    #                y = moderatedValue,
+    #                color = .data[[mods[2]]])) +
+    #       ylab("Individual Parameter Value for") +
+    #       geom_line()
+    #   }
+    # }
 }
+
 .mnlfaPlotHelper <- function(tmpData, options) {
 
 }
+
 .mnlfaPrintSyntax <- function(jaspResults, dataset, options, ready) {
   if (!is.null(jaspResults[["syntaxContainer"]])) return()
   if (!options$showSyntax) return()
@@ -1537,4 +1603,43 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   return(result)
 }
 
+.extractIncludedPlotItemsDf <- function(plotModelList) {
+  results <- list()
 
+  for (model in plotModelList) {
+    modelName <- model$value
+    for (param in model$plotParameterList) {
+      parameterGroup <- param$value
+      for (item in param$plotItemList) {
+        if (isTRUE(item$includePlot)) {
+          results[[length(results) + 1]] <- list(
+            modelName = modelName,
+            parameterGroup = parameterGroup,
+            plotMod1 = item$plotMod1,
+            plotMod2 = item$plotMod2,
+            value = item$value,
+            value.types = item$value.types
+          )
+        }
+      }
+    }
+  }
+  if (length(results) == 0) return(NULL)
+
+  # Convert to data frame
+  do.call(rbind, lapply(results, as.data.frame, stringsAsFactors = FALSE))
+}
+
+
+.translatedElements <- function() {
+  # some elements in qml are to be translated but these names are transferred into R
+  parTableNames <- c("configural", "metric", "scalar", "strict", "load", "int",
+              "res", "var", "mean", "rho")
+  rNames <- c("configural", "metric", "scalar", "strict", "loadings", "intercepts",
+              "residualVariances", "variances", "means", "covariances")
+  guiNames <- c(gettext("Configural"), gettext("Metric"), gettext("Scalar"), gettext("Strict"),
+                gettext("Loadings"), gettext("Intercepts"), gettext("Residual variances"),
+                gettext("Factor variances"), gettext("Factor means"), gettext("Factor covariances"))
+  df <- data.frame(cbind(parTableNames, rNames, guiNames))
+  return(df)
+}
