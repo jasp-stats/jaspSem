@@ -20,34 +20,11 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   sink("~/Downloads/log.txt")
   on.exit(sink(NULL))
 
-  # openMx messes up the options so we store them so they are correctly loaded upon re-run
-  .storeOpenMxOptions <- function(jaspResults) {
-    if (!is.null(jaspResults[["openMxOptions"]])) return()
-
-    library(OpenMx)
-    mxOpts <- getOption("mxOptions")
-    mxOtherOpts <- options()[grep("^mx", names(options()), value = TRUE)]  # Any other mx-related options
-    mxOtherOpts[["mxOptions"]] <- NULL
-    optsObj <- list(mxOpts = mxOpts, mxOtherOpts = mxOtherOpts)
-    optsState <- createJaspState(optsObj)
-    jaspResults[["openMxOptions"]] <- optsState
-    return()
-  }
-
-  .restoreOpenMxOptions <- function(jaspResults) {
-    if (is.null(jaspResults[["openMxOptions"]])) return()
-
-    optsObj <- jaspResults[["openMxOptions"]][["object"]]
-    options(mxOptions = optsObj[["mxOpts"]])
-    if (!is.null(optsObj[["mxOtherOpts"]])) {
-      do.call("options", optsObj[["mxOtherOpts"]])
-    }
-  }
-
+  print("something")
   .storeOpenMxOptions(jaspResults)
   .restoreOpenMxOptions(jaspResults)
-#
-#   print(options()[grep("^mx", names(options()), value = F)])
+
+  print(options()[grep("^mx", names(options()), value = F)])
 
   ready <- length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)) > 1 &&
     length(options[["moderators"]]) > 0
@@ -60,8 +37,9 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
 
-  dataset <- .mnlfaHandleData(jaspResults, dataset, options, ready)
-  # colnames(dataset) <- jaspBase::decodeColNames(colnames(dataset))
+  dataObj <- .mnlfaHandleData(jaspResults, dataset, options, ready)
+  dataset <- dataObj$dataset
+  options <- dataObj$options
 
   saveRDS(options, file = "~/Downloads/options.rds")
   saveRDS(dataset, file = "~/Downloads/dataset.rds")
@@ -83,7 +61,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   .mnlfaGlobalInvarianceParameterTables(jaspResults, dataset, options, ready)
 
   # plots
-  .mnlfaPlotPrepare(jaspResults, dataset, options, ready)
+  .mnlfaPlot(jaspResults, dataset, options, ready)
 
   .mnlfaPrintSyntax(jaspResults, dataset, options, ready)
 
@@ -94,19 +72,21 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 }
 
 ##### PREPROCESSING #####
-
+# handle the data and options: add interactions and higher power effects to the data and options
 .mnlfaHandleData <- function(jaspResults, dataset, options, ready) {
 
-  if (!is.null(jaspResults[["dataState"]])) return(dataset)
+  if (!is.null(jaspResults[["dataState"]])) {
+    return(list(dataset = jaspResults[["dataState"]][["object"]], options = options))
+  }
   if (!ready) return()
 
 
-  # convert the whoel data to numeric
+  # convert the whole data to numeric
   dataset <- as.data.frame(lapply(dataset, function(x) as.numeric(as.character(x))))
 
   # scale the continuous moderators
   mods <- unlist(lapply(options[["moderators"]], `[[`, "variable"), use.names = FALSE)
-  if (length(mods) == 0) return(dataset)
+  if (length(mods) == 0) return(list(dataset = dataset, options = options))
   mods.types <- options[["moderators.types"]]
   for (i in 1:length(mods)) {
     if (mods.types[i] != "nominal") {
@@ -116,16 +96,24 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
   # add interactions and extra effects
-    # already create the interaction variables, even if we dont need them.
+  # already create the interaction variables, even if we dont need them.
   if (length(mods) > 1 && options[["addInteractionTerms"]]) {
     inters <- combn(mods, 2)
+    interTypes <- combn(mods.types, 2)
     for (i in 1:ncol(inters)) {
       tmp1 <- as.numeric(as.character(dataset[[inters[1, i]]])) # needed for nominal moderators
       tmp2 <- as.numeric(as.character(dataset[[inters[2, i]]]))
       tmpDt <- data.frame(tmp1 * tmp2)
       interNames <- jaspBase::decodeColNames(c(inters[1, i], inters[2, i]))
-      colnames(tmpDt) <- paste0(interNames[1], "_x_", interNames[2])
+      tmpName <- paste0(interNames[1], "_x_", interNames[2])
+      colnames(tmpDt) <- tmpName
       dataset <- cbind(dataset, tmpDt)
+      options[["moderators"]] <- append(options[["moderators"]], list(list(cubicEffect = FALSE, squaredEffect = FALSE,
+                                                                           variable = tmpName)))
+      if (sum(interTypes[, i] == "scale") > 0)
+        options[["moderators.types"]] <- append(options[["moderators.types"]], "scale")
+      else
+        options[["moderators.types"]] <- append(options[["moderators.types"]], "nominal")
     }
   }
 
@@ -133,32 +121,42 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   squares <- sapply(options[["moderators"]], function(x) x[["squaredEffect"]])
   if (sum(squares) > 0) {
     squaredMods <- mods[squares]
+    squaredTypes <- mods.types[squares]
     for (i in 1:length(squaredMods)) {
       tmp <- as.numeric(as.character(dataset[[squaredMods[i]]]))
       tmpDt <- data.frame(tmp^2)
       squaredModsName <- jaspBase::decodeColNames(squaredMods[i])
-      colnames(tmpDt) <- paste0(squaredModsName, "_squared")
+      tmpName <- paste0(squaredModsName, "_squared")
+      colnames(tmpDt) <- tmpName
       dataset <- cbind(dataset, tmpDt)
+      options[["moderators"]] <- append(options[["moderators"]], list(list(cubicEffect = FALSE, squaredEffect = FALSE,
+                                                                           variable = tmpName)))
+      options[["moderators.types"]] <- append(options[["moderators.types"]], squaredTypes[i])
     }
   }
   cubics <- sapply(options[["moderators"]], function(x) x[["cubicEffect"]])
   if (sum(cubics) > 0) {
     cubicMods <- mods[cubics]
+    cubicTypes <- mods.types[cubics]
     for (i in 1:length(cubicMods)) {
       tmp <- as.numeric(as.character(dataset[[cubicMods[i]]]))
       tmpDt <- data.frame(tmp^3)
       cubicModsName <- jaspBase::decodeColNames(cubicMods[i])
-      colnames(tmpDt) <- paste0(cubicModsName, "_cubic")
+      tmpName <- paste0(cubicModsName, "_cubic")
+      colnames(tmpDt) <- tmpName
       dataset <- cbind(dataset, tmpDt)
+      options[["moderators"]] <- append(options[["moderators"]], list(list(cubicEffect = FALSE, squaredEffect = FALSE,
+                                                                           variable = tmpName)))
+      options[["moderators.types"]] <- append(options[["moderators.types"]], cubicTypes[i])
     }
   }
 
-
-  dataState <- createJaspState(dataset)
+  dataState <- dataset
+  dataState <- createJaspState(dataState)
   dataState$dependOn(options = c("factors", "moderators", "addInteractionTerms", "squaredEffect", "cubicEffect"))
   jaspResults[["dataState"]] <- dataState
 
-  return(dataset)
+  return(list(dataset = dataset, options = options))
 }
 
 .mnlfaCheckErrors <- function(dataset, options, ready) {
@@ -171,7 +169,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (is.null(jaspResults[["mainContainer"]])) {
     jaspResults[["mainContainer"]] <- createJaspContainer()
     jaspResults[["mainContainer"]]$dependOn(options = c(
-      "factors", "moderators",
+      "factors", "moderators", "addInteractionTerms", "squaredEffect", "cubicEffect",
       "meanstructure", "se", "modelIdentification", "factorsUncorrelated",
       "interceptsFixedToZero", "packageMimiced", "estimator", "naAction"))
     jaspResults[["mainContainer"]]$position <- 1
@@ -179,15 +177,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   return()
 }
 
-# # Create a container for the global invariance stuff
-# .mnlfaCreateGlobalInvarianceContainer <- function(jaspResults, options) {
-#   if (is.null(jaspResults[["mainContainer"]][["globalInvarianceContainer"]])) {
-#     jaspResults[["mainContainer"]][["globalInvarianceContainer"]] <- createJaspContainer()
-#     jaspResults[["mainContainer"]][["globalInvarianceContainer"]]$dependOn(options = c("addInteractionTerms"))
-#     jaspResults[["mainContainer"]][["globalInvarianceContainer"]]$position <- 2
-#   }
-#   return()
-# }
 
 ##### ANALYSIS #####
 # test configural invariance with the CFA module
@@ -236,10 +225,12 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       return(x)
     }
   })
+
   options[["factors"]] <- cleanedFactors[!sapply(cleanedFactors, is.null)]
 
   # this part is from jaspFactor
   cfaResult <- list()
+  options$seType <- "default"
   cfaResult[["spec"]] <- jaspFactor:::.cfaCalcSpecs(dataset, options)
 
   # we fit a model per group so we have access to all the fit indices, which we would not have if we would use
@@ -253,7 +244,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                 se              = cfaResult[["spec"]]$se,
                 std.lv          = TRUE,
                 orthogonal      = options$factorsUncorrelated,
-                missing         = options$naAction)
+                missing         = "default")
 
   result <- list()
   for (i in 1:length(groups)) {
@@ -297,25 +288,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   factorNames <- sapply(options[["factors"]], function(x) x[["name"]])
   names(factorList) <- factorNames
   moderatorNames <- moderatorsOriginal <- sapply(options[["moderators"]], function(x) x[["variable"]])
-  decodedModeratorNames <- jaspBase::decodeColNames(moderatorNames)
-  if (length(moderatorNames) > 0) {
-    if (length(moderatorNames) > 1 && options[["addInteractionTerms"]]) {
-      interactionTerms <- combn(decodedModeratorNames, 2, paste, collapse = "_x_")
-      moderatorNames <- c(moderatorNames, interactionTerms)
-    }
-    squares <- sapply(options[["moderators"]], function(x) x[["squaredEffect"]])
-    if (sum(squares) > 0) {
-      squaredMods <- moderatorsOriginal[squares]
-      decodedSquaredMods <- jaspBase::decodeColNames(squaredMods)
-      moderatorNames <- c(moderatorNames, paste0(decodedSquaredMods, "_squared"))
-    }
-    cubics <- sapply(options[["moderators"]], function(x) x[["cubicEffect"]])
-    if (sum(cubics) > 0) {
-      cubicMods <- moderatorsOriginal[cubics]
-      decodedCubicMods <- jaspBase::decodeColNames(cubicMods)
-      moderatorNames <- c(moderatorNames, paste0(decodedCubicMods, "_cubic"))
-    }
-  }
 
   modelObj <- .generateSyntax(factorList, moderatorNames, type = testName, options)
 
@@ -324,7 +296,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   fit <- try(OpenMx::mxRun(script))
 
   fitState <- createJaspState(fit)
-  fitState$dependOn(options = c(paste0(testName, "Invariance"), "addInteractionTerms"))
+  fitState$dependOn(options = c(paste0(testName, "Invariance")))
   jaspResults[["mainContainer"]][[state]] <- fitState
 
   # also save the model and mapping
@@ -761,7 +733,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   return(cont)
 }
 
-.mnlfaPlotPrepare <- function(jaspResults, dataset, options, ready) {
+.mnlfaPlot <- function(jaspResults, dataset, options, ready) {
   if (!ready) return()
   if (!is.null(jaspResults[["plotContainer"]])) return()
 
@@ -771,6 +743,9 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                          options = c("plotModelList"))
   jaspResults[["plotContainer"]] <- plotContainer
 
+  mods <- unlist(lapply(options[["moderators"]], `[[`, "variable"), use.names = FALSE)
+  mods.types <- options[["moderators.types"]]
+
   plotModelList <- options[["plotModelList"]]
   # only keep the elements where includePlot is true
   filteredPlots <- .extractIncludedPlotItemsDf(plotModelList)
@@ -778,8 +753,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (is.null(filteredPlots)) {
     return()
   }
-
-  colnames(dataset)
 
   translatedNames <- .translatedElements()
   for (i in 1:nrow(filteredPlots)) {
@@ -809,12 +782,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       modEstimates <- c(subMat$Estimate[match(subMap[1, coefficientColumnIndex], subMat$name)], # Baseline
                         subMat$Estimate[match(subMap[matchIndices, coefficientColumnIndex], subMat$name)]) # the other estimates
 
-      # print(modsForPlots)
-      # print(coefficientColumnIndex)
-      # print(matchIndices)
-      # print(modEstimates)
-      # cat("=======\n")
-
       dtSub <- dataset[, modsForPlots, drop = FALSE]
       outValues <- modEstimates[1] + rowSums(sweep(dtSub, 2, modEstimates[-1], `*`))
       dtSub[["estimatedValue"]] <- outValues
@@ -823,19 +790,54 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         gg <- ggplot2::ggplot(data = dtSub,
           ggplot2::aes(x = .data[[modsForPlots]],
                        y = estimatedValue)) +
-          ggplot2::ylab("Individual Parameter Value") +
-          ggplot2::geom_line()
+          ggplot2::ylab(gettext("Parameter Value")) +
+          jaspGraphs::themeJaspRaw() +
+          jaspGraphs::geom_rangeframe(size = 1.1)
+        if (mods.types[mods == modsForPlots] == "scale")
+          gg <- gg + ggplot2::geom_line()
+        else
+          gg <- gg + ggplot2::geom_bar()
       } else { # length is 2
-        gg <- ggplot2::ggplot(data = dtSub,
-          ggplot2::aes(x = .data[[modsForPlots[1]]],
-                       y = estimatedValue,
-                       color = .data[[modsForPlots[2]]])) +
-          ggplot2::ylab("Individual Parameter Value") +
-          ggplot2::geom_point()
+        modsForPlotsTypes <- mods.types[match(modsForPlots, mods)]
+        if (length(unique(modsForPlotsTypes)) == 2) { # one moderator scale, one nominal
+          gg <- ggplot2::ggplot(data = dtSub,
+                                ggplot2::aes(x = .data[[modsForPlots[modsForPlotsTypes == "scale"]]],
+                                             y = estimatedValue,
+                                             color = factor(.data[[modsForPlots[modsForPlotsTypes == "nominal"]]]))) +
+            ggplot2::ylab(gettext("Parameter Value")) +
+            ggplot2::geom_point() +
+            jaspGraphs::themeJaspRaw() +
+            jaspGraphs::geom_rangeframe(size = 1.1) +
+            ggplot2::theme(legend.position = "right") +
+            ggplot2::labs(color = modsForPlots[modsForPlotsTypes == "nominal"])
+
+        } else if (modsForPlotsTypes == "scale") {
+          gg <- ggplot2::ggplot(data = dtSub,
+                                ggplot2::aes(x = .data[[modsForPlots[1]]],
+                                             y = estimatedValue,
+                                             color = .data[[modsForPlots[2]]])) +
+            ggplot2::ylab(gettext("Parameter Value")) +
+            ggplot2::geom_point() +
+            jaspGraphs::themeJaspRaw() +
+            jaspGraphs::geom_rangeframe(size = 1.1) +
+            ggplot2::theme(legend.position = "right")
+        } else if (modsForPlotsTypes == "nominal") {
+          gg <- ggplot2::ggplot(data = dtSub,
+                                ggplot2::aes(x = factor(.data[[modsForPlots[1]]]),
+                                             y = estimatedValue,
+                                             color = factor(.data[[modsForPlots[2]]]))) +
+            ggplot2::ylab(gettext("Parameter Value")) +
+            ggplot2::geom_bar() +
+            jaspGraphs::themeJaspRaw() +
+            jaspGraphs::geom_rangeframe(size = 1.1) +
+            ggplot2::theme(legend.position = "right") +
+            ggplot2::labs(color = "My Legend Title")
+        }
+
       }
 
       plt <- createJaspPlot(gg)
-      plt$title <- gettextf("plot %s", i)
+      plt$title <- paste(parameterGroup, currentRow$value, sep = ": ")
       plotContainer[[paste0("plot", i)]] <- plt
     }
   }
@@ -846,39 +848,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   #' - proper plot formatting
   #' - dependencies
   #' - special cases
-  #' - do the factor stuff
+  #' - do the factors separately
 
-
-    # if (length(mods) == 1) {
-    #   if (mods.types == "scale") {
-    #     ggplot(data = dtSub,
-    #            aes(x = .data[[newParMods]], y = moderatedValue)) +
-    #       ylab("Individual Parameter Value") +
-    #       geom_line()
-    #   }
-    # } else if (length(mods == 2)) {
-    #   if (length(unique(mods.types)) == 2) { # one moderator continuous the other nominal
-    #     modCont <- mods[mods.types == "scale"]
-    #     modNom <- mods[mods.types == "nominal"]
-    #     ggplot(data = dtSub,
-    #            aes(x = .data[[modCont]],
-    #                y = moderatedValue,
-    #                color = factor(.data[[modNom]]))) +
-    #       ylab("Individual Parameter Value") +
-    #       geom_line()
-    #
-    #   } else { # two continuous moderators
-    #     ggplot(data = dtSub,
-    #            aes(x = .data[[mods[1]]],
-    #                y = moderatedValue,
-    #                color = .data[[mods[2]]])) +
-    #       ylab("Individual Parameter Value for") +
-    #       geom_line()
-    #   }
-    # }
-}
-
-.mnlfaPlotHelper <- function(tmpData, options) {
 
 }
 
@@ -1642,4 +1613,29 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                 gettext("Factor variances"), gettext("Factor means"), gettext("Factor covariances"))
   df <- data.frame(cbind(parTableNames, rNames, guiNames))
   return(df)
+}
+
+# openMx messes up the options so we store them so they are correctly loaded upon re-run
+.storeOpenMxOptions <- function(jaspResults) {
+  print("why not?")
+  if (!is.null(jaspResults[["openMxOptions"]])) return()
+
+  library(OpenMx)
+  mxOpts <- getOption("mxOptions")
+  mxOtherOpts <- options()[grep("^mx", names(options()), value = TRUE)]  # Any other mx-related options
+  mxOtherOpts[["mxOptions"]] <- NULL
+  optsObj <- list(mxOpts = mxOpts, mxOtherOpts = mxOtherOpts)
+  optsState <- createJaspState(optsObj)
+  jaspResults[["openMxOptions"]] <- optsState
+  return()
+}
+
+.restoreOpenMxOptions <- function(jaspResults) {
+  if (is.null(jaspResults[["openMxOptions"]])) return()
+
+  optsObj <- jaspResults[["openMxOptions"]][["object"]]
+  options(mxOptions = optsObj[["mxOpts"]])
+  if (!is.null(optsObj[["mxOtherOpts"]])) {
+    do.call("options", optsObj[["mxOtherOpts"]])
+  }
 }
