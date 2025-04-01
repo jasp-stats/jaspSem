@@ -50,6 +50,7 @@ Form
 			AssignedVariablesList 
 			{
 				id: moderators
+				allowedColumns:		["scale", "nominal"]
 				title: qsTr("Effects")
 				name: "moderators"
 				rowComponentTitle: qsTr("Square   Cubic")
@@ -102,7 +103,7 @@ Form
 			CheckBox {
 				id: interactions
 				name: "addInteractionTerms"
-				checked: true
+				enabled: moderators.columnsNames.length > 1
 				label: qsTr("Add two-way interaction terms to model")
 			}
 		}
@@ -112,7 +113,7 @@ Form
 			title: qsTr("Assumption Check")
 			CheckBox 
 			{ 
-				name: "fitPerGroup" ; 
+				name: "fitPerGroup"; 
 				checked: true ; 
 				label: qsTr("Check model fit per group"); 
 				id: fitPerGroup; 
