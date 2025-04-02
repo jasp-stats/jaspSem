@@ -24,7 +24,8 @@ Imports:
   tidyr,
   SEMsens, 
   jaspFactor, 
-  mxsem
+  mxsem,
+  OpenMx
 Remotes:
   jasp-stats/jaspBase,
   jasp-stats/jaspGraphs,
