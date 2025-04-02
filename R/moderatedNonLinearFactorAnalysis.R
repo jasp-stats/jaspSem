@@ -78,7 +78,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (!is.null(jaspResults[["dataState"]])) {
     return(list(dataset = jaspResults[["dataState"]][["object"]], options = options))
   }
-  if (!ready) return()
+
+  if (!ready) return(list(dataset = dataset, options = options))
 
 
   # convert the whole data to numeric
@@ -755,6 +756,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
   translatedNames <- .translatedElements()
+
   for (i in 1:nrow(filteredPlots)) {
     currentRow <- filteredPlots[i, ]
     modelName <- currentRow$modelName
@@ -786,19 +788,31 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       outValues <- modEstimates[1] + rowSums(sweep(dtSub, 2, modEstimates[-1], `*`))
       dtSub[["estimatedValue"]] <- outValues
 
-      if (length(modsForPlots) == 1) {
-        gg <- ggplot2::ggplot(data = dtSub,
-          ggplot2::aes(x = .data[[modsForPlots]],
-                       y = estimatedValue)) +
-          ggplot2::ylab(gettext("Parameter Value")) +
-          jaspGraphs::themeJaspRaw() +
-          jaspGraphs::geom_rangeframe(size = 1.1)
-        if (mods.types[mods == modsForPlots] == "scale")
-          gg <- gg + ggplot2::geom_line()
-        else
-          gg <- gg + ggplot2::geom_bar()
-      } else { # length is 2
+      if (length(modsForPlots) == 1) { # only one moderator
+        if (mods.types[mods == modsForPlots] == "scale") {
+          gg <- ggplot2::ggplot(data = dtSub,
+                                ggplot2::aes(x = .data[[modsForPlots]],
+                                             y = estimatedValue)) +
+            ggplot2::ylab(gettext("Parameter Value")) +
+            jaspGraphs::themeJaspRaw() +
+            jaspGraphs::geom_rangeframe(size = 1.1) +
+            ggplot2::geom_line()
+            ggplot2::labs(x = gsub("_x_", ":", modsForPlots))
+        } else { # nominal moderator
+          gg <- ggplot2::ggplot(data = dtSub,
+                                ggplot2::aes(x = factor(.data[[modsForPlots]]),
+                                             y = estimatedValue)) +
+            ggplot2::ylab(gettext("Parameter Value")) +
+            jaspGraphs::themeJaspRaw() +
+            jaspGraphs::geom_rangeframe(size = 1.1) +
+            ggplot2::stat_summary(fun = mean, geom = "col", fill = "gray", width = 0.5) +
+            ggplot2::scale_x_discrete() +
+            ggplot2::labs(x = modsForPlots)
+          }
+
+      } else { # two moderators
         modsForPlotsTypes <- mods.types[match(modsForPlots, mods)]
+        modsForPlotsTypes <- modsForPlotsTypes[!is.na(modsForPlotsTypes)]
         if (length(unique(modsForPlotsTypes)) == 2) { # one moderator scale, one nominal
           gg <- ggplot2::ggplot(data = dtSub,
                                 ggplot2::aes(x = .data[[modsForPlots[modsForPlotsTypes == "scale"]]],
@@ -809,9 +823,10 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
             jaspGraphs::themeJaspRaw() +
             jaspGraphs::geom_rangeframe(size = 1.1) +
             ggplot2::theme(legend.position = "right") +
-            ggplot2::labs(color = modsForPlots[modsForPlotsTypes == "nominal"])
+            ggplot2::labs(color = modsForPlots[modsForPlotsTypes == "nominal"],
+                          x = gsub("_x_", ":", modsForPlots[modsForPlotsTypes == "scale"]))
 
-        } else if (modsForPlotsTypes == "scale") {
+        } else if (all(modsForPlotsTypes == "scale")) {
           gg <- ggplot2::ggplot(data = dtSub,
                                 ggplot2::aes(x = .data[[modsForPlots[1]]],
                                              y = estimatedValue,
@@ -820,8 +835,13 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
             ggplot2::geom_point() +
             jaspGraphs::themeJaspRaw() +
             jaspGraphs::geom_rangeframe(size = 1.1) +
-            ggplot2::theme(legend.position = "right")
-        } else if (modsForPlotsTypes == "nominal") {
+            ggplot2::theme(legend.position = "right") +
+            ggplot2::labs(color = modsForPlots[2]) +
+            ggplot2::scale_color_gradient(low = "blue", high = "green") +
+            ggplot2::labs(x = gsub("_x_", ":", modsForPlots[1]),
+                          color = gsub("_x_", ":", modsForPlots[2]))
+
+        } else if (all(modsForPlotsTypes == "nominal")) {
           gg <- ggplot2::ggplot(data = dtSub,
                                 ggplot2::aes(x = factor(.data[[modsForPlots[1]]]),
                                              y = estimatedValue,
@@ -831,7 +851,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
             jaspGraphs::themeJaspRaw() +
             jaspGraphs::geom_rangeframe(size = 1.1) +
             ggplot2::theme(legend.position = "right") +
-            ggplot2::labs(color = "My Legend Title")
+            ggplot2::labs(color = modsForPlots[2])
         }
 
       }
@@ -843,10 +863,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
   ##### a lot to do still...:
-  #' - interactions
-  #' - scaling of the moderators: take that into account, maybe do two plots for two continous
-  #' - proper plot formatting
-  #' - dependencies
   #' - special cases
   #' - do the factors separately
 
