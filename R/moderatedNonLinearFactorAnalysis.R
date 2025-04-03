@@ -36,7 +36,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     syncText$position <- 0.01
   }
 
-
+  options <- .mnlfaPreprocessOptions(options)
   dataObj <- .mnlfaHandleData(jaspResults, dataset, options, ready)
   dataset <- dataObj$dataset
   options <- dataObj$options
@@ -72,6 +72,21 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 }
 
 ##### PREPROCESSING #####
+# check for empty factors
+.mnlfaPreprocessOptions <- function(options) {
+
+  cleanedFactors <- lapply(options[["factors"]], function(x) {
+    if (length(x[["indicators"]]) == 0) {
+      return(NULL)
+    } else {
+      return(x)
+    }
+  })
+
+  options[["factors"]] <- cleanedFactors[!sapply(cleanedFactors, is.null)]
+  return(options)
+}
+
 # handle the data and options: add interactions and higher power effects to the data and options
 .mnlfaHandleData <- function(jaspResults, dataset, options, ready) {
 
@@ -218,16 +233,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
   colnames(dataset) <- c(ogColnames, "addedGroupVar")
-  # check for empty factors
-  cleanedFactors <- lapply(options[["factors"]], function(x) {
-    if (length(x[["indicators"]]) == 0) {
-      return(NULL)
-    } else {
-      return(x)
-    }
-  })
-
-  options[["factors"]] <- cleanedFactors[!sapply(cleanedFactors, is.null)]
 
   # this part is from jaspFactor
   cfaResult <- list()
@@ -1595,25 +1600,29 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   for (model in plotModelList) {
     modelName <- model$value
-    for (param in model$plotParameterList) {
-      parameterGroup <- param$value
-      for (item in param$plotItemList) {
-        if (isTRUE(item$includePlot)) {
-          results[[length(results) + 1]] <- list(
-            modelName = modelName,
-            parameterGroup = parameterGroup,
-            plotMod1 = item$plotMod1,
-            plotMod2 = item$plotMod2,
-            value = item$value,
-            value.types = item$value.types
-          )
+    for (typeBlock in model$plotTypeList) {
+      plotType <- typeBlock$value
+      for (param in typeBlock$plotParameterList) {
+        parameterGroup <- param$value
+        for (item in param$plotItemList) {
+          if (isTRUE(item$includePlot)) {
+            results[[length(results) + 1]] <- list(
+              modelName = modelName,
+              plotType = plotType,
+              parameterGroup = parameterGroup,
+              plotMod1 = item$plotMod1$value,
+              plotMod2 = item$plotMod2$value,
+              value = if (is.list(item$value)) item$value$value else item$value,
+              value.types = if (is.list(item$value)) item$value$types else NA
+            )
+          }
         }
       }
     }
   }
+
   if (length(results) == 0) return(NULL)
 
-  # Convert to data frame
   do.call(rbind, lapply(results, as.data.frame, stringsAsFactors = FALSE))
 }
 
