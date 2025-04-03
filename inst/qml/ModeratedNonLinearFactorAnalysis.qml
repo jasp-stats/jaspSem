@@ -22,7 +22,46 @@ import JASP.Controls
 
 Form
 {
-
+	// function for getting the values for the plots
+function getValues(inValue, rwValue, factorCount) {
+						if (inValue == qsTr("Configural")) {
+							if (rwValue == qsTr("Indicators")) {
+								return [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances")];
+							} 
+							if (factorCount > 1) {
+								return [qsTr("Covariances")];
+							} 
+							return [];
+						} 
+						if (inValue == qsTr("Metric")) {
+							if (rwValue == qsTr("Indicators")) {
+								return [qsTr("Intercepts"), qsTr("Residual variances")];
+							} 
+							if (factorCount > 1) {
+								return [qsTr("Variances"), qsTr("Covariances")];
+							} 
+							return [qsTr("Variances")];
+						} 
+						if (inValue == qsTr("Scalar")) {
+							if (rwValue == qsTr("Indicators")) {
+								return [qsTr("Residual variances")];
+							} 
+							if (factorCount > 1) {
+								return [qsTr("Variances"), qsTr("Means"), qsTr("Covariances")];
+							} 
+							return [qsTr("Variances"), qsTr("Means")];
+						} 
+						if (inValue == qsTr("Strict")) {
+							if (rwValue == qsTr("Indicators")) {
+								return [];
+							} 
+							if (factorCount > 1) {
+								return [qsTr("Covariances")];
+							} 
+							return [];
+						} 
+						return [];
+					}
 	FactorsForm
 	{
 		id:					factors
@@ -35,7 +74,7 @@ Form
 	Section
 	{
 		title: qsTr("Moderation")
-		expanded: true
+		expanded: false
 		id: mod
 		
 		VariablesForm
@@ -242,6 +281,63 @@ Form
 		}
 	}
 
+	// Section
+	// {
+	// 	title: qsTr("Plots")
+	// 	id: plots
+
+	// 	// property var names: moderators.columnsNames
+	// 	property var names: []
+		
+	// 	TabView 
+	// 	{
+	// 		values: [
+	// 			configuralInvariance.checked ? qsTr("Configural") : null,
+	// 			metricInvariance.checked ? qsTr("Metric") : null,
+	// 			scalarInvariance.checked ? qsTr("Scalar") : null,
+	// 			strictInvariance.checked ? qsTr("Strict") : null
+	// 		].filter(value => value !== null) // Dynamically set values based on checkboxes
+	// 		name: "plotModelList"
+	// 		addItemManually: false
+	// 		rowComponent: TabView 
+	// 		{
+	// 			name: "plotParameterList"
+	// 			addItemManually: false
+	// 			values: [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances"), qsTr("Factor variances"), qsTr("Factor means"), qsTr("Factor covariances")]
+	// 			rowComponent: ComponentsList
+	// 			{
+	// 				name: "plotItemList"
+	// 				addItemManually: false
+	// 				headerLabels: [qsTr("Moderator 1"), qsTr("Moderator 2"), qsTr("Display plot")]
+	// 				source: factors.name
+	// 				rowComponent: RowLayout
+	// 				{
+	// 					Text { text: rowValue ; Layout.preferredWidth: 150*jaspTheme.uiScale }
+	// 					DropDown
+	// 					{
+	// 						name: "plotMod1"
+	// 						id: plotMod1
+	// 						// source: [moderators]
+	// 						source: [moderators, {values: plots.names}, {values: modOpts.interactionPairs}]
+
+	// 						addEmptyValue: true
+	// 					}
+	// 					DropDown
+	// 					{
+	// 						name: "plotMod2"
+	// 						id: plotMod2
+	// 						addEmptyValue: true
+	// 						source: plotMod1
+	// 						// source: [{id: plotMod1, discard: {values: [plotMod1.currentValue]}}]
+	// 					}
+
+	// 					CheckBox { name: "includePlot"; enabled: plotMod1.currentValue !== "" || plotMod2.currentValue !== "" }
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
+
 	Section
 	{
 		title: qsTr("Plots")
@@ -252,6 +348,7 @@ Form
 		
 		TabView 
 		{
+
 			values: [
 				configuralInvariance.checked ? qsTr("Configural") : null,
 				metricInvariance.checked ? qsTr("Metric") : null,
@@ -259,43 +356,59 @@ Form
 				strictInvariance.checked ? qsTr("Strict") : null
 			].filter(value => value !== null) // Dynamically set values based on checkboxes
 			name: "plotModelList"
+			id: firstTab
 			addItemManually: false
 			rowComponent: TabView 
 			{
-				name: "plotParameterList"
+				id: secondTab
+				property var invValue: rowValue 
+				name: "plotTypeList"
 				addItemManually: false
-				values: [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances"), qsTr("Factor variances"), qsTr("Factor means"), qsTr("Factor covariances")]
-				rowComponent: ComponentsList
+				values: [qsTr("Indicators"), qsTr("Factors")]
+				rowComponent: TabView 
 				{
-					name: "plotItemList"
+					id: thirdTab
+					property var typeValue: rowValue
+					name: "plotParameterList"
 					addItemManually: false
-					headerLabels: [qsTr("Moderator 1"), qsTr("Moderator 2"), qsTr("Display plot")]
-					source: factors.name
-					rowComponent: RowLayout
+
+					values: getValues(secondTab.invValue, rowValue, factors.factorsTitles.length)
+				
+					rowComponent: ComponentsList
 					{
-						Text { text: rowValue ; Layout.preferredWidth: 150*jaspTheme.uiScale }
-						DropDown
+						name: "plotItemList"
+						addItemManually: false
+						headerLabels: [qsTr("Moderator 1"), qsTr("Moderator 2"), qsTr("Display plot")]
+						source: thirdTab.typeValue == qsTr("Indicators") ? factors.name : {values: factors.factorsTitles}
+						
+						rowComponent: RowLayout
 						{
-							name: "plotMod1"
-							id: plotMod1
-							// source: [moderators]
-							source: [moderators, {values: plots.names}, {values: modOpts.interactionPairs}]
+							Text { text: rowValue ; Layout.preferredWidth: 150*jaspTheme.uiScale }
+							DropDown
+							{
+								name: "plotMod1"
+								id: plotMod1
+								// source: [moderators]
+								source: [moderators, {values: plots.names}, {values: modOpts.interactionPairs}]
 
-							addEmptyValue: true
-						}
-						DropDown
-						{
-							name: "plotMod2"
-							id: plotMod2
-							addEmptyValue: true
-							source: plotMod1
-							// source: [{id: plotMod1, discard: {values: [plotMod1.currentValue]}}]
-						}
+								addEmptyValue: true
+							}
+							DropDown
+							{
+								name: "plotMod2"
+								id: plotMod2
+								addEmptyValue: true
+								source: plotMod1
+								// source: [{id: plotMod1, discard: {values: [plotMod1.currentValue]}}]
+							}
 
-						CheckBox { name: "includePlot"; enabled: plotMod1.currentValue !== "" || plotMod2.currentValue !== "" }
+							CheckBox { name: "includePlot"; enabled: plotMod1.currentValue !== "" || plotMod2.currentValue !== "" }
+						}
 					}
 				}
 			}
+			
+			
 		}
 	}
 
