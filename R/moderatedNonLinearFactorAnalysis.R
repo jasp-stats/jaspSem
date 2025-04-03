@@ -20,11 +20,10 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   sink("~/Downloads/log.txt")
   on.exit(sink(NULL))
 
-  print("something")
   .storeOpenMxOptions(jaspResults)
   .restoreOpenMxOptions(jaspResults)
 
-  print(options()[grep("^mx", names(options()), value = F)])
+  # print(options()[grep("^mx", names(options()), value = F)])
 
   ready <- length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)) > 1 &&
     length(options[["moderators"]]) > 0
@@ -740,6 +739,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 }
 
 .mnlfaPlot <- function(jaspResults, dataset, options, ready) {
+
   if (!ready) return()
   if (!is.null(jaspResults[["plotContainer"]])) return()
 
@@ -760,9 +760,14 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     return()
   }
 
-  translatedNames <- .translatedElements()
+  results <- lapply(c("configuralInvState", "metricInvState", "scalarInvState", "strictInvState"),
+                    function(state) jaspResults[["mainContainer"]][[state]][["object"]])
+  if (all(sapply(results, is.null))) return()
 
+  translatedNames <- .translatedElements()
+  # for the filtered plots object each row is one parameter to plot:
   for (i in 1:nrow(filteredPlots)) {
+
     currentRow <- filteredPlots[i, ]
     modelName <- currentRow$modelName
     modelNameR <- translatedNames$rNames[translatedNames$guiNames == modelName]
@@ -778,7 +783,22 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       subMat <- paramTable[parPosition, ]
       parName <- translatedNames$rNames[translatedNames$guiNames == parameterGroup]
       map <- mapResult[[parName]]
-      subMap <- map[map$variable == currentRow$value, ]
+      if (currentRow$plotType == "Factors") {
+        # match the factor names with the factor labels
+        fTitleMapping <- lapply(options[["factors"]], function(x) c(x[["name"]], x[["title"]])) # map GUI titles with internal titles
+        if (parName == "covariances") {
+          subMap <- map # for factor covariances there is not matching cause the map is only created
+          # if there are two factors and there are always the same parameters
+        } else {
+          for (mapping in fTitleMapping) {
+            map$factor[map$factor == mapping[1]] <- mapping[2]
+          }
+          subMap <- map[map$factor == currentRow$value, ]
+        }
+
+      } else {
+        subMap <- map[map$variable == currentRow$value, ]
+      }
       currentMods <- sub("^data.", "", subMap$moderator)
       modsForPlots <- c(currentRow$plotMod1, currentRow$plotMod2)
       modsForPlots <- modsForPlots[modsForPlots != ""]
@@ -786,12 +806,20 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       matchIndices <- match(modsForPlots, currentMods)
       matchIndices <- matchIndices[!is.na(matchIndices)]
       coefficientColumnIndex <- grep("Coefficient", colnames(subMap))
-      modEstimates <- c(subMat$Estimate[match(subMap[1, coefficientColumnIndex], subMat$name)], # Baseline
+      modEstimates <- c(subMat$Estimate[match(subMap[subMap$moderator == "Baseline", coefficientColumnIndex], subMat$name)], # Baseline
                         subMat$Estimate[match(subMap[matchIndices, coefficientColumnIndex], subMat$name)]) # the other estimates
 
       dtSub <- dataset[, modsForPlots, drop = FALSE]
-      outValues <- modEstimates[1] + rowSums(sweep(dtSub, 2, modEstimates[-1], `*`))
-      dtSub[["estimatedValue"]] <- outValues
+      baselineTerm <- sum(modEstimates[subMap$moderator == "Baseline"])
+      slopeTerms <- modEstimates[subMap$moderator != "Baseline"]
+      slopeTerms <- slopeTerms[!is.na(slopeTerms)]
+      if (length(slopeTerms) == 1) {
+        slopeValues <- dtSub[, modsForPlots] * slopeTerms
+      } else {
+        slopeValues <- rowSums(sweep(dtSub, 2, slopeTerms, `*`))
+      }
+      dtSub[["estimatedValue"]] <- baselineTerm + slopeValues
+
 
       if (length(modsForPlots) == 1) { # only one moderator
         if (mods.types[mods == modsForPlots] == "scale") {
@@ -1600,20 +1628,22 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   for (model in plotModelList) {
     modelName <- model$value
+
     for (typeBlock in model$plotTypeList) {
-      plotType <- typeBlock$value
+      typeName <- typeBlock$value
+
       for (param in typeBlock$plotParameterList) {
         parameterGroup <- param$value
+
         for (item in param$plotItemList) {
           if (isTRUE(item$includePlot)) {
             results[[length(results) + 1]] <- list(
               modelName = modelName,
-              plotType = plotType,
+              plotType = typeName,
               parameterGroup = parameterGroup,
-              plotMod1 = item$plotMod1$value,
-              plotMod2 = item$plotMod2$value,
-              value = if (is.list(item$value)) item$value$value else item$value,
-              value.types = if (is.list(item$value)) item$value$types else NA
+              plotMod1 = if (is.list(item$plotMod1)) item$plotMod1$value else item$plotMod1,
+              plotMod2 = if (is.list(item$plotMod2)) item$plotMod2$value else item$plotMod2,
+              value = if (is.list(item$value)) item$value$value else item$value
             )
           }
         }
@@ -1622,7 +1652,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
   if (length(results) == 0) return(NULL)
-
   do.call(rbind, lapply(results, as.data.frame, stringsAsFactors = FALSE))
 }
 
@@ -1635,14 +1664,14 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
               "residualVariances", "variances", "means", "covariances")
   guiNames <- c(gettext("Configural"), gettext("Metric"), gettext("Scalar"), gettext("Strict"),
                 gettext("Loadings"), gettext("Intercepts"), gettext("Residual variances"),
-                gettext("Factor variances"), gettext("Factor means"), gettext("Factor covariances"))
+                gettext("Variances"), gettext("Means"), gettext("Covariances"))
   df <- data.frame(cbind(parTableNames, rNames, guiNames))
   return(df)
 }
 
 # openMx messes up the options so we store them so they are correctly loaded upon re-run
 .storeOpenMxOptions <- function(jaspResults) {
-  print("why not?")
+
   if (!is.null(jaspResults[["openMxOptions"]])) return()
 
   library(OpenMx)

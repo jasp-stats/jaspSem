@@ -22,13 +22,14 @@ import JASP.Controls
 
 Form
 {
-	// function for getting the values for the plots
+
+// function for getting the values for the plots
 function getValues(inValue, rwValue, factorCount) {
 						if (inValue == qsTr("Configural")) {
 							if (rwValue == qsTr("Indicators")) {
 								return [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances")];
 							} 
-							if (factorCount > 1) {
+							if (factorCount == 2) {
 								return [qsTr("Covariances")];
 							} 
 							return [];
@@ -37,16 +38,16 @@ function getValues(inValue, rwValue, factorCount) {
 							if (rwValue == qsTr("Indicators")) {
 								return [qsTr("Intercepts"), qsTr("Residual variances")];
 							} 
-							if (factorCount > 1) {
+							if (factorCount == 2) {
 								return [qsTr("Variances"), qsTr("Covariances")];
-							} 
+							}
 							return [qsTr("Variances")];
 						} 
 						if (inValue == qsTr("Scalar")) {
 							if (rwValue == qsTr("Indicators")) {
 								return [qsTr("Residual variances")];
 							} 
-							if (factorCount > 1) {
+							if (factorCount == 2) {
 								return [qsTr("Variances"), qsTr("Means"), qsTr("Covariances")];
 							} 
 							return [qsTr("Variances"), qsTr("Means")];
@@ -55,13 +56,22 @@ function getValues(inValue, rwValue, factorCount) {
 							if (rwValue == qsTr("Indicators")) {
 								return [];
 							} 
-							if (factorCount > 1) {
+							if (factorCount == 2) {
 								return [qsTr("Covariances")];
 							} 
 							return [];
 						} 
 						return [];
 					}
+	function concatFactorTitles(factorTitles) {
+		var result = [];
+		for (var i = 0; i < factorTitles.length; i++) {
+			result.push(factorTitles[i].label);
+		}
+		result = result.join(" <-> ");
+		return [result];
+	}
+
 	FactorsForm
 	{
 		id:					factors
@@ -153,7 +163,7 @@ function getValues(inValue, rwValue, factorCount) {
 			CheckBox 
 			{ 
 				name: "fitPerGroup"; 
-				checked: true ; 
+				checked: false ; 
 				label: qsTr("Check model fit per group"); 
 				id: fitPerGroup; 
 				enabled: moderators.columnsNames != "" 
@@ -281,63 +291,7 @@ function getValues(inValue, rwValue, factorCount) {
 		}
 	}
 
-	// Section
-	// {
-	// 	title: qsTr("Plots")
-	// 	id: plots
-
-	// 	// property var names: moderators.columnsNames
-	// 	property var names: []
-		
-	// 	TabView 
-	// 	{
-	// 		values: [
-	// 			configuralInvariance.checked ? qsTr("Configural") : null,
-	// 			metricInvariance.checked ? qsTr("Metric") : null,
-	// 			scalarInvariance.checked ? qsTr("Scalar") : null,
-	// 			strictInvariance.checked ? qsTr("Strict") : null
-	// 		].filter(value => value !== null) // Dynamically set values based on checkboxes
-	// 		name: "plotModelList"
-	// 		addItemManually: false
-	// 		rowComponent: TabView 
-	// 		{
-	// 			name: "plotParameterList"
-	// 			addItemManually: false
-	// 			values: [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances"), qsTr("Factor variances"), qsTr("Factor means"), qsTr("Factor covariances")]
-	// 			rowComponent: ComponentsList
-	// 			{
-	// 				name: "plotItemList"
-	// 				addItemManually: false
-	// 				headerLabels: [qsTr("Moderator 1"), qsTr("Moderator 2"), qsTr("Display plot")]
-	// 				source: factors.name
-	// 				rowComponent: RowLayout
-	// 				{
-	// 					Text { text: rowValue ; Layout.preferredWidth: 150*jaspTheme.uiScale }
-	// 					DropDown
-	// 					{
-	// 						name: "plotMod1"
-	// 						id: plotMod1
-	// 						// source: [moderators]
-	// 						source: [moderators, {values: plots.names}, {values: modOpts.interactionPairs}]
-
-	// 						addEmptyValue: true
-	// 					}
-	// 					DropDown
-	// 					{
-	// 						name: "plotMod2"
-	// 						id: plotMod2
-	// 						addEmptyValue: true
-	// 						source: plotMod1
-	// 						// source: [{id: plotMod1, discard: {values: [plotMod1.currentValue]}}]
-	// 					}
-
-	// 					CheckBox { name: "includePlot"; enabled: plotMod1.currentValue !== "" || plotMod2.currentValue !== "" }
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
-
+	
 	Section
 	{
 		title: qsTr("Plots")
@@ -379,7 +333,7 @@ function getValues(inValue, rwValue, factorCount) {
 						name: "plotItemList"
 						addItemManually: false
 						headerLabels: [qsTr("Moderator 1"), qsTr("Moderator 2"), qsTr("Display plot")]
-						source: thirdTab.typeValue == qsTr("Indicators") ? factors.name : {values: factors.factorsTitles}
+						source: thirdTab.typeValue == qsTr("Indicators") ? factors.name : (rowValue == qsTr("Covariances") ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
 						
 						rowComponent: RowLayout
 						{
