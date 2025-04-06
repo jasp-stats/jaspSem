@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.19.2\n"
 "POT-Creation-Date: 2025-03-01 02:57\n"
-"PO-Revision-Date: 2025-04-05 14:20+0000\n"
+"PO-Revision-Date: 2025-04-07 02:38+0000\n"
 "Last-Translator: Marko Bojović <bojovicmarko@outlook.com>\n"
 "Language-Team: Serbian <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "sr/>\n"
@@ -510,7 +510,7 @@ msgid "n(Observations)"
 msgstr ""
 
 msgid "Total"
-msgstr ""
+msgstr "Укупно"
 
 msgid "n(Parameters)"
 msgstr ""
@@ -651,10 +651,10 @@ msgid "The data covariance matrix could not be inverted: Mardia's coefficients n
 msgstr ""
 
 msgid "Skewness"
-msgstr ""
+msgstr "Асиметрија (Skewness)"
 
 msgid "Kurtosis"
-msgstr ""
+msgstr "Спљоштеност (Kurtosis)"
 
 msgid "Covariance tables"
 msgstr ""
