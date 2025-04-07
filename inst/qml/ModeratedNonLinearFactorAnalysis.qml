@@ -23,46 +23,47 @@ import JASP.Controls
 Form
 {
 
-// function for getting the values for the plots
-function getValues(inValue, rwValue, factorCount) {
-						if (inValue == qsTr("Configural")) {
-							if (rwValue == qsTr("Indicators")) {
-								return [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances")];
-							} 
-							if (factorCount == 2) {
-								return [qsTr("Covariances")];
-							} 
-							return [];
-						} 
-						if (inValue == qsTr("Metric")) {
-							if (rwValue == qsTr("Indicators")) {
-								return [qsTr("Intercepts"), qsTr("Residual variances")];
-							} 
-							if (factorCount == 2) {
-								return [qsTr("Variances"), qsTr("Covariances")];
-							}
-							return [qsTr("Variances")];
-						} 
-						if (inValue == qsTr("Scalar")) {
-							if (rwValue == qsTr("Indicators")) {
-								return [qsTr("Residual variances")];
-							} 
-							if (factorCount == 2) {
-								return [qsTr("Variances"), qsTr("Means"), qsTr("Covariances")];
-							} 
-							return [qsTr("Variances"), qsTr("Means")];
-						} 
-						if (inValue == qsTr("Strict")) {
-							if (rwValue == qsTr("Indicators")) {
-								return [];
-							} 
-							if (factorCount == 2) {
-								return [qsTr("Covariances")];
-							} 
-							return [];
-						} 
-						return [];
-					}
+	// function for getting the values for the plots
+	function getValues(inValue, rwValue, factorCount) {
+		if (inValue == qsTr("Configural")) {
+			if (rwValue == qsTr("Indicators")) {
+				return [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances")];
+			} 
+			if (factorCount == 2) {
+				return [qsTr("Covariances")];
+			} 
+			return [];
+		} 
+		if (inValue == qsTr("Metric")) {
+			if (rwValue == qsTr("Indicators")) {
+				return [qsTr("Intercepts"), qsTr("Residual variances")];
+			} 
+			if (factorCount == 2) {
+				return [qsTr("Variances"), qsTr("Covariances")];
+			}
+			return [qsTr("Variances")];
+		} 
+		if (inValue == qsTr("Scalar")) {
+			if (rwValue == qsTr("Indicators")) {
+				return [qsTr("Residual variances")];
+			} 
+			if (factorCount == 2) {
+				return [qsTr("Variances"), qsTr("Means"), qsTr("Covariances")];
+			} 
+			return [qsTr("Variances"), qsTr("Means")];
+		} 
+		if (inValue == qsTr("Strict")) {
+			if (rwValue == qsTr("Indicators")) {
+				return [];
+			} 
+			if (factorCount == 2) {
+				return [qsTr("Covariances")];
+			} 
+			return [];
+		} 
+		return [];
+	}
+
 	function concatFactorTitles(factorTitles) {
 		var result = [];
 		for (var i = 0; i < factorTitles.length; i++) {
@@ -70,6 +71,16 @@ function getValues(inValue, rwValue, factorCount) {
 		}
 		result = result.join(" <-> ");
 		return [result];
+	}
+
+	function combinePairs(values) {
+		var pairs = [];
+		for (var i = 0; i < values.length; i++) {
+				for (var j = i + 1; j < values.length; j++) {
+								pairs.push(values[i] + ":" + values[j]);
+				}
+		}
+		return pairs;
 	}
 
 	FactorsForm
@@ -89,7 +100,7 @@ function getValues(inValue, rwValue, factorCount) {
 		
 		VariablesForm
 		{
-			preferredHeight: jaspTheme.smallDefaultVariablesFormHeight * 0.75
+			preferredHeight: jaspTheme.smallDefaultVariablesFormHeight * 0.65
 			AvailableVariablesList 		 
 			{	
 				title: qsTr("Moderator Variables")
@@ -148,13 +159,6 @@ function getValues(inValue, rwValue, factorCount) {
 				}
 
 			}
-
-			CheckBox {
-				id: interactions
-				name: "addInteractionTerms"
-				enabled: moderators.columnsNames.length > 1
-				label: qsTr("Add two-way interaction terms to model")
-			}
 		}
 
 		Group 
@@ -178,61 +182,73 @@ function getValues(inValue, rwValue, factorCount) {
 			}
 			CheckBox { name: "addGroupVar"; label: qsTr("Add group variable to data"); enabled: fitPerGroup.checked }
 		}
-
 		Group
 		{
-			title: qsTr("Global Invariance Testing")
-			CheckBox { name: "configuralInvariance" ; checked: true ; label: qsTr("Configural"); id: configuralInvariance }
-			CheckBox { name: "metricInvariance" ; checked: false ; label: qsTr("Metric"); id: metricInvariance }
-			CheckBox { name: "scalarInvariance" ; checked: false ; label: qsTr("Scalar"); id: scalarInvariance }
-			CheckBox { name: "strictInvariance" ; checked: false ; label: qsTr("Strict"); id: strictInvariance }
+			preferredWidth: form.width / 2.5
+
+			ComponentsList 
+			{
+				visible: moderators.columnsNames.length > 1
+				title: qsTr("Interaction Terms")
+				name: "moderatorInteractions"
+				id: interactions
+				addItemManually: false
+				values: combinePairs(moderators.columnsNames)
+				headerLabels: [qsTr("Include")]
+				rowComponent: RowLayout
+				{
+					Text{ text: rowValue; Layout.preferredWidth: 150*jaspTheme.uiScale }
+					CheckBox { name: "includeInteraction"; id: includeInteraction }
+				}
+			}
+		
 		}
 		
 	}
 
 	Section
 	{
-		id: modOpts
-		title: qsTr("Moderation Options")
+		id: invOpts
+		title: qsTr("Invariance Options")
 
-		function combinePairs(values) {
-			var pairs = [];
-			for (var i = 0; i < values.length; i++) {
-					for (var j = i + 1; j < values.length; j++) {
-									pairs.push(values[i] + ":" + values[j]);
-					}
-			}
-			return pairs;
-		}
-
-		property var interactionPairs: interactions.checked ? combinePairs(moderators.columnsNames) : null
-		property var combinedSources: moderators.columnsNames.concat(interactionPairs);		
-
-   // now also add the square and cubic effects 
-		ComponentsList
+		Group
 		{
+			columns: 4
 			title: qsTr("Invariance Tests")
-			name: "something"
-			values: modOpts.combinedSources.filter(value => value !== null)
-			addItemManually: false
-			headerLabels: [qsTr("Factor 1")]
-			rowComponent: RowLayout
-			{
-				Text { text: rowValue ; Layout.preferredWidth: 150*jaspTheme.uiScale }
-				DropDown 
-				{ 
-					name: "invarianceTest"
-					values: [
-						{ label: qsTr("Factor mean"), value: "latentMean" },
-						{ label: qsTr("Factor variance"), value: "latentVariance" },
-						{ label: qsTr("Factor loadings"), value: "loadings" }, 
-						{ label: qsTr("Item intercepts"), value: "intercepts"},
-						{ label: qsTr("Residual variances"), value: "residualVariances"}
-					]
-					addEmptyValue: true
-				}
-			}
+			CheckBox { name: "configuralInvariance" ; checked: true ; label: qsTr("Configural"); id: configuralInvariance }
+			CheckBox { name: "metricInvariance" ; checked: false ; label: qsTr("Metric"); id: metricInvariance }
+			CheckBox { name: "scalarInvariance" ; checked: false ; label: qsTr("Scalar"); id: scalarInvariance }
+			CheckBox { name: "strictInvariance" ; checked: false ; label: qsTr("Strict"); id: strictInvariance }
 		}
+
+	// 	property var interactionPairs: interactions.checked ? combinePairs(moderators.columnsNames) : null
+	// 	property var combinedSources: moderators.columnsNames.concat(interactionPairs);		
+
+  //  // now also add the square and cubic effects 
+	// 	ComponentsList
+	// 	{
+	// 		title: qsTr("Invariance Tests")
+	// 		name: "something"
+	// 		values: modOpts.combinedSources.filter(value => value !== null)
+	// 		addItemManually: false
+	// 		headerLabels: [qsTr("Factor 1")]
+	// 		rowComponent: RowLayout
+	// 		{
+	// 			Text { text: rowValue ; Layout.preferredWidth: 150*jaspTheme.uiScale }
+	// 			DropDown 
+	// 			{ 
+	// 				name: "invarianceTest"
+	// 				values: [
+	// 					{ label: qsTr("Factor mean"), value: "latentMean" },
+	// 					{ label: qsTr("Factor variance"), value: "latentVariance" },
+	// 					{ label: qsTr("Factor loadings"), value: "loadings" }, 
+	// 					{ label: qsTr("Item intercepts"), value: "intercepts"},
+	// 					{ label: qsTr("Residual variances"), value: "residualVariances"}
+	// 				]
+	// 				addEmptyValue: true
+	// 			}
+	// 		}
+	// 	}
 	}
 
 	Section
@@ -343,7 +359,7 @@ function getValues(inValue, rwValue, factorCount) {
 								name: "plotMod1"
 								id: plotMod1
 								// source: [moderators]
-								source: [moderators, {values: plots.names}, {values: modOpts.interactionPairs}]
+								source: [moderators, {values: plots.names}, {name: "moderatorInteractions", condition: "includeInteraction"}]
 
 								addEmptyValue: true
 							}
