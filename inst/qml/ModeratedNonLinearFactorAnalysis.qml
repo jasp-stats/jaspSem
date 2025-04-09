@@ -182,13 +182,15 @@ Form
 			}
 			CheckBox { name: "addGroupVar"; label: qsTr("Add group variable to data"); enabled: fitPerGroup.checked }
 		}
-		Group
+
+		ColumnLayout
 		{
-			preferredWidth: form.width / 2.5
+			Layout.alignment: Qt.AlignRight
 
 			ComponentsList 
 			{
 				visible: moderators.columnsNames.length > 1
+				preferredWidth: form.width * 0.4
 				title: qsTr("Interaction Terms")
 				name: "moderatorInteractions"
 				id: interactions
@@ -197,23 +199,23 @@ Form
 				headerLabels: [qsTr("Include")]
 				rowComponent: RowLayout
 				{
-					Text{ text: rowValue; Layout.preferredWidth: 150*jaspTheme.uiScale }
+					Text { text: rowValue; Layout.preferredWidth: 150 * jaspTheme.uiScale }
 					CheckBox { name: "includeInteraction"; id: includeInteraction }
 				}
 			}
-		
 		}
+
+
 		
 	}
 
 	Section
 	{
 		id: invOpts
-		title: qsTr("Invariance Options")
+		title: qsTr("Moderation Options")
 
 		Group
 		{
-			columns: 4
 			title: qsTr("Invariance Tests")
 			CheckBox { name: "configuralInvariance" ; checked: true ; label: qsTr("Configural"); id: configuralInvariance }
 			CheckBox { name: "metricInvariance" ; checked: false ; label: qsTr("Metric"); id: metricInvariance }
@@ -221,46 +223,59 @@ Form
 			CheckBox { name: "strictInvariance" ; checked: false ; label: qsTr("Strict"); id: strictInvariance }
 		}
 
-	// 	property var interactionPairs: interactions.checked ? combinePairs(moderators.columnsNames) : null
-	// 	property var combinedSources: moderators.columnsNames.concat(interactionPairs);		
+		TabView 
+		{
+			Layout.columnSpan: 1
+			preferredWidth: form.width * 0.75
+			values: [
+				configuralInvariance.checked ? qsTr("Configural") : null,
+				metricInvariance.checked ? qsTr("Metric") : null,
+				scalarInvariance.checked ? qsTr("Scalar") : null,
+				strictInvariance.checked ? qsTr("Strict") : null
+			].filter(value => value !== null) // Dynamically set values based on checkboxes
+			title: qsTr("Remove Moderation")
+			name: "moderatorRemoveList"
+			id: modFirstTab
+			addItemManually: false
+			rowComponent: TabView 
+			{
+				id: modSecondTab
+				property var modInvValue: rowValue 
+				name: "modTypeList"
+				addItemManually: false
+				values: [qsTr("Indicators"), qsTr("Factors")]
+				rowComponent: TabView 
+				{
+					id: modThirdTab
+					property var modTypeValue: rowValue
+					name: "modParameterList"
+					addItemManually: false
 
-  //  // now also add the square and cubic effects 
-	// 	ComponentsList
-	// 	{
-	// 		title: qsTr("Invariance Tests")
-	// 		name: "something"
-	// 		values: modOpts.combinedSources.filter(value => value !== null)
-	// 		addItemManually: false
-	// 		headerLabels: [qsTr("Factor 1")]
-	// 		rowComponent: RowLayout
-	// 		{
-	// 			Text { text: rowValue ; Layout.preferredWidth: 150*jaspTheme.uiScale }
-	// 			DropDown 
-	// 			{ 
-	// 				name: "invarianceTest"
-	// 				values: [
-	// 					{ label: qsTr("Factor mean"), value: "latentMean" },
-	// 					{ label: qsTr("Factor variance"), value: "latentVariance" },
-	// 					{ label: qsTr("Factor loadings"), value: "loadings" }, 
-	// 					{ label: qsTr("Item intercepts"), value: "intercepts"},
-	// 					{ label: qsTr("Residual variances"), value: "residualVariances"}
-	// 				]
-	// 				addEmptyValue: true
-	// 			}
-	// 		}
-	// 	}
+					values: getValues(modSecondTab.modInvValue, rowValue, factors.factorsTitles.length)
+				
+					rowComponent: ComponentsList
+					{
+						name: "modItemList"
+						preferredHeight: 200 * preferencesModel.uiScale
+						addItemManually: false
+						headerLabels: [qsTr("Remove")]
+						source: modThirdTab.modTypeValue == qsTr("Indicators") ? factors.name : (rowValue == qsTr("Covariances") ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
+
+						rowComponent: RowLayout
+						{
+							Text { text: rowValue ; Layout.preferredWidth: 200*jaspTheme.uiScale }
+							CheckBox { name: "removeModerator";}
+						}
+					}
+				}
+			}
+		}
 	}
 
 	Section
 	{
 		title: qsTr("Model Options")
 
-		// RadioButtonGroup 
-		// {
-		// 	title: qsTr("Factor Scaling")
-		// 	RadioButton { value: "factorVariance"; label: qsTr("Factor variance") }
-		// 	RadioButton { value: "factorLoading"; label: qsTr("Factor loading") }
-		// }
 		CheckBox { name: "factorsUncorrelated"; label: qsTr("Assume factors uncorrelated")   }
 
 	}
@@ -313,12 +328,11 @@ Form
 		title: qsTr("Plots")
 		id: plots
 
-		// property var names: moderators.columnsNames
 		property var names: []
-		
+
 		TabView 
 		{
-
+			
 			values: [
 				configuralInvariance.checked ? qsTr("Configural") : null,
 				metricInvariance.checked ? qsTr("Metric") : null,
@@ -326,46 +340,48 @@ Form
 				strictInvariance.checked ? qsTr("Strict") : null
 			].filter(value => value !== null) // Dynamically set values based on checkboxes
 			name: "plotModelList"
-			id: firstTab
+			id: plotFirstTab
 			addItemManually: false
 			rowComponent: TabView 
 			{
-				id: secondTab
-				property var invValue: rowValue 
+				id: plotSecondTab
+				property var plotInvValue: rowValue 
 				name: "plotTypeList"
 				addItemManually: false
 				values: [qsTr("Indicators"), qsTr("Factors")]
 				rowComponent: TabView 
 				{
-					id: thirdTab
-					property var typeValue: rowValue
+					id: plotThirdTab
+					property var plotTypeValue: rowValue
 					name: "plotParameterList"
 					addItemManually: false
 
-					values: getValues(secondTab.invValue, rowValue, factors.factorsTitles.length)
+					values: getValues(plotSecondTab.plotInvValue, rowValue, factors.factorsTitles.length)
 				
 					rowComponent: ComponentsList
 					{
 						name: "plotItemList"
 						addItemManually: false
 						headerLabels: [qsTr("Moderator 1"), qsTr("Moderator 2"), qsTr("Display plot")]
-						source: thirdTab.typeValue == qsTr("Indicators") ? factors.name : (rowValue == qsTr("Covariances") ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
+						source: plotThirdTab.plotTypeValue == qsTr("Indicators") ? factors.name : (rowValue == qsTr("Covariances") ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
 						
 						rowComponent: RowLayout
 						{
 							Text { text: rowValue ; Layout.preferredWidth: 150*jaspTheme.uiScale }
 							DropDown
 							{
-								name: "plotMod1"
+								name: "plotModerator1"
 								id: plotMod1
 								// source: [moderators]
 								source: [moderators, {values: plots.names}, {name: "moderatorInteractions", condition: "includeInteraction"}]
+								// source: [moderators, {name: "moderatorInteractions", condition: "includeInteraction"}]
+
 
 								addEmptyValue: true
 							}
 							DropDown
 							{
-								name: "plotMod2"
+								name: "plotModerator2"
 								id: plotMod2
 								addEmptyValue: true
 								source: plotMod1
@@ -377,8 +393,6 @@ Form
 					}
 				}
 			}
-			
-			
 		}
 	}
 
