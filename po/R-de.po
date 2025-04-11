@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2025-03-01 02:57\n"
-"PO-Revision-Date: 2025-03-11 21:45+0000\n"
+"PO-Revision-Date: 2025-04-11 04:47+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 5.10.3-dev\n"
+"X-Generator: Weblate 5.11-dev\n"
 
 msgid "Fit indices"
 msgstr "Anpassungsindikatoren"
@@ -832,7 +832,6 @@ msgstr "Min"
 msgid "Max"
 msgstr "Max"
 
-#, fuzzy
 msgid ""
 "Please include at least one regression path in the model to perform a "
 "sensitivity analysis."
@@ -871,7 +870,6 @@ msgstr "Yuan-Bentler"
 msgid "Yuan-Bentler Mplus"
 msgstr "Yuan-Bentler (Mplus)"
 
-#, fuzzy
 msgid "mean and variance-adjusted"
 msgstr "Mittelwert- und Varianz-angepasst"
 
@@ -881,8 +879,9 @@ msgstr "skaliert und verschoben"
 msgid "bootstrap (Bollen-Stine)"
 msgstr "Bootstrap (Bollen-Stine)"
 
+#, fuzzy
 msgid "Browne residual based (ADF)"
-msgstr ""
+msgstr "basiert auf Browne Residuen (ADF)"
 
 msgid "Browne residual based (NT)"
 msgstr ""
@@ -893,8 +892,9 @@ msgstr "robust"
 msgid "robust Huber-White"
 msgstr "Robust Huber-White"
 
+#, fuzzy
 msgid "first-order"
-msgstr ""
+msgstr "erster Ordnung"
 
 #~ msgid ""
 #~ "Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate "
