@@ -24,7 +24,48 @@ Form
 {
 
 	// function for getting the values for the plots
-	function getValues(inValue, rwValue, factorCount) {
+	function getValuesModOptions(inValue, rwValue, factorCount) {
+		if (inValue == qsTr("Configural")) {
+			if (rwValue == qsTr("Indicators")) {
+				return [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances")];
+			} 
+			if (factorCount == 2) {
+				return [qsTr("Covariances")];
+			} 
+			return [];
+		} 
+		if (inValue == qsTr("Metric")) {
+			if (rwValue == qsTr("Indicators")) {
+				return [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances")];
+			} 
+			if (factorCount == 2) {
+				return [qsTr("Variances"), qsTr("Covariances")];
+			}
+			return [qsTr("Variances")];
+		} 
+		if (inValue == qsTr("Scalar")) {
+			if (rwValue == qsTr("Indicators")) {
+				return [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances")];
+			} 
+			if (factorCount == 2) {
+				return [qsTr("Variances"), qsTr("Means"), qsTr("Covariances")];
+			} 
+			return [qsTr("Variances"), qsTr("Means")];
+		} 
+		if (inValue == qsTr("Strict")) {
+			if (rwValue == qsTr("Indicators")) {
+				return [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances")];
+			} 
+			if (factorCount == 2) {
+				return [qsTr("Variances"), qsTr("Means"), qsTr("Covariances")];
+			} 
+			return [qsTr("Variances"), qsTr("Means")];
+		} 
+		return [];
+	}
+
+	// function for getting the values for the plots
+	function getValuesPlotOptions(inValue, rwValue, factorCount) {
 		if (inValue == qsTr("Configural")) {
 			if (rwValue == qsTr("Indicators")) {
 				return [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances")];
@@ -95,7 +136,7 @@ Form
 	Section
 	{
 		title: qsTr("Moderation")
-		expanded: false
+		expanded: true
 		id: mod
 		
 		VariablesForm
@@ -157,7 +198,17 @@ Form
 						}
 					}
 				}
-
+			}
+			CheckBox
+			{
+				id: 						syncAnalysisBox
+				name: 					"syncAnalysisBox"
+				label: 					qsTr("<b>Start/Sync Analysis</b>")
+				checked: 				false
+				Component.onCompleted:
+				{
+						background.color = "#ff8600"
+				}
 			}
 		}
 
@@ -205,7 +256,6 @@ Form
 			}
 		}
 
-
 		
 	}
 
@@ -214,8 +264,11 @@ Form
 		id: invOpts
 		title: qsTr("Moderation Options")
 
+		// property var names: []
+
 		Group
 		{
+			columns: 1
 			title: qsTr("Invariance Tests")
 			CheckBox { name: "configuralInvariance" ; checked: true ; label: qsTr("Configural"); id: configuralInvariance }
 			CheckBox { name: "metricInvariance" ; checked: false ; label: qsTr("Metric"); id: metricInvariance }
@@ -226,15 +279,16 @@ Form
 		TabView 
 		{
 			Layout.columnSpan: 1
-			preferredWidth: form.width * 0.75
+			preferredWidth: 100
+			Layout.fillWidth: true
 			values: [
 				configuralInvariance.checked ? qsTr("Configural") : null,
 				metricInvariance.checked ? qsTr("Metric") : null,
 				scalarInvariance.checked ? qsTr("Scalar") : null,
 				strictInvariance.checked ? qsTr("Strict") : null
 			].filter(value => value !== null) // Dynamically set values based on checkboxes
-			title: qsTr("Remove Moderation")
-			name: "moderatorRemoveList"
+			title: qsTr("Include Individual Moderations")
+			name: "moderationIncludeList"
 			id: modFirstTab
 			addItemManually: false
 			rowComponent: TabView 
@@ -251,20 +305,28 @@ Form
 					name: "modParameterList"
 					addItemManually: false
 
-					values: getValues(modSecondTab.modInvValue, rowValue, factors.factorsTitles.length)
-				
+					values: getValuesModOptions(modInvValue, rowValue, factors.factorsTitles.length)
 					rowComponent: ComponentsList
 					{
+						id: modFourthTab
+						property var modParamValue: rowValue
 						name: "modItemList"
-						preferredHeight: 200 * preferencesModel.uiScale
+						implicitWidth: modThirdTab.width - 2
 						addItemManually: false
-						headerLabels: [qsTr("Remove")]
-						source: modThirdTab.modTypeValue == qsTr("Indicators") ? factors.name : (rowValue == qsTr("Covariances") ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
+						headerLabels: [qsTr("Include"), "   ", qsTr("Display Plot")]
+						source: modTypeValue == qsTr("Indicators") ? factors.name : (rowValue == qsTr("Covariances") ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
 
 						rowComponent: RowLayout
 						{
 							Text { text: rowValue ; Layout.preferredWidth: 200*jaspTheme.uiScale }
-							CheckBox { name: "removeModerator";}
+							CheckBox { 
+								name: "includeModeration";
+								onCheckedChanged: hiddenOption.value = hiddenOption.value + 1
+								checked: modSecondTab.modInvValue == qsTr("Configural") ||
+									(modSecondTab.modInvValue == qsTr("Metric") && modFourthTab.modParamValue != qsTr("Loadings")) ||
+										(modSecondTab.modInvValue == qsTr("Scalar") && (modFourthTab.modParamValue != qsTr("Loadings") && modFourthTab.modParamValue != qsTr("Intercepts"))) ||
+											(modSecondTab.modInvValue == qsTr("Strict") && (modFourthTab.modParamValue != qsTr("Loadings") && modFourthTab.modParamValue != qsTr("Intercepts") && modFourthTab.modParamValue != qsTr("Residual variances")))
+							}
 						}
 					}
 				}
@@ -356,14 +418,15 @@ Form
 					name: "plotParameterList"
 					addItemManually: false
 
-					values: getValues(plotSecondTab.plotInvValue, rowValue, factors.factorsTitles.length)
+					values: getValuesModOptions(plotSecondTab.plotInvValue, rowValue, factors.factorsTitles.length)
 				
 					rowComponent: ComponentsList
 					{
 						name: "plotItemList"
 						addItemManually: false
 						headerLabels: [qsTr("Moderator 1"), qsTr("Moderator 2"), qsTr("Display plot")]
-						source: plotThirdTab.plotTypeValue == qsTr("Indicators") ? factors.name : (rowValue == qsTr("Covariances") ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
+						rSource: "plotOptions"
+						// source: plotThirdTab.plotTypeValue == qsTr("Indicators") ? factors.name : (rowValue == qsTr("Covariances") ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
 						
 						rowComponent: RowLayout
 						{
