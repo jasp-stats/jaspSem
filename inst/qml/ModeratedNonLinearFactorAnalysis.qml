@@ -401,6 +401,7 @@ Form
 				scalarInvariance.checked ? qsTr("Scalar") : null,
 				strictInvariance.checked ? qsTr("Strict") : null
 			].filter(value => value !== null) // Dynamically set values based on checkboxes
+			valuesNames: ["configural", "metric", "scalar", "strict"]
 			name: "plotModelList"
 			id: plotFirstTab
 			addItemManually: false
@@ -425,8 +426,8 @@ Form
 						name: "plotItemList"
 						addItemManually: false
 						headerLabels: [qsTr("Moderator 1"), qsTr("Moderator 2"), qsTr("Display plot")]
-						rSource: "plotOptions"
-						// source: plotThirdTab.plotTypeValue == qsTr("Indicators") ? factors.name : (rowValue == qsTr("Covariances") ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
+						// rSource: "plotOptions"
+						source: plotThirdTab.plotTypeValue == qsTr("Indicators") ? factors.name : (rowValue == qsTr("Covariances") ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
 						
 						rowComponent: RowLayout
 						{

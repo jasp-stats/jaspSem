@@ -249,7 +249,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   plotOpts <- .buildModeratedVariableSummary(options[["moderationIncludeList"]])
 
   modelOptions <- .extractIncludeModerationPaths(options[["moderationIncludeList"]])
-  plotOpts <- as.list(plotOpts$Configural$Indicators$Loadings)
 
   src <- createJaspQmlSource("plotOptions", plotOpts)
   src$dependOn(optionsFromObject = jaspResults[["mainContainer"]],
