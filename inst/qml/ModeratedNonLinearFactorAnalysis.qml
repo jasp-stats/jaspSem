@@ -25,93 +25,34 @@ Form
 
 	// function for getting the values for the plots
 	function getValuesModOptions(inValue, rwValue, factorCount) {
-		if (inValue == qsTr("Configural")) {
-			if (rwValue == qsTr("Indicators")) {
-				return [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances")];
-			} 
-			if (factorCount == 2) {
-				return [qsTr("Covariances")];
-			} 
-			return [];
+		if (rwValue == "indicators") {
+			return [{value: "loadings", label: qsTr("Loadings")}, {value: "intercepts", label: qsTr("Intercepts")}, {value: "residualVariances", label: qsTr("Residual variances")}];
 		} 
-		if (inValue == qsTr("Metric")) {
-			if (rwValue == qsTr("Indicators")) {
-				return [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances")];
-			} 
+		if (inValue == "configuralInvariance" && factorCount == 2) {
+			return [{value: "covariances", label: qsTr("Covariances")}];
+		}
+		if (inValue == "metricInvariance") {
 			if (factorCount == 2) {
-				return [qsTr("Variances"), qsTr("Covariances")];
+				return [{value: "variances", label: qsTr("Variances")}, {value: "covariances", label: qsTr("Covariances")}];
 			}
-			return [qsTr("Variances")];
+			return [{value: "variances", label: qsTr("Variances")}];
 		} 
-		if (inValue == qsTr("Scalar")) {
-			if (rwValue == qsTr("Indicators")) {
-				return [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances")];
-			} 
+		if (inValue == "scalarInvariance" || inValue == "strictInvariance") {
 			if (factorCount == 2) {
-				return [qsTr("Variances"), qsTr("Means"), qsTr("Covariances")];
+				return [{value: "variances", label: qsTr("Variances")}, {value: "means", label: qsTr("Means")}, {value: "covariances", label: qsTr("Covariances")}];
 			} 
-			return [qsTr("Variances"), qsTr("Means")];
-		} 
-		if (inValue == qsTr("Strict")) {
-			if (rwValue == qsTr("Indicators")) {
-				return [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances")];
-			} 
-			if (factorCount == 2) {
-				return [qsTr("Variances"), qsTr("Means"), qsTr("Covariances")];
-			} 
-			return [qsTr("Variances"), qsTr("Means")];
-		} 
-		return [];
-	}
-
-	// function for getting the values for the plots
-	function getValuesPlotOptions(inValue, rwValue, factorCount) {
-		if (inValue == qsTr("Configural")) {
-			if (rwValue == qsTr("Indicators")) {
-				return [qsTr("Loadings"), qsTr("Intercepts"), qsTr("Residual variances")];
-			} 
-			if (factorCount == 2) {
-				return [qsTr("Covariances")];
-			} 
-			return [];
-		} 
-		if (inValue == qsTr("Metric")) {
-			if (rwValue == qsTr("Indicators")) {
-				return [qsTr("Intercepts"), qsTr("Residual variances")];
-			} 
-			if (factorCount == 2) {
-				return [qsTr("Variances"), qsTr("Covariances")];
-			}
-			return [qsTr("Variances")];
-		} 
-		if (inValue == qsTr("Scalar")) {
-			if (rwValue == qsTr("Indicators")) {
-				return [qsTr("Residual variances")];
-			} 
-			if (factorCount == 2) {
-				return [qsTr("Variances"), qsTr("Means"), qsTr("Covariances")];
-			} 
-			return [qsTr("Variances"), qsTr("Means")];
-		} 
-		if (inValue == qsTr("Strict")) {
-			if (rwValue == qsTr("Indicators")) {
-				return [];
-			} 
-			if (factorCount == 2) {
-				return [qsTr("Covariances")];
-			} 
-			return [];
+			return [{value: "variances", label: qsTr("Variances")}, {value: "means", label: qsTr("Means")}];
 		} 
 		return [];
 	}
 
 	function concatFactorTitles(factorTitles) {
-		var result = [];
+		var resultLabel = [];
 		for (var i = 0; i < factorTitles.length; i++) {
-			result.push(factorTitles[i].label);
+			resultLabel.push(factorTitles[i].label);
 		}
-		result = result.join(" <-> ");
-		return [result];
+		resultLabel = resultLabel.join(":");
+		return [resultLabel];
 	}
 
 	function combinePairs(values) {
@@ -207,7 +148,7 @@ Form
 				checked: 				false
 				Component.onCompleted:
 				{
-						background.color = "#ff8600"
+						background.color = "#ffcb98"
 				}
 			}
 		}
@@ -255,8 +196,6 @@ Form
 				}
 			}
 		}
-
-		
 	}
 
 	Section
@@ -276,70 +215,67 @@ Form
 			CheckBox { name: "strictInvariance" ; checked: false ; label: qsTr("Strict"); id: strictInvariance }
 		}
 
+		property var firstLayerValues: [configuralInvariance, metricInvariance, scalarInvariance, strictInvariance].filter(x => x.checked).map(x => ({value: x.name, label: x.label}))
+		
 		TabView 
 		{
 			Layout.columnSpan: 1
 			preferredWidth: 100
 			Layout.fillWidth: true
-			values: [
-				configuralInvariance.checked ? qsTr("Configural") : null,
-				metricInvariance.checked ? qsTr("Metric") : null,
-				scalarInvariance.checked ? qsTr("Scalar") : null,
-				strictInvariance.checked ? qsTr("Strict") : null
-			].filter(value => value !== null) // Dynamically set values based on checkboxes
+			values: invOpts.firstLayerValues
 			title: qsTr("Include Individual Moderations")
 			name: "moderationIncludeList"
-			id: modFirstTab
+			optionKey: "keyValue"
+			optionKeyLabel: "keyLabel"
+			id: modFirstLayer
 			addItemManually: false
 			rowComponent: TabView 
 			{
-				id: modSecondTab
-				property var modInvValue: rowValue 
+				id: modSecondLayer
+				property string modInvValue: rowValue
+				property string modInvLable: rowLabel
 				name: "modTypeList"
 				addItemManually: false
-				values: [qsTr("Indicators"), qsTr("Factors")]
+				values: [{value: "indicators", label: qsTr("Indicators")}, {value: "factors", label: qsTr("Factors")}]
+				optionKey: "keyValue"
+				optionKeyLabel: "keyLabel"
 				rowComponent: TabView 
 				{
-					id: modThirdTab
-					property var modTypeValue: rowValue
+					id: modThirdLayer
+					property string modTypeValue: rowValue
+					property string modTypeLabel: rowLabel
 					name: "modParameterList"
 					addItemManually: false
-
-					values: getValuesModOptions(modInvValue, rowValue, factors.factorsTitles.length)
+					optionKey: "keyValue"
+					optionKeyLabel: "keyLabel"
+					values: getValuesModOptions(modSecondLayer.modInvValue, rowValue, factors.factorsTitles.length)
 					rowComponent: ComponentsList
 					{
-						id: modFourthTab
-						property var modParamValue: rowValue
+						id: modFourthLayer
+						property string modParamValue: rowValue
+						property string modParamLabel: rowLabel
 						name: "modItemList"
-						implicitWidth: modThirdTab.width - 2
+						implicitWidth: modThirdLayer.width - 2
 						addItemManually: false
 						headerLabels: [qsTr("Include"), "   ", qsTr("Display Plot")]
-						source: modTypeValue == qsTr("Indicators") ? factors.name : (rowValue == qsTr("Covariances") ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
-
+						source: "factors"
+						// source: modThirdLayer.modTypeValue == "indicators" ? factors.name : (rowValue == "covariances" ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
 						rowComponent: RowLayout
 						{
 							Text { text: rowValue ; Layout.preferredWidth: 200*jaspTheme.uiScale }
 							CheckBox { 
 								name: "includeModeration";
-								onCheckedChanged: hiddenOption.value = hiddenOption.value + 1
-								checked: modSecondTab.modInvValue == qsTr("Configural") ||
-									(modSecondTab.modInvValue == qsTr("Metric") && modFourthTab.modParamValue != qsTr("Loadings")) ||
-										(modSecondTab.modInvValue == qsTr("Scalar") && (modFourthTab.modParamValue != qsTr("Loadings") && modFourthTab.modParamValue != qsTr("Intercepts"))) ||
-											(modSecondTab.modInvValue == qsTr("Strict") && (modFourthTab.modParamValue != qsTr("Loadings") && modFourthTab.modParamValue != qsTr("Intercepts") && modFourthTab.modParamValue != qsTr("Residual variances")))
+								id: includeModeration
+								checked: modSecondLayer.modInvValue == "configuralInvariance" ||
+									(modSecondLayer.modInvValue == "metricInvariance" && modFourthLayer.modParamValue != "loadings") ||
+										(modSecondLayer.modInvValue == "scalarInvariance" && (modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "intercepts")) ||
+											(modSecondLayer.modInvValue == "strictInvariance" && (modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "intercepts" && modFourthLayer.modParamValue != "residualVariances"));
 							}
 						}
 					}
 				}
 			}
 		}
-	}
-
-	Section
-	{
-		title: qsTr("Model Options")
-
-		CheckBox { name: "factorsUncorrelated"; label: qsTr("Assume factors uncorrelated")   }
-
 	}
 
 	Section
@@ -366,22 +302,8 @@ Form
 
 		}
 
-		Group
-		{
-			CheckBox { label: qsTr("Implied covariance matrix")  ; name: "impliedCovarianceMatrix"		}
-			CheckBox { label: qsTr("Residual covariance matrix") ; name: "residualCovarianceMatrix"		}
-			CheckBox {
-				label: qsTr("Modification indices")
-				name: "modificationIndices"
-				DoubleField {
-					label: qsTr("Cutoff")
-					name: "modificationIndicesCutoff"
-					min: 0
-					defaultValue: 3.84
-				}
-			}
-			CheckBox { label: qsTr("Show syntax")         ; name: "showSyntax" }
-		}
+		CheckBox { label: qsTr("Show syntax")         ; name: "showSyntax" }
+		
 	}
 
 	
@@ -391,42 +313,43 @@ Form
 		id: plots
 
 		property var names: []
-
+		// property var variablesIncluded: 
 		TabView 
 		{
 			
-			values: [
-				configuralInvariance.checked ? qsTr("Configural") : null,
-				metricInvariance.checked ? qsTr("Metric") : null,
-				scalarInvariance.checked ? qsTr("Scalar") : null,
-				strictInvariance.checked ? qsTr("Strict") : null
-			].filter(value => value !== null) // Dynamically set values based on checkboxes
+			values: invOpts.firstLayerValues
 			name: "plotModelList"
-			id: plotFirstTab
+			id: plotFirstLayer
+			optionKey: "keyValue"
+			optionKeyLabel: "keyLabel"
 			addItemManually: false
 			rowComponent: TabView 
 			{
-				id: plotSecondTab
-				property var plotInvValue: rowValue 
+				id: plotSecondLayer
+				property string plotInvValue: rowValue 
 				name: "plotTypeList"
+				optionKey: "keyValue"
+				optionKeyLabel: "keyLabel"
 				addItemManually: false
-				values: [qsTr("Indicators"), qsTr("Factors")]
+				values: [{value: "indicators", label: qsTr("Indicators")}, {value: "factors", label: qsTr("Factors")}]
+
 				rowComponent: TabView 
 				{
-					id: plotThirdTab
-					property var plotTypeValue: rowValue
+					id: plotThirdLayer
+					property string plotTypeValue: rowValue
+					optionKey: "keyValue"
+					optionKeyLabel: "keyLabel"
 					name: "plotParameterList"
 					addItemManually: false
 
-					values: getValuesModOptions(plotSecondTab.plotInvValue, rowValue, factors.factorsTitles.length)
+					values: getValuesModOptions(plotSecondLayer.plotInvValue, rowValue, factors.factorsTitles.length)
 				
 					rowComponent: ComponentsList
 					{
 						name: "plotItemList"
 						addItemManually: false
 						headerLabels: [qsTr("Moderator 1"), qsTr("Moderator 2"), qsTr("Display plot")]
-						rSource: "plotOptions"
-						// source: plotThirdTab.plotTypeValue == qsTr("Indicators") ? factors.name : (rowValue == qsTr("Covariances") ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
+						rSource: "plotOptions." + plotSecondLayer.plotInvValue + "." + plotThirdLayer.plotTypeValue + "." + rowValue
 						
 						rowComponent: RowLayout
 						{
