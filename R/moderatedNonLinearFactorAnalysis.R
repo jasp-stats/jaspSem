@@ -44,8 +44,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   dataset <- .mnlfaHandleData(jaspResults, dataset, options, ready)
   options <- .mnlfaPreprocessOptions(options)
 
-  saveRDS(options, file = "~/Downloads/options.rds")
-  saveRDS(dataset, file = "~/Downloads/dataset.rds")
+  # saveRDS(options, file = "~/Downloads/options.rds")
+  # saveRDS(dataset, file = "~/Downloads/dataset.rds")
 
   .mnlfaCreateContainer(jaspResults, options)
   .mnlfaPlotOptionsForQml(jaspResults, options)
@@ -244,22 +244,28 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 }
 
 .mnlfaPlotOptionsForQml <- function(jaspResults, options) {
-  if (!is.null(jaspResults[["plotOptionsForQml"]])) return()
+
+  if (!is.null(jaspResults[["plotOptionsForQml"]])) {
+    # print("reused")
+    # print(jaspResults[["plotOptionsForQml"]])
+    return()
+  }
 
   plotOpts <- .buildModeratedVariableSummary(options[["moderationIncludeList"]])
 
   modelOptions <- .extractIncludeModerationPaths(options[["moderationIncludeList"]])
-  plotOpts <- as.list(plotOpts$Configural$Indicators$Loadings)
+  modelOptionsPath <- unlist(modelOptions$paths, recursive = FALSE, use.names = FALSE)
 
-  src <- createJaspQmlSource("plotOptions", plotOpts)
+  src <- createJaspQmlSource(sourceID = "plotOptions", value = plotOpts)
   src$dependOn(optionsFromObject = jaspResults[["mainContainer"]],
                options = c("configuralInvariance", "metricInvariance",
                            "scalarInvariance", "strictInvariance"),
-               nestedOptions = modelOptions$path)
+               nestedOptions = modelOptionsPath)
+
   jaspResults[["plotOptionsForQml"]] <- src
+
   return()
 }
-
 
 ##### ANALYSIS #####
 # test configural invariance with the CFA module
@@ -293,30 +299,30 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
   ogColnames <- colnames(dataset)
-  colnames(dataset) <- jaspBase::decodeColNames(colnames(dataset))
-  dataset$addedGroupVar <- NA
+  colnames(dataset) <- jaspBase::decodeColNames(ogColnames)
+  dataset[["addedGroupVar"]] <- NA
   for (rr in 1:nrow(dataset)) {
-    dataset$addedGroupVar[rr] <- paste0(colsToCombine, "_", dataset[rr, colsToCombine], collapse = ":")
+    dataset[["addedGroupVar"]][rr] <- paste0(colsToCombine, "_", dataset[rr, colsToCombine], collapse = ":")
   }
 
   colnames(dataset) <- c(ogColnames, "addedGroupVar")
 
   # this part is from jaspFactor
   cfaResult <- list()
-  options$seType <- "default"
+  options[["seType"]] <- "default"
   cfaResult[["spec"]] <- jaspFactor:::.cfaCalcSpecs(dataset, options)
 
   # we fit a model per group so we have access to all the fit indices, which we would not have if we would use
   # the lavaan built-in group functionality
-  options$group <- ""
-  options$invarianceTesting <- NULL
-  mod <- jaspFactor:::.optionsToCFAMod(options, dataset, cfaResult)$model
-  groups <- unique(dataset$addedGroupVar)
+  options[["group"]] <- ""
+  options[["invarianceTesting"]] <- NULL
+  mod <- jaspFactor:::.optionsToCFAMod(options, dataset, cfaResult)[["model"]]
+  groups <- unique(dataset[["addedGroupVar"]])
   fitArgs <- list(model         = mod,
                 data            = NULL,
-                se              = cfaResult[["spec"]]$se,
-                std.lv          = TRUE,
-                orthogonal      = options$factorsUncorrelated,
+                se              = cfaResult[["spec"]][["se"]],
+                std.lv          = FALSE,
+                orthogonal      = FALSE,
                 missing         = "default")
 
   result <- list()
@@ -341,31 +347,26 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
              options[["strictInvariance"]])
   if (sum(tests) == 0) return()
 
-  testNames <- gettext("configural", "metric", "scalar", "strict")
+  testNames <- c("configuralInvariance", "metricInvariance", "scalarInvariance", "strictInvariance")
   testNames <- testNames[tests]
 
   removeModObj <- .extractExcludedModerationItemsDf(options[["moderationIncludeList"]])
-  translatedNames <- .translatedElements(options)
-
-  if (!is.null(removeModObj)) {
-    removeModObj$modelValue <- translatedNames$rNames[match(removeModObj$modelValue, translatedNames$guiNames)]
-    removeModObj$modParameter <- translatedNames$rNames[match(removeModObj$modParameter, translatedNames$guiNames)]
-    removeModObj$value[removeModObj$modType == "Factors"] <- translatedNames$rNames[match(removeModObj$value[removeModObj$modType == "Factors"], translatedNames$guiNames)]
-  }
 
   # get extra options for dependencies
   modelOptions <- .extractIncludeModerationPaths(options[["moderationIncludeList"]])
+
+  jaspBase::startProgressbar(length(testNames), label = gettext("Fitting invariance model"))
   for (i in 1:length(testNames)) {
-    modelOption <- modelOptions[tolower(modelOptions$modelType) == testNames[i], ]
+    modelOptionsPaths <- modelOptions$paths
+    modelOption <- modelOptionsPaths[[testNames[i]]]
     if (testNames[i] %in% removeModObj$modelValue) {
       removeMod <- removeModObj[removeModObj$modelValue == testNames[i], ]
       .mnlfaGlobalInvarianceTestHelper(jaspResults, dataset, options, testNames[i], modelOption, removeMod)
     } else {
       .mnlfaGlobalInvarianceTestHelper(jaspResults, dataset, options, testNames[i], modelOption)
-
     }
+    progressbarTick()
   }
-
 
   return()
 }
@@ -373,10 +374,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
 .mnlfaGlobalInvarianceTestHelper <- function(jaspResults, dataset, options, testName, modelOption, removeMod = NULL) {
 
-  state <- paste0(testName, "InvState")
-  print(state)
-  if (!is.null(jaspResults[["mainContainer"]][[state]])) {
-    print(paste0("reused: ", state))
+  stateName <- paste0(testName, "State")
+  if (!is.null(jaspResults[["mainContainer"]][[stateName]])) {
     return()
   }
 
@@ -391,16 +390,15 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   fitState <- createJaspState(fit)
 
-  fitState$dependOn(options = paste0(testName, "Invariance"), nestedOptions = modelOption$path)
-  # fitState$dependOn(options = paste0(testName, "Invariance"))
+  fitState$dependOn(options = testName, nestedOptions = modelOption)
 
-  jaspResults[["mainContainer"]][[state]] <- fitState
+  jaspResults[["mainContainer"]][[stateName]] <- fitState
 
   # also save the model and mapping
   mapList <- modelObj$map
   modelState <- createJaspState(list(model = modelObj$model, map = mapList))
-  modelState$dependOn(optionsFromObject = jaspResults[["mainContainer"]][[state]])
-  jaspResults[["mainContainer"]][[paste0(testName, "InvModelState")]] <- modelState
+  modelState$dependOn(optionsFromObject = jaspResults[["mainContainer"]][[stateName]])
+  jaspResults[["mainContainer"]][[paste0(testName, "ModelState")]] <- modelState
 
   return()
 }
@@ -476,28 +474,25 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   invFitTable <- createJaspTable(gettext("Global Invariance Fit"))
   invFitTable$position <- 2
 
-  # invFitTable$dependOn(optionsFromObject = list(jaspResults[["mainContainer"]][["configuralInvState"]],
-  #                                               jaspResults[["mainContainer"]][["metricInvState"]],
-  #                                               jaspResults[["mainContainer"]][["scalarInvState"]],
-  #                                               jaspResults[["mainContainer"]][["strictInvState"]]))
   modelOptions <- .extractIncludeModerationPaths(options[["moderationIncludeList"]])
+  modelOptionsPath <- unlist(modelOptions$paths, recursive = FALSE, use.names = FALSE)
 
   invFitTable$dependOn(optionsFromObject = jaspResults[["mainContainer"]],
                        options = c("configuralInvariance", "metricInvariance",
                                    "scalarInvariance", "strictInvariance"),
-                       nestedOptions = modelOptions$path)
+                       nestedOptions = modelOptionsPath)
 
 
   invFitTable$addColumnInfo(name = "type", title = gettext("Type"), type = "string")
   jaspResults[["mainContainer"]][["invFitTable"]] <- invFitTable
 
-  results <- list(Configural = jaspResults[["mainContainer"]][["configuralInvState"]][["object"]],
-                  Metric = jaspResults[["mainContainer"]][["metricInvState"]][["object"]],
-                  Scalar = jaspResults[["mainContainer"]][["scalarInvState"]][["object"]],
-                  Strict = jaspResults[["mainContainer"]][["strictInvState"]][["object"]])
+  results <- list(Configural = jaspResults[["mainContainer"]][["configuralInvarianceState"]][["object"]],
+                  Metric = jaspResults[["mainContainer"]][["metricInvarianceState"]][["object"]],
+                  Scalar = jaspResults[["mainContainer"]][["scalarInvarianceState"]][["object"]],
+                  Strict = jaspResults[["mainContainer"]][["strictInvarianceState"]][["object"]])
 
   results <- results[sapply(results, function(x) !is.null(x))]
-  saveRDS(results, "~/Downloads/results.rds")
+  # saveRDS(results, "~/Downloads/results.rds")
 
   if (length(results) == 0) {
     invFitTable$addFootnote(gettext("Choose one of the global invariance tests to perform the test."))
@@ -565,10 +560,10 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (!ready) return()
   if (!is.null(jaspResults[["mainContainer"]][["globalParameterContainer"]])) return()
 
-  results <- list(Configural = jaspResults[["mainContainer"]][["configuralInvState"]][["object"]],
-                  Metric = jaspResults[["mainContainer"]][["metricInvState"]][["object"]],
-                  Scalar = jaspResults[["mainContainer"]][["scalarInvState"]][["object"]],
-                  Strict = jaspResults[["mainContainer"]][["strictInvState"]][["object"]])
+  results <- list(Configural = jaspResults[["mainContainer"]][["configuralInvarianceState"]][["object"]],
+                  Metric = jaspResults[["mainContainer"]][["metricInvarianceState"]][["object"]],
+                  Scalar = jaspResults[["mainContainer"]][["scalarInvarianceState"]][["object"]],
+                  Strict = jaspResults[["mainContainer"]][["strictInvarianceState"]][["object"]])
 
   results <- results[sapply(results, function(x) !is.null(x))]
 
@@ -583,13 +578,13 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   jaspResults[["mainContainer"]][["globalParameterContainer"]] <- globalParameterContainer
 
   # get the mappings
-  mapResults <- list(Configural = jaspResults[["mainContainer"]][["configuralInvModelState"]][["object"]][["map"]],
-                      Metric = jaspResults[["mainContainer"]][["metricInvModelState"]][["object"]][["map"]],
-                      Scalar = jaspResults[["mainContainer"]][["scalarInvModelState"]][["object"]][["map"]],
-                      Strict = jaspResults[["mainContainer"]][["strictInvModelState"]][["object"]][["map"]])
+  mapResults <- list(Configural = jaspResults[["mainContainer"]][["configuralInvarianceModelState"]][["object"]][["map"]],
+                      Metric = jaspResults[["mainContainer"]][["metricInvarianceModelState"]][["object"]][["map"]],
+                      Scalar = jaspResults[["mainContainer"]][["scalarInvarianceModelState"]][["object"]][["map"]],
+                      Strict = jaspResults[["mainContainer"]][["strictInvarianceModelState"]][["object"]][["map"]])
   mapResults <- mapResults[sapply(mapResults, function(x) !is.null(x))]
 
-  saveRDS(mapResults, "~/Downloads/mapResults.rds")
+  # saveRDS(mapResults, "~/Downloads/mapResults.rds")
 
   for (i in 1:length(results)) {
 
@@ -1019,10 +1014,10 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                            optionsFromObject = jaspResults[["mainContainer"]][["globalParameterContainer"]])
   jaspResults[["syntaxContainer"]] <- syntaxContainer
 
-  models <- list(Configural = jaspResults[["mainContainer"]][["configuralInvModelState"]][["object"]][["model"]],
-                 Metric = jaspResults[["mainContainer"]][["metricInvModelState"]][["object"]][["model"]],
-                 Scalar = jaspResults[["mainContainer"]][["scalarInvModelState"]][["object"]][["model"]],
-                 Strict = jaspResults[["mainContainer"]][["strictInvModelState"]][["object"]][["model"]])
+  models <- list(Configural = jaspResults[["mainContainer"]][["configuralInvarianceModelState"]][["object"]][["model"]],
+                 Metric     = jaspResults[["mainContainer"]][["metricInvarianceModelState"]][["object"]][["model"]],
+                 Scalar     = jaspResults[["mainContainer"]][["scalarInvarianceModelState"]][["object"]][["model"]],
+                 Strict     = jaspResults[["mainContainer"]][["strictInvarianceModelState"]][["object"]][["model"]])
   models <- models[sapply(models, function(x) !is.null(x))]
 
   if (length(models) == 0) {
@@ -1090,48 +1085,47 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   factorNamesVars <- factorNamesMeans <- names(factorList)
 
-  if (type == "configural") {
+  if (type == "configuralInvariance") {
     factorNamesVars <- factorNamesMeans <- NULL
-  }
-
-  if (type == "metric") {
+  } else if (type == "metricInvariance") {
     factorNamesMeans <- NULL
-  }
-
-  if (type == "scalar") {
+  } else if (type == "scalarInvariance") {
     rmvLoadMod <- rmvIntMod <- TRUE
-  }
-
-  if (type == "strict") {
+  } else if (type == "strictInvariance") {
     rmvLoadMod <-  rmvIntMod <- rmvResMod <- TRUE
   }
 
   loadingsObj <- .generateLoadings(factorList, moderators,
-                                   removeModerationForVariables = removeMod$value[removeMod$modParameter == "loadings"])
+                                   removeModerationForVariables = removeMod$itemValue[removeMod$paramValue == "loadings"])
   loadingsBlock <- loadingsObj$loadingsBlock
 
   interceptsObj <- .generateIntercepts(factorList, moderators,
-                                       removeModerationForVariables = removeMod$value[removeMod$modParameter == "intercepts"])
+                                       removeModerationForVariables = removeMod$itemValue[removeMod$paramValue == "intercepts"])
   interceptsBlock <- interceptsObj$interceptsBlock
 
   residualsObj <- .generateResidualVariances(factorList, moderators,
-                                             removeModerationForVariables = removeMod$value[removeMod$modParameter == "residualVariances"])
+                                             removeModerationForVariables = removeMod$itemValue[removeMod$paramValue == "residualVariances"])
   residualsBlock <- residualsObj$residualsBlock
 
   variancesObj <- .generateFactorVariances(factorList, moderators, moderate = factorNamesVars,
-                                           removeAllModeration = removeMod$value[removeMod$modParameter == "variances"])
+                                           removeAllModeration = removeMod$itemValue[removeMod$paramValue == "variances"])
   variancesBlock <- variancesObj$variancesBlock
 
   meansObj <- .generateFactorMeans(factorList, moderators, moderate = factorNamesMeans,
-                                   removeAllModeration = removeMod$value[removeMod$modParameter == "means"])
+                                   removeAllModeration = removeMod$itemValue[removeMod$paramValue == "means"])
   meansBlock <- meansObj$meansBlock
 
-  if (length(names(factorList)) == 2) {
+  covarianceObj <- .generateFactorCovariances(factorList, moderators,
+                                             removeModeration = any(removeMod$paramValue == "covariances"))
+
+  if (length(names(factorList)) > 1) {
     covarianceObj <- .generateFactorCovariances(factorList, moderators,
-                                               removeModeration = any(removeMod$modParameter == "covariances"))
+                                                removeModeration = any(removeMod$paramValue == "covariances"))
   } else {
     covarianceObj <- list(covarianceBlock = "", covarianceMapDf = NULL)
   }
+
+
   covarianceBlock <- covarianceObj$covarianceBlock
 
   model <- paste0(loadingsBlock, interceptsBlock, residualsBlock, variancesBlock, meansBlock, covarianceBlock,
@@ -1671,8 +1665,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   covarianceList <- list()
   rowIndex <- 1  # Track row index for mapping
 
-  if (numFactors < 2) stop("At least two factors are required for covariance estimation.")
-
   # If there are exactly two factors, decide whether to apply moderation
   if (numFactors == 2) {
     factor1 <- factorNames[1]
@@ -1788,23 +1780,27 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   results <- list()
 
   for (model in moderationIncludeList) {
-    modelValue <- if (!is.null(model$value)) model$value else NA
-    modTypeList <- model$modTypeList
+    modelLabel <- if (!is.null(model$keyLabel)) model$keyLabel else NA
+    modelValue <- if (!is.null(model$keyValue)) model$keyValue else NA
 
-    for (typeBlock in modTypeList) {
-      modType <- if (!is.null(typeBlock$value)) typeBlock$value else NA
+    for (typeBlock in model$modTypeList) {
+      modTypeLabel <- if (!is.null(typeBlock$keyLabel)) typeBlock$keyLabel else NA
+      modTypeValue <- if (!is.null(typeBlock$keyValue)) typeBlock$keyValue else NA
 
       for (paramBlock in typeBlock$modParameterList) {
-        modParameter <- if (!is.null(paramBlock$value)) paramBlock$value else NA
+        paramLabel <- if (!is.null(paramBlock$keyLabel)) paramBlock$keyLabel else NA
+        paramValue <- if (!is.null(paramBlock$keyValue)) paramBlock$keyValue else NA
 
         for (item in paramBlock$modItemList) {
-          # ONLY record items where includeModeration is FALSE or missing
           if (!isTRUE(item$includeModeration)) {
             results[[length(results) + 1]] <- list(
+              modelLabel = modelLabel,
               modelValue = modelValue,
-              modType = modType,
-              modParameter = modParameter,
-              value = if (!is.null(item$value)) item$value else NA
+              modTypeLabel = modTypeLabel,
+              modTypeValue = modTypeValue,
+              paramLabel = paramLabel,
+              paramValue = paramValue,
+              itemValue = if (!is.null(item$value)) item$value else NA
             )
           }
         }
@@ -1816,64 +1812,89 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   do.call(rbind, lapply(results, as.data.frame, stringsAsFactors = FALSE))
 }
 
+
 .extractIncludeModerationPaths <- function(moderationIncludeList) {
-  results <- list()
+  includedResults <- list()
+  pathResults <- list()
 
   for (modelIndex in seq_along(moderationIncludeList)) {
     model <- moderationIncludeList[[modelIndex]]
-    modelType <- if (!is.null(model$value)) model$value else NA
-    modTypeList <- model$modTypeList
+    modelLabel <- model$keyLabel
+    modelValue <- model$keyValue
 
-    for (modTypeIndex in seq_along(modTypeList)) {
-      modParameterList <- modTypeList[[modTypeIndex]]$modParameterList
+    modelPaths <- list()
 
-      for (paramIndex in seq_along(modParameterList)) {
-        modItemList <- modParameterList[[paramIndex]]$modItemList
+    for (modTypeIndex in seq_along(model$modTypeList)) {
+      modType <- model$modTypeList[[modTypeIndex]]
+      modTypeLabel <- modType$keyLabel
+      modTypeValue <- modType$keyValue
 
-        for (itemIndex in seq_along(modItemList)) {
-          item <- modItemList[[itemIndex]]
+      for (paramIndex in seq_along(modType$modParameterList)) {
+        param <- modType$modParameterList[[paramIndex]]
+        paramLabel <- param$keyLabel
+        paramValue <- param$keyValue
+
+        for (itemIndex in seq_along(param$modItemList)) {
+          item <- param$modItemList[[itemIndex]]
+
           if (!is.null(item$includeModeration)) {
             path <- c(
-              "moderationIncludeList",
-              as.character(modelIndex),
-              "modTypeList",
-              as.character(modTypeIndex),
-              "modParameterList",
-              as.character(paramIndex),
-              "modItemList",
-              as.character(itemIndex),
+              "moderationIncludeList", modelIndex,
+              "modTypeList", modTypeIndex,
+              "modParameterList", paramIndex,
+              "modItemList", itemIndex,
               "includeModeration"
             )
-            results[[length(results) + 1]] <- list(
-              modelType = modelType,
-              path = path
-            )
+            modelPaths[[length(modelPaths) + 1]] <- path
+
+            if (isTRUE(item$includeModeration)) {
+              includedResults[[length(includedResults) + 1]] <- list(
+                modelLabel = modelLabel,
+                modelValue = modelValue,
+                modTypeLabel = modTypeLabel,
+                modTypeValue = modTypeValue,
+                paramLabel = paramLabel,
+                paramValue = paramValue,
+                itemValue = if (!is.null(item$value)) item$value else NA
+              )
+            }
           }
         }
       }
     }
+
+    # Store modelPaths under the name of the modelValue
+    if (!is.null(modelValue) && length(modelPaths) > 0) {
+      pathResults[[modelValue]] <- modelPaths
+    }
   }
 
-  if (length(results) == 0) return(NULL)
+  includedDf <- if (length(includedResults) > 0) {
+    do.call(rbind, lapply(includedResults, as.data.frame, stringsAsFactors = FALSE))
+  } else {
+    NULL
+  }
 
-  df <- data.frame(modelType = vapply(results, `[[`, "", "modelType"), stringsAsFactors = FALSE)
-  df$path <- lapply(results, `[[`, "path")
-  return(df)
+  list(
+    included = includedDf,
+    paths = pathResults
+  )
 }
+
 
 .buildModeratedVariableSummary <- function(moderationIncludeList) {
   summary <- list()
 
   for (model in moderationIncludeList) {
-    modelType <- if (!is.null(model$value)) model$value else "Unknown"
+    modelType <- if (!is.null(model$keyValue)) model$keyValue else "Unknown"
     modTypeList <- model$modTypeList
 
     for (modType in modTypeList) {
-      modTypeName <- if (!is.null(modType$value)) modType$value else "Unknown"
+      modTypeName <- if (!is.null(modType$keyValue)) modType$keyValue else "Unknown"
       modParameterList <- modType$modParameterList
 
       for (param in modParameterList) {
-        paramName <- if (!is.null(param$value)) param$value else "Unknown"
+        paramName <- if (!is.null(param$keyValue)) param$keyValue else "Unknown"
         modItemList <- param$modItemList
 
         for (item in modItemList) {
@@ -1892,18 +1913,17 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 }
 
 
-
 .extractIncludedPlotItemsDf <- function(plotModelList) {
   results <- list()
 
   for (model in plotModelList) {
-    modelName <- model$value
+    modelName <- model$keyValue
 
     for (typeBlock in model$plotTypeList) {
-      typeName <- typeBlock$value
+      typeName <- typeBlock$keyValue
 
       for (param in typeBlock$plotParameterList) {
-        parameterGroup <- param$value
+        parameterGroup <- param$keyValue
 
         for (item in param$plotItemList) {
           if (isTRUE(item$includePlot)) {
@@ -1926,24 +1946,24 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 }
 
 
-.translatedElements <- function(options) {
-  # some elements in qml are to be translated but these names are transferred into R
-  parTableNames <- c("configural", "metric", "scalar", "strict", "load", "int",
-              "res", "var", "mean", "rho")
-  rNames <- c("configural", "metric", "scalar", "strict", "loadings", "intercepts",
-              "residualVariances", "variances", "means", "covariances")
-  guiNames <- c(gettext("Configural"), gettext("Metric"), gettext("Scalar"), gettext("Strict"),
-                gettext("Loadings"), gettext("Intercepts"), gettext("Residual variances"),
-                gettext("Variances"), gettext("Means"), gettext("Covariances"))
-  # add the factor names to the list
-  for (factor in options$factors) {
-    parTableNames <- c(parTableNames, factor$name)
-    rNames <- c(rNames, factor$name)
-    guiNames <- c(guiNames, factor$title)
-  }
-  df <- data.frame(cbind(parTableNames, rNames, guiNames))
-  return(df)
-}
+# .translatedElements <- function(options) {
+#   # some elements in qml are to be translated but these names are transferred into R
+#   parTableNames <- c("configural", "metric", "scalar", "strict", "load", "int",
+#               "res", "var", "mean", "rho")
+#   rNames <- c("configural", "metric", "scalar", "strict", "loadings", "intercepts",
+#               "residualVariances", "variances", "means", "covariances")
+#   guiNames <- c(gettext("Configural"), gettext("Metric"), gettext("Scalar"), gettext("Strict"),
+#                 gettext("Loadings"), gettext("Intercepts"), gettext("Residual variances"),
+#                 gettext("Variances"), gettext("Means"), gettext("Covariances"))
+#   # add the factor names to the list
+#   for (factor in options$factors) {
+#     parTableNames <- c(parTableNames, factor$name)
+#     rNames <- c(rNames, factor$name)
+#     guiNames <- c(guiNames, factor$title)
+#   }
+#   df <- data.frame(cbind(parTableNames, rNames, guiNames))
+#   return(df)
+# }
 
 # openMx messes up the options so we store them so they are correctly loaded upon re-run
 .storeOpenMxOptions <- function(jaspResults) {
