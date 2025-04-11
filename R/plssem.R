@@ -16,6 +16,7 @@
 #
 
 PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
+
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
   options <- .plsSemPrepOpts(options)
@@ -23,6 +24,9 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   # Read data, check if ready
   dataset <- .plsSemReadData(dataset, options)
   ready   <- .plsSemIsReady(dataset, options)
+
+  saveRDS(dataset, "~/Downloads/dataset.rds")
+  saveRDS(options, "~/Downloads/options.rds")
 
   # Store in container
   modelContainer <- .plsSemModelContainer(jaspResults)
@@ -146,7 +150,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # check for '~~'
   if (grepl("~~", vmodel)) {
-    return(gettext("Using '~~' is not supported. Try '~' instead"))
+    return(gettext("Using '~~' is not yet supported. Try '~' instead"))
   }
 
   # if checks pass, return empty string
@@ -165,7 +169,7 @@ checkCSemModel <- function(model, availableVars) {
                               "structuralModelIgnored", "innerWeightingScheme", "errorCalculationMethod",
                               "bootstrapSamples", "ciLevel",
                               "setSeed", "seed", "handlingOfInadmissibles", "endogenousIndicatorPrediction",
-                              "kFolds", "repetitions", "benchmark", "predictedScore", "models"))
+                              "kFolds", "repetitions", "benchmark", "models"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -257,7 +261,7 @@ checkCSemModel <- function(model, availableVars) {
     }
 
     results[[i]] <- fit
-
+    saveRDS(fit, "~/Downloads/fit.rds")
   }
 
   # store results in model container
@@ -309,29 +313,11 @@ checkCSemModel <- function(model, availableVars) {
 .plsSemFitTab <- function(modelContainer, dataset, options, ready) {
   # create model fit table
   if (!is.null(modelContainer[["fittab"]])) return()
-
-  fittab <- createJaspTable(title = gettext("Model Fit"))
-  fittab$dependOn(optionsFromObject = modelContainer,
-                  options = c("group", "bollenStineBootstrapSamples", "significanceLevel", "saturatedStructuralModel"))
-  fittab$position <- 0
-
-  if (options[["group"]] != "")
-    fittab$addColumnInfo(name = "group",  title = gettext("Group"),              type = "string", combine = TRUE)
-
-  fittab$addColumnInfo(name = "measure",  title = gettext("Distance Measure"),                type = "string" )
-  fittab$addColumnInfo(name = "statistic",      title = gettext("Test Statistic"),                type = "number" )
-  fittab$addColumnInfo(name = "critValue",      title = gettext("Critical Value"),                type = "number" )
-
-  modelContainer[["fittab"]] <- fittab
-
   if (!ready) return()
 
   # fill model fit table
   plsSemResults <- .plsSemComputeResults(modelContainer, dataset, options)
-
-  if (modelContainer$getError()) return()
-
-  # we need this for a lot of other tables
+  # we need this for a lot of other tables so we do this once here:
   results <- plsSemResults[[1]]
   msc <- .withWarnings(.computeMSC(results, dataset, options))
   #create jasp state and store msc for additional output tables
@@ -340,6 +326,20 @@ checkCSemModel <- function(model, availableVars) {
   modSelCriteria$dependOn(optionsFromObject = modelContainer)
   modSelCriteria$object <- msc
 
+  if (modelContainer$getError() || !options[["overallModelFit"]]) return()
+
+  fittab <- createJaspTable(title = gettext("Model Fit"))
+  fittab$dependOn(optionsFromObject = modelContainer,
+                  options = c("group", "omfBootstrapSamples", "omfSignificanceLevel", "saturatedStructuralModel"))
+  fittab$position <- 0
+
+  if (options[["group"]] != "")
+    fittab$addColumnInfo(name = "group",  title = gettext("Group"),              type = "string", combine = TRUE)
+
+  fittab$addColumnInfo(name = "measure",    title = gettext("Distance Measure"),                type = "string" )
+  fittab$addColumnInfo(name = "statistic",  title = gettext("Test Statistic"),                type = "number" )
+  fittab$addColumnInfo(name = "critValue",  title = gettextf("Critical Value (%s%% Quantile)", (1 - options[["omfSignificanceLevel"]]) * 100), type = "number" )
+
   vv <- cSEM::verify(plsSemResults[[1]])
   if (any(unlist(vv))) {
     fittab$setError(gettext("At least one result is inadmissible."))
@@ -347,25 +347,32 @@ checkCSemModel <- function(model, availableVars) {
   }
 
   omf <- .withWarnings(cSEM::testOMF(.object = plsSemResults[[1]],
-                                     .alpha = options[["significanceLevel"]],
-                                     .R = options[["bollenStineBootstrapSamples"]],
+                                     .alpha = options[["omfSignificanceLevel"]],
+                                     .R = options[["omfBootstrapSamples"]],
                                      .saturated = options[["saturatedStructuralModel"]],
                                      .seed = if (options[["setSeed"]]) options[["seed"]]))
   fit <- omf$value
 
   if (options[["group"]] == "") {
-    stat      <- fit$Test_statistic
+    stat <- fit$Test_statistic
     fittab[["measure"]] <- names(stat)
     fittab[["statistic"]] <- stat
     fittab[["critValue"]] <- fit$Critical_value
 
   } else {
-    stats     <- sapply(fit, function(x) x$Test_statistic)
+    stats <- sapply(fit, function(x) x$Test_statistic)
     fittab[["group"]]     <- rep(names(fit), each = nrow(stats))
     fittab[["measure"]] <- rep(rownames(stats), ncol(stats))
     fittab[["statistic"]] <- c(stats)
     fittab[["critValue"]] <- c(sapply(fit, function(x) x$Critical_value))
   }
+
+  if (options[["saturatedStructuralModel"]])
+    fittab$addFootnote(gettext("Denotes the fit of the model including a saturated structural model."))
+
+  modelContainer[["fittab"]] <- fittab
+
+  return()
 
 }
 
@@ -894,7 +901,7 @@ checkCSemModel <- function(model, availableVars) {
 
   predict <- createJaspContainer(gettext("Endogenous Indicator Prediction"))
   predict$position <- 2
-  predict$dependOn(c("endogenousIndicatorPrediction", "models", "kFolds", "repetitions", "benchmark", "predictedScore"))
+  predict$dependOn(c("endogenousIndicatorPrediction", "models", "kFolds", "repetitions", "benchmark"))
   modelContainer[["predict"]] <- predict
 
   if (length(options[["models"]]) < 2) {
@@ -921,25 +928,10 @@ checkCSemModel <- function(model, availableVars) {
 
   if (options[["benchmark"]] != "none" && options[["benchmark"]] != "all") {
     benchmarks <- options[["benchmark"]]
-  }
-  else if (options[["benchmark"]] == "all") {
-    benchmarks <- c("lm", "PLS-PM", "GSCA", "PCA", "MAXVAR")
-    benchmarks <- benchmarks[benchmarks != "PLS-PM"]
+  } else if (options[["benchmark"]] == "all") {
+    benchmarks <- c("lm", "GSCA", "PCA", "MAXVAR")
   } else {
     benchmarks <- NULL
-  }
-
-  if (options[["benchmark"]] != "none" && options[["benchmark"]] != "all" && benchmarks == "PLS-PM") {
-    errormsg <- gettextf("The target model uses the same weighting approach as the benchmark model, please choose another benchmark.")
-    modelContainer$setError(errormsg)
-    modelContainer$dependOn("benchmark")
-    return()
-  }
-  if (options[["benchmark"]] == "all" && options[["predictedScore"]]) {
-    errormsg <- gettextf("For the predicted indicator scores table(s), please select a single benchmark or 'none'.")
-    modelContainer$setError(errormsg)
-    modelContainer$dependOn("benchmark")
-    return()
   }
 
   #Create metrics table
@@ -953,9 +945,7 @@ checkCSemModel <- function(model, availableVars) {
   metricstab$addColumnInfo(name = "mae", title = gettext("Target MAE"), type = "number")
 
   if("lm" %in% benchmarks)
-    metricstab$addColumnInfo(name = "maelm",     title = gettext("Linear model MAE"), type = "number")
-  if("PLS-PM" %in% benchmarks)
-    metricstab$addColumnInfo(name = "maePLS-PM", title = gettext("PLS-PM MAE"),       type = "number")
+    metricstab$addColumnInfo(name = "maelm",     title = gettext("LM MAE"), type = "number")
   if("GSCA" %in% benchmarks)
     metricstab$addColumnInfo(name = "maeGSCA",   title = gettext("GSCA MAE"),         type = "number")
   if("PCA" %in% benchmarks)
@@ -966,9 +956,7 @@ checkCSemModel <- function(model, availableVars) {
   metricstab$addColumnInfo(name = "rmse", title = gettext(" Target RMSE"), type = "number")
 
   if("lm" %in% benchmarks)
-    metricstab$addColumnInfo(name = "rmselm",     title = gettext("Linear model RMSE"), type = "number")
-  if("PLS-PM" %in% benchmarks)
-    metricstab$addColumnInfo(name = "rmsePLS-PM", title = gettext("PLS-PM RMSE"),       type = "number")
+    metricstab$addColumnInfo(name = "rmselm",     title = gettext("LM RMSE"), type = "number")
   if("GSCA" %in% benchmarks)
     metricstab$addColumnInfo(name = "rmseGSCA",   title = gettext("GSCA RMSE"),         type = "number")
   if("PCA" %in% benchmarks)
@@ -1000,7 +988,7 @@ checkCSemModel <- function(model, availableVars) {
         return()
       }
       progressbarTick()
-      prediction_list[i] <- prediction
+      prediction_list[[benchmarks[i]]] <- prediction
     }
   } else if (options[["benchmark"]] == "none") {
     prediction <- try(cSEM::predict(fit, .handle_inadmissibles = "ignore", .cv_folds = options[["kFolds"]], .r = options[["repetitions"]]))
@@ -1060,7 +1048,7 @@ checkCSemModel <- function(model, availableVars) {
       metricstab[[paste0("rmse", benchmarks)]] <- unlist(lapply(prediction, function(x) x[["Prediction_metrics"]][["RMSE_benchmark"]]))
     }
 
-    if(options[["benchmark"]] == "all") {
+    if (options[["benchmark"]] == "all") {
       for (i in seq_along(benchmarks)) {
         prediction <- prediction_list[[benchmarks[[i]]]]
         metricstab[[paste0("mae", benchmarks[[i]])]]  <- unlist(lapply(prediction, function(x) x[["Prediction_metrics"]][["MAE_benchmark"]]))
