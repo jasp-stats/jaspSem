@@ -82,7 +82,7 @@ options$modelTest         <- "standard"
 options$reliability       <- TRUE
 options$ave               <- TRUE
 options$htmt              <- TRUE
-results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
+results <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options)
 
 
 container   <- results[["results"]][["modelContainer"]][["collection"]]
@@ -175,7 +175,7 @@ options$models = list(
   list(name = "more constrained", syntax = modelMoreConstrained)
 )
 
-results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
+results <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options)
 
 
 test_that("Model fit table results match", {
@@ -603,7 +603,7 @@ options$bootstrapCiType   <- "percentile"
 options$bootstrapSamples  <- 100
 
 set.seed(1)
-results <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = T)
+results <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
 
 # Model fit table results match
 test_that("Bootstrapping model fit table works", {
@@ -830,7 +830,7 @@ options$models = list(
   list(name = "default", syntax = modelDefault)
 )
 
-results <- jaspTools::runAnalysis("SEM", "poldem_grouped.csv", options)
+results <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options)
 
 
 test_that("Residual covariances table results match", {
@@ -1023,7 +1023,7 @@ options$models <- list(list(name = "Model1",
                             syntax = list(model=model,
                                           columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))))
 set.seed(1)
-results <- runAnalysis("SEM", "poldem_grouped.csv", options)
+results <- runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options)
 
 test_that("Sensitivity parameters that led to a change in significance table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_sensitivity"]][["collection"]][["modelContainer_sensitivity_senpar"]][["data"]]
