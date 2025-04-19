@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.19.2\n"
 "POT-Creation-Date: 2025-03-01 02:57\n"
-"PO-Revision-Date: 2025-04-07 02:38+0000\n"
+"PO-Revision-Date: 2025-04-14 23:01+0000\n"
 "Last-Translator: Marko Bojović <bojovicmarko@outlook.com>\n"
 "Language-Team: Serbian <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "sr/>\n"
@@ -15,91 +15,91 @@ msgstr ""
 "X-Generator: Weblate 5.11-dev\n"
 
 msgid "Fit indices"
-msgstr ""
+msgstr "Индекси усклађености"
 
 msgid "Index"
-msgstr ""
+msgstr "Индекс"
 
 msgid "Value"
-msgstr ""
+msgstr "Вредност"
 
 msgid "Comparative Fit Index (CFI)"
-msgstr ""
+msgstr "Упоредни индекс усклађености (CFI)"
 
 msgid "Tucker-Lewis Index (TLI)"
-msgstr ""
+msgstr "Такер-Луисов индекс (TLI)"
 
 msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
-msgstr ""
+msgstr "Бентлер-Бонетов ненормирани индекс усклађености (NNFI)"
 
 msgid "Bentler-Bonett Normed Fit Index (NFI)"
-msgstr ""
+msgstr "Бентлер-Бонетов нормирани индекс усклађености (NFI)"
 
 msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr ""
+msgstr "Парсимони нормирани индекс усклађености (PNFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
-msgstr ""
+msgstr "Боленов релативни индекс усклађености (RFI)"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
-msgstr ""
+msgstr "Боленов инкрементални индекс усклађености (IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
-msgstr ""
+msgstr "Релативни индекс нецентралности (RNI)"
 
 msgid "Root mean square error of approximation (RMSEA)"
-msgstr ""
+msgstr "Средња квадратна грешка апроксимације (RMSEA)"
 
 msgid "RMSEA 90%% CI lower bound"
-msgstr ""
+msgstr "RMSEA 90%% CI доња граница"
 
 msgid "RMSEA 90%% CI upper bound"
-msgstr ""
+msgstr "RMSEA 90%% CI горња граница"
 
 msgid "RMSEA p-value"
-msgstr ""
+msgstr "RMSEA p-вредност"
 
 msgid "Standardized root mean square residual (SRMR)"
-msgstr ""
+msgstr "Стандардизовани средњеквадратни остатак (SRMR)"
 
 msgid "Hoelter's critical N (%s = .05)"
-msgstr ""
+msgstr "Холтерова критична N вредност (%s = .05)"
 
 msgid "Hoelter's critical N (%s = .01)"
-msgstr ""
+msgstr "Холтерова критична N вредност (%s = .01)"
 
 msgid "Goodness of fit index (GFI)"
-msgstr ""
+msgstr "Индекс доброте уклапања (GFI)"
 
 msgid "McDonald fit index (MFI)"
-msgstr ""
+msgstr "Мекдоналдов индекс усклађености (MFI)"
 
 msgid "Expected cross validation index (ECVI)"
-msgstr ""
+msgstr "Очекивани индекс унакрсне валидације (ECVI)"
 
 msgid "Log-likelihood"
-msgstr ""
+msgstr "Лог-вероватноћа"
 
 msgid "Number of free parameters"
-msgstr ""
+msgstr "Број слободних параметара"
 
 msgid "Akaike (AIC)"
-msgstr ""
+msgstr "Акаикеов информациони критеријум (AIC)"
 
 msgid "Bayesian (BIC)"
-msgstr ""
+msgstr "Бајесов информациони критеријум (BIC)"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr ""
+msgstr "Бајесов информациони критеријум прилагођен величини узорка (SSABIC)"
 
 msgid "The model could not be estimated due to nonconvergence."
-msgstr ""
+msgstr "Модел није могао бити процењен због неконвергенције."
 
 msgid "The model could not be estimated: No degrees of freedom left."
-msgstr ""
+msgstr "Модел није могао бити процењен: Нема преосталих степени слободе."
 
 msgid "Chi-square test"
-msgstr ""
+msgstr "χ² (хи-квадрат) тест"
 
 msgid "Baseline model"
 msgstr ""
@@ -150,7 +150,7 @@ msgid "Predictor"
 msgstr ""
 
 msgid "Variable"
-msgstr ""
+msgstr "Променљива"
 
 msgid "Intercept"
 msgstr ""
