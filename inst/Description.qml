@@ -27,6 +27,7 @@ Description
 		title:	qsTr("Partial Least Squares SEM")
 		qml:	"PLSSEM.qml"
 		func:	"PLSSEM"
+		preloadData: true
 	}
 
 	Analysis
