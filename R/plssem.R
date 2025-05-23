@@ -17,17 +17,11 @@
 
 PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
 
-  # sink(file = "~/Downloads/log.txt", append = TRUE)
-  # on.exit(sink(NULL), add = TRUE)
-
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
   options <- .plsSemPrepOpts(options)
 
-  # saveRDS(options, "~/Downloads/options.rds")
-
   dataset <- .plsSemHandleData(dataset, options)
-  # saveRDS(dataset, "~/Downloads/dataset.rds")
 
   ready   <- .plsSemIsReady(dataset, options)
 
@@ -1850,14 +1844,8 @@ checkCSemModel <- function(model, availableVars) {
       jaspResults[["modelContainer"]]$getError() ||
       !options[["addConstructScores"]]) {
 
-    # cat("===== DID NOT ENTER =====\n")
-
     return()
   }
-
-  # cat("===== ENTER: .plsAddConstructScores() =====\n")
-  # cat("container scores: ")
-  # print(is.null(jaspResults[["addedScoresContainer"]]))
 
   container <- createJaspContainer()
   container$dependOn(options = "addConstructScores")
@@ -1900,7 +1888,6 @@ checkCSemModel <- function(model, availableVars) {
   }
 
   jaspResults[["addedScoresContainer"]] <- container
-  # print(str(jaspResults[["addedScoresContainer"]]))
 
   # check if there are previous colNames that are not needed anymore and delete the cols
   oldNames <- jaspResults[["createdColumnNames"]][["object"]]
@@ -1916,8 +1903,6 @@ checkCSemModel <- function(model, availableVars) {
 
   # save the created col names
   jaspResults[["createdColumnNames"]] <- createJaspState(newNames)
-
-  cat("===== EXIT: .plsAddConstructScores() =====\n\n")
 
   return()
 
