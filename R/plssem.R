@@ -24,17 +24,12 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   options <- .plsSemPrepOpts(options)
 
-  # Handle data, check if ready
-  dataset <- .plsSemReadData(dataset, options)
+  # saveRDS(options, "~/Downloads/options.rds")
 
-#   saveRDS(dataset, "~/Downloads/dataset.rds")
-#   saveRDS(options, "~/Downloads/options.rds")
-
-  # this is for when preloadData finally works
-  # dataset <- .plsSemHandleData(dataset, options)
+  dataset <- .plsSemHandleData(dataset, options)
+  # saveRDS(dataset, "~/Downloads/dataset.rds")
 
   ready   <- .plsSemIsReady(dataset, options)
-
 
   # Store in container
   modelContainer <- .plsSemModelContainer(jaspResults)
@@ -483,8 +478,6 @@ checkCSemModel <- function(model, availableVars) {
     weightTab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                             overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   }
-
-
   pecont[["weight"]] <- weightTab
 
   # create loadings table
@@ -555,6 +548,27 @@ checkCSemModel <- function(model, availableVars) {
 
   pecont[["total"]] <- totalTab
 
+  # create residual correlation table
+  resCorTab <- createJaspTable(title = gettext("Residual Correlations"))
+
+  if (options[["group"]] != "")
+    resCorTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
+
+  resCorTab$addColumnInfo(name = "lhs",      title = gettext("Indicator"),     type = "string")
+  resCorTab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),     type = "string")
+  resCorTab$addColumnInfo(name = "est",      title = gettext("Estimate"),   type = "number")
+  if (options[["errorCalculationMethod"]] != "none") {
+    resCorTab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
+    resCorTab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
+    resCorTab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+    resCorTab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
+                           overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+    resCorTab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
+                           overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+  }
+
+  pecont[["Residual_correlation"]] <- resCorTab
+
 
   if (!is.null(name)) parentContainer[[name]] <- pecont
 
@@ -602,6 +616,11 @@ checkCSemModel <- function(model, availableVars) {
       pe[["Total_effect"]] <- list()
       pe[["Total_effect"]][["mean"]] <- summ$Effect_estimates$Total_effect$Estimate
       names(pe[["Total_effect"]][["mean"]]) <- summ$Effect_estimates$Total_effect$Name
+
+      pe[["Residual_correlation"]] <- list()
+      pe[["Residual_correlation"]][["mean"]] <- summ$Residual_correlation$Estimate
+      names(pe[["Residual_correlation"]][["mean"]]) <- summ$Residual_correlation$Name
+
     } else {
       IdxViFB <- 0
       IdxViF <- 0
@@ -651,6 +670,10 @@ checkCSemModel <- function(model, availableVars) {
         pe[[i]][["Total_effect"]] <- list()
         pe[[i]][["Total_effect"]][["mean"]] <- summ[[i]]$Estimates$Effect_estimates$Total_effect$Estimate
         names(pe[[i]][["Total_effect"]][["mean"]]) <- summ[[i]]$Estimates$Effect_estimates$Total_effect$Name
+
+        pe[[i]][["Residual_correlation"]] <- list()
+        pe[[i]][["Residual_correlation"]][["mean"]] <- summ[[i]]$Estimates$Residual_correlation$Estimate
+        names(pe[[i]][["Residual_correlation"]][["mean"]]) <- summ[[i]]$Estimates$Residual_correlation$Name
       }
     }
   } else {
@@ -669,16 +692,16 @@ checkCSemModel <- function(model, availableVars) {
       }
 
 
-    pe[["vif"]] <- list()
-    pe[["vif"]][["mean"]] <- pe[["Path_estimates"]][["mean"]]
-    pe[["vif"]][["mean"]][names(pe[["vif"]][["mean"]])] <- NA
-    VIFtemp <- .plsSEMVIFhelper(fit)
-    if(!is.null(VIFtemp)){
-      pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
-      pecont[["path"]] <- pathTab
-      pe[["vif"]][["mean"]][names(VIFtemp)] <- VIFtemp
-    }
-    }else{
+      pe[["vif"]] <- list()
+      pe[["vif"]][["mean"]] <- pe[["Path_estimates"]][["mean"]]
+      pe[["vif"]][["mean"]][names(pe[["vif"]][["mean"]])] <- NA
+      VIFtemp <- .plsSEMVIFhelper(fit)
+      if(!is.null(VIFtemp)){
+        pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
+        pecont[["path"]] <- pathTab
+        pe[["vif"]][["mean"]][names(VIFtemp)] <- VIFtemp
+      }
+    } else {
       IdxViFB <- 0
       IdxViF <- 0
       for (i in names(pe)) {
@@ -852,7 +875,6 @@ checkCSemModel <- function(model, availableVars) {
 
   # fill Total effects table
 
-
   if (options[["group"]] == "") {
     totalEstimates <- try(.prepareEstimates(pe, estimateType = "Total_effect", options = options))
     if (isTryError(totalEstimates)) {
@@ -888,16 +910,64 @@ checkCSemModel <- function(model, availableVars) {
       totalTab[["ci.upper"]] <- totalEstimates[["ciUpper"]]
     }
   }
+
+  # fill residual correlations table
+  if (options[["group"]] == "") {
+    if (!is.null(pe[["Residual_correlation"]])) {
+      resCorEstimates <- try(.prepareEstimates(pe, estimateType = "Residual_correlation", options = options))
+      if (isTryError(resCorEstimates)) {
+        pecont[["Residual_correlation"]] <- NULL
+      }
+    } else {
+      pecont[["Residual_correlation"]] <- NULL
+    }
+
+  } else {
+
+    if (!is.null(pe[[1]][["Residual_correlation"]])) {
+      resCorEstimates <- try(lapply(pe, .prepareEstimates, estimateType = "Residual_correlation", options = options))
+      if (isTryError(resCorEstimates)) {
+        pecont[["Residual_correlation"]] <- NULL
+      } else {
+        for (i in names(resCorEstimates)) {
+          resCorEstimates[[i]][["group"]] <- rep(i, length(resCorEstimates[[i]][["rhs"]]))
+        }
+        resCorEstimates <- as.data.frame(Reduce(function(...) merge(..., all=T), resCorEstimates))
+        resCorEstimates <- resCorEstimates[order(resCorEstimates[["group"]], resCorEstimates[["lhs"]]),]
+      }
+    } else {
+      pecont[["Residual_correlation"]] <- NULL
+    }
+
+  }
+
+  if (!isTryError(resCorEstimates) && !is.null(pecont[["Residual_correlation"]])) {
+
+    if (options[["group"]] != "")
+      resCorTab[["group"]]    <- resCorEstimates[["group"]]
+
+    resCorTab[["rhs"]]      <- resCorEstimates[["rhs"]]
+    resCorTab[["lhs"]]      <- resCorEstimates[["lhs"]]
+    resCorTab[["est"]]      <- resCorEstimates[["est"]]
+
+    if (options[["errorCalculationMethod"]] != "none") {
+      resCorTab[["se"]]       <- resCorEstimates[["se"]]
+      resCorTab[["z"]]        <- resCorEstimates[["zVal"]]
+      resCorTab[["pvalue"]]   <- resCorEstimates[["pVal"]]
+      resCorTab[["ci.lower"]] <- resCorEstimates[["ciLower"]]
+      resCorTab[["ci.upper"]] <- resCorEstimates[["ciUpper"]]
+    }
+  }
 }
 
 # help function to extract data for parameter tables
 .prepareEstimates <- function(pe, estimateType, options) {
 
-  operator <- ifelse(estimateType == "Weight_estimates",
-                     " <~ ",
-                     ifelse(estimateType == "Loading_estimates",
-                            " =~ ",
-                            " ~ "))
+  operator <- switch(estimateType,
+                     "Weight_estimates" = " <~ ",
+                     "Loading_estimates" = " =~ ",
+                     "Residual_correlation" = " ~~ ",
+                     " ~ ")
 
   varNamesDf <- t(data.frame(sapply(names(pe[[estimateType]]$mean), strsplit, split = operator, fixed = TRUE)))
 
