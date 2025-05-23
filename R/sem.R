@@ -20,13 +20,9 @@
 SEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
-
   # Read dataset
   options <- .semPrepOpts(options)
   dataset <- .semReadData(dataset, options)
-
-  # saveRDS(options, "~/Downloads/options.rds")
-  # saveRDS(dataset, "~/Downloads/dataset.rds")
 
   ready   <- .semIsReady(dataset, options)
 
