@@ -23,11 +23,10 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
 
   # Read dataset
   options <- .semPrepOpts(options)
-
-  saveRDS(options, "~/Downloads/options.rds")
-
   dataset <- .semReadData(dataset, options)
-  saveRDS(dataset, "~/Downloads/dataset.rds")
+
+  # saveRDS(options, "~/Downloads/options.rds")
+  # saveRDS(dataset, "~/Downloads/dataset.rds")
 
   ready   <- .semIsReady(dataset, options)
 

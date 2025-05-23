@@ -17,8 +17,8 @@
 
 PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
 
-  sink(file = "~/Downloads/log.txt", append = TRUE)
-  on.exit(sink(NULL), add = TRUE)
+  # sink(file = "~/Downloads/log.txt", append = TRUE)
+  # on.exit(sink(NULL), add = TRUE)
 
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
@@ -27,8 +27,8 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   # Handle data, check if ready
   dataset <- .plsSemReadData(dataset, options)
 
-  saveRDS(dataset, "~/Downloads/dataset.rds")
-  saveRDS(options, "~/Downloads/options.rds")
+#   saveRDS(dataset, "~/Downloads/dataset.rds")
+#   saveRDS(options, "~/Downloads/options.rds")
 
   # this is for when preloadData finally works
   # dataset <- .plsSemHandleData(dataset, options)
