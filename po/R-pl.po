@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
 "POT-Creation-Date: 2025-03-01 02:57\n"
-"PO-Revision-Date: 2025-03-30 22:05+0000\n"
+"PO-Revision-Date: 2025-06-01 21:05+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-r/pl/"
 ">\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.11-dev\n"
+"X-Generator: Weblate 5.12-dev\n"
 
 msgid "Fit indices"
 msgstr "Wskaźniki dopasowania"
@@ -334,12 +334,11 @@ msgstr "UWAGA! model %1$s: %2$s"
 msgid "WARNING! %1$s, group %2$s: %3$s"
 msgstr "UWAGA! model %1$s, grupa %2$s: %3$s"
 
-#, fuzzy
 msgid "Weights"
 msgstr "Wagi"
 
 msgid "Construct"
-msgstr ""
+msgstr "Konstrukt"
 
 msgid "Std. Error"
 msgstr "Błąd stand."
@@ -357,7 +356,7 @@ msgid "Total effects"
 msgstr "Efekty całkowite"
 
 msgid "VIF"
-msgstr ""
+msgstr "VIF"
 
 msgid "Endogenous Indicator Prediction"
 msgstr ""
@@ -394,7 +393,7 @@ msgid "MAXVAR MAE"
 msgstr "MAXVAR MAE"
 
 msgid "Target RMSE"
-msgstr ""
+msgstr "Docelowe RMSE"
 
 msgid "Linear model RMSE"
 msgstr ""
@@ -409,7 +408,7 @@ msgid "PCA RMSE"
 msgstr "PCA RMSE"
 
 msgid "MAXVAR RMSE"
-msgstr ""
+msgstr "MAXVAR RMSE"
 
 msgid "Target Q2 prediction"
 msgstr ""
@@ -640,7 +639,7 @@ msgid "Defined parameters"
 msgstr ""
 
 msgid "Name"
-msgstr ""
+msgstr "Nazwa"
 
 msgid "%s Fit indices are based on the scaled test statistic."
 msgstr ""
