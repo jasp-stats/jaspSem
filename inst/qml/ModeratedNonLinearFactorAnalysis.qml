@@ -158,7 +158,7 @@ Form
 			title: qsTr("Assumption Check")
 			CheckBox 
 			{ 
-				name: "fitPerGroup"; 
+				name: "fitPerGroup";  
 				checked: false ; 
 				label: qsTr("Check model fit per group"); 
 				id: fitPerGroup; 
@@ -258,8 +258,8 @@ Form
 						implicitWidth: modThirdLayer.width - 2
 						addItemManually: false
 						headerLabels: [qsTr("Include"), "   ", qsTr("Display Plot")]
-						source: "factors"
-						// source: modThirdLayer.modTypeValue == "indicators" ? factors.name : (rowValue == "covariances" ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
+						// source: "factors"
+						source: modThirdLayer.modTypeValue == "indicators" ? factors.name : (rowValue == "covariances" ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
 						rowComponent: RowLayout
 						{
 							Text { text: rowValue ; Layout.preferredWidth: 200*jaspTheme.uiScale }
@@ -382,11 +382,6 @@ Form
 		}
 	}
 
-	Section
-	{
-		title: qsTr("Advanced")
-
-	}
 }
 
 
