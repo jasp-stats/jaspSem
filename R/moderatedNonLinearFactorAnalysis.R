@@ -20,8 +20,9 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   sink("~/Downloads/log.txt")
   on.exit(sink(NULL))
 
-  .storeOpenMxOptions(jaspResults)
-  .restoreOpenMxOptions(jaspResults)
+  # .storeOpenMxOptions(jaspResults)
+  # .restoreOpenMxOptions(jaspResults)
+  OpenMx::mxSetDefaultOptions()
 
   # print(options()[grep("^mx", names(options()), value = F)])
 
@@ -44,8 +45,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   dataset <- .mnlfaHandleData(jaspResults, dataset, options, ready)
   options <- .mnlfaPreprocessOptions(options)
 
-  # saveRDS(options, file = "~/Downloads/options.rds")
-  # saveRDS(dataset, file = "~/Downloads/dataset.rds")
+  saveRDS(options, file = "~/Downloads/options.rds")
+  saveRDS(dataset, file = "~/Downloads/dataset.rds")
 
   .mnlfaCreateContainer(jaspResults, options)
   .mnlfaPlotOptionsForQml(jaspResults, options)
@@ -492,7 +493,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                   Strict = jaspResults[["mainContainer"]][["strictInvarianceState"]][["object"]])
 
   results <- results[sapply(results, function(x) !is.null(x))]
-  # saveRDS(results, "~/Downloads/results.rds")
+  saveRDS(results, "~/Downloads/results.rds")
 
   if (length(results) == 0) {
     invFitTable$addFootnote(gettext("Choose one of the global invariance tests to perform the test."))
@@ -506,8 +507,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   dtFill <- data.frame(type = c(), N = c(), AIC = c(), BIC = c(), SABIC = c())
   if (length(results) > 1) {
 
-    dtFill$BF <- dtFill$diffLL <- dtFill$diffdf <- dtFill$p <- c()
-    invFitTable$addColumnInfo(name = "BF", title = gettext("BF(10)"), type = "number")
+    dtFill$diffLL <- dtFill$diffdf <- dtFill$p <- c()
     invFitTable$addColumnInfo(name = "diffLL", title = gettext("\u0394(LL)"), type = "number")
     invFitTable$addColumnInfo(name = "diffdf", title = gettext("\u0394(df)"), type = "integer")
     invFitTable$addColumnInfo(name = "p", title = gettext("p"), type = "pvalue")
@@ -534,11 +534,9 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                           SABIC = sabic)
       if (length(results) > 1) {
         if (i == 1) {
-          dtAdd$BF <- dtAdd$p <- dtAdd$diffdf <- dtAdd$diffLL <- NA
+          dtAdd$p <- dtAdd$diffdf <- dtAdd$diffLL <- NA
         } else {
           comp <- OpenMx::mxCompare(results[[i-1]], results[[i]])
-          BF10 <- exp((summary(results[[i-1]])$BIC.Mx - summ$BIC.Mx) / 2)
-          dtAdd$BF <- BF10
           dtAdd$diffLL <- comp$diffLL[2]
           dtAdd$diffdf <- comp$diffdf[2]
           dtAdd$p <- comp$p[2]
@@ -584,7 +582,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                       Strict = jaspResults[["mainContainer"]][["strictInvarianceModelState"]][["object"]][["map"]])
   mapResults <- mapResults[sapply(mapResults, function(x) !is.null(x))]
 
-  # saveRDS(mapResults, "~/Downloads/mapResults.rds")
+  saveRDS(mapResults, "~/Downloads/mapResults.rds")
 
   for (i in 1:length(results)) {
 
@@ -856,33 +854,46 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     return()
   }
 
-  results <- lapply(c("configuralInvState", "metricInvState", "scalarInvState", "strictInvState"),
+
+  results <- lapply(c("configuralInvarianceState", "metricInvarianceState",
+                      "scalarInvarianceState", "strictInvarianceState"),
                     function(state) jaspResults[["mainContainer"]][[state]][["object"]])
   if (all(sapply(results, is.null))) return()
 
-  translatedNames <- .translatedElements(options)
   # for the filtered plots object each row is one parameter to plot:
   for (i in 1:nrow(filteredPlots)) {
 
     currentRow <- filteredPlots[i, ]
     modelName <- currentRow$modelName
-    modelNameR <- translatedNames$rNames[translatedNames$guiNames == modelName]
-    fit <- jaspResults[["mainContainer"]][[paste0(modelNameR, "InvState")]][["object"]]
-    mapResult <- jaspResults[["mainContainer"]][[paste0(modelNameR, "InvModelState")]][["object"]][["map"]]
+    fit <- jaspResults[["mainContainer"]][[paste0(modelName, "State")]][["object"]]
+    mapResult <- jaspResults[["mainContainer"]][[paste0(modelName, "ModelState")]][["object"]][["map"]]
+    # temporary fix? the variable names in the plot qml tabview are coming from an R source and they are
+    # therefor not encoded so we decode the ones in the mapping:
+    mapResult <- lapply(mapResult, function(x) {
+      x[["variable"]] <- jaspBase::decodeColNames(x[["variable"]])
+      x
+    })
+
     paramTable <- summary(fit)$parameters
     parameterGroup <- currentRow$parameterGroup
-    parameterGroupR <- translatedNames$parTableNames[translatedNames$guiNames == parameterGroup]
+    # map type to corresponding prefix
+    prefix <- switch(parameterGroup,
+                     "loadings" = "load",
+                     "intercepts" = "int",
+                     "residualVariances" = "res",
+                     "variances" = "var",
+                     "means" = "mean",
+                     "covariances" = "rho")
 
     parNames <- paramTable[, "name"]
-    parPosition <- grepl(paste0("^", parameterGroupR, "_"), parNames)
+    parPosition <- grepl(paste0("^", prefix, "_"), parNames)
     if (sum(parPosition) > 0) {
       subMat <- paramTable[parPosition, ]
-      parName <- translatedNames$rNames[translatedNames$guiNames == parameterGroup]
-      map <- mapResult[[parName]]
-      if (currentRow$plotType == "Factors") {
+      map <- mapResult[[parameterGroup]]
+      if (currentRow$plotType == "factors") {
         # match the factor names with the factor labels
         fTitleMapping <- lapply(options[["factors"]], function(x) c(x[["name"]], x[["title"]])) # map GUI titles with internal titles
-        if (parName == "covariances") {
+        if (parameterGroup == "covariances") {
           subMap <- map # for factor covariances there is not matching cause the map is only created
           # if there are two factors and there are always the same parameters
         } else {
@@ -915,13 +926,11 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         slopeValues <- rowSums(sweep(dtSub, 2, slopeTerms, `*`))
       }
       # re-transform the log variances
-      if (parName %in% c("residualVariances", "variances")) {
+      if (parameterGroup %in% c("residualVariances", "variances")) {
         dtSub[["estimatedValue"]] <- exp(baselineTerm + slopeValues)
       } else {
         dtSub[["estimatedValue"]] <- baselineTerm + slopeValues
       }
-
-
 
       if (length(modsForPlots) == 1) { # only one moderator
         if (mods.types[mods == modsForPlots] == "scale") {
