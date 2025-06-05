@@ -22,9 +22,8 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
 
   # Read dataset
   options <- .semPrepOpts(options)
-
-  # TODO: don't read data if we aren't ready anyway...
   dataset <- .semReadData(dataset, options)
+
   ready   <- .semIsReady(dataset, options)
 
   modelContainer <- .semModelContainer(jaspResults)
@@ -68,7 +67,7 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
 .semReadData <- function(dataset, options) {
   if (!is.null(dataset)) return(dataset)
 
-  if(options[["dataType"]] == "raw") {
+  if (options[["dataType"]] == "raw") {
     variablesToRead <- if (options[["group"]] == "") character() else options[["group"]]
     for (model in options[["models"]])
       variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
@@ -624,10 +623,10 @@ checkLavaanModel <- function(model, availableVars) {
     }
 
     total_effects <- c()
-    for (pred in unique(c(pred,regressions[[group]][["rhs"]]))) {
+    for (pred in unique(c(pred, regressions[[group]][["rhs"]]))) {
       for (out in unique(c(out, regressions[[group]][["lhs"]]))) {
         total_effect <- NULL
-        total_effect_name <- paste0("total_", groups[group], "_", pred, "_", out)
+        total_effect_name <- paste0("total_", groups[group], "__", pred, "__", out)
         indirect_effect_idx <- unlist(lapply(names(indirect_effects), function(x) {
           startsWith(x, pred) && endsWith(x, out)
         }))
@@ -1195,10 +1194,6 @@ checkLavaanModel <- function(model, availableVars) {
 
   }
 
-  # TODO: bootstrap standardized CI:
-  #' Do we want the standardization to happen for the fit of each bootstrap sample and then save the std coeffs?
-  #' Or do we want to save all the unstd coeffs from the bootstrap, and after summarizing them with mean
-  #' and se and such standardize them?
 
   if (options[["group"]] != "")  {
     pe[pe[["op"]] != ":=", "groupname"] <- lavaan::lavInspect(fit, "group.label")[pe[["group"]]]
@@ -1382,8 +1377,22 @@ checkLavaanModel <- function(model, availableVars) {
 
     path <- list()
     for (idx in 1:nrow(pe_toteff)) {
-      path[[idx]] <- gsub("_", " \u2192 ", pe_toteff[idx, "lhs"])
-      path[[idx]] <- gsub("total \u2192", "", path[[idx]])
+      # path[[idx]] <- gsub("_", " \u2192 ", pe_toteff[idx, "lhs"])
+      # path[[idx]] <- gsub("total \u2192", "", path[[idx]])
+
+      # Step 1: Remove the "total_X__" prefix (X can be a number or word)
+      path[[idx]] <- gsub("^total_[^_]+__", "", pe_toteff[idx, "lhs"])
+
+      # Step 2: Decode any "JaspColumn_X_Encoded" variable names
+      matches <- regmatches(path[[idx]], gregexpr("JaspColumn_[0-9]+_Encoded", path[[idx]]))
+      if (length(matches[[1]]) > 0) {
+        decoded_matches <- sapply(matches[[1]], jaspBase::decodeColNames) # Decode each match
+        regmatches(path[[idx]], gregexpr("JaspColumn_[0-9]+_Encoded", path[[idx]])) <- list(decoded_matches)
+      }
+
+      # Step 3: Replace double underscores "__" with " → "
+      path[[idx]] <- gsub("__", " \u2192 ", path[[idx]])
+
       for (group in groups)
         path[[idx]] <- gsub(paste0(" ", group, " \u2192"), "", path[[idx]])
 
@@ -2695,7 +2704,8 @@ checkLavaanModel <- function(model, availableVars) {
   modelContainer[["plot"]] <- pcont
 
   if (length(options[["models"]]) < 2) {
-    .semCreatePathPlot(modelContainer[["results"]][["object"]][[1]], NULL, pcont, options, ready)
+    fit <- modelContainer[["results"]][["object"]][[1]]
+    .semCreatePathPlot(fit, NULL, pcont, options, ready)
   } else {
 
     for (i in seq_along(options[["models"]])) {
@@ -2721,8 +2731,12 @@ checkLavaanModel <- function(model, availableVars) {
 
   if (!ready || !inherits(fit, "lavaan")) return()
 
-  if (length(lavaan::lavInspect(fit, "ordered")) > 0) {
-    plt$setError(gettext("Model plot not available with ordinal variables"))
+  # this fix is temporary until the semPlot package fixes this issue
+  if (fit@Options$conditional.x && length(fit@Data@ov.names.x[[1]]) > 0) {
+    # jsut create a plot so we can atatch the error to it
+    errorPlot <- createJaspPlot(title = modelname, width = 600, height = 400)
+    parentContainer[[modelname]] <- errorPlot
+    errorPlot$setError(gettext("Model plot not available when there is at least one exogenous covariate and the 'Exogenous covariate(s) fixed' box is checked."))
     return()
   }
 

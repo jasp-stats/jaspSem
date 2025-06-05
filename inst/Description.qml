@@ -7,7 +7,7 @@ Description
 	title : 		qsTr("SEM")
 	description:	qsTr("Evaluate latent data structures with Yves Rosseel’s lavaan program")
 	icon:			"sem-latreg.svg"
-	version			: "0.20.0"
+	version			: "0.95.0"
 	author:			"JASP Team"
 	maintainer:		"JASP Team <info@jasp-stats.org>"
 	website:		"https://github.com/jasp-stats/jaspSem/"
@@ -20,6 +20,7 @@ Description
 		title:	qsTr("Structural Equation Modeling")
 		qml:	"SEM.qml"
 		func:	"SEM"
+		preloadData: false
 	}
 
 	Analysis
@@ -27,6 +28,7 @@ Description
 		title:	qsTr("Partial Least Squares SEM")
 		qml:	"PLSSEM.qml"
 		func:	"PLSSEM"
+		preloadData: true
 	}
 
 	Analysis
