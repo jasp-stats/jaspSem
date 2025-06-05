@@ -20,11 +20,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   sink("~/Downloads/log.txt")
   on.exit(sink(NULL))
 
-  # .storeOpenMxOptions(jaspResults)
-  # .restoreOpenMxOptions(jaspResults)
   OpenMx::mxSetDefaultOptions()
-
-  # print(options()[grep("^mx", names(options()), value = F)])
 
   ready <- length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)) > 1 &&
     length(options[["moderators"]]) > 0 && options[["syncAnalysisBox"]]
@@ -1974,27 +1970,3 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 #   return(df)
 # }
 
-# openMx messes up the options so we store them so they are correctly loaded upon re-run
-.storeOpenMxOptions <- function(jaspResults) {
-
-  if (!is.null(jaspResults[["openMxOptions"]])) return()
-
-  library(OpenMx)
-  mxOpts <- getOption("mxOptions")
-  mxOtherOpts <- options()[grep("^mx", names(options()), value = TRUE)]  # Any other mx-related options
-  mxOtherOpts[["mxOptions"]] <- NULL
-  optsObj <- list(mxOpts = mxOpts, mxOtherOpts = mxOtherOpts)
-  optsState <- createJaspState(optsObj)
-  jaspResults[["openMxOptions"]] <- optsState
-  return()
-}
-
-.restoreOpenMxOptions <- function(jaspResults) {
-  if (is.null(jaspResults[["openMxOptions"]])) return()
-
-  optsObj <- jaspResults[["openMxOptions"]][["object"]]
-  options(mxOptions = optsObj[["mxOpts"]])
-  if (!is.null(optsObj[["mxOtherOpts"]])) {
-    do.call("options", optsObj[["mxOtherOpts"]])
-  }
-}
