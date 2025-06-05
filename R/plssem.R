@@ -293,7 +293,6 @@ checkCSemModel <- function(model, availableVars) {
     }
 
     results[[i]] <- fit
-    saveRDS(fit, "~/Downloads/fit.rds")
   }
 
   # store results in model container
