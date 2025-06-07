@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2025-03-01 02:57\n"
+"POT-Creation-Date: 2025-06-07 03:06\n"
 "PO-Revision-Date: 2025-06-01 21:05+0000\n"
 "Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
 "Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-r/pl/"
@@ -299,40 +299,47 @@ msgstr "Wykres modelu nie jest dostępny dla zmiennych porządkowych"
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr ""
 
+#, fuzzy
+msgid "Enter a model"
+msgstr "Model czynnikowy"
+
+msgid "Variable(s) in model syntax not recognized: %s"
+msgstr ""
+
+msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
+msgstr ""
+
 msgid "Estimation failed Message: %s"
 msgstr ""
 
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr ""
 
-msgid "Model fit"
+#, fuzzy
+msgid "Model Fit"
 msgstr "Dopasowanie modelu"
 
 msgid "Group"
 msgstr "Grupa"
 
-msgid "AIC"
-msgstr "AIC"
-
-msgid "BIC"
-msgstr "BIC"
-
-msgid "n"
-msgstr "n"
-
-msgid "Baseline test"
+msgid "Distance Measure"
 msgstr ""
 
-msgid "Difference test"
-msgstr "Test różnic"
+msgid "Test Statistic"
+msgstr ""
+
+msgid "Critical Value (%s%% Quantile)"
+msgstr ""
+
+msgid "At least one result is inadmissible."
+msgstr ""
+
+msgid "Denotes the fit of the model including a saturated structural model."
+msgstr ""
 
 #, fuzzy
-msgid "WARNING! %1$s: %2$s"
-msgstr "UWAGA! model %1$s: %2$s"
-
-#, fuzzy
-msgid "WARNING! %1$s, group %2$s: %3$s"
-msgstr "UWAGA! model %1$s, grupa %2$s: %3$s"
+msgid "Parameter Estimates"
+msgstr "Oszacowanie parametrów"
 
 msgid "Weights"
 msgstr "Wagi"
@@ -352,23 +359,18 @@ msgstr "Współczynniki regresji"
 msgid "Outcome"
 msgstr "Rezultat"
 
-msgid "Total effects"
+#, fuzzy
+msgid "Total Effects"
 msgstr "Efekty całkowite"
+
+#, fuzzy
+msgid "Residual Correlations"
+msgstr "Kowariancje reszt"
 
 msgid "VIF"
 msgstr "VIF"
 
 msgid "Endogenous Indicator Prediction"
-msgstr ""
-
-msgid ""
-"The target model uses the same weighting approach as the benchmark model, "
-"please choose another benchmark."
-msgstr ""
-
-msgid ""
-"For the predicted indicator scores table(s), please select a single "
-"benchmark or 'none'."
 msgstr ""
 
 msgid "Prediction Metrics"
@@ -377,10 +379,8 @@ msgstr ""
 msgid "Target MAE"
 msgstr ""
 
-msgid "Linear model MAE"
-msgstr ""
-
-msgid "PLS-PM MAE"
+#, fuzzy
+msgid "LM MAE"
 msgstr "PLS-PM MAE"
 
 msgid "GSCA MAE"
@@ -395,10 +395,8 @@ msgstr "MAXVAR MAE"
 msgid "Target RMSE"
 msgstr "Docelowe RMSE"
 
-msgid "Linear model RMSE"
-msgstr ""
-
-msgid "PLS-PM RMSE"
+#, fuzzy
+msgid "LM RMSE"
 msgstr "PLS-PM RMSE"
 
 msgid "GSCA RMSE"
@@ -410,7 +408,7 @@ msgstr "PCA RMSE"
 msgid "MAXVAR RMSE"
 msgstr "MAXVAR RMSE"
 
-msgid "Target Q2 prediction"
+msgid "Target Q2 Prediction"
 msgstr ""
 
 msgid ""
@@ -423,30 +421,6 @@ msgstr ""
 
 msgid "Prediction failed Message: %1$s"
 msgstr ""
-
-msgid "Indicator Scores"
-msgstr ""
-
-msgid "Actual scores"
-msgstr ""
-
-msgid "Predicted scores"
-msgstr ""
-
-msgid "Target residuals"
-msgstr ""
-
-msgid "benchmark"
-msgstr ""
-
-msgid "lm"
-msgstr ""
-
-msgid "Linear model"
-msgstr ""
-
-msgid "residuals"
-msgstr "reszty"
 
 msgid "Additional Fit Measures"
 msgstr ""
@@ -466,7 +440,7 @@ msgstr ""
 msgid "Squared Euclidean distance"
 msgstr "Kwadrat odległości euklidesowej"
 
-msgid "Maximum likelihood-based dinstance"
+msgid "Maximum likelihood-based distance"
 msgstr ""
 
 msgid "Reliability Measures"
@@ -496,7 +470,7 @@ msgstr ""
 msgid "Implied construct correlation matrix"
 msgstr ""
 
-msgid "Column '%s' name already exists in the dataset"
+msgid "Column name %s already exists in the dataset"
 msgstr ""
 
 msgid ""
@@ -545,6 +519,15 @@ msgstr ""
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr ""
 
+msgid "Model fit"
+msgstr "Dopasowanie modelu"
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "BIC"
+msgstr "BIC"
+
 msgid "n(Observations)"
 msgstr ""
 
@@ -557,6 +540,12 @@ msgstr "Parametr"
 
 msgid "Free"
 msgstr ""
+
+msgid "Baseline test"
+msgstr ""
+
+msgid "Difference test"
+msgstr "Test różnic"
 
 msgid "%1$sdf"
 msgstr ""
@@ -592,10 +581,6 @@ msgstr "Wszystko"
 
 msgid "<b>Warnings:</b> %s"
 msgstr ""
-
-#, fuzzy
-msgid "Parameter Estimates"
-msgstr "Oszacowanie parametrów"
 
 msgid "Factor Loadings"
 msgstr "Ładunki czynnikowe"
@@ -640,6 +625,9 @@ msgstr ""
 
 msgid "Name"
 msgstr "Nazwa"
+
+msgid "Total effects"
+msgstr "Efekty całkowite"
 
 msgid "%s Fit indices are based on the scaled test statistic."
 msgstr ""
@@ -823,6 +811,11 @@ msgstr ""
 msgid "Path diagram"
 msgstr ""
 
+msgid ""
+"Model plot not available when there is at least one exogenous covariate and "
+"the 'Exogenous covariate(s) fixed' box is checked."
+msgstr ""
+
 msgid "Satorra-Bentler"
 msgstr ""
 
@@ -855,6 +848,20 @@ msgstr ""
 
 msgid "first-order"
 msgstr ""
+
+#~ msgid "n"
+#~ msgstr "n"
+
+#, fuzzy
+#~ msgid "WARNING! %1$s: %2$s"
+#~ msgstr "UWAGA! model %1$s: %2$s"
+
+#, fuzzy
+#~ msgid "WARNING! %1$s, group %2$s: %3$s"
+#~ msgstr "UWAGA! model %1$s, grupa %2$s: %3$s"
+
+#~ msgid "residuals"
+#~ msgstr "reszty"
 
 #~ msgid "95%% Confidence Interval"
 #~ msgstr "95%% przedział ufności"

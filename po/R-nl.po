@@ -2,11 +2,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2025-03-01 02:57\n"
+"POT-Creation-Date: 2025-06-07 03:06\n"
 "PO-Revision-Date: 2025-04-19 11:43+0000\n"
 "Last-Translator: Koen Derks <koen-derks@hotmail.com>\n"
-"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/>"
-"\n"
+"Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/"
+">\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -322,38 +322,47 @@ msgstr "Modelplot niet beschikbaar met ordinale variabelen"
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "Groeperingsvariabele heeft minder dan 3 waarnemingen in groep %s"
 
+#, fuzzy
+msgid "Enter a model"
+msgstr "Lineair model"
+
+msgid "Variable(s) in model syntax not recognized: %s"
+msgstr ""
+
+msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
+msgstr ""
+
 msgid "Estimation failed Message: %s"
 msgstr "Schatting mislukt Melding: %s"
 
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr "Schatting mislukt! Bericht: Model %s convergeert niet!"
 
-msgid "Model fit"
+#, fuzzy
+msgid "Model Fit"
 msgstr "Model passing"
 
 msgid "Group"
 msgstr "Groep"
 
-msgid "AIC"
-msgstr "AIC"
+msgid "Distance Measure"
+msgstr ""
 
-msgid "BIC"
-msgstr "BIC"
+msgid "Test Statistic"
+msgstr ""
 
-msgid "n"
-msgstr "n"
+msgid "Critical Value (%s%% Quantile)"
+msgstr ""
 
-msgid "Baseline test"
-msgstr "Baseline test"
+msgid "At least one result is inadmissible."
+msgstr ""
 
-msgid "Difference test"
-msgstr "Verschillen test"
+msgid "Denotes the fit of the model including a saturated structural model."
+msgstr ""
 
-msgid "WARNING! %1$s: %2$s"
-msgstr "WAARSCHUWING! %1$s: %2$s"
-
-msgid "WARNING! %1$s, group %2$s: %3$s"
-msgstr "WAARSCHUWING! %1$s, groep %2$s: %3$s"
+#, fuzzy
+msgid "Parameter Estimates"
+msgstr "Parameterschattingen"
 
 msgid "Weights"
 msgstr "Gewichten"
@@ -373,8 +382,13 @@ msgstr "Regressie Coëfficiënten"
 msgid "Outcome"
 msgstr "Uitkomst"
 
-msgid "Total effects"
+#, fuzzy
+msgid "Total Effects"
 msgstr "Totale effecten"
+
+#, fuzzy
+msgid "Residual Correlations"
+msgstr "Residu covarianties"
 
 msgid "VIF"
 msgstr "VIF"
@@ -382,30 +396,14 @@ msgstr "VIF"
 msgid "Endogenous Indicator Prediction"
 msgstr "Endogene indicator voorspelling"
 
-msgid ""
-"The target model uses the same weighting approach as the benchmark model, "
-"please choose another benchmark."
-msgstr ""
-"Het streefmodel gebruikt dezelfde wegingsmethode als het benchmarkmodel, "
-"kies een andere benchmark."
-
-msgid ""
-"For the predicted indicator scores table(s), please select a single "
-"benchmark or 'none'."
-msgstr ""
-"Selecteer voor de tabel(len) met voorspelde indicatorscores een enkele "
-"benchmark of 'geen'."
-
 msgid "Prediction Metrics"
 msgstr "Voorspellingsmetriek"
 
 msgid "Target MAE"
 msgstr "Doel MAE"
 
-msgid "Linear model MAE"
-msgstr "Lineair model MAE"
-
-msgid "PLS-PM MAE"
+#, fuzzy
+msgid "LM MAE"
 msgstr "PLS-PM MAE"
 
 msgid "GSCA MAE"
@@ -420,10 +418,8 @@ msgstr "MAXVAR MAE"
 msgid "Target RMSE"
 msgstr "Doel RMSE"
 
-msgid "Linear model RMSE"
-msgstr "Lineair model RMSE"
-
-msgid "PLS-PM RMSE"
+#, fuzzy
+msgid "LM RMSE"
 msgstr "PLS-PM RMSE"
 
 msgid "GSCA RMSE"
@@ -435,7 +431,8 @@ msgstr "PCA RMSE"
 msgid "MAXVAR RMSE"
 msgstr "MAXVAR RMSE"
 
-msgid "Target Q2 prediction"
+#, fuzzy
+msgid "Target Q2 Prediction"
 msgstr "Doelstelling Q2 voorspelling"
 
 msgid ""
@@ -450,30 +447,6 @@ msgstr "Zijn alle indicatorvariabelen ingesteld op \"schaal\"?"
 
 msgid "Prediction failed Message: %1$s"
 msgstr "Schatting mislukt Melding: %s"
-
-msgid "Indicator Scores"
-msgstr "Indicator Scores"
-
-msgid "Actual scores"
-msgstr "Werkelijke scores"
-
-msgid "Predicted scores"
-msgstr "Voorspelde scores"
-
-msgid "Target residuals"
-msgstr "Doel residuen"
-
-msgid "benchmark"
-msgstr "benchmark"
-
-msgid "lm"
-msgstr "lm"
-
-msgid "Linear model"
-msgstr "Lineair model"
-
-msgid "residuals"
-msgstr "residuen"
 
 msgid "Additional Fit Measures"
 msgstr "Extra Fitmaten"
@@ -493,7 +466,8 @@ msgstr "Geodetische afstand"
 msgid "Squared Euclidean distance"
 msgstr "Gekwadrateerde Euclidische afstand"
 
-msgid "Maximum likelihood-based dinstance"
+#, fuzzy
+msgid "Maximum likelihood-based distance"
 msgstr "Meest aannemelijke schatter-gebaseerde afstand"
 
 msgid "Reliability Measures"
@@ -523,7 +497,7 @@ msgstr "Waargenomen correlatiematrix van het construct"
 msgid "Implied construct correlation matrix"
 msgstr "Geïmpliceerde construct correlatie matrix"
 
-msgid "Column '%s' name already exists in the dataset"
+msgid "Column name %s already exists in the dataset"
 msgstr ""
 
 msgid ""
@@ -587,6 +561,15 @@ msgstr "Schatting mislukt! Bericht: Model %s convergeert niet!"
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr "Schatting mislukt! Bericht: Model %s heeft negatieve vrijheidsgraden."
 
+msgid "Model fit"
+msgstr "Model passing"
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "BIC"
+msgstr "BIC"
+
 msgid "n(Observations)"
 msgstr "n(Observaties)"
 
@@ -598,6 +581,12 @@ msgstr "n(Parameters)"
 
 msgid "Free"
 msgstr "Vrij"
+
+msgid "Baseline test"
+msgstr "Baseline test"
+
+msgid "Difference test"
+msgstr "Verschillen test"
 
 msgid "%1$sdf"
 msgstr "%1$sdf"
@@ -633,10 +622,6 @@ msgstr "alle"
 
 msgid "<b>Warnings:</b> %s"
 msgstr ""
-
-#, fuzzy
-msgid "Parameter Estimates"
-msgstr "Parameterschattingen"
 
 msgid "Factor Loadings"
 msgstr "Factorladingen"
@@ -680,6 +665,9 @@ msgstr "Gedefineerde Parameters"
 
 msgid "Name"
 msgstr "Naam"
+
+msgid "Total effects"
+msgstr "Totale effecten"
 
 #, fuzzy
 msgid "%s Fit indices are based on the scaled test statistic."
@@ -868,6 +856,11 @@ msgstr "Gevoeligheids-parameter"
 msgid "Path diagram"
 msgstr "Paddiagram"
 
+msgid ""
+"Model plot not available when there is at least one exogenous covariate and "
+"the 'Exogenous covariate(s) fixed' box is checked."
+msgstr ""
+
 msgid "Satorra-Bentler"
 msgstr ""
 
@@ -904,6 +897,56 @@ msgstr ""
 
 msgid "first-order"
 msgstr ""
+
+#~ msgid "n"
+#~ msgstr "n"
+
+#~ msgid "WARNING! %1$s: %2$s"
+#~ msgstr "WAARSCHUWING! %1$s: %2$s"
+
+#~ msgid "WARNING! %1$s, group %2$s: %3$s"
+#~ msgstr "WAARSCHUWING! %1$s, groep %2$s: %3$s"
+
+#~ msgid ""
+#~ "The target model uses the same weighting approach as the benchmark model, "
+#~ "please choose another benchmark."
+#~ msgstr ""
+#~ "Het streefmodel gebruikt dezelfde wegingsmethode als het benchmarkmodel, "
+#~ "kies een andere benchmark."
+
+#~ msgid ""
+#~ "For the predicted indicator scores table(s), please select a single "
+#~ "benchmark or 'none'."
+#~ msgstr ""
+#~ "Selecteer voor de tabel(len) met voorspelde indicatorscores een enkele "
+#~ "benchmark of 'geen'."
+
+#~ msgid "Linear model MAE"
+#~ msgstr "Lineair model MAE"
+
+#~ msgid "Linear model RMSE"
+#~ msgstr "Lineair model RMSE"
+
+#~ msgid "Indicator Scores"
+#~ msgstr "Indicator Scores"
+
+#~ msgid "Actual scores"
+#~ msgstr "Werkelijke scores"
+
+#~ msgid "Predicted scores"
+#~ msgstr "Voorspelde scores"
+
+#~ msgid "Target residuals"
+#~ msgstr "Doel residuen"
+
+#~ msgid "benchmark"
+#~ msgstr "benchmark"
+
+#~ msgid "lm"
+#~ msgstr "lm"
+
+#~ msgid "residuals"
+#~ msgstr "residuen"
 
 #~ msgid "95%% Confidence Interval"
 #~ msgstr "95%% Betrouwbaarheidsinterval"

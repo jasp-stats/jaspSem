@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2025-03-01 02:57\n"
+"POT-Creation-Date: 2025-06-07 03:06\n"
 "PO-Revision-Date: 2025-05-03 14:12+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
@@ -300,38 +300,46 @@ msgstr "使用次序變數分析時，無法提供模型圖"
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "分組變數在%s組中的觀察值小於3"
 
+#, fuzzy
+msgid "Enter a model"
+msgstr "線性模型"
+
+msgid "Variable(s) in model syntax not recognized: %s"
+msgstr ""
+
+msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
+msgstr ""
+
 msgid "Estimation failed Message: %s"
 msgstr "估計失敗。訊息:%s"
 
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr "估計失敗。訊息:模型%s無法收斂!"
 
-msgid "Model fit"
+#, fuzzy
+msgid "Model Fit"
 msgstr "模型配適"
 
 msgid "Group"
 msgstr "群"
 
-msgid "AIC"
-msgstr "AIC"
+msgid "Distance Measure"
+msgstr ""
 
-msgid "BIC"
-msgstr "BIC"
+msgid "Test Statistic"
+msgstr ""
 
-msgid "n"
-msgstr "n"
+msgid "Critical Value (%s%% Quantile)"
+msgstr ""
 
-msgid "Baseline test"
-msgstr "模型檢定"
+msgid "At least one result is inadmissible."
+msgstr ""
 
-msgid "Difference test"
-msgstr "差異檢定"
+msgid "Denotes the fit of the model including a saturated structural model."
+msgstr ""
 
-msgid "WARNING! %1$s: %2$s"
-msgstr "警告! %1$s: %2$s"
-
-msgid "WARNING! %1$s, group %2$s: %3$s"
-msgstr "警告! %1$s, 組 %2$s: %3$s"
+msgid "Parameter Estimates"
+msgstr "參數估計值"
 
 msgid "Weights"
 msgstr "加權"
@@ -351,8 +359,13 @@ msgstr "迴歸係數"
 msgid "Outcome"
 msgstr "結果"
 
-msgid "Total effects"
+#, fuzzy
+msgid "Total Effects"
 msgstr "總效果"
+
+#, fuzzy
+msgid "Residual Correlations"
+msgstr "殘差共變數"
 
 msgid "VIF"
 msgstr "VIF"
@@ -360,26 +373,13 @@ msgstr "VIF"
 msgid "Endogenous Indicator Prediction"
 msgstr "內衍指標預測"
 
-msgid ""
-"The target model uses the same weighting approach as the benchmark model, "
-"please choose another benchmark."
-msgstr ""
-
-msgid ""
-"For the predicted indicator scores table(s), please select a single "
-"benchmark or 'none'."
-msgstr ""
-
 msgid "Prediction Metrics"
 msgstr "預測指標"
 
 msgid "Target MAE"
 msgstr ""
 
-msgid "Linear model MAE"
-msgstr "線性模型的均絕對誤差(MAE)"
-
-msgid "PLS-PM MAE"
+msgid "LM MAE"
 msgstr ""
 
 msgid "GSCA MAE"
@@ -394,11 +394,9 @@ msgstr ""
 msgid "Target RMSE"
 msgstr ""
 
-msgid "Linear model RMSE"
-msgstr "線性模型的均方根誤差(RMSE)"
-
-msgid "PLS-PM RMSE"
-msgstr ""
+#, fuzzy
+msgid "LM RMSE"
+msgstr "RMSEA"
 
 msgid "GSCA RMSE"
 msgstr ""
@@ -409,7 +407,7 @@ msgstr ""
 msgid "MAXVAR RMSE"
 msgstr ""
 
-msgid "Target Q2 prediction"
+msgid "Target Q2 Prediction"
 msgstr ""
 
 msgid ""
@@ -422,30 +420,6 @@ msgstr "所有指標變數是否皆設定為連續變數？"
 
 msgid "Prediction failed Message: %1$s"
 msgstr "估計失敗。訊息:%s"
-
-msgid "Indicator Scores"
-msgstr "指標得分"
-
-msgid "Actual scores"
-msgstr "實際分數"
-
-msgid "Predicted scores"
-msgstr "預測分數"
-
-msgid "Target residuals"
-msgstr "目標殘差"
-
-msgid "benchmark"
-msgstr "基準模型"
-
-msgid "lm"
-msgstr ""
-
-msgid "Linear model"
-msgstr "線性模型"
-
-msgid "residuals"
-msgstr "殘差"
 
 msgid "Additional Fit Measures"
 msgstr "其他配適指標"
@@ -465,7 +439,8 @@ msgstr "測地距離"
 msgid "Squared Euclidean distance"
 msgstr "平方歐式距離"
 
-msgid "Maximum likelihood-based dinstance"
+#, fuzzy
+msgid "Maximum likelihood-based distance"
 msgstr "基於最大概似估計法距離"
 
 msgid "Reliability Measures"
@@ -495,7 +470,8 @@ msgstr "觀察構念相關矩陣"
 msgid "Implied construct correlation matrix"
 msgstr "隱含構面的相關矩陣"
 
-msgid "Column '%s' name already exists in the dataset"
+#, fuzzy
+msgid "Column name %s already exists in the dataset"
 msgstr "資料中已有命名為'%s'之變數"
 
 msgid ""
@@ -544,6 +520,15 @@ msgstr "估計失敗。訊息:模型%s無法收斂！"
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr "估計失敗!訊息:模型%s的自由度為負值。"
 
+msgid "Model fit"
+msgstr "模型配適"
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "BIC"
+msgstr "BIC"
+
 msgid "n(Observations)"
 msgstr "樣本數"
 
@@ -555,6 +540,12 @@ msgstr "參數個數"
 
 msgid "Free"
 msgstr "自由參數"
+
+msgid "Baseline test"
+msgstr "模型檢定"
+
+msgid "Difference test"
+msgstr "差異檢定"
 
 msgid "%1$sdf"
 msgstr "%1$s自由度"
@@ -587,9 +578,6 @@ msgstr "所有參數"
 
 msgid "<b>Warnings:</b> %s"
 msgstr "<b>警告:</b> %s"
-
-msgid "Parameter Estimates"
-msgstr "參數估計值"
 
 msgid "Factor Loadings"
 msgstr "因素負荷量"
@@ -632,6 +620,9 @@ msgstr "變數定義"
 
 msgid "Name"
 msgstr "命名"
+
+msgid "Total effects"
+msgstr "總效果"
 
 msgid "%s Fit indices are based on the scaled test statistic."
 msgstr "%s 配適指標，將基於量尺化檢定統計數。"
@@ -800,6 +791,12 @@ msgstr "敏感性參數"
 msgid "Path diagram"
 msgstr "路徑圖"
 
+#, fuzzy
+msgid ""
+"Model plot not available when there is at least one exogenous covariate and "
+"the 'Exogenous covariate(s) fixed' box is checked."
+msgstr "當條件估計是基於外衍共變數時，必須勾選「固定外衍共變數」。"
+
 msgid "Satorra-Bentler"
 msgstr ""
 
@@ -832,6 +829,39 @@ msgstr "穩健 Huber-White"
 
 msgid "first-order"
 msgstr "一階"
+
+#~ msgid "n"
+#~ msgstr "n"
+
+#~ msgid "WARNING! %1$s: %2$s"
+#~ msgstr "警告! %1$s: %2$s"
+
+#~ msgid "WARNING! %1$s, group %2$s: %3$s"
+#~ msgstr "警告! %1$s, 組 %2$s: %3$s"
+
+#~ msgid "Linear model MAE"
+#~ msgstr "線性模型的均絕對誤差(MAE)"
+
+#~ msgid "Linear model RMSE"
+#~ msgstr "線性模型的均方根誤差(RMSE)"
+
+#~ msgid "Indicator Scores"
+#~ msgstr "指標得分"
+
+#~ msgid "Actual scores"
+#~ msgstr "實際分數"
+
+#~ msgid "Predicted scores"
+#~ msgstr "預測分數"
+
+#~ msgid "Target residuals"
+#~ msgstr "目標殘差"
+
+#~ msgid "benchmark"
+#~ msgstr "基準模型"
+
+#~ msgid "residuals"
+#~ msgstr "殘差"
 
 #~ msgid "95%% Confidence Interval"
 #~ msgstr "95%% 信賴區間"

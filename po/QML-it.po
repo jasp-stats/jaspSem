@@ -270,10 +270,6 @@ msgid "Legend"
 msgstr ""
 
 msgctxt "PLSSEM|"
-msgid "Model 1"
-msgstr ""
-
-msgctxt "PLSSEM|"
 msgid "Model"
 msgstr ""
 
@@ -298,10 +294,6 @@ msgid "None"
 msgstr ""
 
 msgctxt "PLSSEM|"
-msgid "Robust"
-msgstr ""
-
-msgctxt "PLSSEM|"
 msgid "Bootstrap"
 msgstr ""
 
@@ -310,15 +302,7 @@ msgid "Samples"
 msgstr ""
 
 msgctxt "PLSSEM|"
-msgid "Jackknife"
-msgstr ""
-
-msgctxt "PLSSEM|"
 msgid "Confidence intervals"
-msgstr ""
-
-msgctxt "PLSSEM|"
-msgid "PLS-PM"
 msgstr ""
 
 msgctxt "PLSSEM|"
@@ -390,10 +374,6 @@ msgid "R-squared"
 msgstr ""
 
 msgctxt "PLSSEM|"
-msgid "Additional fit measures"
-msgstr ""
-
-msgctxt "PLSSEM|"
 msgid "Mardia's coefficient"
 msgstr ""
 
@@ -443,10 +423,6 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "All"
-msgstr ""
-
-msgctxt "PLSSEM|"
-msgid "Show predicted scores"
 msgstr ""
 
 msgctxt "SEM|"
@@ -1415,4 +1391,24 @@ msgid ""
 "analysis. Specifically, the lavaan syntax for equality constraints in "
 "multigroup analysis is now interpreted differently. Proceed with caution! "
 "More details about the update can be found at %1"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Fit measures"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Overall model fit"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Bootstrap samples"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Significance level"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Saturated structural model"
 msgstr ""

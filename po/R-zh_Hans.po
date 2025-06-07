@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2025-03-01 02:57\n"
+"POT-Creation-Date: 2025-06-07 03:06\n"
 "PO-Revision-Date: 2024-04-30 07:08+0000\n"
 "Last-Translator: Cochrane <cunyikang@qq.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -297,38 +297,45 @@ msgstr ""
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr ""
 
+msgid "Enter a model"
+msgstr ""
+
+msgid "Variable(s) in model syntax not recognized: %s"
+msgstr ""
+
+msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
+msgstr ""
+
 msgid "Estimation failed Message: %s"
 msgstr ""
 
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr ""
 
-msgid "Model fit"
+msgid "Model Fit"
 msgstr ""
 
 msgid "Group"
 msgstr ""
 
-msgid "AIC"
-msgstr "AIC"
-
-msgid "BIC"
-msgstr "BIC"
-
-msgid "n"
+msgid "Distance Measure"
 msgstr ""
 
-msgid "Baseline test"
+msgid "Test Statistic"
 msgstr ""
 
-msgid "Difference test"
+msgid "Critical Value (%s%% Quantile)"
 msgstr ""
 
-msgid "WARNING! %1$s: %2$s"
+msgid "At least one result is inadmissible."
 msgstr ""
 
-msgid "WARNING! %1$s, group %2$s: %3$s"
+msgid "Denotes the fit of the model including a saturated structural model."
 msgstr ""
+
+#, fuzzy
+msgid "Parameter Estimates"
+msgstr "参数估计"
 
 msgid "Weights"
 msgstr ""
@@ -348,7 +355,10 @@ msgstr ""
 msgid "Outcome"
 msgstr ""
 
-msgid "Total effects"
+msgid "Total Effects"
+msgstr ""
+
+msgid "Residual Correlations"
 msgstr ""
 
 msgid "VIF"
@@ -357,26 +367,13 @@ msgstr ""
 msgid "Endogenous Indicator Prediction"
 msgstr ""
 
-msgid ""
-"The target model uses the same weighting approach as the benchmark model, "
-"please choose another benchmark."
-msgstr ""
-
-msgid ""
-"For the predicted indicator scores table(s), please select a single "
-"benchmark or 'none'."
-msgstr ""
-
 msgid "Prediction Metrics"
 msgstr ""
 
 msgid "Target MAE"
 msgstr ""
 
-msgid "Linear model MAE"
-msgstr ""
-
-msgid "PLS-PM MAE"
+msgid "LM MAE"
 msgstr ""
 
 msgid "GSCA MAE"
@@ -391,10 +388,7 @@ msgstr ""
 msgid "Target RMSE"
 msgstr ""
 
-msgid "Linear model RMSE"
-msgstr ""
-
-msgid "PLS-PM RMSE"
+msgid "LM RMSE"
 msgstr ""
 
 msgid "GSCA RMSE"
@@ -406,7 +400,7 @@ msgstr ""
 msgid "MAXVAR RMSE"
 msgstr ""
 
-msgid "Target Q2 prediction"
+msgid "Target Q2 Prediction"
 msgstr ""
 
 msgid ""
@@ -418,30 +412,6 @@ msgid "Are all indicator variables set to 'scale'?"
 msgstr ""
 
 msgid "Prediction failed Message: %1$s"
-msgstr ""
-
-msgid "Indicator Scores"
-msgstr ""
-
-msgid "Actual scores"
-msgstr ""
-
-msgid "Predicted scores"
-msgstr ""
-
-msgid "Target residuals"
-msgstr ""
-
-msgid "benchmark"
-msgstr ""
-
-msgid "lm"
-msgstr ""
-
-msgid "Linear model"
-msgstr ""
-
-msgid "residuals"
 msgstr ""
 
 msgid "Additional Fit Measures"
@@ -462,7 +432,7 @@ msgstr ""
 msgid "Squared Euclidean distance"
 msgstr ""
 
-msgid "Maximum likelihood-based dinstance"
+msgid "Maximum likelihood-based distance"
 msgstr ""
 
 msgid "Reliability Measures"
@@ -492,7 +462,7 @@ msgstr ""
 msgid "Implied construct correlation matrix"
 msgstr ""
 
-msgid "Column '%s' name already exists in the dataset"
+msgid "Column name %s already exists in the dataset"
 msgstr ""
 
 msgid ""
@@ -541,6 +511,15 @@ msgstr ""
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr ""
 
+msgid "Model fit"
+msgstr ""
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "BIC"
+msgstr "BIC"
+
 msgid "n(Observations)"
 msgstr ""
 
@@ -552,6 +531,12 @@ msgid "n(Parameters)"
 msgstr "参数"
 
 msgid "Free"
+msgstr ""
+
+msgid "Baseline test"
+msgstr ""
+
+msgid "Difference test"
 msgstr ""
 
 msgid "%1$sdf"
@@ -586,10 +571,6 @@ msgstr "全部"
 
 msgid "<b>Warnings:</b> %s"
 msgstr ""
-
-#, fuzzy
-msgid "Parameter Estimates"
-msgstr "参数估计"
 
 msgid "Factor Loadings"
 msgstr ""
@@ -632,6 +613,9 @@ msgid "Defined parameters"
 msgstr ""
 
 msgid "Name"
+msgstr ""
+
+msgid "Total effects"
 msgstr ""
 
 msgid "%s Fit indices are based on the scaled test statistic."
@@ -804,6 +788,11 @@ msgid "Sensitivity parameter"
 msgstr ""
 
 msgid "Path diagram"
+msgstr ""
+
+msgid ""
+"Model plot not available when there is at least one exogenous covariate and "
+"the 'Exogenous covariate(s) fixed' box is checked."
 msgstr ""
 
 msgid "Satorra-Bentler"

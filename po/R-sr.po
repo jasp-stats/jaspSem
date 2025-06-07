@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.19.2\n"
-"POT-Creation-Date: 2025-03-01 02:57\n"
+"POT-Creation-Date: 2025-06-07 03:06\n"
 "PO-Revision-Date: 2025-04-24 23:01+0000\n"
 "Last-Translator: Marko Bojović <bojovicmarko@outlook.com>\n"
 "Language-Team: Serbian <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -170,7 +170,8 @@ msgstr "Аритметичка средина"
 msgid "Variance"
 msgstr "Варијанца"
 
-msgid "Residual variance is negative. This may indicate model misspecification."
+msgid ""
+"Residual variance is negative. This may indicate model misspecification."
 msgstr ""
 
 msgid "R-Squared"
@@ -200,16 +201,25 @@ msgstr ""
 msgid "Curve + parameter uncertainty"
 msgstr ""
 
-msgid "Not all exogenous variables are admissible. Inadmissible exogenous variables: %s. Only binary or continuous exogenous variables allowed."
+msgid ""
+"Not all exogenous variables are admissible. Inadmissible exogenous "
+"variables: %s. Only binary or continuous exogenous variables allowed."
 msgstr ""
 
-msgid "Not all endogenous variables are admissible. Inadmissible endogenous variables: %s. Only scale or ordinal endogenous variables allowed."
+msgid ""
+"Not all endogenous variables are admissible. Inadmissible endogenous "
+"variables: %s. Only scale or ordinal endogenous variables allowed."
 msgstr ""
 
-msgid "FIML missing value handling only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s"
+msgid ""
+"FIML missing value handling only available when all endogenous variables are "
+"of scale type. Ordinal endogenous variables in the model: %s"
 msgstr ""
 
-msgid "Estimation failed\nMessage:\n%s"
+msgid ""
+"Estimation failed\n"
+"Message:\n"
+"%s"
 msgstr ""
 
 msgid "Direct effects"
@@ -233,16 +243,21 @@ msgstr "Коефицијенти путање"
 msgid "Estimator is %s."
 msgstr ""
 
-msgid "%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
+msgid ""
+"%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
 msgstr ""
 
 msgid "Path plot"
 msgstr ""
 
-msgid "Currently it is not possible to plot mediation models with ordinal variables. The plot could not be generated."
+msgid ""
+"Currently it is not possible to plot mediation models with ordinal "
+"variables. The plot could not be generated."
 msgstr ""
 
-msgid "The plot could not be generated. The underlying code resulted in the following error message: %s"
+msgid ""
+"The plot could not be generated. The underlying code resulted in the "
+"following error message: %s"
 msgstr ""
 
 msgid "Model syntax"
@@ -251,7 +266,9 @@ msgstr "Синтакса модела"
 msgid "FIML only available with ML-type estimators."
 msgstr ""
 
-msgid "Estimation failed! Message: The model did not converge. Try using a different estimator or specify an other MIMIC model."
+msgid ""
+"Estimation failed! Message: The model did not converge. Try using a "
+"different estimator or specify an other MIMIC model."
 msgstr ""
 
 msgid "df"
@@ -278,37 +295,44 @@ msgstr ""
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr ""
 
+msgid "Enter a model"
+msgstr ""
+
+msgid "Variable(s) in model syntax not recognized: %s"
+msgstr ""
+
+msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
+msgstr ""
+
 msgid "Estimation failed Message: %s"
 msgstr ""
 
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr ""
 
-msgid "Model fit"
-msgstr ""
+#, fuzzy
+msgid "Model Fit"
+msgstr "Синтакса модела"
 
 msgid "Group"
 msgstr ""
 
-msgid "AIC"
-msgstr "AIC"
-
-msgid "BIC"
+msgid "Distance Measure"
 msgstr ""
 
-msgid "n"
+msgid "Test Statistic"
 msgstr ""
 
-msgid "Baseline test"
+msgid "Critical Value (%s%% Quantile)"
 msgstr ""
 
-msgid "Difference test"
+msgid "At least one result is inadmissible."
 msgstr ""
 
-msgid "WARNING! %1$s: %2$s"
+msgid "Denotes the fit of the model including a saturated structural model."
 msgstr ""
 
-msgid "WARNING! %1$s, group %2$s: %3$s"
+msgid "Parameter Estimates"
 msgstr ""
 
 msgid "Weights"
@@ -329,19 +353,18 @@ msgstr ""
 msgid "Outcome"
 msgstr ""
 
-msgid "Total effects"
-msgstr ""
+#, fuzzy
+msgid "Total Effects"
+msgstr "Укупни индиректни ефекти"
+
+#, fuzzy
+msgid "Residual Correlations"
+msgstr "Преостале коваријансе"
 
 msgid "VIF"
 msgstr ""
 
 msgid "Endogenous Indicator Prediction"
-msgstr ""
-
-msgid "The target model uses the same weighting approach as the benchmark model, please choose another benchmark."
-msgstr ""
-
-msgid "For the predicted indicator scores table(s), please select a single benchmark or 'none'."
 msgstr ""
 
 msgid "Prediction Metrics"
@@ -350,10 +373,7 @@ msgstr ""
 msgid "Target MAE"
 msgstr ""
 
-msgid "Linear model MAE"
-msgstr ""
-
-msgid "PLS-PM MAE"
+msgid "LM MAE"
 msgstr ""
 
 msgid "GSCA MAE"
@@ -368,11 +388,9 @@ msgstr ""
 msgid "Target RMSE"
 msgstr ""
 
-msgid "Linear model RMSE"
-msgstr ""
-
-msgid "PLS-PM RMSE"
-msgstr ""
+#, fuzzy
+msgid "LM RMSE"
+msgstr "RMSEA"
 
 msgid "GSCA RMSE"
 msgstr ""
@@ -383,40 +401,18 @@ msgstr ""
 msgid "MAXVAR RMSE"
 msgstr ""
 
-msgid "Target Q2 prediction"
+msgid "Target Q2 Prediction"
 msgstr ""
 
-msgid "There are not enough observations for each k-fold, try setting 'cross-validation k-folds' to a lower number"
+msgid ""
+"There are not enough observations for each k-fold, try setting 'cross-"
+"validation k-folds' to a lower number"
 msgstr ""
 
 msgid "Are all indicator variables set to 'scale'?"
 msgstr ""
 
 msgid "Prediction failed Message: %1$s"
-msgstr ""
-
-msgid "Indicator Scores"
-msgstr ""
-
-msgid "Actual scores"
-msgstr ""
-
-msgid "Predicted scores"
-msgstr ""
-
-msgid "Target residuals"
-msgstr ""
-
-msgid "benchmark"
-msgstr ""
-
-msgid "lm"
-msgstr ""
-
-msgid "Linear model"
-msgstr ""
-
-msgid "residuals"
 msgstr ""
 
 msgid "Additional Fit Measures"
@@ -437,7 +433,7 @@ msgstr ""
 msgid "Squared Euclidean distance"
 msgstr ""
 
-msgid "Maximum likelihood-based dinstance"
+msgid "Maximum likelihood-based distance"
 msgstr ""
 
 msgid "Reliability Measures"
@@ -467,28 +463,38 @@ msgstr ""
 msgid "Implied construct correlation matrix"
 msgstr ""
 
-msgid "Column '%s' name already exists in the dataset"
+msgid "Column name %s already exists in the dataset"
 msgstr ""
 
-msgid "Mean structure can not be included when data is variance-covariance matrix"
+msgid ""
+"Mean structure can not be included when data is variance-covariance matrix"
 msgstr ""
 
 msgid "Please set the sample size!"
 msgstr ""
 
-msgid "Multiple group analysis not supported when data is variance-covariance matrix"
+msgid ""
+"Multiple group analysis not supported when data is variance-covariance matrix"
 msgstr ""
 
-msgid "Not more cases than number of variables. Is your data a variance-covariance matrix?"
+msgid ""
+"Not more cases than number of variables. Is your data a variance-covariance "
+"matrix?"
 msgstr ""
 
-msgid "When mean structure is included, at least one of the checkboxes to fix the intercepts to zero has to be checked"
+msgid ""
+"When mean structure is included, at least one of the checkboxes to fix the "
+"intercepts to zero has to be checked"
 msgstr ""
 
-msgid "When conditioning estimation on exogenous covariates, the 'Exogenous covariate(s) fixed' box must be checked."
+msgid ""
+"When conditioning estimation on exogenous covariates, the 'Exogenous "
+"covariate(s) fixed' box must be checked."
 msgstr ""
 
-msgid "Bootstrapped standard errors are not yet available when 'Condition on exogenous covariate(s)' box is checked."
+msgid ""
+"Bootstrapped standard errors are not yet available when 'Condition on "
+"exogenous covariate(s)' box is checked."
 msgstr ""
 
 msgid "Invalid model specification. Did you pass a variable name as a string?"
@@ -506,6 +512,15 @@ msgstr ""
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr ""
 
+msgid "Model fit"
+msgstr ""
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "BIC"
+msgstr ""
+
 msgid "n(Observations)"
 msgstr ""
 
@@ -518,10 +533,18 @@ msgstr ""
 msgid "Free"
 msgstr ""
 
+msgid "Baseline test"
+msgstr ""
+
+msgid "Difference test"
+msgstr ""
+
 msgid "%1$sdf"
 msgstr ""
 
-msgid "%sFitting the model resulted in warnings. Check the 'Show warnings' box in the Output Options to see the warnings."
+msgid ""
+"%sFitting the model resulted in warnings. Check the 'Show warnings' box in "
+"the Output Options to see the warnings."
 msgstr ""
 
 msgid "A total of %g cases were removed due to missing values."
@@ -536,16 +559,15 @@ msgstr ""
 msgid "Standard errors are %s."
 msgstr ""
 
-msgid "%s The AIC, BIC and additional information criteria are only available with ML-type estimators."
+msgid ""
+"%s The AIC, BIC and additional information criteria are only available with "
+"ML-type estimators."
 msgstr ""
 
 msgid "all"
 msgstr ""
 
 msgid "<b>Warnings:</b> %s"
-msgstr ""
-
-msgid "Parameter Estimates"
 msgstr ""
 
 msgid "Factor Loadings"
@@ -588,6 +610,9 @@ msgid "Defined parameters"
 msgstr ""
 
 msgid "Name"
+msgstr ""
+
+msgid "Total effects"
 msgstr ""
 
 msgid "%s Fit indices are based on the scaled test statistic."
@@ -641,13 +666,18 @@ msgstr ""
 msgid "z"
 msgstr ""
 
-msgid "Multivariate skewness and kurtosis calculated for observed variables from all models."
+msgid ""
+"Multivariate skewness and kurtosis calculated for observed variables from "
+"all models."
 msgstr ""
 
-msgid "Not all used variables are continuous: Mardia's coefficients not available."
+msgid ""
+"Not all used variables are continuous: Mardia's coefficients not available."
 msgstr ""
 
-msgid "The data covariance matrix could not be inverted: Mardia's coefficients not available."
+msgid ""
+"The data covariance matrix could not be inverted: Mardia's coefficients not "
+"available."
 msgstr ""
 
 msgid "Skewness"
@@ -659,13 +689,17 @@ msgstr "Спљоштеност (Kurtosis)"
 msgid "Covariance tables"
 msgstr ""
 
-msgid "The standardized residual covariance table is currently unavailable when the error calculation method is 'Bootstrap'"
+msgid ""
+"The standardized residual covariance table is currently unavailable when the "
+"error calculation method is 'Bootstrap'"
 msgstr ""
 
 msgid "The standardized residual covariance matrix could not be computed"
 msgstr ""
 
-msgid "The standardized residual covariance tables are currently unavailable when the error calculation method is 'Bootstrap'"
+msgid ""
+"The standardized residual covariance tables are currently unavailable when "
+"the error calculation method is 'Bootstrap'"
 msgstr ""
 
 msgid "The standardized residual covariance matrices could not be computed"
@@ -722,7 +756,9 @@ msgstr ""
 msgid "Max"
 msgstr ""
 
-msgid "Please include at least one regression path in the model to perform a sensitivity analysis."
+msgid ""
+"Please include at least one regression path in the model to perform a "
+"sensitivity analysis."
 msgstr ""
 
 msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
@@ -744,6 +780,11 @@ msgid "Sensitivity parameter"
 msgstr ""
 
 msgid "Path diagram"
+msgstr ""
+
+msgid ""
+"Model plot not available when there is at least one exogenous covariate and "
+"the 'Exogenous covariate(s) fixed' box is checked."
 msgstr ""
 
 msgid "Satorra-Bentler"

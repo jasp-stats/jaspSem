@@ -550,10 +550,6 @@ msgid "Partial Least Squares SEM"
 msgstr "MES (SEM) de Mínimos Cadrados Parciais"
 
 msgctxt "PLSSEM|"
-msgid "Model 1"
-msgstr "Modelo 1"
-
-msgctxt "PLSSEM|"
 msgid "Model"
 msgstr "Modelo"
 
@@ -578,20 +574,12 @@ msgid "None"
 msgstr "Ningún"
 
 msgctxt "PLSSEM|"
-msgid "Robust"
-msgstr "Robusto"
-
-msgctxt "PLSSEM|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
 
 msgctxt "PLSSEM|"
 msgid "Confidence intervals"
 msgstr "Intervalos de confianza"
-
-msgctxt "PLSSEM|"
-msgid "PLS-PM"
-msgstr "MCP-MR (PLS-PM)"
 
 msgctxt "PLSSEM|"
 msgid "GSCA"
@@ -662,10 +650,6 @@ msgid "R-squared"
 msgstr "R-cadrado"
 
 msgctxt "PLSSEM|"
-msgid "Additional fit measures"
-msgstr "Medidas adicionais de axuste"
-
-msgctxt "PLSSEM|"
 msgid "Mardia's coefficient"
 msgstr "Coeficiente de Mardia"
 
@@ -718,16 +702,8 @@ msgid "All"
 msgstr "Todo"
 
 msgctxt "PLSSEM|"
-msgid "Show predicted scores"
-msgstr "Amosar as puntuacións preditas"
-
-msgctxt "PLSSEM|"
 msgid "Samples"
 msgstr "Mostras"
-
-msgctxt "PLSSEM|"
-msgid "Jackknife"
-msgstr "Jackknife"
 
 msgctxt "SEM|"
 msgid "Average variance extracted (AVE)"
@@ -1431,3 +1407,24 @@ msgstr ""
 "concreto, a sintaxe Lavaan para as restricións de igualdade na análise "
 "multigrupo interprétase agora de xeito diferente. Actúa con tento! Podes "
 "atopar máis detalles sobre a actualización en %1"
+
+msgctxt "PLSSEM|"
+msgid "Fit measures"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Overall model fit"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Bootstrap samples"
+msgstr ""
+
+#, fuzzy
+msgctxt "PLSSEM|"
+msgid "Significance level"
+msgstr "Nivel de significación"
+
+msgctxt "PLSSEM|"
+msgid "Saturated structural model"
+msgstr ""

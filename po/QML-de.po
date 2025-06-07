@@ -550,10 +550,6 @@ msgid "Partial Least Squares SEM"
 msgstr "Partielle kleinste Quadrate SGM"
 
 msgctxt "PLSSEM|"
-msgid "Model 1"
-msgstr "Modell 1"
-
-msgctxt "PLSSEM|"
 msgid "Model"
 msgstr "Modell"
 
@@ -578,21 +574,12 @@ msgid "None"
 msgstr "Keine"
 
 msgctxt "PLSSEM|"
-msgid "Robust"
-msgstr "Robust"
-
-msgctxt "PLSSEM|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
 
 msgctxt "PLSSEM|"
 msgid "Confidence intervals"
 msgstr "Konfidenzintervalle"
-
-#, fuzzy
-msgctxt "PLSSEM|"
-msgid "PLS-PM"
-msgstr "PLS-PM"
 
 #, fuzzy
 msgctxt "PLSSEM|"
@@ -668,10 +655,6 @@ msgid "R-squared"
 msgstr "R-Quadrat"
 
 msgctxt "PLSSEM|"
-msgid "Additional fit measures"
-msgstr "Weitere Anpassungsmaße"
-
-msgctxt "PLSSEM|"
 msgid "Mardia's coefficient"
 msgstr "Mardias Koeffizient"
 
@@ -724,18 +707,9 @@ msgctxt "PLSSEM|"
 msgid "All"
 msgstr "Alle"
 
-#, fuzzy
-msgctxt "PLSSEM|"
-msgid "Show predicted scores"
-msgstr "Vorhergesagte Scores anzeigen"
-
 msgctxt "PLSSEM|"
 msgid "Samples"
 msgstr "Stichproben"
-
-msgctxt "PLSSEM|"
-msgid "Jackknife"
-msgstr "Jackknife"
 
 #, fuzzy
 msgctxt "SEM|"
@@ -1455,4 +1429,25 @@ msgid ""
 "analysis. Specifically, the lavaan syntax for equality constraints in "
 "multigroup analysis is now interpreted differently. Proceed with caution! "
 "More details about the update can be found at %1"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Fit measures"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Overall model fit"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Bootstrap samples"
+msgstr ""
+
+#, fuzzy
+msgctxt "PLSSEM|"
+msgid "Significance level"
+msgstr "Signifikanzniveau"
+
+msgctxt "PLSSEM|"
+msgid "Saturated structural model"
 msgstr ""

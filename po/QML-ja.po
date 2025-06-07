@@ -548,10 +548,6 @@ msgid "Partial Least Squares SEM"
 msgstr "部分的最小二乗SEM"
 
 msgctxt "PLSSEM|"
-msgid "Model 1"
-msgstr "モデル1"
-
-msgctxt "PLSSEM|"
 msgid "Model"
 msgstr "モデル"
 
@@ -576,20 +572,12 @@ msgid "None"
 msgstr "なし"
 
 msgctxt "PLSSEM|"
-msgid "Robust"
-msgstr "ロバスト"
-
-msgctxt "PLSSEM|"
 msgid "Bootstrap"
 msgstr "ブートストラップ"
 
 msgctxt "PLSSEM|"
 msgid "Confidence intervals"
 msgstr "信頼区間"
-
-msgctxt "PLSSEM|"
-msgid "PLS-PM"
-msgstr "PLS-PM"
 
 msgctxt "PLSSEM|"
 msgid "GSCA"
@@ -660,10 +648,6 @@ msgid "R-squared"
 msgstr "R-2乗"
 
 msgctxt "PLSSEM|"
-msgid "Additional fit measures"
-msgstr "追加の適合度指標"
-
-msgctxt "PLSSEM|"
 msgid "Mardia's coefficient"
 msgstr "Mardiaの係数"
 
@@ -716,16 +700,8 @@ msgid "All"
 msgstr "すべて"
 
 msgctxt "PLSSEM|"
-msgid "Show predicted scores"
-msgstr "予測スコアを表示"
-
-msgctxt "PLSSEM|"
 msgid "Samples"
 msgstr "サンプル"
-
-msgctxt "PLSSEM|"
-msgid "Jackknife"
-msgstr "ジャックナイフ"
 
 msgctxt "SEM|"
 msgid "Average variance extracted (AVE)"
@@ -1420,4 +1396,25 @@ msgid ""
 "analysis. Specifically, the lavaan syntax for equality constraints in "
 "multigroup analysis is now interpreted differently. Proceed with caution! "
 "More details about the update can be found at %1"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Fit measures"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Overall model fit"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Bootstrap samples"
+msgstr ""
+
+#, fuzzy
+msgctxt "PLSSEM|"
+msgid "Significance level"
+msgstr "有意水準"
+
+msgctxt "PLSSEM|"
+msgid "Saturated structural model"
 msgstr ""

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.19.2\n"
-"POT-Creation-Date: 2025-03-01 02:57\n"
+"POT-Creation-Date: 2025-06-07 03:06\n"
 "PO-Revision-Date: 2025-02-14 13:21+0000\n"
 "Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/jasp/jaspsem-r/ta/"
@@ -311,38 +311,46 @@ msgstr "ஆர்டினல் மாறிகள் மூலம் மாத
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "குழு %s இல் 3 க்கும் குறைவான அவதானிப்புகளை தொகுத்தல் மாறி உள்ளது"
 
+#, fuzzy
+msgid "Enter a model"
+msgstr "நேரியல் மாதிரி"
+
+msgid "Variable(s) in model syntax not recognized: %s"
+msgstr ""
+
+msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
+msgstr ""
+
 msgid "Estimation failed Message: %s"
 msgstr "மதிப்பீடு தோல்வியுற்ற செய்தி: %s"
 
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr "மதிப்பீடு தோல்வியுற்றது! செய்தி: மாதிரி %s ஒன்றிணைக்கவில்லை!"
 
-msgid "Model fit"
+#, fuzzy
+msgid "Model Fit"
 msgstr "மாதிரி பொருத்தம்"
 
 msgid "Group"
 msgstr ""
 
-msgid "AIC"
-msgstr "Aic"
-
-msgid "BIC"
-msgstr "பிக்"
-
-msgid "n"
+msgid "Distance Measure"
 msgstr ""
 
-msgid "Baseline test"
-msgstr "அடிப்படை சோதனை"
+msgid "Test Statistic"
+msgstr ""
 
-msgid "Difference test"
-msgstr "வேறுபாடு சோதனை"
+msgid "Critical Value (%s%% Quantile)"
+msgstr ""
 
-msgid "WARNING! %1$s: %2$s"
-msgstr "எச்சரிக்கை! %1$s: %2$s"
+msgid "At least one result is inadmissible."
+msgstr ""
 
-msgid "WARNING! %1$s, group %2$s: %3$s"
-msgstr "எச்சரிக்கை! %1$s, குழு %2$s: %3$s"
+msgid "Denotes the fit of the model including a saturated structural model."
+msgstr ""
+
+msgid "Parameter Estimates"
+msgstr "அளவுரு மதிப்பீடுகள்"
 
 msgid "Weights"
 msgstr "எடைகள்"
@@ -362,8 +370,13 @@ msgstr "பின்னடைவு குணகங்கள்"
 msgid "Outcome"
 msgstr ""
 
-msgid "Total effects"
+#, fuzzy
+msgid "Total Effects"
 msgstr "மொத்த விளைவுகள்"
+
+#, fuzzy
+msgid "Residual Correlations"
+msgstr "மீதமுள்ள கோவாரியன்ச்"
 
 msgid "VIF"
 msgstr "Vif"
@@ -371,30 +384,14 @@ msgstr "Vif"
 msgid "Endogenous Indicator Prediction"
 msgstr "எண்டோசெனச் காட்டி கணிப்பு"
 
-msgid ""
-"The target model uses the same weighting approach as the benchmark model, "
-"please choose another benchmark."
-msgstr ""
-"இலக்கு மாதிரி பெஞ்ச்மார்க் மாதிரியின் அதே எடையுள்ள அணுகுமுறையைப் பயன்படுத்துகிறது, "
-"தயவுசெய்து மற்றொரு பெஞ்ச்மார்க் தேர்வு செய்யவும்."
-
-msgid ""
-"For the predicted indicator scores table(s), please select a single "
-"benchmark or 'none'."
-msgstr ""
-"கணிக்கப்பட்ட காட்டி மதிப்பெண்கள் அட்டவணை (கள்) க்கு, தயவுசெய்து ஒரு பெஞ்ச்மார்க் அல்லது "
-"'எதுவுமில்லை' என்பதைத் தேர்ந்தெடுக்கவும்."
-
 msgid "Prediction Metrics"
 msgstr "கணிப்பு அளவீடுகள்"
 
 msgid "Target MAE"
 msgstr "இலக்கு மே"
 
-msgid "Linear model MAE"
-msgstr "நேரியல் மாதிரி மே"
-
-msgid "PLS-PM MAE"
+#, fuzzy
+msgid "LM MAE"
 msgstr "Pls-pm மய்"
 
 msgid "GSCA MAE"
@@ -409,10 +406,8 @@ msgstr "மேக்ச்வார்"
 msgid "Target RMSE"
 msgstr "இலக்கு RMSE"
 
-msgid "Linear model RMSE"
-msgstr "நேரியல் மாதிரி RMSE"
-
-msgid "PLS-PM RMSE"
+#, fuzzy
+msgid "LM RMSE"
 msgstr "Pls-pm rmse"
 
 msgid "GSCA RMSE"
@@ -424,7 +419,8 @@ msgstr "பி.சி.ஏ ஆர்.எம்.எச்.இ."
 msgid "MAXVAR RMSE"
 msgstr "மேக்ச்வார் ஆர்.எம்.எச்.இ."
 
-msgid "Target Q2 prediction"
+#, fuzzy
+msgid "Target Q2 Prediction"
 msgstr "இலக்கு Q2 கணிப்பு"
 
 msgid ""
@@ -439,30 +435,6 @@ msgstr "அனைத்து காட்டி மாறிகள் 'அள�
 
 msgid "Prediction failed Message: %1$s"
 msgstr "கணிப்பு தோல்வியுற்ற செய்தி: %1$s"
-
-msgid "Indicator Scores"
-msgstr "காட்டி மதிப்பெண்கள்"
-
-msgid "Actual scores"
-msgstr "உண்மையான மதிப்பெண்கள்"
-
-msgid "Predicted scores"
-msgstr "கணிக்கப்பட்ட மதிப்பெண்கள்"
-
-msgid "Target residuals"
-msgstr "இலக்கு எச்சங்கள்"
-
-msgid "benchmark"
-msgstr "பெஞ்ச்மார்க்"
-
-msgid "lm"
-msgstr "எல்.எம்"
-
-msgid "Linear model"
-msgstr "நேரியல் மாதிரி"
-
-msgid "residuals"
-msgstr "எஞ்சியவர்கள்"
 
 msgid "Additional Fit Measures"
 msgstr "கூடுதல் பொருத்தம் நடவடிக்கைகள்"
@@ -482,7 +454,8 @@ msgstr "புவிசார் தூரம்"
 msgid "Squared Euclidean distance"
 msgstr "ச்கொயர் யூக்ளிடியன் தூரம்"
 
-msgid "Maximum likelihood-based dinstance"
+#, fuzzy
+msgid "Maximum likelihood-based distance"
 msgstr "அதிகபட்ச சாத்தியக்கூறு அடிப்படையிலான தூரம்"
 
 msgid "Reliability Measures"
@@ -512,7 +485,8 @@ msgstr "கவனிக்கப்பட்ட கட்டுமான தொ�
 msgid "Implied construct correlation matrix"
 msgstr "கட்டுமான தொடர்பு மேட்ரிக்ச்"
 
-msgid "Column '%s' name already exists in the dataset"
+#, fuzzy
+msgid "Column name %s already exists in the dataset"
 msgstr "நெடுவரிசை '%s' பெயர் ஏற்கனவே தரவுத்தொகுப்பில் உள்ளது"
 
 msgid ""
@@ -573,6 +547,15 @@ msgstr "மதிப்பீடு தோல்வியுற்றது! ச
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr "மதிப்பீடு தோல்வியுற்றது! செய்தி: %s எதிர்மறையான டிகிரி சுதந்திரத்தைக் கொண்டுள்ளன."
 
+msgid "Model fit"
+msgstr "மாதிரி பொருத்தம்"
+
+msgid "AIC"
+msgstr "Aic"
+
+msgid "BIC"
+msgstr "பிக்"
+
 msgid "n(Observations)"
 msgstr "n (அவதானிப்புகள்)"
 
@@ -584,6 +567,12 @@ msgstr "n (அளவுருக்கள்)"
 
 msgid "Free"
 msgstr "இலவசம்"
+
+msgid "Baseline test"
+msgstr "அடிப்படை சோதனை"
+
+msgid "Difference test"
+msgstr "வேறுபாடு சோதனை"
 
 msgid "%1$sdf"
 msgstr "%1$sDF"
@@ -619,9 +608,6 @@ msgstr "அனைத்தும்"
 
 msgid "<b>Warnings:</b> %s"
 msgstr "<b> எச்சரிக்கைகள்: </b> %s"
-
-msgid "Parameter Estimates"
-msgstr "அளவுரு மதிப்பீடுகள்"
 
 msgid "Factor Loadings"
 msgstr "காரணி ஏற்றுதல்"
@@ -664,6 +650,9 @@ msgstr "வரையறுக்கப்பட்ட அளவுருக்�
 
 msgid "Name"
 msgstr "பெயர்"
+
+msgid "Total effects"
+msgstr "மொத்த விளைவுகள்"
 
 msgid "%s Fit indices are based on the scaled test statistic."
 msgstr "%s FIT குறியீடுகள் அளவிடப்பட்ட சோதனை புள்ளிவிவரத்தை அடிப்படையாகக் கொண்டவை."
@@ -841,6 +830,14 @@ msgstr "உணர்திறன் அளவுரு"
 msgid "Path diagram"
 msgstr "பாதை வரைபடம்"
 
+#, fuzzy
+msgid ""
+"Model plot not available when there is at least one exogenous covariate and "
+"the 'Exogenous covariate(s) fixed' box is checked."
+msgstr ""
+"வெளிப்புற கோவாரியட்டுகளில் கண்டிசனிங் மதிப்பீடு போது, 'வெளிப்புற கோவாரியேட் (கள்) "
+"நிலையான' பெட்டியை சரிபார்க்க வேண்டும்."
+
 msgid "Satorra-Bentler"
 msgstr "சடோரா-பென்ட்லர்"
 
@@ -873,6 +870,53 @@ msgstr "வலுவான ஊபர்-வெள்ளை"
 
 msgid "first-order"
 msgstr "முதல்-வரிசை"
+
+#~ msgid "WARNING! %1$s: %2$s"
+#~ msgstr "எச்சரிக்கை! %1$s: %2$s"
+
+#~ msgid "WARNING! %1$s, group %2$s: %3$s"
+#~ msgstr "எச்சரிக்கை! %1$s, குழு %2$s: %3$s"
+
+#~ msgid ""
+#~ "The target model uses the same weighting approach as the benchmark model, "
+#~ "please choose another benchmark."
+#~ msgstr ""
+#~ "இலக்கு மாதிரி பெஞ்ச்மார்க் மாதிரியின் அதே எடையுள்ள அணுகுமுறையைப் பயன்படுத்துகிறது, "
+#~ "தயவுசெய்து மற்றொரு பெஞ்ச்மார்க் தேர்வு செய்யவும்."
+
+#~ msgid ""
+#~ "For the predicted indicator scores table(s), please select a single "
+#~ "benchmark or 'none'."
+#~ msgstr ""
+#~ "கணிக்கப்பட்ட காட்டி மதிப்பெண்கள் அட்டவணை (கள்) க்கு, தயவுசெய்து ஒரு பெஞ்ச்மார்க் அல்லது "
+#~ "'எதுவுமில்லை' என்பதைத் தேர்ந்தெடுக்கவும்."
+
+#~ msgid "Linear model MAE"
+#~ msgstr "நேரியல் மாதிரி மே"
+
+#~ msgid "Linear model RMSE"
+#~ msgstr "நேரியல் மாதிரி RMSE"
+
+#~ msgid "Indicator Scores"
+#~ msgstr "காட்டி மதிப்பெண்கள்"
+
+#~ msgid "Actual scores"
+#~ msgstr "உண்மையான மதிப்பெண்கள்"
+
+#~ msgid "Predicted scores"
+#~ msgstr "கணிக்கப்பட்ட மதிப்பெண்கள்"
+
+#~ msgid "Target residuals"
+#~ msgstr "இலக்கு எச்சங்கள்"
+
+#~ msgid "benchmark"
+#~ msgstr "பெஞ்ச்மார்க்"
+
+#~ msgid "lm"
+#~ msgstr "எல்.எம்"
+
+#~ msgid "residuals"
+#~ msgstr "எஞ்சியவர்கள்"
 
 #~ msgid ""
 #~ "Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate "

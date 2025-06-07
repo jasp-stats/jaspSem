@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
-"POT-Creation-Date: 2025-03-01 02:57\n"
+"POT-Creation-Date: 2025-06-07 03:06\n"
 "PO-Revision-Date: 2025-05-19 21:42+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -315,38 +315,46 @@ msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr ""
 "La variable de agrupamiento tiene menos de 3 observaciones en el grupo %s"
 
+#, fuzzy
+msgid "Enter a model"
+msgstr "Modelo lineal"
+
+msgid "Variable(s) in model syntax not recognized: %s"
+msgstr ""
+
+msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
+msgstr ""
+
 msgid "Estimation failed Message: %s"
 msgstr "Mensaje de fallo de la estimación: %s"
 
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr "¡Falló la estimación! Mensaje: ¡El modelo %s no convergió!"
 
-msgid "Model fit"
+#, fuzzy
+msgid "Model Fit"
 msgstr "Ajuste del modelo"
 
 msgid "Group"
 msgstr "Grupo"
 
-msgid "AIC"
-msgstr "AIC"
+msgid "Distance Measure"
+msgstr ""
 
-msgid "BIC"
-msgstr "BIC"
+msgid "Test Statistic"
+msgstr ""
 
-msgid "n"
-msgstr "n"
+msgid "Critical Value (%s%% Quantile)"
+msgstr ""
 
-msgid "Baseline test"
-msgstr "Contraste de referencia"
+msgid "At least one result is inadmissible."
+msgstr ""
 
-msgid "Difference test"
-msgstr "Contraste de diferencias"
+msgid "Denotes the fit of the model including a saturated structural model."
+msgstr ""
 
-msgid "WARNING! %1$s: %2$s"
-msgstr "¡AVISO! %1$s: %2$s"
-
-msgid "WARNING! %1$s, group %2$s: %3$s"
-msgstr "AVISO! %1$s, %2$s grupo: %3$s"
+msgid "Parameter Estimates"
+msgstr "Estimaciones de parámetros"
 
 msgid "Weights"
 msgstr "Ponderaciones"
@@ -366,8 +374,13 @@ msgstr "Coeficientes de Regresión"
 msgid "Outcome"
 msgstr "Resultado"
 
-msgid "Total effects"
+#, fuzzy
+msgid "Total Effects"
 msgstr "Efectos totales"
+
+#, fuzzy
+msgid "Residual Correlations"
+msgstr "Covarianzas de los errores"
 
 msgid "VIF"
 msgstr "FIV"
@@ -375,30 +388,14 @@ msgstr "FIV"
 msgid "Endogenous Indicator Prediction"
 msgstr "Predicción de Indicadores Endógenos"
 
-msgid ""
-"The target model uses the same weighting approach as the benchmark model, "
-"please choose another benchmark."
-msgstr ""
-"El modelo objetivo utiliza el mismo enfoque de ponderación que el modelo de "
-"referencia; por favor, elige otra referencia."
-
-msgid ""
-"For the predicted indicator scores table(s), please select a single "
-"benchmark or 'none'."
-msgstr ""
-"Para las tablas de puntuaciones de indicadores predichos, por favor, elige "
-"una única referencia o 'ninguna'."
-
 msgid "Prediction Metrics"
 msgstr "Métricas de Predicción"
 
 msgid "Target MAE"
 msgstr "EAM (MAE) objetivo"
 
-msgid "Linear model MAE"
-msgstr "EAM (MAE) del modelo lineal"
-
-msgid "PLS-PM MAE"
+#, fuzzy
+msgid "LM MAE"
 msgstr "EAM (MAE) de MCP-MR (PLS-PM)"
 
 msgid "GSCA MAE"
@@ -413,10 +410,8 @@ msgstr "EAM (MAE) de MAXVAR"
 msgid "Target RMSE"
 msgstr "RECM (RMSE) objetivo"
 
-msgid "Linear model RMSE"
-msgstr "RECM (RMSE) del modelo lineal"
-
-msgid "PLS-PM RMSE"
+#, fuzzy
+msgid "LM RMSE"
 msgstr "RECM (RMSE) de MCP-MR (PLS-PM)"
 
 msgid "GSCA RMSE"
@@ -428,7 +423,8 @@ msgstr "RECM (RMSE) de CP (PCA)"
 msgid "MAXVAR RMSE"
 msgstr "RECM (RMSE) de MAXVAR"
 
-msgid "Target Q2 prediction"
+#, fuzzy
+msgid "Target Q2 Prediction"
 msgstr "Predicción Q2 objetivo"
 
 msgid ""
@@ -443,30 +439,6 @@ msgstr "¿Están todas las variables indicadoras fijadas como 'escala'?"
 
 msgid "Prediction failed Message: %1$s"
 msgstr "Mensaje de fallo de la predicción: %1$s"
-
-msgid "Indicator Scores"
-msgstr "Coeficientes de Indicadores"
-
-msgid "Actual scores"
-msgstr "Puntuacións actuais"
-
-msgid "Predicted scores"
-msgstr "Puntuacións preditas"
-
-msgid "Target residuals"
-msgstr "Errores objetivo"
-
-msgid "benchmark"
-msgstr "referencia"
-
-msgid "lm"
-msgstr "lm"
-
-msgid "Linear model"
-msgstr "Modelo lineal"
-
-msgid "residuals"
-msgstr "Errores"
 
 msgid "Additional Fit Measures"
 msgstr "Medidas de Ajuste Adicionales"
@@ -486,7 +458,8 @@ msgstr "Distancia geodésica"
 msgid "Squared Euclidean distance"
 msgstr "Distancia Euclídea cuadrada"
 
-msgid "Maximum likelihood-based dinstance"
+#, fuzzy
+msgid "Maximum likelihood-based distance"
 msgstr "Distancia basada en la Máxima-Verosimilitud"
 
 msgid "Reliability Measures"
@@ -516,7 +489,8 @@ msgstr "Matriz de correlaciones de construcciones observadas"
 msgid "Implied construct correlation matrix"
 msgstr "Matriz de correlaciones de construcciones implicadas"
 
-msgid "Column '%s' name already exists in the dataset"
+#, fuzzy
+msgid "Column name %s already exists in the dataset"
 msgstr "El nombre de la columna '%s' ya existe en el conjunto de datos"
 
 msgid ""
@@ -581,6 +555,15 @@ msgstr ""
 "¡Falló la estimación! Mensaje: %s tiene un número de grados de libertad "
 "negativo."
 
+msgid "Model fit"
+msgstr "Ajuste del modelo"
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "BIC"
+msgstr "BIC"
+
 msgid "n(Observations)"
 msgstr "n(Observaciones)"
 
@@ -592,6 +575,12 @@ msgstr "n(Parámetros)"
 
 msgid "Free"
 msgstr "Libres"
+
+msgid "Baseline test"
+msgstr "Contraste de referencia"
+
+msgid "Difference test"
+msgstr "Contraste de diferencias"
 
 msgid "%1$sdf"
 msgstr "%1$sgl"
@@ -628,9 +617,6 @@ msgstr "Todo"
 
 msgid "<b>Warnings:</b> %s"
 msgstr "<b>Advertencias:</b> %s"
-
-msgid "Parameter Estimates"
-msgstr "Estimaciones de parámetros"
 
 msgid "Factor Loadings"
 msgstr "Cargas de los Factores"
@@ -673,6 +659,9 @@ msgstr "Parámetros definidos"
 
 msgid "Name"
 msgstr "Nombre"
+
+msgid "Total effects"
+msgstr "Efectos totales"
 
 msgid "%s Fit indices are based on the scaled test statistic."
 msgstr ""
@@ -857,6 +846,14 @@ msgstr "Parámetro de Sensibilidad"
 msgid "Path diagram"
 msgstr "Diagrama de ruta"
 
+#, fuzzy
+msgid ""
+"Model plot not available when there is at least one exogenous covariate and "
+"the 'Exogenous covariate(s) fixed' box is checked."
+msgstr ""
+"Cuando se condiciona la estimación según covariables exógenas, la casilla "
+"'Covariable(s) exógena(s) fijadas' debe estar marcada."
+
 msgid "Satorra-Bentler"
 msgstr "Satorra-Bentler"
 
@@ -889,6 +886,56 @@ msgstr "Huber-White robusto"
 
 msgid "first-order"
 msgstr "Primer orden"
+
+#~ msgid "n"
+#~ msgstr "n"
+
+#~ msgid "WARNING! %1$s: %2$s"
+#~ msgstr "¡AVISO! %1$s: %2$s"
+
+#~ msgid "WARNING! %1$s, group %2$s: %3$s"
+#~ msgstr "AVISO! %1$s, %2$s grupo: %3$s"
+
+#~ msgid ""
+#~ "The target model uses the same weighting approach as the benchmark model, "
+#~ "please choose another benchmark."
+#~ msgstr ""
+#~ "El modelo objetivo utiliza el mismo enfoque de ponderación que el modelo "
+#~ "de referencia; por favor, elige otra referencia."
+
+#~ msgid ""
+#~ "For the predicted indicator scores table(s), please select a single "
+#~ "benchmark or 'none'."
+#~ msgstr ""
+#~ "Para las tablas de puntuaciones de indicadores predichos, por favor, "
+#~ "elige una única referencia o 'ninguna'."
+
+#~ msgid "Linear model MAE"
+#~ msgstr "EAM (MAE) del modelo lineal"
+
+#~ msgid "Linear model RMSE"
+#~ msgstr "RECM (RMSE) del modelo lineal"
+
+#~ msgid "Indicator Scores"
+#~ msgstr "Coeficientes de Indicadores"
+
+#~ msgid "Actual scores"
+#~ msgstr "Puntuacións actuais"
+
+#~ msgid "Predicted scores"
+#~ msgstr "Puntuacións preditas"
+
+#~ msgid "Target residuals"
+#~ msgstr "Errores objetivo"
+
+#~ msgid "benchmark"
+#~ msgstr "referencia"
+
+#~ msgid "lm"
+#~ msgstr "lm"
+
+#~ msgid "residuals"
+#~ msgstr "Errores"
 
 #~ msgid ""
 #~ "Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate "

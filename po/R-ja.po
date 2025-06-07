@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2025-03-01 02:57\n"
+"POT-Creation-Date: 2025-06-07 03:06\n"
 "PO-Revision-Date: 2024-11-11 09:23+0000\n"
 "Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -311,38 +311,46 @@ msgstr "順序変数ではモデルプロットを使用できません"
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "グループ化変数のグループ%sの観測値が3未満です"
 
+#, fuzzy
+msgid "Enter a model"
+msgstr "線形モデル"
+
+msgid "Variable(s) in model syntax not recognized: %s"
+msgstr ""
+
+msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
+msgstr ""
+
 msgid "Estimation failed Message: %s"
 msgstr "推定失敗 :%s"
 
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr "推定に失敗しました! メッセージ: モデル %s が収束しませんでした!"
 
-msgid "Model fit"
+#, fuzzy
+msgid "Model Fit"
 msgstr "モデルフィット"
 
 msgid "Group"
 msgstr "群"
 
-msgid "AIC"
-msgstr "AIC"
+msgid "Distance Measure"
+msgstr ""
 
-msgid "BIC"
-msgstr "BIC"
+msgid "Test Statistic"
+msgstr ""
 
-msgid "n"
-msgstr "n"
+msgid "Critical Value (%s%% Quantile)"
+msgstr ""
 
-msgid "Baseline test"
-msgstr "ベースラインテスト"
+msgid "At least one result is inadmissible."
+msgstr ""
 
-msgid "Difference test"
-msgstr "差分検定"
+msgid "Denotes the fit of the model including a saturated structural model."
+msgstr ""
 
-msgid "WARNING! %1$s: %2$s"
-msgstr "警告! %1$s: %2$s"
-
-msgid "WARNING! %1$s, group %2$s: %3$s"
-msgstr "警告! %1$s、グループ%2$s:%3$s"
+msgid "Parameter Estimates"
+msgstr "パラメータ推定値"
 
 msgid "Weights"
 msgstr "ウェイト"
@@ -362,8 +370,13 @@ msgstr "回帰係数"
 msgid "Outcome"
 msgstr "結果変数"
 
-msgid "Total effects"
+#, fuzzy
+msgid "Total Effects"
 msgstr "全体効果"
+
+#, fuzzy
+msgid "Residual Correlations"
+msgstr "残差共分散"
 
 msgid "VIF"
 msgstr "VIF"
@@ -371,30 +384,14 @@ msgstr "VIF"
 msgid "Endogenous Indicator Prediction"
 msgstr "内生観測変数の予測"
 
-msgid ""
-"The target model uses the same weighting approach as the benchmark model, "
-"please choose another benchmark."
-msgstr ""
-"モデルは、ベンチマークモデルと同じ重みづけアプローチを使用してください。別の"
-"ベンチマークを選択してください."
-
-msgid ""
-"For the predicted indicator scores table(s), please select a single "
-"benchmark or 'none'."
-msgstr ""
-"予測された観測変数のスコアテーブルを表示するには、単一のベンチマークまたは"
-"「なし」を選択してください."
-
 msgid "Prediction Metrics"
 msgstr "予測統計量"
 
 msgid "Target MAE"
 msgstr "ターゲットのMAE"
 
-msgid "Linear model MAE"
-msgstr "線形モデルのMAE"
-
-msgid "PLS-PM MAE"
+#, fuzzy
+msgid "LM MAE"
 msgstr "PLS-PMのMAE"
 
 msgid "GSCA MAE"
@@ -409,10 +406,8 @@ msgstr "MAXVARのMAE"
 msgid "Target RMSE"
 msgstr "ターゲットのRMSE"
 
-msgid "Linear model RMSE"
-msgstr "線形モデルのRMSE"
-
-msgid "PLS-PM RMSE"
+#, fuzzy
+msgid "LM RMSE"
 msgstr "PLS-PMのRMSE"
 
 msgid "GSCA RMSE"
@@ -424,7 +419,8 @@ msgstr "PCAのRMSE"
 msgid "MAXVAR RMSE"
 msgstr "MAXVARのRMSE"
 
-msgid "Target Q2 prediction"
+#, fuzzy
+msgid "Target Q2 Prediction"
 msgstr "ターゲットのQ2予測"
 
 msgid ""
@@ -439,30 +435,6 @@ msgstr "すべての観測変数は「スケール」に設定されています
 
 msgid "Prediction failed Message: %1$s"
 msgstr "推定失敗 :%s"
-
-msgid "Indicator Scores"
-msgstr "観測変数のスコア"
-
-msgid "Actual scores"
-msgstr "実際のスコア"
-
-msgid "Predicted scores"
-msgstr "予測されたスコア"
-
-msgid "Target residuals"
-msgstr "ターゲットの残差"
-
-msgid "benchmark"
-msgstr "ベンチマーク"
-
-msgid "lm"
-msgstr "線形モデル"
-
-msgid "Linear model"
-msgstr "線形モデル"
-
-msgid "residuals"
-msgstr "残差"
 
 msgid "Additional Fit Measures"
 msgstr "追加の適合度指標"
@@ -482,7 +454,8 @@ msgstr "測地距離"
 msgid "Squared Euclidean distance"
 msgstr "二乗ユークリッド距離"
 
-msgid "Maximum likelihood-based dinstance"
+#, fuzzy
+msgid "Maximum likelihood-based distance"
 msgstr "最尤法に基づく距離"
 
 msgid "Reliability Measures"
@@ -512,7 +485,8 @@ msgstr "観測された構成変数の相関行列"
 msgid "Implied construct correlation matrix"
 msgstr "推定された構成変数の相関行列"
 
-msgid "Column '%s' name already exists in the dataset"
+#, fuzzy
+msgid "Column name %s already exists in the dataset"
 msgstr "列 '%s' は既にデータセットに存在しています"
 
 msgid ""
@@ -564,6 +538,15 @@ msgstr "推定に失敗しました! メッセージ: モデル %s が収束し�
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr "推定に失敗しました! メッセージ: モデル%sの自由度が負になりました."
 
+msgid "Model fit"
+msgstr "モデルフィット"
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "BIC"
+msgstr "BIC"
+
 msgid "n(Observations)"
 msgstr "n(観測度数)"
 
@@ -575,6 +558,12 @@ msgstr "n(パラメータ)"
 
 msgid "Free"
 msgstr "自由"
+
+msgid "Baseline test"
+msgstr "ベースラインテスト"
+
+msgid "Difference test"
+msgstr "差分検定"
 
 msgid "%1$sdf"
 msgstr "自由度 %1$s"
@@ -609,9 +598,6 @@ msgstr "すべて"
 
 msgid "<b>Warnings:</b> %s"
 msgstr "<b> 警告:</b> %s"
-
-msgid "Parameter Estimates"
-msgstr "パラメータ推定値"
 
 msgid "Factor Loadings"
 msgstr "因子負荷量"
@@ -654,6 +640,9 @@ msgstr "定義されたパラメータ"
 
 msgid "Name"
 msgstr "名前"
+
+msgid "Total effects"
+msgstr "全体効果"
 
 msgid "%s Fit indices are based on the scaled test statistic."
 msgstr "%s 敵同度指標は標準化された検定統計量に基づいています"
@@ -826,6 +815,11 @@ msgstr "感度パラメータ"
 msgid "Path diagram"
 msgstr "パス図"
 
+msgid ""
+"Model plot not available when there is at least one exogenous covariate and "
+"the 'Exogenous covariate(s) fixed' box is checked."
+msgstr ""
+
 msgid "Satorra-Bentler"
 msgstr "Satorra-Bentler."
 
@@ -858,6 +852,56 @@ msgstr "ロバストなHuber-White"
 
 msgid "first-order"
 msgstr "一次"
+
+#~ msgid "n"
+#~ msgstr "n"
+
+#~ msgid "WARNING! %1$s: %2$s"
+#~ msgstr "警告! %1$s: %2$s"
+
+#~ msgid "WARNING! %1$s, group %2$s: %3$s"
+#~ msgstr "警告! %1$s、グループ%2$s:%3$s"
+
+#~ msgid ""
+#~ "The target model uses the same weighting approach as the benchmark model, "
+#~ "please choose another benchmark."
+#~ msgstr ""
+#~ "モデルは、ベンチマークモデルと同じ重みづけアプローチを使用してください。別"
+#~ "のベンチマークを選択してください."
+
+#~ msgid ""
+#~ "For the predicted indicator scores table(s), please select a single "
+#~ "benchmark or 'none'."
+#~ msgstr ""
+#~ "予測された観測変数のスコアテーブルを表示するには、単一のベンチマークまたは"
+#~ "「なし」を選択してください."
+
+#~ msgid "Linear model MAE"
+#~ msgstr "線形モデルのMAE"
+
+#~ msgid "Linear model RMSE"
+#~ msgstr "線形モデルのRMSE"
+
+#~ msgid "Indicator Scores"
+#~ msgstr "観測変数のスコア"
+
+#~ msgid "Actual scores"
+#~ msgstr "実際のスコア"
+
+#~ msgid "Predicted scores"
+#~ msgstr "予測されたスコア"
+
+#~ msgid "Target residuals"
+#~ msgstr "ターゲットの残差"
+
+#~ msgid "benchmark"
+#~ msgstr "ベンチマーク"
+
+#~ msgid "lm"
+#~ msgstr "線形モデル"
+
+#~ msgid "residuals"
+#~ msgstr "残差"
 
 #~ msgid ""
 #~ "Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate "
