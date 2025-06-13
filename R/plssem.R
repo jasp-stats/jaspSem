@@ -17,11 +17,8 @@
 
 PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
 
-<<<<<<< HEAD
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
-=======
->>>>>>> 3377cec3d (cor table formatting changed, ~~ fobidden)
   options <- .plsSemPrepOpts(options)
 
   dataset <- .plsSemHandleData(dataset, options)
@@ -155,7 +152,6 @@ checkCSemModel <- function(model, availableVars) {
       notRecognized <- modelVars[!modelVarsInAvailableVars]
       return(gettextf("Variable(s) in model syntax not recognized: %s",
                       paste(stringr::str_replace_all(notRecognized, unvvars), collapse = ", ")))
-<<<<<<< HEAD
     }
   }
 
@@ -187,8 +183,6 @@ checkCSemModel <- function(model, availableVars) {
     for (i in seq_along(tildeResult)) {
       if (all(unlist(tildeResult[[i]]) %in% latents))
         return(gettext("Using '~~' is not supported for composite covariances. Try '~' instead"))
-=======
->>>>>>> 3377cec3d (cor table formatting changed, ~~ fobidden)
     }
   }
 
@@ -358,10 +352,6 @@ checkCSemModel <- function(model, availableVars) {
 .plsSemFitTab <- function(modelContainer, dataset, options, ready) {
   # create model fit table
   if (!is.null(modelContainer[["fittab"]])) return()
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
 
   fittab <- createJaspTable(title = gettext("Model fit"))
   fittab$dependOn(c("models"))
@@ -391,15 +381,10 @@ checkCSemModel <- function(model, availableVars) {
 
   modelContainer[["fittab"]] <- fittab
 
->>>>>>> 3377cec3d (cor table formatting changed, ~~ fobidden)
-=======
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
   if (!ready) return()
 
   # fill model fit table
   plsSemResults <- .plsSemComputeResults(modelContainer, dataset, options)
-<<<<<<< HEAD
-<<<<<<< HEAD
   # we need this for a lot of other tables so we do this once here:
   results <- plsSemResults[[1]]
   msc <- .withWarnings(.computeMSC(results, dataset, options))
@@ -2028,17 +2013,8 @@ checkCSemModel <- function(model, availableVars) {
 
   results <- jaspResults[["modelContainer"]][["results"]][["object"]]
 
-<<<<<<< HEAD
-  # loop over the models
-  for (i in seq_along(results)) {
-=======
-  modelNames <- sapply(models, function(x) x[["name"]])
-  modelNames <- gsub(" ", "_", modelNames)
-  colNamesR <- c()
-
   # loop over the models
   for (i in seq_len(length(results))) {
->>>>>>> 3377cec3d (cor table formatting changed, ~~ fobidden)
 
     if (options$group != "") {
       scoresList <- cSEM::getConstructScores(results[[i]])
@@ -2054,11 +2030,8 @@ checkCSemModel <- function(model, availableVars) {
     }
 
     z <- 1
-<<<<<<< HEAD
-    for (ll in seq_along(scores)) {
-=======
+
     for (ll in seq_len(length(scores))) {
->>>>>>> 3377cec3d (cor table formatting changed, ~~ fobidden)
       for (ii in seq_len(ncol(scores[[ll]]))) {
 
         colNameR <- colNamesR[z]
@@ -2080,11 +2053,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # check if there are previous colNames that are not needed anymore and delete the cols
   oldNames <- jaspResults[["createdColumnNames"]][["object"]]
-<<<<<<< HEAD
-  newNames <- colNamesR
-=======
   newNames <- colNamesR[1:z]
->>>>>>> 3377cec3d (cor table formatting changed, ~~ fobidden)
   if (!is.null(oldNames)) {
     noMatch <- which(!(oldNames %in% newNames))
     if (length(noMatch) > 0) {
@@ -2096,10 +2065,6 @@ checkCSemModel <- function(model, availableVars) {
 
   # save the created col names
   jaspResults[["createdColumnNames"]] <- createJaspState(newNames)
-<<<<<<< HEAD
-=======
-
->>>>>>> 3377cec3d (cor table formatting changed, ~~ fobidden)
 
   return()
 
