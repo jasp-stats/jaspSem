@@ -43,6 +43,14 @@ Description
 		title:	qsTr("Latent Growth")
 		qml:	"LatentGrowthCurve.qml"
 		func:	"LatentGrowthCurve"
-		//enabled: false
+	}
+
+	Analysis
+	{
+		title: qsTr("Moderated Non-Linear Factor Analysis")
+		qml: "ModeratedNonLinearFactorAnalysis.qml"
+		func: "ModeratedNonLinearFactorAnalysis"
+		hasWrapper: true
+		preloadData: true
 	}
 }
