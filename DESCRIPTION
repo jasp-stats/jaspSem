@@ -22,8 +22,11 @@ Imports:
   stringr,
   tibble,
   tidyr,
-  SEMsens
+  SEMsens, 
+  jaspFactor
 Remotes:
   jasp-stats/jaspBase,
-  jasp-stats/jaspGraphs
+  jasp-stats/jaspGraphs,
+  jasp-stats/jaspFactor
+  
 
