@@ -1276,47 +1276,28 @@ local({
       for (pattern in patterns)
         object <- gsub(pattern[[2L]], pattern[[1L]], object, fixed = TRUE)
     }
-<<<<<<< HEAD
   
-=======
-    
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
     # recurse for other objects
     if (is.recursive(object))
       for (i in seq_along(object))
         object[i] <- list(renv_json_read_remap(object[[i]], patterns))
-<<<<<<< HEAD
   
     # return remapped object
     object
   
-=======
-    
-    # return remapped object
-    object
-    
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
   }
   
   renv_json_read_default <- function(file = NULL, text = NULL) {
   
     # read json text
     text <- paste(text %||% readLines(file, warn = FALSE), collapse = "\n")
-<<<<<<< HEAD
   
-=======
-    
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
     # convert into something the R parser will understand
     patterns <- renv_json_read_patterns()
     transformed <- text
     for (pattern in patterns)
       transformed <- gsub(pattern[[1L]], pattern[[2L]], transformed, fixed = TRUE)
-<<<<<<< HEAD
   
-=======
-    
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
     # parse it
     rfile <- tempfile("renv-json-", fileext = ".R")
     on.exit(unlink(rfile), add = TRUE)
@@ -1325,13 +1306,6 @@ local({
   
     # evaluate in safe environment
     result <- eval(json, envir = renv_json_read_envir())
-<<<<<<< HEAD
-  
-    # fix up strings if necessary -- do so only with reversible patterns
-    patterns <- Filter(function(pattern) pattern[[3L]], patterns)
-    renv_json_read_remap(result, patterns)
-=======
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
   
     # fix up strings if necessary -- do so only with reversible patterns
     patterns <- Filter(function(pattern) pattern[[3L]], patterns)

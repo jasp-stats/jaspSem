@@ -49,8 +49,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   .mnlfaCheckErrors(dataset, options, ready)
 
-  dataTmp <- .mnlfaFitPerGroup(jaspResults, dataset, options, ready)
-
+  .mnlfaFitPerGroup(jaspResults, dataset, options, ready)
 
   # .mnlfaCreateGlobalInvarianceContainer(jaspResults, options)
 
@@ -67,7 +66,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   .mnlfaPrintSyntax(jaspResults, dataset, options, ready)
 
-  .mnlfaAddGroupingVariableToData(jaspResults, dataTmp, options)
+  .mnlfaAddGroupingVariableToData(jaspResults, dataset, options)
 
 
   return()
@@ -278,13 +277,14 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   nominalModerators <- jaspBase::decodeColNames(moderatorNames[moderatorTypes == "nominal"])
   nonNominalModerators <- moderatorNames[moderatorTypes != "nominal"]
 
+  dataTmp <- dataset
   if (length(nonNominalModerators) > 0) {
     nSplits <- options[["continuousVariableSplit"]]
     for (i in 1:length(nonNominalModerators)) {
-      tmp <- as.numeric(as.character(dataset[[nonNominalModerators[i]]])) # in cases where the variable is ordinal
+      tmp <- as.numeric(as.character(dataTmp[[nonNominalModerators[i]]])) # in cases where the variable is ordinal
       modRange <- range(tmp)
       modSplits <- seq(modRange[1], modRange[2], length.out = nSplits + 1)
-      dataset[[paste0(nonNominalModerators[i], "_nominal")]] <- cut(tmp,
+      dataTmp[[paste0(nonNominalModerators[i], "_nominal")]] <- cut(tmp,
                                                                    breaks = modSplits,
                                                                    labels = as.character(1:nSplits),
                                                                    include.lowest = TRUE)
@@ -295,26 +295,26 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     colsToCombine <- nominalModerators
   }
 
-  ogColnames <- colnames(dataset)
-  colnames(dataset) <- jaspBase::decodeColNames(ogColnames)
-  dataset[["addedGroupVar"]] <- NA
-  for (rr in 1:nrow(dataset)) {
-    dataset[["addedGroupVar"]][rr] <- paste0(colsToCombine, "_", dataset[rr, colsToCombine], collapse = ":")
+  ogColnames <- colnames(dataTmp)
+  colnames(dataTmp) <- jaspBase::decodeColNames(ogColnames)
+  dataTmp[["addedGroupVar"]] <- NA
+  for (rr in 1:nrow(dataTmp)) {
+    dataTmp[["addedGroupVar"]][rr] <- paste0(colsToCombine, "_", dataTmp[rr, colsToCombine], collapse = ":")
   }
 
-  colnames(dataset) <- c(ogColnames, "addedGroupVar")
+  colnames(dataTmp) <- c(ogColnames, "addedGroupVar")
 
   # this part is from jaspFactor
   cfaResult <- list()
   options[["seType"]] <- "default"
-  cfaResult[["spec"]] <- jaspFactor:::.cfaCalcSpecs(dataset, options)
+  cfaResult[["spec"]] <- jaspFactor:::.cfaCalcSpecs(dataTmp, options)
 
   # we fit a model per group so we have access to all the fit indices, which we would not have if we would use
   # the lavaan built-in group functionality
   options[["group"]] <- ""
   options[["invarianceTesting"]] <- NULL
-  mod <- jaspFactor:::.optionsToCFAMod(options, dataset, cfaResult)[["model"]]
-  groups <- unique(dataset[["addedGroupVar"]])
+  mod <- jaspFactor:::.optionsToCFAMod(options, dataTmp, cfaResult)[["model"]]
+  groups <- unique(dataTmp[["addedGroupVar"]])
   fitArgs <- list(model         = mod,
                 data            = NULL,
                 se              = cfaResult[["spec"]][["se"]],
@@ -324,16 +324,16 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   result <- list()
   for (i in 1:length(groups)) {
-    fitArgs$data <- dataset[dataset$addedGroupVar == groups[i], ]
+    fitArgs$data <- dataTmp[dataTmp$addedGroupVar == groups[i], ]
     fit <- try(do.call(lavaan::cfa, fitArgs))
     result[[groups[i]]] <- fit
   }
 
-  fitPerGroupResult <- createJaspState(result)
+  fitPerGroupResult <- createJaspState(list(result = result, addedGroupVar = dataTmp[["addedGroupVar"]]))
   fitPerGroupResult$dependOn(options = c("continuousVariableSplit", "fitPerGroup"))
   jaspResults[["mainContainer"]][["fitPerGroupState"]] <- fitPerGroupResult
 
-  return(dataset)
+  return()
 }
 
 .mnlfaCallGlobalInvarianceTests <- function(jaspResults, dataset, options, ready) {
@@ -416,7 +416,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   jaspResults[["mainContainer"]][["fitPerGroupTable"]] <- fitPerGroupTable
 
-  result <- jaspResults[["mainContainer"]][["fitPerGroupState"]][["object"]]
+  result <- jaspResults[["mainContainer"]][["fitPerGroupState"]][["object"]][["result"]]
   if (any(unlist(lapply(result, isTryError)))) {
     errs <- which(unlist(lapply(result, isTryError)))
     errmsg <- ""
@@ -439,7 +439,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   groupN <- unlist(lapply(result, function(x) x@SampleStats@nobs))
   fillData$N <- groupN
   fitPerGroupTable$setData(fillData)
-
 
   if (any(!unlist(lapply(result, function(x) x@optim$converged)))) {
     nonConv <- which(!unlist(lapply(result, function(x) x@optim$converged)))
@@ -1043,9 +1042,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 ##### HELPER #####
 .mnlfaAddGroupingVariableToData <- function(jaspResults, dataset, options) {
 
-  if (!is.null(jaspResults[["addedGroupVarContainer"]]) ||
-      !options[["addGroupVar"]])
-  {
+  if (!is.null(jaspResults[["addedGroupVarContainer"]]) || !options[["addGroupVar"]]) {
     return()
   }
 
@@ -1053,14 +1050,15 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   container$dependOn(optionsFromObject = jaspResults[["mainContainer"]][["fitPerGroupState"]],
                      options = "addGroupVar")
 
-  var <- dataset[["addedGroupVar"]]
+  var <- jaspResults[["mainContainer"]][["fitPerGroupState"]][["object"]][["addedGroupVar"]]
 
-  colNameR <- gettext("addedGroupVar")
+  colNameR <- gettext("addedGroupVariable")
   if (jaspBase:::columnExists(colNameR) && !jaspBase:::columnIsMine(colNameR)) {
     .quitAnalysis(gettextf("Column name %s already exists in the dataset", colNameR))
   }
 
   container[["addedGroupVar"]] <- jaspBase::createJaspColumn(colNameR)
+  # TODO: this needs ot be fixed, see also: https://github.com/jasp-stats/INTERNAL-jasp/issues/2813
   container[["addedGroupVar"]]$setNominal(var)
 
   jaspResults[["addedGroupVarContainer"]] <- container

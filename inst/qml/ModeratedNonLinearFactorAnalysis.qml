@@ -28,21 +28,16 @@ Form
 		if (rwValue == "indicators") {
 			return [{value: "loadings", label: qsTr("Loadings")}, {value: "intercepts", label: qsTr("Intercepts")}, {value: "residualVariances", label: qsTr("Residual variances")}];
 		} 
-		if (inValue == "configuralInvariance" && factorCount == 2) {
-			return [{value: "covariances", label: qsTr("Covariances")}];
-		}
-		if (inValue == "metricInvariance") {
+		if (inValue == "configuralInvariance") {
 			if (factorCount == 2) {
 				return [{value: "variances", label: qsTr("Variances")}, {value: "covariances", label: qsTr("Covariances")}];
 			}
 			return [{value: "variances", label: qsTr("Variances")}];
-		} 
-		if (inValue == "scalarInvariance" || inValue == "strictInvariance") {
-			if (factorCount == 2) {
-				return [{value: "variances", label: qsTr("Variances")}, {value: "means", label: qsTr("Means")}, {value: "covariances", label: qsTr("Covariances")}];
-			} 
-			return [{value: "variances", label: qsTr("Variances")}, {value: "means", label: qsTr("Means")}];
-		} 
+		}
+		if (factorCount == 2) {
+			return [{value: "variances", label: qsTr("Variances")}, {value: "means", label: qsTr("Means")}, {value: "covariances", label: qsTr("Covariances")}];
+		}
+		return [{value: "variances", label: qsTr("Variances")}, {value: "means", label: qsTr("Means")}];
 		return [];
 	}
 
@@ -266,8 +261,8 @@ Form
 							CheckBox { 
 								name: "includeModeration";
 								id: includeModeration
-								checked: modSecondLayer.modInvValue == "configuralInvariance" ||
-									(modSecondLayer.modInvValue == "metricInvariance" && modFourthLayer.modParamValue != "loadings") ||
+								checked: modSecondLayer.modInvValue == "configuralInvariance" && modFourthLayer.modParamValue != "variances" ||
+									(modSecondLayer.modInvValue == "metricInvariance" && modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "means") || 
 										(modSecondLayer.modInvValue == "scalarInvariance" && (modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "intercepts")) ||
 											(modSecondLayer.modInvValue == "strictInvariance" && (modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "intercepts" && modFourthLayer.modParamValue != "residualVariances"));
 							}
