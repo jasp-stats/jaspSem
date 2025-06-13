@@ -352,8 +352,7 @@ checkLavaanModel <- function(model, availableVars) {
       fit$value <- lavBootstrap(fit$value,
                                 samples = options[["bootstrapSamples"]],
                                 standard = options[["standardizedEstimate"]],
-                                typeStd = type,
-                                iseed = lavOptions[["iseed"]]) # lavOptions[["iseed"]] should be NULL unless options[["userGaveSeed"]] is TRUE
+                                typeStd = type)
       modelContainer$dependOn(optionsFromObject = modelContainer,
                               options = c("bootstrapSamples", "standardizedEstimate", "standardizedEstimateType"))
     }
