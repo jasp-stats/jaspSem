@@ -15,14 +15,33 @@ options$convergenceCriterion      <- "absoluteDifference"
 options$overallModelFit <- TRUE
 options$setSeed <- TRUE
 options$seed <- 123
+<<<<<<< HEAD
 results <- jaspTools::runAnalysis("PLSSEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
 
+<<<<<<< HEAD
 test_that("Model Fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(0.43026588019435, "dG", 0.295547730720455, 0.0560152218904532,
                                       "SRMR", 0.0529946519222452, 0.207096082194422, "dL", 0.185356586735755,
                                       1.97158372315007, "dML", 1.67522948035842))
+=======
+=======
+>>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
+results <- jaspTools::runAnalysis("PLSSEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
+
+test_that("Model Fit table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+<<<<<<< HEAD
+                                 list(1764.23685931775, 1796.68169290726, 123.966981546523, 41, 75,
+                                      2.86465847952811e-10))
+>>>>>>> 3377cec3d (cor table formatting changed, ~~ fobidden)
+=======
+                                 list(0.43026588019435, "dG", 0.295547730720455, 0.0560152218904532,
+                                      "SRMR", 0.0529946519222452, 0.207096082194422, "dL", 0.185356586735755,
+                                      1.97158372315007, "dML", 1.67522948035842))
+>>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
 })
 
 
@@ -100,7 +119,15 @@ test_that("Additional Fit Measures table results match", {
                                       0.0943761594914448, 0.0897114551867814, "Goodness of Fit (GoF)",
                                       0.651821788678243, 0.614476373672947, "Geodesic distance", 0.495814387492708,
                                       0.623860456924762, "Squared Euclidean distance", 0.587852725703405,
+<<<<<<< HEAD
+<<<<<<< HEAD
                                       0.531177582654172, "Maximum likelihood-based distance", 2.49543038009159,
+=======
+                                      0.531177582654172, "Maximum likelihood-based dinstance", 2.49543038009159,
+>>>>>>> 3377cec3d (cor table formatting changed, ~~ fobidden)
+=======
+                                      0.531177582654172, "Maximum likelihood-based distance", 2.49543038009159,
+>>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
                                       3.77238193053797))
 })
 
@@ -346,6 +373,19 @@ options$seed <- 123
 results <- jaspTools::runAnalysis("PLSSEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
 
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+test_that("Model fit table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(1764.23685931775, 1796.68169290726, 123.966981546523, 41,
+                                      75, 2.86465847952851e-10))
+})
+
+>>>>>>> 3377cec3d (cor table formatting changed, ~~ fobidden)
+=======
+>>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
 test_that("Loadings table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_loading"]][["data"]]
   jaspTools::expect_equal_tables(table,
@@ -481,6 +521,18 @@ test_that("Additional Fit Measures table results match", {
                                  ))
 })
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+test_that("Model fit table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(12305.9746183875, 12471.483281527, 727.561148710193, 184,
+                                      250, 1.10159512549514e-65))
+})
+>>>>>>> 3377cec3d (cor table formatting changed, ~~ fobidden)
+=======
+>>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
 
 test_that("Mardia's coefficients table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_mardiasTable"]][["data"]]
