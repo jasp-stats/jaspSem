@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2013-2022 University of Amsterdam
+# Copyright (C) 2013-2025 University of Amsterdam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,31 +15,63 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# This is a generated file. Don't change it
+# This is a generated file. Don't change it!
 
+#' MediationAnalysis
+#'
+#' @param bootstrapCiType, Select the type of bootstrap confidence interval to compute
+#' @param bootstrapSamples, Specify the number of bootstrap samples
+#' @param ciLevel, Set the confidence level for the interval estimates
+#' @param emulation, Select the software to emulate estimation behavior
+#' \itemize{
+#'   \item \code{"mplus"}: Emulate Mplus estimation methods
+#'   \item \code{"lavaan"}: Use Lavaan default estimation method
+#'   \item \code{"eqs"}: Emulate EQS estimation methods
+#' }
+#' @param errorCalculationMethod, Select the method for calculating standard errors and confidence intervals
+#' \itemize{
+#'   \item \code{"robust"}: Use robust estimation for standard errors
+#'   \item \code{"bootstrap"}: Use bootstrap method for estimating standard errors and confidence intervals
+#'   \item \code{"standard"}: Use standard maximum likelihood estimation for standard errors
+#' }
+#' @param estimator, Choose the estimator for model fitting
+#' \itemize{
+#'   \item \code{"uls"}: Unweighted Least Squares estimator
+#'   \item \code{"gls"}: Generalized Least Squares estimator
+#'   \item \code{"wls"}: Weighted Least Squares estimator
+#'   \item \code{"ml"}: Maximum Likelihood estimator
+#'   \item \code{"default"}: Use the default estimator based on the model and data
+#'   \item \code{"dwls"}: Diagonally Weighted Least Squares estimator
+#' }
+#' @param naAction, Select the method for handling missing data in estimation
+#' \itemize{
+#'   \item \code{"fiml"}: Use Full Information Maximum Likelihood to handle missing data
+#'   \item \code{"listwise"}: Exclude cases with missing data (listwise deletion)
+#' }
 MediationAnalysis <- function(
           data = NULL,
-          version = "0.19",
+          version = "0.95",
           bootstrapCiType = "percentileBiasCorrected",
           bootstrapSamples = 1000,
           ciLevel = 0.95,
-          confounds = list(),
+          confounds = list(types = list(), value = list()),
           emulation = "lavaan",
           errorCalculationMethod = "standard",
           estimator = "default",
-          mediators = list(),
+          mediators = list(types = list(), value = list()),
           naAction = "fiml",
-          outcomes = list(),
+          outcomes = list(types = list(), value = list()),
           pathCoefficient = TRUE,
           pathPlot = FALSE,
           pathPlotLegend = FALSE,
           pathPlotParameter = FALSE,
           plotHeight = 320,
           plotWidth = 480,
-          predictors = list(),
+          predictors = list(types = list(), value = list()),
           rSquared = FALSE,
           residualCovariance = TRUE,
           standardizedEstimate = FALSE,
+          standardizedEstimateType = "all",
           syntax = FALSE,
           totalIndirectEffect = TRUE) {
 
@@ -52,9 +84,14 @@ MediationAnalysis <- function(
    options[["data"]] <- NULL
    options[["version"]] <- NULL
 
+
+   if (!jaspBase::jaspResultsCalledFromJasp() && !is.null(data)) {
+      jaspBase::storeDataSet(data)
+   }
+
    optionsWithFormula <- c("bootstrapCiType", "confounds", "mediators", "outcomes", "predictors")
    for (name in optionsWithFormula) {
       if ((name %in% optionsWithFormula) && inherits(options[[name]], "formula")) options[[name]] = jaspBase::jaspFormula(options[[name]], data)   }
 
-   return(jaspBase::runWrappedAnalysis("jaspSem::MediationAnalysis", data, options, version))
+   return(jaspBase::runWrappedAnalysis("jaspSem", "MediationAnalysis", "MediationAnalysis.qml", options, version, FALSE))
 }

@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2013-2022 University of Amsterdam
+# Copyright (C) 2013-2025 University of Amsterdam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,16 +15,22 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# This is a generated file. Don't change it
+# This is a generated file. Don't change it!
 
+#' SEM
+#'
 SEM <- function(
           data = NULL,
-          version = "0.19",
+          version = "0.95",
           additionalFitMeasures = FALSE,
+          alpha = 0.05,
           ave = FALSE,
+          bootSeed = 1,
           bootstrapCiType = "percentileBiasCorrected",
           bootstrapSamples = 1000,
+          bootstrapSamplesBollenStine = 1000,
           ciLevel = 0.95,
+          convergenceRateThreshold = 0.1,
           dataType = "raw",
           dependentCorrelation = TRUE,
           efaConstrained = TRUE,
@@ -38,20 +44,22 @@ SEM <- function(
           equalResidual = FALSE,
           equalResidualCovariance = FALSE,
           equalThreshold = FALSE,
-          errorCalculationMethod = "standard",
+          errorCalculationMethod = "default",
           estimator = "default",
+          exogenousCovariateConditional = FALSE,
           exogenousCovariateFixed = TRUE,
           exogenousLatentCorrelation = TRUE,
           factorScaling = "factorLoading",
           freeParameters = list(columns = list(), model = "", modelOriginal = ""),
-          group = "",
+          group = list(types = "unknown", value = ""),
           htmt = FALSE,
           impliedCovariance = FALSE,
-          informationMatrix = "expected",
+          informationMatrix = "default",
           latentInterceptFixedToZero = TRUE,
           manifestInterceptFixedToZero = FALSE,
           manifestMeanFixedToZero = FALSE,
           mardiasCoefficient = FALSE,
+          maxIterations = 1000,
           meanStructure = FALSE,
           modelTest = "default",
           models = list(list(name = "Model 1", syntax = list(columns = list(), model = "", modelOriginal = ""))),
@@ -59,11 +67,14 @@ SEM <- function(
           modificationIndexHiddenLow = FALSE,
           modificationIndexThreshold = 10,
           naAction = "fiml",
+          numberOfAnts = 10,
           observedCovariance = FALSE,
+          optimizerFunction = "percentChangeMeanEstimate",
           orthogonal = FALSE,
           pathPlot = FALSE,
           pathPlotLegend = FALSE,
           pathPlotParameter = FALSE,
+          pathPlotParameterStandardized = FALSE,
           plotHeight = 320,
           plotWidth = 480,
           rSquared = FALSE,
@@ -71,13 +82,21 @@ SEM <- function(
           residualCovariance = FALSE,
           residualSingleIndicatorOmitted = TRUE,
           residualVariance = TRUE,
-          sampleSize = 0,
-          samplingWeights = "",
+          sampleSize = 500,
+          samplingWeights = list(types = "unknown", value = ""),
           scalingParameter = TRUE,
+          searchAlgorithm = "antColonyOptimization",
+          seed = 1,
+          sensitivityAnalysis = FALSE,
+          setSeed = FALSE,
+          sizeOfSolutionArchive = 100,
           standardizedEstimate = FALSE,
+          standardizedEstimateType = "all",
           standardizedResidual = FALSE,
           standardizedVariable = FALSE,
-          threshold = TRUE) {
+          threshold = TRUE,
+          userGaveSeed = FALSE,
+          warnings = FALSE) {
 
    defaultArgCalls <- formals(jaspSem::SEM)
    defaultArgs <- lapply(defaultArgCalls, eval)
@@ -88,9 +107,14 @@ SEM <- function(
    options[["data"]] <- NULL
    options[["version"]] <- NULL
 
-   optionsWithFormula <- c("bootstrapCiType", "emulation", "estimator", "factorScaling", "freeParameters", "group", "informationMatrix", "modelTest", "models", "naAction", "samplingWeights")
+
+   if (!jaspBase::jaspResultsCalledFromJasp() && !is.null(data)) {
+      jaspBase::storeDataSet(data)
+   }
+
+   optionsWithFormula <- c("bootstrapCiType", "emulation", "errorCalculationMethod", "estimator", "factorScaling", "freeParameters", "group", "informationMatrix", "modelTest", "models", "naAction", "optimizerFunction", "samplingWeights")
    for (name in optionsWithFormula) {
       if ((name %in% optionsWithFormula) && inherits(options[[name]], "formula")) options[[name]] = jaspBase::jaspFormula(options[[name]], data)   }
 
-   return(jaspBase::runWrappedAnalysis("jaspSem::SEM", data, options, version))
+   return(jaspBase::runWrappedAnalysis("jaspSem", "SEM", "SEM.qml", options, version, FALSE))
 }

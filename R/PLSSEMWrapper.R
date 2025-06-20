@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2013-2022 University of Amsterdam
+# Copyright (C) 2013-2025 University of Amsterdam
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,42 +15,45 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# This is a generated file. Don't change it
+# This is a generated file. Don't change it!
 
+#' PLSSEM
+#'
 PLSSEM <- function(
           data = NULL,
-          version = "0.19",
+          version = "0.95",
+          addConstructScores = FALSE,
           additionalFitMeasures = FALSE,
           benchmark = "none",
           bootstrapSamples = 200,
           ciLevel = 0.95,
           consistentPartialLeastSquares = TRUE,
           convergenceCriterion = "absoluteDifference",
-          correctionFactor = "squaredEuclidean",
-          correlationMatrix = "pearson",
           endogenousIndicatorPrediction = FALSE,
-          errorCalculationMethod = "none",
-          group = "",
-          handlingOfFlippedSigns = "none",
+          errorCalculationMethod = "bootstrap",
+          group = list(types = "unknown", value = ""),
           handlingOfInadmissibles = "replace",
           impliedConstructCorrelation = FALSE,
           impliedIndicatorCorrelation = FALSE,
           innerWeightingScheme = "path",
           kFolds = 10,
           mardiasCoefficient = FALSE,
-          models = list(list(name = "Model 1", syntax = list(columns = list(), model = "", modelOriginal = ""))),
+          models = list(list(name = "Model", syntax = list(columns = list(), model = "", modelOriginal = ""))),
           observedConstructCorrelation = FALSE,
           observedIndicatorCorrelation = FALSE,
+          omfBootstrapSamples = 499,
+          omfSignificanceLevel = 0.05,
+          overallModelFit = FALSE,
           plotHeight = 320,
           plotWidth = 480,
-          predictedScore = FALSE,
           rSquared = FALSE,
           reliabilityMeasures = FALSE,
           repetitions = 10,
-          robustMethod = "bootstrap",
+          saturatedStructuralModel = FALSE,
           seed = 1,
           setSeed = FALSE,
-          structuralModelIgnored = FALSE) {
+          structuralModelIgnored = FALSE,
+          tolerance = 1e-05) {
 
    defaultArgCalls <- formals(jaspSem::PLSSEM)
    defaultArgs <- lapply(defaultArgCalls, eval)
@@ -61,9 +64,14 @@ PLSSEM <- function(
    options[["data"]] <- NULL
    options[["version"]] <- NULL
 
-   optionsWithFormula <- c("convergenceCriterion", "correctionFactor", "group", "handlingOfFlippedSigns", "innerWeightingScheme", "models")
+
+   if (!jaspBase::jaspResultsCalledFromJasp() && !is.null(data)) {
+      jaspBase::storeDataSet(data)
+   }
+
+   optionsWithFormula <- c("convergenceCriterion", "group", "innerWeightingScheme", "models")
    for (name in optionsWithFormula) {
       if ((name %in% optionsWithFormula) && inherits(options[[name]], "formula")) options[[name]] = jaspBase::jaspFormula(options[[name]], data)   }
 
-   return(jaspBase::runWrappedAnalysis("jaspSem::PLSSEM", data, options, version))
+   return(jaspBase::runWrappedAnalysis("jaspSem", "PLSSEM", "PLSSEM.qml", options, version, TRUE))
 }
