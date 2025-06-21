@@ -906,7 +906,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # fill residual correlations table
   if (options[["group"]] == "") {
-    if (!is.null(pe[["Residual_correlation"]])) {
+    if (!is.null(pe[["Residual_correlation"]]) && length(pe[["Residual_correlation"]]) > 0) {
       resCorEstimates <- try(.prepareEstimates(pe, estimateType = "Residual_correlation", options = options))
       if (isTryError(resCorEstimates)) {
         pecont[["Residual_correlation"]] <- NULL
@@ -917,7 +917,7 @@ checkCSemModel <- function(model, availableVars) {
 
   } else {
 
-    if (!is.null(pe[[1]][["Residual_correlation"]])) {
+    if (!is.null(pe[[1]][["Residual_correlation"]]) && length(pe[[1]][["Residual_correlation"]]) > 0) {
       resCorEstimates <- try(lapply(pe, .prepareEstimates, estimateType = "Residual_correlation", options = options))
       if (isTryError(resCorEstimates)) {
         pecont[["Residual_correlation"]] <- NULL
@@ -934,7 +934,7 @@ checkCSemModel <- function(model, availableVars) {
 
   }
 
-  if (!isTryError(resCorEstimates) && !is.null(pecont[["Residual_correlation"]])) {
+  if (!is.null(pecont[["Residual_correlation"]])) {
 
     if (options[["group"]] != "")
       resCorTab[["group"]]    <- resCorEstimates[["group"]]
