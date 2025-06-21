@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2025-06-07 03:06\n"
-"PO-Revision-Date: 2024-12-08 08:00+0000\n"
+"PO-Revision-Date: 2025-06-15 08:01+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "gl/>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.9-dev\n"
+"X-Generator: Weblate 5.12-dev\n"
 "X-Virgin-Header: remove this line if you change anything in the header.\n"
 "X-Language: gl_ES\n"
 "X-Source-Language: C\n"
@@ -322,15 +322,15 @@ msgstr "A gráfica do modelo non está dispoñible con variables ordinais"
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "A variable de agrupamento ten menos de 3 observacións no grupo %s"
 
-#, fuzzy
 msgid "Enter a model"
-msgstr "Modelo linear"
+msgstr "Introducir un modelo"
 
 msgid "Variable(s) in model syntax not recognized: %s"
-msgstr ""
+msgstr "Variable(s) non recoñecida(s) na sintaxe do modelo: %s"
 
 msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
 msgstr ""
+"Usar '~~' non se admite para covarianzas compostas. En troques, intenta '~'"
 
 msgid "Estimation failed Message: %s"
 msgstr "Mensaxe de fallo da estimación: %s"
@@ -338,7 +338,6 @@ msgstr "Mensaxe de fallo da estimación: %s"
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr "Fallou a estimación! Mensaxe: O modelo %s non converxeu!"
 
-#, fuzzy
 msgid "Model Fit"
 msgstr "Axuste do modelo"
 
@@ -346,19 +345,19 @@ msgid "Group"
 msgstr "Grupo"
 
 msgid "Distance Measure"
-msgstr ""
+msgstr "Medida de distancia"
 
 msgid "Test Statistic"
-msgstr ""
+msgstr "Estatístico de proba"
 
 msgid "Critical Value (%s%% Quantile)"
-msgstr ""
+msgstr "Valor crítico (Cuantil do %s%%)"
 
 msgid "At least one result is inadmissible."
-msgstr ""
+msgstr "Cando menos un resultado non é admisible."
 
 msgid "Denotes the fit of the model including a saturated structural model."
-msgstr ""
+msgstr "Denota o axuste do modelo incluíndo un modelo estrutural saturado."
 
 msgid "Parameter Estimates"
 msgstr "Estimacións dos parámetros"
@@ -381,13 +380,11 @@ msgstr "Coeficientes da Regresión"
 msgid "Outcome"
 msgstr "Resultado"
 
-#, fuzzy
 msgid "Total Effects"
 msgstr "Efectos totais"
 
-#, fuzzy
 msgid "Residual Correlations"
-msgstr "Covarianzas dos erros"
+msgstr "Correlacións dos erros"
 
 msgid "VIF"
 msgstr "FIV"
@@ -401,9 +398,8 @@ msgstr "Métricas de Predición"
 msgid "Target MAE"
 msgstr "EAM (MAE) obxectivo"
 
-#, fuzzy
 msgid "LM MAE"
-msgstr "EAM (MAE) de MCP-MR (PLS-PM)"
+msgstr "EAM (MAE) de ML"
 
 msgid "GSCA MAE"
 msgstr "EAM (MAE) de GSCA"
@@ -417,9 +413,8 @@ msgstr "EAM (MAE) de MAXVAR"
 msgid "Target RMSE"
 msgstr "RECM (RMSE) obxectivo"
 
-#, fuzzy
 msgid "LM RMSE"
-msgstr "RECM (RMSE) de MCP-MR (PLS-PM)"
+msgstr "RECM (RMSE) de ML"
 
 msgid "GSCA RMSE"
 msgstr "RECM (RMSE) de GSCA"
@@ -430,9 +425,8 @@ msgstr "RECM (RMSE) de CP (PCA)"
 msgid "MAXVAR RMSE"
 msgstr "RECM (RMSE) de MAXVAR"
 
-#, fuzzy
 msgid "Target Q2 Prediction"
-msgstr "Predición Q2 obxectivo"
+msgstr "Predición de Q2 obxectivo"
 
 msgid ""
 "There are not enough observations for each k-fold, try setting 'cross-"
@@ -465,7 +459,6 @@ msgstr "Distancia xeodésica"
 msgid "Squared Euclidean distance"
 msgstr "Distancia Euclídea cadrada"
 
-#, fuzzy
 msgid "Maximum likelihood-based distance"
 msgstr "Distancia baseada na Máxima-Verosimilitude"
 
@@ -496,9 +489,8 @@ msgstr "Matriz de correlacións de construcións observadas"
 msgid "Implied construct correlation matrix"
 msgstr "Matriz de correlacións de construcións implicadas"
 
-#, fuzzy
 msgid "Column name %s already exists in the dataset"
-msgstr "O nome '%s' de columna xa existe no conxunto de datos"
+msgstr "O nome %s de columna xa existe no conxunto de datos"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
@@ -534,7 +526,7 @@ msgid ""
 "covariate(s) fixed' box must be checked."
 msgstr ""
 "Cando se condiciona a estimación segundo covariantes esóxenas, a caixa "
-"'Covariante(s) esóxena(s) fixadas' debe estar marcada."
+"'Covariante(s) esóxena(s) fixada(s)' debe estar marcada."
 
 msgid ""
 "Bootstrapped standard errors are not yet available when 'Condition on "
@@ -849,13 +841,12 @@ msgstr "Parámetro de Sensibilidade"
 msgid "Path diagram"
 msgstr "Diagrama de ruta"
 
-#, fuzzy
 msgid ""
 "Model plot not available when there is at least one exogenous covariate and "
 "the 'Exogenous covariate(s) fixed' box is checked."
 msgstr ""
-"Cando se condiciona a estimación segundo covariantes esóxenas, a caixa "
-"'Covariante(s) esóxena(s) fixadas' debe estar marcada."
+"Gráfica de modelo non dispoñible cando hai ao menos unha covariante esóxena, "
+"e está marcada a caixa 'Covariante(s) esóxena(s) fixada(s)'."
 
 msgid "Satorra-Bentler"
 msgstr "Satorra-Bentler"
