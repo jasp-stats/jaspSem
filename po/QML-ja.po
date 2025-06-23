@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2025-06-23 17:16+0000\n"
+"Last-Translator: Akira Harada <momoldo@gmail.com>\n"
+"Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/"
+"jaspsem-qml/ja/>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.13-dev\n"
 "X-Language: ja\n"
 "X-Qt-Contexts: true\n"
 
@@ -1112,11 +1118,11 @@ msgstr "構成されたアスコアをデータに追加"
 
 msgctxt "SEM|"
 msgid "Standardized"
-msgstr ""
+msgstr "標準化された"
 
 msgctxt "Advanced|"
 msgid "Select the method for handling missing data in estimation"
-msgstr ""
+msgstr "推定時の欠損値処理方法を選択する"
 
 msgctxt "Advanced|"
 msgid "Use Full Information Maximum Likelihood to handle missing data"
@@ -1132,7 +1138,7 @@ msgstr ""
 
 msgctxt "Advanced|"
 msgid "Use Lavaan default estimation method"
-msgstr ""
+msgstr "Lavaanのデフォルト推定法を使う"
 
 msgctxt "Advanced|"
 msgid "Emulate Mplus estimation methods"
@@ -1152,7 +1158,7 @@ msgstr ""
 
 msgctxt "Advanced|"
 msgid "Maximum Likelihood estimator"
-msgstr ""
+msgstr "最尤推定値"
 
 msgctxt "Advanced|"
 msgid "Generalized Least Squares estimator"
@@ -1386,7 +1392,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Set a random seed:"
-msgstr ""
+msgstr "乱数の種(シード)を設定する:"
 
 #, qt-format
 msgctxt "SEM|"
@@ -1397,6 +1403,10 @@ msgid ""
 "multigroup analysis is now interpreted differently. Proceed with caution! "
 "More details about the update can be found at %1"
 msgstr ""
+"この分析は現在より古いバージョンのJASP(もしくは動的モジュール)によって行われ"
+"ました．現在，この分析を行うlavaanのパッケージは変更されています．特に，等値"
+"制約に関するlavaanの構文の解釈が異なります．注意して結果を見てください！"
+"lavaanのアップデートに関するより詳しい情報は %1 にあります．"
 
 msgctxt "PLSSEM|"
 msgid "Fit measures"
