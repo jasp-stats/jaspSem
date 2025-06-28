@@ -2,16 +2,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.19.2\n"
 "POT-Creation-Date: 2025-06-07 03:06\n"
-"PO-Revision-Date: 2025-02-14 13:21+0000\n"
-"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
-"Language-Team: Tamil <https://hosted.weblate.org/projects/jasp/jaspsem-r/ta/"
-">\n"
+"PO-Revision-Date: 2025-06-29 13:01+0000\n"
+"Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
+"Language-Team: Tamil <https://hosted.weblate.org/projects/jasp/jaspsem-r/ta/>"
+"\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10\n"
+"X-Generator: Weblate 5.13-dev\n"
 
 msgid "Fit indices"
 msgstr "குறியீடுகளை பொருத்துங்கள்"
@@ -119,7 +119,7 @@ msgid "Std. estimate"
 msgstr "Std. மதிப்பீடு"
 
 msgid "Estimate"
-msgstr ""
+msgstr "மதிப்பீடு"
 
 msgid "Component"
 msgstr "உறுப்பு"
@@ -134,10 +134,10 @@ msgid "z-value"
 msgstr "z- மதிப்பு"
 
 msgid "p"
-msgstr ""
+msgstr "ப"
 
 msgid "Lower"
-msgstr ""
+msgstr "கீழ்"
 
 msgid "%s%% Confidence Interval"
 msgstr "%s %% நம்பிக்கை இடைவெளி"
@@ -164,10 +164,10 @@ msgid "Cubic slope"
 msgstr "கன சாய்வு"
 
 msgid "Mean"
-msgstr ""
+msgstr "இடை, சராசரி"
 
 msgid "Variance"
-msgstr ""
+msgstr "மாறுபாட்டெண்"
 
 msgid ""
 "Residual variance is negative. This may indicate model misspecification."
@@ -234,7 +234,7 @@ msgid "Direct effects"
 msgstr "நேரடி விளைவுகள்"
 
 msgid "Upper"
-msgstr ""
+msgstr "மேல்"
 
 msgid "Indirect effects"
 msgstr "மறைமுக விளைவுகள்"
@@ -288,10 +288,10 @@ msgstr ""
 "முயற்சிக்கவும் அல்லது பிற மிமிக் மாதிரியைக் குறிப்பிடவும்."
 
 msgid "df"
-msgstr ""
+msgstr "டி.எஃப்"
 
 msgid "&#967;&sup2;"
-msgstr "&#967; & sup2;"
+msgstr "&#967;&sup2;"
 
 msgid "Factor model"
 msgstr "காரணி மாதிரி"
@@ -311,15 +311,16 @@ msgstr "ஆர்டினல் மாறிகள் மூலம் மாத
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "குழு %s இல் 3 க்கும் குறைவான அவதானிப்புகளை தொகுத்தல் மாறி உள்ளது"
 
-#, fuzzy
 msgid "Enter a model"
-msgstr "நேரியல் மாதிரி"
+msgstr "ஒரு மாதிரியை உள்ளிடவும்"
 
 msgid "Variable(s) in model syntax not recognized: %s"
-msgstr ""
+msgstr "மாதிரி தொடரியல் அங்கீகரிக்கப்படவில்லை: %s"
 
 msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
 msgstr ""
+"'~~' ஐப் பயன்படுத்துவது கலப்பு கோவாரியன்களுக்கு ஆதரிக்கப்படவில்லை. அதற்கு பதிலாக '~' "
+"முயற்சிக்கவும்"
 
 msgid "Estimation failed Message: %s"
 msgstr "மதிப்பீடு தோல்வியுற்ற செய்தி: %s"
@@ -327,27 +328,27 @@ msgstr "மதிப்பீடு தோல்வியுற்ற செய�
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr "மதிப்பீடு தோல்வியுற்றது! செய்தி: மாதிரி %s ஒன்றிணைக்கவில்லை!"
 
-#, fuzzy
 msgid "Model Fit"
 msgstr "மாதிரி பொருத்தம்"
 
 msgid "Group"
-msgstr ""
+msgstr "குழு"
 
 msgid "Distance Measure"
-msgstr ""
+msgstr "தூர நடவடிக்கை"
 
 msgid "Test Statistic"
-msgstr ""
+msgstr "சோதனை புள்ளிவிவரம்"
 
 msgid "Critical Value (%s%% Quantile)"
-msgstr ""
+msgstr "சிக்கலான மதிப்பு (%s %% அளவு)"
 
 msgid "At least one result is inadmissible."
-msgstr ""
+msgstr "குறைந்தது ஒரு முடிவுக்கு உறுதிப்படுத்த முடியாதது."
 
 msgid "Denotes the fit of the model including a saturated structural model."
 msgstr ""
+"ஒரு நிறைவுற்ற கட்டமைப்பு மாதிரி உட்பட மாதிரியின் பொருத்தத்தைக் குறிக்கிறது."
 
 msgid "Parameter Estimates"
 msgstr "அளவுரு மதிப்பீடுகள்"
@@ -368,15 +369,13 @@ msgid "Regression Coefficients"
 msgstr "பின்னடைவு குணகங்கள்"
 
 msgid "Outcome"
-msgstr ""
+msgstr "விளைவு"
 
-#, fuzzy
 msgid "Total Effects"
 msgstr "மொத்த விளைவுகள்"
 
-#, fuzzy
 msgid "Residual Correlations"
-msgstr "மீதமுள்ள கோவாரியன்ச்"
+msgstr "மீதமுள்ள தொடர்புகள்"
 
 msgid "VIF"
 msgstr "Vif"
@@ -390,9 +389,8 @@ msgstr "கணிப்பு அளவீடுகள்"
 msgid "Target MAE"
 msgstr "இலக்கு மே"
 
-#, fuzzy
 msgid "LM MAE"
-msgstr "Pls-pm மய்"
+msgstr "எல்.எம்"
 
 msgid "GSCA MAE"
 msgstr "சி.எச்.சி.ஏ."
@@ -406,9 +404,8 @@ msgstr "மேக்ச்வார்"
 msgid "Target RMSE"
 msgstr "இலக்கு RMSE"
 
-#, fuzzy
 msgid "LM RMSE"
-msgstr "Pls-pm rmse"
+msgstr "LM RMSE"
 
 msgid "GSCA RMSE"
 msgstr "சி.எச்.சி.ஏ ஆர்.எம்.எச்.இ."
@@ -419,7 +416,6 @@ msgstr "பி.சி.ஏ ஆர்.எம்.எச்.இ."
 msgid "MAXVAR RMSE"
 msgstr "மேக்ச்வார் ஆர்.எம்.எச்.இ."
 
-#, fuzzy
 msgid "Target Q2 Prediction"
 msgstr "இலக்கு Q2 கணிப்பு"
 
@@ -454,7 +450,6 @@ msgstr "புவிசார் தூரம்"
 msgid "Squared Euclidean distance"
 msgstr "ச்கொயர் யூக்ளிடியன் தூரம்"
 
-#, fuzzy
 msgid "Maximum likelihood-based distance"
 msgstr "அதிகபட்ச சாத்தியக்கூறு அடிப்படையிலான தூரம்"
 
@@ -485,9 +480,8 @@ msgstr "கவனிக்கப்பட்ட கட்டுமான தொ�
 msgid "Implied construct correlation matrix"
 msgstr "கட்டுமான தொடர்பு மேட்ரிக்ச்"
 
-#, fuzzy
 msgid "Column name %s already exists in the dataset"
-msgstr "நெடுவரிசை '%s' பெயர் ஏற்கனவே தரவுத்தொகுப்பில் உள்ளது"
+msgstr "நெடுவரிசை பெயர் %s ஏற்கனவே தரவுத்தொகுப்பில் உள்ளன"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
@@ -560,7 +554,7 @@ msgid "n(Observations)"
 msgstr "n (அவதானிப்புகள்)"
 
 msgid "Total"
-msgstr ""
+msgstr "மொத்தம்"
 
 msgid "n(Parameters)"
 msgstr "n (அளவுருக்கள்)"
@@ -703,7 +697,7 @@ msgid "Coefficient"
 msgstr "கெழு"
 
 msgid "z"
-msgstr ""
+msgstr "சட்"
 
 msgid ""
 "Multivariate skewness and kurtosis calculated for observed variables from "
@@ -798,10 +792,10 @@ msgid "Sensitivity model"
 msgstr "உணர்திறன் மாதிரி"
 
 msgid "Min"
-msgstr ""
+msgstr "மணித்துளி"
 
 msgid "Max"
-msgstr ""
+msgstr "அதிகபட்சம்"
 
 msgid ""
 "Please include at least one regression path in the model to perform a "
@@ -830,13 +824,12 @@ msgstr "உணர்திறன் அளவுரு"
 msgid "Path diagram"
 msgstr "பாதை வரைபடம்"
 
-#, fuzzy
 msgid ""
 "Model plot not available when there is at least one exogenous covariate and "
 "the 'Exogenous covariate(s) fixed' box is checked."
 msgstr ""
-"வெளிப்புற கோவாரியட்டுகளில் கண்டிசனிங் மதிப்பீடு போது, 'வெளிப்புற கோவாரியேட் (கள்) "
-"நிலையான' பெட்டியை சரிபார்க்க வேண்டும்."
+"குறைந்தது ஒரு வெளிப்புற கோவாரியட் மற்றும் 'வெளிப்புற கோவாரியேட் (கள்) நிலையான' பெட்டி "
+"சரிபார்க்கப்படும்போது மாதிரி சூழ்ச்சி கிடைக்காது."
 
 msgid "Satorra-Bentler"
 msgstr "சடோரா-பென்ட்லர்"
