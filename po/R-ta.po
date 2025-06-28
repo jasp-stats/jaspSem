@@ -369,7 +369,7 @@ msgid "Regression Coefficients"
 msgstr "பின்னடைவு குணகங்கள்"
 
 msgid "Outcome"
-msgstr "விளைவுகள்"
+msgstr "விளைவாக"
 
 msgid "Total Effects"
 msgstr "மொத்த விளைவுகள்"
