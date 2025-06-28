@@ -119,7 +119,7 @@ msgid "Std. estimate"
 msgstr "Std. மதிப்பீடு"
 
 msgid "Estimate"
-msgstr "மதிப்பீடு"
+msgstr "மதிப்பிடு"
 
 msgid "Component"
 msgstr "உறுப்பு"
@@ -369,7 +369,7 @@ msgid "Regression Coefficients"
 msgstr "பின்னடைவு குணகங்கள்"
 
 msgid "Outcome"
-msgstr "விளைவு"
+msgstr "விளைவுகள்"
 
 msgid "Total Effects"
 msgstr "மொத்த விளைவுகள்"
@@ -393,7 +393,7 @@ msgid "LM MAE"
 msgstr "எல்.எம்"
 
 msgid "GSCA MAE"
-msgstr "சி.எச்.சி.ஏ."
+msgstr "சி.எச்.சி.ஏ. மே"
 
 msgid "PCA MAE"
 msgstr "பி.சி.ஏ அங்கே"
@@ -408,13 +408,13 @@ msgid "LM RMSE"
 msgstr "LM RMSE"
 
 msgid "GSCA RMSE"
-msgstr "சி.எச்.சி.ஏ ஆர்.எம்.எச்.இ."
+msgstr "சி.எச்.சி.ஏ ஆர்.எம்.எச்.இ"
 
 msgid "PCA RMSE"
-msgstr "பி.சி.ஏ ஆர்.எம்.எச்.இ."
+msgstr "பி.சி.ஏ ஆர்.எம்.எச்.இ"
 
 msgid "MAXVAR RMSE"
-msgstr "மேக்ச்வார் ஆர்.எம்.எச்.இ."
+msgstr "மேக்ச்வார் ஆர்.எம்.எச்.இ"
 
 msgid "Target Q2 Prediction"
 msgstr "இலக்கு Q2 கணிப்பு"
