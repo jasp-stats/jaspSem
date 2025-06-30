@@ -470,7 +470,7 @@ msgid "Implied construct correlation matrix"
 msgstr ""
 
 msgid "Column name %s already exists in the dataset"
-msgstr "Nazwa kolumny %s już istnieje w zbiorze danych."
+msgstr "Nazwa kolumny %s już istnieje w zbiorze danych"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
