@@ -210,7 +210,7 @@ Form
 				text: qsTr("Model plot")
 				name: "pathPlot"
 				info: qsTr("Generate a path diagram of the model")
-				CheckBox { text: qsTr("Show parameters") ; name: "pathPlotParameter"; info: qsTr("Display parameter estimates in the model plot") }
+				CheckBox { text: qsTr("Show parameter estimates") ; name: "pathPlotParameter"; info: qsTr("Display parameter estimates in the model plot") }
 				CheckBox { text: qsTr("Show means")      ; name: "pathPlotMean"; info: qsTr("Display means in the model plot") }
 			}
 		}

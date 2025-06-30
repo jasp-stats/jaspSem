@@ -16,7 +16,8 @@
 
 
 LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
-
+  sink(file="~/Downloads/log.txt")
+  on.exit(sink(NULL))
   ready <- length(options[["variables"]]) > 2
 
   # Read dataset
