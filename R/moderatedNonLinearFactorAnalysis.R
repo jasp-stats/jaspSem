@@ -20,7 +20,10 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   sink("~/Downloads/log.txt")
   on.exit(sink(NULL))
 
-  OpenMx::mxSetDefaultOptions()
+  print("in here1")
+
+  # OpenMx::mxSetDefaultOptions()
+  print("in here2")
 
   ready <- length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)) > 1 &&
     length(options[["moderators"]]) > 0 && options[["syncAnalysisBox"]]
@@ -242,8 +245,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 .mnlfaPlotOptionsForQml <- function(jaspResults, options) {
 
   if (!is.null(jaspResults[["plotOptionsForQml"]])) {
-    # print("reused")
-    # print(jaspResults[["plotOptionsForQml"]])
     return()
   }
 
