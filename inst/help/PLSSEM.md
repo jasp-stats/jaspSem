@@ -4,10 +4,6 @@ This document explains how to perform Partial Least Squares Structural Equation 
 
 ## 1. Model Setup
 ---
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
 In the **Model** section, you can specify the structural equation model using lavaan syntax. 
 The following operators can be used: =~ to specify a latent variable 
 measured by a set of indicators; <~ to specify a composite/emergent variable that is made up of a set of indicators; 
@@ -20,17 +16,6 @@ Furthermore, the structural model may not include any observed variables, i.e.,
 to include observed variables in the structural model they must be specified as
 a single-indicator construct. Finally, a grouping variable can be selected. 
 In this case, the model is estimated separately for each group. 
-<<<<<<< HEAD
-=======
-In the **Model** section, you can specify the structural equation model using lavaan syntax. The following operators can be used: =~ to specify a latent variable 
-measured by a set of indicators; <~ to specify a composite/emergent variable that is made up of a set of indicators; and ~ to specify the structural model, i.e., the relationships 
-between the latent variables and the composites. In specifying the relationships between the latent variables and the composites, 
-they must not be isolated in the structural model. In addition, no indicator may be connected to more than one latent variable/composite. 
-Furthermore, the structural model may not include any observed variables, i.e., to include observed variables in the structural model they must be specified as
-a single-indicator construct. Finally, a grouping variable can be selected. In this case, the model is estimated separately for each group. 
->>>>>>> 93227b971 (adjusted helpfile by Flo Schuberth)
-=======
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
 
 - **Grouping Variable**: You can select the grouping variable for multi-group analysis. 
 The grouping variable is optional and can be left empty if not required.
@@ -39,28 +24,13 @@ The grouping variable is optional and can be left empty if not required.
 ---
 In the **Estimation** section, the following options are available:
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
 - **Consistent partial least squares**: Enables the option to use consistent partial least squares (PLSc), which, 
 in contrast to traditional PLS, produces consistent estimates for latent variable models (=~). 
 In this case, Mode A weights are transformed to obtain consistent factor loading estimates. 
 In addition, the correlations between latent variables and other variables of the structural model are corrected 
 for attenuation before they are used to estimate the parameters of the structural model.  
-<<<<<<< HEAD
   
 - **Inner weighting scheme**: Choose from the following options to calculate inner weights used in the PLS algorithm:
-=======
-- **Consistent Partial Least Squares**: Enables the option to use consistent partial least squares (PLSc), which, in contrast to traditional PLS, produces consistent estimates for latent variable models (=~). In this case, Mode A weights are transformed to obtain consistent factor loadings. 
-In addition, the correlations between latent variables and other variables of the structural model are corrected for attenuation before they are used to estimate the parameters of the structural model.  
-  
-- **Inner Weighting Scheme**: Choose from the following options to calculate inner weights used in the PLS algorithm:
->>>>>>> 93227b971 (adjusted helpfile by Flo Schuberth)
-=======
-  
-- **Inner weighting scheme**: Choose from the following options to calculate inner weights used in the PLS algorithm:
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
   - Path weighting scheme
   - Centroid weighting scheme
   - Factorial weighting scheme
@@ -76,29 +46,11 @@ In case of centroid and factorial inner weighting schemes, the structural model 
 
 - **Error calculation method**: Choose from the following options to calculate the standard errors and confidence intervals of the parameter estimates:
   - None
-<<<<<<< HEAD
-<<<<<<< HEAD
   - Bootstrap
   
 **Samples**: The number of bootstrap runs can be specified.  
   
 **Repeatability**: A seed can be set, to make the analysis reproducible.  
-=======
-  - Robust: Use one of the following resample techniques:
-    - Bootstrap
-    - Jackknife
-  
-**Samples**: The number of bootstrap runs can be specified.  
-  
-**Repeatabilty**: A seed can be set, to make the analysis reproducible.  
->>>>>>> 93227b971 (adjusted helpfile by Flo Schuberth)
-=======
-  - Bootstrap
-  
-**Samples**: The number of bootstrap runs can be specified.  
-  
-**Repeatability**: A seed can be set, to make the analysis reproducible.  
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
   
 
 ## 3. Output Options
@@ -115,10 +67,6 @@ The **Output** section includes options to customize the output you want to gene
 - **Observed construct correlations**: Enable output of the construct correlation matrix. 
 - **Implied construct correlations**: Enable output of the model-implied construct correlation matrix. 
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
 - **Overall model fit** Enables the option to assess the overall fit of the model. 
 In particular, bootstrap in combination with various distance measures, i.e., the geodesic distance (dG), 
 the standardized root mean square residual (SRMR), the squared Euclidean distance (dL), 
@@ -133,11 +81,6 @@ in the population.
   The significance level is used to determine the critical value. 
   The critical value is determined as 1-alpha quantile of the bootstrap distance measures.
   - Saturated structural model: Enables the option to assess the overall fit of a model with a saturated structural model.
-<<<<<<< HEAD
-=======
->>>>>>> 93227b971 (adjusted helpfile by Flo Schuberth)
-=======
->>>>>>> d9fdbfad6 (change model fit table, and remove multi models)
 
 You can also add **construct scores** to the dataset for further analysis.
 
