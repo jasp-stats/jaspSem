@@ -1,4 +1,4 @@
-context("MIMIC")
+context("LGCM")
 
 options <- list(
   .meta = list(
@@ -138,3 +138,141 @@ test_that("Residual variances table results match", {
                                  ))
 })
 
+
+# test standardization
+options <- list(
+  .meta = list(
+    categorical = list(
+      hasTypes = TRUE,
+      shouldEncode = TRUE
+    ),
+    curvePlotCategorical = list(
+      shouldEncode = TRUE
+    ),
+    group = list(
+      shouldEncode = TRUE
+    ),
+    regressions = list(
+      hasTypes = TRUE,
+      shouldEncode = TRUE
+    ),
+    timings = list(
+      hasTypes = TRUE,
+      shouldEncode = TRUE
+    ),
+    variables = list(
+      hasTypes = TRUE,
+      shouldEncode = TRUE
+    )
+  ),
+  additionalFitMeasures = FALSE,
+  bootstrapCiType = "percentileBiasCorrected",
+  bootstrapSamples = 1000,
+  categorical = "group",
+  categorical.types = "nominal",
+  ciLevel = 0.95,
+  colorPalette = "colorblind",
+  covariates = list(),
+  covaryingLatentCurve = TRUE,
+  cubic = FALSE,
+  curvePlot = FALSE,
+  curvePlotCategorical = "group",
+  curvePlotMaxLines = 30,
+  dependentCorrelation = TRUE,
+  emulation = "lavaan",
+  errorCalculationMethod = "standard",
+  estimator = "default",
+  exogenousLatentCorrelation = TRUE,
+  group = "",
+  impliedCovariance = FALSE,
+  intercept = TRUE,
+  latentInterceptFixedToZero = TRUE,
+  linear = TRUE,
+  manifestInterceptFixedToZero = FALSE,
+  misfitPlot = FALSE,
+  naAction = "fiml",
+  pathPlot = FALSE,
+  pathPlotMean = FALSE,
+  pathPlotParameter = FALSE,
+  plotHeight = 320,
+  plotWidth = 480,
+  quadratic = FALSE,
+  rSquared = FALSE,
+  regressions = "x3",
+  regressions.types = "scale",
+  residualCovariance = FALSE,
+  residualSingleIndicatorOmitted = TRUE,
+  residualVariance = TRUE,
+  scalingParameter = TRUE,
+  standardizedEstimate = TRUE,
+  standardizedEstimateType = "all",
+  syntax = FALSE,
+  threshold = TRUE,
+  timings = list(
+    list(timing = 0, variable = "y1"),
+    list(timing = 1, variable = "y2"),
+    list(timing = 2, variable = "y3"),
+    list(timing = 3, variable = "y4")
+  ),
+  timings.types = c("scale", "scale", "scale", "scale"),
+  variables = c("y1", "y2", "y3", "y4"),
+  variables.types = c("scale", "scale", "scale", "scale")
+)
+
+set.seed(1)
+results <- runAnalysis("LatentGrowthCurve", data = testthat::test_path("poldem_grouped.csv"), options = options, makeTests = F)
+
+
+test_that("Chi-square test table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_maintab"]][["collection"]][["modelContainer_maintab_chisqtab"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(187.534921995622, 14, "Baseline model", "", 69.7448930126911,
+                                      9, "Growth curve model", 1.7085333148259e-11))
+})
+
+test_that("Latent covariances table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_partabs"]][["collection"]][["modelContainer_partabs_latcov"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-0.933354887001021, 1.3219684208426, 0.194306766920789, "Intercept",
+                                      0.735573953392761, "Linear slope", 0.57534815068882, "<unicode><unicode>",
+                                      0.33772032931393))
+})
+
+test_that("Latent curve table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_partabs"]][["collection"]][["modelContainer_partabs_latcur"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(0.689567552015991, 3.32433715024733, "Intercept", 2.00695235113166,
+                                      "Mean", 0.0028276259429858, 0.672147452456796, 2.98588106492996,
+                                      0.783158280188574, 1.05502577241312, "Intercept", 0.919092026300845,
+                                      "Variance", 0, 0.0693552265166601, 13.2519504651905, -3.31263568354905,
+                                      0.945322073452253, "Linear slope", -1.1836568050484, "Mean",
+                                      0.275850195795035, 1.08623367331939, -1.08968892616935, 0.168252475473949,
+                                      1.34638609981018, "Linear slope", 0.757319287642065, "Variance",
+                                      0.0117428340916275, 0.30054981459588, 2.51977958682276))
+})
+
+test_that("Regressions table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_partabs"]][["collection"]][["modelContainer_partabs_latreg"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-0.00312680005628446, 0.499329260284261, "Intercept", 0.248101230113988,
+                                      "x3", 0.0529203694733311, 0.128179921749546, 1.93557014802021,
+                                      -0.344514960408374, 0.170092804220773, "Intercept", -0.0872110780938004,
+                                      "group", 0.506489360351412, 0.131279903275853, -0.66431400326787,
+                                      -0.134719469422696, 0.977938637115648, "Linear slope", 0.421609583846476,
+                                      "x3", 0.13745292242919, 0.283846569456084, 1.48534324249321,
+                                      -0.580720852131014, 0.250970704664956, "Linear slope", -0.164875073733029,
+                                      "group", 0.437106225941533, 0.21217011214396, -0.777089063426423
+                                 ))
+})
+
+test_that("Residual variances table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_partabs"]][["collection"]][["modelContainer_partabs_resvar"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(-0.0445852644621054, 0.524655960556052, 0.240035348046973, 0.0983431883416908,
+                                      0.14521726662027, "y1", 1.65293944469183, 0.449063836698895,
+                                      0.697652586970778, 0.573358211834837, 0, 0.0634166628143986,
+                                      "y2", 9.0411287253144, 0.412017878121697, 0.66226317253542,
+                                      0.537140525328559, 0, 0.0638392583709768, "y3", 8.41395309148451,
+                                      -0.0399776999941945, 0.393824053017031, 0.176923176511418, 0.109883564718275,
+                                      0.110665746011916, "y4", 1.59871670220673))
+})

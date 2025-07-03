@@ -29,7 +29,7 @@ Form
 		AvailableVariablesList
 		{
 			name: "availableVariables"
-			info: qsTr("List of all available variables for analysis")
+			// info: qsTr("List of all available variables for analysis")
 		}
 		AssignedVariablesList
 		{
@@ -60,7 +60,6 @@ Form
 			title: qsTr("Time-varying covariates")
 			allowedColumns: ["scale"]
 			debug: true
-			info: qsTr("Time-varying covariates in the model")
 			//listViewType: "RepeatedMeasures"
 			//source: variables.name
 		}
@@ -210,7 +209,7 @@ Form
 				text: qsTr("Model plot")
 				name: "pathPlot"
 				info: qsTr("Generate a path diagram of the model")
-				CheckBox { text: qsTr("Show parameters") ; name: "pathPlotParameter"; info: qsTr("Display parameter estimates in the model plot") }
+				CheckBox { text: qsTr("Show parameter estimates") ; name: "pathPlotParameter"; info: qsTr("Display parameter estimates in the model plot") }
 				CheckBox { text: qsTr("Show means")      ; name: "pathPlotMean"; info: qsTr("Display means in the model plot") }
 			}
 		}
@@ -224,14 +223,30 @@ Form
 		title: qsTr("Options")
 		debug: true
 		info: qsTr("Additional modeling options")
-		CheckBox { text: qsTr("Fix manifest intercepts to zero") ; name: "manifestInterceptFixedToZero" 	; info: qsTr("Fix manifest intercepts to zero") }
-		CheckBox { text: qsTr("Fix latent intercepts to zero")   ; name: "latentInterceptFixedToZero"		; checked: true ; info: qsTr("Fix latent intercepts to zero") }
-		CheckBox { text: qsTr("Omit residual single indicator")  ; name: "residualSingleIndicatorOmitted"	; checked: true ; info: qsTr("Omit residuals for single indicators") }
-		CheckBox { text: qsTr("Residual variances")              ; name: "residualVariance"           		; checked: true ; info: qsTr("Include residual variances in the model") }
-		CheckBox { text: qsTr("Correlate exogenous latents")     ; name: "exogenousLatentCorrelation"   	; checked: true ; info: qsTr("Allow exogenous latent variables to correlate") }
-		CheckBox { text: qsTr("Add thresholds")                  ; name: "threshold"               			; checked: true ; info: qsTr("Include thresholds in the model") }
-		CheckBox { text: qsTr("Add scaling parameters")          ; name: "scalingParameter"        			; checked: true ; info: qsTr("Include scaling parameters in the model") }
-		CheckBox { text: qsTr("Correlate dependent variables")   ; name: "dependentCorrelation" 			; checked: true ; info: qsTr("Allow dependent variables to correlate") }
+		CheckBox { text: qsTr("Fix manifest intercepts to zero") ; name: "manifestInterceptFixedToZero" 	
+		// ; info: qsTr("Fix manifest intercepts to zero") 
+		}
+		CheckBox { text: qsTr("Fix latent intercepts to zero")   ; name: "latentInterceptFixedToZero"		; checked: true ; 
+		// info: qsTr("Fix latent intercepts to zero") 
+		}
+		CheckBox { text: qsTr("Omit residual single indicator")  ; name: "residualSingleIndicatorOmitted"	; checked: true 
+		// ; info: qsTr("Omit residuals for single indicators") 
+		}
+		CheckBox { text: qsTr("Residual variances")              ; name: "residualVariance"           		; checked: true 
+		// ; info: qsTr("Include residual variances in the model") 
+		}
+		CheckBox { text: qsTr("Correlate exogenous latents")     ; name: "exogenousLatentCorrelation"   	; checked: true 
+		// ; info: qsTr("Allow exogenous latent variables to correlate") 
+		}
+		CheckBox { text: qsTr("Add thresholds")                  ; name: "threshold"               			; checked: true 
+		// ; info: qsTr("Include thresholds in the model") 
+		}
+		CheckBox { text: qsTr("Add scaling parameters")          ; name: "scalingParameter"        			; checked: true 
+		// ; info: qsTr("Include scaling parameters in the model") 
+		}
+		CheckBox { text: qsTr("Correlate dependent variables")   ; name: "dependentCorrelation" 			; checked: true 
+		// ; info: qsTr("Allow dependent variables to correlate") 
+		}
 	}
 	
 
@@ -239,14 +254,14 @@ Form
 	{
 		text: qsTr("Multigroup LGCM")
 		debug: true
-		info: qsTr("Options for multigroup latent growth curve modeling")
+		// info: qsTr("Options for multigroup latent growth curve modeling")
 		DropDown
 		{
 			label: qsTr("Grouping variable") ;
 			name: "group";
 			showVariableTypeIcon: true;
 			addEmptyValue: true;
-			info: qsTr("Select a grouping variable that is ideally nominally scaled")
+			// info: qsTr("Select a grouping variable that is ideally nominally scaled")
 		} // No model or syncModels: it takes all variables per default
 	}
 }

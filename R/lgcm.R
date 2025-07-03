@@ -16,6 +16,7 @@
 
 
 LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
+
   ready <- length(options[["variables"]]) > 2
 
   # Read dataset
@@ -386,12 +387,6 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   latcur[["cilo"]]      <- pecur[["ci.lower"]]
   latcur[["ciup"]]      <- pecur[["ci.upper"]]
 
-  if (options[["standardizedEstimate"]]) {
-    latcur[["std.lv"]]  <- pecur[["std.lv"]]
-    latcur[["std.all"]] <- pecur[["std.all"]]
-    latcur[["std.nox"]] <- pecur[["std.nox"]]
-  }
-
   # covariance
   if (options[["covaryingLatentCurve"]]) {
     pecov <- pe[pe$lhs %in% slope_names & pe$op == "~~" & pe$lhs != pe$rhs,]
@@ -404,11 +399,6 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     latcov[["pval"]] <- pecov[["pvalue"]]
     latcov[["cilo"]] <- pecov[["ci.lower"]]
     latcov[["ciup"]] <- pecov[["ci.upper"]]
-    if (options[["standardizedEstimate"]]) {
-      latcov[["std.lv"]]  <- pecov[["std.lv"]]
-      latcov[["std.all"]] <- pecov[["std.all"]]
-      latcov[["std.nox"]] <- pecov[["std.nox"]]
-    }
   }
 
   # regressions
@@ -423,11 +413,6 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     latreg[["pval"]]      <- pereg[["pvalue"]]
     latreg[["cilo"]]      <- pereg[["ci.lower"]]
     latreg[["ciup"]]      <- pereg[["ci.upper"]]
-    if (options[["standardizedEstimate"]]) {
-      latreg[["std.lv"]]  <- pereg[["std.lv"]]
-      latreg[["std.all"]] <- pereg[["std.all"]]
-      latreg[["std.nox"]] <- pereg[["std.nox"]]
-    }
   }
 
   # residual variances
@@ -439,12 +424,6 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   resvar[["pval"]] <- perev[["pvalue"]]
   resvar[["cilo"]] <- perev[["ci.lower"]]
   resvar[["ciup"]] <- perev[["ci.upper"]]
-
-  if (options[["standardizedEstimate"]]) {
-    resvar[["std.lv"]]  <- perev[["std.lv"]]
-    resvar[["std.all"]] <- perev[["std.all"]]
-    resvar[["std.nox"]] <- perev[["std.nox"]]
-  }
 
   if (any(perev[["est"]] < 0)) {
     resvar$addFootnote(gettext("Residual variance is negative. This may indicate model misspecification."),
