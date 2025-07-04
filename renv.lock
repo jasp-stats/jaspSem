@@ -384,11 +384,11 @@
     },
     "RcppArmadillo": {
       "Package": "RcppArmadillo",
-      "Version": "14.4.3-1",
+      "Version": "14.6.0-1",
       "Source": "Repository",
       "Type": "Package",
       "Title": "'Rcpp' Integration for the 'Armadillo' Templated Linear Algebra Library",
-      "Date": "2025-05-21",
+      "Date": "2025-07-02",
       "Authors@R": "c(person(\"Dirk\", \"Eddelbuettel\", role = c(\"aut\", \"cre\"), email = \"edd@debian.org\", comment = c(ORCID = \"0000-0001-6419-907X\")), person(\"Romain\", \"Francois\", role = \"aut\", comment = c(ORCID = \"0000-0002-2444-4226\")), person(\"Doug\", \"Bates\", role = \"aut\", comment = c(ORCID = \"0000-0001-8316-9503\")), person(\"Binxiang\", \"Ni\", role = \"aut\"), person(\"Conrad\", \"Sanderson\", role = \"aut\", comment = c(ORCID = \"0000-0002-0049-4501\")))",
       "Description": "'Armadillo' is a templated C++ linear algebra library (by Conrad Sanderson) that aims towards a good balance between speed and ease of use. Integer, floating point and complex numbers are supported, as well as a subset of trigonometric and statistics functions. Various matrix decompositions are provided through optional integration with LAPACK and ATLAS libraries.  The 'RcppArmadillo' package includes the header files from the templated 'Armadillo' library. Thus users do not need to install 'Armadillo' itself in order to use 'RcppArmadillo'. From release 7.800.0 on, 'Armadillo' is licensed under Apache License 2; previous releases were under licensed as MPL 2.0 from version 3.800.0 onwards and LGPL-3 prior to that; 'RcppArmadillo' (the 'Rcpp' bindings/bridge to Armadillo) is licensed under the GNU GPL version 2 or later, as is the rest of 'Rcpp'.",
       "License": "GPL (>= 2)",
@@ -418,8 +418,7 @@
       "NeedsCompilation": "yes",
       "Author": "Dirk Eddelbuettel [aut, cre] (ORCID: <https://orcid.org/0000-0001-6419-907X>), Romain Francois [aut] (ORCID: <https://orcid.org/0000-0002-2444-4226>), Doug Bates [aut] (ORCID: <https://orcid.org/0000-0001-8316-9503>), Binxiang Ni [aut], Conrad Sanderson [aut] (ORCID: <https://orcid.org/0000-0002-0049-4501>)",
       "Maintainer": "Dirk Eddelbuettel <edd@debian.org>",
-      "Repository": "https://packagemanager.posit.co/cran/latest",
-      "Encoding": "UTF-8"
+      "Repository": "CRAN"
     },
     "RcppEigen": {
       "Package": "RcppEigen",
@@ -485,6 +484,29 @@
       "NeedsCompilation": "yes",
       "Author": "JJ Allaire [aut], Romain Francois [aut, cph], Kevin Ushey [aut, cre], Gregory Vandenbrouck [aut], Marcus Geelnard [aut, cph] (TinyThread library, https://tinythreadpp.bitsnbites.eu/), Hamada S. Badr [ctb] (<https://orcid.org/0000-0002-9808-2344>), Posit, PBC [cph], Intel [aut, cph] (Intel TBB library, https://www.threadingbuildingblocks.org/), Microsoft [cph]",
       "Maintainer": "Kevin Ushey <kevin@rstudio.com>",
+      "Repository": "CRAN"
+    },
+    "Rcsdp": {
+      "Package": "Rcsdp",
+      "Version": "0.1.57.6",
+      "Source": "Repository",
+      "Title": "R Interface to the CSDP Semidefinite Programming Library",
+      "Authors@R": "c( person(\"Hector\", \"Corrada Bravo\", email=\"hcorrada@gmail.com\", role=c(\"aut\", \"cre\")), person(\"Florian\", \"Schwendinger\", email=\"FlorianSchwendinger@gmx.at\", role=c(\"ctb\")), person(\"Brian\", \"Borchers\", role=\"aut\"), person(\"Don\", \"van den Bergh\", role=\"ctb\") )",
+      "Description": "R interface to the CSDP semidefinite programming library. Installs version 6.1.1 of CSDP from the COIN-OR website if required. An existing installation of CSDP may be used by passing the proper configure arguments to the installation command. See the INSTALL file for further details.",
+      "LazyLoad": "yes",
+      "Imports": [
+        "methods"
+      ],
+      "Enhances": [
+        "Matrix"
+      ],
+      "License": "CPL-1.0",
+      "URL": "https://github.com/coin-or/Csdp/",
+      "RoxygenNote": "7.0.2",
+      "BugReports": "https://github.com/hcorrada/rcsdp/issues",
+      "NeedsCompilation": "yes",
+      "Author": "Hector Corrada Bravo [aut, cre], Florian Schwendinger [ctb], Brian Borchers [aut], Don van den Bergh [ctb]",
+      "Maintainer": "Hector Corrada Bravo <hcorrada@gmail.com>",
       "Repository": "CRAN"
     },
     "Rdpack": {
@@ -2836,6 +2858,41 @@
       "RemoteSha": "9dd637722c25bf0ea035ccaabf58ef9faf36b852",
       "Remotes": "jasp-stats/jaspGraphs"
     },
+    "jaspFactor": {
+      "Package": "jaspFactor",
+      "Version": "0.95.0",
+      "Source": "GitHub",
+      "Type": "Package",
+      "Title": "Factor Module for JASP",
+      "Date": "2025-04-11",
+      "Author": "JASP Team",
+      "Website": "jasp-stats.org",
+      "Maintainer": "JASP Team <info@jasp-stats.org>",
+      "Description": "Explore hidden structure in the data",
+      "License": "GPL (>= 2)",
+      "Encoding": "UTF-8",
+      "Imports": [
+        "ggplot2",
+        "jaspBase",
+        "jaspGraphs",
+        "jaspSem",
+        "lavaan",
+        "psych",
+        "qgraph",
+        "reshape2",
+        "semPlot",
+        "GPArotation",
+        "Rcsdp",
+        "semTools"
+      ],
+      "RemoteType": "github",
+      "RemoteUsername": "jasp-stats",
+      "RemoteRepo": "jaspFactor",
+      "RemoteRef": "master",
+      "RemoteSha": "3f0de6e5f8fa3fcab7098bdb4715e7d026be563e",
+      "RemoteHost": "api.github.com",
+      "Remotes": "jasp-stats/jaspBase, jasp-stats/jaspGraphs, jasp-stats/jaspSem"
+    },
     "jaspGraphs": {
       "Package": "jaspGraphs",
       "Version": "0.20.0",
@@ -2883,6 +2940,7 @@
       "Description": "This package assists JASP developers when writing R code. It removes the necessity of building JASP every time a change is made. Rather, analyses can be called directly in R and be debugged interactively.",
       "License": "GNU General Public License",
       "Encoding": "UTF-8",
+      "LazyData": "true",
       "Imports": [
         "archive (>= 1.1.6)",
         "data.table",
@@ -2899,17 +2957,13 @@
       ],
       "RoxygenNote": "7.3.2",
       "Roxygen": "list(markdown = TRUE)",
+      "Author": "Tim de Jong [aut], Don van den Bergh [ctb, cre]",
       "RemoteType": "github",
       "RemoteHost": "api.github.com",
-      "RemoteRepo": "jaspTools",
       "RemoteUsername": "jasp-stats",
-      "RemoteRef": "HEAD",
-      "RemoteSha": "8a5cf998d43d08f0925ae7bb6083242e0bc6e0ce",
-      "NeedsCompilation": "no",
-      "Author": "Tim de Jong [aut], Don van den Bergh [ctb, cre]",
-      "Depends": [
-        "R (>= 4.1.0)"
-      ]
+      "RemoteRepo": "jaspTools",
+      "RemoteRef": "master",
+      "RemoteSha": "8a5cf998d43d08f0925ae7bb6083242e0bc6e0ce"
     },
     "jpeg": {
       "Package": "jpeg",
@@ -3605,6 +3659,42 @@
       "NeedsCompilation": "yes",
       "Author": "Alan Genz [aut], Frank Bretz [aut], Tetsuhisa Miwa [aut], Xuefei Mi [aut], Friedrich Leisch [ctb], Fabian Scheipl [ctb], Bjoern Bornkamp [ctb] (<https://orcid.org/0000-0002-6294-8185>), Martin Maechler [ctb] (<https://orcid.org/0000-0002-8685-9910>), Torsten Hothorn [aut, cre] (<https://orcid.org/0000-0001-8301-0471>)",
       "Maintainer": "Torsten Hothorn <Torsten.Hothorn@R-project.org>",
+      "Repository": "CRAN"
+    },
+    "mxsem": {
+      "Package": "mxsem",
+      "Version": "0.1.0",
+      "Source": "Repository",
+      "Type": "Package",
+      "Title": "Specify 'OpenMx' Models with a 'lavaan'-Style Syntax",
+      "Authors@R": "c(person(given   = \"Jannik H.\", family = \"Orzek\", role    = c(\"aut\", \"cre\", \"cph\"), email   = \"jannik.orzek@mailbox.org\", comment = c(ORCID = \"0000-0002-3123-2248\")))",
+      "Maintainer": "Jannik H. Orzek <jannik.orzek@mailbox.org>",
+      "Description": "Provides a 'lavaan'-like syntax for 'OpenMx' models. The syntax supports  definition variables, bounds, and parameter transformations. This allows for latent growth curve models with person-specific measurement occasions, moderated nonlinear factor analysis and much more.",
+      "License": "GPL (>= 3)",
+      "Depends": [
+        "OpenMx"
+      ],
+      "Imports": [
+        "Rcpp (>= 1.0.10)",
+        "stats",
+        "methods",
+        "dplyr",
+        "utils"
+      ],
+      "LinkingTo": [
+        "Rcpp"
+      ],
+      "RoxygenNote": "7.3.1",
+      "Encoding": "UTF-8",
+      "Suggests": [
+        "knitr",
+        "rmarkdown"
+      ],
+      "URL": "https://jhorzek.github.io/mxsem/, https://github.com/jhorzek/mxsem/",
+      "BugReports": "https://github.com/jhorzek/mxsem/issues",
+      "VignetteBuilder": "knitr",
+      "NeedsCompilation": "yes",
+      "Author": "Jannik H. Orzek [aut, cre, cph] (<https://orcid.org/0000-0002-3123-2248>)",
       "Repository": "CRAN"
     },
     "nleqslv": {

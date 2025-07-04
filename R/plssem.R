@@ -184,6 +184,11 @@ checkCSemModel <- function(model, availableVars) {
     }
   }
 
+  # check for '~~'
+  if (grepl("~~", vmodel)) {
+    return(gettext("Using '~~' is not supported. Try '~' instead"))
+  }
+
   # if checks pass, return empty string
   return("")
 }
@@ -344,10 +349,186 @@ checkCSemModel <- function(model, availableVars) {
 .plsSemFitTab <- function(modelContainer, dataset, options, ready) {
   # create model fit table
   if (!is.null(modelContainer[["fittab"]])) return()
+
+  fittab <- createJaspTable(title = gettext("Model fit"))
+  fittab$dependOn(c("models"))
+  fittab$position <- 0
+
+  # fittab$addColumnInfo(name = "Model",    title = "",                            type = "string", combine = TRUE)
+  if (options[["group"]] != "")
+    fittab$addColumnInfo(name = "group",  title = gettext("Group"),              type = "string" )
+  fittab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
+  fittab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
+  fittab$addColumnInfo(name = "N",        title = gettext("n"),                  type = "integer")
+  fittab$addColumnInfo(name = "Chisq",    title = "\u03C7\u00B2",       type = "number" ,
+                       overtitle = gettext("Baseline test"))
+  fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
+                       overtitle = gettext("Baseline test"))
+  fittab$addColumnInfo(name = "PrChisq",  title = gettext("p"),                  type = "pvalue",
+                       overtitle = gettext("Baseline test"))
+  if (length(options[["models"]]) > 1) {
+    fittab$addColumnInfo(name = "dchisq",   title = "\u0394\u03C7\u00B2", type = "number" ,
+                         overtitle = gettext("Difference test"))
+    fittab$addColumnInfo(name = "ddf",      title = "\u0394df",           type = "integer",
+                         overtitle = gettext("Difference test"))
+    fittab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
+                         overtitle = gettext("Difference test"))
+  }
+
+
+  modelContainer[["fittab"]] <- fittab
+
   if (!ready) return()
 
   # fill model fit table
   plsSemResults <- .plsSemComputeResults(modelContainer, dataset, options)
+  # we need this for a lot of other tables so we do this once here:
+  results <- plsSemResults[[1]]
+  msc <- .withWarnings(.computeMSC(results, dataset, options))
+
+  if (modelContainer$getError()) return()
+
+
+  if (length(plsSemResults) < 2) {
+    if (options[["group"]] == "") {
+
+      msc       <- .withWarnings(.computeMSC(plsSemResults[[1]], dataset, options))
+
+      name <- options[["models"]][[1]][["name"]]
+      aic       <- msc$value$msc$AIC
+      bic       <- msc$value$msc$BIC
+      Ns        <- nrow(dataset)
+      chisq     <- msc$value$mfm$Chi_square
+      df        <- msc$value$mfm$Df
+      prChisq   <- pchisq(q = chisq, df = df, lower.tail = FALSE)
+
+    } else {
+
+      msc       <- .withWarnings(.computeMSC(plsSemResults[[1]], dataset, options))
+
+      name <- rep(options[["models"]][[1]][["name"]], length(plsSemResults[[1]]))
+      group     <- names(plsSemResults[[1]])
+      aic       <- msc$value$msc["AIC",]
+      bic       <- msc$value$msc["BIC",]
+      Ns        <- msc$value$Ns
+      chisq     <- msc$value$mfm["Chi_square",]
+      df        <- msc$value$mfm["Df",]
+      prChisq   <- prChisq <- mapply(pchisq, q = chisq, df = df, lower.tail = FALSE)
+
+    }
+  } else {
+      postEstimation_args <- plsSemResults
+      names(postEstimation_args) <- "object" # (the first result is object, the others ...)
+      name <- list()
+      aic       <- list()
+      bic       <- list()
+      Ns        <- list()
+      chisq     <- list()
+      df        <- list()
+      prChisq   <- list()
+      group     <- list()
+      rsquared  <- list()
+
+      if (options[["group"]] == "") {
+
+        msc <- .withWarnings(lapply(postEstimation_args, .computeMSC, dataset = dataset, options = options))
+
+        name <- vapply(options[["models"]], getElement, name = "name", "")
+        Ns        <- rep(nrow(dataset), length(plsSemResults))
+        for (i in seq_along(options[["models"]])) {
+
+          aic       <- c(aic, msc$value[[i]]$msc$AIC)
+          bic       <- c(bic, msc$value[[i]]$msc$BIC)
+          chisq     <- c(chisq, msc$value[[i]]$mfm$Chi_square)
+          df        <- c(df, msc$value[[i]]$mfm$Df)
+          prChisq   <- c(prChisq, pchisq(q = msc$value[[i]]$mfm$Chi_square, df = msc$value[[i]]$mfm$Df, lower.tail = FALSE))
+        }
+
+      } else {
+
+        msc <- .withWarnings(lapply(postEstimation_args, .computeMSC, dataset = dataset, options = options))
+        for (i in seq_along(options[["models"]])) {
+
+          name <- c(name, rep(options[["models"]][[i]][["name"]], length(plsSemResults[[i]])))
+          aic       <- c(aic,   msc$value[[i]]$msc["AIC",])
+          bic       <- c(bic,   msc$value[[i]]$msc["BIC",])
+          Ns        <- c(Ns,    msc$value[[i]]$Ns)
+          chisq     <- c(chisq, msc$value[[i]]$mfm["Chi_square",])
+          df        <- c(df,    msc$value[[i]]$mfm["Df",])
+          prChisq   <- c(prChisq, mapply(pchisq, q = msc$value[[i]]$mfm["Chi_square",], df = msc$value[[i]]$mfm["Df",], lower.tail = FALSE))
+          group     <- c(group, names(plsSemResults[[i]]))
+        }
+      }
+    }
+
+  # fittab[["Model"]]    <- name
+  if (options[["group"]] != "")
+    fittab[["group"]]    <- group
+  fittab[["AIC"]]      <- aic
+  fittab[["BIC"]]      <- bic
+  fittab[["N"]]        <- Ns
+  fittab[["Chisq"]]    <- chisq
+  fittab[["Df"]]       <- df
+  fittab[["PrChisq"]]  <- prChisq
+
+  if (length(options[["models"]]) > 1) {
+    groupLength <- length(chisq) / length(options[["models"]])
+    dchisq   <- as.list(rep(NA, groupLength))
+    ddf      <- as.list(rep(NA, groupLength))
+    dPrChisq <- as.list(rep(NA, groupLength))
+    chisq <- as.list(chisq)
+    df <- as.list(df)
+    for(i in 1:(length(chisq)-groupLength)) {
+      dchisq     <- c(dchisq, abs(unlist(chisq[i+groupLength])- unlist(chisq[i])))
+      ddf        <- c(ddf, abs(unlist(df[i+groupLength])-unlist(df[i])))
+      dPrChisq   <- c(dPrChisq, pchisq(q = abs(unlist(chisq[i+groupLength])- unlist(chisq[i])),
+                                       df = abs(unlist(df[i+groupLength])-unlist(df[i])),
+                                       lower.tail = FALSE))
+    }
+    fittab[["dchisq"]] <- dchisq
+    fittab[["ddf"]] <- ddf
+    fittab[["dPrChisq"]] <- dPrChisq
+
+  }
+
+
+  # add warning footnotes
+  if (!is.null(msc$warnings)) {
+    if (!grepl(c("NaNs produced"), msc$warnings[[1]]$message))
+      fittab$addFootnote(msc$warnings[[1]]$message)
+  }
+
+  # check if there are any problems with the results and give warnings
+  warningmsgs <- c("Absolute standardized loading estimates are NOT all <= 1",
+                   "Construct VCV is NOT positive semi-definite",
+                   "Reliability estimates are NOT all <= 1",
+                   "Model-implied indicator VCV is NOT positive semi-definite")
+
+  if (options[["group"]] == "") {
+    for (i in seq_along(options[["models"]])) {
+      warnings <- cSEM::verify(plsSemResults[[i]])[2:5]
+      msgs <- warningmsgs[warnings]
+
+      for (j in seq_along(msgs)) {
+        warningFootnote <- gettextf("WARNING! %1$s: %2$s", options[["models"]][[i]][["name"]],  msgs[j])
+        fittab$addFootnote(warningFootnote)
+      }
+    }
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      for (j in seq_along(plsSemResults[i])) {
+        warnings <- cSEM::verify(plsSemResults[[i]][[j]])[2:5]
+        msgs <- warningmsgs[warnings]
+
+        for (k in seq_along(msgs)) {
+          warningFootnote <- gettextf("WARNING! %1$s, group %2$s: %3$s",
+                                      options[["models"]][[i]][["name"]], names(plsSemResults[[i]])[[j]], msgs[k])
+          fittab$addFootnote(warningFootnote)
+        }
+      }
+    }
+  }
+
   # we need this for a lot of other tables so we do this once here:
   results <- plsSemResults[[1]]
   msc <- .withWarnings(.computeMSC(results, dataset, options))
@@ -1852,7 +2033,7 @@ checkCSemModel <- function(model, availableVars) {
   results <- jaspResults[["modelContainer"]][["results"]][["object"]]
 
   # loop over the models
-  for (i in seq_along(results)) {
+  for (i in seq_len(length(results))) {
 
     if (options$group != "") {
       scoresList <- cSEM::getConstructScores(results[[i]])
@@ -1868,7 +2049,8 @@ checkCSemModel <- function(model, availableVars) {
     }
 
     z <- 1
-    for (ll in seq_along(scores)) {
+
+    for (ll in seq_len(length(scores))) {
       for (ii in seq_len(ncol(scores[[ll]]))) {
 
         colNameR <- colNamesR[z]
@@ -1890,7 +2072,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # check if there are previous colNames that are not needed anymore and delete the cols
   oldNames <- jaspResults[["createdColumnNames"]][["object"]]
-  newNames <- colNamesR
+  newNames <- colNamesR[1:z]
   if (!is.null(oldNames)) {
     noMatch <- which(!(oldNames %in% newNames))
     if (length(noMatch) > 0) {
