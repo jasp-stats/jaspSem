@@ -105,10 +105,6 @@ msgid "Model plot"
 msgstr "Modelldiagramm"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Show parameters"
-msgstr "Parameter anzeigen"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Show means"
 msgstr "Mittelwerte anzeigen"
 
@@ -1234,10 +1230,6 @@ msgid "Select the type of bootstrap confidence interval to compute"
 msgstr "Art der zu berechnenden Bootstrap-Konfidenzintervalle auswählen"
 
 msgctxt "LatentGrowthCurve|"
-msgid "List of all available variables for analysis"
-msgstr "Liste aller verfügbaren Variablen für die Analyse"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Variables to include in the latent growth curve model"
 msgstr "Variablen zum Einschluss im latenten Wachstumskurvenmodell"
 
@@ -1248,10 +1240,6 @@ msgstr "Variablen zur Verwendung als Regressoren im Modell"
 msgctxt "LatentGrowthCurve|"
 msgid "Categorical variables acting as factors"
 msgstr "Kategorische Variablen, die als Faktoren fungieren"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Time-varying covariates in the model"
-msgstr "Zeitveränderliche Kovariaten im Modell"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Variable timing"
@@ -1374,43 +1362,11 @@ msgid "Additional modeling options"
 msgstr ""
 
 msgctxt "LatentGrowthCurve|"
-msgid "Omit residuals for single indicators"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
-msgid "Include residual variances in the model"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
-msgid "Allow exogenous latent variables to correlate"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
 msgid "Add thresholds"
 msgstr ""
 
 msgctxt "LatentGrowthCurve|"
-msgid "Include thresholds in the model"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
 msgid "Add scaling parameters"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
-msgid "Include scaling parameters in the model"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
-msgid "Allow dependent variables to correlate"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
-msgid "Options for multigroup latent growth curve modeling"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
-msgid "Select a grouping variable that is ideally nominally scaled"
 msgstr ""
 
 msgctxt "SEM|"
@@ -1451,3 +1407,8 @@ msgstr "Signifikanzniveau"
 msgctxt "PLSSEM|"
 msgid "Saturated structural model"
 msgstr ""
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Show parameter estimates"
+msgstr "Parameterschätzungen anzeigen"

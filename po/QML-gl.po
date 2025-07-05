@@ -142,10 +142,6 @@ msgid "Model plot"
 msgstr "Gráfica do modelo"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Show parameters"
-msgstr "Amosar os parámetros"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Show means"
 msgstr "Amosar as medias"
 
@@ -1205,10 +1201,6 @@ msgid "Select the type of bootstrap confidence interval to compute"
 msgstr "Seleccionar o tipo de intervalo de confianza de Bootstrap a calcular"
 
 msgctxt "LatentGrowthCurve|"
-msgid "List of all available variables for analysis"
-msgstr "Lista de tódalas variables para a análise"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Variables to include in the latent growth curve model"
 msgstr "Variables a incluír no modelo da curva de crecemento latente"
 
@@ -1219,10 +1211,6 @@ msgstr "Variables a usar no modelo como regresores"
 msgctxt "LatentGrowthCurve|"
 msgid "Categorical variables acting as factors"
 msgstr "Variables con categorías funcionando como factores"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Time-varying covariates in the model"
-msgstr "Covariantes no modelo que mudan co tempo"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Variable timing"
@@ -1345,45 +1333,12 @@ msgid "Additional modeling options"
 msgstr "Opcións adicionais da modelización"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Omit residuals for single indicators"
-msgstr "Omitir os erros para indicadores únicos"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Include residual variances in the model"
-msgstr "Incluír as varianzas dos erros no modelo"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Allow exogenous latent variables to correlate"
-msgstr "Permitir que correlacionen as variables latentes esóxenas"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Add thresholds"
 msgstr "Engadir limiares"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Include thresholds in the model"
-msgstr "Incluír limiares no modelo"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Add scaling parameters"
 msgstr "Engadir parámetros de escalado"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Include scaling parameters in the model"
-msgstr "Incluír parámetros de escalado no modelo"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Allow dependent variables to correlate"
-msgstr "Permitir que correlacionen as variables dependentes"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Options for multigroup latent growth curve modeling"
-msgstr "Opcións para a modelización da curva de crecemento latente multigrupo"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Select a grouping variable that is ideally nominally scaled"
-msgstr ""
-"Escoller unha variable de agrupamento que idealmente teña escala nominal"
 
 msgctxt "SEM|"
 msgid "Condition on exogenous covariate(s)"
@@ -1427,3 +1382,8 @@ msgstr "Nivel de significación"
 msgctxt "PLSSEM|"
 msgid "Saturated structural model"
 msgstr "Modelo estrutural saturado"
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Show parameter estimates"
+msgstr "Amosar as estimacións dos parámetros"

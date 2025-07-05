@@ -1,16 +1,10 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-07-02 11:01+0000\n"
-"Last-Translator: Tomasz Misiuro <tomaszmisiuro@gmail.com>\n"
-"Language-Team: Polish <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
-"pl/>\n"
-"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.13-dev\n"
 "X-Language: pl\n"
 "X-Qt-Contexts: true\n"
 
@@ -109,10 +103,6 @@ msgstr "Wykres niedopasowania"
 msgctxt "LatentGrowthCurve|"
 msgid "Model plot"
 msgstr "Wykres dla modelu"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Show parameters"
-msgstr "Pokaż parametry"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Show means"
@@ -1230,10 +1220,6 @@ msgid "Select the type of bootstrap confidence interval to compute"
 msgstr ""
 
 msgctxt "LatentGrowthCurve|"
-msgid "List of all available variables for analysis"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
 msgid "Variables to include in the latent growth curve model"
 msgstr ""
 
@@ -1243,10 +1229,6 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Categorical variables acting as factors"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
-msgid "Time-varying covariates in the model"
 msgstr ""
 
 msgctxt "LatentGrowthCurve|"
@@ -1370,43 +1352,11 @@ msgid "Additional modeling options"
 msgstr ""
 
 msgctxt "LatentGrowthCurve|"
-msgid "Omit residuals for single indicators"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
-msgid "Include residual variances in the model"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
-msgid "Allow exogenous latent variables to correlate"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
 msgid "Add thresholds"
 msgstr ""
 
 msgctxt "LatentGrowthCurve|"
-msgid "Include thresholds in the model"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
 msgid "Add scaling parameters"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
-msgid "Include scaling parameters in the model"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
-msgid "Allow dependent variables to correlate"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
-msgid "Options for multigroup latent growth curve modeling"
-msgstr ""
-
-msgctxt "LatentGrowthCurve|"
-msgid "Select a grouping variable that is ideally nominally scaled"
 msgstr ""
 
 msgctxt "SEM|"
@@ -1446,3 +1396,8 @@ msgstr ""
 msgctxt "PLSSEM|"
 msgid "Saturated structural model"
 msgstr ""
+
+#, fuzzy
+msgctxt "LatentGrowthCurve|"
+msgid "Show parameter estimates"
+msgstr "Pokaż oszacowania parametrów"
