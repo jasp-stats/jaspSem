@@ -20,10 +20,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   sink("~/Downloads/log.txt")
   on.exit(sink(NULL))
 
-  print("in here1")
-
-  # OpenMx::mxSetDefaultOptions()
-  print("in here2")
+  OpenMx::mxSetDefaultOptions()
 
   ready <- length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)) > 1 &&
     length(options[["moderators"]]) > 0 && options[["syncAnalysisBox"]]
@@ -465,12 +462,23 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 }
 
 .mnlfaGlobalInvarianceFitTable <- function(jaspResults, dataset, options, ready) {
-  if (!ready) return()
+
   if (!is.null(jaspResults[["mainContainer"]][["invFitTable"]])) return()
 
   invFitTable <- createJaspTable(gettext("Global Invariance Fit"))
   invFitTable$position <- 2
+  invFitTable$addColumnInfo(name = "type", title = gettext("Type"), type = "string")
+  jaspResults[["mainContainer"]][["invFitTable"]] <- invFitTable
 
+  invFitTable$addColumnInfo(name = "N", title = gettext("n(Parameters)"), type = "integer")
+  invFitTable$addColumnInfo(name = "AIC", title = gettext("AIC"), type = "number")
+  invFitTable$addColumnInfo(name = "BIC", title = gettext("BIC"), type = "number")
+  invFitTable$addColumnInfo(name = "SABIC", title = gettext("SABIC"), type = "number")
+
+  # this way we see an empty table for expectation management
+  if (!ready) {
+    return()
+  }
   modelOptions <- .extractIncludeModerationPaths(options[["moderationIncludeList"]])
   modelOptionsPath <- unlist(modelOptions$paths, recursive = FALSE, use.names = FALSE)
 
@@ -479,9 +487,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                                    "scalarInvariance", "strictInvariance"),
                        nestedOptions = modelOptionsPath)
 
-
-  invFitTable$addColumnInfo(name = "type", title = gettext("Type"), type = "string")
-  jaspResults[["mainContainer"]][["invFitTable"]] <- invFitTable
 
   results <- list(Configural = jaspResults[["mainContainer"]][["configuralInvarianceState"]][["object"]],
                   Metric = jaspResults[["mainContainer"]][["metricInvarianceState"]][["object"]],
@@ -496,10 +501,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     return()
   }
 
-  invFitTable$addColumnInfo(name = "N", title = gettext("n(Parameters)"), type = "integer")
-  invFitTable$addColumnInfo(name = "AIC", title = gettext("AIC"), type = "number")
-  invFitTable$addColumnInfo(name = "BIC", title = gettext("BIC"), type = "number")
-  invFitTable$addColumnInfo(name = "SABIC", title = gettext("SABIC"), type = "number")
   dtFill <- data.frame(type = c(), N = c(), AIC = c(), BIC = c(), SABIC = c())
   if (length(results) > 1) {
 

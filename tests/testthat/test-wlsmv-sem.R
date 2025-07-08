@@ -322,11 +322,14 @@ options$bootstrapCiType        <- "percentile"
 options$modelTest              <- "default"
 options$userGaveSeed           <- TRUE
 options$bootSeed               <- 235711
+options$exogenousCovariateConditional <- FALSE
 
 ## Estimate model is JASP:
+set.seed(1)
 results1 <- suppressWarnings(
   jaspTools::runAnalysis("SEM", data = bfi_ae, options = options)
 )
+set.seed(1)
 results2 <- suppressWarnings(
   jaspTools::runAnalysis("SEM", data = bfi_ae, options = options)
 )
