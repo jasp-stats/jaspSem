@@ -208,9 +208,10 @@ Form
 			CheckBox { name: "metricInvariance" ; checked: false ; label: qsTr("Metric"); id: metricInvariance }
 			CheckBox { name: "scalarInvariance" ; checked: false ; label: qsTr("Scalar"); id: scalarInvariance }
 			CheckBox { name: "strictInvariance" ; checked: false ; label: qsTr("Strict"); id: strictInvariance }
+			CheckBox { name: "customInvariance" ; checked: false;  label: qsTr("Custom"); id: customInvariance }
 		}
 
-		property var firstLayerValues: [configuralInvariance, metricInvariance, scalarInvariance, strictInvariance].filter(x => x.checked).map(x => ({value: x.name, label: x.label}))
+		property var firstLayerValues: [configuralInvariance, metricInvariance, scalarInvariance, strictInvariance, customInvariance].filter(x => x.checked).map(x => ({value: x.name, label: x.label}))
 		
 		TabView 
 		{
