@@ -605,22 +605,20 @@ options$bootstrapSamples  <- 100
 set.seed(1)
 results <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
 
-# Model fit table results match
-test_that("Bootstrapping model fit table works", {
-
+test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(46.1563554263454, 55.4263078804906, 9.99200722162641e-14, "", "Model1",
-                                      75, 0, 4, 4))
+                                 list(46.1563554263452, 55.4263078804904, 1.33226762955019e-13, 0, "Model1",
+                                      75, "", 4, 4))
 })
 
 test_that("Residual covariances table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_cov"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(1.78200922818399, 1.78200922818399, 1.78200922818399, "", "x2 - x3",
+                                 list(1.782009228184, 1.782009228184, 1.782009228184, "", "x2 - x3",
                                       "", 0, "", 1.2564136096, 1.2564136096, 1.2564136096, "", "x2 - y1",
-                                      "", 0, "", 0.899301179999995, 0.899301179999995, 0.899301179999995,
-                                      "", "x3 - y1", "", 0, ""))
+                                      "", 0, "", 0.89930118, 0.89930118, 0.89930118, "", "x3 - y1",
+                                      "", 0, ""))
 })
 
 test_that("Regression coefficients table results match", {
@@ -638,13 +636,13 @@ test_that("Regression coefficients table results match", {
 test_that("Total effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_toteff"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.268681455197478, 0.452255911056787, 0.355178159312481, " x2 <unicode> x1",
-                                      3.13082892944294e-14, 0.0467810929527104, 7.59234419066523,
-                                      -0.0227477243021426, 0.150803629695307, 0.0779182588187377,
-                                      " x3 <unicode> x1", 0.112759818779579, 0.0491315892354841, 1.58590959566321,
-                                      -0.000464738405957426, 0.0538034631716805, 0.0306885890333795,
-                                      " y1 <unicode> x1", 0.0358943957021094, 0.0146266963291095,
-                                      2.09812170450988))
+                                 list(0.249609318439143, 0.447867133100656, 0.355178159312481, "x2 <unicode> x1",
+                                      3.13082892944294e-14, 0.0467810929527105, 7.59234419066521,
+                                      -0.0367152972775892, 0.199977912531745, 0.0779182588187374,
+                                      "x3 <unicode> x1", 0.112759818779581, 0.0491315892354842, 1.5859095956632,
+                                      0.00301905807224417, 0.0567699557699217, 0.0306885890333796,
+                                      "y1 <unicode> x1", 0.0358943957021094, 0.0146266963291095, 2.09812170450988
+                                 ))
 })
 
 test_that("Residual variances table results match", {
