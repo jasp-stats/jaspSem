@@ -642,3 +642,108 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL, 
   return(fitinds)
 }
 
+
+# options also used by the facto module
+.cfaCalcSpecs <- function(dataset, options) {
+  spec <- list()
+  spec$variables <- unlist(lapply(options$factors, function(x) x$indicators))
+  spec$latents   <- vapply(options$factors,        function(x) x$name, "names")
+  if (length(options$secondOrder) > 0) {
+    spec$soIndics  <- .translateFactorNames(options$secondOrder[[1]]$indicators, options, back = TRUE)
+  }
+  if (options$seType == "bootstrap") {
+    spec$se <- "standard"
+    spec$bootstrap <- TRUE
+  } else {
+    if (options$seType == "robust") {
+      if (options[["dataType"]] == "varianceCovariance") {
+        .quitAnalysis(gettext("Robust standard errors are not available for variance-covariance matrix input."))
+      }
+      spec$se <- "robust.sem"
+    } else {
+      spec$se <- options$seType
+    }
+    spec$bootstrap <- FALSE
+  }
+  return(spec)
+}
+
+.optionsToCFAMod <- function(options, dataset, cfaResult, base64 = TRUE) {
+  gv <- options$group
+  if (!base64) .v <- identity
+
+  vars    <- options$factors
+  latents <- cfaResult[["spec"]]$latents
+  labels  <- list()
+  # add extra output here because the Htmt needs a model syntax without grouping labels
+  labels_simp <- list()
+
+  fo <- gettext("# Factors")
+  fo_simp <- gettext("# Factors")
+  for (i in 1:length(vars)) {
+    pre <- paste0("\n", latents[i], " =~ ")
+    len <- length(vars[[i]]$indicators)
+    labelledvars <- character(len)
+    labels[[i]] <- list()
+    labelledvars_simp <- character(len)
+    labels_simp[[i]] <- list()
+    for (j in 1:len) {
+      if (nchar(options$group) == 0 || options$invarianceTesting !="configural") {
+        labels[[i]][[j]]  <- paste0("lambda_", i, "_", j)
+        labelledvars[j] <- paste0("lambda_", i, "_", j, "*", vars[[i]]$indicators[j])
+      } else { # grouping variable present and configural invarianceTesting
+        # we need a vector with different labels per group for lavaan
+        n_levels <- length(unique(na.omit(dataset[[options$group]])))
+        tmp_labels <- paste0("lambda_", i, "_", j, "_", seq(n_levels))
+        labels[[i]][[j]] <- tmp_labels
+        labelledvars[j] <- paste0("c(", paste0(tmp_labels, collapse = ","), ")", "*", vars[[i]]$indicators[j])
+      }
+      # give the simple model always since that is needed for the HTMT
+      labels_simp[[i]][[j]]  <- paste0("lambda_", i, "_", j)
+      labelledvars_simp[j] <- paste0("lambda_", i, "_", j, "*", vars[[i]]$indicators[j])
+    }
+    fo <- paste0(fo, pre, paste0(labelledvars, collapse = " + "))
+    fo_simp <- paste0(fo_simp, pre, paste0(labelledvars_simp, collapse = " + "))
+  }
+
+
+  if (!is.null(cfaResult[["spec"]]$soIndics)) {
+    facs    <- cfaResult[["spec"]]$soIndics
+    lenvars <- length(vars)
+
+    so  <- "# Second-order factor"
+    pre <- "\nSecondOrder =~ "
+    len <- length(facs)
+    labelledfacs <- character(len)
+    labels[[lenvars + 1]] <- list()
+    for (j in 1:len) {
+      # the normal case, either no grouping or no configural invarianceTesting
+      if (nchar(options$group) == 0 || options$invarianceTesting !="configural") {
+        labels[[lenvars + 1]][[j]] <- paste0("gamma_1_", j)
+        labelledfacs[j] <- paste0("gamma_1_", j, "*", facs[j])
+      } else { # grouping variable present and configural invarianceTesting
+        # we need a vector with different labels per group for lavaan
+        tmp_labels <- paste0("gamma_1_", j, "_", seq(n_levels))
+        labels[[lenvars + 1]][[j]] <- tmp_labels
+        labelledfacs[j] <- paste0("c(", paste0(tmp_labels, collapse = ","), ")", "*", facs[j])
+      }
+
+    }
+
+    so <- paste0(so, pre, paste0(labelledfacs, collapse = " + "))
+  } else {
+    so <- NULL
+  }
+
+  if (length(options$residualsCovarying) > 0) {
+    rc <- "# Residual Correlations"
+    for (rcv in options$residualsCovarying) {
+      rc <- paste0(rc, "\n", rcv[1], " ~~ ", rcv[2])
+    }
+  } else {
+    rc <- NULL
+  }
+
+
+  return(list(model = paste0(c(fo, so, rc), collapse = "\n\n"), simple_model = fo_simp))
+}
