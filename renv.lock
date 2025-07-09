@@ -486,29 +486,6 @@
       "Maintainer": "Kevin Ushey <kevin@rstudio.com>",
       "Repository": "CRAN"
     },
-    "Rcsdp": {
-      "Package": "Rcsdp",
-      "Version": "0.1.57.6",
-      "Source": "Repository",
-      "Title": "R Interface to the CSDP Semidefinite Programming Library",
-      "Authors@R": "c( person(\"Hector\", \"Corrada Bravo\", email=\"hcorrada@gmail.com\", role=c(\"aut\", \"cre\")), person(\"Florian\", \"Schwendinger\", email=\"FlorianSchwendinger@gmx.at\", role=c(\"ctb\")), person(\"Brian\", \"Borchers\", role=\"aut\"), person(\"Don\", \"van den Bergh\", role=\"ctb\") )",
-      "Description": "R interface to the CSDP semidefinite programming library. Installs version 6.1.1 of CSDP from the COIN-OR website if required. An existing installation of CSDP may be used by passing the proper configure arguments to the installation command. See the INSTALL file for further details.",
-      "LazyLoad": "yes",
-      "Imports": [
-        "methods"
-      ],
-      "Enhances": [
-        "Matrix"
-      ],
-      "License": "CPL-1.0",
-      "URL": "https://github.com/coin-or/Csdp/",
-      "RoxygenNote": "7.0.2",
-      "BugReports": "https://github.com/hcorrada/rcsdp/issues",
-      "NeedsCompilation": "yes",
-      "Author": "Hector Corrada Bravo [aut, cre], Florian Schwendinger [ctb], Brian Borchers [aut], Don van den Bergh [ctb]",
-      "Maintainer": "Hector Corrada Bravo <hcorrada@gmail.com>",
-      "Repository": "CRAN"
-    },
     "Rdpack": {
       "Package": "Rdpack",
       "Version": "2.6.4",
@@ -2857,41 +2834,6 @@
       "RemoteRef": "master",
       "RemoteSha": "0f0f59e18f5524ea422cb3dc5ad76ace6f0518e4",
       "Remotes": "jasp-stats/jaspGraphs"
-    },
-    "jaspFactor": {
-      "Package": "jaspFactor",
-      "Version": "0.95.0",
-      "Source": "GitHub",
-      "Type": "Package",
-      "Title": "Factor Module for JASP",
-      "Date": "2025-04-11",
-      "Author": "JASP Team",
-      "Website": "jasp-stats.org",
-      "Maintainer": "JASP Team <info@jasp-stats.org>",
-      "Description": "Explore hidden structure in the data",
-      "License": "GPL (>= 2)",
-      "Encoding": "UTF-8",
-      "Imports": [
-        "ggplot2",
-        "jaspBase",
-        "jaspGraphs",
-        "jaspSem",
-        "lavaan",
-        "psych",
-        "qgraph",
-        "reshape2",
-        "semPlot",
-        "GPArotation",
-        "Rcsdp",
-        "semTools"
-      ],
-      "RemoteType": "github",
-      "RemoteHost": "api.github.com",
-      "RemoteUsername": "jasp-stats",
-      "RemoteRepo": "jaspFactor",
-      "RemoteRef": "master",
-      "RemoteSha": "353232a3cddaba171bf5efdf291f12dfc39c91c7",
-      "Remotes": "jasp-stats/jaspBase, jasp-stats/jaspGraphs, jasp-stats/jaspSem"
     },
     "jaspGraphs": {
       "Package": "jaspGraphs",
