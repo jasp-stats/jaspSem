@@ -304,13 +304,13 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   # this part is from jaspFactor
   cfaResult <- list()
   options[["seType"]] <- "default"
-  cfaResult[["spec"]] <- jaspFactor:::.cfaCalcSpecs(dataTmp, options)
+  cfaResult[["spec"]] <- .cfaCalcSpecs(dataTmp, options)
 
   # we fit a model per group so we have access to all the fit indices, which we would not have if we would use
   # the lavaan built-in group functionality
   options[["group"]] <- ""
   options[["invarianceTesting"]] <- NULL
-  mod <- jaspFactor:::.optionsToCFAMod(options, dataTmp, cfaResult)[["model"]]
+  mod <- .optionsToCFAMod(options, dataTmp, cfaResult)[["model"]]
   groups <- unique(dataTmp[["addedGroupVar"]])
   fitArgs <- list(model         = mod,
                 data            = NULL,
