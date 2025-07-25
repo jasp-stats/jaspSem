@@ -27,34 +27,39 @@ Form
 {
     VariablesForm
     {
-        AvailableVariablesList
-        {
-            name: "availableVariables"
-        }
-        AssignedVariablesList
-        {
-			title: qsTr("Predictors")
-            name:  "predictors"
-            allowedColumns: []
-        }
-        AssignedVariablesList
-        {
-			title: qsTr("Mediators")
-            name:  "mediators"
-            allowedColumns: ["scale", "ordinal"]
-        }
-        AssignedVariablesList
-        {
-			title: qsTr("Outcome")
-            name:  "outcomes"
-            allowedColumns: ["scale", "ordinal"]
-        }
-        AssignedVariablesList
-        {
-			title: qsTr("Background confounders")
-            name:  "confounds"
-            allowedColumns: []
-        }
+			AvailableVariablesList
+			{
+				name: "availableVariables"
+			}
+			AssignedVariablesList
+			{
+				title: qsTr("Predictors")
+				name:  "predictors"
+				id: predictors
+			}
+			AssignedVariablesList
+			{
+				title: qsTr("Mediators")
+				name:  "mediators"
+				allowedColumns: ["scale", "ordinal"]
+				allowTypeChange: true
+				id: mediators
+
+			}
+			AssignedVariablesList
+			{
+				title: qsTr("Outcome")
+				name:  "outcomes"
+				allowedColumns: ["scale", "ordinal"]
+				allowTypeChange: true
+				id: outcomes
+			}
+			AssignedVariablesList
+			{
+				title: qsTr("Background confounders")
+				name:  "confounds"
+				id: confounds
+			}
     }
 
 	Section
@@ -86,9 +91,10 @@ Form
 				CheckBox { label: qsTr("Path coefficients");        name: "pathCoefficient";    checked: true }
 			}
 		}
-
+	  // create a string with all variables types to pass to the error calc elements
+		// property bool ordinal: 
 		Common.ErrorCalculation{}
-		
+
 	}
 
 	Section 

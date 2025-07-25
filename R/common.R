@@ -42,9 +42,9 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL, 
   startProgressbar(samples + 1)
 
   if (!standard) {
-    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallback, iseed = iseed)
+    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallback, iseed = iseed, type = "nonparametric")
   } else {
-    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallbackStd, typeStd = typeStd, iseed = iseed)
+    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallbackStd, typeStd = typeStd, iseed = iseed, type = "nonparametric")
   }
 
   # Add the bootstrap samples to the fit object
