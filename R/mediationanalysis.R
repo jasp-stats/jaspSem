@@ -115,7 +115,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
     mimic           = options$emulation,
     estimator       = options$estimator,
     missing         = miss
-  ))
+    ))
 
   if (inherits(medResult, "try-error")) {
     errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(medResult, "condition")$message)
