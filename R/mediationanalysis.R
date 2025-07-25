@@ -19,10 +19,6 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
 
-  sink(file="~/Downloads/log.txt")
-  on.exit(sink(NULL))
-
-
   # Read dataset
   dataset <- .medReadData(dataset, options)
   ready   <- .medCheckErrors(dataset, options)
@@ -119,7 +115,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
     mimic           = options$emulation,
     estimator       = options$estimator,
     missing         = miss
-  ))
+    ))
 
   if (inherits(medResult, "try-error")) {
     errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(medResult, "condition")$message)
