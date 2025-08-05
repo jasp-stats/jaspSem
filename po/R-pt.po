@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2025-06-07 03:06\n"
-"PO-Revision-Date: 2025-08-04 22:02+0000\n"
+"PO-Revision-Date: 2025-08-06 01:02+0000\n"
 "Last-Translator: Wendel Paulo Silvestre <wpsilvestre@ucs.br>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
 "jaspsem-r/pt/>\n"
@@ -45,7 +45,7 @@ msgid "Bollen's Relative Fit Index (RFI)"
 msgstr "Índice de ajuste relativo de Bollen (RFI)"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
-msgstr ""
+msgstr "Índice de ajuste incremental de Bollen (IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
 msgstr "Índice relativo de não-centralidade (RNI)"
@@ -101,7 +101,6 @@ msgstr "O modelo não pode ser estimado devido a não convergência."
 msgid "The model could not be estimated: No degrees of freedom left."
 msgstr "O modelo não pode ser estimado: sem graus de liberdade restantes."
 
-#, fuzzy
 msgid "Chi-square test"
 msgstr "Teste Qui-Quadrado"
 
@@ -120,9 +119,8 @@ msgstr "Aviso."
 msgid "Parameter estimates"
 msgstr "Estimativas de parâmetros"
 
-#, fuzzy
 msgid "Std. estimate"
-msgstr "Padronizado"
+msgstr "Estimativa Pad."
 
 msgid "Estimate"
 msgstr "Estimativa"
@@ -133,9 +131,8 @@ msgstr "Componentes"
 msgid "Parameter"
 msgstr "Parâmetro"
 
-#, fuzzy
 msgid "Std. error"
-msgstr "Erro padrão"
+msgstr "Erro Pad."
 
 msgid "z-value"
 msgstr "Escore Z"
@@ -192,7 +189,7 @@ msgid "Residual covariance matrix"
 msgstr "Matriz de covariância residual"
 
 msgid "Curve plot"
-msgstr ""
+msgstr "Gráfico de curva"
 
 msgid "Model plot"
 msgstr "Gráfico do modelo"
@@ -240,13 +237,13 @@ msgid "Indirect effects"
 msgstr "Efeitos Indiretos"
 
 msgid "Total indirect effects"
-msgstr ""
+msgstr "Efeitos totais indiretos"
 
 msgid "Residual covariances"
 msgstr "Covariâncias residuais"
 
 msgid "Path coefficients"
-msgstr ""
+msgstr "Coeficientes de caminho"
 
 msgid "Estimator is %s."
 msgstr ""
@@ -289,7 +286,7 @@ msgid "Factor model"
 msgstr "Fatores"
 
 msgid "Predictor coefficients"
-msgstr ""
+msgstr "Coeficientes dos preditores"
 
 msgid "Indicator coefficients"
 msgstr ""
@@ -303,9 +300,8 @@ msgstr ""
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr ""
 
-#, fuzzy
 msgid "Enter a model"
-msgstr "Modelo de linha de base"
+msgstr "Insira um modelo"
 
 msgid "Variable(s) in model syntax not recognized: %s"
 msgstr ""
@@ -320,7 +316,7 @@ msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr ""
 
 msgid "Model Fit"
-msgstr "Ajuste do modelo"
+msgstr "Ajuste do Modelo"
 
 msgid "Group"
 msgstr "Grupo"
@@ -340,12 +336,11 @@ msgstr ""
 msgid "Denotes the fit of the model including a saturated structural model."
 msgstr ""
 
-#, fuzzy
 msgid "Parameter Estimates"
-msgstr "Estimativas de parâmetros"
+msgstr "Estimativas de Parâmetros"
 
 msgid "Weights"
-msgstr ""
+msgstr "Pesos"
 
 msgid "Construct"
 msgstr ""
@@ -353,24 +348,20 @@ msgstr ""
 msgid "Std. Error"
 msgstr "Erro padrão"
 
-#, fuzzy
 msgid "Loadings"
-msgstr "Cargas Fatoriais"
+msgstr "Cargas"
 
-#, fuzzy
 msgid "Regression Coefficients"
 msgstr "Coeficientes de Regressão"
 
 msgid "Outcome"
 msgstr "Resultado"
 
-#, fuzzy
 msgid "Total Effects"
-msgstr "Efeitos Indiretos"
+msgstr "Efeitos Totais"
 
-#, fuzzy
 msgid "Residual Correlations"
-msgstr "Covariâncias residuais"
+msgstr "Correlações Residuais"
 
 msgid "VIF"
 msgstr ""
@@ -378,9 +369,8 @@ msgstr ""
 msgid "Endogenous Indicator Prediction"
 msgstr ""
 
-#, fuzzy
 msgid "Prediction Metrics"
-msgstr "Preditor"
+msgstr "Métricas de Previsão"
 
 msgid "Target MAE"
 msgstr ""
@@ -426,17 +416,14 @@ msgstr ""
 msgid "Prediction failed Message: %1$s"
 msgstr ""
 
-#, fuzzy
 msgid "Additional Fit Measures"
 msgstr "Medidas Adicionais de Ajuste"
 
-#, fuzzy
 msgid "Hoelter's critical N (CN)"
-msgstr "N crítico de Hoelter (%s = .05)"
+msgstr "N crítico de Hoelter (CN)"
 
-#, fuzzy
 msgid "Root mean square residual covariance (RMS theta)"
-msgstr "RMSEA"
+msgstr "Covariância residual média quadrática (RMS theta)"
 
 msgid "Goodness of Fit (GoF)"
 msgstr ""
@@ -546,9 +533,8 @@ msgstr ""
 msgid "Total"
 msgstr ""
 
-#, fuzzy
 msgid "n(Parameters)"
-msgstr "Parâmetro"
+msgstr "n(Parâmetros)"
 
 msgid "Free"
 msgstr ""
@@ -584,9 +570,8 @@ msgid ""
 "ML-type estimators."
 msgstr ""
 
-#, fuzzy
 msgid "all"
-msgstr "Todas"
+msgstr "todos"
 
 msgid "<b>Warnings:</b> %s"
 msgstr ""
@@ -597,9 +582,8 @@ msgstr "Cargas Fatoriais"
 msgid "Latent"
 msgstr "Latentes"
 
-#, fuzzy
 msgid "%s%% Confidence interval"
-msgstr "%s%% Intervalo de Confiança"
+msgstr "%s%% Intervalo de confiança"
 
 msgid "Regression coefficients"
 msgstr "Coeficientes de Regressão"
@@ -640,9 +624,8 @@ msgstr "Efeitos totais"
 msgid "%s Fit indices are based on the scaled test statistic."
 msgstr ""
 
-#, fuzzy
 msgid "T-size fit indices"
-msgstr "Índices de ajuste"
+msgstr "Índices de ajuste do tamanho T"
 
 msgid "Poor-fair limit"
 msgstr ""
@@ -665,17 +648,14 @@ msgstr ""
 msgid "AVE"
 msgstr ""
 
-#, fuzzy
 msgid "Reliability"
-msgstr "Medidas Adicionais de Ajuste"
+msgstr "Confiabilidade"
 
-#, fuzzy
 msgid "Coefficient α"
-msgstr "Coeficiente"
+msgstr "Coeficiente α"
 
-#, fuzzy
 msgid "Coefficient ω"
-msgstr "Coeficiente"
+msgstr "Coeficiente ω"
 
 msgid "Heterotrait-Monotrait Ratio"
 msgstr ""
@@ -699,20 +679,18 @@ msgstr ""
 "Assimetria e curtose multivariadas calculadas para as variáveis observadas "
 "de todos os modelos."
 
-#, fuzzy
 msgid ""
 "Not all used variables are continuous: Mardia's coefficients not available."
 msgstr ""
-"Nem todas as variáveis usadas são numéricas. Coeficientes de Mardia não "
+"Nem todas as variáveis usadas são contínuas: coeficientes de Mardia não "
 "disponíveis."
 
-#, fuzzy
 msgid ""
 "The data covariance matrix could not be inverted: Mardia's coefficients not "
 "available."
 msgstr ""
-"Nem todas as variáveis usadas são numéricas. Coeficientes de Mardia não "
-"disponíveis."
+"A matriz de covariância dos dados não pode ser invertida: coeficientes de "
+"Mardia não disponíveis."
 
 msgid "Skewness"
 msgstr "Assimetria"
@@ -769,21 +747,17 @@ msgstr ""
 msgid "Summary of sensitivity analysis"
 msgstr ""
 
-#, fuzzy
 msgid "Path"
-msgstr "Diagrama de caminhos"
+msgstr "Caminho"
 
-#, fuzzy
 msgid "Standardized estimate"
-msgstr "Padronizado"
+msgstr "Estimativa padronizada"
 
-#, fuzzy
 msgid "Original model"
-msgstr "Modelo de linha de base"
+msgstr "Modelo original"
 
-#, fuzzy
 msgid "p*"
-msgstr "p"
+msgstr "p*"
 
 msgid "Sensitivity model"
 msgstr ""
@@ -808,17 +782,14 @@ msgstr ""
 msgid "Sensitivity parameters that led to a change in significance"
 msgstr ""
 
-#, fuzzy
 msgid "Sensitivity parameters"
-msgstr "Parâmetros definidos"
+msgstr "Parâmetros de sensibilidade"
 
-#, fuzzy
 msgid "Summary of sensitivity parameters"
-msgstr "Número de parâmetros livres"
+msgstr "Resumo dos parâmetros de sensibilidade"
 
-#, fuzzy
 msgid "Sensitivity parameter"
-msgstr "Parâmetros definidos"
+msgstr "Parâmetro de sensibilidade"
 
 msgid "Path diagram"
 msgstr "Diagrama de caminhos"
