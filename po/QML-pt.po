@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2025-08-05 15:02+0000\n"
+"Last-Translator: Wendel Paulo Silvestre <wpsilvestre@ucs.br>\n"
+"Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
+"jaspsem-qml/pt/>\n"
+"Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.13-dev\n"
 "X-Language: pt\n"
 "X-Source-Language: American English\n"
 "X-Qt-Contexts: true\n"
@@ -94,7 +100,7 @@ msgstr "Fator"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Time-varying covariates"
-msgstr ""
+msgstr "Covariáveis que variam no tempo"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Timings"
@@ -122,7 +128,7 @@ msgstr "Cúbico"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Covarying latent curve"
-msgstr ""
+msgstr "Curva latente covariante"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Additional Output"
@@ -188,10 +194,9 @@ msgctxt "LatentGrowthCurve|"
 msgid "Residual variances"
 msgstr "Variâncias residuais"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Correlate exogenous latents"
-msgstr "Correlacionar var. latentes exógenas"
+msgstr "Correlacionar variáveis latentes exógenas"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Correlate dependent variables"
@@ -203,7 +208,7 @@ msgstr "Latent Growth Curve Modeling Multigrupo"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Grouping variable"
-msgstr "Variável de Agrupamento"
+msgstr "Variável de agrupamento"
 
 msgctxt "Mimic|"
 msgid "Indicators"
@@ -553,7 +558,6 @@ msgctxt "PLSSEM|"
 msgid "Ignore structural model"
 msgstr ""
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Grouping Variable"
 msgstr "Variável de Agrupamento"
@@ -566,17 +570,14 @@ msgctxt "PLSSEM|"
 msgid "Error calculation method"
 msgstr ""
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "None"
-msgstr "Nenhuma"
+msgstr "Nenhum"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Confidence intervals"
 msgstr "Intervalos de confiança"
@@ -645,12 +646,10 @@ msgctxt "PLSSEM|"
 msgid "Output"
 msgstr ""
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "R-squared"
 msgstr "R²"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Mardia's coefficient"
 msgstr "Coeficiente de Mardia"
@@ -821,7 +820,6 @@ msgctxt "Advanced|"
 msgid "Lavaan"
 msgstr ""
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Mplus"
 msgstr "Mplus"
@@ -885,7 +883,6 @@ msgctxt "ErrorCalculation|"
 msgid "Robust"
 msgstr "Robusto"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
