@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-08-05 15:02+0000\n"
+"PO-Revision-Date: 2025-08-06 07:43+0000\n"
 "Last-Translator: Wendel Paulo Silvestre <wpsilvestre@ucs.br>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
 "jaspsem-qml/pt/>\n"
@@ -794,12 +794,10 @@ msgctxt "SEM|"
 msgid "Maximum number of iterations"
 msgstr ""
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Advanced"
 msgstr "Avançado"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Missing value handling"
 msgstr "Manipulação de valores ausentes"
@@ -824,12 +822,10 @@ msgctxt "Advanced|"
 msgid "Mplus"
 msgstr "Mplus"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "EQS"
 msgstr "EQS"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Estimator"
 msgstr "Estimador"
@@ -838,47 +834,38 @@ msgctxt "Advanced|"
 msgid "Default"
 msgstr ""
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "ML"
 msgstr "ML"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "GLS"
 msgstr "GLS"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "WLS"
 msgstr "WLS"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "ULS"
 msgstr "ULS"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "DWLS"
 msgstr "DWLS"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Confidence intervals"
 msgstr "Intervalos de confiança"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Method"
 msgstr "Método"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Standard"
 msgstr "Padrão"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Robust"
 msgstr "Robusto"
@@ -887,22 +874,18 @@ msgctxt "ErrorCalculation|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Replications"
 msgstr "Replicações"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Type"
 msgstr "Tipo"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Bias-corrected percentile"
 msgstr "Percentil com correção de viés"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Percentile"
 msgstr "Percentil"
@@ -915,7 +898,6 @@ msgctxt "LatentGrowthCurve|"
 msgid "Estimation Options"
 msgstr ""
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Additional fit measures"
 msgstr "Medidas adicionais de ajuste"
@@ -1396,7 +1378,6 @@ msgctxt "PLSSEM|"
 msgid "Saturated structural model"
 msgstr ""
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Show parameter estimates"
 msgstr "Mostrar estimativas dos parâmetros"
