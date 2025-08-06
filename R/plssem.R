@@ -239,7 +239,6 @@ checkCSemModel <- function(model, availableVars) {
     cSemOpts[[".data"]]  <- dataset
 
     # fit the model
-
     fit <- try(do.call(cSEM::csem, cSemOpts))
 
     # error messages
@@ -351,7 +350,7 @@ checkCSemModel <- function(model, availableVars) {
   # we need this for a lot of other tables so we do this once here:
   results <- plsSemResults[[1]]
   msc <- .withWarnings(.computeMSC(results, dataset, options))
-  #create jasp state and store msc for additional output tables
+  # create jasp state and store msc for additional output tables
   modSelCriteria <- createJaspState()
   modelContainer[["modSelCriteria"]] <- modSelCriteria
   modSelCriteria$dependOn(optionsFromObject = modelContainer)
@@ -361,7 +360,8 @@ checkCSemModel <- function(model, availableVars) {
 
   fittab <- createJaspTable(title = gettext("Model Fit"))
   fittab$dependOn(optionsFromObject = modelContainer,
-                  options = c("group", "omfBootstrapSamples", "omfSignificanceLevel", "saturatedStructuralModel"))
+                  options = c("group", "omfBootstrapSamples", "omfSignificanceLevel", "saturatedStructuralModel",
+                              "overallModelFit"))
   fittab$position <- 0
 
   if (options[["group"]] != "")
@@ -370,6 +370,13 @@ checkCSemModel <- function(model, availableVars) {
   fittab$addColumnInfo(name = "measure",    title = gettext("Distance Measure"),                type = "string" )
   fittab$addColumnInfo(name = "statistic",  title = gettext("Test Statistic"),                type = "number" )
   fittab$addColumnInfo(name = "critValue",  title = gettextf("Critical Value (%s%% Quantile)", (1 - options[["omfSignificanceLevel"]]) * 100), type = "number" )
+
+  modelContainer[["fittab"]] <- fittab
+
+  if (isTryError(msc$value$msc)) {
+    fittab$setError(gettextf("Model selection criteria could not be computed: %s", .extractErrorMessage(msc$value$msc)))
+    return()
+  }
 
   vv <- cSEM::verify(plsSemResults[[1]])
   if (any(unlist(vv))) {
@@ -401,8 +408,6 @@ checkCSemModel <- function(model, availableVars) {
   if (options[["saturatedStructuralModel"]])
     fittab$addFootnote(gettext("Denotes the fit of the model including a saturated structural model."))
 
-  modelContainer[["fittab"]] <- fittab
-
   return()
 
 }
@@ -413,8 +418,8 @@ checkCSemModel <- function(model, availableVars) {
   if (options[["group"]] == "") {
 
     Ns <- rep(nrow(dataset), length(plsSemResults))
-    modelSelectionCriteria <- cSEM::calculateModelSelectionCriteria(resultsCopy, .only_structural = FALSE, .by_equation = FALSE)
-    modelFitMeasures       <- cSEM::assess(resultsCopy)
+    modelSelectionCriteria <- try(cSEM::calculateModelSelectionCriteria(resultsCopy, .only_structural = FALSE, .by_equation = FALSE))
+    modelFitMeasures       <- try(cSEM::assess(resultsCopy))
   } else{
     Ns <- list()
     for (i in names(resultsCopy)) {
@@ -586,7 +591,13 @@ checkCSemModel <- function(model, availableVars) {
         weightTab$addColumnInfo(name = "vifb",      title = gettext("VIF"),   type = "number")
         pecont[["weight"]] <- weightTab
         pe[["vifb"]][["mean"]][names(VIFBtemp)] <- VIFBtemp
+
+        if (all(is.na(VIFBtemp))) {
+          weightTab$addFootnote(gettext("VIF could not be computed."))
+        }
       }
+
+
 
       pe[["Loading_estimates"]] <- list()
       pe[["Loading_estimates"]][["mean"]] <- summ$Loading_estimates$Estimate
@@ -601,10 +612,15 @@ checkCSemModel <- function(model, availableVars) {
       pe[["vif"]][["mean"]][names(pe[["vif"]][["mean"]])] <- NA
       VIFtemp <- .plsSEMVIFhelper(fit)
       if(!is.null(VIFtemp)){
-      pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
-      pecont[["path"]] <- pathTab
-      pe[["vif"]][["mean"]][names(VIFtemp)] <- VIFtemp
+        pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
+        pecont[["path"]] <- pathTab
+        pe[["vif"]][["mean"]][names(VIFtemp)] <- VIFtemp
+        if (all(is.na(VIFtemp))) {
+          pathTab$addFootnote(gettext("VIF could not be computed."))
+        }
       }
+
+
 
       pe[["Total_effect"]] <- list()
       pe[["Total_effect"]][["mean"]] <- summ$Effect_estimates$Total_effect$Estimate
@@ -631,12 +647,14 @@ checkCSemModel <- function(model, availableVars) {
           pe[[i]][["vifb"]][["mean"]][names(VIFBtemp)] <- VIFBtemp
 
           if(IdxViFB==0){
-          weightTab$addColumnInfo(name = "vifb",      title = gettext("VIF"),   type = "number")
-          pecont[["weight"]] <- weightTab
-          IdxViFB <- 1
+            weightTab$addColumnInfo(name = "vifb",      title = gettext("VIF"),   type = "number")
+            pecont[["weight"]] <- weightTab
+            IdxViFB <- 1
+          }
+          if (all(is.na(VIFBtemp))) {
+            weightTab$addFootnote(gettext("VIF could not be computed."))
           }
         }
-
 
         pe[[i]][["Loading_estimates"]] <- list()
         pe[[i]][["Loading_estimates"]][["mean"]] <- summ[[i]]$Estimates$Loading_estimates$Estimate
@@ -654,10 +672,14 @@ checkCSemModel <- function(model, availableVars) {
           pe[[i]][["vif"]][["mean"]][names(VIFtemp)] <- VIFtemp
 
           if(IdxViF==0){
-          pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
-          pecont[["path"]] <- pathTab
-          IdxViF <- 1
+            pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
+            pecont[["path"]] <- pathTab
+            IdxViF <- 1
           }
+          if (all(is.na(VIFtemp))) {
+            pathTab$addFootnote(gettext("VIF could not be computed."))
+          }
+
         }
 
         pe[[i]][["Total_effect"]] <- list()
@@ -682,7 +704,12 @@ checkCSemModel <- function(model, availableVars) {
         weightTab$addColumnInfo(name = "vifb",      title = gettext("VIF"),   type = "number")
         pecont[["weight"]] <- weightTab
         pe[["vifb"]][["mean"]][names(VIFBtemp)] <- VIFBtemp
+
+        if (all(is.na(VIFBtemp))) {
+          weightTab$addFootnote(gettext("VIF could not be computed."))
+        }
       }
+
 
 
       pe[["vif"]] <- list()
@@ -693,7 +720,13 @@ checkCSemModel <- function(model, availableVars) {
         pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
         pecont[["path"]] <- pathTab
         pe[["vif"]][["mean"]][names(VIFtemp)] <- VIFtemp
+
+        if (all(is.na(VIFtemp))) {
+          pathTab$addFootnote(gettext("VIF could not be computed."))
+        }
       }
+
+
     } else {
       IdxViFB <- 0
       IdxViF <- 0
@@ -709,7 +742,12 @@ checkCSemModel <- function(model, availableVars) {
             pecont[["weight"]] <- weightTab
             IdxViFB <- 1
           }
+
+          if (all(is.na(VIFBtemp))) {
+            weightTab$addFootnote(gettext("VIF could not be computed."))
+          }
         }
+
 
 
         pe[[i]][["vif"]] <- list()
@@ -719,11 +757,15 @@ checkCSemModel <- function(model, availableVars) {
         if(!is.null(VIFtemp)){
           pe[[i]][["vif"]][["mean"]][names(VIFtemp)] <- VIFtemp
           if(IdxViF==0){
-          pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
-          pecont[["path"]] <- pathTab
-          IdxViF <- 1
+            pathTab$addColumnInfo(name = "vif",      title = gettext("VIF")     ,     type = "number")
+            pecont[["path"]] <- pathTab
+            IdxViF <- 1
+          }
+          if (all(is.na(VIFtemp))) {
+            pathTab$addFootnote(gettext("VIF could not be computed."))
           }
         }
+
       }
     }
   }
@@ -1215,6 +1257,11 @@ checkCSemModel <- function(model, availableVars) {
 
   # fill additional fits table
 
+  if (isTryError(mfm$mfm)) {
+    fitin$setError(gettextf("Model fit could not be computed: %s", .extractErrorMessage(mfm$mfm)))
+    return()
+  }
+
   if (options[["group"]] == "") {
 
     fitin[["value"]] <- list(mfm$mfm$CFI, mfm$mfm$GFI, mfm$mfm$CN, mfm$mfm$IFI, mfm$mfm$NNFI,
@@ -1278,6 +1325,11 @@ checkCSemModel <- function(model, availableVars) {
   # compute data and fill rsquared table
   msc <- modelContainer[["modSelCriteria"]][["object"]]
   mfm <- msc$value
+  if (isTryError(mfm$mfm)) {
+    tabr2$setError(gettextf("Model selection criteria could not be computed: %s", .extractErrorMessage(mfm$mfm)))
+    return()
+  }
+
   if (options[["group"]] == "") {
 
     if (length(options[["models"]]) < 2) {
@@ -1286,7 +1338,8 @@ checkCSemModel <- function(model, availableVars) {
       tabr2[["var"]]     <- as.list(names(r2))
       tabr2[["rsq"]]         <- as.list(r2)
       tabr2[["adjustedRsq"]] <- as.list(mfm$mfm$R2_adj)
-    } else {
+
+    } else { # at the moment we only allow a single model
 
       # determine variable names
 
@@ -1428,6 +1481,11 @@ checkCSemModel <- function(model, availableVars) {
   # compute data and fill table
   msc <- modelContainer[["modSelCriteria"]][["object"]]
   mfm <- msc$value
+
+  if (isTryError(mfm$mfm)) {
+    tabrho$setError(gettextf("Model selection criteria could not be computed: %s", .extractErrorMessage(mfm$mfm)))
+    return()
+  }
 
   if (options[["group"]] == "") {
 
@@ -1681,7 +1739,11 @@ checkCSemModel <- function(model, availableVars) {
 
     if (options[["impliedIndicatorCorrelation"]]) {
       # actually compute the implied indicator correlations
-      iic <- cSEM::fit(fit, .type_vcv = "indicator")
+      iic <- try(cSEM::fit(fit, .type_vcv = "indicator"))
+      if (isTryError(iic)) {
+        iictab$setError(gettextf("Implied indicator correlations could not be computed: %s", .extractErrorMessage(iic)))
+        return()
+      }
       iic[upper.tri(iic)] <- NA
 
       for (i in 1:ncol(iic)) {
@@ -1713,7 +1775,11 @@ checkCSemModel <- function(model, availableVars) {
 
     if (options[["impliedConstructCorrelation"]]) {
       # actually compute the implied construct correlations
-      icc <- cSEM::fit(fit, .type_vcv = "construct")
+      icc <- try(cSEM::fit(fit, .type_vcv = "construct"))
+      if (isTryError(icc)) {
+        icctab$setError(gettextf("Implied construct correlations could not be computed: %s", .extractErrorMessage(icc)))
+        return()
+      }
       icc[upper.tri(icc)] <- NA
 
       for (i in 1:ncol(icc)) {
@@ -1911,40 +1977,52 @@ checkCSemModel <- function(model, availableVars) {
 .plsSEMVIFhelper <- function(fit){
   # Make VIFs into a matrix
   # Restructure the VIFs into a table.
-  VIFspath <- cSEM::assess(.object = fit,.quality_criterion = 'vif')
+  VIFspath <- try(cSEM::assess(.object = fit,.quality_criterion = 'vif'))
 
-  idx <- which(VIFspath$VIF!=0,arr.ind = T)
+  if (!isTryError(VIFspath)) {
+    idx <- which(VIFspath$VIF!=0,arr.ind = T)
 
-  if(nrow(idx)!=0){
-    VIFDf <- data.frame(Relation=paste(rownames(VIFspath$VIF)[idx[,'row']],'~',colnames(VIFspath$VIF)[idx[,'col']]),
-                        vif=VIFspath$VIF[cbind(rownames(VIFspath$VIF)[idx[,'row']],colnames(VIFspath$VIF)[idx[,'col']])])
+    if(nrow(idx)!=0){
+      VIFDf <- data.frame(Relation=paste(rownames(VIFspath$VIF)[idx[,'row']],'~',colnames(VIFspath$VIF)[idx[,'col']]),
+                          vif=VIFspath$VIF[cbind(rownames(VIFspath$VIF)[idx[,'row']],colnames(VIFspath$VIF)[idx[,'col']])])
 
-    VIFvector <-setNames(VIFDf$vif, VIFDf$Relation)
-  } else{
-    VIFvector <- NULL
+      VIFvector <-setNames(VIFDf$vif, VIFDf$Relation)
+    } else{
+      VIFvector <- NULL
+    }
+  } else {
+    VIFvector <- NA
   }
+
   return(VIFvector)
+
 }
 
-.plsSEMVIFBhelper <- function(fit){
-  VIFsweights <- cSEM::calculateVIFModeB(fit)
+.plsSEMVIFBhelper <- function(fit) {
+
+  VIFsweights <- try(cSEM::calculateVIFModeB(fit))
 
   # If there is only one weight, cSEM::calculateVIFModeB() returns NA for that VIF
   # therefore, replace NAs with 0
-  VIFsweights[is.na(VIFsweights)] <- 0
+  if (!isTryError(VIFsweights)) {
+    VIFsweights[is.na(VIFsweights)] <- 0
 
 
-  if(!is.null(VIFsweights)&sum(VIFsweights)!=0){
-    idx <- which(VIFsweights!=0,arr.ind = T)
+    if(!is.null(VIFsweights)&sum(VIFsweights)!=0){
+      idx <- which(VIFsweights!=0,arr.ind = T)
 
-    VIFBDf <- data.frame(Relation=paste(rownames(VIFsweights)[idx[,'row']],'<~',colnames(VIFsweights)[idx[,'col']]),
-                         vif=VIFsweights[cbind(rownames(VIFsweights)[idx[,'row']],colnames(VIFsweights)[idx[,'col']])])
+      VIFBDf <- data.frame(Relation=paste(rownames(VIFsweights)[idx[,'row']],'<~',colnames(VIFsweights)[idx[,'col']]),
+                           vif=VIFsweights[cbind(rownames(VIFsweights)[idx[,'row']],colnames(VIFsweights)[idx[,'col']])])
 
-    VIFBvector <-setNames(VIFBDf$vif, VIFBDf$Relation)
+      VIFBvector <-setNames(VIFBDf$vif, VIFBDf$Relation)
 
-  } else{
-    VIFBvector <- NULL
+    } else {
+      VIFBvector <- NULL
+    }
+  } else {
+    VIFBvector <- NA
   }
+
   return(VIFBvector)
 
 }
