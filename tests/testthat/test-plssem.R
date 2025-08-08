@@ -322,7 +322,6 @@ test_that("R-Squared table results match", {
 })
 
 # Bootstrapping works
-
 options <- jaspTools::analysisOptions("PLSSEM")
 model <- "
   ind60 =~ x1 + x2 + x3
