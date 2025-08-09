@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.19.2\n"
-"POT-Creation-Date: 2025-06-07 03:06\n"
+"POT-Creation-Date: 2025-08-09 03:12\n"
 "PO-Revision-Date: 2025-06-29 13:01+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
-"Language-Team: Tamil <https://hosted.weblate.org/projects/jasp/jaspsem-r/ta/>"
-"\n"
+"Language-Team: Tamil <https://hosted.weblate.org/projects/jasp/jaspsem-r/ta/"
+">\n"
 "Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -343,12 +343,18 @@ msgstr "சோதனை புள்ளிவிவரம்"
 msgid "Critical Value (%s%% Quantile)"
 msgstr "சிக்கலான மதிப்பு (%s %% அளவு)"
 
+#, fuzzy
+msgid "Model selection criteria could not be computed: %s"
+msgstr "தரப்படுத்தப்பட்ட மீதமுள்ள கோவாரன்ச் மேட்ரிக்சை கணக்கிட முடியவில்லை"
+
+msgid "Model selection criteria could not be computed for group %1$s: %2$s"
+msgstr ""
+
 msgid "At least one result is inadmissible."
 msgstr "குறைந்தது ஒரு முடிவுக்கு உறுதிப்படுத்த முடியாதது."
 
 msgid "Denotes the fit of the model including a saturated structural model."
-msgstr ""
-"ஒரு நிறைவுற்ற கட்டமைப்பு மாதிரி உட்பட மாதிரியின் பொருத்தத்தைக் குறிக்கிறது."
+msgstr "ஒரு நிறைவுற்ற கட்டமைப்பு மாதிரி உட்பட மாதிரியின் பொருத்தத்தைக் குறிக்கிறது."
 
 msgid "Parameter Estimates"
 msgstr "அளவுரு மதிப்பீடுகள்"
@@ -379,6 +385,9 @@ msgstr "மீதமுள்ள தொடர்புகள்"
 
 msgid "VIF"
 msgstr "Vif"
+
+msgid "VIF could not be computed."
+msgstr ""
 
 msgid "Endogenous Indicator Prediction"
 msgstr "எண்டோசெனச் காட்டி கணிப்பு"
@@ -453,6 +462,12 @@ msgstr "ச்கொயர் யூக்ளிடியன் தூரம்"
 msgid "Maximum likelihood-based distance"
 msgstr "அதிகபட்ச சாத்தியக்கூறு அடிப்படையிலான தூரம்"
 
+msgid "Model assessment could not be computed: %s"
+msgstr ""
+
+msgid "Model assessment could not be computed for group %1$s: %2$s"
+msgstr ""
+
 msgid "Reliability Measures"
 msgstr "நம்பகத்தன்மை நடவடிக்கைகள்"
 
@@ -478,6 +493,14 @@ msgid "Observed construct correlation matrix"
 msgstr "கவனிக்கப்பட்ட கட்டுமான தொடர்பு அணி"
 
 msgid "Implied construct correlation matrix"
+msgstr "கட்டுமான தொடர்பு மேட்ரிக்ச்"
+
+#, fuzzy
+msgid "Implied indicator correlations could not be computed: %s"
+msgstr "மறைமுகமான காட்டி தொடர்பு அணி"
+
+#, fuzzy
+msgid "Implied construct correlations could not be computed: %s"
 msgstr "கட்டுமான தொடர்பு மேட்ரிக்ச்"
 
 msgid "Column name %s already exists in the dataset"

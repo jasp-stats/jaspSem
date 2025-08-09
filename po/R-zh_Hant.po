@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2025-06-07 03:06\n"
+"POT-Creation-Date: 2025-08-09 03:12\n"
 "PO-Revision-Date: 2025-06-26 18:01+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
@@ -332,6 +332,13 @@ msgstr ""
 msgid "Critical Value (%s%% Quantile)"
 msgstr ""
 
+#, fuzzy
+msgid "Model selection criteria could not be computed: %s"
+msgstr "無法計算標準化殘差共變數矩陣"
+
+msgid "Model selection criteria could not be computed for group %1$s: %2$s"
+msgstr ""
+
 msgid "At least one result is inadmissible."
 msgstr ""
 
@@ -368,6 +375,9 @@ msgstr "殘差共變數"
 
 msgid "VIF"
 msgstr "VIF"
+
+msgid "VIF could not be computed."
+msgstr ""
 
 msgid "Endogenous Indicator Prediction"
 msgstr "內衍指標預測"
@@ -442,6 +452,12 @@ msgstr "平方歐式距離"
 msgid "Maximum likelihood-based distance"
 msgstr "基於最大概似估計法距離"
 
+msgid "Model assessment could not be computed: %s"
+msgstr ""
+
+msgid "Model assessment could not be computed for group %1$s: %2$s"
+msgstr ""
+
 msgid "Reliability Measures"
 msgstr "信度指標(Cronbach's α 與 CR值)"
 
@@ -467,6 +483,14 @@ msgid "Observed construct correlation matrix"
 msgstr "觀察構念相關矩陣"
 
 msgid "Implied construct correlation matrix"
+msgstr "隱含構面的相關矩陣"
+
+#, fuzzy
+msgid "Implied indicator correlations could not be computed: %s"
+msgstr "隱含指標的相關矩陣"
+
+#, fuzzy
+msgid "Implied construct correlations could not be computed: %s"
 msgstr "隱含構面的相關矩陣"
 
 #, fuzzy

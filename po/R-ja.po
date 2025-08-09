@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2025-06-07 03:06\n"
+"POT-Creation-Date: 2025-08-09 03:12\n"
 "PO-Revision-Date: 2024-11-11 09:23+0000\n"
 "Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -343,6 +343,13 @@ msgstr ""
 msgid "Critical Value (%s%% Quantile)"
 msgstr ""
 
+#, fuzzy
+msgid "Model selection criteria could not be computed: %s"
+msgstr "標準化された残差共分散行列が計算できませんでした"
+
+msgid "Model selection criteria could not be computed for group %1$s: %2$s"
+msgstr ""
+
 msgid "At least one result is inadmissible."
 msgstr ""
 
@@ -380,6 +387,9 @@ msgstr "残差共分散"
 
 msgid "VIF"
 msgstr "VIF"
+
+msgid "VIF could not be computed."
+msgstr ""
 
 msgid "Endogenous Indicator Prediction"
 msgstr "内生観測変数の予測"
@@ -458,6 +468,12 @@ msgstr "二乗ユークリッド距離"
 msgid "Maximum likelihood-based distance"
 msgstr "最尤法に基づく距離"
 
+msgid "Model assessment could not be computed: %s"
+msgstr ""
+
+msgid "Model assessment could not be computed for group %1$s: %2$s"
+msgstr ""
+
 msgid "Reliability Measures"
 msgstr "信頼性指標"
 
@@ -483,6 +499,14 @@ msgid "Observed construct correlation matrix"
 msgstr "観測された構成変数の相関行列"
 
 msgid "Implied construct correlation matrix"
+msgstr "推定された構成変数の相関行列"
+
+#, fuzzy
+msgid "Implied indicator correlations could not be computed: %s"
+msgstr "推定された観測変数の相関行列"
+
+#, fuzzy
+msgid "Implied construct correlations could not be computed: %s"
 msgstr "推定された構成変数の相関行列"
 
 #, fuzzy

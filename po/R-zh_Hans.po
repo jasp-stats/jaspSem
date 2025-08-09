@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2025-06-07 03:06\n"
+"POT-Creation-Date: 2025-08-09 03:12\n"
 "PO-Revision-Date: 2024-04-30 07:08+0000\n"
 "Last-Translator: Cochrane <cunyikang@qq.com>\n"
 "Language-Team: Chinese (Simplified) <https://hosted.weblate.org/projects/"
@@ -327,6 +327,12 @@ msgstr ""
 msgid "Critical Value (%s%% Quantile)"
 msgstr ""
 
+msgid "Model selection criteria could not be computed: %s"
+msgstr ""
+
+msgid "Model selection criteria could not be computed for group %1$s: %2$s"
+msgstr ""
+
 msgid "At least one result is inadmissible."
 msgstr ""
 
@@ -362,6 +368,9 @@ msgid "Residual Correlations"
 msgstr ""
 
 msgid "VIF"
+msgstr ""
+
+msgid "VIF could not be computed."
 msgstr ""
 
 msgid "Endogenous Indicator Prediction"
@@ -435,6 +444,12 @@ msgstr ""
 msgid "Maximum likelihood-based distance"
 msgstr ""
 
+msgid "Model assessment could not be computed: %s"
+msgstr ""
+
+msgid "Model assessment could not be computed for group %1$s: %2$s"
+msgstr ""
+
 msgid "Reliability Measures"
 msgstr ""
 
@@ -460,6 +475,12 @@ msgid "Observed construct correlation matrix"
 msgstr ""
 
 msgid "Implied construct correlation matrix"
+msgstr ""
+
+msgid "Implied indicator correlations could not be computed: %s"
+msgstr ""
+
+msgid "Implied construct correlations could not be computed: %s"
 msgstr ""
 
 msgid "Column name %s already exists in the dataset"

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
-"POT-Creation-Date: 2025-06-07 03:06\n"
+"POT-Creation-Date: 2025-08-09 03:12\n"
 "PO-Revision-Date: 2025-07-26 07:50+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -346,6 +346,14 @@ msgstr "Estadístico de contraste"
 msgid "Critical Value (%s%% Quantile)"
 msgstr "Valor crítico (Cuantil del %s%%)"
 
+#, fuzzy
+msgid "Model selection criteria could not be computed: %s"
+msgstr ""
+"No se puede calcular la matriz de covarianzas de los errores tipificados"
+
+msgid "Model selection criteria could not be computed for group %1$s: %2$s"
+msgstr ""
+
 msgid "At least one result is inadmissible."
 msgstr "Al menos un resultado no es admisible."
 
@@ -381,6 +389,9 @@ msgstr "Correlaciones de los errores"
 
 msgid "VIF"
 msgstr "FIV"
+
+msgid "VIF could not be computed."
+msgstr ""
 
 msgid "Endogenous Indicator Prediction"
 msgstr "Predicción de Indicadores Endógenos"
@@ -455,6 +466,12 @@ msgstr "Distancia Euclídea cuadrada"
 msgid "Maximum likelihood-based distance"
 msgstr "Distancia basada en la Máxima-Verosimilitud"
 
+msgid "Model assessment could not be computed: %s"
+msgstr ""
+
+msgid "Model assessment could not be computed for group %1$s: %2$s"
+msgstr ""
+
 msgid "Reliability Measures"
 msgstr "Medidas de Fiabilidad"
 
@@ -480,6 +497,14 @@ msgid "Observed construct correlation matrix"
 msgstr "Matriz de correlaciones de construcciones observadas"
 
 msgid "Implied construct correlation matrix"
+msgstr "Matriz de correlaciones de construcciones implicadas"
+
+#, fuzzy
+msgid "Implied indicator correlations could not be computed: %s"
+msgstr "Matriz de correlaciones de indicadores implicados"
+
+#, fuzzy
+msgid "Implied construct correlations could not be computed: %s"
 msgstr "Matriz de correlaciones de construcciones implicadas"
 
 msgid "Column name %s already exists in the dataset"
