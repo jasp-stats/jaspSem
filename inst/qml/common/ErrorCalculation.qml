@@ -21,10 +21,12 @@ import QtQuick.Layouts
 import JASP.Controls
 import JASP
 
+
 Group
 {
+	
 	CIField {
-			text: qsTr("Confidence intervals")
+			text: qsTr("Confidence intervals" )
 			name: "ciLevel"
 			info: qsTr("Set the confidence level for the interval estimates")
 	}
@@ -59,9 +61,9 @@ Group
 				label: qsTr("Type")
 				name: "bootstrapCiType"
 				values: [
-						{ label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"   },
-						{ label: qsTr("Percentile"),                value: "percentile"         },
-						{ label: qsTr("Normal theory"),             value: "normalTheory"         }
+					{ label: qsTr("Bias-corrected percentile"), value: "percentileBiasCorrected"   	},
+					{ label: qsTr("Percentile"),                value: "percentile"         			 	},
+					{ label: qsTr("Normal theory"),             value: "normalTheory"       			 	}
 				]
 				info: qsTr("Select the type of bootstrap confidence interval to compute")
 			}

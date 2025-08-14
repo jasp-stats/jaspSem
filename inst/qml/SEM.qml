@@ -248,9 +248,9 @@ Form
 				label: qsTr("     Type")
 				name: "bootstrapCiType"
 				values: [
-						{ label: qsTr("Bias-corrected percentile"),	value: "percentileBiasCorrected"	},
-						{ label: qsTr("Percentile"),				value: "percentile"					},
-						{ label: qsTr("Normal theory"),				value: "normalTheory"				}
+					{ label: qsTr("Bias-corrected percentile"),	value: "percentileBiasCorrected"	},
+					{ label: qsTr("Percentile"),				value: "percentile"					},
+					{ label: qsTr("Normal theory"),				value: "normalTheory"				}
 				]
 			}
 
@@ -338,10 +338,10 @@ Form
 				name: "standardizedEstimate"; label: qsTr("Standardized estimates");
 				RadioButtonGroup
 				{
-						name: "standardizedEstimateType"
-						RadioButton { value: "all"; 	label: qsTr("All"); checked: true	}
-						RadioButton { value: "latents"; label: qsTr("Latents")	}
-						RadioButton { value: "nox"; 	label: qsTr("Except exogenous covariates")		}
+					name: "standardizedEstimateType"
+					RadioButton { value: "all"; 	label: qsTr("All"); checked: true	}
+					RadioButton { value: "latents"; label: qsTr("Latents")	}
+					RadioButton { value: "nox"; 	label: qsTr("Except exogenous covariates")		}
 				}
 			}
 			CheckBox

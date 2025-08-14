@@ -42,9 +42,9 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL, 
   startProgressbar(samples + 1)
 
   if (!standard) {
-    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallback, iseed = iseed)
+    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallback, iseed = iseed, type = "nonparametric")
   } else {
-    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallbackStd, typeStd = typeStd, iseed = iseed)
+    bootres <- lavaan::bootstrapLavaan(object = fit, R = samples, FUN = coefWithCallbackStd, typeStd = typeStd, iseed = iseed, type = "nonparametric")
   }
 
   # Add the bootstrap samples to the fit object
@@ -59,22 +59,24 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL, 
 
   # we actually need the SEs from the bootstrap not the SEs from ML or some other estimator
   N <- nrow(fit@boot$coef)
+  P <- ncol(fit@boot$coef)
+  freePars <- which(fit@ParTable$free != 0)
 
-  # we multiply the var by (n-1)/n because lavaan actually uses n for the variance instead of n-1
   if (!standard) {
     # for unstandardized
-    fit@ParTable$se[fit@ParTable$free != 0] <- apply(fit@boot$coef, 2, sd) * sqrt((N-1)/N)
+    fit@ParTable$se[freePars] <- apply(fit@boot$coef, 2, sd)
   } else {
-    fit@ParTable$se <- apply(fit@boot$coef, 2, sd) * sqrt((N-1)/N)
-    # the standardized solution gives all estimates not only the unconstrained, so we need to change
-    # the free prameters in the partable and also change the estimate
-    fit@ParTable$free <- seq_len(ncol(fit@boot$coef))
+    # we replace 1:P because the boot coef output contains also the constrained parameters
+    fit@ParTable$se[1:P] <- apply(fit@boot$coef, 2, sd)
+    fit@boot$coef <- fit@boot$coef[, freePars, drop = FALSE]
     std <- lavaan::standardizedSolution(fit, type = typeStd)
-    fit@ParTable$est <- std$est.std
+    # for the standardized output we also replace some constrained elements
+    fit@ParTable$est[1:P] <- std$est.std
   }
 
   return(fit)
 }
+
 
 
 # Function to create a misfit plot
