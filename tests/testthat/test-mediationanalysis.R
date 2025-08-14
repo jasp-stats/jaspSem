@@ -187,42 +187,42 @@ options$bootstrapCiType  <- "percentileBiasCorrected"
 options$naAction         <- "fiml"
 
 set.seed(1)
-results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options)
+results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options, makeTests = F)
 
 test_that("Direct effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.0761400441342019, 0.671443275931248, 0.257757843176866, "contcor1",
-                                      "<unicode>", 0.0589199802205698, "contNormal", 0.136467182830779,
-                                      1.88878994810415))
+                                 list(0.0761400418471621, 0.67144328199062, 0.257757843176866, "contcor1",
+                                      "<unicode>", 0.0602005168476014, "contNormal", 0.137154686851546,
+                                      1.87932216604351))
 })
 
 test_that("Indirect effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_ind"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.299720825954233, 0.073293678485771, -0.0893136104463747, "contcor2",
-                                      "<unicode>", "<unicode>", 0.321618931630391, 0.0901123208859354,
-                                      "contcor1", "contNormal", -0.991136501294072))
+                                 list(-0.299720820153127, 0.0732936772629952, -0.0893136104463748, "contcor2",
+                                      "<unicode>", "<unicode>", 0.321618931631225, 0.0901123208860908,
+                                      "contcor1", "contNormal", -0.991136501292364))
 })
 
 test_that("Path coefficients table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_path"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.475862353202892, 0.110585521838546, -0.136980447123533, "contcor2",
-                                      "<unicode>", 0.306661780077382, "contNormal", 0.133998745278152,
-                                      -1.02225171466488, 0.0761400441342019, 0.671443275931248, 0.257757843176866,
-                                      "contcor1", "<unicode>", 0.0589199802205698, "contNormal", 0.136467182830779,
-                                      1.88878994810415, 0.481651777938874, 0.754639896102554, 0.652017220865318,
-                                      "contcor1", "<unicode>", 0, "contcor2", 0.06513006081573, 10.0110027950081
-                                 ))
+                                 list(-0.475862350312371, 0.11058551725881, -0.136980447123533, "contcor2",
+                                      "<unicode>", 0.309092736100577, "contNormal", 0.1346738091268,
+                                      -1.01712759156134, 0.0761400418471621, 0.67144328199062, 0.257757843176866,
+                                      "contcor1", "<unicode>", 0.0602005168476014, "contNormal", 0.137154686851546,
+                                      1.87932216604351, 0.481651772564286, 0.75463988878285, 0.652017220865318,
+                                      "contcor1", "<unicode>", 0, "contcor2", 0.0654581731453709,
+                                      9.960822148478))
 })
 
 test_that("Total effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_tot"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.00126714302930483, 0.440665080716848, 0.168444232730491, "contcor1",
-                                      "<unicode>", 0.102761008345243, "contNormal", 0.103237850067971,
-                                      1.63161314013793))
+                                 list(-0.00126713143815475, 0.440665080659029, 0.168444232730491, "contcor1",
+                                      "<unicode>", 0.102761008340492, "contNormal", 0.103237850066545,
+                                      1.63161314016047))
 })
 
 
@@ -247,35 +247,35 @@ results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options, make
 test_that("Direct effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.00203607928291166, 0.515217977105027, 0.246415337256947, "contcor1",
-                                      "<unicode>", 0.0454269308884425, "contNormal", 0.123165817830769,
-                                      2.0006795846192))
+                                 list(0.00203609861592261, 0.515217972956754, 0.246415337277754, "contcor1",
+                                      "<unicode>", 0.0465192566969286, "contNormal", 0.123786300663823,
+                                      1.99065111370413))
 })
 
 test_that("Indirect effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_ind"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.285927353530278, 0.072679544829816, -0.085383409360225, "contcor2",
-                                      "<unicode>", "<unicode>", 0.323289823674984, 0.086444958200602,
-                                      "contcor1", "contNormal", -0.987719945009244))
+                                 list(-0.285927353547018, 0.0726795446582816, -0.0853834093674345, "contcor2",
+                                      "<unicode>", "<unicode>", 0.325721157816279, 0.0868804491259142,
+                                      "contcor1", "contNormal", -0.982768968467117))
 })
 
 test_that("Path coefficients table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_path"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.423032428335729, 0.125618203679588, -0.129957536543631, "contcor2",
-                                      "<unicode>", 0.299640536185824, "contNormal", 0.12529595637462,
-                                      -1.03720455395283, 0.00203607928291166, 0.515217977105027, 0.246415337256947,
-                                      "contcor1", "<unicode>", 0.0454269308884425, "contNormal", 0.123165817830769,
-                                      2.0006795846192, 0.514802944243485, 0.794776932027742, 0.657010063679986,
-                                      "contcor1", "<unicode>", 0, "contcor2", 0.0623901955114432,
-                                      10.5306620422352))
+                                 list(-0.42303242765298, 0.125618203587476, -0.129957536548202, "contcor2",
+                                      "<unicode>", 0.302069524845541, "contNormal", 0.125927170167018,
+                                      -1.0320055344358, 0.00203609861592261, 0.515217972956754, 0.246415337277754,
+                                      "contcor1", "<unicode>", 0.0465192566969286, "contNormal", 0.123786300663823,
+                                      1.99065111370413, 0.514802945031706, 0.794776935427497, 0.657010063712354,
+                                      "contcor1", "<unicode>", 0, "contcor2", 0.0627045055841268,
+                                      10.4778764714265))
 })
 
 test_that("Total effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_tot"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.0364757008466789, 0.347861388237319, 0.161031927896722, "contcor1",
-                                      "<unicode>", 0.0988448047762278, "contNormal", 0.0975667259740126,
-                                      1.65047997961533))
+                                 list(-0.0364756940559679, 0.347861392970991, 0.161031927910319, "contcor1",
+                                      "<unicode>", 0.100547140107636, "contNormal", 0.0980582478184411,
+                                      1.6422068667643))
 })
