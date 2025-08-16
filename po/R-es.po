@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
 "POT-Creation-Date: 2025-08-09 03:12\n"
-"PO-Revision-Date: 2025-07-26 07:50+0000\n"
+"PO-Revision-Date: 2025-08-10 04:01+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "es/>\n"
@@ -346,13 +346,13 @@ msgstr "Estadístico de contraste"
 msgid "Critical Value (%s%% Quantile)"
 msgstr "Valor crítico (Cuantil del %s%%)"
 
-#, fuzzy
 msgid "Model selection criteria could not be computed: %s"
-msgstr ""
-"No se puede calcular la matriz de covarianzas de los errores tipificados"
+msgstr "No se pueden calcular los Criterios de Selección de modelos: %s"
 
 msgid "Model selection criteria could not be computed for group %1$s: %2$s"
 msgstr ""
+"No se pueden calcular los Criterios de Selección de modelos para el grupo "
+"%1$s: %2$s"
 
 msgid "At least one result is inadmissible."
 msgstr "Al menos un resultado no es admisible."
@@ -391,7 +391,7 @@ msgid "VIF"
 msgstr "FIV"
 
 msgid "VIF could not be computed."
-msgstr ""
+msgstr "No se pueden calcular los FIV."
 
 msgid "Endogenous Indicator Prediction"
 msgstr "Predicción de Indicadores Endógenos"
@@ -467,10 +467,10 @@ msgid "Maximum likelihood-based distance"
 msgstr "Distancia basada en la Máxima-Verosimilitud"
 
 msgid "Model assessment could not be computed: %s"
-msgstr ""
+msgstr "No se puede calcular la evaluación de modelos: %s"
 
 msgid "Model assessment could not be computed for group %1$s: %2$s"
-msgstr ""
+msgstr "No se puede calcular la evaluación de modelos para el grupo %1$s: %2$s"
 
 msgid "Reliability Measures"
 msgstr "Medidas de Fiabilidad"
@@ -497,15 +497,13 @@ msgid "Observed construct correlation matrix"
 msgstr "Matriz de correlaciones de construcciones observadas"
 
 msgid "Implied construct correlation matrix"
-msgstr "Matriz de correlaciones de construcciones implicadas"
+msgstr "Matriz de correlaciones de constructos implicados"
 
-#, fuzzy
 msgid "Implied indicator correlations could not be computed: %s"
-msgstr "Matriz de correlaciones de indicadores implicados"
+msgstr "No se pueden calcular las correlaciones de indicadores implicados: %s"
 
-#, fuzzy
 msgid "Implied construct correlations could not be computed: %s"
-msgstr "Matriz de correlaciones de construcciones implicadas"
+msgstr "No se pueden calcular las correlaciones de constructos implicados: %s"
 
 msgid "Column name %s already exists in the dataset"
 msgstr "El nombre %s de columna ya existe en el conjunto de datos"

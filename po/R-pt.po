@@ -3,10 +3,10 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2025-08-09 03:12\n"
-"PO-Revision-Date: 2025-08-09 03:01+0000\n"
+"PO-Revision-Date: 2025-08-10 04:01+0000\n"
 "Last-Translator: Wendel Paulo Silvestre <wpsilvestre@ucs.br>\n"
-"Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/jaspsem-"
-"r/pt/>\n"
+"Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/"
+"jaspsem-r/pt/>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -351,12 +351,13 @@ msgstr "Estatística de Teste"
 msgid "Critical Value (%s%% Quantile)"
 msgstr "Valor Crítico (Quantil %s%%)"
 
-#, fuzzy
 msgid "Model selection criteria could not be computed: %s"
-msgstr "A matriz de covariância residual padronizada não pôde ser calculada"
+msgstr "Os critérios de seleção do modelo não puderam ser calculados: %s"
 
 msgid "Model selection criteria could not be computed for group %1$s: %2$s"
 msgstr ""
+"Os critérios de seleção do modelo não puderam ser calculados para o grupo "
+"%1$s: %2$s"
 
 msgid "At least one result is inadmissible."
 msgstr "Pelo menos um resultado é inadmissível."
@@ -395,7 +396,7 @@ msgid "VIF"
 msgstr "FIV"
 
 msgid "VIF could not be computed."
-msgstr ""
+msgstr "VIF não pôde ser calculado."
 
 msgid "Endogenous Indicator Prediction"
 msgstr "Previsão de Indicadores Endógenos"
@@ -471,10 +472,10 @@ msgid "Maximum likelihood-based distance"
 msgstr "Distância baseada na Máxima Verossimilhança"
 
 msgid "Model assessment could not be computed: %s"
-msgstr ""
+msgstr "A avaliação do modelo não pôde ser computada: %s"
 
 msgid "Model assessment could not be computed for group %1$s: %2$s"
-msgstr ""
+msgstr "A avaliação do modelo não pôde ser computada para o grupo %1$s: %2$s"
 
 msgid "Reliability Measures"
 msgstr "Medidas de confiabilidade"
@@ -503,13 +504,11 @@ msgstr "Matriz de correlação da construção observado"
 msgid "Implied construct correlation matrix"
 msgstr "Matriz de correlação de construção implícita"
 
-#, fuzzy
 msgid "Implied indicator correlations could not be computed: %s"
-msgstr "Matriz de correlação de indicadores implícita"
+msgstr "As correlações de indicadores implícitas não puderam ser calculadas: %s"
 
-#, fuzzy
 msgid "Implied construct correlations could not be computed: %s"
-msgstr "Matriz de correlação de construção implícita"
+msgstr "As correlações de construção implícitas não puderam ser calculadas: %s"
 
 msgid "Column name %s already exists in the dataset"
 msgstr "O nome da coluna %s já existe no conjunto de dados"
@@ -876,7 +875,7 @@ msgid "Yuan-Bentler"
 msgstr "Yuan-Bentler"
 
 msgid "Yuan-Bentler Mplus"
-msgstr "Yuan-Bentler Mplus"
+msgstr "Mplus de Yuan-Bentler"
 
 msgid "mean and variance-adjusted"
 msgstr "média e variância ajustada"
