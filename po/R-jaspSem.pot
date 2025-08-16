@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.95.0\n"
-"POT-Creation-Date: 2025-08-09 03:12\n"
+"POT-Creation-Date: 2025-08-16 03:07\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,6 +86,12 @@ msgid "Bayesian (BIC)"
 msgstr ""
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
+msgstr ""
+
+msgid "# Factors"
+msgstr ""
+
+msgid "Robust standard errors are not available for variance-covariance matrix input."
 msgstr ""
 
 msgid "The model could not be estimated due to nonconvergence."

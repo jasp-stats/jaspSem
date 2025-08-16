@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
-"POT-Creation-Date: 2025-08-09 03:12\n"
+"POT-Creation-Date: 2025-08-16 03:07\n"
 "PO-Revision-Date: 2025-08-10 04:01+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -90,6 +90,17 @@ msgstr "Bayesiano (BIC)"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
 msgstr "Bayesiano ajustado por tamaño de muestra (SSABIC)"
+
+msgid "# Factors"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"Robust standard errors are not available for variance-covariance matrix "
+"input."
+msgstr ""
+"No hay más casos que el número de variables. ¿Son sus datos una matriz de "
+"varianzas-covarianzas?"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "El modelo no se pudo estimar debido a la no-convergencia."

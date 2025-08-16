@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2025-08-09 03:12\n"
+"POT-Creation-Date: 2025-08-16 03:07\n"
 "PO-Revision-Date: 2024-11-11 09:23+0000\n"
 "Last-Translator: JASP Stats <b.boutin@uva.nl>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -90,6 +90,16 @@ msgstr "ベイズ情報量規準(BIC)"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
 msgstr "サンプルサイズ調整済みベイジアン情報量規準(SSABIC)"
+
+msgid "# Factors"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"Robust standard errors are not available for variance-covariance matrix "
+"input."
+msgstr ""
+"変数の数よりもケースの数が少ないです。このデータは分散共分散行列ですか?"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "収束しなかったため，モデルは推定できませんでした。"

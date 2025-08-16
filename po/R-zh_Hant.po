@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2025-08-09 03:12\n"
+"POT-Creation-Date: 2025-08-16 03:07\n"
 "PO-Revision-Date: 2025-06-26 18:01+0000\n"
 "Last-Translator: 陳寬裕 <pf.kuan.yu.chen@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
@@ -90,6 +90,15 @@ msgstr "貝氏資訊量準則 (BIC)"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
 msgstr "依照樣本大小校正之貝氏資訊量準則 (SSABIC)"
+
+msgid "# Factors"
+msgstr ""
+
+#, fuzzy
+msgid ""
+"Robust standard errors are not available for variance-covariance matrix "
+"input."
+msgstr "資料個數少於變數個數，你是以變異數-共變數矩陣為資料進行分析嗎？"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "此模型無法估計: 迭代結果無法收斂。"
