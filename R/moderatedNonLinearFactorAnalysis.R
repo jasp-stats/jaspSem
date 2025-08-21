@@ -17,13 +17,16 @@
 
 ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
-  sink("~/Downloads/log.txt")
-  on.exit(sink(NULL))
+  # sink("~/Downloads/log.txt")
+  # on.exit(sink(NULL))
 
   OpenMx::mxSetDefaultOptions()
 
   ready <- length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)) > 1 &&
     length(options[["moderators"]]) > 0 && options[["syncAnalysisBox"]]
+
+  readyForFitPerGroup <- length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)) > 1 &&
+    length(options[["moderators"]]) > 0
 
   if (!ready) {
     if (length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)) > 1 &&
@@ -49,7 +52,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   .mnlfaCheckErrors(dataset, options, ready)
 
-  .mnlfaFitPerGroup(jaspResults, dataset, options, ready)
+  .mnlfaFitPerGroup(jaspResults, dataset, options, readyForFitPerGroup)
 
   # .mnlfaCreateGlobalInvarianceContainer(jaspResults, options)
 
@@ -57,7 +60,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   # output
   # tables
-  .mnlfaFitPerGroupTable(jaspResults, dataset, options, ready)
+  .mnlfaFitPerGroupTable(jaspResults, dataset, options, readyForFitPerGroup)
   .mnlfaGlobalInvarianceFitTable(jaspResults, dataset, options, ready)
   .mnlfaGlobalInvarianceParameterTables(jaspResults, dataset, options, ready)
 
@@ -244,6 +247,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     return()
   }
 
+  if (length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)) < 1) return()
+
   plotOpts <- .buildModeratedVariableSummary(options[["moderationIncludeList"]])
 
   modelOptions <- .extractIncludeModerationPaths(options[["moderationIncludeList"]])
@@ -301,7 +306,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   colnames(dataTmp) <- c(ogColnames, "addedGroupVar")
 
-  # this part is from jaspFactor
+  # this part is borrowed from jaspFactor
   cfaResult <- list()
   options[["seType"]] <- "default"
   cfaResult[["spec"]] <- .cfaCalcSpecs(dataTmp, options)
