@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-04-01 00:00+0000\n"
+"PO-Revision-Date: 2025-08-25 11:02+0000\n"
 "Last-Translator: Marko Bojović <bojovicmarko@outlook.com>\n"
 "Language-Team: Serbian <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "sr/>\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Weblate 5.11-dev\n"
+"X-Generator: Weblate 5.13\n"
 "X-Qt-Contexts: true\n"
 
 msgctxt "Description|"
@@ -151,7 +151,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Grouping variable"
-msgstr "Групишуће варијабле"
+msgstr "Групишућa варијаблa"
 
 msgctxt "MediationAnalysis|"
 msgid "Predictors"
@@ -495,7 +495,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Grouping Variable"
-msgstr "Групишуће варијабле"
+msgstr "Групишућa варијаблa"
 
 msgctxt "SEM|"
 msgid "Equality Constraints"
@@ -567,7 +567,7 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Grouping Variable"
-msgstr "Групишуће варијабле"
+msgstr "Групишућa варијаблa"
 
 msgctxt "PLSSEM|"
 msgid "Estimation"
