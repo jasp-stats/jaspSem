@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-01-04 21:55+0000\n"
+"PO-Revision-Date: 2025-09-15 01:01+0000\n"
 "Last-Translator: தமிழ்நேரம் <anishprabu.t@gmail.com>\n"
 "Language-Team: Tamil <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "ta/>\n"
@@ -9,7 +9,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10-dev\n"
+"X-Generator: Weblate 5.14-dev\n"
 "X-Qt-Contexts: true\n"
 
 msgctxt "Description|"
@@ -482,7 +482,7 @@ msgstr "இரட்டிப்பான வலுவான"
 
 msgctxt "SEM|"
 msgid "Mplus"
-msgstr "Mplus"
+msgstr "எம்கூட்டல்"
 
 msgctxt "SEM|"
 msgid "EQS"
@@ -722,7 +722,7 @@ msgstr "குறுக்கு சரிபார்ப்பு கே-மட
 
 msgctxt "PLSSEM|"
 msgid "Repetitions"
-msgstr "மறுபடியும் மறுபடியும்"
+msgstr "மறுநிகழ்வுகள்"
 
 msgctxt "PLSSEM|"
 msgid "Benchmark(s)"
@@ -862,7 +862,7 @@ msgstr "மேடையில்"
 
 msgctxt "Advanced|"
 msgid "Mplus"
-msgstr "Mplus"
+msgstr "எம்கூட்டல்"
 
 msgctxt "Advanced|"
 msgid "EQS"
@@ -1427,7 +1427,7 @@ msgstr "மல்டிகிரூப் மறைந்த வளர்ச்�
 
 msgctxt "LatentGrowthCurve|"
 msgid "Select a grouping variable that is ideally nominally scaled"
-msgstr "பெயரளவில் பெயரளவில் அளவிடப்பட்ட ஒரு குழு மாறியைத் தேர்ந்தெடுக்கவும்"
+msgstr "பெயரளவில் அளவிடப்பட்ட ஒரு குழு மாறியைத் தேர்ந்தெடுக்கவும்"
 
 msgctxt "SEM|"
 msgid "Condition on exogenous covariate(s)"
