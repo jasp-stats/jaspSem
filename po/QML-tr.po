@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-09-15 01:01+0000\n"
-"Last-Translator: hakan dokumuş <dokumushakan@gmail.com>\n"
+"PO-Revision-Date: 2025-09-19 21:01+0000\n"
+"Last-Translator: Tahir Enes Gedik <tegedik@gmail.com>\n"
 "Language-Team: Turkish <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "tr/>\n"
 "Language: tr\n"
@@ -111,7 +111,7 @@ msgstr "Model grafiği"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Show means"
-msgstr ""
+msgstr "Ortalamaları göster"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Options"
@@ -259,27 +259,27 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Model 1"
-msgstr ""
+msgstr "Model 1"
 
 msgctxt "SEM|"
 msgid "Data"
-msgstr ""
+msgstr "Veri"
 
 msgctxt "SEM|"
 msgid "Raw"
-msgstr ""
+msgstr "Ham"
 
 msgctxt "SEM|"
 msgid "Variance-covariance matrix"
-msgstr ""
+msgstr "Varyans-kovaryans matrisi"
 
 msgctxt "SEM|"
 msgid "Sample size"
-msgstr ""
+msgstr "Örneklem büyüklüğü"
 
 msgctxt "SEM|"
 msgid "Sampling weights"
-msgstr ""
+msgstr "Örnekleme ağırlıkları"
 
 msgctxt "SEM|"
 msgid "Additional fit measures"
@@ -291,7 +291,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Observed covariances"
-msgstr ""
+msgstr "Gözlemlenen kovaryanslar"
 
 msgctxt "SEM|"
 msgid "Implied covariances"
@@ -307,7 +307,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Mardia's coefficient"
-msgstr ""
+msgstr "Mardia katsayısı"
 
 msgctxt "SEM|"
 msgid "Standardized estimates"
@@ -335,7 +335,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Threshold"
-msgstr ""
+msgstr "Eşik"
 
 msgctxt "SEM|"
 msgid "Model Options"
@@ -343,15 +343,15 @@ msgstr "Model Seçenekleri"
 
 msgctxt "SEM|"
 msgid "Factor scaling"
-msgstr ""
+msgstr "Faktör ölçeklendirme"
 
 msgctxt "SEM|"
 msgid "Factor loadings"
-msgstr ""
+msgstr "Faktör yükleri"
 
 msgctxt "SEM|"
 msgid "Factor variance"
-msgstr ""
+msgstr "Faktör varyansları"
 
 msgctxt "SEM|"
 msgid "Effects coding"
@@ -367,23 +367,23 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Information matrix"
-msgstr ""
+msgstr "Bilgi matrisi"
 
 msgctxt "SEM|"
 msgid "Expected"
-msgstr ""
+msgstr "Beklenen"
 
 msgctxt "SEM|"
 msgid "Observed"
-msgstr ""
+msgstr "Gözlemlenen"
 
 msgctxt "SEM|"
 msgid "Standard"
-msgstr ""
+msgstr "Standart"
 
 msgctxt "SEM|"
 msgid "Robust"
-msgstr ""
+msgstr "Dirençli (sağlam)"
 
 msgctxt "SEM|"
 msgid "Bootstrap"
@@ -395,7 +395,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Percentile"
-msgstr ""
+msgstr "Yüzdebirlik"
 
 msgctxt "SEM|"
 msgid "Normal theory"
@@ -403,7 +403,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Confidence intervals"
-msgstr ""
+msgstr "Güven aralıkları"
 
 msgctxt "SEM|"
 msgid "Standardize variables before estimation"
@@ -443,11 +443,11 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Satorra-Bentler"
-msgstr ""
+msgstr "Satorra-Bentler"
 
 msgctxt "SEM|"
 msgid "Yuan-Bentler"
-msgstr ""
+msgstr "Yuan-Bentler"
 
 msgctxt "SEM|"
 msgid "Scaled and shifted"
@@ -491,11 +491,11 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Multigroup SEM"
-msgstr ""
+msgstr "Çok gruplu YEM"
 
 msgctxt "SEM|"
 msgid "Grouping Variable"
-msgstr ""
+msgstr "Gruplayıcı Değişken"
 
 msgctxt "SEM|"
 msgid "Equality Constraints"
@@ -515,7 +515,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Means"
-msgstr ""
+msgstr "Ortalamalar"
 
 #, fuzzy
 msgctxt "SEM|"
@@ -584,7 +584,7 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Confidence intervals"
-msgstr ""
+msgstr "Güven aralıkları"
 
 msgctxt "PLSSEM|"
 msgid "GSCA"
@@ -704,7 +704,7 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "All"
-msgstr ""
+msgstr "Hepsi"
 
 msgctxt "PLSSEM|"
 msgid "Samples"
@@ -836,7 +836,7 @@ msgstr ""
 
 msgctxt "Advanced|"
 msgid "Default"
-msgstr ""
+msgstr "Varsayılan"
 
 msgctxt "Advanced|"
 msgid "ML"
