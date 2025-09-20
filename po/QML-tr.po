@@ -1,15 +1,9 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-09-19 21:01+0000\n"
-"Last-Translator: Tahir Enes Gedik <tegedik@gmail.com>\n"
-"Language-Team: Turkish <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
-"tr/>\n"
-"Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14-dev\n"
 "X-Language: tr\n"
 "X-Qt-Contexts: true\n"
 
@@ -562,9 +556,10 @@ msgctxt "PLSSEM|"
 msgid "Ignore structural model"
 msgstr ""
 
+#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Grouping Variable"
-msgstr ""
+msgstr "Gruplayıcı Değişken"
 
 msgctxt "PLSSEM|"
 msgid "Estimation"
@@ -654,9 +649,10 @@ msgctxt "PLSSEM|"
 msgid "R-squared"
 msgstr ""
 
+#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Mardia's coefficient"
-msgstr ""
+msgstr "Mardia katsayısı"
 
 msgctxt "PLSSEM|"
 msgid "Reliability measures"
@@ -858,21 +854,24 @@ msgctxt "Advanced|"
 msgid "DWLS"
 msgstr ""
 
+#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Confidence intervals"
-msgstr ""
+msgstr "Güven aralıkları"
 
 msgctxt "ErrorCalculation|"
 msgid "Method"
 msgstr ""
 
+#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Standard"
-msgstr ""
+msgstr "Standart"
 
+#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Robust"
-msgstr ""
+msgstr "Dirençli (sağlam)"
 
 msgctxt "ErrorCalculation|"
 msgid "Bootstrap"
@@ -890,9 +889,10 @@ msgctxt "ErrorCalculation|"
 msgid "Bias-corrected percentile"
 msgstr ""
 
+#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Percentile"
-msgstr ""
+msgstr "Yüzdebirlik"
 
 msgctxt "ErrorCalculation|"
 msgid "Normal theory"
@@ -906,9 +906,10 @@ msgctxt "LatentGrowthCurve|"
 msgid "Additional fit measures"
 msgstr ""
 
+#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "All"
-msgstr ""
+msgstr "Hepsi"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Latents"
@@ -918,9 +919,10 @@ msgctxt "LatentGrowthCurve|"
 msgid "Except exogenous covariates"
 msgstr ""
 
+#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "All"
-msgstr ""
+msgstr "Hepsi"
 
 msgctxt "MediationAnalysis|"
 msgid "Latents"
@@ -930,9 +932,10 @@ msgctxt "MediationAnalysis|"
 msgid "Except exogenous covariates"
 msgstr ""
 
+#, fuzzy
 msgctxt "Mimic|"
 msgid "All"
-msgstr ""
+msgstr "Hepsi"
 
 msgctxt "Mimic|"
 msgid "Latents"
@@ -986,9 +989,10 @@ msgctxt "SEM|"
 msgid "EFA blocks constrained"
 msgstr ""
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "Default"
-msgstr ""
+msgstr "Varsayılan"
 
 msgctxt "SEM|"
 msgid "DLS"
@@ -1082,9 +1086,10 @@ msgctxt "SEM|"
 msgid "Lavaan"
 msgstr ""
 
+#, fuzzy
 msgctxt "SEM|"
 msgid "All"
-msgstr ""
+msgstr "Hepsi"
 
 msgctxt "SEM|"
 msgid "Latents"
