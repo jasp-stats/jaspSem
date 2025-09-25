@@ -17,6 +17,9 @@
 
 PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
 
+  # sink(file="~/Downloads/log.txt")
+  # on.exit(sink(NULL))
+
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
   options <- .plsSemPrepOpts(options)
@@ -25,16 +28,24 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   ready   <- .plsSemIsReady(dataset, options)
 
+  print(str(options))
+
+  # print("point1")
   # Store in container
   modelContainer <- .plsSemModelContainer(jaspResults)
+  # print("point2")
 
   # Check for errors
   .plsSemCheckErrors(dataset, options, ready, modelContainer)
+  # print("point3")
 
+  .plsSemComputeResults(modelContainer, dataset, options)
   # Output functions
   .plsSemFitTab(modelContainer, dataset, options, ready)
-  if (modelContainer$getError()) return()
+  # print("point4")
   .plsSemParameters(modelContainer, dataset, options, ready)
+  # print("point5")
+
   .plsSemRsquared(modelContainer, dataset, options, ready)
   .plsSemPrediction(modelContainer, options, ready)
   .plsSemAdditionalFits(modelContainer, dataset, options, ready)
@@ -201,7 +212,7 @@ checkCSemModel <- function(model, availableVars) {
                               "bootstrapSamples", "ciLevel",
                               "setSeed", "seed", "handlingOfInadmissibles", "endogenousIndicatorPrediction",
                               "kFolds", "repetitions", "benchmark", "models"
-                              ))
+    ))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -300,7 +311,7 @@ checkCSemModel <- function(model, availableVars) {
     modelContainer[["models"]]  <- createJaspState(options[["models"]])
   }
 
-  return(results)
+  return()
 }
 
 
@@ -342,11 +353,13 @@ checkCSemModel <- function(model, availableVars) {
 # Model Fit Table
 .plsSemFitTab <- function(modelContainer, dataset, options, ready) {
   # create model fit table
-  if (!is.null(modelContainer[["fittab"]])) return()
+  if (!is.null(modelContainer[["fittab"]])) {
+    return()
+  }
   if (!ready) return()
 
   # fill model fit table
-  plsSemResults <- .plsSemComputeResults(modelContainer, dataset, options)
+  plsSemResults <- modelContainer[["results"]][["object"]]
   # we need this for a lot of other tables so we do this once here:
   results <- plsSemResults[[1]]
   msc <- .withWarnings(.computeMSC(results, dataset, options))
@@ -449,14 +462,19 @@ checkCSemModel <- function(model, availableVars) {
 }
 
 .plsSemParameters <- function(modelContainer, dataset, options, ready) {
+
   if (!is.null(modelContainer[["params"]])) return()
 
   # create container for parameter estimates
   params <- createJaspContainer(gettext("Parameter Estimates"))
   params$position <- 1
   params$dependOn(c("models", "ciLevel"))
-
   modelContainer[["params"]] <- params
+
+  # if (modelContainer$getError()) {
+  #   params$setError(jaspBase::.extractErrorMessage(modelContainer[["results"]][["object"]][[1]]))
+  #   return()
+  # }
 
   .plsSemParameterTables(modelContainer[["results"]][["object"]][[1]], NULL, params, options, ready)
 
@@ -575,9 +593,9 @@ checkCSemModel <- function(model, availableVars) {
     resCorTab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
     resCorTab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
     resCorTab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                           overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                            overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
     resCorTab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                           overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+                            overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
   }
 
   pecont[["Residual_correlation"]] <- resCorTab
@@ -1487,11 +1505,11 @@ checkCSemModel <- function(model, availableVars) {
   } else {
     for (i in seq_along(options[["models"]])) {
       tabrho$addColumnInfo(name = paste0("rhoT_", i), title = options[["models"]][[i]][["name"]],
-                          overtitle = gettextf("Cronbach's %s", "\u03B1"), type = "number")
+                           overtitle = gettextf("Cronbach's %s", "\u03B1"), type = "number")
     }
     for (i in seq_along(options[["models"]])) {
       tabrho$addColumnInfo(name = paste0("rhoCmm_", i), title = options[["models"]][[i]][["name"]],
-                          overtitle = gettextf("J%1$sreskog's %2$s","\u00F6", "\u03C1" ), type = "number")
+                           overtitle = gettextf("J%1$sreskog's %2$s","\u00F6", "\u03C1" ), type = "number")
     }
     for (i in seq_along(options[["models"]])) {
       tabrho$addColumnInfo(name = paste0("rhoCWeightedmm_", i), title = options[["models"]][[i]][["name"]],
@@ -1656,10 +1674,10 @@ checkCSemModel <- function(model, availableVars) {
   cors <- createJaspContainer(gettext("Correlation tables"))
   cors$position <- 3
   cors$dependOn(c("observedIndicatorCorrelation",
-                    "impliedIndicatorCorrelation",
-                    "observedConstructCorrelation",
-                    "impliedConstructCorrelation",
-                    "models"))
+                  "impliedIndicatorCorrelation",
+                  "observedConstructCorrelation",
+                  "impliedConstructCorrelation",
+                  "models"))
 
   modelContainer[["cors"]] <- cors
 
