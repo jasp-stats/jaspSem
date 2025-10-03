@@ -142,14 +142,14 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
     }
   }
 
-  # Check if meanstructure is true but then no checkbox to fix the intercepts to zero is checked
-  if (options[["meanStructure"]]) {
-    if (!any(c(options[["manifestInterceptFixedToZero"]], options[["latentInterceptFixedToZero"]],
-               options[["manifestMeanFixedToZero"]]))) {
-      .quitAnalysis(gettext("When mean structure is included, at least one of the checkboxes to fix the intercepts to zero has to be checked"))
-      return()
-    }
-  }
+  # # Check if meanstructure is true but then no checkbox to fix the intercepts to zero is checked
+  # if (options[["meanStructure"]]) {
+  #   if (!any(c(options[["manifestInterceptFixedToZero"]], options[["latentInterceptFixedToZero"]],
+  #              options[["manifestMeanFixedToZero"]]))) {
+  #     .quitAnalysis(gettext("When mean structure is included, at least one of the checkboxes to fix the intercepts to zero has to be checked"))
+  #     return()
+  #   }
+  # }
 
   # Check if we're trying to condition on random covariates
   if (options[["exogenousCovariateConditional"]] && !options[["exogenousCovariateFixed"]]) {

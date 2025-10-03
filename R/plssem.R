@@ -239,7 +239,6 @@ checkCSemModel <- function(model, availableVars) {
     syntax   <- .semTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
     cSemOpts[[".model"]] <- syntax
     cSemOpts[[".data"]]  <- dataset
-    saveRDS(cSemOpts, file = "/Users/julius/Downloads/cSemOpts.rds")
 
     # fit the model
     fit <- try(do.call(cSEM::csem, cSemOpts))
