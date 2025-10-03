@@ -18,6 +18,9 @@
 MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
 
+  # sink(file="~/Downloads/log.txt")
+  # on.exit(sink(NULL))
+
 
   # Read dataset
   dataset <- .medReadData(dataset, options)
@@ -106,20 +109,29 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 .medComputeResults <- function(modelContainer, dataset, options, ready) {
 
   miss <- if (anyNA(dataset)) options[["naAction"]] else "listwise"
-  medResult <- try(lavaan::sem(
+  medResult <- try(.withWarnings(lavaan::sem(
     model           = .medToLavMod(options),
     data            = dataset,
     se              = ifelse(options$errorCalculationMethod == "bootstrap", "standard", options$errorCalculationMethod),
-    std.ov          = options$standardizedEstimate,
-    fixed.x         = !options$standardizedEstimate,
+    fixed.x         = TRUE,
     mimic           = options$emulation,
     estimator       = options$estimator,
     missing         = miss
-    ))
+    )))
 
-  if (inherits(medResult, "try-error")) {
-    errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(medResult, "condition")$message)
+  if (inherits(medResult$value, "try-error")) {
+    errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(medResult$value, "condition")$message)
     modelContainer$setError(.decodeVarsInMessage(names(dataset), errmsg))
+    return(medResult$value)
+  }
+
+  # there seems to be cases where warnings from the model say: "model estimation failed, returning starting values"
+  # in those cases bootstrapping makes no sense, we need to catch those
+  warnings <- medResult$warnings
+  if (any(unlist(lapply(warnings, \(w) grepl("Model estimation FAILED!",
+                                             conditionMessage(w), fixed = FALSE))))) {
+    modelContainer$setError(gettext("Estimation failed"))
+    return(medResult$value)
   }
 
   if (options$errorCalculationMethod == "bootstrap") {
@@ -127,13 +139,13 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
                    "all" = "std.all",
                    "latents" = "std.lv",
                    "nox" = "std.nox")
-    medResult <- lavBootstrap(medResult, samples = options[["bootstrapSamples"]],
+    medResult$value <- lavBootstrap(medResult$value, samples = options[["bootstrapSamples"]],
                               standard = options[["standardizedEstimate"]],
                               typeStd = type)
   }
 
-  modelContainer[["model"]] <- createJaspState(medResult)
-  return(medResult)
+  modelContainer[["model"]] <- createJaspState(medResult$value)
+  return(medResult$value)
 }
 
 .medToLavMod <- function(options, base64 = TRUE) {

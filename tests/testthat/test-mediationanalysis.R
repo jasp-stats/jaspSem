@@ -247,35 +247,35 @@ results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options, make
 test_that("Direct effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_dir"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.00203609861592261, 0.515217972956754, 0.246415337277754, "contcor1",
-                                      "<unicode>", 0.0465192566969286, "contNormal", 0.123786300663823,
-                                      1.99065111370413))
+                                 list(0.00199972978415685, 0.507013814969438, 0.246415337277754, "contcor1",
+                                      "<unicode>", 0.0468922517340504, "contNormal", 0.123996777945369,
+                                      1.98727209981473))
 })
 
 test_that("Indirect effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_ind"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.285927353547018, 0.0726795446582816, -0.0853834093674345, "contcor2",
-                                      "<unicode>", "<unicode>", 0.325721157816279, 0.0868804491259142,
-                                      "contcor1", "contNormal", -0.982768968467117))
+                                 list(-0.291761049102628, 0.077145133775399, -0.0853834093674347, "contcor2",
+                                      "<unicode>", "<unicode>", 0.327810547743048, 0.0872565040567844,
+                                      "contcor1", "contNormal", -0.978533466248766))
 })
 
 test_that("Path coefficients table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_path"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.42303242765298, 0.125618203587476, -0.129957536548202, "contcor2",
-                                      "<unicode>", 0.302069524845541, "contNormal", 0.125927170167018,
-                                      -1.0320055344358, 0.00203609861592261, 0.515217972956754, 0.246415337277754,
-                                      "contcor1", "<unicode>", 0.0465192566969286, "contNormal", 0.123786300663823,
-                                      1.99065111370413, 0.514802945031706, 0.794776935427497, 0.657010063712354,
-                                      "contcor1", "<unicode>", 0, "contcor2", 0.0627045055841268,
-                                      10.4778764714265))
+                                 list(-0.414163309323928, 0.12431149578601, -0.129957536548202, "contcor2",
+                                      "<unicode>", 0.303430302457657, "contNormal", 0.126282087152938,
+                                      -1.02910507323824, 0.00199972978415685, 0.507013814969438, 0.246415337277754,
+                                      "contcor1", "<unicode>", 0.0468922517340504, "contNormal", 0.123996777945369,
+                                      1.98727209981473, 0.552952099539788, 0.782767982205505, 0.657010063712354,
+                                      "contcor1", "<unicode>", 0, "contcor2", 0.0570818137821871,
+                                      11.5099717437041))
 })
 
 test_that("Total effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_tot"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(-0.0364756940559679, 0.347861392970991, 0.161031927910319, "contcor1",
-                                      "<unicode>", 0.100547140107636, "contNormal", 0.0980582478184411,
-                                      1.6422068667643))
+                                 list(-0.0352345287443855, 0.337187300357418, 0.161031927910319, "contcor1",
+                                      "<unicode>", 0.0999482490400043, "contNormal", 0.0978855272669042,
+                                      1.64510456659475))
 })
