@@ -67,12 +67,11 @@
     },
     "Hmisc": {
       "Package": "Hmisc",
-      "Version": "5.2-3",
+      "Version": "5.2-4",
       "Source": "Repository",
-      "Date": "2025-03-16",
+      "Date": "2025-10-02",
       "Title": "Harrell Miscellaneous",
-      "Authors@R": "c(person(given = \"Frank E\", family = \"Harrell Jr\", role = c(\"aut\", \"cre\"), email = \"fh@fharrell.com\", comment = c(ORCID = \"0000-0002-8271-5493\")), person(given = \"Charles\", family = \"Dupont\", role = \"ctb\", email = \"charles.dupont@vumc.org\", comment = \"contributed several functions and maintains latex functions\"))",
-      "Maintainer": "Frank E Harrell Jr <fh@fharrell.com>",
+      "Authors@R": "c(person(given   = \"Frank E\", family  = \"Harrell Jr\", role    = c(\"aut\", \"cre\"), email   = \"fh@fharrell.com\", comment = c(ORCID = \"0000-0002-8271-5493\")), person(given   = \"Cole\", family  = \"Beck\", role    = c(\"ctb\"), email   = \"cole.beck@vumc.org\" ), person(given   = \"Charles\", family  = \"Dupont\", role    = \"ctb\") )",
       "Depends": [
         "R (>= 4.2.0)"
       ],
@@ -88,7 +87,7 @@
         "gridExtra",
         "data.table",
         "htmlTable (>= 1.11.0)",
-        "viridis",
+        "viridisLite",
         "htmltools",
         "base64enc",
         "colorspace",
@@ -107,7 +106,6 @@
         "tables",
         "plotly (>= 4.5.6)",
         "rlang",
-        "plyr",
         "VGAM",
         "leaps",
         "pcaPP",
@@ -127,16 +125,18 @@
         "getPass",
         "keyring",
         "safer",
-        "htm2txt"
+        "htm2txt",
+        "boot"
       ],
       "Description": "Contains many functions useful for data analysis, high-level graphics, utility operations, functions for computing sample size and power, simulation, importing and annotating datasets, imputing missing values, advanced table making, variable clustering, character string manipulation, conversion of R objects to LaTeX and html code, recoding variables, caching, simplified parallel computing, encrypting and decrypting data using a safe workflow, general moving window statistical estimation, and assistance in interpreting principal component analysis.",
       "License": "GPL (>= 2)",
       "LazyLoad": "Yes",
       "URL": "https://hbiostat.org/R/Hmisc/",
       "Encoding": "UTF-8",
-      "RoxygenNote": "7.3.2",
+      "RoxygenNote": "7.3.3",
       "NeedsCompilation": "yes",
-      "Author": "Frank E Harrell Jr [aut, cre] (<https://orcid.org/0000-0002-8271-5493>), Charles Dupont [ctb] (contributed several functions and maintains latex functions)",
+      "Author": "Frank E Harrell Jr [aut, cre] (ORCID: <https://orcid.org/0000-0002-8271-5493>), Cole Beck [ctb], Charles Dupont [ctb]",
+      "Maintainer": "Frank E Harrell Jr <fh@fharrell.com>",
       "Repository": "CRAN"
     },
     "MASS": {
@@ -1002,20 +1002,21 @@
     },
     "cSEM": {
       "Package": "cSEM",
-      "Version": "0.5.0",
+      "Version": "0.6.1",
       "Source": "Repository",
       "Title": "Composite-Based Structural Equation Modeling",
-      "Date": "2022-11-24",
-      "Authors@R": "c(person(given = \"Manuel E.\", family = \"Rademaker\", role  = c(\"aut\"), email = \"manuel-rademaker@outlook.de\", comment = c(ORCID = \"0000-0002-8902-3561\")), person(given = \"Florian\", family = \"Schuberth\", role  = c(\"aut\", \"cre\"), email = \"f.schuberth@utwente.nl\", comment = c(ORCID = \"0000-0002-2110-9086\")), person(given = \"Tamara\", family = \"Schamberger\", role  = c(\"ctb\"), email = \"tamara.schamberger@uni-wuerzburg.de\", comment = c(ORCID = \"0000-0002-7845-784X\")), person(given = \"Michael\", family = \"Klesel\", role  = c(\"ctb\"), email = \"\", comment = c(ORCID = \"0000-0002-2884-1819\")), person(given = \"Theo K.\", family = \"Dijkstra\", role  = c(\"ctb\"), email = \"\"), person(given = \"Jörg\", family = \"Henseler\", role  = c(\"ctb\"), email = \"\", comment = c(ORCID = \"0000-0002-9736-3048\")))",
+      "Date": "2025-05-15",
+      "Authors@R": "c(person(given = \"Manuel E.\", family = \"Rademaker\", role  = c(\"aut\"), email = \"manuel-rademaker@outlook.de\", comment = c(ORCID = \"0000-0002-8902-3561\")), person(given = \"Florian\", family = \"Schuberth\", role  = c(\"aut\", \"cre\"), email = \"f.schuberth@utwente.nl\", comment = c(ORCID = \"0000-0002-2110-9086\")), person(given = \"Tamara\", family = \"Schamberger\", role  = c(\"ctb\"), email = \"tamara.schamberger@uni-wuerzburg.de\", comment = c(ORCID = \"0000-0002-7845-784X\")), person(given = \"Michael\", family = \"Klesel\", role  = c(\"ctb\"), email = \"\", comment = c(ORCID = \"0000-0002-2884-1819\")), person(given = \"Huu Phuc\", family = \"Nguyen\", role  = c(\"ctb\"), email = \"\", comment = c(ORCID = \"0009-0000-9344-7132\")),        person(given = \"Theo K.\", family = \"Dijkstra\", role  = c(\"ctb\"), email = \"\"), person(given = \"Jörg\", family = \"Henseler\", role  = c(\"ctb\"), email = \"\", comment = c(ORCID = \"0000-0002-9736-3048\")))",
       "Maintainer": "Florian Schuberth <f.schuberth@utwente.nl>",
       "Depends": [
         "R (>= 3.5.0)"
       ],
-      "Description": "Estimate, assess, test, and study linear, nonlinear, hierarchical  and multigroup structural equation models using composite-based approaches  and procedures, including estimation techniques such as partial least squares  path modeling (PLS-PM) and its derivatives (PLSc, ordPLSc, robustPLSc),  generalized structured component analysis (GSCA), generalized structured  component analysis with uniqueness terms (GSCAm), generalized canonical  correlation analysis (GCCA), principal component analysis (PCA),  factor score regression (FSR) using sum score, regression or  bartlett scores (including bias correction using Croon’s approach),  as well as several tests and typical postestimation procedures  (e.g., verify admissibility of the estimates, assess the model fit,  test the model fit etc.).",
-      "BugReports": "https://github.com/M-E-Rademaker/cSEM/issues/",
-      "URL": "https://github.com/M-E-Rademaker/cSEM/, https://m-e-rademaker.github.io/cSEM/",
+      "Description": "Estimate, assess, test, and study linear, nonlinear, hierarchical  and multigroup structural equation models using composite-based approaches  and procedures, including estimation techniques such as partial least squares  path modeling (PLS-PM) and its derivatives (PLSc, ordPLSc, robustPLSc),  generalized structured component analysis (GSCA), generalized structured  component analysis with uniqueness terms (GSCAm), generalized canonical  correlation analysis (GCCA), principal component analysis (PCA),  factor score regression (FSR) using sum score, regression or  Bartlett scores (including bias correction using Croon’s approach),  as well as several tests and typical postestimation procedures  (e.g., verify admissibility of the estimates, assess the model fit,  test the model fit etc.).",
+      "BugReports": "https://github.com/FloSchuberth/cSEM/issues/",
+      "URL": "https://github.com/FloSchuberth/cSEM/, https://floschuberth.github.io/cSEM/",
       "License": "GPL-3",
       "Encoding": "UTF-8",
+      "NeedsCompilation": "yes",
       "LazyData": "true",
       "Imports": [
         "alabama",
@@ -1024,6 +1025,7 @@
         "expm (>= 0.999-5)",
         "future.apply",
         "future",
+        "lifecycle",
         "lavaan",
         "magrittr",
         "MASS",
@@ -1039,29 +1041,33 @@
         "stats",
         "symmoments",
         "TruncatedNormal",
-        "utils",
-        "lifecycle"
+        "utils"
       ],
       "RdMacros": "Rdpack, lifecycle",
-      "RoxygenNote": "7.2.2",
+      "RoxygenNote": "7.3.2",
       "Suggests": [
+        "DiagrammeR",
+        "DiagrammeRsvg",
         "dplyr",
         "tidyr",
         "knitr",
         "nnls",
         "prettydoc",
         "plotly",
+        "rsvg",
         "rmarkdown",
         "rootSolve",
         "listviewer",
-        "testthat",
+        "testthat (>= 3.0.0)",
         "ggplot2",
         "openxlsx",
-        "graphics"
+        "graphics",
+        "spelling"
       ],
+      "Config/testthat/edition": "3",
       "VignetteBuilder": "knitr",
-      "NeedsCompilation": "no",
-      "Author": "Manuel E. Rademaker [aut] (<https://orcid.org/0000-0002-8902-3561>), Florian Schuberth [aut, cre] (<https://orcid.org/0000-0002-2110-9086>), Tamara Schamberger [ctb] (<https://orcid.org/0000-0002-7845-784X>), Michael Klesel [ctb] (<https://orcid.org/0000-0002-2884-1819>), Theo K. Dijkstra [ctb], Jörg Henseler [ctb] (<https://orcid.org/0000-0002-9736-3048>)",
+      "Language": "en-US",
+      "Author": "Manuel E. Rademaker [aut] (ORCID: <https://orcid.org/0000-0002-8902-3561>), Florian Schuberth [aut, cre] (ORCID: <https://orcid.org/0000-0002-2110-9086>), Tamara Schamberger [ctb] (ORCID: <https://orcid.org/0000-0002-7845-784X>), Michael Klesel [ctb] (ORCID: <https://orcid.org/0000-0002-2884-1819>), Huu Phuc Nguyen [ctb] (ORCID: <https://orcid.org/0009-0000-9344-7132>), Theo K. Dijkstra [ctb], Jörg Henseler [ctb] (ORCID: <https://orcid.org/0000-0002-9736-3048>)",
       "Repository": "CRAN"
     },
     "cachem": {
@@ -2904,7 +2910,7 @@
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspGraphs",
       "RemoteRef": "master",
-      "RemoteSha": "e7ed012199dcbd48aa6b2fffb22bd9fb012ada4e",
+      "RemoteSha": "cf422696bb8d8e2677868997f9a65e6e15ea9a2f",
       "RemoteHost": "api.github.com"
     },
     "jaspTools": {
@@ -2940,7 +2946,7 @@
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspTools",
       "RemoteRef": "master",
-      "RemoteSha": "525d7bd87fc832df731c5484582dc45af3d40f80",
+      "RemoteSha": "9ef3d8d1c1d9d5b3a87057e80599c250940464ed",
       "RemoteHost": "api.github.com"
     },
     "jpeg": {
@@ -3770,7 +3776,7 @@
     },
     "openssl": {
       "Package": "openssl",
-      "Version": "2.3.3",
+      "Version": "2.3.4",
       "Source": "Repository",
       "Type": "Package",
       "Title": "Toolkit for Encryption, Signatures and Certificates Based on OpenSSL",
@@ -4821,7 +4827,7 @@
     },
     "rmarkdown": {
       "Package": "rmarkdown",
-      "Version": "2.29",
+      "Version": "2.30",
       "Source": "Repository",
       "Type": "Package",
       "Title": "Dynamic Documents for R",
@@ -4871,7 +4877,7 @@
       "RoxygenNote": "7.3.2",
       "SystemRequirements": "pandoc (>= 1.14) - http://pandoc.org",
       "NeedsCompilation": "no",
-      "Author": "JJ Allaire [aut], Yihui Xie [aut, cre] (<https://orcid.org/0000-0003-0645-5666>), Christophe Dervieux [aut] (<https://orcid.org/0000-0003-4474-2498>), Jonathan McPherson [aut], Javier Luraschi [aut], Kevin Ushey [aut], Aron Atkins [aut], Hadley Wickham [aut], Joe Cheng [aut], Winston Chang [aut], Richard Iannone [aut] (<https://orcid.org/0000-0003-3925-190X>), Andrew Dunning [ctb] (<https://orcid.org/0000-0003-0464-5036>), Atsushi Yasumoto [ctb, cph] (<https://orcid.org/0000-0002-8335-495X>, Number sections Lua filter), Barret Schloerke [ctb], Carson Sievert [ctb] (<https://orcid.org/0000-0002-4958-2844>), Devon Ryan [ctb] (<https://orcid.org/0000-0002-8549-0971>), Frederik Aust [ctb] (<https://orcid.org/0000-0003-4900-788X>), Jeff Allen [ctb], JooYoung Seo [ctb] (<https://orcid.org/0000-0002-4064-6012>), Malcolm Barrett [ctb], Rob Hyndman [ctb], Romain Lesur [ctb], Roy Storey [ctb], Ruben Arslan [ctb], Sergio Oller [ctb], Posit Software, PBC [cph, fnd], jQuery UI contributors [ctb, cph] (jQuery UI library; authors listed in inst/rmd/h/jqueryui/AUTHORS.txt), Mark Otto [ctb] (Bootstrap library), Jacob Thornton [ctb] (Bootstrap library), Bootstrap contributors [ctb] (Bootstrap library), Twitter, Inc [cph] (Bootstrap library), Alexander Farkas [ctb, cph] (html5shiv library), Scott Jehl [ctb, cph] (Respond.js library), Ivan Sagalaev [ctb, cph] (highlight.js library), Greg Franko [ctb, cph] (tocify library), John MacFarlane [ctb, cph] (Pandoc templates), Google, Inc. [ctb, cph] (ioslides library), Dave Raggett [ctb] (slidy library), W3C [cph] (slidy library), Dave Gandy [ctb, cph] (Font-Awesome), Ben Sperry [ctb] (Ionicons), Drifty [cph] (Ionicons), Aidan Lister [ctb, cph] (jQuery StickyTabs), Benct Philip Jonsson [ctb, cph] (pagebreak Lua filter), Albert Krewinkel [ctb, cph] (pagebreak Lua filter)",
+      "Author": "JJ Allaire [aut], Yihui Xie [aut, cre] (ORCID: <https://orcid.org/0000-0003-0645-5666>), Christophe Dervieux [aut] (ORCID: <https://orcid.org/0000-0003-4474-2498>), Jonathan McPherson [aut], Javier Luraschi [aut], Kevin Ushey [aut], Aron Atkins [aut], Hadley Wickham [aut], Joe Cheng [aut], Winston Chang [aut], Richard Iannone [aut] (ORCID: <https://orcid.org/0000-0003-3925-190X>), Andrew Dunning [ctb] (ORCID: <https://orcid.org/0000-0003-0464-5036>), Atsushi Yasumoto [ctb, cph] (ORCID: <https://orcid.org/0000-0002-8335-495X>, cph: Number sections Lua filter), Barret Schloerke [ctb], Carson Sievert [ctb] (ORCID: <https://orcid.org/0000-0002-4958-2844>), Devon Ryan [ctb] (ORCID: <https://orcid.org/0000-0002-8549-0971>), Frederik Aust [ctb] (ORCID: <https://orcid.org/0000-0003-4900-788X>), Jeff Allen [ctb], JooYoung Seo [ctb] (ORCID: <https://orcid.org/0000-0002-4064-6012>), Malcolm Barrett [ctb], Rob Hyndman [ctb], Romain Lesur [ctb], Roy Storey [ctb], Ruben Arslan [ctb], Sergio Oller [ctb], Posit Software, PBC [cph, fnd], jQuery UI contributors [ctb, cph] (jQuery UI library; authors listed in inst/rmd/h/jqueryui/AUTHORS.txt), Mark Otto [ctb] (Bootstrap library), Jacob Thornton [ctb] (Bootstrap library), Bootstrap contributors [ctb] (Bootstrap library), Twitter, Inc [cph] (Bootstrap library), Alexander Farkas [ctb, cph] (html5shiv library), Scott Jehl [ctb, cph] (Respond.js library), Ivan Sagalaev [ctb, cph] (highlight.js library), Greg Franko [ctb, cph] (tocify library), John MacFarlane [ctb, cph] (Pandoc templates), Google, Inc. [ctb, cph] (ioslides library), Dave Raggett [ctb] (slidy library), W3C [cph] (slidy library), Dave Gandy [ctb, cph] (Font-Awesome), Ben Sperry [ctb] (Ionicons), Drifty [cph] (Ionicons), Aidan Lister [ctb, cph] (jQuery StickyTabs), Benct Philip Jonsson [ctb, cph] (pagebreak Lua filter), Albert Krewinkel [ctb, cph] (pagebreak Lua filter)",
       "Maintainer": "Yihui Xie <xie@yihui.name>",
       "Repository": "CRAN"
     },
@@ -5050,37 +5056,38 @@
     },
     "rvg": {
       "Package": "rvg",
-      "Version": "0.3.5",
+      "Version": "0.4.0",
       "Source": "Repository",
       "Type": "Package",
       "Title": "R Graphics Devices for 'Office' Vector Graphics Output",
-      "Authors@R": "c( person(\"David\", \"Gohel\", role = c(\"aut\", \"cre\"), email = \"david.gohel@ardata.fr\"), person(given = \"ArData\", role = \"cph\"), person(\"Bob\", \"Rudis\", role = c(\"ctb\"), comment = \"the javascript code used by function set_attr\"), person(\"Francois\", \"Brunetti\", role = c(\"ctb\"), email = \"francois.brunetti@lysis-consultants.fr\", comment = \"clipping algorithms\") )",
-      "Description": "Vector Graphics devices for 'Microsoft PowerPoint' and  'Microsoft Excel'. Functions extending package 'officer' are provided to  embed 'DrawingML' graphics into 'Microsoft PowerPoint' presentations and  'Microsoft Excel' workbooks.",
-      "SystemRequirements": "libpng",
+      "Authors@R": "c( person(\"David\", \"Gohel\", , \"david.gohel@ardata.fr\", role = c(\"aut\", \"cre\")), person(\"ArData\", role = \"cph\"), person(\"Bob\", \"Rudis\", role = \"ctb\", comment = \"the javascript code used by function set_attr\"), person(\"Francois\", \"Brunetti\", , \"francois.brunetti@lysis-consultants.fr\", role = \"ctb\", comment = \"clipping algorithms\") )",
+      "Description": "Vector Graphics devices for 'Microsoft PowerPoint' and 'Microsoft Excel'. Functions extending package 'officer' are provided to embed 'DrawingML' graphics into 'Microsoft PowerPoint' presentations and 'Microsoft Excel' workbooks.",
       "License": "GPL-3",
-      "Encoding": "UTF-8",
+      "URL": "https://ardata-fr.github.io/officeverse/, https://davidgohel.github.io/rvg/",
+      "BugReports": "https://github.com/davidgohel/rvg/issues",
       "Depends": [
         "R (>= 3.0)"
       ],
       "Imports": [
-        "grDevices",
-        "Rcpp (>= 0.12.12)",
-        "officer (>= 0.6.2)",
         "gdtools (>= 0.3.3)",
-        "xml2 (>= 1.0.0)",
-        "rlang"
+        "grDevices",
+        "officer (>= 0.6.2)",
+        "Rcpp (>= 0.12.12)",
+        "rlang",
+        "systemfonts",
+        "xml2 (>= 1.0.0)"
+      ],
+      "Suggests": [
+        "grid",
+        "testthat"
       ],
       "LinkingTo": [
         "Rcpp",
-        "gdtools"
+        "systemfonts"
       ],
-      "Suggests": [
-        "testthat",
-        "grid"
-      ],
-      "URL": "https://ardata-fr.github.io/officeverse/, https://davidgohel.github.io/rvg/",
-      "BugReports": "https://github.com/davidgohel/rvg/issues",
-      "RoxygenNote": "7.3.2",
+      "Encoding": "UTF-8",
+      "RoxygenNote": "7.3.3",
+      "SystemRequirements": "libpng",
       "NeedsCompilation": "yes",
       "Author": "David Gohel [aut, cre], ArData [cph], Bob Rudis [ctb] (the javascript code used by function set_attr), Francois Brunetti [ctb] (clipping algorithms)",
       "Maintainer": "David Gohel <david.gohel@ardata.fr>",
@@ -5478,7 +5485,7 @@
     },
     "systemfonts": {
       "Package": "systemfonts",
-      "Version": "1.2.3",
+      "Version": "1.3.1",
       "Source": "Repository",
       "Type": "Package",
       "Title": "System Native Font Finding",
@@ -5501,9 +5508,12 @@
       "Suggests": [
         "covr",
         "farver",
+        "ggplot2",
         "graphics",
         "knitr",
+        "ragg",
         "rmarkdown",
+        "svglite",
         "testthat (>= 2.1.0)"
       ],
       "LinkingTo": [
@@ -5943,52 +5953,6 @@
       "NeedsCompilation": "yes",
       "Author": "Lionel Henry [cre, aut], Thomas Lin Pedersen [aut] (<https://orcid.org/0000-0002-5147-4711>), Posit Software, PBC [cph, fnd], T Jake Luciani [aut] (svglite), Matthieu Decorde [aut] (svglite), Vaudor Lise [aut] (svglite), Tony Plate [ctb] (svglite: Early line dashing code), David Gohel [ctb] (svglite: Line dashing code and raster code), Yixuan Qiu [ctb] (svglite: Improved styles; polypath implementation), Håkon Malmedal [ctb] (svglite: Opacity code)",
       "Maintainer": "Lionel Henry <lionel@posit.co>",
-      "Repository": "CRAN"
-    },
-    "viridis": {
-      "Package": "viridis",
-      "Version": "0.6.5",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "Colorblind-Friendly Color Maps for R",
-      "Date": "2024-01-28",
-      "Authors@R": "c( person(\"Simon\", \"Garnier\", email = \"garnier@njit.edu\", role = c(\"aut\", \"cre\")), person(\"Noam\", \"Ross\", email = \"noam.ross@gmail.com\", role = c(\"ctb\", \"cph\")), person(\"Bob\", \"Rudis\", email = \"bob@rud.is\", role = c(\"ctb\", \"cph\")), person(\"Marco\", \"Sciaini\", email = \"sciaini.marco@gmail.com\", role = c(\"ctb\", \"cph\")), person(\"Antônio Pedro\", \"Camargo\", role = c(\"ctb\", \"cph\")), person(\"Cédric\", \"Scherer\", email = \"scherer@izw-berlin.de\", role = c(\"ctb\", \"cph\")) )",
-      "Maintainer": "Simon Garnier <garnier@njit.edu>",
-      "Description": "Color maps designed to improve graph readability for readers with  common forms of color blindness and/or color vision deficiency. The color  maps are also perceptually-uniform, both in regular form and also when  converted to black-and-white for printing. This package also contains  'ggplot2' bindings for discrete and continuous color and fill scales. A lean version of the package called 'viridisLite' that does not include the  'ggplot2' bindings can be found at  <https://cran.r-project.org/package=viridisLite>.",
-      "License": "MIT + file LICENSE",
-      "Encoding": "UTF-8",
-      "Depends": [
-        "R (>= 2.10)",
-        "viridisLite (>= 0.4.0)"
-      ],
-      "Imports": [
-        "ggplot2 (>= 1.0.1)",
-        "gridExtra"
-      ],
-      "Suggests": [
-        "hexbin (>= 1.27.0)",
-        "scales",
-        "MASS",
-        "knitr",
-        "dichromat",
-        "colorspace",
-        "httr",
-        "mapproj",
-        "vdiffr",
-        "svglite (>= 1.2.0)",
-        "testthat",
-        "covr",
-        "rmarkdown",
-        "maps",
-        "terra"
-      ],
-      "LazyData": "true",
-      "VignetteBuilder": "knitr",
-      "URL": "https://sjmgarnier.github.io/viridis/, https://github.com/sjmgarnier/viridis/",
-      "BugReports": "https://github.com/sjmgarnier/viridis/issues",
-      "RoxygenNote": "7.3.1",
-      "NeedsCompilation": "no",
-      "Author": "Simon Garnier [aut, cre], Noam Ross [ctb, cph], Bob Rudis [ctb, cph], Marco Sciaini [ctb, cph], Antônio Pedro Camargo [ctb, cph], Cédric Scherer [ctb, cph]",
       "Repository": "CRAN"
     },
     "viridisLite": {
