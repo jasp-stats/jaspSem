@@ -397,8 +397,8 @@ checkLavaanModel <- function(model, availableVars) {
 
   # model features
   lavOptions[["meanstructure"]]   <- options[["meanStructure"]]
-  lavOptions[["int.ov.free"]]     <- !options[["manifestInterceptFixedToZero"]]
-  lavOptions[["int.lv.free"]]     <- !options[["latentInterceptFixedToZero"]]
+  lavOptions[["int.ov.free"]]     <- if (options[["meanStructure"]]) !options[["manifestInterceptFixedToZero"]] else TRUE
+  lavOptions[["int.lv.free"]]     <- if (options[["meanStructure"]]) !options[["latentInterceptFixedToZero"]] else TRUE
   lavOptions[["conditional.x"]]   <- options[["exogenousCovariateConditional"]]
   lavOptions[["fixed.x"]]         <- options[["exogenousCovariateFixed"]]
   lavOptions[["orthogonal"]]      <- options[["orthogonal"]]
@@ -1055,9 +1055,7 @@ checkLavaanModel <- function(model, availableVars) {
   allTables <- list(indtab, regtab, lvartab, lcovtab, vartab, covtab)
 
   # Means
-  if (options[["meanStructure"]] || options[["naAction"]] == "fiml" ||
-      # check for categorical variables, cause that means we get thresholds for the categorical variables, and intercepts for the remaining non-categorical
-      (fit@Options$categorical && !all(sapply(dataset, is.ordered)))) {
+  if (fit@Options$meanstructure) {
 
     mutab <- createJaspTable(title = gettext("Intercepts"))
     allTables[[length(allTables) + 1]] <- mutab
@@ -1308,8 +1306,7 @@ checkLavaanModel <- function(model, availableVars) {
 
 
   # Means
-  if (options[["meanStructure"]] || options[["naAction"]] == "fiml" ||
-      (fit@Options$categorical && !all(sapply(dataset, is.ordered)))) {
+  if (fit@Options$meanstructure) {
     pe_mu <- pe[pe$op == "~1",]
 
     if (options[["group"]] != "")
