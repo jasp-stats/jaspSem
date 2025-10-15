@@ -44,8 +44,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   dataset <- .mnlfaHandleData(jaspResults, dataset, options, ready)
   options <- .mnlfaPreprocessOptions(options)
 
-  saveRDS(options, file = "~/Downloads/options.rds")
-  saveRDS(dataset, file = "~/Downloads/dataset.rds")
+  # saveRDS(options, file = "~/Downloads/options.rds")
+  # saveRDS(dataset, file = "~/Downloads/dataset.rds")
 
   .mnlfaCreateContainer(jaspResults, options)
   .mnlfaPlotOptionsForQml(jaspResults, options)
@@ -254,7 +254,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   modelOptions <- .extractIncludeModerationPaths(options[["moderationIncludeList"]])
   modelOptionsPath <- unlist(modelOptions$paths, recursive = FALSE, use.names = FALSE)
 
-  src <- createJaspQmlSource(sourceID = "plotOptions", value = plotOpts)
+  src <- createJaspQmlSource(sourceID = "plotOptionsForQml", value = plotOpts)
   src$dependOn(optionsFromObject = jaspResults[["mainContainer"]],
                options = c("configuralInvariance", "metricInvariance",
                            "scalarInvariance", "strictInvariance", "customInvariance"),
@@ -497,7 +497,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                   Custom = jaspResults[["mainContainer"]][["customInvarianceState"]][["object"]])
 
   results <- results[sapply(results, function(x) !is.null(x))]
-  saveRDS(results, "~/Downloads/results.rds")
+  # saveRDS(results, "~/Downloads/results.rds")
 
   if (length(results) == 0) {
 
@@ -585,7 +585,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                       Custom = jaspResults[["mainContainer"]][["customInvarianceModelState"]][["object"]][["map"]])
   mapResults <- mapResults[sapply(mapResults, function(x) !is.null(x))]
 
-  saveRDS(mapResults, "~/Downloads/mapResults.rds")
+  # saveRDS(mapResults, "~/Downloads/mapResults.rds")
 
   for (i in 1:length(results)) {
 
