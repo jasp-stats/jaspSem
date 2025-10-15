@@ -27,7 +27,7 @@ Form
 	function getValuesModOptions(inValue, rwValue, factorCount) {
 		if (rwValue == "indicators") {
 			return [{value: "loadings", label: qsTr("Loadings")}, {value: "intercepts", label: qsTr("Intercepts")}, {value: "residualVariances", label: qsTr("Residual variances")}];
-		} 
+		}
 		if (inValue == "configuralInvariance") {
 			if (factorCount == 2) {
 				return [{value: "variances", label: qsTr("Variances")}, {value: "covariances", label: qsTr("Covariances")}];
@@ -74,17 +74,17 @@ Form
 		title: qsTr("Moderation")
 		expanded: true
 		id: mod
-		
+
 		VariablesForm
 		{
 			preferredHeight: jaspTheme.smallDefaultVariablesFormHeight * 0.65
-			AvailableVariablesList 		 
-			{	
+			AvailableVariablesList
+			{
 				title: qsTr("Moderator Variables")
 				name: "moderatorVars"
 				source: [{ isDataSetVariables: true, discard: factors.name }]
 			}
-			AssignedVariablesList 
+			AssignedVariablesList
 			{
 				id: moderators
 				allowedColumns:		["scale", "nominal"]
@@ -148,24 +148,24 @@ Form
 			}
 		}
 
-		Group 
+		Group
 		{
 			title: qsTr("Assumption Check")
-			CheckBox 
-			{ 
-				name: "fitPerGroup";  
-				checked: false ; 
-				label: qsTr("Check model fit per group"); 
-				id: fitPerGroup; 
-				enabled: moderators.columnsNames != "" 
+			CheckBox
+			{
+				name: "fitPerGroup";
+				checked: false ;
+				label: qsTr("Check model fit per group");
+				id: fitPerGroup;
+				enabled: moderators.columnsNames != ""
 			}
-			IntegerField 
-			{ 
-				name: "continuousVariableSplit"; 
-				label: qsTr("Split continous variables into groups:");  
-				defaultValue: 2; 
-				enabled: fitPerGroup.checked; 
-				min: 2 
+			IntegerField
+			{
+				name: "continuousVariableSplit";
+				label: qsTr("Split continous variables into groups:");
+				defaultValue: 2;
+				enabled: fitPerGroup.checked;
+				min: 2
 			}
 			CheckBox { name: "addGroupVar"; label: qsTr("Add group variable to data"); enabled: fitPerGroup.checked }
 		}
@@ -174,7 +174,7 @@ Form
 		{
 			Layout.alignment: Qt.AlignRight
 
-			ComponentsList 
+			ComponentsList
 			{
 				visible: moderators.columnsNames.length > 1
 				preferredWidth: form.width * 0.4
@@ -212,8 +212,8 @@ Form
 		}
 
 		property var firstLayerValues: [configuralInvariance, metricInvariance, scalarInvariance, strictInvariance, customInvariance].filter(x => x.checked).map(x => ({value: x.name, label: x.label}))
-		
-		TabView 
+
+		TabView
 		{
 			Layout.columnSpan: 1
 			preferredWidth: 100
@@ -225,7 +225,7 @@ Form
 			optionKeyLabel: "keyLabel"
 			id: modFirstLayer
 			addItemManually: false
-			rowComponent: TabView 
+			rowComponent: TabView
 			{
 				id: modSecondLayer
 				property string modInvValue: rowValue
@@ -235,7 +235,7 @@ Form
 				values: [{value: "indicators", label: qsTr("Indicators")}, {value: "factors", label: qsTr("Factors")}]
 				optionKey: "keyValue"
 				optionKeyLabel: "keyLabel"
-				rowComponent: TabView 
+				rowComponent: TabView
 				{
 					id: modThirdLayer
 					property string modTypeValue: rowValue
@@ -259,11 +259,11 @@ Form
 						rowComponent: RowLayout
 						{
 							Text { text: rowValue ; Layout.preferredWidth: 200*jaspTheme.uiScale }
-							CheckBox { 
+							CheckBox {
 								name: "includeModeration";
 								id: includeModeration
 								checked: modSecondLayer.modInvValue == "configuralInvariance" && modFourthLayer.modParamValue != "variances" ||
-									(modSecondLayer.modInvValue == "metricInvariance" && modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "means") || 
+									(modSecondLayer.modInvValue == "metricInvariance" && modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "means") ||
 										(modSecondLayer.modInvValue == "scalarInvariance" && (modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "intercepts")) ||
 											(modSecondLayer.modInvValue == "strictInvariance" && (modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "intercepts" && modFourthLayer.modParamValue != "residualVariances"));
 							}
@@ -277,7 +277,7 @@ Form
 	Section
 	{
 		title: qsTr("Output Options")
-		
+
 		Group
 		{
 			title: qsTr("Parameter Estimates")
@@ -299,37 +299,37 @@ Form
 		}
 
 		CheckBox { label: qsTr("Show syntax")         ; name: "showSyntax" }
-		
+
 	}
 
-	
+
 	Section
 	{
 		title: qsTr("Plots")
 		id: plots
 
 		property var names: []
-		// property var variablesIncluded: 
-		TabView 
+		// property var variablesIncluded:
+		TabView
 		{
-			
+
 			values: invOpts.firstLayerValues
 			name: "plotModelList"
 			id: plotFirstLayer
 			optionKey: "keyValue"
 			optionKeyLabel: "keyLabel"
 			addItemManually: false
-			rowComponent: TabView 
+			rowComponent: TabView
 			{
 				id: plotSecondLayer
-				property string plotInvValue: rowValue 
+				property string plotInvValue: rowValue
 				name: "plotTypeList"
 				optionKey: "keyValue"
 				optionKeyLabel: "keyLabel"
 				addItemManually: false
 				values: [{value: "indicators", label: qsTr("Indicators")}, {value: "factors", label: qsTr("Factors")}]
 
-				rowComponent: TabView 
+				rowComponent: TabView
 				{
 					id: plotThirdLayer
 					property string plotTypeValue: rowValue
@@ -339,14 +339,14 @@ Form
 					addItemManually: false
 
 					values: getValuesModOptions(plotSecondLayer.plotInvValue, rowValue, factors.factorsTitles.length)
-				
+
 					rowComponent: ComponentsList
 					{
 						name: "plotItemList"
 						addItemManually: false
 						headerLabels: [qsTr("Moderator 1"), qsTr("Moderator 2"), qsTr("Display plot")]
-						rSource: "plotOptions." + plotSecondLayer.plotInvValue + "." + plotThirdLayer.plotTypeValue + "." + rowValue
-						
+						rSource: "plotOptionsForQml." + plotSecondLayer.plotInvValue + "." + plotThirdLayer.plotTypeValue + "." + rowValue
+
 						rowComponent: RowLayout
 						{
 							Text { text: rowValue ; Layout.preferredWidth: 150*jaspTheme.uiScale }
