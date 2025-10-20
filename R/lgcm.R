@@ -579,7 +579,8 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
       p +
         ggplot2::aes_(colour = as.name(options[["curvePlotCategorical"]]),
                       shape  = as.name(options[["curvePlotCategorical"]])) +
-        jaspGraphs::scale_JASPcolor_discrete(options[["colorPalette"]])
+        jaspGraphs::scale_JASPcolor_discrete(options[["colorPalette"]]) +
+        jaspGraphs::themeJaspRaw(legend.position = "right", legend.justification = "center")
     )
 
   return(p)
