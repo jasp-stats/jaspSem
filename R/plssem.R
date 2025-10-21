@@ -240,8 +240,6 @@ checkCSemModel <- function(model, availableVars) {
     cSemOpts[[".model"]] <- syntax
     cSemOpts[[".data"]]  <- dataset
 
-    print(str(dataset))
-    print(str(options))
     # fit the model
     fit <- try(do.call(cSEM::csem, cSemOpts))
 
