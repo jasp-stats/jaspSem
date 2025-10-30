@@ -16,8 +16,8 @@
 #
 
 PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
-
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
+
 
   options <- .plsSemPrepOpts(options)
 
@@ -31,10 +31,12 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   # Check for errors
   .plsSemCheckErrors(dataset, options, ready, modelContainer)
 
+  .plsSemComputeResults(modelContainer, dataset, options)
+
   # Output functions
   .plsSemFitTab(modelContainer, dataset, options, ready)
-  if (modelContainer$getError()) return()
   .plsSemParameters(modelContainer, dataset, options, ready)
+  if (modelContainer$getError()) return()
   .plsSemRsquared(modelContainer, dataset, options, ready)
   .plsSemPrediction(modelContainer, options, ready)
   .plsSemAdditionalFits(modelContainer, dataset, options, ready)
@@ -271,6 +273,8 @@ checkCSemModel <- function(model, availableVars) {
         return(c(0,0))
       }
       # resample
+      options(future.globals.method.default = "ordered",
+              future.globals.method         = "ordered")
       fit <- try(cSEM::resamplecSEMResults(.object = fit,
                                            .R = options[["bootstrapSamples"]],
                                            .user_funs = tickFunction,
@@ -282,7 +286,6 @@ checkCSemModel <- function(model, availableVars) {
 
       if (isTryError(fit)) {
         err <- .extractErrorMessage(fit)
-
         errmsg <- gettextf("Estimation failed Message: %s", err)
         modelContainer$setError(paste0("Error in model \"", options[["models"]][[i]][["name"]], "\" - ",
                                        .decodeVarsInMessage(names(dataset), errmsg)))
@@ -300,7 +303,7 @@ checkCSemModel <- function(model, availableVars) {
     modelContainer[["models"]]  <- createJaspState(options[["models"]])
   }
 
-  return(results)
+  return()
 }
 
 
@@ -343,10 +346,11 @@ checkCSemModel <- function(model, availableVars) {
 .plsSemFitTab <- function(modelContainer, dataset, options, ready) {
   # create model fit table
   if (!is.null(modelContainer[["fittab"]])) return()
+  if (modelContainer$getError()) return() # attach the error in the parameter table
   if (!ready) return()
 
   # fill model fit table
-  plsSemResults <- .plsSemComputeResults(modelContainer, dataset, options)
+  plsSemResults <- modelContainer[["results"]][["object"]]
   # we need this for a lot of other tables so we do this once here:
   results <- plsSemResults[[1]]
   msc <- .withWarnings(.computeMSC(results, dataset, options))
@@ -354,9 +358,10 @@ checkCSemModel <- function(model, availableVars) {
   modSelCriteria <- createJaspState()
   modelContainer[["modSelCriteria"]] <- modSelCriteria
   modSelCriteria$dependOn(optionsFromObject = modelContainer)
+
   modSelCriteria$object <- msc
 
-  if (modelContainer$getError() || !options[["overallModelFit"]]) return()
+  if (!options[["overallModelFit"]]) return()
 
   fittab <- createJaspTable(title = gettext("Model Fit"))
   fittab$dependOn(optionsFromObject = modelContainer,
@@ -458,6 +463,11 @@ checkCSemModel <- function(model, availableVars) {
 
   modelContainer[["params"]] <- params
 
+  if (modelContainer$getError()) {
+    emptyTab <- createJaspTable(title = gettext("Parameter Estimates"))
+    params[["error"]] <- emptyTab
+    return()
+  }
   .plsSemParameterTables(modelContainer[["results"]][["object"]][[1]], NULL, params, options, ready)
 
 }
