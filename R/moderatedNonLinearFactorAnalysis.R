@@ -200,6 +200,11 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     squaredTypes <- mods.types[squares]
     for (i in 1:length(squaredMods)) {
       squaredModsName <- jaspBase::decodeColNames(squaredMods[i])
+      # check that none of the variables have already "squared" in their name
+      if (grepl("_squared$", squaredModsName)) {
+        .quitAnalysis(gettextf("The moderator variable '%s' already has '_squared' in its name. Please rename the variable before proceeding.", squaredModsName))
+      }
+
       tmpName <- paste0(squaredModsName, "_squared")
       options[["moderators"]] <- append(options[["moderators"]], list(list(cubicEffect = FALSE, squaredEffect = FALSE,
                                                                            variable = tmpName)))
@@ -212,6 +217,9 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     cubicTypes <- mods.types[cubics]
     for (i in 1:length(cubicMods)) {
       cubicModsName <- jaspBase::decodeColNames(cubicMods[i])
+      if (grepl("_cubic$", cubicModsName)) {
+        .quitAnalysis(gettextf("The moderator variable '%s' already has '_cubic' in its name. Please rename the variable before proceeding.", cubicModsName))
+      }
       tmpName <- paste0(cubicModsName, "_cubic")
       options[["moderators"]] <- append(options[["moderators"]], list(list(cubicEffect = FALSE, squaredEffect = FALSE,
                                                                            variable = tmpName)))
@@ -225,6 +233,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
 .mnlfaCheckErrors <- function(dataset, options, ready) {
 
+  # TODO:
+  # mdoerator names should not be "squared"
   return()
 }
 
@@ -913,9 +923,32 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       modsForPlots <- c(currentRow$plotModerator1, currentRow$plotModerator2)
       modsForPlots <- modsForPlots[modsForPlots != ""]
       modsForPlots <- gsub(":", "_x_", modsForPlots) # for interactions
+
+      # so if there are square or cubic effects the data has those variables attached but in decoded format
+      # modsForPlots has them in encoded format.
+      # check for _squared and _cubic suffix in modsForPlots
+      if (any(grepl("_squared$", modsForPlots))) {
+        sqrMods <- modsForPlots[grepl("_squared$", modsForPlots)]
+        for (sqrMod in sqrMods) {
+          baseMod <- sub("_squared$", "", sqrMod)
+          decMod <- jaspBase::decodeColNames(baseMod)
+          modsForPlots[modsForPlots == sqrMod] <- paste0(decMod, "_squared")
+        }
+      }
+      # same for cubic
+      if (any(grepl("_cubic$", modsForPlots))) {
+        cubicMods <- modsForPlots[grepl("_cubic$", modsForPlots)]
+        for (cubicMod in cubicMods) {
+          baseMod <- sub("_cubic$", "", cubicMod)
+          decMod <- jaspBase::decodeColNames(baseMod)
+          modsForPlots[modsForPlots == cubicMod] <- paste0(decMod, "_cubic")
+        }
+      }
+
       matchIndices <- match(modsForPlots, currentMods)
       matchIndices <- matchIndices[!is.na(matchIndices)]
       coefficientColumnIndex <- grep("Coefficient", colnames(subMap))
+
       modEstimates <- c(subMat$Estimate[match(subMap[subMap$moderator == "Baseline", coefficientColumnIndex], subMat$name)], # Baseline
                         subMat$Estimate[match(subMap[matchIndices, coefficientColumnIndex], subMat$name)]) # the other estimates
 
@@ -923,6 +956,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       baselineTerm <- sum(modEstimates[subMap$moderator == "Baseline"])
       slopeTerms <- modEstimates[subMap$moderator != "Baseline"]
       slopeTerms <- slopeTerms[!is.na(slopeTerms)]
+
       if (length(slopeTerms) == 1) {
         slopeValues <- dtSub[, modsForPlots] * slopeTerms
       } else {
@@ -1008,11 +1042,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       plotContainer[[paste0("plot", i)]] <- plt
     }
   }
-
-  ##### a lot to do still...:
-  #' - special cases
-  #' - do the factors separately
-
 
 }
 
