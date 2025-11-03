@@ -18,6 +18,14 @@ Description
 
 	Analysis
 	{
+		title:	qsTr("Bayesian Structural Equation Modeling")
+		qml:	"BayesianSEM.qml"
+		func:	"BayesianSEM"
+		preloadData: false
+	}
+
+	Analysis
+	{
 		title:	qsTr("Partial Least Squares SEM")
 		qml:	"PLSSEM.qml"
 		func:	"PLSSEM"
