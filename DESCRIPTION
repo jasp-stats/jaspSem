@@ -13,6 +13,7 @@ Imports:
   forcats,
   ggplot2,
   lavaan,
+  blavaan,
   cSEM,
   reshape2,
   jaspBase,
