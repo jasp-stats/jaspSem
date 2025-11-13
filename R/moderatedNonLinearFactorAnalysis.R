@@ -17,27 +17,40 @@
 
 ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
+
   # sink("~/Downloads/log.txt")
   # on.exit(sink(NULL))
 
   OpenMx::mxSetDefaultOptions()
 
-  ready <- length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)) > 1 &&
-    length(options[["moderators"]]) > 0 && options[["syncAnalysisBox"]]
+  nIndicators  <- length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE))
+  nModerators  <- length(options[["moderators"]])
+  hasModelSpec <- nIndicators > 1 && nModerators > 0
+  runAnalysis  <- options[[ "syncAnalysisBox" ]]
 
-  readyForFitPerGroup <- length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)) > 1 &&
-    length(options[["moderators"]]) > 0
+  ready               <- hasModelSpec
+  readyForFitPerGroup <- hasModelSpec
 
-  if (!ready) {
-    if (length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)) > 1 &&
-        length(options[["moderators"]]) > 0 && !options[["syncAnalysisBox"]]) {
-      syncText <- createJaspHtml(text = gettext("Check the the 'Sync Analysis' box to run the analysis."))
-    } else if (!(length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)) > 1 &&
-                 length(options[["moderators"]]) > 0)) {
-      syncText <- createJaspHtml(text = gettext("Specify both factor indicator variables and moderator variables to run the analysis."))
-    }
+  if (!hasModelSpec) {
+
+    .mnlfaInitGlobalInvarianceFitTable(jaspResults, options)
+
+    syncText <- createJaspHtml(
+      text = gettext("Specify both factor indicator variables and moderator variables to run the analysis.")
+    )
     jaspResults[["syncText"]] <- syncText
-    syncText$dependOn(c("factors", "moderators", "syncAnalysisBox"))
+    syncText$dependOn(c("factors", "moderators"))
+    syncText$position <- 0.01
+    return()
+  }
+
+  # Optional: show “check sync” message only *before* the first run
+  if (!runAnalysis && is.null(jaspResults[["mainContainer"]])) {
+    syncText <- createJaspHtml(
+      text = gettext("Check the 'Sync Analysis' box to run the analysis.")
+    )
+    jaspResults[["syncText"]] <- syncText
+    syncText$dependOn("syncAnalysisBox")
     syncText$position <- 0.01
   }
 
@@ -56,21 +69,19 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   # .mnlfaCreateGlobalInvarianceContainer(jaspResults, options)
 
-  .mnlfaCallGlobalInvarianceTests(jaspResults, dataset, options, ready)
+  if (runAnalysis) {
+    .mnlfaCallGlobalInvarianceTests(jaspResults, dataset, options, ready)
+    .mnlfaGlobalInvarianceFitTable(jaspResults, dataset, options, ready)
+    .mnlfaGlobalInvarianceParameterTables(jaspResults, dataset, options, ready)
+    .mnlfaPrintSyntax(jaspResults, dataset, options, ready)
 
-  # output
-  # tables
+    # plots
+    .mnlfaPlot(jaspResults, dataset, options, ready)
+  }
+
   .mnlfaFitPerGroupTable(jaspResults, dataset, options, readyForFitPerGroup)
-  .mnlfaGlobalInvarianceFitTable(jaspResults, dataset, options, ready)
-  .mnlfaGlobalInvarianceParameterTables(jaspResults, dataset, options, ready)
-
-  # plots
-  .mnlfaPlot(jaspResults, dataset, options, ready)
-
-  .mnlfaPrintSyntax(jaspResults, dataset, options, ready)
 
   .mnlfaAddGroupingVariableToData(jaspResults, dataset, options)
-
 
   return()
 }
@@ -234,7 +245,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 .mnlfaCheckErrors <- function(dataset, options, ready) {
 
   # TODO:
-  # mdoerator names should not be "squared"
+  # moderator names should not be "squared"
   return()
 }
 
@@ -244,9 +255,9 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     jaspResults[["mainContainer"]] <- createJaspContainer()
     jaspResults[["mainContainer"]]$dependOn(options = c(
       "factors", "moderators", "moderatorInteractions", "includeInteraction",
-      "squaredEffect", "cubicEffect", "syncAnalysisBox",
-       "factorsUncorrelated", "interceptsFixedToZero", "packageMimiced", "estimator", "naAction"))
-    jaspResults[["mainContainer"]]$position <- 1
+      "squaredEffect", "cubicEffect",
+      "factorsUncorrelated", "interceptsFixedToZero", "packageMimiced", "estimator", "naAction"))
+    jaspResults[["mainContainer"]]$position <- 3
   }
   return()
 }
@@ -417,16 +428,18 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 ##### OUTPUT #####
 .mnlfaFitPerGroupTable <- function(jaspResults, dataset, options, ready) {
 
-  if (!is.null(jaspResults[["mainContainer"]][["fitPerGroupTable"]])) return()
+  if (!is.null(jaspResults[["groupContainer"]][["fitPerGroupTable"]])) return()
   if (!ready) return()
   if (!options[["fitPerGroup"]]) return()
 
   fitPerGroupTable <- createJaspTable(gettext("Fit per Group Test"))
-  fitPerGroupTable$position <- 1
-  fitPerGroupTable$dependOn(optionsFromObject = jaspResults[["mainContainer"]][["fitPerGroupState"]])
   fitPerGroupTable$addColumnInfo(name = "model", title = gettext("Group Model"), type = "string")
 
-  jaspResults[["mainContainer"]][["fitPerGroupTable"]] <- fitPerGroupTable
+  groupContainer <- createJaspContainer()
+  groupContainer$position <- 1
+  groupContainer$dependOn(optionsFromObject = jaspResults[["mainContainer"]][["fitPerGroupState"]])
+  jaspResults[["groupContainer"]] <- groupContainer
+  jaspResults[["groupContainer"]][["fitPerGroupTable"]] <- fitPerGroupTable
 
   result <- jaspResults[["mainContainer"]][["fitPerGroupState"]][["object"]][["result"]]
   if (any(unlist(lapply(result, isTryError)))) {
@@ -475,30 +488,37 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   return()
 }
 
-.mnlfaGlobalInvarianceFitTable <- function(jaspResults, dataset, options, ready) {
+.mnlfaInitGlobalInvarianceFitTable <- function(jaspResults, options) {
 
-  if (!is.null(jaspResults[["mainContainer"]][["invFitTable"]])) {
+  # Only create once per analysis
+  if (!is.null(jaspResults[["fitContainer"]][["invFitTable"]]))
     return()
-  }
 
   invFitTable <- createJaspTable(gettext("Global Invariance Fit"))
-  invFitTable$position <- 2
-  invFitTable$addColumnInfo(name = "type", title = gettext("Type"), type = "string")
-  jaspResults[["mainContainer"]][["invFitTable"]] <- invFitTable
+  invFitTable$addColumnInfo(name = "type",  title = gettext("Type"),           type = "string")
+  invFitTable$addColumnInfo(name = "N",     title = gettext("n(Parameters)"),  type = "integer")
+  invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number")
+  invFitTable$addColumnInfo(name = "BIC",   title = gettext("BIC"),            type = "number")
+  invFitTable$addColumnInfo(name = "SABIC", title = gettext("SABIC"),          type = "number")
 
-  invFitTable$addColumnInfo(name = "N", title = gettext("n(Parameters)"), type = "integer")
-  invFitTable$addColumnInfo(name = "AIC", title = gettext("AIC"), type = "number")
-  invFitTable$addColumnInfo(name = "BIC", title = gettext("BIC"), type = "number")
-  invFitTable$addColumnInfo(name = "SABIC", title = gettext("SABIC"), type = "number")
+  fitContainer <- createJaspContainer()
+  fitContainer$position <- 2
+  jaspResults[["fitContainer"]] <- fitContainer
+  jaspResults[["fitContainer"]][["invFitTable"]] <- invFitTable
+}
 
-  modelOptions <- .extractIncludeModerationPaths(options[["moderationIncludeList"]])
-  modelOptionsPath <- unlist(modelOptions$paths, recursive = FALSE, use.names = FALSE)
+.mnlfaGlobalInvarianceFitTable <- function(jaspResults, dataset, options, ready) {
 
-  invFitTable$dependOn(optionsFromObject = jaspResults[["mainContainer"]],
-                       options = c("configuralInvariance", "metricInvariance",
-                                   "scalarInvariance", "strictInvariance",
-                                   "customInvariance"),
-                       nestedOptions = modelOptionsPath)
+  if (!ready) return()
+
+  invFitTable <- createJaspTable(gettext("Global Invariance Fit"))
+  jaspResults[["fitContainer"]][["invFitTable"]] <- invFitTable
+
+  invFitTable$addColumnInfo(name = "type",  title = gettext("Type"),           type = "string")
+  invFitTable$addColumnInfo(name = "N",     title = gettext("n(Parameters)"),  type = "integer")
+  invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number")
+  invFitTable$addColumnInfo(name = "BIC",   title = gettext("BIC"),            type = "number")
+  invFitTable$addColumnInfo(name = "SABIC", title = gettext("SABIC"),          type = "number")
 
   results <- list(Configural = jaspResults[["mainContainer"]][["configuralInvarianceState"]][["object"]],
                   Metric = jaspResults[["mainContainer"]][["metricInvarianceState"]][["object"]],
@@ -548,6 +568,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           dtAdd$p <- dtAdd$diffdf <- dtAdd$diffLL <- NA
         } else {
           comp <- OpenMx::mxCompare(results[[i-1]], results[[i]])
+          # print(comp)
           dtAdd$diffLL <- comp$diffLL[2]
           dtAdd$diffdf <- comp$diffdf[2]
           dtAdd$p <- comp$p[2]
@@ -565,26 +586,41 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
 }
 
+
 .mnlfaGlobalInvarianceParameterTables <- function(jaspResults, dataset, options, ready) {
   if (!ready) return()
   if (!is.null(jaspResults[["mainContainer"]][["globalParameterContainer"]])) return()
 
-  results <- list(Configural = jaspResults[["mainContainer"]][["configuralInvarianceState"]][["object"]],
-                  Metric = jaspResults[["mainContainer"]][["metricInvarianceState"]][["object"]],
-                  Scalar = jaspResults[["mainContainer"]][["scalarInvarianceState"]][["object"]],
-                  Strict = jaspResults[["mainContainer"]][["strictInvarianceState"]][["object"]],
-                  Custom = jaspResults[["mainContainer"]][["customInvarianceState"]][["object"]])
+  results <- list(
+    Configural = jaspResults[["mainContainer"]][["configuralInvarianceState"]][["object"]],
+    Metric     = jaspResults[["mainContainer"]][["metricInvarianceState"]][["object"]],
+    Scalar     = jaspResults[["mainContainer"]][["scalarInvarianceState"]][["object"]],
+    Strict     = jaspResults[["mainContainer"]][["strictInvarianceState"]][["object"]],
+    Custom     = jaspResults[["mainContainer"]][["customInvarianceState"]][["object"]]
+  )
 
   results <- results[sapply(results, function(x) !is.null(x))]
-
   if (length(results) == 0) return()
 
   globalParameterContainer <- createJaspContainer(gettext("Parameter Estimates"), initCollapsed = TRUE)
-  globalParameterContainer$position <- 2
-  globalParameterContainer$dependOn(optionsFromObject = jaspResults[["mainContainer"]][["invFitTable"]],
-                                    options = c("loadingEstimates", "interceptEstimates", "residualVarianceEstimates",
-                                            "factorVarianceEstimates", "factorMeanEstimates",
-                                            "factorCovarianceEstimates", "alphaLevel"))
+  globalParameterContainer$position <- 3
+
+  # NEW: get nested paths for moderation include list (same trick as before)
+  modelOptions <- .extractIncludeModerationPaths(options[["moderationIncludeList"]])
+  modelOptionsPath <- unlist(modelOptions$paths, recursive = FALSE, use.names = FALSE)
+
+  globalParameterContainer$dependOn(
+    optionsFromObject = jaspResults[["mainContainer"]],
+    options = c(
+      "configuralInvariance", "metricInvariance",
+      "scalarInvariance", "strictInvariance", "customInvariance",
+      "loadingEstimates", "interceptEstimates", "residualVarianceEstimates",
+      "factorVarianceEstimates", "factorMeanEstimates",
+      "factorCovarianceEstimates", "alphaLevel"
+    ),
+    nestedOptions = modelOptionsPath
+  )
+
   jaspResults[["mainContainer"]][["globalParameterContainer"]] <- globalParameterContainer
 
   # get the mappings
@@ -1126,15 +1162,15 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   factorNamesVars <- factorNamesMeans <- names(factorList)
 
-  if (type == "configuralInvariance") {
-    factorNamesVars <- factorNamesMeans <- NULL
-  } else if (type == "metricInvariance") {
-    factorNamesMeans <- NULL
-  } else if (type == "scalarInvariance") {
-    rmvLoadMod <- rmvIntMod <- TRUE
-  } else if (type == "strictInvariance") {
-    rmvLoadMod <-  rmvIntMod <- rmvResMod <- TRUE
-  }
+  # if (type == "configuralInvariance") {
+  #   factorNamesVars <- factorNamesMeans <- NULL
+  # } else if (type == "metricInvariance") {
+  #   factorNamesMeans <- NULL
+  # } else if (type == "scalarInvariance") {
+  #   rmvLoadMod <- rmvIntMod <- TRUE
+  # } else if (type == "strictInvariance") {
+  #   rmvLoadMod <-  rmvIntMod <- rmvResMod <- TRUE
+  # }
 
   loadingsObj <- .generateLoadings(factorList, moderators,
                                    removeModerationForVariables = removeMod$itemValue[removeMod$paramValue == "loadings"])
