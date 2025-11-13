@@ -28,12 +28,6 @@ Form
 		if (rwValue == "indicators") {
 			return [{value: "loadings", label: qsTr("Loadings")}, {value: "intercepts", label: qsTr("Intercepts")}, {value: "residualVariances", label: qsTr("Residual variances")}];
 		}
-		if (inValue == "configuralInvariance") {
-			if (factorCount == 2) {
-				return [{value: "variances", label: qsTr("Variances")}, {value: "covariances", label: qsTr("Covariances")}];
-			}
-			return [{value: "variances", label: qsTr("Variances")}];
-		}
 		if (factorCount == 2) {
 			return [{value: "variances", label: qsTr("Variances")}, {value: "means", label: qsTr("Means")}, {value: "covariances", label: qsTr("Covariances")}];
 		}
@@ -204,7 +198,7 @@ Form
 		{
 			columns: 1
 			title: qsTr("Invariance Tests")
-			CheckBox { name: "configuralInvariance" ; checked: true ; label: qsTr("Configural"); id: configuralInvariance }
+			CheckBox { name: "configuralInvariance" ; checked: false ; label: qsTr("Configural"); id: configuralInvariance }
 			CheckBox { name: "metricInvariance" ; checked: false ; label: qsTr("Metric"); id: metricInvariance }
 			CheckBox { name: "scalarInvariance" ; checked: false ; label: qsTr("Scalar"); id: scalarInvariance }
 			CheckBox { name: "strictInvariance" ; checked: false ; label: qsTr("Strict"); id: strictInvariance }
@@ -258,11 +252,12 @@ Form
 						source: modThirdLayer.modTypeValue == "indicators" ? factors.name : (rowValue == "covariances" ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
 						rowComponent: RowLayout
 						{
-							Text { text: rowValue ; Layout.preferredWidth: 200*jaspTheme.uiScale }
+							Text { text: rowLabel ; Layout.preferredWidth: 200*jaspTheme.uiScale }
 							CheckBox {
 								name: "includeModeration";
 								id: includeModeration
-								checked: modSecondLayer.modInvValue == "configuralInvariance" && modFourthLayer.modParamValue != "variances" ||
+								checked: 
+								(modSecondLayer.modInvValue == "configuralInvariance" && modFourthLayer.modParamValue != "variances" && modFourthLayer.modParamValue != "means") ||
 									(modSecondLayer.modInvValue == "metricInvariance" && modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "means") ||
 										(modSecondLayer.modInvValue == "scalarInvariance" && (modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "intercepts")) ||
 											(modSecondLayer.modInvValue == "strictInvariance" && (modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "intercepts" && modFourthLayer.modParamValue != "residualVariances"));
