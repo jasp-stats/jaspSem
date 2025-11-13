@@ -26,6 +26,6 @@ Imports:
   mxsem,
   OpenMx
 Remotes:
-  jasp-stats/jaspBase,
+  jasp-stats/jaspBase@a022a784eea8746351e60a362d56ff5a32166316,
   jasp-stats/jaspGraphs
 
