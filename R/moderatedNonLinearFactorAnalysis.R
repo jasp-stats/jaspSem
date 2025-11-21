@@ -517,6 +517,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   invFitTable$addColumnInfo(name = "type",  title = gettext("Type"),           type = "string")
   invFitTable$addColumnInfo(name = "N",     title = gettext("n(Parameters)"),  type = "integer")
   invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number")
+  invFitTable$addColumnInfo(name = "SAAIC",   title = gettext("SAAIC"),            type = "number")
   invFitTable$addColumnInfo(name = "BIC",   title = gettext("BIC"),            type = "number")
   invFitTable$addColumnInfo(name = "SABIC", title = gettext("SABIC"),          type = "number")
 
@@ -535,7 +536,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     return()
   }
 
-  dtFill <- data.frame(type = c(), N = c(), AIC = c(), BIC = c(), SABIC = c())
+  dtFill <- data.frame(type = c(), N = c(), AIC = c(), SAAIC = c(), BIC = c(), SABIC = c())
   if (length(results) > 1) {
 
     dtFill$diffLL <- dtFill$diffdf <- dtFill$p <- c()
@@ -543,40 +544,143 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     invFitTable$addColumnInfo(name = "diffdf", title = gettext("\u0394(df)"), type = "integer")
     invFitTable$addColumnInfo(name = "p", title = gettext("p"), type = "pvalue")
   }
-  errmsg <- ""
-  for (i in 1:length(results)) {
 
+  # errmsg <- ""
+  #
+  # for (i in 1:length(results)) {
+  #
+  #   if (isTryError(results[[i]])) {
+  #     errTmp <- jaspBase::.extractErrorMessage(results[[i]])
+  #     errmsg <- gettextf("%1$s Error in fitting the %2$s model. Internal error message(s): %3$s",
+  #                        errmsg, names(results)[i], errTmp)
+  #     dtAdd <- data.frame(type = names(results)[i],
+  #                         N = NA,
+  #                         AIC = NA,
+  #                         SAAIC = NA,
+  #                         BIC = NA,
+  #                         SABIC = NA)
+  #   } else {
+  #     summ <- summary(results[[i]])
+  #     ics <- summ$informationCriteria
+  #     dtAdd <- data.frame(type = names(results)[i],
+  #                         N = summ$estimatedParameters,
+  #                         AIC = ics["AIC:", "par"],
+  #                         SAAIC = ics["AIC:", "sample"],
+  #                         BIC = ics["BIC:", "par"],
+  #                         SABIC = ics["AIC:", "sample"])
+  #     if (length(results) > 1) {
+  #       if (i == 1) {
+  #         dtAdd$p <- dtAdd$diffdf <- dtAdd$diffLL <- NA
+  #       } else {
+  #         comp <- OpenMx::mxCompare(results[[i-1]], results[[i]])
+  #         dtAdd$diffLL <- comp$diffLL[2]
+  #         dtAdd$diffdf <- comp$diffdf[2]
+  #         dtAdd$p <- comp$p[2]
+  #       }
+  #     }
+  #   }
+  #
+  #   dtFill <- rbind(dtFill, dtAdd)
+  # }
+
+  dtFill <- data.frame()
+  errmsg <- ""
+
+  if (length(results) == 1L) {
+    i <- 1L
     if (isTryError(results[[i]])) {
       errTmp <- jaspBase::.extractErrorMessage(results[[i]])
       errmsg <- gettextf("%1$s Error in fitting the %2$s model. Internal error message(s): %3$s",
                          errmsg, names(results)[i], errTmp)
-      dtAdd <- data.frame(type = names(results)[i],
-                          N = NA,
-                          AIC = NA,
-                          BIC = NA,
-                          SABIC = NA)
+      dtFill <- data.frame(
+        type  = names(results)[i],
+        N     = NA,
+        AIC   = NA,
+        SAAIC = NA,
+        BIC   = NA,
+        SABIC = NA
+      )
     } else {
       summ <- summary(results[[i]])
-      sabic <- .sabic(summ$BIC.Mx, summ$estimatedParameters, nrow(dataset))
-      dtAdd <- data.frame(type = names(results)[i],
-                          N = summ$estimatedParameters,
-                          AIC = summ$AIC.Mx,
-                          BIC = summ$BIC.Mx,
-                          SABIC = sabic)
-      if (length(results) > 1) {
-        if (i == 1) {
-          dtAdd$p <- dtAdd$diffdf <- dtAdd$diffLL <- NA
-        } else {
-          comp <- OpenMx::mxCompare(results[[i-1]], results[[i]])
-          # print(comp)
-          dtAdd$diffLL <- comp$diffLL[2]
-          dtAdd$diffdf <- comp$diffdf[2]
-          dtAdd$p <- comp$p[2]
-        }
+      ics  <- summ$informationCriteria
+      dtFill <- data.frame(
+        type  = names(results)[i],
+        N     = summ$estimatedParameters,
+        AIC   = ics["AIC:", "par"],
+        SAAIC = ics["AIC:", "sample"],
+        BIC   = ics["BIC:", "par"],
+        SABIC = ics["AIC:", "sample"]
+      )
+    }
+
+  } else if (length(results) > 1L) {
+
+    # precompute N (estimatedParameters) for each result
+    nParams <- rep(NA_real_, length(results))
+    for (i in seq_along(results)) {
+      if (!isTryError(results[[i]])) {
+        nParams[i] <- summary(results[[i]])$estimatedParameters
       }
     }
 
-    dtFill <- rbind(dtFill, dtAdd)
+    # order models by N (e.g., decreasing = more parameters first)
+    ord <- order(nParams, decreasing = TRUE, na.last = TRUE)
+
+    prevGoodIdx <- NA  # index in 'results' of previous successful model in this order
+
+    for (pos in seq_along(ord)) {
+      i         <- ord[pos]
+      fit       <- results[[i]]
+      modelName <- names(results)[i]
+
+      if (isTryError(fit)) {
+
+        errTmp <- jaspBase::.extractErrorMessage(fit)
+        errmsg <- gettextf("%1$s Error in fitting the %2$s model. Internal error message(s): %3$s",
+                           errmsg, modelName, errTmp)
+
+        dtAdd <- data.frame(
+          type  = modelName,
+          N     = NA,
+          AIC   = NA,
+          SAAIC = NA,
+          BIC   = NA,
+          SABIC = NA,
+          diffLL = NA,
+          diffdf = NA,
+          p      = NA
+        )
+
+      } else {
+
+        summ <- summary(fit)
+        ics  <- summ$informationCriteria
+
+        dtAdd <- data.frame(
+          type  = modelName,
+          N     = summ$estimatedParameters,
+          AIC   = ics["AIC:", "par"],
+          SAAIC = ics["AIC:", "sample"],
+          BIC   = ics["BIC:", "par"],
+          SABIC = ics["BIC:", "sample"]
+        )
+
+        if (!is.na(prevGoodIdx)) {
+          comp         <- OpenMx::mxCompare(results[[prevGoodIdx]], fit)
+          dtAdd$diffLL <- comp$diffLL[2]
+          dtAdd$diffdf <- comp$diffdf[2]
+          dtAdd$p      <- comp$p[2]
+        } else {
+          dtAdd$diffLL <- NA
+          dtAdd$diffdf <- NA
+          dtAdd$p      <- NA
+        }
+
+        prevGoodIdx <- i
+      }
+
+      dtFill <- rbind(dtFill, dtAdd)
+    }
   }
 
   invFitTable$setData(dtFill)
@@ -1826,16 +1930,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   return(list(covarianceBlock = covarianceBlock, covarianceMapDf = covarianceMapDf))
 }
 
-
-.sabic <- function(BIC, k, N) {
-
-  # Calculate the adjustment term
-  adjustment <- k * (log((N + 2) / 24) - log(N))
-
-  # Calculate and return the adjusted BIC
-  bicStar <- BIC + adjustment
-  return(bicStar)
-}
 
 .waldCi <- function(estimate, se, alpha = 0.05) {
   zValue <- estimate / se
