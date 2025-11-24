@@ -496,8 +496,11 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   invFitTable <- createJaspTable(gettext("Global Invariance Fit"))
   invFitTable$addColumnInfo(name = "type",  title = gettext("Type"),           type = "string")
-  invFitTable$addColumnInfo(name = "N",     title = gettext("n(Parameters)"),  type = "integer")
+  invFitTable$addColumnInfo(name = "N",     title = gettext("n(Par)"),  type = "integer")
+  invFitTable$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
+  invFitTable$addColumnInfo(name = "Fit",     title = gettext("Fit (-2LL)"),  type = "number")
   invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number")
+  invFitTable$addColumnInfo(name = "SAAIC",   title = gettext("SAAIC"),            type = "number")
   invFitTable$addColumnInfo(name = "BIC",   title = gettext("BIC"),            type = "number")
   invFitTable$addColumnInfo(name = "SABIC", title = gettext("SABIC"),          type = "number")
 
@@ -515,7 +518,9 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   jaspResults[["fitContainer"]][["invFitTable"]] <- invFitTable
 
   invFitTable$addColumnInfo(name = "type",  title = gettext("Type"),           type = "string")
-  invFitTable$addColumnInfo(name = "N",     title = gettext("n(Parameters)"),  type = "integer")
+  invFitTable$addColumnInfo(name = "N",     title = gettext("n(Par)"),  type = "integer")
+  invFitTable$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
+  invFitTable$addColumnInfo(name = "Fit",     title = gettext("Fit (-2LL)"),  type = "number")
   invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number")
   invFitTable$addColumnInfo(name = "SAAIC",   title = gettext("SAAIC"),            type = "number")
   invFitTable$addColumnInfo(name = "BIC",   title = gettext("BIC"),            type = "number")
@@ -536,7 +541,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     return()
   }
 
-  dtFill <- data.frame(type = c(), N = c(), AIC = c(), SAAIC = c(), BIC = c(), SABIC = c())
+  dtFill <- data.frame(type = c(), N = c(), df = c(), Fit = c(), AIC = c(), SAAIC = c(), BIC = c(), SABIC = c())
   if (length(results) > 1) {
 
     dtFill$diffLL <- dtFill$diffdf <- dtFill$p <- c()
@@ -544,44 +549,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     invFitTable$addColumnInfo(name = "diffdf", title = gettext("\u0394(df)"), type = "integer")
     invFitTable$addColumnInfo(name = "p", title = gettext("p"), type = "pvalue")
   }
-
-  # errmsg <- ""
-  #
-  # for (i in 1:length(results)) {
-  #
-  #   if (isTryError(results[[i]])) {
-  #     errTmp <- jaspBase::.extractErrorMessage(results[[i]])
-  #     errmsg <- gettextf("%1$s Error in fitting the %2$s model. Internal error message(s): %3$s",
-  #                        errmsg, names(results)[i], errTmp)
-  #     dtAdd <- data.frame(type = names(results)[i],
-  #                         N = NA,
-  #                         AIC = NA,
-  #                         SAAIC = NA,
-  #                         BIC = NA,
-  #                         SABIC = NA)
-  #   } else {
-  #     summ <- summary(results[[i]])
-  #     ics <- summ$informationCriteria
-  #     dtAdd <- data.frame(type = names(results)[i],
-  #                         N = summ$estimatedParameters,
-  #                         AIC = ics["AIC:", "par"],
-  #                         SAAIC = ics["AIC:", "sample"],
-  #                         BIC = ics["BIC:", "par"],
-  #                         SABIC = ics["AIC:", "sample"])
-  #     if (length(results) > 1) {
-  #       if (i == 1) {
-  #         dtAdd$p <- dtAdd$diffdf <- dtAdd$diffLL <- NA
-  #       } else {
-  #         comp <- OpenMx::mxCompare(results[[i-1]], results[[i]])
-  #         dtAdd$diffLL <- comp$diffLL[2]
-  #         dtAdd$diffdf <- comp$diffdf[2]
-  #         dtAdd$p <- comp$p[2]
-  #       }
-  #     }
-  #   }
-  #
-  #   dtFill <- rbind(dtFill, dtAdd)
-  # }
 
   dtFill <- data.frame()
   errmsg <- ""
@@ -595,6 +562,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       dtFill <- data.frame(
         type  = names(results)[i],
         N     = NA,
+        df    = NA,
+        Fit   = NA,
         AIC   = NA,
         SAAIC = NA,
         BIC   = NA,
@@ -606,6 +575,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       dtFill <- data.frame(
         type  = names(results)[i],
         N     = summ$estimatedParameters,
+        df    = summ$degreesOfFreedom,
+        Fit   = summ$fit$minus2LogLikelihood,
         AIC   = ics["AIC:", "par"],
         SAAIC = ics["AIC:", "sample"],
         BIC   = ics["BIC:", "par"],
@@ -642,6 +613,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         dtAdd <- data.frame(
           type  = modelName,
           N     = NA,
+          df    = NA,
+          Fit   = NA,
           AIC   = NA,
           SAAIC = NA,
           BIC   = NA,
@@ -659,6 +632,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         dtAdd <- data.frame(
           type  = modelName,
           N     = summ$estimatedParameters,
+          df    = summ$degreesOfFreedom,
+          Fit   = summ$fit$minus2LogLikelihood,
           AIC   = ics["AIC:", "par"],
           SAAIC = ics["AIC:", "sample"],
           BIC   = ics["BIC:", "par"],
