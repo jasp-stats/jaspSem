@@ -514,6 +514,12 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   if (!ready) return()
 
+  if (is.null(jaspResults[["fitContainer"]])) {
+    fitContainer <- createJaspContainer()
+    fitContainer$position <- 2
+    jaspResults[["fitContainer"]] <- fitContainer
+  }
+
   invFitTable <- createJaspTable(gettext("Global Invariance Fit"))
   jaspResults[["fitContainer"]][["invFitTable"]] <- invFitTable
 
