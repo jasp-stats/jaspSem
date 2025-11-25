@@ -576,7 +576,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         type  = names(results)[i],
         N     = summ$estimatedParameters,
         df    = summ$degreesOfFreedom,
-        Fit   = summ$fit$minus2LogLikelihood,
+        Fit   = summ$Minus2LogLikelihood,
         AIC   = ics["AIC:", "par"],
         SAAIC = ics["AIC:", "sample"],
         BIC   = ics["BIC:", "par"],
@@ -633,7 +633,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           type  = modelName,
           N     = summ$estimatedParameters,
           df    = summ$degreesOfFreedom,
-          Fit   = summ$fit$minus2LogLikelihood,
+          Fit   = summ$Minus2LogLikelihood,
           AIC   = ics["AIC:", "par"],
           SAAIC = ics["AIC:", "sample"],
           BIC   = ics["BIC:", "par"],
@@ -721,9 +721,9 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     } else {
       fitSummary <- summary(results[[i]])
       paramTable <- fitSummary$parameters
-      globalParameterContainer[[names(results)[i]]] <- .mnlfaParameterTableHelper(paramTable,
-                                                                                  names(results)[i],
-                                                                                  mapResults[[i]],
+      globalParameterContainer[[names(results)[i]]] <- .mnlfaParameterTableHelper(paramTable = paramTable,
+                                                                                  nm = names(results)[i],
+                                                                                  mapResult = mapResults[[i]],
                                                                                   options)
     }
 
@@ -772,15 +772,20 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
       subMat <- paramTable[allLoads, ]
       ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$alphaLevel)
-      df <- data.frame(factor = loadMap$factor,
-                       indicator = loadMap$variable,
-                       effect = sub("^data.", "", loadMap$moderator),
-                       # param = sub("^load_", "", loadMap$loadingCoefficient),
-                       est = subMat[, "Estimate"],
-                       se = subMat[, "Std.Error"],
-                       pvalue = ciObj$pValue,
-                       ci.lower = ciObj$lowerBound,
-                       ci.upper = ciObj$upperBound)
+      # match loadMap rows to subMat rows
+      idx <- match(loadMap$loadingCoefficient, subMat$name)
+
+      df <- data.frame(
+        factor    = loadMap$factor,
+        indicator = loadMap$variable,
+        effect    = sub("^data\\.", "", loadMap$moderator),
+        est       = subMat$Estimate[idx],
+        se        = subMat$Std.Error[idx],
+        pvalue    = ciObj$pValue[idx],
+        ci.lower  = ciObj$lowerBound[idx],
+        ci.upper  = ciObj$upperBound[idx],
+        stringsAsFactors = FALSE
+      )
       loadTable$setData(df)
     }
   }
@@ -804,17 +809,30 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                               overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
 
       intMap <- mapResult$intercepts
-
+      # subMat contains only intercept rows from lavaan
       subMat <- paramTable[intPosition, ]
-      ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$alphaLevel)
-      df <- data.frame(indicator = intMap$variable,
-                       effect = sub("^data.", "", intMap$moderator),
-                       # param = sub("^int_", "", intMap$interceptCoefficient),
-                       est = subMat[, "Estimate"],
-                       se = subMat[, "Std.Error"],
-                       pvalue = ciObj$pValue,
-                       ci.lower = ciObj$lowerBound,
-                       ci.upper = ciObj$upperBound)
+
+      # Match each mapping row to the correct row in subMat
+      idx <- match(intMap$interceptCoefficient, subMat$name)
+
+      # Reorder estimates/SEs according to intMap
+      est <- subMat$Estimate[idx]
+      se  <- subMat$Std.Error[idx]
+
+      # CIs in the same order
+      ciObj <- .waldCi(est, se, options$alphaLevel)
+
+      df <- data.frame(
+        indicator = intMap$variable,
+        effect    = sub("^data\\.", "", intMap$moderator),
+        # param  = sub("^int_", "", intMap$interceptCoefficient),  # if you want it
+        est       = est,
+        se        = se,
+        pvalue    = ciObj$pValue,
+        ci.lower  = ciObj$lowerBound,
+        ci.upper  = ciObj$upperBound,
+        stringsAsFactors = FALSE
+      )
       intTable$setData(df)
     }
   }
@@ -838,17 +856,29 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                              overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
 
       resMap <- mapResult$residualVariances
-
       subMat <- paramTable[resPosition, ]
-      ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$alphaLevel)
-      df <- data.frame(indicator = resMap$variable,
-                       effect = sub("^data.", "", resMap$moderator),
-                       # param = sub("^res_", "", resMap$residualCoefficient),
-                       est = exp(subMat[, "Estimate"]),
-                       se = subMat[, "Std.Error"],
-                       pvalue = ciObj$pValue,
-                       ci.lower = ciObj$lowerBound,
-                       ci.upper = ciObj$upperBound)
+
+      # Match map rows to the correct rows in subMat
+      idx <- match(resMap$residualCoefficient, subMat$name)
+
+      # log-scale estimates and SE (as they come from lavaan)
+      est_log <- subMat$Estimate[idx]
+      se_log  <- subMat$Std.Error[idx]
+
+      # Wald CI on log scale
+      ciObj <- .waldCi(est_log, se_log, options$alphaLevel)
+
+      df <- data.frame(
+        indicator = resMap$variable,
+        effect    = sub("^data\\.", "", resMap$moderator),
+        # param  = sub("^res_", "", resMap$residualCoefficient),
+        est       = exp(est_log),            # back-transformed variance
+        se        = exp(est_log) * se_log,
+        pvalue    = ciObj$pValue,
+        ci.lower  = exp(ciObj$lowerBound),   # CIs on variance scale
+        ci.upper  = exp(ciObj$upperBound),
+        stringsAsFactors = FALSE
+      )
       resTable$setData(df)
     }
   }
@@ -871,21 +901,27 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                              overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
 
       fvMap <- mapResult$variances
-      # Replace values in the fvTable based on fTitleMapping
       for (mapping in fTitleMapping) {
         fvMap$factor[fvMap$factor == mapping[1]] <- mapping[2]
       }
 
       subMat <- paramTable[fvPosition, ]
-      ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$alphaLevel)
-      df <- data.frame(factor = fvMap$factor,
-                       effect = sub("^data.", "", fvMap$moderator),
-                       # param = sub("^var_", "", fvMap$varianceCoefficient),
-                       est = exp(subMat[, "Estimate"]),
-                       se = subMat[, "Std.Error"],
-                       pvalue = ciObj$pValue,
-                       ci.lower = ciObj$lowerBound,
-                       ci.upper = ciObj$upperBound)
+      idx <- match(fvMap$varianceCoefficient, subMat$name)
+      est_log <- subMat$Estimate[idx]
+      se_log  <- subMat$Std.Error[idx]
+
+      ciObj_log <- .waldCi(est_log, se_log, options$alphaLevel)
+
+      df <- data.frame(
+        factor   = fvMap$factor,
+        effect   = sub("^data\\.", "", fvMap$moderator),
+        est      = exp(est_log),
+        se       = exp(est_log) * se_log,
+        pvalue   = ciObj_log$pValue,
+        ci.lower = exp(ciObj_log$lowerBound),
+        ci.upper = exp(ciObj_log$upperBound),
+        stringsAsFactors = FALSE
+      )
       fvTable$setData(df)
     }
   }
@@ -908,21 +944,31 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                             overtitle = gettextf("%s%% Confidence Interval", (1 - options$alphaLevel) * 100))
 
       fmMap <- mapResult$means
-      # Replace values in the fmTable based on fTitleMapping
+
       for (mapping in fTitleMapping) {
         fmMap$factor[fmMap$factor == mapping[1]] <- mapping[2]
       }
 
       subMat <- paramTable[fmPosition, ]
-      ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$alphaLevel)
-      df <- data.frame(factor = fmMap$factor,
-                       effect = sub("^data.", "", fmMap$moderator),
-                       # param = sub("^mean_", "", fmMap$meanCoefficient),
-                       est = subMat[, "Estimate"],
-                       se = subMat[, "Std.Error"],
-                       pvalue = ciObj$pValue,
-                       ci.lower = ciObj$lowerBound,
-                       ci.upper = ciObj$upperBound)
+
+      idx <- match(fmMap$meanCoefficient, subMat$name)
+
+      est <- subMat$Estimate[idx]
+      se  <- subMat$Std.Error[idx]
+
+      ciObj <- .waldCi(est, se, options$alphaLevel)
+
+      df <- data.frame(
+        factor   = fmMap$factor,
+        effect   = sub("^data\\.", "", fmMap$moderator),
+        est      = est,
+        se       = se,
+        pvalue   = ciObj$pValue,
+        ci.lower = ciObj$lowerBound,
+        ci.upper = ciObj$upperBound,
+        stringsAsFactors = FALSE
+      )
+
       fmTable$setData(df)
     }
   }
@@ -1348,11 +1394,14 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           loadExpr <- var
         }
 
+        # This MUST match what JASP/lavaan puts in subMat$name
+        baselineName <- paste0(factorName, "\u2192", var)  # "Factor1→JaspColumn_3_Encoded"
+
         loadingsList[[rowIndex]] <- list(
           factor = factorName,
           variable = var,
           loadingParameter = paramName,
-          loadingCoefficient = NA,
+          loadingCoefficient = baselineName,
           moderator = gettext("Baseline")
         )
         rowIndex <- rowIndex + 1
@@ -1673,13 +1722,14 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       }
 
       if (removeModeration || (!is.null(removeModerationFor) && factorName %in% removeModerationFor) || var %in% removeModerationForVariables) {
+        # Unmoderated intercept: lavaan parameter will be "int_<var>"
         interceptExpr <- paste0(var, " ~ ", paramName, " * 1")
 
         interceptsList[[rowIndex]] <- list(
-          variable = var,
-          interceptParameter = paramName,
-          interceptCoefficient = NA,
-          moderator = NA
+          variable             = var,
+          interceptParameter   = paramName,   # "int_<var>"
+          interceptCoefficient = paramName,   # also "int_<var>" → matches subMat$name
+          moderator            = gettext("Baseline")
         )
         rowIndex <- rowIndex + 1
       } else {
@@ -1761,13 +1811,14 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       }
 
       if (removeModeration || (!is.null(removeModerationFor) && factorName %in% removeModerationFor) || var %in% removeModerationForVariables) {
+        # Unmoderated residual: lavaan parameter is just "res_<var>"
         residualExpr <- paste0(var, " ~~ ", paramName, " * ", var)
 
         residualsList[[rowIndex]] <- list(
-          variable = var,
-          residualParameter = paramName,
-          residualCoefficient = NA,
-          moderator = NA
+          variable             = var,
+          residualParameter    = paramName,   # "res_<var>"
+          residualCoefficient  = paramName,   # also "res_<var>" → matches subMat$name
+          moderator            = gettext("Baseline")
         )
         rowIndex <- rowIndex + 1
       } else {
