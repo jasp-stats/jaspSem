@@ -57,8 +57,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   dataset <- .mnlfaHandleData(jaspResults, dataset, options, ready)
   options <- .mnlfaPreprocessOptions(options)
 
-  # saveRDS(options, file = "~/Downloads/options.rds")
-  # saveRDS(dataset, file = "~/Downloads/dataset.rds")
+   # saveRDS(options, file = "~/Downloads/options.rds")
+   # saveRDS(dataset, file = "~/Downloads/dataset.rds")
 
   .mnlfaCreateContainer(jaspResults, options)
   .mnlfaPlotOptionsForQml(jaspResults, options)
@@ -716,7 +716,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                       Custom = jaspResults[["mainContainer"]][["customInvarianceModelState"]][["object"]][["map"]])
   mapResults <- mapResults[sapply(mapResults, function(x) !is.null(x))]
 
-  # saveRDS(mapResults, "~/Downloads/mapResults.rds")
+   # saveRDS(mapResults, "~/Downloads/mapResults.rds")
 
   for (i in 1:length(results)) {
 
@@ -1072,14 +1072,18 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       map <- mapResult[[parameterGroup]]
       if (currentRow$plotType == "factors") {
         # match the factor names with the factor labels
-        fTitleMapping <- lapply(options[["factors"]], function(x) c(x[["name"]], x[["title"]])) # map GUI titles with internal titles
+        factors <- options[["factors"]]
+        fTitleMapping <- setNames(
+          vapply(factors, `[[`, character(1), "title"),  # values
+          vapply(factors, `[[`, character(1), "name")   # names
+        )
         if (parameterGroup == "covariances") {
           subMap <- map # for factor covariances there is not matching cause the map is only created
           # if there are two factors and there are always the same parameters
         } else {
-          for (mapping in fTitleMapping) {
-            map$factor[map$factor == mapping[1]] <- mapping[2]
-          }
+          map$factor <- ifelse(is.na(fTitleMapping[map$factor]), map$factor, fTitleMapping[map$factor])
+          # currentRow value also needs the title mapping
+          currentRow$value <- ifelse(is.na(fTitleMapping[currentRow$value]), currentRow$value, fTitleMapping[currentRow$value])
           subMap <- map[map$factor == currentRow$value, ]
         }
 
