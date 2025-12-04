@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-12-01 06:16+0000\n"
+"PO-Revision-Date: 2025-12-05 22:00+0000\n"
 "Last-Translator: Marko Bojović <bojovicmarko@outlook.com>\n"
 "Language-Team: Serbian <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "sr/>\n"
@@ -8,9 +8,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural="
-"(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? "
-"1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Weblate 5.15-dev\n"
 "X-Qt-Contexts: true\n"
 
@@ -76,7 +75,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "R-Squared"
-msgstr ""
+msgstr "R-квадрат"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Standardized estimates"
@@ -84,7 +83,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Implied covariance matrix"
-msgstr ""
+msgstr "Имплицирана матрица коваријанције"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Residual covariance matrix"
@@ -184,11 +183,11 @@ msgstr ""
 
 msgctxt "MediationAnalysis|"
 msgid "R-squared"
-msgstr ""
+msgstr "R-квадрат"
 
 msgctxt "MediationAnalysis|"
 msgid "Additional parameter estimates"
-msgstr ""
+msgstr "Додатне процене параметара"
 
 msgctxt "MediationAnalysis|"
 msgid "Total indirect effects"
@@ -236,11 +235,11 @@ msgstr ""
 
 msgctxt "Mimic|"
 msgid "R-squared"
-msgstr ""
+msgstr "R-квадрат"
 
 msgctxt "Mimic|"
 msgid "Additional fit measures"
-msgstr ""
+msgstr "Додатне мере приступа"
 
 msgctxt "Mimic|"
 msgid "Plots"
@@ -284,11 +283,11 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Additional fit measures"
-msgstr ""
+msgstr "Додатне мере приступа"
 
 msgctxt "SEM|"
 msgid "R-squared"
-msgstr ""
+msgstr "R-квадрат"
 
 msgctxt "SEM|"
 msgid "Observed covariances"
@@ -660,15 +659,15 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Output"
-msgstr ""
+msgstr "Излаз"
 
 msgctxt "PLSSEM|"
 msgid "R-squared"
-msgstr ""
+msgstr "R-квадрат"
 
 msgctxt "PLSSEM|"
 msgid "Additional fit measures"
-msgstr ""
+msgstr "Додатне мере приступа"
 
 msgctxt "PLSSEM|"
 msgid "Mardia's coefficient"
@@ -1120,7 +1119,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Show warnings"
-msgstr ""
+msgstr "Прикажи упозорења"
 
 msgctxt "SEM|"
 msgid "SD of deviance / old estimate"
