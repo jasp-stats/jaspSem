@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2025-12-05 22:00+0000\n"
+"PO-Revision-Date: 2025-12-09 00:00+0000\n"
 "Last-Translator: Marko Bojović <bojovicmarko@outlook.com>\n"
 "Language-Team: Serbian <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "sr/>\n"
@@ -239,7 +239,7 @@ msgstr "R-квадрат"
 
 msgctxt "Mimic|"
 msgid "Additional fit measures"
-msgstr "Додатне мере приступа"
+msgstr "Додатне мере прилагођавања"
 
 msgctxt "Mimic|"
 msgid "Plots"
@@ -283,7 +283,7 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Additional fit measures"
-msgstr "Додатне мере приступа"
+msgstr "Додатне мере прилагођавања"
 
 msgctxt "SEM|"
 msgid "R-squared"
@@ -667,7 +667,7 @@ msgstr "R-квадрат"
 
 msgctxt "PLSSEM|"
 msgid "Additional fit measures"
-msgstr "Додатне мере приступа"
+msgstr "Додатне мере прилагођавања"
 
 msgctxt "PLSSEM|"
 msgid "Mardia's coefficient"
@@ -927,7 +927,7 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Additional fit measures"
-msgstr ""
+msgstr "Додатне мере прилагођавања"
 
 msgctxt "LatentGrowthCurve|"
 msgid "All"
