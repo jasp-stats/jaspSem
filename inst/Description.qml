@@ -47,7 +47,7 @@ Description
 
 	Analysis
 	{
-		title: qsTr("Moderated Non-Linear Factor Analysis")
+		title: qsTr("MNLFA (beta)")
 		qml: "ModeratedNonLinearFactorAnalysis.qml"
 		func: "ModeratedNonLinearFactorAnalysis"
 		hasWrapper: true
