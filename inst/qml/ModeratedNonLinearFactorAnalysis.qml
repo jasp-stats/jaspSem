@@ -73,15 +73,14 @@ Form
 			preferredHeight: jaspTheme.smallDefaultVariablesFormHeight * 0.65
 			AvailableVariablesList
 			{
-				title: qsTr("Moderator Variables")
-				name: "moderatorVariables"
+				name: "availableModerators"
 				source: [{ isDataSetVariables: true, discard: factors.name }]
 			}
 			AssignedVariablesList
 			{
 				id: moderators
 				allowedColumns:		["scale", "nominal"]
-				title: qsTr("Effects")
+				title: qsTr("Moderators")
 				name: "moderators"
 				rowComponentTitle: qsTr("Square   Cubic")
 				rowComponent: RowLayout

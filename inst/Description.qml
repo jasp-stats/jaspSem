@@ -50,7 +50,6 @@ Description
 		title: qsTr("MNLFA (beta)")
 		qml: "ModeratedNonLinearFactorAnalysis.qml"
 		func: "ModeratedNonLinearFactorAnalysis"
-		hasWrapper: true
 		preloadData: true
 	}
 }
