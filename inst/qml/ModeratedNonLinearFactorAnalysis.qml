@@ -24,7 +24,7 @@ Form
 {
 
 	// function for getting the values for the plots
-	function getValuesModOptions(inValue, rwValue, factorCount) {
+	function getValuesModOptions(rwValue, factorCount) {
 		if (rwValue == "indicators") {
 			return [{value: "loadings", label: qsTr("Loadings")}, {value: "intercepts", label: qsTr("Intercepts")}, {value: "residualVariances", label: qsTr("Residual variances")}];
 		}
@@ -32,7 +32,6 @@ Form
 			return [{value: "variances", label: qsTr("Variances")}, {value: "means", label: qsTr("Means")}, {value: "covariances", label: qsTr("Covariances")}];
 		}
 		return [{value: "variances", label: qsTr("Variances")}, {value: "means", label: qsTr("Means")}];
-		return [];
 	}
 
 	function concatFactorTitles(factorTitles) {
@@ -75,7 +74,7 @@ Form
 			AvailableVariablesList
 			{
 				title: qsTr("Moderator Variables")
-				name: "moderatorVars"
+				name: "moderatorVariables"
 				source: [{ isDataSetVariables: true, discard: factors.name }]
 			}
 			AssignedVariablesList
@@ -89,7 +88,7 @@ Form
 				{
 					CheckBox
 					{
-						name: "squaredEffect"
+						name: "moderatorSquaredEffect"
 						id: squared
 						onCheckedChanged:
 						{
@@ -109,7 +108,7 @@ Form
 					}
 					CheckBox
 					{
-						name: "cubicEffect"
+						name: "moderatorCubicEffect"
 						id: cubic
 						onCheckedChanged:
 						{
@@ -147,7 +146,7 @@ Form
 			title: qsTr("Assumption Check")
 			CheckBox
 			{
-				name: "fitPerGroup";
+				name: "checkFitPerGroup";
 				checked: false ;
 				label: qsTr("Check model fit per group");
 				id: fitPerGroup;
@@ -156,12 +155,12 @@ Form
 			IntegerField
 			{
 				name: "continuousVariableSplit";
-				label: qsTr("Split continous variables into groups:");
+				label: qsTr("Split continuous variables into groups:");
 				defaultValue: 2;
 				enabled: fitPerGroup.checked;
 				min: 2
 			}
-			CheckBox { name: "addGroupVar"; label: qsTr("Add group variable to data"); enabled: fitPerGroup.checked }
+			CheckBox { name: "addGroupVariableToData"; label: qsTr("Add group variable to data"); enabled: fitPerGroup.checked }
 		}
 
 		ColumnLayout
@@ -173,7 +172,7 @@ Form
 				visible: moderators.columnsNames.length > 1
 				preferredWidth: form.width * 0.4
 				title: qsTr("Interaction Terms")
-				name: "moderatorInteractions"
+				name: "moderatorInteractionTerms"
 				id: interactions
 				addItemManually: false
 				values: combinePairs(moderators.columnsNames)
@@ -181,7 +180,7 @@ Form
 				rowComponent: RowLayout
 				{
 					Text { text: rowValue; Layout.preferredWidth: 150 * jaspTheme.uiScale }
-					CheckBox { name: "includeInteraction"; id: includeInteraction }
+					CheckBox { name: "moderatorInteractionTermsInclude"; id: includeInteraction }
 				}
 			}
 		}
@@ -214,7 +213,7 @@ Form
 			Layout.fillWidth: true
 			values: invOpts.firstLayerValues
 			title: qsTr("Include Individual Moderations")
-			name: "moderationIncludeList"
+			name: "includeIndividualModerationsList"
 			optionKey: "keyValue"
 			optionKeyLabel: "keyLabel"
 			id: modFirstLayer
@@ -222,9 +221,9 @@ Form
 			rowComponent: TabView
 			{
 				id: modSecondLayer
-				property string modInvValue: rowValue
-				property string modInvLable: rowLabel
-				name: "modTypeList"
+				property string moderationInvValue: rowValue
+				property string moderationInvLabel: rowLabel
+				name: "moderationTypeList"
 				addItemManually: false
 				values: [{value: "indicators", label: qsTr("Indicators")}, {value: "factors", label: qsTr("Factors")}]
 				optionKey: "keyValue"
@@ -232,35 +231,34 @@ Form
 				rowComponent: TabView
 				{
 					id: modThirdLayer
-					property string modTypeValue: rowValue
-					property string modTypeLabel: rowLabel
-					name: "modParameterList"
+					property string moderationTypeValue: rowValue
+					property string moderationTypeLabel: rowLabel
+					name: "moderationParameterList"
 					addItemManually: false
 					optionKey: "keyValue"
 					optionKeyLabel: "keyLabel"
-					values: getValuesModOptions(modSecondLayer.modInvValue, rowValue, factors.factorsTitles.length)
+					values: getValuesModOptions(rowValue, factors.factorsTitles.length)
 					rowComponent: ComponentsList
 					{
 						id: modFourthLayer
-						property string modParamValue: rowValue
-						property string modParamLabel: rowLabel
-						name: "modItemList"
+						property string moderationParamValue: rowValue
+						property string moderationParamLabel: rowLabel
+						name: "moderationItemList"
 						implicitWidth: modThirdLayer.width - 2
 						addItemManually: false
 						headerLabels: [qsTr("Include"), "   ", qsTr("Display Plot")]
-						// source: "factors"
-						source: modThirdLayer.modTypeValue == "indicators" ? factors.name : (rowValue == "covariances" ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
+						source: modThirdLayer.moderationTypeValue == "indicators" ? factors.name : (rowValue == "covariances" ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
 						rowComponent: RowLayout
 						{
 							Text { text: rowLabel ; Layout.preferredWidth: 200*jaspTheme.uiScale }
 							CheckBox {
-								name: "includeModeration";
-								id: includeModeration
+								name: "includeIndividualModeration";
+								id: includeIndividualModeration
 								checked: 
-								(modSecondLayer.modInvValue == "configuralInvariance" && modFourthLayer.modParamValue != "variances" && modFourthLayer.modParamValue != "means") ||
-									(modSecondLayer.modInvValue == "metricInvariance" && modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "means") ||
-										(modSecondLayer.modInvValue == "scalarInvariance" && (modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "intercepts")) ||
-											(modSecondLayer.modInvValue == "strictInvariance" && (modFourthLayer.modParamValue != "loadings" && modFourthLayer.modParamValue != "intercepts" && modFourthLayer.modParamValue != "residualVariances"));
+								(modSecondLayer.moderationInvValue == "configuralInvariance" && modFourthLayer.moderationParamValue != "variances" && modFourthLayer.moderationParamValue != "means") ||
+									(modSecondLayer.moderationInvValue == "metricInvariance" && modFourthLayer.moderationParamValue != "loadings" && modFourthLayer.moderationParamValue != "means") ||
+										(modSecondLayer.moderationInvValue == "scalarInvariance" && (modFourthLayer.moderationParamValue != "loadings" && modFourthLayer.moderationParamValue != "intercepts")) ||
+											(modSecondLayer.moderationInvValue == "strictInvariance" && (modFourthLayer.moderationParamValue != "loadings" && modFourthLayer.moderationParamValue != "intercepts" && modFourthLayer.moderationParamValue != "residualVariances"));
 							}
 						}
 					}
@@ -278,7 +276,7 @@ Form
 			title: qsTr("Parameter Estimates")
 			DoubleField
 			{
-				name: "alphaLevel"
+				name: "parameterAlphaLevel"
 				label: qsTr("Significance level")
 				negativeValues: false
 				decimals: 4
@@ -333,7 +331,7 @@ Form
 					name: "plotParameterList"
 					addItemManually: false
 
-					values: getValuesModOptions(plotSecondLayer.plotInvValue, rowValue, factors.factorsTitles.length)
+					values: getValuesModOptions(rowValue, factors.factorsTitles.length)
 
 					rowComponent: ComponentsList
 					{
@@ -350,7 +348,7 @@ Form
 								name: "plotModerator1"
 								id: plotMod1
 								// source: [moderators]
-								source: [moderators, {values: plots.names}, {name: "moderatorInteractions", condition: "includeInteraction"}]
+								source: [moderators, {values: plots.names}, {name: "moderatorInteractionTerms", condition: "moderatorInteractionTermsInclude"}]
 								// source: [moderators, {name: "moderatorInteractions", condition: "includeInteraction"}]
 
 
