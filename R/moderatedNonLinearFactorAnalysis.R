@@ -17,7 +17,6 @@
 
 ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
-
   OpenMx::mxSetDefaultOptions()
 
   nIndicators  <- length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE))
@@ -1974,31 +1973,86 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   return(result)
 }
 
+# .extractExcludedModerationItemsDf <- function(includeIndividualModerationsList) {
+#   results <- list()
+#
+#   for (model in includeIndividualModerationsList) {
+#     modelLabel <- if (!is.null(model$keyLabel)) model$keyLabel else NA
+#     modelValue <- if (!is.null(model$keyValue)) model$keyValue else NA
+#
+#     for (typeBlock in model$moderationTypeList) {
+#       modTypeLabel <- if (!is.null(typeBlock$keyLabel)) typeBlock$keyLabel else NA
+#       modTypeValue <- if (!is.null(typeBlock$keyValue)) typeBlock$keyValue else NA
+#
+#       for (paramBlock in typeBlock$moderationParameterList) {
+#         paramLabel <- if (!is.null(paramBlock$keyLabel)) paramBlock$keyLabel else NA
+#         paramValue <- if (!is.null(paramBlock$keyValue)) paramBlock$keyValue else NA
+#
+#         for (item in paramBlock$moderationItemList) {
+#           if (!isTRUE(item$includeIndividualModeration)) {
+#             results[[length(results) + 1]] <- list(
+#               modelLabel = modelLabel,
+#               modelValue = modelValue,
+#               modTypeLabel = modTypeLabel,
+#               modTypeValue = modTypeValue,
+#               paramLabel = paramLabel,
+#               paramValue = paramValue,
+#               itemValue = if (!is.null(item$value)) item$value else NA
+#             )
+#           }
+#         }
+#       }
+#     }
+#   }
+#
+#   if (length(results) == 0) return(NULL)
+#   do.call(rbind, lapply(results, as.data.frame, stringsAsFactors = FALSE))
+# }
+
+.splitItemValue <- function(x) {
+  if (is.list(x) && length(x) == 2) {
+    list(
+      itemType  = x[[1]],
+      itemValue = x[[2]]
+    )
+  } else {
+    list(
+      itemType  = NA_character_,
+      itemValue = x
+    )
+  }
+}
 .extractExcludedModerationItemsDf <- function(includeIndividualModerationsList) {
+
   results <- list()
 
   for (model in includeIndividualModerationsList) {
-    modelLabel <- if (!is.null(model$keyLabel)) model$keyLabel else NA
-    modelValue <- if (!is.null(model$keyValue)) model$keyValue else NA
+    modelLabel <- model$keyLabel %||% NA
+    modelValue <- model$keyValue %||% NA
 
     for (typeBlock in model$moderationTypeList) {
-      modTypeLabel <- if (!is.null(typeBlock$keyLabel)) typeBlock$keyLabel else NA
-      modTypeValue <- if (!is.null(typeBlock$keyValue)) typeBlock$keyValue else NA
+      modTypeLabel <- typeBlock$keyLabel %||% NA
+      modTypeValue <- typeBlock$keyValue %||% NA
 
       for (paramBlock in typeBlock$moderationParameterList) {
-        paramLabel <- if (!is.null(paramBlock$keyLabel)) paramBlock$keyLabel else NA
-        paramValue <- if (!is.null(paramBlock$keyValue)) paramBlock$keyValue else NA
+        paramLabel <- paramBlock$keyLabel %||% NA
+        paramValue <- paramBlock$keyValue %||% NA
 
         for (item in paramBlock$moderationItemList) {
-          if (!isTRUE(item$includeIndividualModeration)) {
+
+          include <- isTRUE(item[[1]])
+          split   <- .splitItemValue(item[[2]])
+
+          if (!include) {
             results[[length(results) + 1]] <- list(
-              modelLabel = modelLabel,
-              modelValue = modelValue,
+              modelLabel   = modelLabel,
+              modelValue   = modelValue,
               modTypeLabel = modTypeLabel,
               modTypeValue = modTypeValue,
-              paramLabel = paramLabel,
-              paramValue = paramValue,
-              itemValue = if (!is.null(item$value)) item$value else NA
+              paramLabel   = paramLabel,
+              paramValue   = paramValue,
+              itemType     = split$itemType,
+              itemValue    = split$itemValue
             )
           }
         }
@@ -2007,11 +2061,15 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
   if (length(results) == 0) return(NULL)
-  do.call(rbind, lapply(results, as.data.frame, stringsAsFactors = FALSE))
+
+  do.call(
+    rbind,
+    lapply(results, as.data.frame, stringsAsFactors = FALSE)
+  )
 }
 
-
 .extractIncludeIndividualModerationPaths <- function(includeIndividualModerationsList) {
+
   includedResults <- list()
   pathResults <- list()
 
@@ -2035,47 +2093,52 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         for (itemIndex in seq_along(param$moderationItemList)) {
           item <- param$moderationItemList[[itemIndex]]
 
-          if (!is.null(item$includeIndividualModeration)) {
-            path <- c(
-              "includeIndividualModerationsList", modelIndex,
-              "moderationTypeList", modTypeIndex,
-              "moderationParameterList", paramIndex,
-              "moderationItemList", itemIndex,
-              "includeIndividualModeration"
-            )
-            modelPaths[[length(modelPaths) + 1]] <- path
+          include <- isTRUE(item[[1]])
+          split   <- .splitItemValue(item[[2]])
 
-            if (isTRUE(item$includeIndividualModeration)) {
-              includedResults[[length(includedResults) + 1]] <- list(
-                modelLabel = modelLabel,
-                modelValue = modelValue,
-                modTypeLabel = modTypeLabel,
-                modTypeValue = modTypeValue,
-                paramLabel = paramLabel,
-                paramValue = paramValue,
-                itemValue = if (!is.null(item$value)) item$value else NA
-              )
-            }
+          path <- c(
+            "includeIndividualModerationsList", modelIndex,
+            "moderationTypeList", modTypeIndex,
+            "moderationParameterList", paramIndex,
+            "moderationItemList", itemIndex,
+            "includeIndividualModeration"
+          )
+
+          modelPaths[[length(modelPaths) + 1]] <- path
+
+          if (include) {
+            includedResults[[length(includedResults) + 1]] <- list(
+              modelLabel   = modelLabel,
+              modelValue   = modelValue,
+              modTypeLabel = modTypeLabel,
+              modTypeValue = modTypeValue,
+              paramLabel   = paramLabel,
+              paramValue   = paramValue,
+              itemType     = split$itemType,
+              itemValue    = split$itemValue
+            )
           }
         }
       }
     }
 
-    # Store modelPaths under the name of the modelValue
     if (!is.null(modelValue) && length(modelPaths) > 0) {
       pathResults[[modelValue]] <- modelPaths
     }
   }
 
   includedDf <- if (length(includedResults) > 0) {
-    do.call(rbind, lapply(includedResults, as.data.frame, stringsAsFactors = FALSE))
+    do.call(
+      rbind,
+      lapply(includedResults, as.data.frame, stringsAsFactors = FALSE)
+    )
   } else {
     NULL
   }
 
   list(
     included = includedDf,
-    paths = pathResults
+    paths    = pathResults
   )
 }
 

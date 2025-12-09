@@ -719,7 +719,6 @@ test_that("T-size fit indices table results match", {
 })
 
 
-
 options <- jaspTools::analysisOptions("SEM")
 options$dataType          <- "varianceCovariance"
 options$sampleSize        <- 75
