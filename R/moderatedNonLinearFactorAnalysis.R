@@ -98,7 +98,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   mods.types <- options[["moderators.types"]]
   for (i in 1:length(mods)) {
     if (mods.types[i] != "nominal") {
-      # this also forces also ordinal moderator variables to be numeric, do we want this???????????????????????????????????
+      # this also forces also ordinal moderator variables to be continuous, do we want this???????????????????????????????????
       dataset[[mods[i]]] <- scale(as.numeric(as.character(dataset[[mods[i]]])))
     }
   }
@@ -270,8 +270,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   src <- createJaspQmlSource(sourceID = "plotOptionsForQml", value = plotOpts)
   src$dependOn(optionsFromObject = jaspResults[["mainContainer"]],
-               options = c("configuralInvariance", "metricInvariance",
-                           "scalarInvariance", "strictInvariance", "customInvariance"),
+               options = c("invarianceTestConfigural", "invarianceTestMetric",
+                           "invarianceTestScalar", "invarianceTestStrict", "invarianceTestCustom"),
                nestedOptions = modelOptionsPath)
 
   jaspResults[["plotOptionsForQml"]] <- src
@@ -284,8 +284,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 .mnlfaFitPerGroup <- function(jaspResults, dataset, options, ready) {
 
   if (!ready) return()
-  if (!is.null(jaspResults[["mainContainer"]][["checkFitPerGroupState"]])) return()
-  if (!options[["checkFitPerGroup"]]) return()
+  if (!is.null(jaspResults[["mainContainer"]][["checkModelFitPerGroupState"]])) return()
+  if (!options[["checkModelFitPerGroup"]]) return()
 
   moderatorNames <- sapply(options[["moderators"]], function(x) x[["variable"]])
   moderatorTypes <- options[["moderators.types"]]
@@ -295,7 +295,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   dataTmp <- dataset
   if (length(nonNominalModerators) > 0) {
-    nSplits <- options[["continuousVariableSplit"]]
+    nSplits <- options[["splitContinuousVariablesIntoGroups"]]
     for (i in 1:length(nonNominalModerators)) {
       tmp <- as.numeric(as.character(dataTmp[[nonNominalModerators[i]]])) # in cases where the variable is ordinal
       modRange <- range(tmp)
@@ -346,8 +346,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
   fitPerGroupResult <- createJaspState(list(result = result, addedGroupVar = dataTmp[["addedGroupVar"]]))
-  fitPerGroupResult$dependOn(options = c("continuousVariableSplit", "checkFitPerGroup"))
-  jaspResults[["mainContainer"]][["checkFitPerGroupState"]] <- fitPerGroupResult
+  fitPerGroupResult$dependOn(options = c("splitContinuousVariablesIntoGroups", "checkModelFitPerGroup"))
+  jaspResults[["mainContainer"]][["checkModelFitPerGroupState"]] <- fitPerGroupResult
 
   return()
 }
@@ -356,11 +356,11 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   if (!ready) return()
 
-  tests <- c(options[["configuralInvariance"]], options[["metricInvariance"]], options[["scalarInvariance"]],
-             options[["strictInvariance"]], options[["customInvariance"]])
+  tests <- c(options[["invarianceTestConfigural"]], options[["invarianceTestMetric"]], options[["invarianceTestScalar"]],
+             options[["invarianceTestStrict"]], options[["invarianceTestCustom"]])
   if (sum(tests) == 0) return()
 
-  testNames <- c("configuralInvariance", "metricInvariance", "scalarInvariance", "strictInvariance", "customInvariance")
+  testNames <- c("invarianceTestConfigural", "invarianceTestMetric", "invarianceTestScalar", "invarianceTestStrict", "invarianceTestCustom")
   testNames <- testNames[tests]
 
   removeModObj <- .extractExcludedModerationItemsDf(options[["includeIndividualModerationsList"]])
@@ -399,6 +399,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   modelObj <- .generateSyntax(factorList, moderators, type = testName, removeMod)
   script <- mxsem::mxsem(model = modelObj$model, data = dataset, scale_loadings = FALSE, scale_latent_variances = FALSE)
+  .ensureImxReportProgress()
   fit <- try(OpenMx::mxRun(script))
 
   fitState <- createJaspState(fit)
@@ -421,20 +422,20 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 ##### OUTPUT #####
 .mnlfaFitPerGroupTable <- function(jaspResults, dataset, options, ready) {
 
-  if (!is.null(jaspResults[["groupContainer"]][["checkFitPerGroupTable"]])) return()
+  if (!is.null(jaspResults[["groupContainer"]][["checkModelFitPerGroupTable"]])) return()
   if (!ready) return()
-  if (!options[["checkFitPerGroup"]]) return()
+  if (!options[["checkModelFitPerGroup"]]) return()
 
   fitPerGroupTable <- createJaspTable(gettext("Fit per Group Test"))
   fitPerGroupTable$addColumnInfo(name = "model", title = gettext("Group Model"), type = "string")
 
   groupContainer <- createJaspContainer()
   groupContainer$position <- 1
-  groupContainer$dependOn(optionsFromObject = jaspResults[["mainContainer"]][["checkFitPerGroupState"]])
+  groupContainer$dependOn(optionsFromObject = jaspResults[["mainContainer"]][["checkModelFitPerGroupState"]])
   jaspResults[["groupContainer"]] <- groupContainer
-  jaspResults[["groupContainer"]][["checkFitPerGroupTable"]] <- fitPerGroupTable
+  jaspResults[["groupContainer"]][["checkModelFitPerGroupTable"]] <- fitPerGroupTable
 
-  result <- jaspResults[["mainContainer"]][["checkFitPerGroupState"]][["object"]][["result"]]
+  result <- jaspResults[["mainContainer"]][["checkModelFitPerGroupState"]][["object"]][["result"]]
   if (any(unlist(lapply(result, isTryError)))) {
     errs <- which(unlist(lapply(result, isTryError)))
     errmsg <- ""
@@ -525,11 +526,11 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   invFitTable$addColumnInfo(name = "BIC",   title = gettext("BIC"),            type = "number")
   invFitTable$addColumnInfo(name = "SABIC", title = gettext("SABIC"),          type = "number")
 
-  results <- list(Configural = jaspResults[["mainContainer"]][["configuralInvarianceState"]][["object"]],
-                  Metric = jaspResults[["mainContainer"]][["metricInvarianceState"]][["object"]],
-                  Scalar = jaspResults[["mainContainer"]][["scalarInvarianceState"]][["object"]],
-                  Strict = jaspResults[["mainContainer"]][["strictInvarianceState"]][["object"]],
-                  Custom = jaspResults[["mainContainer"]][["customInvarianceState"]][["object"]])
+  results <- list(Configural = jaspResults[["mainContainer"]][["invarianceTestConfiguralState"]][["object"]],
+                  Metric = jaspResults[["mainContainer"]][["invarianceTestMetricState"]][["object"]],
+                  Scalar = jaspResults[["mainContainer"]][["invarianceTestScalarState"]][["object"]],
+                  Strict = jaspResults[["mainContainer"]][["invarianceTestStrictState"]][["object"]],
+                  Custom = jaspResults[["mainContainer"]][["invarianceTestCustomState"]][["object"]])
 
   results <- results[sapply(results, function(x) !is.null(x))]
 
@@ -669,11 +670,11 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (!is.null(jaspResults[["mainContainer"]][["globalParameterContainer"]])) return()
 
   results <- list(
-    Configural = jaspResults[["mainContainer"]][["configuralInvarianceState"]][["object"]],
-    Metric     = jaspResults[["mainContainer"]][["metricInvarianceState"]][["object"]],
-    Scalar     = jaspResults[["mainContainer"]][["scalarInvarianceState"]][["object"]],
-    Strict     = jaspResults[["mainContainer"]][["strictInvarianceState"]][["object"]],
-    Custom     = jaspResults[["mainContainer"]][["customInvarianceState"]][["object"]]
+    Configural = jaspResults[["mainContainer"]][["invarianceTestConfiguralState"]][["object"]],
+    Metric     = jaspResults[["mainContainer"]][["invarianceTestMetricState"]][["object"]],
+    Scalar     = jaspResults[["mainContainer"]][["invarianceTestScalarState"]][["object"]],
+    Strict     = jaspResults[["mainContainer"]][["invarianceTestStrictState"]][["object"]],
+    Custom     = jaspResults[["mainContainer"]][["invarianceTestCustomState"]][["object"]]
   )
 
   results <- results[sapply(results, function(x) !is.null(x))]
@@ -689,11 +690,11 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   globalParameterContainer$dependOn(
     optionsFromObject = jaspResults[["mainContainer"]],
     options = c(
-      "configuralInvariance", "metricInvariance",
-      "scalarInvariance", "strictInvariance", "customInvariance",
-      "loadingEstimates", "interceptEstimates", "residualVarianceEstimates",
-      "factorVarianceEstimates", "factorMeanEstimates",
-      "factorCovarianceEstimates", "parameterAlphaLevel"
+      "invarianceTestConfigural", "invarianceTestMetric",
+      "invarianceTestScalar", "invarianceTestStrict", "invarianceTestCustom",
+      "parameterEstimatesLoadings", "parameterEstimatesIntercepts", "parameterEstimatesResidualVariances",
+      "parameterEstimatesFactorVariance", "parameterEstimatesFactorMeans",
+      "parameterEstimatesFactorCovariances", "parameterEstimatesAlphaLevel"
     ),
     nestedOptions = modelOptionsPath
   )
@@ -701,11 +702,11 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   jaspResults[["mainContainer"]][["globalParameterContainer"]] <- globalParameterContainer
 
   # get the mappings
-  mapResults <- list(Configural = jaspResults[["mainContainer"]][["configuralInvarianceModelState"]][["object"]][["map"]],
-                      Metric = jaspResults[["mainContainer"]][["metricInvarianceModelState"]][["object"]][["map"]],
-                      Scalar = jaspResults[["mainContainer"]][["scalarInvarianceModelState"]][["object"]][["map"]],
-                      Strict = jaspResults[["mainContainer"]][["strictInvarianceModelState"]][["object"]][["map"]],
-                      Custom = jaspResults[["mainContainer"]][["customInvarianceModelState"]][["object"]][["map"]])
+  mapResults <- list(Configural = jaspResults[["mainContainer"]][["invarianceTestConfiguralModelState"]][["object"]][["map"]],
+                      Metric = jaspResults[["mainContainer"]][["invarianceTestMetricModelState"]][["object"]][["map"]],
+                      Scalar = jaspResults[["mainContainer"]][["invarianceTestScalarModelState"]][["object"]][["map"]],
+                      Strict = jaspResults[["mainContainer"]][["invarianceTestStrictModelState"]][["object"]][["map"]],
+                      Custom = jaspResults[["mainContainer"]][["invarianceTestCustomModelState"]][["object"]][["map"]])
   mapResults <- mapResults[sapply(mapResults, function(x) !is.null(x))]
 
   for (i in 1:length(results)) {
@@ -738,7 +739,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   newPars <- grepl("^new_parameters", parTypes)
   fTitleMapping <- lapply(options[["factors"]], function(x) c(x[["name"]], x[["title"]])) # map GUI titles with internal titles
 
-  if (options[["loadingEstimates"]]) {
+  if (options[["parameterEstimatesLoadings"]]) {
     # Loadings
     loadPosition <- grepl("^load_", parNames)
     # special case cause when there is no moderation for loadings they are estimated but named weirdly
@@ -755,9 +756,9 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       loadTable$addColumnInfo(name = "se", title = gettext("Std. Error"), type = "number")
       loadTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
       loadTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                           overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterAlphaLevel) * 100))
+                           overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterEstimatesAlphaLevel) * 100))
       loadTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                           overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterAlphaLevel) * 100))
+                           overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterEstimatesAlphaLevel) * 100))
 
       loadMap <- mapResult$loadings
       loadMap <- loadMap[loadMap$loadingParameter != "fixed_1", ]
@@ -767,7 +768,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       }
 
       subMat <- paramTable[allLoads, ]
-      ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$parameterAlphaLevel)
+      ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$parameterEstimatesAlphaLevel)
       # match loadMap rows to subMat rows
       idx <- match(loadMap$loadingCoefficient, subMat$name)
 
@@ -786,7 +787,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     }
   }
 
-  if (options[["interceptEstimates"]]) {
+  if (options[["parameterEstimatesIntercepts"]]) {
 
     # Intercepts
     intPosition <- grepl("^int_", parNames)
@@ -800,9 +801,9 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       intTable$addColumnInfo(name = "se", title = gettext("Std. Error"), type = "number")
       intTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
       intTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                              overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterAlphaLevel) * 100))
+                              overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterEstimatesAlphaLevel) * 100))
       intTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                              overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterAlphaLevel) * 100))
+                              overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterEstimatesAlphaLevel) * 100))
 
       intMap <- mapResult$intercepts
       # subMat contains only intercept rows from lavaan
@@ -816,7 +817,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       se  <- subMat$Std.Error[idx]
 
       # CIs in the same order
-      ciObj <- .waldCi(est, se, options$parameterAlphaLevel)
+      ciObj <- .waldCi(est, se, options$parameterEstimatesAlphaLevel)
 
       df <- data.frame(
         indicator = intMap$variable,
@@ -833,7 +834,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     }
   }
 
-  if (options[["residualVarianceEstimates"]]) {
+  if (options[["parameterEstimatesResidualVariances"]]) {
 
     # residualVariances
     resPosition <- grepl("^res_", parNames)
@@ -847,9 +848,9 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       resTable$addColumnInfo(name = "se", title = gettext("Std. Error"), type = "number")
       resTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
       resTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                             overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterAlphaLevel) * 100))
+                             overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterEstimatesAlphaLevel) * 100))
       resTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                             overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterAlphaLevel) * 100))
+                             overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterEstimatesAlphaLevel) * 100))
 
       resMap <- mapResult$residualVariances
       subMat <- paramTable[resPosition, ]
@@ -862,7 +863,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       se_log  <- subMat$Std.Error[idx]
 
       # Wald CI on log scale
-      ciObj <- .waldCi(est_log, se_log, options$parameterAlphaLevel)
+      ciObj <- .waldCi(est_log, se_log, options$parameterEstimatesAlphaLevel)
 
       df <- data.frame(
         indicator = resMap$variable,
@@ -879,7 +880,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     }
   }
 
-  if (options[["factorVarianceEstimates"]]) {
+  if (options[["parameterEstimatesFactorVariance"]]) {
     # factor Variances
     fvPosition <- grepl("^var_", parNames)
     if (sum(fvPosition) > 0) { # are factor variances even specified
@@ -892,9 +893,9 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       fvTable$addColumnInfo(name = "se", title = gettext("Std. Error"), type = "number")
       fvTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
       fvTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                             overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterAlphaLevel) * 100))
+                             overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterEstimatesAlphaLevel) * 100))
       fvTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                             overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterAlphaLevel) * 100))
+                             overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterEstimatesAlphaLevel) * 100))
 
       fvMap <- mapResult$variances
       for (mapping in fTitleMapping) {
@@ -906,7 +907,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       est_log <- subMat$Estimate[idx]
       se_log  <- subMat$Std.Error[idx]
 
-      ciObj_log <- .waldCi(est_log, se_log, options$parameterAlphaLevel)
+      ciObj_log <- .waldCi(est_log, se_log, options$parameterEstimatesAlphaLevel)
 
       df <- data.frame(
         factor   = fvMap$factor,
@@ -922,7 +923,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     }
   }
 
-  if (options[["factorMeanEstimates"]]) {
+  if (options[["parameterEstimatesFactorMeans"]]) {
     # factor Means
     fmPosition <- grepl("^mean_", parNames)
     if (sum(fmPosition) > 0) { # are factor variances even specified
@@ -935,9 +936,9 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       fmTable$addColumnInfo(name = "se", title = gettext("Std. Error"), type = "number")
       fmTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
       fmTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                            overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterAlphaLevel) * 100))
+                            overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterEstimatesAlphaLevel) * 100))
       fmTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                            overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterAlphaLevel) * 100))
+                            overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterEstimatesAlphaLevel) * 100))
 
       fmMap <- mapResult$means
 
@@ -952,7 +953,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       est <- subMat$Estimate[idx]
       se  <- subMat$Std.Error[idx]
 
-      ciObj <- .waldCi(est, se, options$parameterAlphaLevel)
+      ciObj <- .waldCi(est, se, options$parameterEstimatesAlphaLevel)
 
       df <- data.frame(
         factor   = fmMap$factor,
@@ -969,7 +970,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     }
   }
 
-  if (options[["factorCovarianceEstimates"]]) {
+  if (options[["parameterEstimatesFactorCovariances"]]) {
     # factor correlations
     covPosition <- grepl("^rho_", parNames)
     if (sum(covPosition) > 0) { # are factor covariances
@@ -981,13 +982,13 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       covTable$addColumnInfo(name = "se", title = gettext("Std. Error"), type = "number")
       covTable$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
       covTable$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                            overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterAlphaLevel) * 100))
+                            overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterEstimatesAlphaLevel) * 100))
       covTable$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                            overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterAlphaLevel) * 100))
+                            overtitle = gettextf("%s%% Confidence Interval", (1 - options$parameterEstimatesAlphaLevel) * 100))
 
       covMap <- mapResult$covariances
       subMat <- paramTable[covPosition, ]
-      ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$parameterAlphaLevel)
+      ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$parameterEstimatesAlphaLevel)
       df <- data.frame(effect = covMap$moderator,
                        # param = covMap$covarianceCoefficient,
                        est = subMat[, "Estimate"],
@@ -1025,8 +1026,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
 
-  results <- lapply(c("configuralInvarianceState", "metricInvarianceState",
-                      "scalarInvarianceState", "strictInvarianceState", "customInvarianceState"),
+  results <- lapply(c("invarianceTestConfiguralState", "invarianceTestMetricState",
+                      "invarianceTestScalarState", "invarianceTestStrictState", "invarianceTestCustomState"),
                     function(state) jaspResults[["mainContainer"]][[state]][["object"]])
   if (all(sapply(results, is.null))) return()
 
@@ -1216,11 +1217,11 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                            optionsFromObject = jaspResults[["mainContainer"]][["globalParameterContainer"]])
   jaspResults[["syntaxContainer"]] <- syntaxContainer
 
-  models <- list(Configural = jaspResults[["mainContainer"]][["configuralInvarianceModelState"]][["object"]][["model"]],
-                 Metric     = jaspResults[["mainContainer"]][["metricInvarianceModelState"]][["object"]][["model"]],
-                 Scalar     = jaspResults[["mainContainer"]][["scalarInvarianceModelState"]][["object"]][["model"]],
-                 Strict     = jaspResults[["mainContainer"]][["strictInvarianceModelState"]][["object"]][["model"]],
-                 Custom     = jaspResults[["mainContainer"]][["customInvarianceModelState"]][["object"]][["model"]])
+  models <- list(Configural = jaspResults[["mainContainer"]][["invarianceTestConfiguralModelState"]][["object"]][["model"]],
+                 Metric     = jaspResults[["mainContainer"]][["invarianceTestMetricModelState"]][["object"]][["model"]],
+                 Scalar     = jaspResults[["mainContainer"]][["invarianceTestScalarModelState"]][["object"]][["model"]],
+                 Strict     = jaspResults[["mainContainer"]][["invarianceTestStrictModelState"]][["object"]][["model"]],
+                 Custom     = jaspResults[["mainContainer"]][["invarianceTestCustomModelState"]][["object"]][["model"]])
   models <- models[sapply(models, function(x) !is.null(x))]
 
   if (length(models) == 0) {
@@ -1246,10 +1247,10 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
   container    <- createJaspContainer()
-  container$dependOn(optionsFromObject = jaspResults[["mainContainer"]][["checkFitPerGroupState"]],
+  container$dependOn(optionsFromObject = jaspResults[["mainContainer"]][["checkModelFitPerGroupState"]],
                      options = "addGroupVariableToData")
 
-  var <- jaspResults[["mainContainer"]][["checkFitPerGroupState"]][["object"]][["addedGroupVar"]]
+  var <- jaspResults[["mainContainer"]][["checkModelFitPerGroupState"]][["object"]][["addedGroupVar"]]
 
   colNameR <- gettext("addedGroupVariable")
   if (jaspBase:::columnExists(colNameR) && !jaspBase:::columnIsMine(colNameR)) {
@@ -1287,13 +1288,13 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   factorNamesVars <- factorNamesMeans <- names(factorList)
 
-  # if (type == "configuralInvariance") {
+  # if (type == "invarianceTestConfigural") {
   #   factorNamesVars <- factorNamesMeans <- NULL
-  # } else if (type == "metricInvariance") {
+  # } else if (type == "invarianceTestMetric") {
   #   factorNamesMeans <- NULL
-  # } else if (type == "scalarInvariance") {
+  # } else if (type == "invarianceTestScalar") {
   #   rmvLoadMod <- rmvIntMod <- TRUE
-  # } else if (type == "strictInvariance") {
+  # } else if (type == "invarianceTestStrict") {
   #   rmvLoadMod <-  rmvIntMod <- rmvResMod <- TRUE
   # }
 
@@ -2206,4 +2207,15 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   do.call(rbind, lapply(results, as.data.frame, stringsAsFactors = FALSE))
 }
 
+.ensureImxReportProgress <- function() {
+  # If imxReportProgress is not visible in the current environment,
+  # but exists in the OpenMx namespace, copy it out.
+  if (!exists("imxReportProgress", inherits = TRUE)) {
+    if ("OpenMx" %in% loadedNamespaces() &&
+        exists("imxReportProgress", where = asNamespace("OpenMx"), inherits = FALSE)) {
+      fn <- get("imxReportProgress", envir = asNamespace("OpenMx"), inherits = FALSE)
+      assign("imxReportProgress", fn, envir = .GlobalEnv)
+    }
+  }
+}
 

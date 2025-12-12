@@ -145,7 +145,7 @@ Form
 			title: qsTr("Assumption Check")
 			CheckBox
 			{
-				name: "checkFitPerGroup";
+				name: "checkModelFitPerGroup";
 				checked: false ;
 				label: qsTr("Check model fit per group");
 				id: fitPerGroup;
@@ -153,7 +153,7 @@ Form
 			}
 			IntegerField
 			{
-				name: "continuousVariableSplit";
+				name: "splitContinuousVariablesIntoGroups";
 				label: qsTr("Split continuous variables into groups:");
 				defaultValue: 2;
 				enabled: fitPerGroup.checked;
@@ -196,14 +196,14 @@ Form
 		{
 			columns: 1
 			title: qsTr("Invariance Tests")
-			CheckBox { name: "configuralInvariance" ; checked: false ; label: qsTr("Configural"); id: configuralInvariance }
-			CheckBox { name: "metricInvariance" ; checked: false ; label: qsTr("Metric"); id: metricInvariance }
-			CheckBox { name: "scalarInvariance" ; checked: false ; label: qsTr("Scalar"); id: scalarInvariance }
-			CheckBox { name: "strictInvariance" ; checked: false ; label: qsTr("Strict"); id: strictInvariance }
-			CheckBox { name: "customInvariance" ; checked: false;  label: qsTr("Custom"); id: customInvariance }
+			CheckBox { name: "invarianceTestConfigural" ; checked: false ; label: qsTr("Configural"); id: invarianceTestConfigural }
+			CheckBox { name: "invarianceTestMetric" ; checked: false ; label: qsTr("Metric"); id: invarianceTestMetric }
+			CheckBox { name: "invarianceTestScalar" ; checked: false ; label: qsTr("Scalar"); id: invarianceTestScalar }
+			CheckBox { name: "invarianceTestStrict" ; checked: false ; label: qsTr("Strict"); id: invarianceTestStrict }
+			CheckBox { name: "invarianceTestCustom" ; checked: false;  label: qsTr("Custom"); id: invarianceTestCustom }
 		}
 
-		property var firstLayerValues: [configuralInvariance, metricInvariance, scalarInvariance, strictInvariance, customInvariance].filter(x => x.checked).map(x => ({value: x.name, label: x.label}))
+		property var firstLayerValues: [invarianceTestConfigural, invarianceTestMetric, invarianceTestScalar, invarianceTestStrict, invarianceTestCustom].filter(x => x.checked).map(x => ({value: x.name, label: x.label}))
 
 		TabView
 		{
@@ -254,10 +254,10 @@ Form
 								name: "includeIndividualModeration";
 								id: includeIndividualModeration
 								checked: 
-								(modSecondLayer.moderationInvValue == "configuralInvariance" && modFourthLayer.moderationParamValue != "variances" && modFourthLayer.moderationParamValue != "means") ||
-									(modSecondLayer.moderationInvValue == "metricInvariance" && modFourthLayer.moderationParamValue != "loadings" && modFourthLayer.moderationParamValue != "means") ||
-										(modSecondLayer.moderationInvValue == "scalarInvariance" && (modFourthLayer.moderationParamValue != "loadings" && modFourthLayer.moderationParamValue != "intercepts")) ||
-											(modSecondLayer.moderationInvValue == "strictInvariance" && (modFourthLayer.moderationParamValue != "loadings" && modFourthLayer.moderationParamValue != "intercepts" && modFourthLayer.moderationParamValue != "residualVariances"));
+								(modSecondLayer.moderationInvValue == "invarianceTestConfigural" && modFourthLayer.moderationParamValue != "variances" && modFourthLayer.moderationParamValue != "means") ||
+									(modSecondLayer.moderationInvValue == "invarianceTestMetric" && modFourthLayer.moderationParamValue != "loadings" && modFourthLayer.moderationParamValue != "means") ||
+										(modSecondLayer.moderationInvValue == "invarianceTestScalar" && (modFourthLayer.moderationParamValue != "loadings" && modFourthLayer.moderationParamValue != "intercepts")) ||
+											(modSecondLayer.moderationInvValue == "invarianceTestStrict" && (modFourthLayer.moderationParamValue != "loadings" && modFourthLayer.moderationParamValue != "intercepts" && modFourthLayer.moderationParamValue != "residualVariances"));
 							}
 						}
 					}
@@ -265,6 +265,7 @@ Form
 			}
 		}
 	}
+
 
 	Section
 	{
@@ -275,18 +276,18 @@ Form
 			title: qsTr("Parameter Estimates")
 			DoubleField
 			{
-				name: "parameterAlphaLevel"
+				name: "parameterEstimatesAlphaLevel"
 				label: qsTr("Significance level")
 				negativeValues: false
 				decimals: 4
 				defaultValue: 0.05
 			}
-			CheckBox { name: "loadingEstimates"; label: qsTr("Loadings") }
-			CheckBox { name: "interceptEstimates"; label: qsTr("Intercepts") }
-			CheckBox { name: "residualVarianceEstimates"; label: qsTr("Residual variances") }
-			CheckBox { name: "factorVarianceEstimates"; label: qsTr("Factor variances") }
-			CheckBox { name: "factorMeanEstimates"; label: qsTr("Factor means") }
-			CheckBox { name: "factorCovarianceEstimates"; label: qsTr("Factor covariances") }
+			CheckBox { name: "parameterEstimatesLoadings"; label: qsTr("Loadings") }
+			CheckBox { name: "parameterEstimatesIntercepts"; label: qsTr("Intercepts") }
+			CheckBox { name: "parameterEstimatesResidualVariances"; label: qsTr("Residual variances") }
+			CheckBox { name: "parameterEstimatesFactorVariance"; label: qsTr("Factor variances") }
+			CheckBox { name: "parameterEstimatesFactorMeans"; label: qsTr("Factor means") }
+			CheckBox { name: "parameterEstimatesFactorCovariances"; label: qsTr("Factor covariances") }
 
 		}
 
