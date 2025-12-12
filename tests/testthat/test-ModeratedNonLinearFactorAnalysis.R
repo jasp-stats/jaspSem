@@ -6,16 +6,16 @@ options <- list(
   ## General switches
   ## ===============================
   addGroupVariableToData = FALSE,
-  checkFitPerGroup       = FALSE,
+  checkModelFitPerGroup       = FALSE,
   syncAnalysisBox        = TRUE,
 
-  configuralInvariance = FALSE,
-  metricInvariance     = FALSE,
-  scalarInvariance     = TRUE,
-  strictInvariance     = FALSE,
-  customInvariance     = FALSE,
+  invarianceTestConfigural = FALSE,
+  invarianceTestMetric     = FALSE,
+  invarianceTestScalar     = TRUE,
+  invarianceTestStrict     = FALSE,
+  invarianceTestCustom     = FALSE,
 
-  continuousVariableSplit = 2,
+  splitContinuousVariablesIntoGroups = 2,
 
   showSyntax = FALSE,
 
@@ -79,7 +79,7 @@ options <- list(
 
     list(
       keyLabel = "Scalar",
-      keyValue = "scalarInvariance",
+      keyValue = "invarianceTestScalar",
 
       moderationTypeList = list(
 
@@ -181,14 +181,14 @@ options <- list(
   ## ===============================
   ## Parameter output switches
   ## ===============================
-  loadingEstimates          = FALSE,
-  interceptEstimates        = TRUE,
-  residualVarianceEstimates = TRUE,
-  factorVarianceEstimates   = FALSE,
-  factorMeanEstimates       = FALSE,
-  factorCovarianceEstimates = FALSE,
+  parameterEstimatesLoadings          = FALSE,
+  parameterEstimatesIntercepts        = TRUE,
+  parameterEstimatesResidualVariances = TRUE,
+  parameterEstimatesFactorVariance   = FALSE,
+  parameterEstimatesFactorMeans       = FALSE,
+  parameterEstimatesFactorCovariances = FALSE,
 
-  parameterAlphaLevel = 0.05,
+  parameterEstimatesAlphaLevel = 0.05,
 
   ## ===============================
   ## Plot options
@@ -200,7 +200,7 @@ options <- list(
 
     list(
       keyLabel = "Scalar",
-      keyValue = "scalarInvariance",
+      keyValue = "invarianceTestScalar",
 
       plotTypeList = list(
 

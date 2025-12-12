@@ -874,38 +874,38 @@ checkCSemModel <- function(model, availableVars) {
   # fill Loadings table
 
   if (options[["group"]] == "") {
-    loadingEstimates <- try(.prepareEstimates(pe, estimateType = "Loading_estimates", options = options))
-    if (isTryError(loadingEstimates)) {
+    parameterEstimatesLoadings <- try(.prepareEstimates(pe, estimateType = "Loading_estimates", options = options))
+    if (isTryError(parameterEstimatesLoadings)) {
       pecont[["loading"]] <- NULL
     }
   } else {
-    loadingEstimates <- try(lapply(pe, .prepareEstimates, estimateType = "Loading_estimates", options = options))
-    if (isTryError(loadingEstimates)) {
+    parameterEstimatesLoadings <- try(lapply(pe, .prepareEstimates, estimateType = "Loading_estimates", options = options))
+    if (isTryError(parameterEstimatesLoadings)) {
       pecont[["loading"]] <- NULL
     } else {
-      for (i in names(loadingEstimates)) {
-        loadingEstimates[[i]][["group"]] <- rep(i, length(loadingEstimates[[i]][["rhs"]]))
+      for (i in names(parameterEstimatesLoadings)) {
+        parameterEstimatesLoadings[[i]][["group"]] <- rep(i, length(parameterEstimatesLoadings[[i]][["rhs"]]))
       }
-      loadingEstimates <- as.data.frame(Reduce(function(...) merge(..., all=T), loadingEstimates))
-      loadingEstimates <- loadingEstimates[order(loadingEstimates[["group"]], loadingEstimates[["lhs"]]),]
+      parameterEstimatesLoadings <- as.data.frame(Reduce(function(...) merge(..., all=T), parameterEstimatesLoadings))
+      parameterEstimatesLoadings <- parameterEstimatesLoadings[order(parameterEstimatesLoadings[["group"]], parameterEstimatesLoadings[["lhs"]]),]
     }
   }
 
-  if (!isTryError(loadingEstimates)) {
+  if (!isTryError(parameterEstimatesLoadings)) {
 
     if (options[["group"]] != "")
-      loadingTab[["group"]]    <- loadingEstimates[["group"]]
+      loadingTab[["group"]]    <- parameterEstimatesLoadings[["group"]]
 
-    loadingTab[["rhs"]]      <- loadingEstimates[["rhs"]]
-    loadingTab[["lhs"]]      <- loadingEstimates[["lhs"]]
-    loadingTab[["est"]]      <- loadingEstimates[["est"]]
+    loadingTab[["rhs"]]      <- parameterEstimatesLoadings[["rhs"]]
+    loadingTab[["lhs"]]      <- parameterEstimatesLoadings[["lhs"]]
+    loadingTab[["est"]]      <- parameterEstimatesLoadings[["est"]]
 
     if (options[["errorCalculationMethod"]] != "none") {
-      loadingTab[["se"]]       <- loadingEstimates[["se"]]
-      loadingTab[["z"]]        <- loadingEstimates[["zVal"]]
-      loadingTab[["pvalue"]]   <- loadingEstimates[["pVal"]]
-      loadingTab[["ci.lower"]] <- loadingEstimates[["ciLower"]]
-      loadingTab[["ci.upper"]] <- loadingEstimates[["ciUpper"]]
+      loadingTab[["se"]]       <- parameterEstimatesLoadings[["se"]]
+      loadingTab[["z"]]        <- parameterEstimatesLoadings[["zVal"]]
+      loadingTab[["pvalue"]]   <- parameterEstimatesLoadings[["pVal"]]
+      loadingTab[["ci.lower"]] <- parameterEstimatesLoadings[["ciLower"]]
+      loadingTab[["ci.upper"]] <- parameterEstimatesLoadings[["ciUpper"]]
     }
   }
 
