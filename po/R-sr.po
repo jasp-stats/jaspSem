@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.19.2\n"
 "POT-Creation-Date: 2025-08-16 03:07\n"
-"PO-Revision-Date: 2025-12-05 21:00+0000\n"
+"PO-Revision-Date: 2025-12-08 20:00+0000\n"
 "Last-Translator: Marko Bojović <bojovicmarko@outlook.com>\n"
 "Language-Team: Serbian <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "sr/>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Generator: Weblate 5.15-dev\n"
 
 msgid "Fit indices"
-msgstr "Индекси усклађености"
+msgstr "Индекси прилагођености"
 
 msgid "Index"
 msgstr "Индекс"
@@ -78,7 +78,7 @@ msgid "Expected cross validation index (ECVI)"
 msgstr "Очекивани индекс унакрсне валидације (ECVI)"
 
 msgid "Log-likelihood"
-msgstr "Лог-вероватноћа"
+msgstr "Log-веродостојност"
 
 msgid "Number of free parameters"
 msgstr "Број слободних параметара"
@@ -87,18 +87,20 @@ msgid "Akaike (AIC)"
 msgstr "Акаикеов информациони критеријум (AIC)"
 
 msgid "Bayesian (BIC)"
-msgstr "Бајесов информациони критеријум (BIC)"
+msgstr "Бејзов информациони критеријум (BIC)"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr "Бајесов информациони критеријум прилагођен величини узорка (SSABIC)"
+msgstr "Бејзов информациони критеријум прилагођен величини узорка (SSABIC)"
 
 msgid "# Factors"
-msgstr ""
+msgstr "# Фактори"
 
 msgid ""
 "Robust standard errors are not available for variance-covariance matrix "
 "input."
 msgstr ""
+"Робусне стандардне грешке нису доступне за унос матрице варијансе-"
+"коваријансе."
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "Модел није могао бити процењен због неконвергенције."
@@ -110,13 +112,13 @@ msgid "Chi-square test"
 msgstr "χ² (хи-квадрат) тест"
 
 msgid "Baseline model"
-msgstr ""
+msgstr "Основни модел"
 
 msgid "Growth curve model"
 msgstr ""
 
 msgid "The model is not admissible: %s"
-msgstr ""
+msgstr "Модел није прихватљив: %s"
 
 msgid "Warning."
 msgstr ""
@@ -286,7 +288,7 @@ msgid "&#967;&sup2;"
 msgstr "&#967;&sup2;"
 
 msgid "Factor model"
-msgstr ""
+msgstr "Факторски модел"
 
 msgid "Predictor coefficients"
 msgstr ""
@@ -318,9 +320,8 @@ msgstr ""
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr ""
 
-#, fuzzy
 msgid "Model Fit"
-msgstr "Синтакса модела"
+msgstr "Прилагођеност модела"
 
 msgid "Group"
 msgstr "Група"
@@ -433,7 +434,7 @@ msgid "Prediction failed Message: %1$s"
 msgstr ""
 
 msgid "Additional Fit Measures"
-msgstr "Додатне мере приступа"
+msgstr "Додатне мере прилагођавања"
 
 msgid "Hoelter's critical N (CN)"
 msgstr ""
@@ -510,6 +511,8 @@ msgid ""
 "Not more cases than number of variables. Is your data a variance-covariance "
 "matrix?"
 msgstr ""
+"Нема више случајева него што је број варијабли. Да ли су ваши подаци матрица "
+"варијансе-коваријансе?"
 
 msgid ""
 "When mean structure is included, at least one of the checkboxes to fix the "
@@ -542,7 +545,7 @@ msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr ""
 
 msgid "Model fit"
-msgstr ""
+msgstr "Прилагођеност модела"
 
 msgid "AIC"
 msgstr "AIC"
