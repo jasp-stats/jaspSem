@@ -17,6 +17,7 @@
 
 ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
+
   OpenMx::mxSetDefaultOptions()
 
   nIndicators  <- length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE))
@@ -1079,12 +1080,17 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         }
 
       } else {
+
+        # something is going wrong here with the encoding and then matching
         subMap <- map[map$variable == currentRow$value, ]
       }
+
       currentMods <- sub("^data.", "", subMap$moderator)
       modsForPlots <- c(currentRow$plotModerator1, currentRow$plotModerator2)
       modsForPlots <- modsForPlots[modsForPlots != ""]
       modsForPlots <- gsub(":", "_x_", modsForPlots) # for interactions
+
+
 
       # so if there are square or cubic effects the data has those variables attached but in decoded format
       # modsForPlots has them in encoded format.
@@ -1104,6 +1110,17 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           baseMod <- sub("_cubic$", "", cubicMod)
           decMod <- jaspBase::decodeColNames(baseMod)
           modsForPlots[modsForPlots == cubicMod] <- paste0(decMod, "_cubic")
+        }
+      }
+
+      # if there is an interaction in the modsForPlots the name is encoded, but it is decoded in the data
+      # grep "_x_" in mods for plots, then decode each part and reassemble
+      if (any(grepl("_x_", modsForPlots))) {
+        interMods <- modsForPlots[grepl("_x_", modsForPlots)]
+        for (interMod in interMods) {
+          parts <- unlist(strsplit(interMod, "_x_"))
+          decParts <- sapply(parts, jaspBase::decodeColNames)
+          modsForPlots[modsForPlots == interMod] <- paste0(decParts, collapse = "_x_")
         }
       }
 
@@ -1139,7 +1156,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
             ggplot2::ylab(gettext("Parameter Value")) +
             jaspGraphs::themeJaspRaw() +
             jaspGraphs::geom_rangeframe(size = 1.1) +
-            ggplot2::geom_line()
+            ggplot2::geom_line() +
             ggplot2::labs(x = gsub("_x_", ":", modsForPlots))
         } else { # nominal moderator
           gg <- ggplot2::ggplot(data = dtSub,

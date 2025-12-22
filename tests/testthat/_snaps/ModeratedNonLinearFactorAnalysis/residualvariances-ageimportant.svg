@@ -57,6 +57,6 @@
 <text x='681.85' y='537.32' text-anchor='middle' style='font-size: 17.00px; font-family: sans;' textLength='9.46px' lengthAdjust='spacingAndGlyphs'>2</text>
 <text x='399.37' y='567.49' text-anchor='middle' style='font-size: 17.00px; font-family: sans;' textLength='71.83px' lengthAdjust='spacingAndGlyphs'>Age:Male</text>
 <text transform='translate(16.68,265.42) rotate(-90)' text-anchor='middle' style='font-size: 17.00px; font-family: sans;' textLength='127.58px' lengthAdjust='spacingAndGlyphs'>Parameter Value</text>
-<text x='399.37' y='11.70' text-anchor='middle' style='font-size: 17.00px; font-family: sans;' textLength='114.34px' lengthAdjust='spacingAndGlyphs'>means-factor-1</text>
+<text x='399.37' y='11.70' text-anchor='middle' style='font-size: 17.00px; font-family: sans;' textLength='237.21px' lengthAdjust='spacingAndGlyphs'>residualvariances-ageimportant</text>
 </g>
 </svg>
