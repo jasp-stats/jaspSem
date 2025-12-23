@@ -17,8 +17,6 @@
 
 ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
-  sink(file="~/Downloads/log.txt")
-  on.exit(sink(NULL))
   OpenMx::mxSetDefaultOptions()
 
   nIndicators  <- length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE))
@@ -571,7 +569,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         SABIC = NA
       )
     } else {
-      summ <- summary(results[[i]])
+      summ <- .mxSummaryFixed(results[[i]])
       ics  <- summ$informationCriteria
       dtFill <- data.frame(
         type  = names(results)[i],
@@ -591,7 +589,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     nParams <- rep(NA_real_, length(results))
     for (i in seq_along(results)) {
       if (!isTryError(results[[i]])) {
-        nParams[i] <- summary(results[[i]])$estimatedParameters
+        nParams[i] <- .mxSummaryFixed(results[[i]])$estimatedParameters
       }
     }
 
@@ -627,7 +625,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
       } else {
 
-        summ <- summary(fit)
+        summ <- .mxSummaryFixed(fit)
         ics  <- summ$informationCriteria
 
         dtAdd <- data.frame(
@@ -718,7 +716,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       errorContainer$setError(gettextf("The %s model could not be fitted", tolower(names(results)[i])))
       globalParameterContainer[[names(results)[i]]] <- errorContainer
     } else {
-      fitSummary <- summary(results[[i]])
+      fitSummary <- .mxSummaryFixed(results[[i]])
       paramTable <- fitSummary$parameters
       globalParameterContainer[[names(results)[i]]] <- .mnlfaParameterTableHelper(paramTable = paramTable,
                                                                                   nm = names(results)[i],
@@ -745,7 +743,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     # Loadings
     loadPosition <- grepl("^load_", parNames)
     # special case cause when there is no moderation for loadings they are estimated but named weirdly
-    loadPositionNoMod <- grepl("→", parNames)
+    loadPositionNoMod <- grepl("->", parNames, fixed = TRUE)
     allLoads <- loadPosition | loadPositionNoMod
     if (sum(loadPosition) + sum(loadPositionNoMod) > 0) { # are loadings even there
       loadTable <- createJaspTable(gettext("Loadings"))
@@ -772,7 +770,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       subMat <- paramTable[allLoads, ]
       ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$parameterEstimatesAlphaLevel)
       # match loadMap rows to subMat rows
-      idx <- match(loadMap$loadingCoefficient, subMat$name)
+      idx <- match(.arrow(loadMap$loadingCoefficient), .arrow(subMat$name))
 
       df <- data.frame(
         factor    = loadMap$factor,
@@ -812,7 +810,10 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       subMat <- paramTable[intPosition, ]
 
       # Match each mapping row to the correct row in subMat
-      idx <- match(intMap$interceptCoefficient, subMat$name)
+      idx <- match(
+        .arrow(intMap$interceptCoefficient),
+        .arrow(subMat$name)
+      )
 
       # Reorder estimates/SEs according to intMap
       est <- subMat$Estimate[idx]
@@ -858,7 +859,10 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       subMat <- paramTable[resPosition, ]
 
       # Match map rows to the correct rows in subMat
-      idx <- match(resMap$residualCoefficient, subMat$name)
+      idx <- match(
+        .arrow(resMap$residualCoefficient),
+        .arrow(subMat$name)
+      )
 
       # log-scale estimates and SE (as they come from lavaan)
       est_log <- subMat$Estimate[idx]
@@ -905,7 +909,10 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       }
 
       subMat <- paramTable[fvPosition, ]
-      idx <- match(fvMap$varianceCoefficient, subMat$name)
+      idx <- match(
+        .arrow(fvMap$varianceCoefficient),
+        .arrow(subMat$name)
+      )
       est_log <- subMat$Estimate[idx]
       se_log  <- subMat$Std.Error[idx]
 
@@ -950,7 +957,10 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
       subMat <- paramTable[fmPosition, ]
 
-      idx <- match(fmMap$meanCoefficient, subMat$name)
+      idx <- match(
+        .arrow(fmMap$meanCoefficient),
+        .arrow(subMat$name)
+      )
 
       est <- subMat$Estimate[idx]
       se  <- subMat$Std.Error[idx]
@@ -1047,7 +1057,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       x
     })
 
-    paramTable <- summary(fit)$parameters
+    paramTable <- .mxSummaryFixed(fit)$parameters
     parameterGroup <- currentRow$parameterGroup
     # map type to corresponding prefix
     prefix <- switch(parameterGroup,
@@ -1091,8 +1101,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       modsForPlots <- modsForPlots[modsForPlots != ""]
       modsForPlots <- gsub(":", "_x_", modsForPlots) # for interactions
 
-      print(str(dataset))
-      print(modsForPlots)
       # so if there are square or cubic effects the data has those variables attached but in decoded format
       # modsForPlots has them in encoded format.
       # check for _squared and _cubic suffix in modsForPlots
@@ -1113,7 +1121,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           modsForPlots[modsForPlots == cubicMod] <- paste0(decMod, "_cubic")
         }
       }
-      print(modsForPlots)
 
       # if there is an interaction in the modsForPlots the name is encoded, but it is decoded in the data
       # grep "_x_" in mods for plots, then decode each part and reassemble
@@ -1126,12 +1133,27 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         }
       }
 
-      matchIndices <- match(modsForPlots, currentMods)
+      matchIndices <- match(
+        .arrow(modsForPlots),
+        .arrow(currentMods)
+      )
       matchIndices <- matchIndices[!is.na(matchIndices)]
       coefficientColumnIndex <- grep("Coefficient", colnames(subMap))
 
-      modEstimates <- c(subMat$Estimate[match(subMap[subMap$moderator == "Baseline", coefficientColumnIndex], subMat$name)], # Baseline
-                        subMat$Estimate[match(subMap[matchIndices, coefficientColumnIndex], subMat$name)]) # the other estimates
+      modEstimates <- c(
+        subMat$Estimate[
+          match(
+            .arrow(subMap[subMap$moderator == "Baseline", coefficientColumnIndex]),
+            .arrow(subMat$name)
+          )
+        ],
+        subMat$Estimate[
+          match(
+            .arrow(subMap[matchIndices, coefficientColumnIndex]),
+            .arrow(subMat$name)
+          )
+        ]
+      )
 
       dtSub <- dataset[, modsForPlots, drop = FALSE]
       baselineTerm <- sum(modEstimates[subMap$moderator == "Baseline"])
@@ -1415,7 +1437,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         }
 
         # This MUST match what JASP/lavaan puts in subMat$name
-        baselineName <- paste0(factorName, "\u2192", var)  # "Factor1→JaspColumn_3_Encoded"
+        baselineName <- paste0(factorName, "->", var)
 
         loadingsList[[rowIndex]] <- list(
           factor = factorName,
@@ -2236,5 +2258,28 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       assign("imxReportProgress", fn, envir = .GlobalEnv)
     }
   }
+}
+
+.arrow <- function(x) {
+  x <- as.character(x)
+  x <- gsub("â†’", "->", x, fixed = TRUE)
+  x <- gsub("\u2192", "->", x, fixed = TRUE)
+  x
+}
+
+.mxSummaryFixed <- function(model, ...) {
+  summ <- summary(model, ...)
+
+  # Fix the parameter table names that your code matches on
+  if (!is.null(summ$parameters) && "name" %in% colnames(summ$parameters)) {
+    summ$parameters[, "name"] <- .arrow(summ$parameters[, "name"])
+  }
+
+  # (Optional) Fix rownames in any matrix-like outputs you later match by name
+  if (!is.null(summ$SE) && !is.null(rownames(summ$SE))) {
+    rownames(summ$SE) <- .arrow(rownames(summ$SE))
+  }
+
+  summ
 }
 
