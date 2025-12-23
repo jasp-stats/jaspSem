@@ -89,6 +89,7 @@ Form
 					{
 						name: "moderatorSquaredEffect"
 						id: squared
+						visible: moderators.getVariableType(rowValue) === columnTypeScale
 						onCheckedChanged:
 						{
 							if (checked)
@@ -109,6 +110,7 @@ Form
 					{
 						name: "moderatorCubicEffect"
 						id: cubic
+						visible: moderators.getVariableType(rowValue) === columnTypeScale
 						onCheckedChanged:
 						{
 							if (checked)
