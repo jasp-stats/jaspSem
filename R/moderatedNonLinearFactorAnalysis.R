@@ -17,7 +17,8 @@
 
 ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
-
+  sink(file="~/Downloads/log.txt")
+  on.exit(sink(NULL))
   OpenMx::mxSetDefaultOptions()
 
   nIndicators  <- length(unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE))
@@ -1090,8 +1091,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       modsForPlots <- modsForPlots[modsForPlots != ""]
       modsForPlots <- gsub(":", "_x_", modsForPlots) # for interactions
 
-
-
+      print(str(dataset))
+      print(modsForPlots)
       # so if there are square or cubic effects the data has those variables attached but in decoded format
       # modsForPlots has them in encoded format.
       # check for _squared and _cubic suffix in modsForPlots
@@ -1112,6 +1113,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           modsForPlots[modsForPlots == cubicMod] <- paste0(decMod, "_cubic")
         }
       }
+      print(modsForPlots)
 
       # if there is an interaction in the modsForPlots the name is encoded, but it is decoded in the data
       # grep "_x_" in mods for plots, then decode each part and reassemble
