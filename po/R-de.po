@@ -3,16 +3,16 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2025-08-16 03:07\n"
-"PO-Revision-Date: 2025-10-20 04:50+0000\n"
+"PO-Revision-Date: 2025-12-23 10:37+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
-"Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
-">\n"
+"Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
+"de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 5.14-dev\n"
+"X-Generator: Weblate 5.15.1\n"
 
 msgid "Fit indices"
 msgstr "Anpassungsindikatoren"
@@ -93,7 +93,7 @@ msgid "Sample-size adjusted Bayesian (SSABIC)"
 msgstr "Sample-size adjusted Bayesian (SSABIC)"
 
 msgid "# Factors"
-msgstr ""
+msgstr "# Faktoren"
 
 msgid ""
 "Robust standard errors are not available for variance-covariance matrix "
@@ -325,15 +325,16 @@ msgstr "Modelldiagramm nicht verfügbar mit Ordinalvariablen"
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "Gruppierungsvariable hat weniger als 3 Beobachtungen in Gruppe %s"
 
-#, fuzzy
 msgid "Enter a model"
-msgstr "Lineares Modell"
+msgstr "Ein Modell eingeben"
 
 msgid "Variable(s) in model syntax not recognized: %s"
-msgstr ""
+msgstr "Variable(n) nicht in Modellsyntax erkannt: %s"
 
 msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
 msgstr ""
+"Die Verwendung von '~~' wird nicht für zusammengesetzte Kovarianzen "
+"unterstützt. Versuchen Sie stattdessen '~'"
 
 msgid "Estimation failed Message: %s"
 msgstr "Meldung zu fehlgeschlagener Schätzung: %s"
@@ -341,7 +342,6 @@ msgstr "Meldung zu fehlgeschlagener Schätzung: %s"
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr "Schätzung fehlgeschlagen! Meldung: Modell %s ist nicht konvergiert!"
 
-#, fuzzy
 msgid "Model Fit"
 msgstr "Modell-Anpassung"
 
@@ -349,27 +349,29 @@ msgid "Group"
 msgstr "Gruppe"
 
 msgid "Distance Measure"
-msgstr ""
+msgstr "Distanzmaß"
 
 msgid "Test Statistic"
-msgstr ""
+msgstr "Teststatistik"
 
 msgid "Critical Value (%s%% Quantile)"
-msgstr ""
+msgstr "Kritischer Wert (%s%% Quantil)"
 
-#, fuzzy
 msgid "Model selection criteria could not be computed: %s"
-msgstr ""
-"Die standardisierte Residuen-Kovarianzmatrix konnte nicht berechnet werden"
+msgstr "Modellauswahlkriterien konnten nicht berechnet werden: %s"
 
 msgid "Model selection criteria could not be computed for group %1$s: %2$s"
 msgstr ""
+"Modellauswahlkriterien konnten für Gruppe %1$s nicht berechnet werden: %2$s"
 
 msgid "At least one result is inadmissible."
-msgstr ""
+msgstr "Mindestens ein Ergebnis ist unzulässig."
 
+#, fuzzy
 msgid "Denotes the fit of the model including a saturated structural model."
 msgstr ""
+"Bezeichnet die Anpassung des Modells einschließlich eines gesättigten "
+"Strukturmodells."
 
 msgid "Parameter Estimates"
 msgstr "Parameterschätzungen"
@@ -392,20 +394,18 @@ msgstr "Regressionskoeffizienten"
 msgid "Outcome"
 msgstr "Ergebnis"
 
-#, fuzzy
 msgid "Total Effects"
 msgstr "Gesamte Effekte"
 
 #, fuzzy
 msgid "Residual Correlations"
-msgstr "Residualkovarianzen"
+msgstr "Residuale Korrelationen"
 
-#, fuzzy
 msgid "VIF"
 msgstr "VIF"
 
 msgid "VIF could not be computed."
-msgstr ""
+msgstr "VIF konnte nicht berechnet werden."
 
 msgid "Endogenous Indicator Prediction"
 msgstr "Endogene Indikatorvorhersage"
@@ -416,9 +416,8 @@ msgstr "Vorhersage-Metriken"
 msgid "Target MAE"
 msgstr "Ziel MAE"
 
-#, fuzzy
 msgid "LM MAE"
-msgstr "PLS-PM MAE"
+msgstr "LM MAE"
 
 msgid "GSCA MAE"
 msgstr "GSCA MAE"
@@ -432,9 +431,8 @@ msgstr "MAXVAR MAE"
 msgid "Target RMSE"
 msgstr "Ziel RMSE"
 
-#, fuzzy
 msgid "LM RMSE"
-msgstr "PLS-PM RMSE"
+msgstr "LM RMSE"
 
 msgid "GSCA RMSE"
 msgstr "GSCA RMSE"
@@ -445,7 +443,6 @@ msgstr "PCA RMSE"
 msgid "MAXVAR RMSE"
 msgstr "MAXVAR RMSE"
 
-#, fuzzy
 msgid "Target Q2 Prediction"
 msgstr "Ziel-Q2-Vorhersage"
 
@@ -480,15 +477,14 @@ msgstr "Geodätische Distanz"
 msgid "Squared Euclidean distance"
 msgstr "Quadrierte Euklidische Distanz"
 
-#, fuzzy
 msgid "Maximum likelihood-based distance"
 msgstr "Maximum-Likelihood-basierte Distanz"
 
 msgid "Model assessment could not be computed: %s"
-msgstr ""
+msgstr "Modellbeurteilung konnte nicht berechnet werden: %s"
 
 msgid "Model assessment could not be computed for group %1$s: %2$s"
-msgstr ""
+msgstr "Modellbeurteilung konnte für Gruppe %1$s nicht berechnet werden: %2$s"
 
 msgid "Reliability Measures"
 msgstr "Reliabilitätsmaße"
@@ -517,17 +513,14 @@ msgstr "Beobachtete Konstrukt-Korrelationsmatrix"
 msgid "Implied construct correlation matrix"
 msgstr "Implizierte Konstrukt-Korrelationsmatrix"
 
-#, fuzzy
 msgid "Implied indicator correlations could not be computed: %s"
-msgstr "Implizierte Indikator-Korrelationsmatrix"
+msgstr "Implizierte Indikator-Korrelationen konnten nicht berechnet werden: %s"
 
-#, fuzzy
 msgid "Implied construct correlations could not be computed: %s"
-msgstr "Implizierte Konstrukt-Korrelationsmatrix"
+msgstr "Implizierte Konstrukt-Korrelationen konnten nicht berechnet werden: %s"
 
-#, fuzzy
 msgid "Column name %s already exists in the dataset"
-msgstr "Spalte '%s' Name existiert bereits in dem Datensatz"
+msgstr "Spaltenname %s existiert bereits in dem Datensatz"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
@@ -551,7 +544,6 @@ msgstr ""
 "Nicht mehr Fälle als die Anzahl der Variablen. Sind Ihre Daten eine Varianz-"
 "Kovarianz-Matrix?"
 
-#, fuzzy
 msgid ""
 "When mean structure is included, at least one of the checkboxes to fix the "
 "intercepts to zero has to be checked"
@@ -631,7 +623,6 @@ msgstr "Insgesamt wurden %g Fälle wegen fehlender Werte entfernt."
 msgid "Model test is %s."
 msgstr "Modell-Test ist %s."
 
-#, fuzzy
 msgid "Information matrix is %s."
 msgstr "Informationsmatrix ist %s."
 
@@ -696,7 +687,6 @@ msgstr "Name"
 msgid "Total effects"
 msgstr "Gesamte Effekte"
 
-#, fuzzy
 msgid "%s Fit indices are based on the scaled test statistic."
 msgstr "%s Anpassungsindikatoren basieren auf der skalierten Teststatistik."
 
@@ -713,13 +703,11 @@ msgstr ""
 msgid "CFI"
 msgstr ""
 
-#, fuzzy
 msgid "RMSEA"
 msgstr "RMSEA"
 
-#, fuzzy
 msgid "T-size statistics are computed for <i>%s = 0.05</i>."
-msgstr "T-Größe-Statistiken werden für <i>%s = 0,05</i> berechnet."
+msgstr "T-Größe-Statistiken sind berechnet für <i>%s = 0,05</i>."
 
 msgid "Average variance extracted"
 msgstr "Durchschnittliche extrahierte Varianz"
@@ -736,11 +724,9 @@ msgstr "Koeffizient α"
 msgid "Coefficient ω"
 msgstr "Koeffizient ω"
 
-#, fuzzy
 msgid "Heterotrait-Monotrait Ratio"
 msgstr "Heterotrait-Monotrait-Verhältnis"
 
-#, fuzzy
 msgid "Heterotrait-monotrait ratio"
 msgstr "Heterotrait-Monotrait-Verhältnis"
 
@@ -908,12 +894,11 @@ msgstr "skaliert und verschoben"
 msgid "bootstrap (Bollen-Stine)"
 msgstr "Bootstrap (Bollen-Stine)"
 
-#, fuzzy
 msgid "Browne residual based (ADF)"
-msgstr "basiert auf Browne Residuen (ADF)"
+msgstr "Browne-Residuen-basiert (ADF)"
 
 msgid "Browne residual based (NT)"
-msgstr ""
+msgstr "Browne-Residuen-basiert (NT)"
 
 msgid "robust"
 msgstr "robust"
@@ -921,7 +906,6 @@ msgstr "robust"
 msgid "robust Huber-White"
 msgstr "Robust Huber-White"
 
-#, fuzzy
 msgid "first-order"
 msgstr "erster Ordnung"
 
