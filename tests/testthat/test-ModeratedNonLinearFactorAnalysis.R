@@ -404,7 +404,7 @@ test_that("Residual Variances table results match", {
 })
 
 test_that("means: Factor 1 plot matches", {
-  plotName <- results[["results"]][["plotContainer"]][["collection"]][["plotContainer_plot1"]][["data"]]
+  plotName <- results[["results"]][["plotContainer"]][["collection"]][["plotContainer_plot2"]][["data"]]
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
   if (isMacOS) {
     jaspTools::expect_equal_plots(testPlot, "means-factor-1")
@@ -414,7 +414,7 @@ test_that("means: Factor 1 plot matches", {
 })
 
 test_that("residualVariances: AgeImportant plot matches", {
-  plotName <- results[["results"]][["plotContainer"]][["collection"]][["plotContainer_plot1"]][["data"]]
+  plotName <- results[["results"]][["plotContainer"]][["collection"]][["plotContainer_plot2"]][["data"]]
   testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
   if (isMacOS) {
     jaspTools::expect_equal_plots(testPlot, "residualvariances-ageimportant")
