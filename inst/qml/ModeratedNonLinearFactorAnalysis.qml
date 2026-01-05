@@ -90,42 +90,12 @@ Form
 						name: "moderatorSquaredEffect"
 						id: squared
 						visible: moderators.getVariableType(rowValue) === columnTypeScale
-						onCheckedChanged:
-						{
-							if (checked)
-							{
-								var newValues1 = [rowValue  + qsTr("_squared")]
-								for (var i = 0; i < plots.names.length; i++)
-										newValues1.push(plots.names[i])
-								plots.names = newValues1
-							}
-							else
-							{
-								var newValues1 = plots.names.filter(value => value !== (rowValue + qsTr("_squared")))
-								plots.names = newValues1
-							}
-						}
 					}
 					CheckBox
 					{
 						name: "moderatorCubicEffect"
 						id: cubic
 						visible: moderators.getVariableType(rowValue) === columnTypeScale
-						onCheckedChanged:
-						{
-							if (checked)
-							{
-								var newValues2 = [rowValue  + qsTr("_cubic")]
-								for (var i = 0; i < plots.names.length; i++)
-										newValues2.push(plots.names[i])
-								plots.names = newValues2
-							}
-							else
-							{
-								var newValues2 = plots.names.filter(value => value !== (rowValue + qsTr("_cubic")))
-								plots.names = newValues2
-							}
-						}
 					}
 				}
 			}
@@ -303,8 +273,6 @@ Form
 		title: qsTr("Plots")
 		id: plots
 
-		property var names: []
-		// property var variablesIncluded:
 		TabView
 		{
 
@@ -349,10 +317,9 @@ Form
 							{
 								name: "plotModerator1"
 								id: plotMod1
-								// source: [moderators]
-								source: [moderators, {values: plots.names}, {name: "moderatorInteractionTerms", condition: "moderatorInteractionTermsInclude"}]
-								// source: [moderators, {name: "moderatorInteractions", condition: "includeInteraction"}]
-
+								// Squared/cubic effects are automatically included in marginal effect plots,
+								// so we only show base moderators and interaction terms
+								source: [moderators, {name: "moderatorInteractionTerms", condition: "moderatorInteractionTermsInclude"}]
 
 								addEmptyValue: true
 							}
