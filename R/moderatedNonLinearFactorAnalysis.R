@@ -1028,6 +1028,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   mods <- unlist(lapply(options[["moderators"]], `[[`, "variable"), use.names = FALSE)
   mods.types <- options[["moderators.types"]]
+  # Decode mods for comparison with decoded variable names
+  modsDecoded <- jaspBase::decodeColNames(mods)
 
   plotModelList <- options[["plotModelList"]]
   # only keep the elements where includePlot is true
@@ -1054,6 +1056,16 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     # therefor not encoded so we decode the ones in the mapping:
     mapResult <- lapply(mapResult, function(x) {
       x[["variable"]] <- jaspBase::decodeColNames(x[["variable"]])
+      # Also decode moderator names (strip "data." prefix first, then decode)
+      if ("moderator" %in% colnames(x)) {
+        modNames <- sub("^data\\.", "", x[["moderator"]])
+        # Decode moderator names that are not "Baseline"
+        x[["moderator"]] <- ifelse(
+          modNames == "Baseline",
+          "Baseline",
+          jaspBase::decodeColNames(modNames)
+        )
+      }
       x
     })
 
@@ -1096,42 +1108,64 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         subMap <- map[map$variable == currentRow$value, ]
       }
 
-      currentMods <- sub("^data.", "", subMap$moderator)
+      # Moderators are now already decoded in mapResult (including stripping "data." prefix)
+      currentMods <- subMap$moderator
       modsForPlots <- c(currentRow$plotModerator1, currentRow$plotModerator2)
       modsForPlots <- modsForPlots[modsForPlots != ""]
       modsForPlots <- gsub(":", "_x_", modsForPlots) # for interactions
-
-      # so if there are square or cubic effects the data has those variables attached but in decoded format
-      # modsForPlots has them in encoded format.
-      # check for _squared and _cubic suffix in modsForPlots
-      if (any(grepl("_squared$", modsForPlots))) {
-        sqrMods <- modsForPlots[grepl("_squared$", modsForPlots)]
-        for (sqrMod in sqrMods) {
-          baseMod <- sub("_squared$", "", sqrMod)
-          decMod <- jaspBase::decodeColNames(baseMod)
-          modsForPlots[modsForPlots == sqrMod] <- paste0(decMod, "_squared")
-        }
-      }
-      # same for cubic
-      if (any(grepl("_cubic$", modsForPlots))) {
-        cubicMods <- modsForPlots[grepl("_cubic$", modsForPlots)]
-        for (cubicMod in cubicMods) {
-          baseMod <- sub("_cubic$", "", cubicMod)
-          decMod <- jaspBase::decodeColNames(baseMod)
-          modsForPlots[modsForPlots == cubicMod] <- paste0(decMod, "_cubic")
-        }
-      }
-
-      # if there is an interaction in the modsForPlots the name is encoded, but it is decoded in the data
-      # grep "_x_" in mods for plots, then decode each part and reassemble
-      if (any(grepl("_x_", modsForPlots))) {
-        interMods <- modsForPlots[grepl("_x_", modsForPlots)]
-        for (interMod in interMods) {
-          parts <- unlist(strsplit(interMod, "_x_"))
+      
+      # Decode modsForPlots early - dataset columns are encoded, but we need consistent naming
+      # Note: base columns in dataset are encoded, derived columns (_squared, _cubic) are decoded
+      modsForPlotsDecoded <- sapply(modsForPlots, function(mod) {
+        if (grepl("_x_", mod)) {
+          parts <- unlist(strsplit(mod, "_x_"))
           decParts <- sapply(parts, jaspBase::decodeColNames)
-          modsForPlots[modsForPlots == interMod] <- paste0(decParts, collapse = "_x_")
+          paste0(decParts, collapse = "_x_")
+        } else {
+          jaspBase::decodeColNames(mod)
+        }
+      }, USE.NAMES = FALSE)
+
+      # Track original base moderators for marginal effects plotting (before adding _squared/_cubic suffixes)
+      # When a base moderator is selected (e.g., "age"), we want to show the marginal effect:
+      # baseline + β₁*age + β₂*age² + β₃*age³
+      baseModeratorsForXAxis <- modsForPlotsDecoded  # These are the decoded base moderators for x-axis
+
+      # For each moderator that is NOT already _squared or _cubic, check if _squared/_cubic versions exist
+      # and add them to modsForPlots to compute the marginal effect
+      modsToAdd <- character(0)
+      for (mod in modsForPlotsDecoded) {
+        if (!grepl("_squared$|_cubic$", mod)) {
+          # Check if squared version exists in the model's moderators
+          squaredName <- paste0(mod, "_squared")
+          if (squaredName %in% currentMods) {
+            modsToAdd <- c(modsToAdd, squaredName)
+          }
+          # Check if cubic version exists in the model's moderators
+          cubicName <- paste0(mod, "_cubic")
+          if (cubicName %in% currentMods) {
+            modsToAdd <- c(modsToAdd, cubicName)
+          }
         }
       }
+      
+      # Also check for interaction between the two base moderators if both are present
+      if (length(baseModeratorsForXAxis) == 2) {
+        decMod1 <- baseModeratorsForXAxis[1]
+        decMod2 <- baseModeratorsForXAxis[2]
+        # Check both orderings of the interaction term
+        interactionName1 <- paste0(decMod1, "_x_", decMod2)
+        interactionName2 <- paste0(decMod2, "_x_", decMod1)
+        if (interactionName1 %in% currentMods) {
+          modsToAdd <- c(modsToAdd, interactionName1)
+        } else if (interactionName2 %in% currentMods) {
+          modsToAdd <- c(modsToAdd, interactionName2)
+        }
+      }
+      
+      # Combine base moderators (decoded) with additional terms
+      # Note: modsForPlots and baseModeratorsForXAxis are now all decoded
+      modsForPlots <- c(modsForPlotsDecoded, modsToAdd)
 
       matchIndices <- match(
         .arrow(modsForPlots),
@@ -1155,15 +1189,39 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         ]
       )
 
-      dtSub <- dataset[, modsForPlots, drop = FALSE]
+      # Access dataset columns - base columns are ENCODED, derived columns (_squared, _cubic, _x_) are DECODED
+      # modsForPlots contains decoded names, so:
+      # - For base moderators: use mods/modsDecoded mapping to find encoded name in dataset
+      # - For derived columns: already match dataset column names
+      datasetCols <- colnames(dataset)
+      dtSub <- data.frame(matrix(nrow = nrow(dataset), ncol = 0))
+      for (modVar in modsForPlots) {
+        # Derived columns (_squared, _cubic, _x_) are stored decoded in dataset
+        if (modVar %in% datasetCols) {
+          dtSub[[modVar]] <- dataset[[modVar]]
+        } else {
+          # Base columns are stored encoded in dataset - use mods/modsDecoded mapping
+          modIdx <- match(modVar, modsDecoded)
+          if (!is.na(modIdx)) {
+            encodedVar <- mods[modIdx]
+            if (encodedVar %in% datasetCols) {
+              dtSub[[modVar]] <- dataset[[encodedVar]]
+            }
+          }
+        }
+      }
+      
       baselineTerm <- sum(modEstimates[subMap$moderator == "Baseline"])
       slopeTerms <- modEstimates[subMap$moderator != "Baseline"]
       slopeTerms <- slopeTerms[!is.na(slopeTerms)]
 
-      if (length(slopeTerms) == 1) {
-        slopeValues <- dtSub[, modsForPlots] * slopeTerms
+      # Calculate slope values using dtSub columns (in order of modsForPlots)
+      if (ncol(dtSub) == 0 || length(slopeTerms) == 0) {
+        slopeValues <- 0
+      } else if (length(slopeTerms) == 1) {
+        slopeValues <- dtSub[[1]] * slopeTerms
       } else {
-        slopeValues <- rowSums(sweep(dtSub, 2, slopeTerms, `*`))
+        slopeValues <- rowSums(sweep(as.matrix(dtSub), 2, slopeTerms, `*`))
       }
       # re-transform the log variances
       if (parameterGroup %in% c("residualVariances", "variances")) {
@@ -1172,70 +1230,136 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         dtSub[["estimatedValue"]] <- baselineTerm + slopeValues
       }
 
-      if (length(modsForPlots) == 1) { # only one moderator
-        if (mods.types[mods == modsForPlots] == "scale") {
+      # Helper function to get column from dataset (handles encoded/decoded names)
+      getDatasetCol <- function(dataset, colName, mods, modsDecoded) {
+        datasetCols <- colnames(dataset)
+        # Derived columns are decoded in dataset
+        if (colName %in% datasetCols) {
+          return(dataset[[colName]])
+        } else {
+          # Base columns are encoded - use mods/modsDecoded mapping
+          modIdx <- match(colName, modsDecoded)
+          if (!is.na(modIdx)) {
+            encodedName <- mods[modIdx]
+            if (encodedName %in% datasetCols) {
+              return(dataset[[encodedName]])
+            }
+          }
+        }
+        return(NULL)
+      }
+
+      # For plotting, use base moderators for x-axis (not squared/cubic versions)
+      # This shows the marginal effect across the original variable
+      nBaseModsForPlot <- length(baseModeratorsForXAxis)
+      
+      # Check if any squared/cubic terms were added for each base moderator
+      # to determine if we should label the axis as "total" effect
+      getAxisLabel <- function(baseMod, modsToAdd) {
+        hasSquared <- any(grepl(paste0("^", baseMod, "_squared$"), modsToAdd))
+        hasCubic <- any(grepl(paste0("^", baseMod, "_cubic$"), modsToAdd))
+        baseLabel <- gsub("_x_", ":", baseMod)
+        if (hasSquared || hasCubic) {
+          return(paste0(baseLabel, " (", gettext("total"), ")"))
+        }
+        return(baseLabel)
+      }
+
+      if (nBaseModsForPlot == 1) { # only one base moderator (though may have squared/cubic terms)
+        baseMod <- baseModeratorsForXAxis[1]
+        # For plotting, we need to add the base variable to dtSub if not present
+        if (!baseMod %in% colnames(dtSub)) {
+          baseModData <- getDatasetCol(dataset, baseMod, mods, modsDecoded)
+          if (!is.null(baseModData)) {
+            dtSub[[baseMod]] <- baseModData
+          }
+        }
+        baseModType <- mods.types[modsDecoded == baseMod]
+        if (length(baseModType) == 0) baseModType <- "scale" # default if not found
+        xAxisLabel <- getAxisLabel(baseMod, modsToAdd)
+        if (baseModType == "scale") {
           gg <- ggplot2::ggplot(data = dtSub,
-                                ggplot2::aes(x = .data[[modsForPlots]],
+                                ggplot2::aes(x = .data[[baseMod]],
                                              y = estimatedValue)) +
             ggplot2::ylab(gettext("Parameter Value")) +
             jaspGraphs::themeJaspRaw() +
             jaspGraphs::geom_rangeframe(size = 1.1) +
             ggplot2::geom_line() +
-            ggplot2::labs(x = gsub("_x_", ":", modsForPlots))
+            ggplot2::labs(x = xAxisLabel)
         } else { # nominal moderator
           gg <- ggplot2::ggplot(data = dtSub,
-                                ggplot2::aes(x = factor(.data[[modsForPlots]]),
+                                ggplot2::aes(x = factor(.data[[baseMod]]),
                                              y = estimatedValue)) +
             ggplot2::ylab(gettext("Parameter Value")) +
             jaspGraphs::themeJaspRaw() +
             jaspGraphs::geom_rangeframe(size = 1.1) +
             ggplot2::stat_summary(fun = mean, geom = "col", fill = "gray", width = 0.5) +
             ggplot2::scale_x_discrete() +
-            ggplot2::labs(x = modsForPlots)
+            ggplot2::labs(x = xAxisLabel)
           }
 
-      } else { # two moderators
-        modsForPlotsTypes <- mods.types[match(modsForPlots, mods)]
+      } else { # two base moderators
+        baseMod1 <- baseModeratorsForXAxis[1]
+        baseMod2 <- baseModeratorsForXAxis[2]
+        # Add base variables to dtSub if not present
+        if (!baseMod1 %in% colnames(dtSub)) {
+          baseMod1Data <- getDatasetCol(dataset, baseMod1, mods, modsDecoded)
+          if (!is.null(baseMod1Data)) {
+            dtSub[[baseMod1]] <- baseMod1Data
+          }
+        }
+        if (!baseMod2 %in% colnames(dtSub)) {
+          baseMod2Data <- getDatasetCol(dataset, baseMod2, mods, modsDecoded)
+          if (!is.null(baseMod2Data)) {
+            dtSub[[baseMod2]] <- baseMod2Data
+          }
+        }
+        modsForPlotsTypes <- mods.types[match(baseModeratorsForXAxis, modsDecoded)]
         modsForPlotsTypes <- modsForPlotsTypes[!is.na(modsForPlotsTypes)]
+        xAxisLabel1 <- getAxisLabel(baseMod1, modsToAdd)
+        xAxisLabel2 <- getAxisLabel(baseMod2, modsToAdd)
         if (length(unique(modsForPlotsTypes)) == 2) { # one moderator scale, one nominal
+          scaleMod <- baseModeratorsForXAxis[modsForPlotsTypes == "scale"]
+          nominalMod <- baseModeratorsForXAxis[modsForPlotsTypes == "nominal"]
+          scaleLabel <- getAxisLabel(scaleMod, modsToAdd)
           gg <- ggplot2::ggplot(data = dtSub,
-                                ggplot2::aes(x = .data[[modsForPlots[modsForPlotsTypes == "scale"]]],
+                                ggplot2::aes(x = .data[[scaleMod]],
                                              y = estimatedValue,
-                                             color = factor(.data[[modsForPlots[modsForPlotsTypes == "nominal"]]]))) +
+                                             color = factor(.data[[nominalMod]]))) +
             ggplot2::ylab(gettext("Parameter Value")) +
             ggplot2::geom_point() +
             jaspGraphs::themeJaspRaw() +
             jaspGraphs::geom_rangeframe(size = 1.1) +
             ggplot2::theme(legend.position = "right") +
-            ggplot2::labs(color = modsForPlots[modsForPlotsTypes == "nominal"],
-                          x = gsub("_x_", ":", modsForPlots[modsForPlotsTypes == "scale"]))
+            ggplot2::labs(color = nominalMod,
+                          x = scaleLabel)
 
         } else if (all(modsForPlotsTypes == "scale")) {
           gg <- ggplot2::ggplot(data = dtSub,
-                                ggplot2::aes(x = .data[[modsForPlots[1]]],
+                                ggplot2::aes(x = .data[[baseMod1]],
                                              y = estimatedValue,
-                                             color = .data[[modsForPlots[2]]])) +
+                                             color = .data[[baseMod2]])) +
             ggplot2::ylab(gettext("Parameter Value")) +
             ggplot2::geom_point() +
             jaspGraphs::themeJaspRaw() +
             jaspGraphs::geom_rangeframe(size = 1.1) +
             ggplot2::theme(legend.position = "right") +
-            ggplot2::labs(color = modsForPlots[2]) +
+            ggplot2::labs(color = baseMod2) +
             ggplot2::scale_color_gradient(low = "blue", high = "green") +
-            ggplot2::labs(x = gsub("_x_", ":", modsForPlots[1]),
-                          color = gsub("_x_", ":", modsForPlots[2]))
+            ggplot2::labs(x = xAxisLabel1,
+                          color = xAxisLabel2)
 
         } else if (all(modsForPlotsTypes == "nominal")) {
           gg <- ggplot2::ggplot(data = dtSub,
-                                ggplot2::aes(x = factor(.data[[modsForPlots[1]]]),
+                                ggplot2::aes(x = factor(.data[[baseMod1]]),
                                              y = estimatedValue,
-                                             color = factor(.data[[modsForPlots[2]]]))) +
+                                             color = factor(.data[[baseMod2]]))) +
             ggplot2::ylab(gettext("Parameter Value")) +
             ggplot2::geom_bar() +
             jaspGraphs::themeJaspRaw() +
             jaspGraphs::geom_rangeframe(size = 1.1) +
             ggplot2::theme(legend.position = "right") +
-            ggplot2::labs(color = modsForPlots[2])
+            ggplot2::labs(x = xAxisLabel1, color = xAxisLabel2)
         }
 
       }
