@@ -19,8 +19,8 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
 
-  sink(file="~/Downloads/log.txt")
-  on.exit(sink(NULL))
+  # sink(file="~/Downloads/log.txt")
+  # on.exit(sink(NULL))
 
 
   options <- .plsSemPrepOpts(options)
@@ -73,16 +73,16 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   return(dataset)
 }
 
-.plsSemReadData <- function(dataset, options) {
-  if (!is.null(dataset)) return(dataset)
-
-  variablesToRead <- if (options[["group"]] == "") character() else options[["group"]]
-
-  for (model in options[["models"]])
-    variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
-
-  return(.readDataSetToEnd(columns = variablesToRead, exclude.na.listwise = variablesToRead))
-}
+# .plsSemReadData <- function(dataset, options) {
+#   if (!is.null(dataset)) return(dataset)
+#
+#   variablesToRead <- if (options[["group"]] == "") character() else options[["group"]]
+#
+#   for (model in options[["models"]])
+#     variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
+#
+#   return(.readDataSetToEnd(columns = variablesToRead, exclude.na.listwise = variablesToRead))
+# }
 
 .plsSemIsReady <- function(dataset, options) {
 
@@ -239,13 +239,12 @@ checkCSemModel <- function(model, availableVars) {
     if (!is.null(results[[i]])) next # existing model is reused
 
     # create options
-
+    # print(str(dataset))
+    # print(options[["models"]][[i]][["syntax"]])
     syntax   <- .semTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
     cSemOpts[[".model"]] <- syntax
     cSemOpts[[".data"]]  <- dataset
 
-    print(str(dataset))
-    print(str(options))
     # fit the model
     fit <- try(do.call(cSEM::csem, cSemOpts))
 

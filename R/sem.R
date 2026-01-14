@@ -710,6 +710,8 @@ checkLavaanModel <- function(model, availableVars) {
   # the way lavaan exports the name of the test is a bit weird, so we get the test option from:
   testName <- .semOptionsToLavOptions(options, dataset)[["test"]]
   if (testName == "default") testName <- semResults[[1]]@Options$test
+  # if the test is actually something else than standard, the testName has two entries
+  if (!all(testName == "standard")) testName <- testName[testName != "standard"]
 
   if (length(semResults) == 1) {
     lrt <- lavaan::lavTestLRT(semResults[[1]], type = "Chisq")[-1, ]
@@ -777,6 +779,7 @@ checkLavaanModel <- function(model, availableVars) {
   }
 
   outNames <- .optionsForOutput()
+  # if (!all(testName))
   if (options[["modelTest"]] == "default") {
       if (testName %in% outNames$lavNames) {
         name <- outNames$jaspNames[outNames$lavNames == testName]
@@ -1464,6 +1467,9 @@ checkLavaanModel <- function(model, availableVars) {
   # the way lavaan exports the name of the test is a bit weird, so we get the test option from:
   testName <- .semOptionsToLavOptions(options, dataset)[["test"]]
   if (testName == "default") testName <- modelContainer[["results"]][["object"]][[1]]@Options$test
+
+  # if the test is actually something else than standard, the testName has two entries
+  if (!all(testName == "standard")) testName <- testName[testName != "standard"]
 
   fmli <- lapply(modelContainer[["results"]][["object"]],
                  function(x) .computeFitMeasures(fit = x, standard = (testName == "standard")))
