@@ -734,6 +734,21 @@ options$models <- list(
   list(name = "Model2", syntax = list(model = "F =~ y1 + y2 + y3", columns = c("y1", "y2", "y3")))
 )
 
+options <- jaspTools::analysisOptions("SEM")
+options$dataType          <- "varianceCovariance"
+options$sampleSize        <- 75
+options$emulation         <- "lavaan"
+options$estimator         <- "default"
+options$group             <- ""
+options$samplingWeights   <- ""
+options$informationMatrix <- "expected"
+options$naAction          <- "default"
+options$modelTest         <- "standard"
+options$models <- list(
+  list(name = "Model1", syntax = list(model = "F =~ x1 + x3 + y1", columns = c("x1", "x3", "y1"))),
+  list(name = "Model2", syntax = list(model = "F =~ y1 + y2 + y3", columns = c("y1", "y2", "y3")))
+)
+
 data <- read.csv(testthat::test_path("poldem_grouped.csv"))
 data <- cov(data)
 data <- as.data.frame(data)

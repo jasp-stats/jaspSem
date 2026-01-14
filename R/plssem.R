@@ -19,8 +19,8 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
 
-  sink(file="~/Downloads/log.txt")
-  on.exit(sink(NULL))
+  # sink(file="~/Downloads/log.txt")
+  # on.exit(sink(NULL))
 
 
   options <- .plsSemPrepOpts(options)
@@ -250,8 +250,6 @@ checkCSemModel <- function(model, availableVars) {
     cSemOpts[[".model"]] <- syntax
     cSemOpts[[".data"]]  <- dataset
 
-    print(str(dataset))
-    print(str(options))
     # fit the model
     fit <- try(do.call(cSEM::csem, cSemOpts))
 
