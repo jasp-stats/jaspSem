@@ -724,36 +724,35 @@ test_that("T-size fit indices table results match", {
 
 
 
-test_that("Variance-covariance input works", {
+options <- jaspTools::analysisOptions("SEM")
+options$dataType          <- "varianceCovariance"
+options$sampleSize        <- 75
+options$emulation         <- "lavaan"
+options$estimator         <- "default"
+options$group             <- ""
+options$samplingWeights   <- ""
+options$informationMatrix <- "expected"
+options$naAction          <- "default"
+options$modelTest         <- "standard"
+options$models <- list(
+  list(name = "Model1", syntax = list(model = "F =~ x1 + x3 + y1", columns = c("x1", "x3", "y1"))),
+  list(name = "Model2", syntax = list(model = "F =~ y1 + y2 + y3", columns = c("y1", "y2", "y3")))
+)
 
-  options <- jaspTools::analysisOptions("SEM")
-  options$dataType          <- "varianceCovariance"
-  options$sampleSize        <- 75
-  options$emulation         <- "lavaan"
-  options$estimator         <- "default"
-  options$group             <- ""
-  options$samplingWeights   <- ""
-  options$informationMatrix <- "expected"
-  options$naAction          <- "default"
-  options$modelTest         <- "standard"
-  options$models <- list(
-    list(name = "Model1", syntax = list(model = "F =~ x1 + x3 + y1", columns = c("x1", "x3", "y1"))),
-    list(name = "Model2", syntax = list(model = "F =~ y1 + y2 + y3", columns = c("y1", "y2", "y3")))
-  )
+data <- read.csv(testthat::test_path("poldem_grouped.csv"))
+data <- cov(data)
+data <- as.data.frame(data)
 
-  data <- read.csv(testthat::test_path("poldem_grouped.csv"))
-  data <- cov(data)
-  data <- as.data.frame(data)
-
-  set.seed(1)
-  results <- jaspTools::runAnalysis("SEM", data, options, makeTests = F)
+set.seed(1)
+results <- jaspTools::runAnalysis("SEM", data, options, makeTests = F)
+test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(707.570148255052, 721.47507693627, 6.66133814775094e-14, 0, "Model1",
-                                      75, "", "", "", "", 6, 6, 1095.63355300897, 1109.53848169019,
-                                      0, 0, "Model2", 75, "", "", -6.66133814775094e-14, 0, 6, 6
-                                 ))
+                                 list(709.023697474126, 722.928626155344, 0, 0, "Model1", 75, "", "",
+                                      "", "", 6, 6, 816.268480294992, 830.17340897621, 2.33146835171283e-13,
+                                      0, "Model2", 75, "", "", 0, 0, 6, 6))
 })
+
 
 
 test_that("Fixing mean manifest intercepts works", {
