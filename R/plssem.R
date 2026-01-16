@@ -31,10 +31,12 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   # Check for errors
   .plsSemCheckErrors(dataset, options, ready, modelContainer)
 
+  .plsSemComputeResults(modelContainer, dataset, options)
+
   # Output functions
   .plsSemFitTab(modelContainer, dataset, options, ready)
-  if (modelContainer$getError()) return()
   .plsSemParameters(modelContainer, dataset, options, ready)
+  if (modelContainer$getError()) return()
   .plsSemRsquared(modelContainer, dataset, options, ready)
   .plsSemPrediction(modelContainer, options, ready)
   .plsSemAdditionalFits(modelContainer, dataset, options, ready)
@@ -67,16 +69,16 @@ PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   return(dataset)
 }
 
-.plsSemReadData <- function(dataset, options) {
-  if (!is.null(dataset)) return(dataset)
-
-  variablesToRead <- if (options[["group"]] == "") character() else options[["group"]]
-
-  for (model in options[["models"]])
-    variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
-
-  return(.readDataSetToEnd(columns = variablesToRead, exclude.na.listwise = variablesToRead))
-}
+# .plsSemReadData <- function(dataset, options) {
+#   if (!is.null(dataset)) return(dataset)
+#
+#   variablesToRead <- if (options[["group"]] == "") character() else options[["group"]]
+#
+#   for (model in options[["models"]])
+#     variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
+#
+#   return(.readDataSetToEnd(columns = variablesToRead, exclude.na.listwise = variablesToRead))
+# }
 
 .plsSemIsReady <- function(dataset, options) {
 
@@ -184,6 +186,11 @@ checkCSemModel <- function(model, availableVars) {
     }
   }
 
+  # check for '~~'
+  if (grepl("~~", vmodel)) {
+    return(gettext("Using '~~' is not supported. Try '~' instead"))
+  }
+
   # if checks pass, return empty string
   return("")
 }
@@ -233,7 +240,8 @@ checkCSemModel <- function(model, availableVars) {
     if (!is.null(results[[i]])) next # existing model is reused
 
     # create options
-
+    # print(str(dataset))
+    # print(options[["models"]][[i]][["syntax"]])
     syntax   <- .semTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
     cSemOpts[[".model"]] <- syntax
     cSemOpts[[".data"]]  <- dataset
@@ -271,6 +279,8 @@ checkCSemModel <- function(model, availableVars) {
         return(c(0,0))
       }
       # resample
+      options(future.globals.method.default = "ordered",
+              future.globals.method         = "ordered")
       fit <- try(cSEM::resamplecSEMResults(.object = fit,
                                            .R = options[["bootstrapSamples"]],
                                            .user_funs = tickFunction,
@@ -282,7 +292,6 @@ checkCSemModel <- function(model, availableVars) {
 
       if (isTryError(fit)) {
         err <- .extractErrorMessage(fit)
-
         errmsg <- gettextf("Estimation failed Message: %s", err)
         modelContainer$setError(paste0("Error in model \"", options[["models"]][[i]][["name"]], "\" - ",
                                        .decodeVarsInMessage(names(dataset), errmsg)))
@@ -300,7 +309,7 @@ checkCSemModel <- function(model, availableVars) {
     modelContainer[["models"]]  <- createJaspState(options[["models"]])
   }
 
-  return(results)
+  return()
 }
 
 
@@ -343,6 +352,35 @@ checkCSemModel <- function(model, availableVars) {
 .plsSemFitTab <- function(modelContainer, dataset, options, ready) {
   # create model fit table
   if (!is.null(modelContainer[["fittab"]])) return()
+
+  fittab <- createJaspTable(title = gettext("Model fit"))
+  fittab$dependOn(c("models"))
+  fittab$position <- 0
+
+  # fittab$addColumnInfo(name = "Model",    title = "",                            type = "string", combine = TRUE)
+  if (options[["group"]] != "")
+    fittab$addColumnInfo(name = "group",  title = gettext("Group"),              type = "string" )
+  fittab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
+  fittab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
+  fittab$addColumnInfo(name = "N",        title = gettext("n"),                  type = "integer")
+  fittab$addColumnInfo(name = "Chisq",    title = "\u03C7\u00B2",       type = "number" ,
+                       overtitle = gettext("Baseline test"))
+  fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
+                       overtitle = gettext("Baseline test"))
+  fittab$addColumnInfo(name = "PrChisq",  title = gettext("p"),                  type = "pvalue",
+                       overtitle = gettext("Baseline test"))
+  if (length(options[["models"]]) > 1) {
+    fittab$addColumnInfo(name = "dchisq",   title = "\u0394\u03C7\u00B2", type = "number" ,
+                         overtitle = gettext("Difference test"))
+    fittab$addColumnInfo(name = "ddf",      title = "\u0394df",           type = "integer",
+                         overtitle = gettext("Difference test"))
+    fittab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
+                         overtitle = gettext("Difference test"))
+  }
+
+
+  modelContainer[["fittab"]] <- fittab
+
   if (!ready) return()
 
   # fill model fit table
@@ -354,9 +392,10 @@ checkCSemModel <- function(model, availableVars) {
   modSelCriteria <- createJaspState()
   modelContainer[["modSelCriteria"]] <- modSelCriteria
   modSelCriteria$dependOn(optionsFromObject = modelContainer)
+
   modSelCriteria$object <- msc
 
-  if (modelContainer$getError() || !options[["overallModelFit"]]) return()
+  if (!options[["overallModelFit"]]) return()
 
   fittab <- createJaspTable(title = gettext("Model Fit"))
   fittab$dependOn(optionsFromObject = modelContainer,
@@ -458,6 +497,11 @@ checkCSemModel <- function(model, availableVars) {
 
   modelContainer[["params"]] <- params
 
+  if (modelContainer$getError()) {
+    emptyTab <- createJaspTable(title = gettext("Parameter Estimates"))
+    params[["error"]] <- emptyTab
+    return()
+  }
   .plsSemParameterTables(modelContainer[["results"]][["object"]][[1]], NULL, params, options, ready)
 
 }
@@ -830,38 +874,38 @@ checkCSemModel <- function(model, availableVars) {
   # fill Loadings table
 
   if (options[["group"]] == "") {
-    loadingEstimates <- try(.prepareEstimates(pe, estimateType = "Loading_estimates", options = options))
-    if (isTryError(loadingEstimates)) {
+    parameterEstimatesLoadings <- try(.prepareEstimates(pe, estimateType = "Loading_estimates", options = options))
+    if (isTryError(parameterEstimatesLoadings)) {
       pecont[["loading"]] <- NULL
     }
   } else {
-    loadingEstimates <- try(lapply(pe, .prepareEstimates, estimateType = "Loading_estimates", options = options))
-    if (isTryError(loadingEstimates)) {
+    parameterEstimatesLoadings <- try(lapply(pe, .prepareEstimates, estimateType = "Loading_estimates", options = options))
+    if (isTryError(parameterEstimatesLoadings)) {
       pecont[["loading"]] <- NULL
     } else {
-      for (i in names(loadingEstimates)) {
-        loadingEstimates[[i]][["group"]] <- rep(i, length(loadingEstimates[[i]][["rhs"]]))
+      for (i in names(parameterEstimatesLoadings)) {
+        parameterEstimatesLoadings[[i]][["group"]] <- rep(i, length(parameterEstimatesLoadings[[i]][["rhs"]]))
       }
-      loadingEstimates <- as.data.frame(Reduce(function(...) merge(..., all=T), loadingEstimates))
-      loadingEstimates <- loadingEstimates[order(loadingEstimates[["group"]], loadingEstimates[["lhs"]]),]
+      parameterEstimatesLoadings <- as.data.frame(Reduce(function(...) merge(..., all=T), parameterEstimatesLoadings))
+      parameterEstimatesLoadings <- parameterEstimatesLoadings[order(parameterEstimatesLoadings[["group"]], parameterEstimatesLoadings[["lhs"]]),]
     }
   }
 
-  if (!isTryError(loadingEstimates)) {
+  if (!isTryError(parameterEstimatesLoadings)) {
 
     if (options[["group"]] != "")
-      loadingTab[["group"]]    <- loadingEstimates[["group"]]
+      loadingTab[["group"]]    <- parameterEstimatesLoadings[["group"]]
 
-    loadingTab[["rhs"]]      <- loadingEstimates[["rhs"]]
-    loadingTab[["lhs"]]      <- loadingEstimates[["lhs"]]
-    loadingTab[["est"]]      <- loadingEstimates[["est"]]
+    loadingTab[["rhs"]]      <- parameterEstimatesLoadings[["rhs"]]
+    loadingTab[["lhs"]]      <- parameterEstimatesLoadings[["lhs"]]
+    loadingTab[["est"]]      <- parameterEstimatesLoadings[["est"]]
 
     if (options[["errorCalculationMethod"]] != "none") {
-      loadingTab[["se"]]       <- loadingEstimates[["se"]]
-      loadingTab[["z"]]        <- loadingEstimates[["zVal"]]
-      loadingTab[["pvalue"]]   <- loadingEstimates[["pVal"]]
-      loadingTab[["ci.lower"]] <- loadingEstimates[["ciLower"]]
-      loadingTab[["ci.upper"]] <- loadingEstimates[["ciUpper"]]
+      loadingTab[["se"]]       <- parameterEstimatesLoadings[["se"]]
+      loadingTab[["z"]]        <- parameterEstimatesLoadings[["zVal"]]
+      loadingTab[["pvalue"]]   <- parameterEstimatesLoadings[["pVal"]]
+      loadingTab[["ci.lower"]] <- parameterEstimatesLoadings[["ciLower"]]
+      loadingTab[["ci.upper"]] <- parameterEstimatesLoadings[["ciUpper"]]
     }
   }
 
@@ -1970,7 +2014,7 @@ checkCSemModel <- function(model, availableVars) {
   results <- jaspResults[["modelContainer"]][["results"]][["object"]]
 
   # loop over the models
-  for (i in seq_along(results)) {
+  for (i in seq_len(length(results))) {
 
     if (options$group != "") {
       scoresList <- cSEM::getConstructScores(results[[i]])
@@ -1986,7 +2030,8 @@ checkCSemModel <- function(model, availableVars) {
     }
 
     z <- 1
-    for (ll in seq_along(scores)) {
+
+    for (ll in seq_len(length(scores))) {
       for (ii in seq_len(ncol(scores[[ll]]))) {
 
         colNameR <- colNamesR[z]
@@ -2008,7 +2053,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # check if there are previous colNames that are not needed anymore and delete the cols
   oldNames <- jaspResults[["createdColumnNames"]][["object"]]
-  newNames <- colNamesR
+  newNames <- colNamesR[1:z]
   if (!is.null(oldNames)) {
     noMatch <- which(!(oldNames %in% newNames))
     if (length(noMatch) > 0) {
