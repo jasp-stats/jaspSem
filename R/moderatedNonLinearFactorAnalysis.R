@@ -491,7 +491,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   invFitTable <- createJaspTable(gettext("Global Invariance Fit"))
   invFitTable$addColumnInfo(name = "type",  title = gettext("Type"),           type = "string")
   invFitTable$addColumnInfo(name = "N",     title = gettext("n(Par)"),  type = "integer")
-  invFitTable$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
+  # invFitTable$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
   invFitTable$addColumnInfo(name = "Fit",     title = gettext("Fit (-2LL)"),  type = "number")
   invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number")
   invFitTable$addColumnInfo(name = "SAAIC",   title = gettext("SAAIC"),            type = "number")
@@ -519,7 +519,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   invFitTable$addColumnInfo(name = "type",  title = gettext("Type"),           type = "string")
   invFitTable$addColumnInfo(name = "N",     title = gettext("n(Par)"),  type = "integer")
-  invFitTable$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
+  # invFitTable$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
   invFitTable$addColumnInfo(name = "Fit",     title = gettext("Fit (-2LL)"),  type = "number")
   invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number")
   invFitTable$addColumnInfo(name = "SAAIC",   title = gettext("SAAIC"),            type = "number")
@@ -540,7 +540,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     return()
   }
 
-  dtFill <- data.frame(type = c(), N = c(), df = c(), Fit = c(), AIC = c(), SAAIC = c(), BIC = c(), SABIC = c())
+  dtFill <- data.frame(type = c(), N = c(), Fit = c(), AIC = c(), SAAIC = c(), BIC = c(), SABIC = c())
   if (length(results) > 1) {
 
     dtFill$diffLL <- dtFill$diffdf <- dtFill$p <- c()
@@ -561,7 +561,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       dtFill <- data.frame(
         type  = names(results)[i],
         N     = NA,
-        df    = NA,
+        # df    = NA,
         Fit   = NA,
         AIC   = NA,
         SAAIC = NA,
@@ -570,11 +570,12 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       )
     } else {
       summ <- .mxSummaryFixed(results[[i]])
+      print(summ)
       ics  <- summ$informationCriteria
       dtFill <- data.frame(
         type  = names(results)[i],
         N     = summ$estimatedParameters,
-        df    = summ$degreesOfFreedom,
+        # df    = summ$degreesOfFreedom,
         Fit   = summ$Minus2LogLikelihood,
         AIC   = ics["AIC:", "par"],
         SAAIC = ics["AIC:", "sample"],
@@ -612,7 +613,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         dtAdd <- data.frame(
           type  = modelName,
           N     = NA,
-          df    = NA,
+          # df    = NA,
           Fit   = NA,
           AIC   = NA,
           SAAIC = NA,
@@ -631,7 +632,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         dtAdd <- data.frame(
           type  = modelName,
           N     = summ$estimatedParameters,
-          df    = summ$degreesOfFreedom,
+          # df    = summ$degreesOfFreedom,
           Fit   = summ$Minus2LogLikelihood,
           AIC   = ics["AIC:", "par"],
           SAAIC = ics["AIC:", "sample"],
@@ -770,7 +771,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       subMat <- paramTable[allLoads, ]
       ciObj <- .waldCi(subMat[, "Estimate"], subMat[, "Std.Error"], options$parameterEstimatesAlphaLevel)
       # match loadMap rows to subMat rows
-      idx <- match(.arrow(loadMap$loadingCoefficient), .arrow(subMat$name))
+      idx <- match(.arrow_norm(loadMap$loadingCoefficient), .arrow_norm(subMat$name))
 
       df <- data.frame(
         factor    = loadMap$factor,
@@ -811,8 +812,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
       # Match each mapping row to the correct row in subMat
       idx <- match(
-        .arrow(intMap$interceptCoefficient),
-        .arrow(subMat$name)
+        .arrow_norm(intMap$interceptCoefficient),
+        .arrow_norm(subMat$name)
       )
 
       # Reorder estimates/SEs according to intMap
@@ -860,8 +861,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
       # Match map rows to the correct rows in subMat
       idx <- match(
-        .arrow(resMap$residualCoefficient),
-        .arrow(subMat$name)
+        .arrow_norm(resMap$residualCoefficient),
+        .arrow_norm(subMat$name)
       )
 
       # log-scale estimates and SE (as they come from lavaan)
@@ -910,8 +911,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
       subMat <- paramTable[fvPosition, ]
       idx <- match(
-        .arrow(fvMap$varianceCoefficient),
-        .arrow(subMat$name)
+        .arrow_norm(fvMap$varianceCoefficient),
+        .arrow_norm(subMat$name)
       )
       est_log <- subMat$Estimate[idx]
       se_log  <- subMat$Std.Error[idx]
@@ -958,8 +959,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       subMat <- paramTable[fmPosition, ]
 
       idx <- match(
-        .arrow(fmMap$meanCoefficient),
-        .arrow(subMat$name)
+        .arrow_norm(fmMap$meanCoefficient),
+        .arrow_norm(subMat$name)
       )
 
       est <- subMat$Estimate[idx]
@@ -1113,7 +1114,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       modsForPlots <- c(currentRow$plotModerator1, currentRow$plotModerator2)
       modsForPlots <- modsForPlots[modsForPlots != ""]
       modsForPlots <- gsub(":", "_x_", modsForPlots) # for interactions
-      
+
       # Decode modsForPlots early - dataset columns are encoded, but we need consistent naming
       # Note: base columns in dataset are encoded, derived columns (_squared, _cubic) are decoded
       modsForPlotsDecoded <- sapply(modsForPlots, function(mod) {
@@ -1148,7 +1149,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           }
         }
       }
-      
+
       # Also check for interaction between the two base moderators if both are present
       if (length(baseModeratorsForXAxis) == 2) {
         decMod1 <- baseModeratorsForXAxis[1]
@@ -1162,14 +1163,14 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           modsToAdd <- c(modsToAdd, interactionName2)
         }
       }
-      
+
       # Combine base moderators (decoded) with additional terms
       # Note: modsForPlots and baseModeratorsForXAxis are now all decoded
       modsForPlots <- c(modsForPlotsDecoded, modsToAdd)
 
       matchIndices <- match(
-        .arrow(modsForPlots),
-        .arrow(currentMods)
+        .arrow_norm(modsForPlots),
+        .arrow_norm(currentMods)
       )
       matchIndices <- matchIndices[!is.na(matchIndices)]
       coefficientColumnIndex <- grep("Coefficient", colnames(subMap))
@@ -1177,14 +1178,14 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       modEstimates <- c(
         subMat$Estimate[
           match(
-            .arrow(subMap[subMap$moderator == "Baseline", coefficientColumnIndex]),
-            .arrow(subMat$name)
+            .arrow_norm(subMap[subMap$moderator == "Baseline", coefficientColumnIndex]),
+            .arrow_norm(subMat$name)
           )
         ],
         subMat$Estimate[
           match(
-            .arrow(subMap[matchIndices, coefficientColumnIndex]),
-            .arrow(subMat$name)
+            .arrow_norm(subMap[matchIndices, coefficientColumnIndex]),
+            .arrow_norm(subMat$name)
           )
         ]
       )
@@ -1210,7 +1211,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           }
         }
       }
-      
+
       baselineTerm <- sum(modEstimates[subMap$moderator == "Baseline"])
       slopeTerms <- modEstimates[subMap$moderator != "Baseline"]
       slopeTerms <- slopeTerms[!is.na(slopeTerms)]
@@ -1252,7 +1253,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       # For plotting, use base moderators for x-axis (not squared/cubic versions)
       # This shows the marginal effect across the original variable
       nBaseModsForPlot <- length(baseModeratorsForXAxis)
-      
+
       # Check if any squared/cubic terms were added for each base moderator
       # to determine if we should label the axis as "total" effect
       getAxisLabel <- function(baseMod, modsToAdd) {
@@ -2384,26 +2385,116 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 }
 
-.arrow <- function(x) {
-  x <- as.character(x)
-  x <- gsub("â†’", "->", x, fixed = TRUE)
-  x <- gsub("\u2192", "->", x, fixed = TRUE)
-  x
+`%||%` <- function(a, b) if (!is.null(a)) a else b
+
+.arrow_norm <- function(x) {
+  x <- enc2utf8(as.character(x))
+
+  # unify arrows -> "->"
+  x <- gsub("\u2192|\u21D2", "->", x, perl = TRUE)        # →, ⇒
+  x <- gsub("â†’|â\u0086\u0092", "->", x, perl = TRUE)    # mojibake variants
+
+  # strip invisible junk that breaks matching
+  x <- gsub("[\u00A0\u200B\u200C\u200D\uFEFF]", "", x, perl = TRUE)
+  trimws(x)
+}
+
+.mx_output_est_se <- function(model) {
+  out <- model@output
+
+  est <- out$estimate %||% out$estimates
+  if (is.null(est)) stop("No model@output$estimate (or $estimates) found.")
+
+  se_obj <- out$standardErrors %||% out$SE
+  if (is.null(se_obj)) stop("No model@output$standardErrors (or $SE) found.")
+
+  # coerce SE to named numeric vector
+  if (is.matrix(se_obj) || is.data.frame(se_obj)) {
+    se_vec <- as.numeric(se_obj[, 1])
+    se_nm  <- rownames(se_obj)
+  } else {
+    se_vec <- as.numeric(se_obj)
+    se_nm  <- names(se_obj)
+  }
+  names(se_vec) <- se_nm
+
+  # normalize names
+  names(est)    <- .arrow_norm(names(est))
+  names(se_vec) <- .arrow_norm(names(se_vec))
+
+  # align SE to estimates (estimate order)
+  se_aligned <- se_vec[match(names(est), names(se_vec))]
+  names(se_aligned) <- names(est)
+
+  list(est = est, se = se_aligned)
+}
+
+.mx_guess_matrix <- function(nm) {
+  out <- rep("unknown", length(nm))
+  out[grepl("^load_", nm)] <- "new_parameters"   # moderated loadings
+  out[grepl("->", nm, fixed=TRUE)] <- "A"        # unmoderated loading (Factor->Indicator)
+  out[grepl("^int_", nm)]  <- "new_parameters"
+  out[grepl("^res_", nm)]  <- "new_parameters"
+  out[grepl("^var_", nm)]  <- "new_parameters"
+  out[grepl("^mean_", nm)] <- "new_parameters"
+  out[grepl("^rho_", nm)]  <- "new_parameters"
+  out
 }
 
 .mxSummaryFixed <- function(model, ...) {
-  summ <- summary(model, ...)
 
-  # Fix the parameter table names that your code matches on
-  if (!is.null(summ$parameters) && "name" %in% colnames(summ$parameters)) {
-    summ$parameters[, "name"] <- .arrow(summ$parameters[, "name"])
-  }
+  out <- model@output
 
-  # (Optional) Fix rownames in any matrix-like outputs you later match by name
-  if (!is.null(summ$SE) && !is.null(rownames(summ$SE))) {
-    rownames(summ$SE) <- .arrow(rownames(summ$SE))
-  }
+  # estimates + SEs (your helper)
+  es  <- .mx_output_est_se(model)
+  est <- es$est
+  se  <- es$se
 
-  summ
+  nm <- names(est)
+
+  paramTable <- data.frame(
+    name      = nm,
+    matrix    = .mx_guess_matrix(nm),
+    Estimate  = as.numeric(est),
+    Std.Error = as.numeric(se),
+    stringsAsFactors = FALSE
+  )
+
+  m2ll <- out$Minus2LogLikelihood %||% out$fit %||% NA_real_
+  df   <- out$degreesOfFreedom %||% out$df %||% NA_integer_
+  k    <- out$estimatedParameters %||% sum(!is.na(se)) %||% length(est)
+
+  # >>> YOUR preferred N source <<<
+  N <- tryCatch(out$data[[1]]$numObs, error = function(e) NA_real_)
+
+  # regular ICs
+  AIC_par <- if (is.finite(m2ll)) m2ll + 2 * k else NA_real_
+  BIC_par <- if (is.finite(m2ll) && is.finite(N) && N > 0) m2ll + log(N) * k else NA_real_
+
+  # sample-size adjusted variants
+  # AICc (common small-sample adjustment)
+  AIC_sample <- if (is.finite(AIC_par) && is.finite(N) && N > (k + 1)) {
+    AIC_par + (2 * k * (k + 1)) / (N - k - 1)
+  } else NA_real_
+
+  # SABIC (SEM-style sample-size adjusted BIC)
+  BIC_sample <- if (is.finite(m2ll) && is.finite(N) && N > 0) {
+    m2ll + log((N + 2) / 24) * k
+  } else NA_real_
+
+  ics <- matrix(NA_real_, nrow = 2, ncol = 2,
+                dimnames = list(c("AIC:", "BIC:"), c("par", "sample")))
+  ics["AIC:", "par"]    <- AIC_par
+  ics["AIC:", "sample"] <- AIC_sample
+  ics["BIC:", "par"]    <- BIC_par
+  ics["BIC:", "sample"] <- BIC_sample
+
+  list(
+    estimatedParameters  = k,
+    degreesOfFreedom     = df,
+    Minus2LogLikelihood  = m2ll,
+    numObs               = N,
+    informationCriteria  = ics,
+    parameters           = paramTable
+  )
 }
-
