@@ -107,7 +107,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   includedInteractions <- lapply(options$moderatorInteractionTerms, function(x) x$value[x$moderatorInteractionTermsInclude])
   includedInteractions <- unlist(includedInteractions, use.names = FALSE)
   modsDecoded <- jaspBase::decodeColNames(mods)
-  if (length(includedInteractions > 0)) {
+  if (length(includedInteractions) > 0) {
     interMods <- strsplit(includedInteractions, ":")
     for (i in 1:length(includedInteractions)) {
       inters <- interMods[[i]]
@@ -181,7 +181,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   includedInteractions <- lapply(options$moderatorInteractionTerms, function(x) x$value[x$moderatorInteractionTermsInclude])
   includedInteractions <- unlist(includedInteractions, use.names = FALSE)
   modsDecoded <- jaspBase::decodeColNames(mods)
-  if (length(includedInteractions > 0)) {
+  if (length(includedInteractions) > 0) {
     interMods <- strsplit(includedInteractions, ":")
     for (i in 1:length(includedInteractions)) {
       inters <- interMods[[i]]
@@ -490,7 +490,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   invFitTable <- createJaspTable(gettext("Global Invariance Fit"))
   invFitTable$addColumnInfo(name = "type",  title = gettext("Type"),           type = "string")
-  invFitTable$addColumnInfo(name = "N",     title = gettext("n(Par)"),  type = "integer")
+  invFitTable$addColumnInfo(name = "Npar",     title = gettext("n(Par)"),  type = "integer")
   # invFitTable$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
   invFitTable$addColumnInfo(name = "Fit",     title = gettext("Fit (-2LL)"),  type = "number")
   invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number")
@@ -518,7 +518,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   jaspResults[["fitContainer"]][["invFitTable"]] <- invFitTable
 
   invFitTable$addColumnInfo(name = "type",  title = gettext("Type"),           type = "string")
-  invFitTable$addColumnInfo(name = "N",     title = gettext("n(Par)"),  type = "integer")
+  invFitTable$addColumnInfo(name = "Npar",     title = gettext("n(Par)"),  type = "integer")
   # invFitTable$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
   invFitTable$addColumnInfo(name = "Fit",     title = gettext("Fit (-2LL)"),  type = "number")
   invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number")
@@ -540,7 +540,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     return()
   }
 
-  dtFill <- data.frame(type = c(), N = c(), Fit = c(), AIC = c(), SAAIC = c(), BIC = c(), SABIC = c())
+  dtFill <- data.frame(type = c(), Npar = c(), Fit = c(), AIC = c(), SAAIC = c(), BIC = c(), SABIC = c())
   if (length(results) > 1) {
 
     dtFill$diffLL <- dtFill$diffdf <- dtFill$p <- c()
@@ -560,7 +560,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
                          errmsg, names(results)[i], errTmp)
       dtFill <- data.frame(
         type  = names(results)[i],
-        N     = NA,
+        Npar     = NA,
         # df    = NA,
         Fit   = NA,
         AIC   = NA,
@@ -570,17 +570,16 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       )
     } else {
       summ <- .mxSummaryFixed(results[[i]])
-      print(summ)
       ics  <- summ$informationCriteria
       dtFill <- data.frame(
         type  = names(results)[i],
-        N     = summ$estimatedParameters,
+        Npar     = summ$estimatedParameters,
         # df    = summ$degreesOfFreedom,
         Fit   = summ$Minus2LogLikelihood,
         AIC   = ics["AIC:", "par"],
         SAAIC = ics["AIC:", "sample"],
         BIC   = ics["BIC:", "par"],
-        SABIC = ics["AIC:", "sample"]
+        SABIC = ics["BIC:", "sample"]
       )
     }
 
@@ -612,7 +611,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
         dtAdd <- data.frame(
           type  = modelName,
-          N     = NA,
+          Npar     = NA,
           # df    = NA,
           Fit   = NA,
           AIC   = NA,
@@ -631,7 +630,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
         dtAdd <- data.frame(
           type  = modelName,
-          N     = summ$estimatedParameters,
+          Npar     = summ$estimatedParameters,
           # df    = summ$degreesOfFreedom,
           Fit   = summ$Minus2LogLikelihood,
           AIC   = ics["AIC:", "par"],
@@ -641,10 +640,10 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         )
 
         if (!is.na(prevGoodIdx)) {
-          comp         <- OpenMx::mxCompare(results[[prevGoodIdx]], fit)
-          dtAdd$diffLL <- comp$diffLL[2]
-          dtAdd$diffdf <- comp$diffdf[2]
-          dtAdd$p      <- comp$p[2]
+          comp         <- .mxCompareLite(results[[prevGoodIdx]], fit)
+          dtAdd$diffLL <- comp$diffLL
+          dtAdd$diffdf <- comp$diffdf
+          dtAdd$p      <- comp$p
         } else {
           dtAdd$diffLL <- NA
           dtAdd$diffdf <- NA
@@ -2460,7 +2459,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     stringsAsFactors = FALSE
   )
 
-  m2ll <- out$Minus2LogLikelihood %||% out$fit %||% NA_real_
+  m2ll <- out$Minus2LogLikelihood %||% out$fit
+  m2ll <- if (length(m2ll) == 1) as.numeric(m2ll) else NA_real_
   df   <- out$degreesOfFreedom %||% out$df %||% NA_integer_
   k    <- out$estimatedParameters %||% sum(!is.na(se)) %||% length(est)
 
@@ -2498,3 +2498,22 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     parameters           = paramTable
   )
 }
+
+.mxCompareLite <- function(ref, other) {
+  s_ref <- .mxSummaryFixed(ref)
+  s_oth <- .mxSummaryFixed(other)
+
+  diffLL <- s_oth$Minus2LogLikelihood - s_ref$Minus2LogLikelihood
+  diffdf <- s_ref$estimatedParameters - s_oth$estimatedParameters  # k_ref - k_other
+
+  if (is.na(diffdf) || diffdf <= 0 || is.na(diffLL)) {
+    return(list(diffLL = NA_real_, diffdf = NA_integer_, p = NA_real_))
+  }
+
+  list(
+    diffLL = diffLL,
+    diffdf = as.integer(diffdf),
+    p      = stats::pchisq(diffLL, df = diffdf, lower.tail = FALSE)
+  )
+}
+

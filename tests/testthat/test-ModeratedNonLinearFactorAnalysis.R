@@ -292,7 +292,7 @@ options <- list(
 results <- runAnalysis(
   "ModeratedNonLinearFactorAnalysis",
   dataset = testthat::test_path("AttractDat.csv"),
-  options = options, makeTests = F
+  options = options, makeTests = FALSE
 )
 
 # Only do full numeric/plot comparison on macOS; other platforms just check for no errors
@@ -303,7 +303,7 @@ test_that("Global Invariance Fit table results match", {
   if (isMacOS) {
     jaspTools::expect_equal_tables(table,
                                    list(110509.169461257, 110941.488082078, 110383.169461257, 63, 110510.32211992,
-                                        110510.32211992, "Scalar"))
+                                        110741.288535264, "Scalar"))
   } else {
     expect_true(!is.null(table))
   }
