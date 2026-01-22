@@ -18,7 +18,7 @@
 context("Structural Equation Modeling w/ WLSMV Estimation")
 
 ## Load the testing data:
-bfi_ae <- readRDS("bfi_ae.rds")
+bfi_ae <- readRDS(testthat::test_path("bfi_ae.rds"))
 
 ###-Basic WLSMV Estimation-------------------------------------------------------------------------------------------###
 
@@ -35,7 +35,7 @@ semPars <- lavaan::parameterEstimates(semOut)
 options <- jaspTools::analysisOptions("SEM")
 options$models <- list(
   list(
-    name = "Model1", 
+    name = "Model1",
     syntax = list(
       model = mod1,
       columns = c(paste0("A", 1:5), paste0("E", 1:5))
@@ -144,7 +144,7 @@ semPars <- lavaan::parameterEstimates(semOut)
 ## Specify the JASP options:
 options$models <- list(
   list(
-    name = "Model1", 
+    name = "Model1",
     syntax = list(
       model = mod2,
       columns = c(paste0("A", 1:5), paste0("E", 1:5), "age")
@@ -322,11 +322,14 @@ options$bootstrapCiType        <- "percentile"
 options$modelTest              <- "default"
 options$userGaveSeed           <- TRUE
 options$bootSeed               <- 235711
+options$exogenousCovariateConditional <- FALSE
 
 ## Estimate model is JASP:
+set.seed(1)
 results1 <- suppressWarnings(
   jaspTools::runAnalysis("SEM", data = bfi_ae, options = options)
 )
+set.seed(1)
 results2 <- suppressWarnings(
   jaspTools::runAnalysis("SEM", data = bfi_ae, options = options)
 )
@@ -362,7 +365,7 @@ testthat::test_that("Bootstrapped WLSMV models don't replicated with different s
 options <- jaspTools::analysisOptions("SEM")
 options$models <- list(
   list(
-    name = "Model1", 
+    name = "Model1",
     syntax = list(
       model = mod1,
       columns = c(paste0("A", 1:5), paste0("E", 1:5))
@@ -385,8 +388,8 @@ results <- jaspTools::runAnalysis("SEM", bfi_ae, options)
 
 test_that("Bootstrapping with conditional covariates throws the correct error",
   testthat::expect_identical(
-    results[["status"]], 
-    "validationError", 
+    results[["status"]],
+    "validationError",
     label = "Bootstrapped standard errors are not yet available when conditioning estimation on exogenous covariates"
   )
 )
@@ -398,8 +401,8 @@ results <- jaspTools::runAnalysis("SEM", bfi_ae, options)
 
 test_that("Conditioning on random covariates throws the correct error",
   testthat::expect_identical(
-    results[["status"]], 
-    "validationError", 
+    results[["status"]],
+    "validationError",
     label = "When conditioning estimation on exogenous covariates, the exogenous covariates must be fixed"
   )
 )

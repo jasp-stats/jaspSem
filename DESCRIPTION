@@ -22,7 +22,9 @@ Imports:
   stringr,
   tibble,
   tidyr,
-  SEMsens
+  SEMsens, 
+  mxsem,
+  OpenMx
 Remotes:
   jasp-stats/jaspBase,
   jasp-stats/jaspGraphs

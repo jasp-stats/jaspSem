@@ -605,59 +605,55 @@ options$bootstrapSamples  <- 100
 set.seed(1)
 results <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
 
-# Model fit table results match
-test_that("Bootstrapping model fit table works", {
-
+test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(46.1563554263454, 55.4263078804906, 9.99200722162641e-14, "", "Model1",
-                                      75, 0, 4, 4))
+                                 list(46.1563554263454, 55.4263078804906, 0, 0, "Model1", 75, "", 4,
+                                      4))
 })
 
 test_that("Residual covariances table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_cov"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(1.78200922818399, 1.78200922818399, 1.78200922818399, "", "x2 - x3",
+                                 list(1.782009228184, 1.782009228184, 1.782009228184, "", "x2 - x3",
                                       "", 0, "", 1.2564136096, 1.2564136096, 1.2564136096, "", "x2 - y1",
-                                      "", 0, "", 0.899301179999995, 0.899301179999995, 0.899301179999995,
-                                      "", "x3 - y1", "", 0, ""))
+                                      "", 0, "", 0.89930118, 0.89930118, 0.89930118, "", "x3 - y1",
+                                      "", 0, ""))
 })
 
 test_that("Regression coefficients table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_reg"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.268681455197478, 0.452255911056786, 0.355178159312481, "x1",
-                                      1.48658862997308e-12, "x2", 0.0501965734037228, 7.07574512020654,
-                                      -0.0227477243021424, 0.150803629695307, 0.0779182588187374,
-                                      "x1", 0.0932718899905223, "x3", 0.0464245338299794, 1.67838537925006,
-                                      -0.000464738405957442, 0.0538034631716805, 0.0306885890333796,
-                                      "x1", 0.0230712646597004, "y1", 0.0135058006046709, 2.27225248851713
+                                 list(0.249609318439143, 0.447867133100657, 0.35517815931248, "x1",
+                                      5.40190114861616e-12, "x2", 0.0515154417427021, 6.89459601426782,
+                                      -0.0367152972775892, 0.199977912531745, 0.0779182588187363,
+                                      "x1", 0.154801733189778, "x3", 0.0547650355681629, 1.4227738192876,
+                                      0.00301905807224416, 0.0567699557699216, 0.0306885890333796,
+                                      "x1", 0.031518490958208, "y1", 0.0142706791957634, 2.15046450224248
                                  ))
 })
 
 test_that("Total effects table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_toteff"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.268681455197478, 0.452255911056787, 0.355178159312481, " x2 <unicode> x1",
-                                      3.13082892944294e-14, 0.0467810929527104, 7.59234419066523,
-                                      -0.0227477243021426, 0.150803629695307, 0.0779182588187377,
-                                      " x3 <unicode> x1", 0.112759818779579, 0.0491315892354841, 1.58590959566321,
-                                      -0.000464738405957426, 0.0538034631716805, 0.0306885890333795,
-                                      " y1 <unicode> x1", 0.0358943957021094, 0.0146266963291095,
-                                      2.09812170450988))
+                                 list(0.249609318439143, 0.447867133100657, 0.35517815931248, "x2 <unicode> x1",
+                                      3.13082892944294e-14, 0.0467810929527117, 7.592344190665, -0.0367152972775892,
+                                      0.199977912531745, 0.0779182588187363, "x3 <unicode> x1", 0.112759818779595,
+                                      0.0491315892354855, 1.58590959566314, 0.00301905807224416, 0.0567699557699216,
+                                      0.0306885890333796, "y1 <unicode> x1", 0.0358943957021141, 0.0146266963291099,
+                                      2.09812170450983))
 })
 
 test_that("Residual variances table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_var"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(0.0692094432457098, 0.123114077566911, "x1", 0.0973808537831693,
-                                      "", "x1", 1.35891298214119e-13, 0.013158953231437, 7.40034956203999,
+                                 list(0.0579281059892853, 0.121472726325043, "x1", 0.0973808537831743,
+                                      "", "x1", 5.28860955029131e-10, 0.0156805585117224, 6.21029242742692,
                                       2.25167664969696, 2.25167664969696, "x2", 2.25167664969696,
                                       "", "x2", "", 0, "", 1.949678538072, 1.949678538072, "x3", 1.949678538072,
                                       "", "x3", "", 0, "", 6.78685155555555, 6.78685155555555, "y1",
                                       6.78685155555555, "", "y1", "", 0, ""))
 })
-
 
 # t-size RMSEA and CFI match values of original article (Katerina M. Marcoulides & Ke-Hai Yuan (2017)),
 # also checks variance-covariance matrix input
@@ -723,37 +719,36 @@ test_that("T-size fit indices table results match", {
 })
 
 
+options <- jaspTools::analysisOptions("SEM")
+options$dataType          <- "varianceCovariance"
+options$sampleSize        <- 75
+options$emulation         <- "lavaan"
+options$estimator         <- "default"
+options$group             <- ""
+options$samplingWeights   <- ""
+options$informationMatrix <- "expected"
+options$naAction          <- "default"
+options$modelTest         <- "standard"
+options$models <- list(
+  list(name = "Model1", syntax = list(model = "F =~ x1 + x3 + y1", columns = c("x1", "x3", "y1"))),
+  list(name = "Model2", syntax = list(model = "F =~ y1 + y2 + y3", columns = c("y1", "y2", "y3")))
+)
 
-test_that("Variance-covariance input works", {
+data <- read.csv(testthat::test_path("poldem_grouped.csv"))
+data <- cov(data)
+data <- as.data.frame(data)
 
-  options <- jaspTools::analysisOptions("SEM")
-  options$dataType          <- "varianceCovariance"
-  options$sampleSize        <- 75
-  options$emulation         <- "lavaan"
-  options$estimator         <- "default"
-  options$group             <- ""
-  options$samplingWeights   <- ""
-  options$informationMatrix <- "expected"
-  options$naAction          <- "default"
-  options$modelTest         <- "standard"
-  options$models <- list(
-    list(name = "Model1", syntax = list(model = "F =~ x1 + x3 + y1", columns = c("x1", "x3", "y1"))),
-    list(name = "Model2", syntax = list(model = "F =~ y1 + y2 + y3", columns = c("y1", "y2", "y3")))
-  )
+set.seed(1)
+results <- jaspTools::runAnalysis("SEM", data, options, makeTests = F)
 
-  data <- read.csv(testthat::test_path("poldem_grouped.csv"))
-  data <- cov(data)
-  data <- as.data.frame(data)
-
-  set.seed(1)
-  results <- jaspTools::runAnalysis("SEM", data, options, makeTests = F)
+test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(707.570148255052, 721.47507693627, 6.66133814775094e-14, 0, "Model1",
-                                      75, "", "", "", "", 6, 6, 1095.63355300897, 1109.53848169019,
-                                      0, 0, "Model2", 75, "", "", -6.66133814775094e-14, 0, 6, 6
-                                 ))
+                                 list(709.023697474126, 722.928626155344, 0, 0, "Model1", 75, "", "",
+                                      "", "", 6, 6, 816.268480294992, 830.173408976209, 9.99200722162641e-14,
+                                      0, "Model2", 75, "", "", 9.99200722162641e-14, 0, 6, 6))
 })
+
 
 
 test_that("Fixing mean manifest intercepts works", {

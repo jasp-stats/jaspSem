@@ -156,7 +156,7 @@ Form
 		Group
 		{
 		  CheckBox { name: "rSquared";							label: qsTr("R-squared")				}
-			CheckBox { name: "additionalFitMeasures";	label: qsTr("Fit measures")	}
+			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures")	}
 			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient")		}
 			CheckBox { name: "reliabilityMeasures";		label: qsTr("Reliability measures")		}
 		}
