@@ -19,7 +19,7 @@
 
 # This is a generated file. Don't change it!
 
-#' MNLFA (beta)
+#' MNLFA
 #'
 ModeratedNonLinearFactorAnalysis <- function(
     data = NULL,
