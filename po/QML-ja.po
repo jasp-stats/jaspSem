@@ -1359,10 +1359,6 @@ msgstr ""
 "lavaanのアップデートに関するより詳しい情報は %1 にあります．"
 
 msgctxt "PLSSEM|"
-msgid "Fit measures"
-msgstr ""
-
-msgctxt "PLSSEM|"
 msgid "Overall model fit"
 msgstr ""
 
@@ -1383,3 +1379,172 @@ msgstr ""
 msgctxt "LatentGrowthCurve|"
 msgid "Show parameter estimates"
 msgstr "パラメータ推定値を表示する"
+
+msgctxt "Description|"
+msgid "MNLFA"
+msgstr ""
+
+#, fuzzy
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Loadings"
+msgstr "負荷量"
+
+#, fuzzy
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Intercepts"
+msgstr "切片"
+
+#, fuzzy
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Residual variances"
+msgstr "残差分散"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Variances"
+msgstr ""
+
+#, fuzzy
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Means"
+msgstr "平均値"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Covariances"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderation"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderators"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Square   Cubic"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "<b>Start/Sync Analysis</b>"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Assumption Check"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Check model fit per group"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Split continuous variables into groups:"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Add group variable to data"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Interaction Terms"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Include"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderation Options"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Invariance Tests"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Configural"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Metric"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Scalar"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Strict"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Custom"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Include Individual Moderations"
+msgstr ""
+
+#, fuzzy
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Indicators"
+msgstr "指標"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factors"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Display Plot"
+msgstr ""
+
+#, fuzzy
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Output Options"
+msgstr "出力オプション"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Parameter Estimates"
+msgstr ""
+
+#, fuzzy
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Significance level"
+msgstr "有意水準"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factor variances"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factor means"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factor covariances"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Show syntax"
+msgstr ""
+
+#, fuzzy
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Plots"
+msgstr "プロット"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderator 1"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderator 2"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Display plot"
+msgstr ""
+
+#, fuzzy
+msgctxt "PLSSEM|"
+msgid "Additional fit measures"
+msgstr "追加の適合度指標"

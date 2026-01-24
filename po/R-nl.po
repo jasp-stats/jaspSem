@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2025-08-16 03:07\n"
+"POT-Creation-Date: 2026-01-24 03:12\n"
 "PO-Revision-Date: 2025-06-22 22:02+0000\n"
 "Last-Translator: Koen Derks <koen-derks@hotmail.com>\n"
 "Language-Team: Dutch <https://hosted.weblate.org/projects/jasp/jaspsem-r/nl/"
@@ -247,6 +247,13 @@ msgstr ""
 "Melding:\n"
 "%s"
 
+#, fuzzy
+msgid "Estimation failed"
+msgstr ""
+"Schatting mislukt\n"
+"Melding:\n"
+"%s"
+
 msgid "Direct effects"
 msgstr "Directe effecten"
 
@@ -328,6 +335,180 @@ msgstr "Indicator"
 msgid "Model plot not available with ordinal variables"
 msgstr "Modelplot niet beschikbaar met ordinale variabelen"
 
+msgid ""
+"Specify both factor indicator variables and moderator variables to run the "
+"analysis."
+msgstr ""
+
+msgid "Check the 'Sync Analysis' box to run the analysis."
+msgstr ""
+
+msgid ""
+"The moderator variable '%s' already has '_squared' in its name. Please "
+"rename the variable before proceeding."
+msgstr ""
+
+msgid ""
+"The moderator variable '%s' already has '_cubic' in its name. Please rename "
+"the variable before proceeding."
+msgstr ""
+
+msgid "Fitting invariance model"
+msgstr ""
+
+msgid "Fit per Group Test"
+msgstr ""
+
+#, fuzzy
+msgid "Group Model"
+msgstr "Groep"
+
+msgid "Error in fit per group test. Internal error message(s): %s"
+msgstr ""
+
+msgid "N"
+msgstr ""
+
+#, fuzzy
+msgid "RMSEA"
+msgstr "PCA RMSE"
+
+msgid "CFI"
+msgstr ""
+
+msgid "SRMR"
+msgstr ""
+
+#, fuzzy
+msgid "The model for group %s did not converge."
+msgstr "Het model kon niet worden geschat door niet-convergentie."
+
+msgid "Global Invariance Fit"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+#, fuzzy
+msgid "n(Par)"
+msgstr "n(Parameters)"
+
+msgid "Fit (-2LL)"
+msgstr ""
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "SAAIC"
+msgstr ""
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "SABIC"
+msgstr ""
+
+msgid "Choose one of the global invariance tests to perform the test."
+msgstr ""
+
+msgid "Δ(LL)"
+msgstr ""
+
+msgid "Δ(df)"
+msgstr ""
+
+msgid "%1$s Error in fitting the %2$s model. Internal error message(s): %3$s"
+msgstr ""
+
+#, fuzzy
+msgid "Parameter Estimates"
+msgstr "Parameterschattingen"
+
+#, fuzzy
+msgid "The %s model could not be fitted"
+msgstr "Het model kon niet worden geschat door niet-convergentie."
+
+msgid "Loadings"
+msgstr "Ladingen"
+
+#, fuzzy
+msgid "Factor"
+msgstr "Factor model"
+
+#, fuzzy
+msgid "Effect"
+msgstr "Totale effecten"
+
+msgid "Std. Error"
+msgstr "Std. fout"
+
+msgid "Intercepts"
+msgstr "Intercepten"
+
+#, fuzzy
+msgid "Residual Variances"
+msgstr "Residu varianties"
+
+#, fuzzy
+msgid "Factor Variances"
+msgstr "Factorvarianties"
+
+#, fuzzy
+msgid "Factor Means"
+msgstr "Factorladingen"
+
+#, fuzzy
+msgid "Factor Covariances"
+msgstr "Factor covarianties"
+
+#, fuzzy
+msgid "Parameter Plots"
+msgstr "Parameter"
+
+#, fuzzy
+msgid "total"
+msgstr "Totaal"
+
+#, fuzzy
+msgid "Parameter Value"
+msgstr "Parameter"
+
+#, fuzzy
+msgid "Model Syntax"
+msgstr "Model syntax"
+
+msgid "Nothing to print."
+msgstr ""
+
+#, fuzzy
+msgid "addedGroupVariable"
+msgstr "Variabele"
+
+msgid "Column name %s already exists in the dataset"
+msgstr ""
+
+msgid "# LOADINGS BLOCK"
+msgstr ""
+
+#, fuzzy
+msgid "Baseline"
+msgstr "Baseline test"
+
+msgid "# FACTOR VARIANCES BLOCK"
+msgstr ""
+
+msgid "# FACTOR MEANS BLOCK"
+msgstr ""
+
+msgid "# INTERCEPTS BLOCK"
+msgstr ""
+
+msgid "# RESIDUAL VARIANCES BLOCK"
+msgstr ""
+
+msgid "# FACTOR COVARIANCES BLOCK"
+msgstr ""
+
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "Groeperingsvariabele heeft minder dan 3 waarnemingen in groep %s"
 
@@ -341,18 +522,33 @@ msgstr ""
 msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
 msgstr ""
 
+msgid "Using '~~' is not supported. Try '~' instead"
+msgstr ""
+
 msgid "Estimation failed Message: %s"
 msgstr "Schatting mislukt Melding: %s"
 
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr "Schatting mislukt! Bericht: Model %s convergeert niet!"
 
-#, fuzzy
-msgid "Model Fit"
+msgid "Model fit"
 msgstr "Model passing"
 
 msgid "Group"
 msgstr "Groep"
+
+msgid "n"
+msgstr "n"
+
+msgid "Baseline test"
+msgstr "Baseline test"
+
+msgid "Difference test"
+msgstr "Verschillen test"
+
+#, fuzzy
+msgid "Model Fit"
+msgstr "Model passing"
 
 msgid "Distance Measure"
 msgstr ""
@@ -377,21 +573,11 @@ msgstr ""
 msgid "Denotes the fit of the model including a saturated structural model."
 msgstr ""
 
-#, fuzzy
-msgid "Parameter Estimates"
-msgstr "Parameterschattingen"
-
 msgid "Weights"
 msgstr "Gewichten"
 
 msgid "Construct"
 msgstr "Construeer"
-
-msgid "Std. Error"
-msgstr "Std. fout"
-
-msgid "Loadings"
-msgstr "Ladingen"
 
 msgid "Regression Coefficients"
 msgstr "Regressie Coëfficiënten"
@@ -531,9 +717,6 @@ msgstr "Geïmpliceerde indicator correlatie matrix"
 msgid "Implied construct correlations could not be computed: %s"
 msgstr "Geïmpliceerde construct correlatie matrix"
 
-msgid "Column name %s already exists in the dataset"
-msgstr ""
-
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
 msgstr ""
@@ -555,13 +738,6 @@ msgid ""
 msgstr ""
 "Niet meer gevallen dan het aantal variabelen. Hebben je gegevens een "
 "variantie-covariantiematrix?"
-
-msgid ""
-"When mean structure is included, at least one of the checkboxes to fix the "
-"intercepts to zero has to be checked"
-msgstr ""
-"Als de gemiddelde structuur is opgenomen, moet ten minste een van de "
-"selectievakjes om de intercepts op nul te stellen zijn aangevinkt"
 
 msgid ""
 "When conditioning estimation on exogenous covariates, the 'Exogenous "
@@ -595,15 +771,6 @@ msgstr "Schatting mislukt! Bericht: Model %s convergeert niet!"
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr "Schatting mislukt! Bericht: Model %s heeft negatieve vrijheidsgraden."
 
-msgid "Model fit"
-msgstr "Model passing"
-
-msgid "AIC"
-msgstr "AIC"
-
-msgid "BIC"
-msgstr "BIC"
-
 msgid "n(Observations)"
 msgstr "n(Observaties)"
 
@@ -615,12 +782,6 @@ msgstr "n(Parameters)"
 
 msgid "Free"
 msgstr "Vrij"
-
-msgid "Baseline test"
-msgstr "Baseline test"
-
-msgid "Difference test"
-msgstr "Verschillen test"
 
 msgid "%1$sdf"
 msgstr "%1$sdf"
@@ -663,10 +824,6 @@ msgstr "Factorladingen"
 msgid "Latent"
 msgstr "Latent"
 
-#, fuzzy
-msgid "%s%% Confidence interval"
-msgstr "%s%% Betrouwbaarheidsinterval"
-
 msgid "Regression coefficients"
 msgstr "Regressie Coëfficiënten"
 
@@ -681,9 +838,6 @@ msgstr "Variabelen"
 
 msgid "Residual variances"
 msgstr "Residu varianties"
-
-msgid "Intercepts"
-msgstr "Intercepten"
 
 msgid "Missing data method 'FIML' forces meanstructure."
 msgstr ""
@@ -716,13 +870,6 @@ msgstr ""
 
 msgid "Fair-close limit"
 msgstr ""
-
-msgid "CFI"
-msgstr ""
-
-#, fuzzy
-msgid "RMSEA"
-msgstr "PCA RMSE"
 
 #, fuzzy
 msgid "T-size statistics are computed for <i>%s = 0.05</i>."
@@ -932,8 +1079,16 @@ msgstr ""
 msgid "first-order"
 msgstr ""
 
-#~ msgid "n"
-#~ msgstr "n"
+#~ msgid ""
+#~ "When mean structure is included, at least one of the checkboxes to fix "
+#~ "the intercepts to zero has to be checked"
+#~ msgstr ""
+#~ "Als de gemiddelde structuur is opgenomen, moet ten minste een van de "
+#~ "selectievakjes om de intercepts op nul te stellen zijn aangevinkt"
+
+#, fuzzy
+#~ msgid "%s%% Confidence interval"
+#~ msgstr "%s%% Betrouwbaarheidsinterval"
 
 #~ msgid "WARNING! %1$s: %2$s"
 #~ msgstr "WAARSCHUWING! %1$s: %2$s"

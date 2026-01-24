@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
-"POT-Creation-Date: 2025-08-16 03:07\n"
+"POT-Creation-Date: 2026-01-24 03:12\n"
 "PO-Revision-Date: 2025-08-17 11:01+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -243,6 +243,13 @@ msgstr ""
 "Mensaje:\n"
 "%s"
 
+#, fuzzy
+msgid "Estimation failed"
+msgstr ""
+"Falló la estimación\n"
+"Mensaje:\n"
+"%s"
+
 msgid "Direct effects"
 msgstr "Efectos directos"
 
@@ -321,6 +328,178 @@ msgstr "Indicador"
 msgid "Model plot not available with ordinal variables"
 msgstr "El gráfico del modelo no está disponible con variables ordinales"
 
+msgid ""
+"Specify both factor indicator variables and moderator variables to run the "
+"analysis."
+msgstr ""
+
+msgid "Check the 'Sync Analysis' box to run the analysis."
+msgstr ""
+
+msgid ""
+"The moderator variable '%s' already has '_squared' in its name. Please "
+"rename the variable before proceeding."
+msgstr ""
+
+msgid ""
+"The moderator variable '%s' already has '_cubic' in its name. Please rename "
+"the variable before proceeding."
+msgstr ""
+
+msgid "Fitting invariance model"
+msgstr ""
+
+msgid "Fit per Group Test"
+msgstr ""
+
+#, fuzzy
+msgid "Group Model"
+msgstr "Grupo"
+
+msgid "Error in fit per group test. Internal error message(s): %s"
+msgstr ""
+
+msgid "N"
+msgstr ""
+
+msgid "RMSEA"
+msgstr "REACM (RMSEA)"
+
+msgid "CFI"
+msgstr "IAC (CFI)"
+
+msgid "SRMR"
+msgstr ""
+
+#, fuzzy
+msgid "The model for group %s did not converge."
+msgstr "El modelo no se pudo estimar debido a la no convergencia."
+
+msgid "Global Invariance Fit"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+#, fuzzy
+msgid "n(Par)"
+msgstr "n(Parámetros)"
+
+msgid "Fit (-2LL)"
+msgstr ""
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "SAAIC"
+msgstr ""
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "SABIC"
+msgstr ""
+
+msgid "Choose one of the global invariance tests to perform the test."
+msgstr ""
+
+msgid "Δ(LL)"
+msgstr ""
+
+msgid "Δ(df)"
+msgstr ""
+
+msgid "%1$s Error in fitting the %2$s model. Internal error message(s): %3$s"
+msgstr ""
+
+msgid "Parameter Estimates"
+msgstr "Estimaciones de parámetros"
+
+#, fuzzy
+msgid "The %s model could not be fitted"
+msgstr "El modelo no se pudo estimar debido a la no convergencia."
+
+msgid "Loadings"
+msgstr "Cargas"
+
+#, fuzzy
+msgid "Factor"
+msgstr "# Factores"
+
+#, fuzzy
+msgid "Effect"
+msgstr "Efectos totales"
+
+msgid "Std. Error"
+msgstr "Error típico"
+
+msgid "Intercepts"
+msgstr "Constantes"
+
+#, fuzzy
+msgid "Residual Variances"
+msgstr "Varianzas de los errores"
+
+#, fuzzy
+msgid "Factor Variances"
+msgstr "Varianzas de factores"
+
+#, fuzzy
+msgid "Factor Means"
+msgstr "Cargas de los Factores"
+
+#, fuzzy
+msgid "Factor Covariances"
+msgstr "Covarianzas de factores"
+
+#, fuzzy
+msgid "Parameter Plots"
+msgstr "Parámetro"
+
+#, fuzzy
+msgid "total"
+msgstr "Total"
+
+#, fuzzy
+msgid "Parameter Value"
+msgstr "Parámetro"
+
+#, fuzzy
+msgid "Model Syntax"
+msgstr "Sintaxis del modelo"
+
+msgid "Nothing to print."
+msgstr ""
+
+#, fuzzy
+msgid "addedGroupVariable"
+msgstr "Variable"
+
+msgid "Column name %s already exists in the dataset"
+msgstr "El nombre %s de columna ya existe en el conjunto de datos"
+
+msgid "# LOADINGS BLOCK"
+msgstr ""
+
+#, fuzzy
+msgid "Baseline"
+msgstr "Contraste de referencia"
+
+msgid "# FACTOR VARIANCES BLOCK"
+msgstr ""
+
+msgid "# FACTOR MEANS BLOCK"
+msgstr ""
+
+msgid "# INTERCEPTS BLOCK"
+msgstr ""
+
+msgid "# RESIDUAL VARIANCES BLOCK"
+msgstr ""
+
+msgid "# FACTOR COVARIANCES BLOCK"
+msgstr ""
+
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr ""
 "La variable de agrupamiento tiene menos de 3 observaciones en el grupo %s"
@@ -335,17 +514,34 @@ msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
 msgstr ""
 "Usar '~~' no se admite para covarianzas compuestas. En su lugar, intenta '~'"
 
+#, fuzzy
+msgid "Using '~~' is not supported. Try '~' instead"
+msgstr ""
+"Usar '~~' no se admite para covarianzas compuestas. En su lugar, intenta '~'"
+
 msgid "Estimation failed Message: %s"
 msgstr "Mensaje de fallo de la estimación: %s"
 
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr "¡Falló la estimación! Mensaje: ¡El modelo %s no convergió!"
 
-msgid "Model Fit"
+msgid "Model fit"
 msgstr "Ajuste del modelo"
 
 msgid "Group"
 msgstr "Grupo"
+
+msgid "n"
+msgstr "n"
+
+msgid "Baseline test"
+msgstr "Contraste de referencia"
+
+msgid "Difference test"
+msgstr "Contraste de diferencias"
+
+msgid "Model Fit"
+msgstr "Ajuste del modelo"
 
 msgid "Distance Measure"
 msgstr "Medida de distancia"
@@ -370,20 +566,11 @@ msgstr "Al menos un resultado no es admisible."
 msgid "Denotes the fit of the model including a saturated structural model."
 msgstr "Denota el ajuste del modelo incluyendo un modelo estructural saturado."
 
-msgid "Parameter Estimates"
-msgstr "Estimaciones de parámetros"
-
 msgid "Weights"
 msgstr "Ponderaciones"
 
 msgid "Construct"
 msgstr "Constructo"
-
-msgid "Std. Error"
-msgstr "Error típico"
-
-msgid "Loadings"
-msgstr "Cargas"
 
 msgid "Regression Coefficients"
 msgstr "Coeficientes de Regresión"
@@ -515,9 +702,6 @@ msgstr "No se pueden calcular las correlaciones de indicadores implicados: %s"
 msgid "Implied construct correlations could not be computed: %s"
 msgstr "No se pueden calcular las correlaciones de constructos implicados: %s"
 
-msgid "Column name %s already exists in the dataset"
-msgstr "El nombre %s de columna ya existe en el conjunto de datos"
-
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
 msgstr ""
@@ -539,13 +723,6 @@ msgid ""
 msgstr ""
 "No hay más casos que el número de variables. ¿Son sus datos una matriz de "
 "varianzas-covarianzas?"
-
-msgid ""
-"When mean structure is included, at least one of the checkboxes to fix the "
-"intercepts to zero has to be checked"
-msgstr ""
-"Cuando se incluye la estructura media, al menos debe estar marcada una de "
-"las casillas para fijar las constantes como cero"
 
 msgid ""
 "When conditioning estimation on exogenous covariates, the 'Exogenous "
@@ -580,15 +757,6 @@ msgstr ""
 "¡Falló la estimación! Mensaje: %s tiene un número de grados de libertad "
 "negativo."
 
-msgid "Model fit"
-msgstr "Ajuste del modelo"
-
-msgid "AIC"
-msgstr "AIC"
-
-msgid "BIC"
-msgstr "BIC"
-
 msgid "n(Observations)"
 msgstr "n(Observaciones)"
 
@@ -600,12 +768,6 @@ msgstr "n(Parámetros)"
 
 msgid "Free"
 msgstr "Libres"
-
-msgid "Baseline test"
-msgstr "Contraste de referencia"
-
-msgid "Difference test"
-msgstr "Contraste de diferencias"
 
 msgid "%1$sdf"
 msgstr "%1$sgl"
@@ -649,9 +811,6 @@ msgstr "Cargas de los Factores"
 msgid "Latent"
 msgstr "Latente"
 
-msgid "%s%% Confidence interval"
-msgstr "Intervalo con %s%% de confianza"
-
 msgid "Regression coefficients"
 msgstr "Coeficientes de regresión"
 
@@ -666,9 +825,6 @@ msgstr "Variables"
 
 msgid "Residual variances"
 msgstr "Varianzas de los errores"
-
-msgid "Intercepts"
-msgstr "Constantes"
 
 msgid "Missing data method 'FIML' forces meanstructure."
 msgstr "El método 'MVIC' de datos ausentes fuerza la estructura media."
@@ -700,12 +856,6 @@ msgstr "Límite deficiente-aceptable"
 
 msgid "Fair-close limit"
 msgstr "Límite aceptable-próximo"
-
-msgid "CFI"
-msgstr "IAC (CFI)"
-
-msgid "RMSEA"
-msgstr "REACM (RMSEA)"
 
 msgid "T-size statistics are computed for <i>%s = 0.05</i>."
 msgstr "Los estadísticos de tamaño T se calculan para <i>%s = 0.05</i>."
@@ -911,8 +1061,15 @@ msgstr "Huber-White robusto"
 msgid "first-order"
 msgstr "Primer orden"
 
-#~ msgid "n"
-#~ msgstr "n"
+#~ msgid ""
+#~ "When mean structure is included, at least one of the checkboxes to fix "
+#~ "the intercepts to zero has to be checked"
+#~ msgstr ""
+#~ "Cuando se incluye la estructura media, al menos debe estar marcada una de "
+#~ "las casillas para fijar las constantes como cero"
+
+#~ msgid "%s%% Confidence interval"
+#~ msgstr "Intervalo con %s%% de confianza"
 
 #~ msgid "WARNING! %1$s: %2$s"
 #~ msgstr "¡AVISO! %1$s: %2$s"
