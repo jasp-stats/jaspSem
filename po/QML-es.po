@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-01-25 08:28+0000\n"
+"PO-Revision-Date: 2026-01-25 09:30+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-qml/"
 "es/>\n"
@@ -1394,131 +1394,124 @@ msgstr "Mostrar estimaciones de parámetros"
 
 msgctxt "Description|"
 msgid "MNLFA"
-msgstr ""
+msgstr "AFNLM"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Loadings"
 msgstr "Cargas"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Intercepts"
 msgstr "Constantes"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Residual variances"
 msgstr "Varianzas de los errores"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Variances"
-msgstr ""
+msgstr "Varianzas"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Means"
 msgstr "Medias"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Covariances"
-msgstr ""
+msgstr "Covarianzas"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Moderation"
-msgstr ""
+msgstr "Moderación"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Moderators"
-msgstr ""
+msgstr "Moderadores"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Square   Cubic"
-msgstr ""
+msgstr "Cuadrado   Cúbico"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "<b>Start/Sync Analysis</b>"
-msgstr ""
+msgstr "<b>Iniciar/Sincr análisis</b>"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Assumption Check"
-msgstr ""
+msgstr "Comprobar supuestos"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Check model fit per group"
-msgstr ""
+msgstr "Comprobar ajuste de modelos por grupo"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Split continuous variables into groups:"
-msgstr ""
+msgstr "Separar variables continuas en grupos:"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Add group variable to data"
-msgstr ""
+msgstr "Añadir variable de grupos a los datos"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Interaction Terms"
-msgstr ""
+msgstr "Términos de interacción"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Include"
-msgstr ""
+msgstr "Incluir"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Moderation Options"
-msgstr ""
+msgstr "Opciones de moderación"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Invariance Tests"
-msgstr ""
+msgstr "Contrastes de invarianza"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Configural"
-msgstr ""
+msgstr "Configural"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Metric"
-msgstr ""
+msgstr "Métrica"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Scalar"
-msgstr ""
+msgstr "Escalar"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Strict"
-msgstr ""
+msgstr "Estricto"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Custom"
-msgstr ""
+msgstr "Personalizado"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Include Individual Moderations"
-msgstr ""
+msgstr "Incluir moderaciones individuales"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Indicators"
 msgstr "Indicadores"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Factors"
-msgstr ""
+msgstr "Factores"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Display Plot"
-msgstr ""
+msgstr "Presentar gráfico"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Output Options"
 msgstr "Opciones de salida"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "Estimaciones de parámetros"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Significance level"
 msgstr "Nivel de significación"
@@ -1537,26 +1530,24 @@ msgstr "Covarianzas de Factores"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Show syntax"
-msgstr ""
+msgstr "Mostrar sintaxis"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Plots"
 msgstr "Gráficos"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Moderator 1"
-msgstr ""
+msgstr "Moderador 1"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Moderator 2"
-msgstr ""
+msgstr "Moderador 2"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Display plot"
-msgstr ""
+msgstr "Presentar gráfico"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Additional fit measures"
 msgstr "Medidas de ajuste adicionales"
