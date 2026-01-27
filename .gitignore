@@ -52,3 +52,6 @@ _processedLockFile.lock
 # Kyle's build stuff
 Makefile
 renv_build.R
+
+# dev mode files
+jasp_dev_work_dir/
