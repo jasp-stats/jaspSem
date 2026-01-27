@@ -520,11 +520,11 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   invFitTable$addColumnInfo(name = "type",  title = gettext("Type"),           type = "string")
   invFitTable$addColumnInfo(name = "Npar",     title = gettext("n(Par)"),  type = "integer")
   # invFitTable$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
-  invFitTable$addColumnInfo(name = "Fit",     title = gettext("Fit (-2LL)"),  type = "number")
-  invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number")
-  invFitTable$addColumnInfo(name = "SAAIC",   title = gettext("SAAIC"),            type = "number")
-  invFitTable$addColumnInfo(name = "BIC",   title = gettext("BIC"),            type = "number")
-  invFitTable$addColumnInfo(name = "SABIC", title = gettext("SABIC"),          type = "number")
+  invFitTable$addColumnInfo(name = "Fit",     title = gettext("Fit (-2LL)"),  type = "number", format = "dp:3")
+  invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number", format = "dp:3")
+  invFitTable$addColumnInfo(name = "SAAIC",   title = gettext("SAAIC"),            type = "number", format = "dp:3")
+  invFitTable$addColumnInfo(name = "BIC",   title = gettext("BIC"),            type = "number", format = "dp:3")
+  invFitTable$addColumnInfo(name = "SABIC", title = gettext("SABIC"),          type = "number", format = "dp:3")
 
   results <- list(Configural = jaspResults[["mainContainer"]][["invarianceTestConfiguralState"]][["object"]],
                   Metric = jaspResults[["mainContainer"]][["invarianceTestMetricState"]][["object"]],
@@ -544,7 +544,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (length(results) > 1) {
 
     dtFill$diffLL <- dtFill$diffdf <- dtFill$p <- c()
-    invFitTable$addColumnInfo(name = "diffLL", title = gettext("\u0394(LL)"), type = "number")
+    invFitTable$addColumnInfo(name = "diffLL", title = gettext("\u0394(LL)"), type = "number", format = "dp:3")
     invFitTable$addColumnInfo(name = "diffdf", title = gettext("\u0394(df)"), type = "integer")
     invFitTable$addColumnInfo(name = "p", title = gettext("p"), type = "pvalue")
   }
