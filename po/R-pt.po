@@ -414,7 +414,7 @@ msgstr "Δ(gl)"
 
 msgid "%1$s Error in fitting the %2$s model. Internal error message(s): %3$s"
 msgstr ""
-"Erro %1$s no ajuste do modelo %s2$s. Mensagem(ns) de erro interna(s): %3$s"
+"Erro %1$s no ajuste do modelo %2$s. Mensagem(ns) de erro interna(s): %3$s"
 
 msgid "Parameter Estimates"
 msgstr "Estimativas de Parâmetros"
