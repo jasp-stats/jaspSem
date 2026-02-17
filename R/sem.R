@@ -2734,15 +2734,6 @@ checkLavaanModel <- function(model, availableVars) {
 
   if (!ready || !inherits(fit, "lavaan")) return()
 
-  # this fix is temporary until the semPlot package fixes this issue
-  if (fit@Options$conditional.x && length(fit@Data@ov.names.x[[1]]) > 0) {
-    # jsut create a plot so we can atatch the error to it
-    errorPlot <- createJaspPlot(title = modelname, width = 600, height = 400)
-    parentContainer[[modelname]] <- errorPlot
-    errorPlot$setError(gettext("Model plot not available when there is at least one exogenous covariate and the 'Exogenous covariate(s) fixed' box is checked."))
-    return()
-  }
-
   if (options[["pathPlotParameter"]])
     if (options[["pathPlotParameterStandardized"]])
       labels <- "std"
