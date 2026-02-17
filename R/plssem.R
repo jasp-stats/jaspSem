@@ -352,39 +352,11 @@ checkCSemModel <- function(model, availableVars) {
 .plsSemFitTab <- function(modelContainer, dataset, options, ready) {
   # create model fit table
   if (!is.null(modelContainer[["fittab"]])) return()
-
-  fittab <- createJaspTable(title = gettext("Model fit"))
-  fittab$dependOn(c("models"))
-  fittab$position <- 0
-
-  # fittab$addColumnInfo(name = "Model",    title = "",                            type = "string", combine = TRUE)
-  if (options[["group"]] != "")
-    fittab$addColumnInfo(name = "group",  title = gettext("Group"),              type = "string" )
-  fittab$addColumnInfo(name = "AIC",      title = gettext("AIC"),                type = "number" )
-  fittab$addColumnInfo(name = "BIC",      title = gettext("BIC"),                type = "number" )
-  fittab$addColumnInfo(name = "N",        title = gettext("n"),                  type = "integer")
-  fittab$addColumnInfo(name = "Chisq",    title = "\u03C7\u00B2",       type = "number" ,
-                       overtitle = gettext("Baseline test"))
-  fittab$addColumnInfo(name = "Df",       title = gettext("df"),                 type = "integer",
-                       overtitle = gettext("Baseline test"))
-  fittab$addColumnInfo(name = "PrChisq",  title = gettext("p"),                  type = "pvalue",
-                       overtitle = gettext("Baseline test"))
-  if (length(options[["models"]]) > 1) {
-    fittab$addColumnInfo(name = "dchisq",   title = "\u0394\u03C7\u00B2", type = "number" ,
-                         overtitle = gettext("Difference test"))
-    fittab$addColumnInfo(name = "ddf",      title = "\u0394df",           type = "integer",
-                         overtitle = gettext("Difference test"))
-    fittab$addColumnInfo(name = "dPrChisq", title = gettext("p"),                  type = "pvalue" ,
-                         overtitle = gettext("Difference test"))
-  }
-
-
-  modelContainer[["fittab"]] <- fittab
-
+  if (modelContainer$getError()) return() # attach the error in the parameter table
   if (!ready) return()
 
   # fill model fit table
-  plsSemResults <- .plsSemComputeResults(modelContainer, dataset, options)
+  plsSemResults <- modelContainer[["results"]][["object"]]
   # we need this for a lot of other tables so we do this once here:
   results <- plsSemResults[[1]]
   msc <- .withWarnings(.computeMSC(results, dataset, options))
