@@ -82,22 +82,29 @@ options$modelTest         <- "standard"
 options$reliability       <- TRUE
 options$ave               <- TRUE
 options$htmt              <- TRUE
-results <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options)
+results <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = FALSE)
 
 
-container   <- results[["results"]][["modelContainer"]][["collection"]]
-ave         <- container[["modelContainer_AVE"]][["data"]]
-htmt        <- container[["modelContainer_htmt"]][["collection"]][["modelContainer_htmt_htmttab"]][["data"]]
-reliability <- container[["modelContainer_reliability"]][["data"]]
+test_that("Reliability table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_reliability"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("ind60", 0.902334680203149, 0.943689529177281, "dem60", 0.858794528217608,
+                                      0.167859510809001, "dem65", 0.882739385479519, 0.824105408667229,
+                                      ".TOTAL.", 0.91494164193877, 0.322839343402656))
+})
 
-test_that("reliability/ AVE/ htmt works", {
-  expect_equal_tables(ave, list(0.8588015398276, "ind60", 0.597128239158634, "dem60", 0.640021072526866,
-                                "dem65"))
-  expect_equal_tables(htmt, list("", "", 1, 1, "", 0.420934414880351, 0.980709420149052, 1, 0.549916280338394
-  ))
-  expect_equal_tables(reliability, list("ind60", 0.902334680203148, 0.943690008441057, "dem60", 0.858794528217608,
-                                        0.841179471771507, "dem65", 0.882739385479519, 0.857553923970666,
-                                        "total", 0.91494164193877, 0.919205517992938))
+test_that("Heterotrait-monotrait ratio table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_htmt"]][["collection"]][["modelContainer_htmt_htmttab"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("", "", 1, 1, "", 0.420934414880351, 0.980709420149051, 1, 0.549916280338395
+                                 ))
+})
+
+test_that("Average variance extracted table results match", {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_AVE"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(0.858801124923028, "ind60", 0.597128634982681, "dem60", 0.640021172021486,
+                                      "dem65"))
 })
 
 
