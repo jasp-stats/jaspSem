@@ -1,3 +1,5 @@
+
+# jaspSem
 <div align="right">
 
 [![Unit Tests](https://github.com/jasp-stats/jaspSem/actions/workflows/unittests.yml/badge.svg)](https://github.com/jasp-stats/jaspSem/actions/workflows/unittests.yml)
@@ -6,3 +8,6 @@
 <b>Maintainer:</b> <a href="https://github.com/juliuspfadt/">Julius Pfadt</a>
 
 </div>
+
+JASP module for Structural Equation Modeling (SEM)
+

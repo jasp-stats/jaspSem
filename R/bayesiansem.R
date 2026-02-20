@@ -529,7 +529,30 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   # Extract parameter estimates from blavaan fit
   # Get parameter table with posterior summaries
-  paramTable <- blavaan::parameterestimates(fit, level = options[["ciLevel"]])
+  paramTable <- tryCatch({
+    blavaan::parameterestimates(fit, level = options[["ciLevel"]])
+  }, error = function(e) {
+    # Fallback: use summary if parameterestimates fails
+    summ <- summary(fit)
+    if (is.list(summ) && !is.null(summ$PE)) {
+      summ$PE
+    } else {
+      lavaan::parameterTable(fit)
+    }
+  })
+  
+  # Ensure required columns exist
+  if (!"label" %in% colnames(paramTable)) {
+    paramTable$label <- ""
+  }
+  
+  # Handle different column naming conventions
+  if ("post.sd" %in% colnames(paramTable) && !"se" %in% colnames(paramTable)) {
+    paramTable$se <- paramTable$post.sd
+  }
+  if (!"est" %in% colnames(paramTable) && "Estimate" %in% colnames(paramTable)) {
+    paramTable$est <- paramTable$Estimate
+  }
 
   # Split by parameter type and fill tables
   ind_params <- paramTable[paramTable$op == "=~", ]
