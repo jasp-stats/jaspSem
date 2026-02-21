@@ -22,6 +22,15 @@ options$mcmcChains   <- 2L
 options$mcmcThin     <- 1L
 options$group        <- ""
 options$dataType     <- "raw"
+options$equalLoading            <- FALSE
+options$equalIntercept          <- FALSE
+options$equalResidual           <- FALSE
+options$equalResidualCovariance <- FALSE
+options$equalMean               <- FALSE
+options$equalThreshold          <- FALSE
+options$equalRegression         <- FALSE
+options$equalLatentVariance     <- FALSE
+options$equalLatentCovariance   <- FALSE
 options$factorScaling               <- "factorLoading"
 options$ciLevel                     <- 0.95
 options$meanStructure               <- FALSE
@@ -78,10 +87,35 @@ test_that("Parameter tables have expected structure", {
 })
 
 
+# Multigroup test with equality constraints
+options_mg <- options
+options_mg$group           <- "group"
+options_mg$equalLoading    <- TRUE
+options_mg$equalIntercept  <- FALSE
+
+# blavaan/Stan corrupts future.globals.method.default to NULL after the first MCMC run;
+# reset it to the correct default before each subsequent run.
+options("future.globals.method.default" = c("ordered", "dfs"))
+set.seed(789)
+results_mg <- jaspTools::runAnalysis("BayesianSEM", testthat::test_path("poldem_grouped.csv"), options_mg)
+
+test_that("Multigroup BayesianSEM with equality constraints runs without errors", {
+  expect_true(results_mg[["status"]] == "complete")
+  expect_true(!is.null(results_mg[["results"]][["modelContainer"]]))
+})
+
+test_that("Multigroup parameter tables contain Group column", {
+  parcont <- results_mg[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]]
+  indtab  <- parcont[["modelContainer_params_ind"]][["data"]]
+  expect_true(!is.null(indtab))
+  expect_true("group" %in% names(indtab[[1]]))
+})
+
 # Additional fit measures test (separate run with additionalFitMeasures = TRUE)
 options2 <- options
 options2$additionalFitMeasures <- TRUE
 
+options("future.globals.method.default" = c("ordered", "dfs"))
 set.seed(456)
 results2 <- jaspTools::runAnalysis("BayesianSEM", testthat::test_path("poldem_grouped.csv"), options2)
 

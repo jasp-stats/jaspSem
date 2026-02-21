@@ -111,6 +111,8 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     modelContainer <- createJaspContainer()
     modelContainer$dependOn(c("models", "meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero",
                               "factorScaling", "orthogonal", "group",
+                              "equalLoading", "equalIntercept", "equalResidual", "equalResidualCovariance",
+                              "equalMean", "equalThreshold", "equalRegression", "equalLatentVariance", "equalLatentCovariance",
                               "mcmcBurnin", "mcmcSamples", "mcmcChains", "mcmcThin",
                               "userGaveSeed", "bootSeed"))
     jaspResults[["modelContainer"]] <- modelContainer
@@ -213,6 +215,24 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   # group variable
   if (isTRUE(options[["group"]] != "")) {
     blavaanOptions[["group"]] <- options[["group"]]
+  }
+
+  # group.equal constraints
+  equality_constraints <- c(
+    options[["equalLoading"]],
+    options[["equalIntercept"]],
+    options[["equalMean"]],
+    options[["equalThreshold"]],
+    options[["equalRegression"]],
+    options[["equalResidual"]],
+    options[["equalResidualCovariance"]],
+    options[["equalLatentVariance"]],
+    options[["equalLatentCovariance"]]
+  )
+  if (isTRUE(options[["group"]] != "") && any(equality_constraints)) {
+    blavaanOptions[["group.equal"]] <- c("loadings", "intercepts", "means", "thresholds", "regressions",
+                                         "residuals", "residual.covariances",
+                                         "lv.variances", "lv.covariances")[equality_constraints]
   }
 
   # Bayesian-specific options for blavaan
