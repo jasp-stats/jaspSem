@@ -49,11 +49,28 @@ Form
 
 	DropDown
 	{
+		id: grpvar
 		name: "group"
 		label: qsTr("Grouping variable")
 		showVariableTypeIcon: true
 		addEmptyValue: true
 		info: qsTr("Optional variable to split the analysis into groups for multigroup SEM.")
+	}
+
+	Group
+	{
+		visible: grpvar.value !== ""
+		title: qsTr("Equality Constraints")
+		info: qsTr("Constrain selected parameter types to be equal across groups.")
+		CheckBox { name: "equalLoading";           label: qsTr("Loadings");             info: qsTr("Constrain factor loadings to be equal across groups.") }
+		CheckBox { name: "equalIntercept";         label: qsTr("Intercepts");           info: qsTr("Constrain intercepts to be equal across groups.") }
+		CheckBox { name: "equalResidual";          label: qsTr("Residuals");            info: qsTr("Constrain residual variances to be equal across groups.") }
+		CheckBox { name: "equalResidualCovariance"; label: qsTr("Residual covariances"); info: qsTr("Constrain residual covariances to be equal across groups.") }
+		CheckBox { name: "equalMean";              label: qsTr("Means");                info: qsTr("Constrain means to be equal across groups.") }
+		CheckBox { name: "equalThreshold";         label: qsTr("Thresholds");           info: qsTr("Constrain thresholds to be equal across groups.") }
+		CheckBox { name: "equalRegression";        label: qsTr("Regressions");          info: qsTr("Constrain regression coefficients to be equal across groups.") }
+		CheckBox { name: "equalLatentVariance";    label: qsTr("Latent variances");     info: qsTr("Constrain latent variances to be equal across groups.") }
+		CheckBox { name: "equalLatentCovariance";  label: qsTr("Latent covariances");   info: qsTr("Constrain latent covariances to be equal across groups.") }
 	}
 
 	Section
