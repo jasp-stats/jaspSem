@@ -1,3 +1,5 @@
+export(BayesianSEM)
+export(BayesianSEMInternal)
 export(SEMInternal)
 export(MediationAnalysisInternal)
 export(MIMICInternal)
