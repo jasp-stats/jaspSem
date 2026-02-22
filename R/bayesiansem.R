@@ -114,7 +114,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
                               "equalLoading", "equalIntercept", "equalResidual", "equalResidualCovariance",
                               "equalMean", "equalThreshold", "equalRegression", "equalLatentVariance", "equalLatentCovariance",
                               "mcmcBurnin", "mcmcSamples", "mcmcChains", "mcmcThin",
-                              "userGaveSeed", "bootSeed"))
+                              "setSeed", "seed"))
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
@@ -157,6 +157,9 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     }
 
     # fit the model with blavaan
+    # blavaan/Stan corrupts future.globals.method.default to NULL after MCMC runs;
+    # reset it before each call to prevent subsequent failures
+    options("future.globals.method.default" = c("ordered", "dfs"))
     fit <- try(.withWarnings(do.call(blavaan::blavaan, blavaanArgs)))
 
     if (isTryError(fit)) {
@@ -197,7 +200,10 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   blavaanOptions <- list()
 
   # model features
-  blavaanOptions[["meanstructure"]]   <- options[["meanStructure"]]
+  # blavaan always estimates mean structure internally; setting meanstructure = FALSE
+  # triggers a warning ("missing argument ml forces meanstructure = TRUE").
+  # Always pass TRUE to avoid the warning; the meanStructure option controls display only.
+  blavaanOptions[["meanstructure"]]   <- TRUE
   blavaanOptions[["int.ov.free"]]     <- !options[["manifestInterceptFixedToZero"]]
   blavaanOptions[["int.lv.free"]]     <- !options[["latentInterceptFixedToZero"]]
   blavaanOptions[["orthogonal"]]      <- options[["orthogonal"]]
@@ -245,8 +251,8 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   if (thinVal > 1L)
     blavaanOptions[["bcontrol"]] <- list(thin = thinVal)
 
-  if (options[["userGaveSeed"]]) {
-    blavaanOptions[["seed"]] <- options[["bootSeed"]]
+  if (isTRUE(options[["setSeed"]])) {
+    blavaanOptions[["seed"]] <- options[["seed"]]
   }
 
   return(blavaanOptions)
@@ -287,20 +293,17 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   if (!is.null(modelContainer[["fittab"]])) return()
 
-  fittab <- createJaspTable(title = gettext("Model fit"))
+  fittab <- createJaspTable(title = gettext("Model Fit"))
   fittab$dependOn(c("models", "warnings"))
   fittab$position <- 0
 
   fittab$addColumnInfo(name = "Model",    title = "",                            type = "string" , combine = TRUE)
-
-  if (isTRUE(options[["group"]] != "")) {
-    fittab$addColumnInfo(name = "group",    title = gettext("Group"),              type = "string" )
-  }
   fittab$addColumnInfo(name = "DIC",      title = gettext("DIC"),                type = "number" )
   fittab$addColumnInfo(name = "WAIC",     title = gettext("WAIC"),               type = "number" )
   fittab$addColumnInfo(name = "LOO",      title = gettext("LOO"),                type = "number" )
   fittab$addColumnInfo(name = "N",        title = gettext("n(Observations)"),    type = "integer")
   fittab$addColumnInfo(name = "npar",     title = gettext("Total"),              overtitle = gettext("n(Parameters)"), type = "integer")
+  fittab$addColumnInfo(name = "nfree",    title = gettext("Free"),               overtitle = gettext("n(Parameters)"), type = "integer")
 
   modelContainer[["fittab"]] <- fittab
 
@@ -323,10 +326,12 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     rownames_data <- options[["models"]][[1]][["name"]]
     Ns <- lavaan::lavInspect(blavaanResults[[1]], "ntotal")
     npar <- lavaan::lavInspect(blavaanResults[[1]], "npar")
+    nfree <- npar - sum(blavaanResults[[1]]@ParTable$op == "==")
   } else {
     rownames_data <- vapply(options[["models"]], getElement, name = "name", "")
     Ns <- vapply(blavaanResults, lavaan::lavInspect, 0, what = "ntotal")
     npar <- vapply(blavaanResults, lavaan::lavInspect, 0, what = "npar")
+    nfree <- npar - vapply(blavaanResults, function(x) sum(x@ParTable$op == "=="), 0L)
   }
 
   # Extract Bayesian fit indices
@@ -346,6 +351,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   dtFill[["LOO"]]      <- sapply(fitMeasures, function(x) x$looic)
   dtFill[["N"]]        <- Ns
   dtFill[["npar"]]     <- npar
+  dtFill[["nfree"]]    <- nfree
 
   fittab$setData(dtFill)
   if (nchar(fnote) > 0) {
@@ -376,7 +382,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   for (i in seq_along(blavaanResults)) {
     modelName <- options[["models"]][[i]][["name"]]
 
-    fitTable <- createJaspTable(title = if (length(blavaanResults) > 1) modelName else gettext("Fit indices"))
+    fitTable <- createJaspTable(title = if (length(blavaanResults) > 1) modelName else gettext("Fit Indices"))
     fitTable$position <- i
 
     fitTable$addColumnInfo(name = "index",  title = gettext("Index"),   type = "string")
@@ -541,133 +547,6 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     pecont <- createJaspContainer(model[["name"]], initCollapsed = TRUE)
   }
 
-  # Measurement model
-  indtab <- createJaspTable(title = gettext("Factor Loadings"))
-
-  if (isTRUE(options[["group"]] != ""))
-    indtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
-
-  indtab$addColumnInfo(name = "lhs",      title = gettext("Latent"),     type = "string", combine = TRUE)
-  indtab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
-  indtab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  indtab$addColumnInfo(name = "est",      title = gettext("Post. Mean"), type = "number")
-  indtab$addColumnInfo(name = "se",       title = gettext("Post. SD"),   type = "number")
-  indtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
-  indtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
-
-  pecont[["ind"]] <- indtab
-
-  # Structural Model
-  regtab <- createJaspTable(title = gettext("Regression coefficients"))
-
-  if (isTRUE(options[["group"]] != ""))
-    regtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
-
-  regtab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),    type = "string", combine = TRUE)
-  regtab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string")
-  regtab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  regtab$addColumnInfo(name = "est",      title = gettext("Post. Mean"), type = "number")
-  regtab$addColumnInfo(name = "se",       title = gettext("Post. SD"),   type = "number")
-  regtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
-  regtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
-
-  pecont[["reg"]] <- regtab
-
-  # Latent variances
-  lvartab <- createJaspTable(title = gettext("Factor variances"))
-
-  if (isTRUE(options[["group"]] != ""))
-    lvartab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
-
-  lvartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
-  lvartab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  lvartab$addColumnInfo(name = "est",      title = gettext("Post. Mean"), type = "number")
-  lvartab$addColumnInfo(name = "se",       title = gettext("Post. SD"),   type = "number")
-  lvartab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
-  lvartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
-
-  pecont[["lvar"]] <- lvartab
-
-  # Latent covariances
-  lcovtab <- createJaspTable(title = gettext("Factor covariances"))
-
-  if (isTRUE(options[["group"]] != ""))
-    lcovtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
-
-  lcovtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
-  lcovtab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  lcovtab$addColumnInfo(name = "est",      title = gettext("Post. Mean"), type = "number")
-  lcovtab$addColumnInfo(name = "se",       title = gettext("Post. SD"),   type = "number")
-  lcovtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
-  lcovtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
-
-  pecont[["lcov"]] <- lcovtab
-
-  # Residual variances
-  vartab <- createJaspTable(title = gettext("Residual variances"))
-
-  if (isTRUE(options[["group"]] != ""))
-    vartab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
-
-  vartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
-  vartab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  vartab$addColumnInfo(name = "est",      title = gettext("Post. Mean"), type = "number")
-  vartab$addColumnInfo(name = "se",       title = gettext("Post. SD"),   type = "number")
-  vartab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
-  vartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
-
-  pecont[["var"]] <- vartab
-
-  # Residual covariances
-  covtab <- createJaspTable(title = gettext("Residual covariances"))
-
-  if (isTRUE(options[["group"]] != ""))
-    covtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
-
-  covtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
-  covtab$addColumnInfo(name = "label",    title = "",                    type = "string")
-  covtab$addColumnInfo(name = "est",      title = gettext("Post. Mean"), type = "number")
-  covtab$addColumnInfo(name = "se",       title = gettext("Post. SD"),   type = "number")
-  covtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
-  covtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
-
-  pecont[["cov"]] <- covtab
-
-  allTables <- list(indtab, regtab, lvartab, lcovtab, vartab, covtab)
-
-  # Means/Intercepts
-  if (options[["meanStructure"]]) {
-
-    mutab <- createJaspTable(title = gettext("Intercepts"))
-    allTables[[length(allTables) + 1]] <- mutab
-
-    if (isTRUE(options[["group"]] != ""))
-      mutab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
-
-    mutab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
-    mutab$addColumnInfo(name = "label",    title = "",                    type = "string")
-    mutab$addColumnInfo(name = "est",      title = gettext("Post. Mean"), type = "number")
-    mutab$addColumnInfo(name = "se",       title = gettext("Post. SD"),   type = "number")
-    mutab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
-    mutab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
-
-    pecont[["mu"]] <- mutab
-  }
-
   # Extract parameter estimates from blavaan fit
   # parameterTable provides est (posterior mean) and se (posterior SD)
   # CIs must be computed from MCMC samples
@@ -686,7 +565,6 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   if (!is.null(mcmcDraws)) {
     allDraws <- do.call(rbind, mcmcDraws)
-    mcmcNames <- colnames(allDraws)
     # MCMC columns match free parameters in order via lhs+op+rhs naming
     freeIdx <- which(paramTable$free > 0)
     for (j in seq_along(freeIdx)) {
@@ -703,46 +581,72 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     paramTable$ci.upper[fixedIdx] <- paramTable$est[fixedIdx]
   }
 
-  # Split by parameter type and fill tables
+  # Map group numbers to group labels for multigroup models
+  if (isTRUE(options[["group"]] != "")) {
+    groupLabels <- lavaan::lavInspect(fit, "group.label")
+    paramTable$group <- ifelse(paramTable$group == 0, "", groupLabels[paramTable$group])
+  }
+
+  # Helper: create and attach a parameter table only when it has rows
+  ciOvertitle <- gettextf("%s%% Credible interval", options[["ciLevel"]] * 100)
+  hasGroup <- isTRUE(options[["group"]] != "")
+
+  .makeParamTable <- function(key, title, lhsTitle, data, rhsTitle = NULL) {
+    if (nrow(data) == 0) return()
+    tab <- createJaspTable(title = gettext(title))
+    if (hasGroup)
+      tab$addColumnInfo(name = "group",    title = gettext("Group"),       type = "string", combine = TRUE)
+    tab$addColumnInfo(name = "lhs",        title = gettext(lhsTitle),      type = "string", combine = TRUE)
+    if (!is.null(rhsTitle))
+      tab$addColumnInfo(name = "rhs",      title = gettext(rhsTitle),      type = "string")
+    tab$addColumnInfo(name = "label",      title = "",                     type = "string")
+    tab$addColumnInfo(name = "est",        title = gettext("Post. Mean"),  type = "number")
+    tab$addColumnInfo(name = "se",         title = gettext("Post. SD"),    type = "number")
+    tab$addColumnInfo(name = "ci.lower",   title = gettext("Lower"),       type = "number", overtitle = ciOvertitle)
+    tab$addColumnInfo(name = "ci.upper",   title = gettext("Upper"),       type = "number", overtitle = ciOvertitle)
+    cols <- c("lhs", "label", "est", "se", "ci.lower", "ci.upper")
+    if (!is.null(rhsTitle)) cols <- c("lhs", "rhs", cols[-1])
+    if (hasGroup) cols <- c("group", cols)
+    tab$setData(data[, cols])
+    pecont[[key]] <- tab
+  }
+
+  latentVars <- unique(paramTable$lhs[paramTable$op == "=~"])
+
+  # Measurement model
   ind_params <- paramTable[paramTable$op == "=~", ]
-  if (nrow(ind_params) > 0) {
-    indtab$setData(ind_params[, c("lhs", "rhs", "label", "est", "se", "ci.lower", "ci.upper")])
-  }
+  .makeParamTable("ind", "Factor Loadings", "Latent", ind_params, rhsTitle = "Indicator")
 
+  # Structural model
   reg_params <- paramTable[paramTable$op == "~", ]
-  if (nrow(reg_params) > 0) {
-    regtab$setData(reg_params[, c("lhs", "rhs", "label", "est", "se", "ci.lower", "ci.upper")])
-  }
+  .makeParamTable("reg", "Regression Coefficients", "Outcome", reg_params, rhsTitle = "Predictor")
 
-  lvar_params <- paramTable[paramTable$op == "~~" & paramTable$lhs == paramTable$rhs & paramTable$lhs %in% unique(ind_params$lhs), ]
-  if (nrow(lvar_params) > 0) {
-    lvartab$setData(lvar_params[, c("lhs", "label", "est", "se", "ci.lower", "ci.upper")])
-  }
+  # Latent variances
+  lvar_params <- paramTable[paramTable$op == "~~" & paramTable$lhs == paramTable$rhs & paramTable$lhs %in% latentVars, ]
+  .makeParamTable("lvar", "Factor Variances", "Variable", lvar_params)
 
-  lcov_params <- paramTable[paramTable$op == "~~" & paramTable$lhs != paramTable$rhs & 
-                             (paramTable$lhs %in% unique(ind_params$lhs) | paramTable$rhs %in% unique(ind_params$lhs)), ]
-  if (nrow(lcov_params) > 0) {
+  # Latent covariances
+  lcov_params <- paramTable[paramTable$op == "~~" & paramTable$lhs != paramTable$rhs &
+                              (paramTable$lhs %in% latentVars | paramTable$rhs %in% latentVars), ]
+  if (nrow(lcov_params) > 0)
     lcov_params$lhs <- paste(lcov_params$lhs, "-", lcov_params$rhs)
-    lcovtab$setData(lcov_params[, c("lhs", "label", "est", "se", "ci.lower", "ci.upper")])
-  }
+  .makeParamTable("lcov", "Factor Covariances", "Variables", lcov_params)
 
-  var_params <- paramTable[paramTable$op == "~~" & paramTable$lhs == paramTable$rhs & !paramTable$lhs %in% unique(ind_params$lhs), ]
-  if (nrow(var_params) > 0) {
-    vartab$setData(var_params[, c("lhs", "label", "est", "se", "ci.lower", "ci.upper")])
-  }
+  # Residual variances
+  var_params <- paramTable[paramTable$op == "~~" & paramTable$lhs == paramTable$rhs & !paramTable$lhs %in% latentVars, ]
+  .makeParamTable("var", "Residual Variances", "Variable", var_params)
 
-  cov_params <- paramTable[paramTable$op == "~~" & paramTable$lhs != paramTable$rhs & 
-                           !paramTable$lhs %in% unique(ind_params$lhs) & !paramTable$rhs %in% unique(ind_params$lhs), ]
-  if (nrow(cov_params) > 0) {
+  # Residual covariances
+  cov_params <- paramTable[paramTable$op == "~~" & paramTable$lhs != paramTable$rhs &
+                             !paramTable$lhs %in% latentVars & !paramTable$rhs %in% latentVars, ]
+  if (nrow(cov_params) > 0)
     cov_params$lhs <- paste(cov_params$lhs, "-", cov_params$rhs)
-    covtab$setData(cov_params[, c("lhs", "label", "est", "se", "ci.lower", "ci.upper")])
-  }
+  .makeParamTable("cov", "Residual Covariances", "Variables", cov_params)
 
+  # Means/Intercepts
   if (options[["meanStructure"]]) {
     mu_params <- paramTable[paramTable$op == "~1", ]
-    if (nrow(mu_params) > 0) {
-      mutab$setData(mu_params[, c("lhs", "label", "est", "se", "ci.lower", "ci.upper")])
-    }
+    .makeParamTable("mu", "Intercepts", "Variable", mu_params)
   }
 
   if (!is.null(model)) {
