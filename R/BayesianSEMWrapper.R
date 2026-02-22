@@ -20,9 +20,18 @@
 BayesianSEM <- function(
           data = NULL,
           version = "0.95",
-          bootSeed = 1,
+          additionalFitMeasures = FALSE,
           ciLevel = 0.95,
           dataType = "raw",
+          equalIntercept = FALSE,
+          equalLatentCovariance = FALSE,
+          equalLatentVariance = FALSE,
+          equalLoading = FALSE,
+          equalMean = FALSE,
+          equalRegression = FALSE,
+          equalResidual = FALSE,
+          equalResidualCovariance = FALSE,
+          equalThreshold = FALSE,
           factorScaling = "factorLoading",
           group = "",
           latentInterceptFixedToZero = TRUE,
@@ -34,7 +43,8 @@ BayesianSEM <- function(
           meanStructure = FALSE,
           models = list(list(name = "Model 1", syntax = "")),
           orthogonal = FALSE,
-          userGaveSeed = FALSE,
+          seed = 1,
+          setSeed = FALSE,
           warnings = FALSE) {
 
    defaultArgCalls <- formals(jaspSem::BayesianSEM)
