@@ -47,32 +47,6 @@ Form
 		RadioButton { value: "raw"; label: qsTr("Raw"); checked: true; info: qsTr("Use raw data for the analysis.") }
 	}
 
-	DropDown
-	{
-		id: grpvar
-		name: "group"
-		label: qsTr("Grouping variable")
-		showVariableTypeIcon: true
-		addEmptyValue: true
-		info: qsTr("Optional variable to split the analysis into groups for multigroup SEM.")
-	}
-
-	Group
-	{
-		visible: grpvar.value !== ""
-		title: qsTr("Equality Constraints")
-		info: qsTr("Constrain selected parameter types to be equal across groups.")
-		CheckBox { name: "equalLoading";           label: qsTr("Loadings");             info: qsTr("Constrain factor loadings to be equal across groups.") }
-		CheckBox { name: "equalIntercept";         label: qsTr("Intercepts");           info: qsTr("Constrain intercepts to be equal across groups.") }
-		CheckBox { name: "equalResidual";          label: qsTr("Residuals");            info: qsTr("Constrain residual variances to be equal across groups.") }
-		CheckBox { name: "equalResidualCovariance"; label: qsTr("Residual covariances"); info: qsTr("Constrain residual covariances to be equal across groups.") }
-		CheckBox { name: "equalMean";              label: qsTr("Means");                info: qsTr("Constrain means to be equal across groups.") }
-		CheckBox { name: "equalThreshold";         label: qsTr("Thresholds");           info: qsTr("Constrain thresholds to be equal across groups.") }
-		CheckBox { name: "equalRegression";        label: qsTr("Regressions");          info: qsTr("Constrain regression coefficients to be equal across groups.") }
-		CheckBox { name: "equalLatentVariance";    label: qsTr("Latent variances");     info: qsTr("Constrain latent variances to be equal across groups.") }
-		CheckBox { name: "equalLatentCovariance";  label: qsTr("Latent covariances");   info: qsTr("Constrain latent covariances to be equal across groups.") }
-	}
-
 	Section
 	{
 		title: qsTr("Model Options")
@@ -92,15 +66,17 @@ Form
 				]
 			}
 
-			CheckBox { name: "manifestInterceptFixedToZero"; 	label: qsTr("Fix manifest intercepts to zero"); checked: false; info: qsTr("Fix the intercepts of observed variables to zero.") }
-			CheckBox { name: "latentInterceptFixedToZero"; 		label: qsTr("Fix latent intercepts to zero"); checked: true; info: qsTr("Fix the intercepts of latent variables to zero.") }
-			CheckBox { name: "orthogonal"; 			label: qsTr("Assume factors uncorrelated"); checked: false; info: qsTr("Assume that all latent factors are uncorrelated.") }
-		}
+			CheckBox
+			{
+				name: "meanStructure"
+				label: qsTr("Mean structure")
+				checked: false
+				info: qsTr("Model the means of observed and latent variables in addition to the covariance structure.")
+				CheckBox { name: "latentInterceptFixedToZero";		label: qsTr("Latent intercepts fixed to zero");		checked: true;	info: qsTr("Fix the intercepts of latent variables to zero.") }
+				CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Manifest intercepts fixed to zero");	checked: false;	info: qsTr("Fix the intercepts of observed variables to zero.") }
+			}
 
-		Group
-		{
-			title: qsTr("Include mean structure")
-			CheckBox { name: "meanStructure"; id: meanstructure; label: qsTr("Include mean structure"); checked: false; info: qsTr("Model the means of observed and latent variables in addition to the covariance structure.") }
+			CheckBox { name: "orthogonal"; label: qsTr("Assume factors uncorrelated"); checked: false; info: qsTr("Assume that all latent factors are uncorrelated.") }
 		}
 	}
 
@@ -158,30 +134,7 @@ Form
 		Group
 		{
 			title: qsTr("Other")
-			
-			CIField {
-				text: qsTr("Credible interval")
-				name: "ciLevel"
-				info: qsTr("Width of the Bayesian credible interval for parameter estimates.")
-			}
-
-			CheckBox
-			{
-				name:		"userGaveSeed"
-				id:			user_seed
-				label:		qsTr("Set random seed:")
-				checked:	false
-				childrenOnSameRow: true
-				info:		qsTr("Set a fixed random seed for reproducibility of the MCMC sampling.")
-
-				IntegerField
-				{
-					name:			"bootSeed"
-					defaultValue:	1
-					min:			1
-					info:			qsTr("The random seed value.")
-				}
-			}
+			SetSeed {}
 		}
 	}
 
@@ -192,9 +145,49 @@ Form
 
 		Group
 		{
-			title: qsTr("Additional output")
 			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures"); info: qsTr("Display additional Bayesian model fit measures.") }
 			CheckBox { name: "warnings";				label: qsTr("Show warnings"); checked: false; info: qsTr("Display any warnings generated during the analysis.") }
+
+			CIField
+			{
+				text: qsTr("Credible interval")
+				name: "ciLevel"
+				info: qsTr("Width of the Bayesian credible interval for parameter estimates.")
+			}
+		}
+	}
+
+	Section
+	{
+		title: qsTr("Multigroup")
+		info: qsTr("Options for multigroup Bayesian SEM.")
+
+		Group
+		{
+			DropDown
+			{
+				id: grpvar
+				name: "group"
+				label: qsTr("Grouping Variable")
+				showVariableTypeIcon: true
+				addEmptyValue: true
+				info: qsTr("Optional variable to split the analysis into groups for multigroup BSEM.")
+			}
+			Group
+			{
+				visible: grpvar.value != ""
+				title: qsTr("Equality Constraints")
+				info: qsTr("Constrain selected parameter types to be equal across groups.")
+				CheckBox { name: "equalLoading";				label: qsTr("Loadings");				info: qsTr("Constrain factor loadings to be equal across groups.") }
+				CheckBox { name: "equalIntercept";			label: qsTr("Intercepts");				info: qsTr("Constrain intercepts to be equal across groups.") }
+				CheckBox { name: "equalResidual";			label: qsTr("Residuals");				info: qsTr("Constrain residual variances to be equal across groups.") }
+				CheckBox { name: "equalResidualCovariance";	label: qsTr("Residual covariances");	info: qsTr("Constrain residual covariances to be equal across groups.") }
+				CheckBox { name: "equalMean";				label: qsTr("Means");					info: qsTr("Constrain means to be equal across groups.") }
+				CheckBox { name: "equalThreshold";			label: qsTr("Thresholds");				info: qsTr("Constrain thresholds to be equal across groups.") }
+				CheckBox { name: "equalRegression";			label: qsTr("Regressions");				info: qsTr("Constrain regression coefficients to be equal across groups.") }
+				CheckBox { name: "equalLatentVariance";		label: qsTr("Latent variances");		info: qsTr("Constrain latent variances to be equal across groups.") }
+				CheckBox { name: "equalLatentCovariance";	label: qsTr("Latent covariances");		info: qsTr("Constrain latent covariances to be equal across groups.") }
+			}
 		}
 	}
 }
