@@ -374,6 +374,7 @@ checkCSemModel <- function(model, availableVars) {
   if (!options[["overallModelFit"]]) return()
 
   fittab <- createJaspTable(title = gettext("Model Fit"))
+  fittab$info <- gettext("Overall model fit test using bootstrap-based distance measures. The test statistic is compared to a critical value obtained from bootstrapping. If the test statistic exceeds the critical value, the model is rejected at the chosen significance level.")
   fittab$dependOn(optionsFromObject = modelContainer,
                   options = c("group", "omfBootstrapSamples", "omfSignificanceLevel", "saturatedStructuralModel",
                               "overallModelFit"))
@@ -468,6 +469,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # create container for parameter estimates
   params <- createJaspContainer(gettext("Parameter Estimates"))
+  params$info <- gettext("Parameter estimates for the PLS-SEM model, including outer weights, outer loadings, inner model path coefficients, total effects, and residual correlations.")
   params$position <- 1
   params$dependOn(c("models", "ciLevel"))
 
@@ -494,6 +496,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # create weights table
   weightTab <- createJaspTable(title = gettext("Weights"))
+  weightTab$info <- gettext("Outer weights relating observed indicators to their composite constructs. Weights determine how indicators are combined to form construct scores and reflect each indicator's relative contribution.")
 
   if (options[["group"]] != "")
     weightTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -515,6 +518,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # create loadings table
   loadingTab <- createJaspTable(title = gettext("Loadings"))
+  loadingTab$info <- gettext("Outer loadings (correlations) between indicators and their constructs. Loadings above 0.708 indicate that the construct explains more than 50%% of the indicator's variance.")
 
   if (options[["group"]] != "")
     loadingTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -539,6 +543,7 @@ checkCSemModel <- function(model, availableVars) {
 
   #create paths table
   pathTab <- createJaspTable(title = gettext("Regression Coefficients"))
+  pathTab$info <- gettext("Inner model path coefficients between constructs. The f\u00B2 effect size indicates the substantive impact of removing each predictor: 0.02 (small), 0.15 (medium), 0.35 (large).")
 
   if (options[["group"]] != "")
     pathTab$addColumnInfo(name = "group",  title = gettext("Group"),        type = "string", combine = TRUE)
@@ -562,6 +567,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # create total effects table
   totalTab <- createJaspTable(title = gettext("Total Effects"))
+  totalTab$info <- gettext("Total effects combining direct and all indirect paths between constructs.")
 
   if (options[["group"]] != "")
     totalTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -583,6 +589,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # create residual correlation table
   resCorTab <- createJaspTable(title = gettext("Residual Correlations"))
+  resCorTab$info <- gettext("Residual correlations between indicators after accounting for the construct model. These represent correlated measurement errors between indicator pairs.")
 
   if (options[["group"]] != "")
     resCorTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -1083,6 +1090,7 @@ checkCSemModel <- function(model, availableVars) {
   if (!options[["endogenousIndicatorPrediction"]] || !is.null(modelContainer[["predict"]])) return()
 
   predict <- createJaspContainer(gettext("Endogenous Indicator Prediction"))
+  predict$info <- gettext("Cross-validated prediction of endogenous indicators using PLSpredict. The prediction metrics assess how well the PLS-SEM model predicts indicator scores out of sample.")
   predict$position <- 2
   predict$dependOn(c("endogenousIndicatorPrediction", "models", "kFolds", "repetitions", "benchmark"))
   modelContainer[["predict"]] <- predict
@@ -1119,6 +1127,7 @@ checkCSemModel <- function(model, availableVars) {
 
   #Create metrics table
   metricstab <- createJaspTable(gettext("Prediction Metrics"))
+  metricstab$info <- gettext("MAE (mean absolute error), RMSE (root mean squared error), and Q\u00B2 prediction metrics for endogenous indicators. Q\u00B2 > 0 indicates that prediction error is less than using the training sample mean. When benchmarks are included, lower MAE/RMSE than the benchmark suggests the PLS-SEM model predicts better.")
 
   if (options[["group"]] != "")
     metricstab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -1253,6 +1262,7 @@ checkCSemModel <- function(model, availableVars) {
   mfm <- msc$value
   # create additional fits table
   fitin <- createJaspTable(gettext("Additional Fit Measures"))
+  fitin$info <- gettext("Additional model fit measures for PLS-SEM. Includes CFI, GFI, RMSEA, SRMR for the model-implied indicator correlation matrix, Goodness-of-Fit (GoF) as geometric mean of AVE and R\u00B2, and bootstrap-based distance measures (dG, dL, dML).")
   fitin$addColumnInfo(name = "index", title = gettext("Index"), type = "string")
   if (options[["group"]] == "")
     fitin$addColumnInfo(name = "value", title = gettext("Value"), type = "number")
@@ -1346,6 +1356,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # create rsquared table
   tabr2 <- createJaspTable(gettext("R-Squared"))
+  tabr2$info <- gettext("R\u00B2 and adjusted R\u00B2 for each endogenous construct. R\u00B2 represents the proportion of variance in the construct explained by its predictors in the structural model. Values of 0.75, 0.50, and 0.25 are considered substantial, moderate, and weak.")
   if (options[["group"]] != "")
     tabr2$addColumnInfo(name = "grp", title = gettext("Group"), type = "string", combine = TRUE)
   tabr2$addColumnInfo(name = "var", title = gettext("Outcome"), type = "string")
@@ -1497,6 +1508,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # init table
   tabrho <- createJaspTable(gettext("Reliability Measures"))
+  tabrho$info <- gettext("Construct reliability measures. Cronbach's \u03B1 assumes equal indicator weights (tau-equivalence). J\u00F6reskog's \u03C1 uses the outer loadings and is the preferred measure for PLS-SEM. Dijkstra-Henseler's \u03C1_A is a consistent reliability estimate. Values above 0.70 indicate acceptable reliability.")
   if (options[["group"]] != "")
     tabrho$addColumnInfo(name = "grp", title = gettext("Group"),  type = "string", combine = TRUE)
   tabrho$addColumnInfo(name = "var",   title = gettext("Latent"), type = "string")
@@ -1674,6 +1686,7 @@ checkCSemModel <- function(model, availableVars) {
       !is.null(modelContainer[["cors"]])) return()
 
   cors <- createJaspContainer(gettext("Correlation Tables"))
+  cors$info <- gettext("Observed and model-implied correlation matrices for indicators and constructs. Comparing observed and implied matrices helps assess model fit at the indicator and construct level.")
   cors$position <- 3
   cors$dependOn(c("observedIndicatorCorrelation",
                     "impliedIndicatorCorrelation",
@@ -1708,6 +1721,7 @@ checkCSemModel <- function(model, availableVars) {
 
     if (options[["observedIndicatorCorrelation"]]) {
       oictab <- createJaspTable(gettext("Observed Indicator Correlation Matrix"))
+      oictab$info <- gettext("Sample correlation matrix of the observed indicator variables.")
       oictab$dependOn("observedIndicatorCorrelation")
       oictab$position <- 1
       corcont[["observedInd"]] <- oictab
@@ -1715,6 +1729,7 @@ checkCSemModel <- function(model, availableVars) {
 
     if (options[["impliedIndicatorCorrelation"]]) {
       iictab <- createJaspTable(gettext("Implied Indicator Correlation Matrix"))
+      iictab$info <- gettext("Model-implied correlation matrix of the indicator variables. Closeness to the observed matrix indicates good model fit at the indicator level.")
       iictab$dependOn("impliedIndicatorCorrelation")
       iictab$position <- 2
       corcont[["impliedInd"]] <- iictab
@@ -1722,6 +1737,7 @@ checkCSemModel <- function(model, availableVars) {
 
     if (options[["observedConstructCorrelation"]]) {
       occtab <- createJaspTable(gettext("Observed Construct Correlation Matrix"))
+      occtab$info <- gettext("Sample correlation matrix of the composite construct scores.")
       occtab$dependOn("observedConstructCorrelation")
       occtab$position <- 3
       corcont[["observedCon"]] <- occtab
@@ -1729,6 +1745,7 @@ checkCSemModel <- function(model, availableVars) {
 
     if (options[["impliedConstructCorrelation"]]) {
       icctab <- createJaspTable(gettext("Implied Construct Correlation Matrix"))
+      icctab$info <- gettext("Model-implied correlation matrix of the constructs. Closeness to the observed construct correlations indicates good structural model fit.")
       icctab$dependOn("impliedConstructCorrelation")
       icctab$position <- 4
       corcont[["impliedCon"]] <- icctab
@@ -1740,6 +1757,7 @@ checkCSemModel <- function(model, availableVars) {
 
     if (options[["observedIndicatorCorrelation"]]) {
       oiccont <- createJaspContainer(gettext("Observed Indicator Correlation Matrix"), initCollapsed = TRUE)
+      oiccont$info <- gettext("Sample correlation matrix of the observed indicator variables, shown per group.")
       oiccont$dependOn("observedIndicatorCorrelation")
       oiccont$position <- 1
       corcont[["observedInd"]] <- oiccont
@@ -1747,6 +1765,7 @@ checkCSemModel <- function(model, availableVars) {
 
     if (options[["impliedIndicatorCorrelation"]]) {
       iiccont <- createJaspContainer(gettext("Implied Indicator Correlation Matrix"), initCollapsed = TRUE)
+      iiccont$info <- gettext("Model-implied correlation matrix of the indicator variables, shown per group.")
       iiccont$dependOn("impliedIndicatorCorrelation")
       iiccont$position <- 2
       corcont[["impliedInd"]] <- iiccont
@@ -1754,6 +1773,7 @@ checkCSemModel <- function(model, availableVars) {
 
     if (options[["observedConstructCorrelation"]]) {
       occcont <- createJaspContainer(gettext("Observed Construct Correlation Matrix"), initCollapsed = TRUE)
+      occcont$info <- gettext("Sample correlation matrix of the composite construct scores, shown per group.")
       occcont$dependOn("observedConstructCorrelation")
       occcont$position <- 3
       corcont[["observedCon"]] <- occcont
@@ -1761,6 +1781,7 @@ checkCSemModel <- function(model, availableVars) {
 
     if (options[["impliedConstructCorrelation"]]) {
       icccont <- createJaspContainer(gettext("Implied Construct Correlation Matrix"), initCollapsed = TRUE)
+      icccont$info <- gettext("Model-implied correlation matrix of the constructs, shown per group.")
       icccont$dependOn("impliedConstructCorrelation")
       icccont$position <- 4
       corcont[["impliedCon"]] <- icccont
