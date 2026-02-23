@@ -56,8 +56,9 @@ Form
 		maximumItems: 9
 		newItemName: qsTr("Model 1")
 		optionKey: "name"
+		info: qsTr("Specify the structural equation model using lavaan syntax. Multiple models can be specified and compared. See lavaan.org for syntax tutorials.")
 
-		content: TextArea { name: "syntax"; width: models.width; textType: JASP.TextTypeLavaan; showLineNumber: true }
+		content: TextArea { name: "syntax"; width: models.width; textType: JASP.TextTypeLavaan; showLineNumber: true; info: qsTr("Enter the lavaan model syntax using variable names from the dataset.") }
 	}
 
 	RadioButtonGroup
@@ -65,11 +66,13 @@ Form
 		title: qsTr("Data")
 		name: "dataType"
 		columns: 2
-		RadioButton { value: "raw"; label: qsTr("Raw"); checked: true }
+		info: qsTr("Select whether the input is a raw data matrix or a variance-covariance matrix.")
+		RadioButton { value: "raw"; label: qsTr("Raw"); checked: true; info: qsTr("Use raw data with observations as rows and variables in columns.") }
 		RadioButton
 		{
 			value: "varianceCovariance"; label: qsTr("Variance-covariance matrix")
-			IntegerField { name: "sampleSize"; label: qsTr("Sample size"); defaultValue: 500 }
+			info: qsTr("Use a variance-covariance matrix as input. Requires specifying the sample size.")
+			IntegerField { name: "sampleSize"; label: qsTr("Sample size"); defaultValue: 500; info: qsTr("The number of observations the covariance matrix is based on.") }
 		}
 	}
 
@@ -79,17 +82,20 @@ Form
 		label: qsTr("Sampling weights")
 		showVariableTypeIcon: true
 		addEmptyValue: true
+		info: qsTr("Select a variable from the dataset to use as sampling weights for each observation.")
 	}
 
 	Section
 	{
 		title: qsTr("Model Options")
+		info: qsTr("Options for configuring the structural equation model specification.")
 		Group
 		{
 			DropDown
 			{
 				name: "factorScaling"
 				label: qsTr("Factor scaling")
+				info: qsTr("How the metric of latent variables is determined: by fixing the first loading to 1 (Factor loadings), fixing factor variance to 1 (Factor variance), fixing average loadings to 1 (Effects coding), or none.")
 				values:
 				[
 					{ label: qsTr("Factor loadings"),	value: "factorLoading"	},
@@ -103,12 +109,13 @@ Form
 				name: "meanStructure"
 				label: qsTr("Mean structure")
 				checked: eq_intercepts.checked || eq_means.checked || eq_thresholds.checked
-				CheckBox { name: "latentInterceptFixedToZero";		label: qsTr("Latent means fixed to zero");					checked: !eq_means.checked	}
-				CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Manifest intercepts fixed to zero")										}
-				CheckBox { name: "manifestMeanFixedToZero";			label: qsTr("Mean of manifest intercepts fixed to zero")								}
+				info: qsTr("Estimate observed intercepts and/or latent means. Some elements need to be fixed for identification.")
+				CheckBox { name: "latentInterceptFixedToZero";		label: qsTr("Latent means fixed to zero");					checked: !eq_means.checked;	info: qsTr("Fix latent means to zero; observed intercepts are estimated freely.")  }
+				CheckBox { name: "manifestInterceptFixedToZero";	label: qsTr("Manifest intercepts fixed to zero");			info: qsTr("Fix observed intercepts to zero; latent means are estimated freely.") }
+				CheckBox { name: "manifestMeanFixedToZero";			label: qsTr("Mean of manifest intercepts fixed to zero");	info: qsTr("Fix the mean of manifest intercepts to zero; latent means are estimated freely.") }
 			}
 			
-			CheckBox { name: "orthogonal";	label: qsTr("Assume factors uncorrelated") }
+			CheckBox { name: "orthogonal";	label: qsTr("Assume factors uncorrelated"); info: qsTr("Estimate factors as orthogonal (uncorrelated) instead of allowing them to correlate.") }
 		}
 
 		Group
@@ -119,6 +126,7 @@ Form
 				label:		qsTr("Exogenous covariate(s) fixed")
 				id:			fix_x
 				checked:	true
+				info:		qsTr("If checked, exogenous covariates are considered fixed and their means, variances, and covariances are fixed to sample values.")
 			}
 			CheckBox 
 			{
@@ -127,20 +135,22 @@ Form
 				id:			cond_x
 				// Try to mimic lavaan's default setting for conditional.x
 				checked:	["wls", "dwls", "wlsm", "wlsmv"].includes(estimator.value) && errorCalc.value != "bootstrap"
+				info:		qsTr("Condition on the exogenous covariates when estimating the model.")
 			}
-			CheckBox { name: "residualSingleIndicatorOmitted";	label: qsTr("Residual single indicator omitted");	checked: true	}
-			CheckBox { name: "residualVariance";				label: qsTr("Residual variances included");			checked: true	}
-			CheckBox { name: "exogenousLatentCorrelation";		label: qsTr("Exogenous latents correlated");		checked: true	}
-			CheckBox { name: "dependentCorrelation";			label: qsTr("Dependent variables correlated");		checked: true	}
-			CheckBox { name: "threshold";						label: qsTr("Thresholds");							checked: true	}
-			CheckBox { name: "scalingParameter";				label: qsTr("Scaling parameters");					checked: true	}
-			CheckBox { name: "efaConstrained";					label: qsTr("EFA blocks constrained");				checked: true	}
+			CheckBox { name: "residualSingleIndicatorOmitted";	label: qsTr("Residual single indicator omitted");	checked: true;	info: qsTr("Set the residual variance of a single indicator to zero if it is the only indicator of a latent variable.") }
+			CheckBox { name: "residualVariance";				label: qsTr("Residual variances included");			checked: true;	info: qsTr("Include residual variances of observed and latent variables as free parameters.") }
+			CheckBox { name: "exogenousLatentCorrelation";		label: qsTr("Exogenous latents correlated");		checked: true;	info: qsTr("Include covariances of exogenous latent variables in the model.") }
+			CheckBox { name: "dependentCorrelation";			label: qsTr("Dependent variables correlated");		checked: true;	info: qsTr("Include covariances of dependent variables (observed and latent) in the model.") }
+			CheckBox { name: "threshold";						label: qsTr("Thresholds");							checked: true;	info: qsTr("Include thresholds for limited (non-continuous) dependent variables.") }
+			CheckBox { name: "scalingParameter";				label: qsTr("Scaling parameters");					checked: true;	info: qsTr("Include response scaling parameters for limited (non-continuous) dependent variables.") }
+			CheckBox { name: "efaConstrained";					label: qsTr("EFA blocks constrained");				checked: true;	info: qsTr("Impose constraints to make exploratory factor analysis blocks identifiable: factor variances set to 1, covariances to zero, and loadings follow an echelon pattern.") }
 		}
 	}
 
 	Section
 	{
 		title: qsTr("Estimation Options")
+		info: qsTr("Options for the estimation method, model test, standard errors, confidence intervals, and missing data handling.")
 
 		Group
 		{
@@ -151,6 +161,7 @@ Form
 					name: "estimator"
 					label: qsTr("Estimator")
 					id: estimator
+					info: qsTr("Choose the estimation method. Some estimators set implicit options for test and standard errors. ML-based extensions: MLM (robust SE, Satorra-Bentler test), MLMV (robust SE, scaled-shifted test), MLMVS (robust SE, Satterthwaite test), MLF (first-order SE), MLR (Huber-White SE, Yuan-Bentler test). WLS variants: WLSM/WLSMV imply DWLS with robust SE, ULSM/ULSMV imply ULS with robust SE.")
 					values: [
 						{ value: "default",	label: qsTr("Default")	},
 						{ value: "ml",		label: qsTr("ML")		},
@@ -171,11 +182,6 @@ Form
 						{ value: "ulsmv",	label: qsTr("ULSMV")	}
 					]
 				}
-				HelpButton
-				{
-					toolTip:	qsTr("Click for more information")
-					helpPage:	"forQml/tooltipEstimators"
-				}
 			}
 			
 			DropDown
@@ -183,6 +189,7 @@ Form
 				name: "modelTest"
 				id: modTest
 				label: qsTr("Model test")
+				info: qsTr("Choose the test statistic for evaluating model fit. If left at Default, the test is determined by the chosen estimator.")
 				values: [
 					{ value: "default", 				label: qsTr("Default")						},
 					{ value: "standard",				label: qsTr("Standard")						},
@@ -205,12 +212,14 @@ Form
 				fieldWidth: 60
 				defaultValue: 1000
 				min: 1
+				info: qsTr("Number of bootstrap samples for the Bollen-Stine bootstrap test.")
 			}
 
 			DropDown
 			{
 				label: qsTr("Information matrix")
 				name: "informationMatrix"
+				info: qsTr("Matrix used to compute the standard errors: expected, observed, or first order (outer product of casewise scores).")
 				values: [
 					{ value: "default",		label: qsTr("Default")		},
 					{ value: "expected",	label: qsTr("Expected") 	},
@@ -224,6 +233,7 @@ Form
 				label: qsTr("Standard errors")
 				name: "errorCalculationMethod"
 				id: errorCalc
+				info: qsTr("Method for computing standard errors. Standard uses the information matrix, Robust uses robust.sem, Robust Huber-White uses the mlr approach, and Bootstrap computes SEs from bootstrapped fits.")
 				values: [
 					{ value: "default", 	 		label: qsTr("Default")				},
 					{ value: "standard",  	 		label: qsTr("Standard") 			},
@@ -241,12 +251,14 @@ Form
 				fieldWidth: 60
 				defaultValue: 1000
 				min: 1
+				info: qsTr("Number of bootstrap samples to use for computing standard errors.")
 			}
 
 			DropDown {
 				visible: errorCalc.value == "bootstrap"
 				label: qsTr("     Type")
 				name: "bootstrapCiType"
+				info: qsTr("Type of bootstrap confidence interval.")
 				values: [
 					{ label: qsTr("Bias-corrected percentile"),	value: "percentileBiasCorrected"	},
 					{ label: qsTr("Percentile"),				value: "percentile"					},
@@ -257,6 +269,7 @@ Form
 			CIField {
 				text: qsTr("Confidence intervals")
 				name: "ciLevel"
+				info: qsTr("Width of the confidence intervals for parameter estimates.")
 			}
 
 			CheckBox
@@ -267,6 +280,7 @@ Form
 				label:		qsTr("Set a random seed:")
 				checked:	false
 				childrenOnSameRow: true
+				info:		qsTr("Set a seed to guarantee reproducible bootstrap results.")
 
 				IntegerField
 				{
@@ -282,12 +296,13 @@ Form
 		Group
 		{
 			id: missingG
-			CheckBox{name: "standardizedVariable"; label: qsTr("Standardize variables before estimation"); checked: false}
+			CheckBox{name: "standardizedVariable"; label: qsTr("Standardize variables before estimation"); checked: false; info: qsTr("Z-standardize all variables before estimation.")}
 
 			DropDown
 			{
 				name: "naAction"
 				label: qsTr("Missing data handling")
+				info: qsTr("How to treat missing values. FIML uses full-information maximum likelihood. Pairwise computes correlations using available pairs. Two-stage uses EM-estimated statistics. Robust two-stage adds robustness against non-normality. Doubly robust is for PML estimation.")
 				values: [
 					{ label: qsTr("(FI)ML"), 						value: "fiml"						},
 					{ label: qsTr("Listwise deletion"), value: "listwise"				},
@@ -303,6 +318,7 @@ Form
 			{
 				name: "emulation"
 				label: qsTr("Mimic")
+				info: qsTr("Emulate the output from different SEM programs.")
 				values: [
 					{ value: "lavaan",	label: qsTr("Lavaan") 	},
 					{ value: "mplus",	label: qsTr("Mplus") 	},
@@ -316,19 +332,20 @@ Form
 	Section
 	{
 		title: qsTr("Output Options")
+		info: qsTr("Options for additional fit measures, parameter estimates, covariance matrices, plots, and modification indices.")
 
 		Group
 		{
-			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures") }
-			CheckBox { name: "rSquared";				label: qsTr("R-squared")							}
-			CheckBox { name: "ave";						label: qsTr("Average variance extracted (AVE)")		}
-			CheckBox { name: "htmt";					label: qsTr("Heterotrait-monotrait ratio (HTMT)")	}
-			CheckBox { name: "reliability";				label: qsTr("Reliability measures")					}
-			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient")					}
-			CheckBox { name: "observedCovariance";		label: qsTr("Observed covariances")					}
-			CheckBox { name: "impliedCovariance";		label: qsTr("Implied covariances")					}
-			CheckBox { name: "residualCovariance";		label: qsTr("Residual covariances")					}
-			CheckBox { name: "standardizedResidual"; 	label: qsTr("Standardized residuals")				}
+			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures");	info: qsTr("Display a table with various fit measures including CFI, TLI, RMSEA, SRMR, and information criteria.") }
+			CheckBox { name: "rSquared";				label: qsTr("R-squared");							info: qsTr("Display the explained variance in each dependent variable.") }
+			CheckBox { name: "ave";						label: qsTr("Average variance extracted (AVE)");	info: qsTr("Display the amount of variance captured by a construct relative to measurement error. Used to evaluate convergent validity.") }
+			CheckBox { name: "htmt";					label: qsTr("Heterotrait-monotrait ratio (HTMT)");	info: qsTr("Display the HTMT ratio to assess discriminant validity between constructs.") }
+			CheckBox { name: "reliability";				label: qsTr("Reliability measures");				info: qsTr("Display reliability metrics such as coefficient alpha and composite (omega) reliability per latent variable.") }
+			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient");				info: qsTr("Display Mardia's multivariate skewness and kurtosis coefficients to assess multivariate normality.") }
+			CheckBox { name: "observedCovariance";		label: qsTr("Observed covariances");				info: qsTr("Display the observed covariance matrix calculated from the data.") }
+			CheckBox { name: "impliedCovariance";		label: qsTr("Implied covariances");				info: qsTr("Display the model-implied covariance matrix based on estimated parameters.") }
+			CheckBox { name: "residualCovariance";		label: qsTr("Residual covariances");				info: qsTr("Display residual covariances (observed minus implied).") }
+			CheckBox { name: "standardizedResidual"; 	label: qsTr("Standardized residuals");			info: qsTr("Display the standardized residual covariance matrix.") }
 		}
 
 		Group
@@ -336,12 +353,14 @@ Form
 			CheckBox
 			{
 				name: "standardizedEstimate"; label: qsTr("Standardized estimates");
+				info: qsTr("Display standardized parameter estimates.")
 				RadioButtonGroup
 				{
 					name: "standardizedEstimateType"
-					RadioButton { value: "all"; 	label: qsTr("All"); checked: true	}
-					RadioButton { value: "latents"; label: qsTr("Latents")	}
-					RadioButton { value: "nox"; 	label: qsTr("Except exogenous covariates")		}
+					info: qsTr("Type of standardization.")
+					RadioButton { value: "all"; 	label: qsTr("All"); checked: true;	info: qsTr("Standardize based on variances of both observed and latent variables.") }
+					RadioButton { value: "latents"; label: qsTr("Latents");				info: qsTr("Standardize based on latent variable variances only.") }
+					RadioButton { value: "nox"; 	label: qsTr("Except exogenous covariates");	info: qsTr("Standardize based on variances of observed and latent variables, excluding exogenous covariates.") }
 				}
 			}
 			CheckBox
@@ -349,30 +368,36 @@ Form
 				name: "pathPlot";
 				text: qsTr("Path diagram");
 				checked: false
+				info: qsTr("Display a path diagram of the model.")
 				CheckBox {
 					name: "pathPlotParameter"
 					text: qsTr("Show parameter estimates")
 					checked: false
+					info: qsTr("Display parameter estimates on the path diagram.")
 					CheckBox {
 						name: "pathPlotParameterStandardized"
 						text: qsTr("Standardized")
 						checked: false
+						info: qsTr("Show standardized estimates on the path diagram.")
 					}
 				}
 				CheckBox {
 					name: "pathPlotLegend"
 					text: qsTr("Show legend")
 					checked: false
+					info: qsTr("Display a legend in the path diagram.")
 				}
 			}
 			CheckBox
 			{
 				name: "modificationIndex"
 				label: qsTr("Modification indices")
+				info: qsTr("Display modification indices showing potential improvements to the model.")
 				CheckBox
 				{
 					name: "modificationIndexHiddenLow"
 					label: qsTr("Hide low indices")
+					info: qsTr("Hide modification indices below the specified threshold.")
 					DoubleField
 					{
 						name: "modificationIndexThreshold"
@@ -380,6 +405,7 @@ Form
 						negativeValues: false
 						decimals: 2
 						defaultValue: 10
+						info: qsTr("Minimum value for modification indices to be displayed.")
 					}
 				}
 			}
@@ -387,6 +413,7 @@ Form
 			{ 
 				name: "warnings";	
 				label: qsTr("Show warnings")
+				info: qsTr("Display warnings produced by lavaan during estimation.")
 			}
 
 		}
@@ -395,6 +422,7 @@ Form
 	Section
 	{
 		title: qsTr("Multigroup SEM")
+		info: qsTr("Options for fitting the model across multiple groups, with equality constraints on parameters.")
 
 		Group
 		{
@@ -405,21 +433,23 @@ Form
 				label: qsTr("Grouping Variable")
 				showVariableTypeIcon: true
 				addEmptyValue: true
+				info: qsTr("Select a nominal or ordinal variable to fit the model separately for each group.")
 			}
 			Group
 			{
 				visible: grpvar.value != ""
 				id: constraints
 				title: qsTr("Equality Constraints")
-				CheckBox { id: eq_loadings; 			name: "equalLoading";				label: qsTr("Loadings")				}
-				CheckBox { id: eq_intercepts; 			name: "equalIntercept";				label: qsTr("Intercepts")			}
-				CheckBox { id: eq_residuals; 			name: "equalResidual";				label: qsTr("Residuals")			}
-				CheckBox { id: eq_residualcovariances; 	name: "equalResidualCovariance";	label: qsTr("Residual covariances")	}
-				CheckBox { id: eq_means; 				name: "equalMean";					label: qsTr("Means")				}
-				CheckBox { id: eq_thresholds; 			name: "equalThreshold";				label: qsTr("Thresholds")			}
-				CheckBox { id: eq_regressions; 			name: "equalRegression";			label: qsTr("Regressions")			}
-				CheckBox { id: eq_variances; 			name: "equalLatentVariance";		label: qsTr("Latent variances")		}
-				CheckBox { id: eq_lvcovariances; 		name: "equalLatentCovariance";		label: qsTr("Latent covariances")	}
+				info: qsTr("Constrain selected parameters to be equal across all groups.")
+				CheckBox { id: eq_loadings; 			name: "equalLoading";				label: qsTr("Loadings");			info: qsTr("Constrain factor loadings to be equal across groups.") }
+				CheckBox { id: eq_intercepts; 			name: "equalIntercept";				label: qsTr("Intercepts");			info: qsTr("Constrain intercepts to be equal across groups.") }
+				CheckBox { id: eq_residuals; 			name: "equalResidual";				label: qsTr("Residuals");			info: qsTr("Constrain residual variances to be equal across groups.") }
+				CheckBox { id: eq_residualcovariances; 	name: "equalResidualCovariance";	label: qsTr("Residual covariances");	info: qsTr("Constrain residual covariances to be equal across groups.") }
+				CheckBox { id: eq_means; 				name: "equalMean";					label: qsTr("Means");				info: qsTr("Constrain means to be equal across groups.") }
+				CheckBox { id: eq_thresholds; 			name: "equalThreshold";				label: qsTr("Thresholds");			info: qsTr("Constrain thresholds to be equal across groups.") }
+				CheckBox { id: eq_regressions; 			name: "equalRegression";			label: qsTr("Regressions");			info: qsTr("Constrain regression coefficients to be equal across groups.") }
+				CheckBox { id: eq_variances; 			name: "equalLatentVariance";		label: qsTr("Latent variances");	info: qsTr("Constrain latent variable variances to be equal across groups.") }
+				CheckBox { id: eq_lvcovariances; 		name: "equalLatentCovariance";		label: qsTr("Latent covariances");	info: qsTr("Constrain latent variable covariances to be equal across groups.") }
 			} // No model or source: it takes all variables per default
 		}	
 
@@ -431,6 +461,7 @@ Form
 			height: constraints.height + grpvar.height
 			textType: JASP.TextTypeLavaan
 			visible: eq_loadings.checked || eq_intercepts.checked || eq_residuals.checked || eq_residualcovariances.checked || eq_means.checked || eq_thresholds.checked || eq_regressions.checked || eq_variances.checked || eq_lvcovariances.checked
+			info: qsTr("Release specific equality constraints using lavaan syntax, e.g., 'f=~x2' to release a single loading.")
 		}
 		
 	}
@@ -439,30 +470,35 @@ Form
 	Section 
 	{
 		title: qsTr("Sensitivity Analysis")
+		info: qsTr("Conduct sensitivity analysis against a potential missing confounder using phantom variables.")
 		CheckBox
 		{
 			name: "sensitivityAnalysis"
 			label: qsTr("Run sensitivity analysis")
+			info: qsTr("Run a sensitivity analysis by adding phantom variables (latent variables without indicators) to assess the robustness of the model.")
 			RadioButtonGroup
 			{
 				title: qsTr("Search algorithm")
 				name: "searchAlgorithm"
 				id: search
+				info: qsTr("Algorithm for sampling phantom variables.")
 				RadioButton
 				{
 					value: "antColonyOptimization"
 					label: qsTr("Ant colony optimization")
-					checked: true 
-					IntegerField { name: "numberOfAnts"; 			label: qsTr("Number of ants"); 					defaultValue: 10	}
-					IntegerField { name: "sizeOfSolutionArchive"; 	label: qsTr("Size of the solution archive"); 	defaultValue: 100	}
-					DoubleField { name: "convergenceRateThreshold";	label: qsTr("Convergence rate threshold");		defaultValue: 0.1;	negativeValues: false	}
+					checked: true
+					info: qsTr("Use ant colony optimization to find good paths through the parameter space.")
+					IntegerField { name: "numberOfAnts"; 			label: qsTr("Number of ants"); 					defaultValue: 10;	info: qsTr("Number of artificial ants per iteration, each representing a potential solution.") }
+					IntegerField { name: "sizeOfSolutionArchive"; 	label: qsTr("Size of the solution archive"); 	defaultValue: 100;	info: qsTr("Number of best solutions stored during optimization.") }
+					DoubleField { name: "convergenceRateThreshold";	label: qsTr("Convergence rate threshold");		defaultValue: 0.1;	negativeValues: false;	info: qsTr("If the change in the objective function is smaller than this threshold, the algorithm has converged.") }
 				}
-				RadioButton { value: "tabuSearch"; 				label: qsTr("Tabu search") 								}
+				RadioButton { value: "tabuSearch"; 				label: qsTr("Tabu search");	info: qsTr("Use tabu search, which maintains a list of recently visited solutions to avoid local optima.") }
 			}
 			DropDown
 			{
 				name: "optimizerFunction"
 				label: qsTr("Optimizer function")
+				info: qsTr("Objective function maximized during the optimization.")
 				values:
 				[
 					{ label: qsTr("% change mean estimate")			, value: "percentChangeMeanEstimate"	},
@@ -480,8 +516,9 @@ Form
 				negativeValues: false
 				decimals: 4
 				defaultValue: 0.05
+				info: qsTr("Significance level for the sensitivity analysis.")
 			}
-			IntegerField { name: "maxIterations"; 	label: qsTr("Maximum number of iterations"); 	defaultValue: 1000	}
+			IntegerField { name: "maxIterations"; 	label: qsTr("Maximum number of iterations"); 	defaultValue: 1000;	info: qsTr("Maximum number of iterations for the optimization algorithm.") }
 			SetSeed{}
 		}
 	}

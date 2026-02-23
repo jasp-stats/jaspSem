@@ -60,6 +60,7 @@ Form
 		initNumberFactors:	1
 		allowedColumns:		["scale"]
 		keepAvailableVariables: true
+		info: qsTr("Define latent factors and assign observed indicator variables to each factor.")
 	}
 
 	Section
@@ -67,6 +68,7 @@ Form
 		title: qsTr("Moderation")
 		expanded: true
 		id: mod
+		info: qsTr("Specify moderator variables and their effects on measurement model parameters.")
 
 		VariablesForm
 		{
@@ -82,6 +84,7 @@ Form
 				allowedColumns:		["scale", "nominal"]
 				title: qsTr("Moderators")
 				name: "moderators"
+				info: qsTr("Variables hypothesized to moderate the measurement model parameters. Continuous moderators can optionally include squared and cubic effects.")
 				rowComponentTitle: qsTr("Square   Cubic")
 				rowComponent: RowLayout
 				{
@@ -90,12 +93,14 @@ Form
 						name: "moderatorSquaredEffect"
 						id: squared
 						visible: moderators.getVariableType(rowValue) === columnTypeScale
+						info: qsTr("Include a quadratic (squared) effect for this moderator.")
 					}
 					CheckBox
 					{
 						name: "moderatorCubicEffect"
 						id: cubic
 						visible: moderators.getVariableType(rowValue) === columnTypeScale
+						info: qsTr("Include a cubic effect for this moderator.")
 					}
 				}
 			}
@@ -105,6 +110,7 @@ Form
 				name: 					"syncAnalysisBox"
 				label: 					qsTr("<b>Start/Sync Analysis</b>")
 				checked: 				false
+				info: qsTr("Click to start or synchronize the analysis. The analysis does not run automatically due to computational intensity.")
 				Component.onCompleted:
 				{
 						background.color = "#ffcb98"
@@ -115,6 +121,7 @@ Form
 		Group
 		{
 			title: qsTr("Assumption Check")
+			info: qsTr("Check measurement invariance assumptions by testing model fit across groups defined by the moderator variables.")
 			CheckBox
 			{
 				name: "checkModelFitPerGroup";
@@ -122,6 +129,7 @@ Form
 				label: qsTr("Check model fit per group");
 				id: fitPerGroup;
 				enabled: moderators.columnsNames != ""
+				info: qsTr("Fit the measurement model separately in each group to verify that the model fits adequately before testing moderation.")
 			}
 			IntegerField
 			{
@@ -130,8 +138,9 @@ Form
 				defaultValue: 2;
 				enabled: fitPerGroup.checked;
 				min: 2
+				info: qsTr("Number of groups into which continuous moderator variables are split for the assumption check.")
 			}
-			CheckBox { name: "addGroupVariableToData"; label: qsTr("Add group variable to data"); enabled: fitPerGroup.checked }
+			CheckBox { name: "addGroupVariableToData"; label: qsTr("Add group variable to data"); enabled: fitPerGroup.checked; info: qsTr("Save the group variable created by splitting the continuous moderator to the dataset.") }
 		}
 
 		ColumnLayout
@@ -148,6 +157,7 @@ Form
 				addItemManually: false
 				values: combinePairs(moderators.columnsNames)
 				headerLabels: [qsTr("Include")]
+				info: qsTr("Include interaction terms between pairs of moderators.")
 				rowComponent: RowLayout
 				{
 					Text { text: rowValue; Layout.preferredWidth: 150 * jaspTheme.uiScale }
@@ -161,6 +171,7 @@ Form
 	{
 		id: invOpts
 		title: qsTr("Moderation Options")
+		info: qsTr("Configure invariance test levels and specify which individual parameters should be tested for moderation.")
 
 		// property var names: []
 
@@ -168,11 +179,12 @@ Form
 		{
 			columns: 1
 			title: qsTr("Invariance Tests")
-			CheckBox { name: "invarianceTestConfigural" ; checked: false ; label: qsTr("Configural"); id: invarianceTestConfigural }
-			CheckBox { name: "invarianceTestMetric" ; checked: false ; label: qsTr("Metric"); id: invarianceTestMetric }
-			CheckBox { name: "invarianceTestScalar" ; checked: false ; label: qsTr("Scalar"); id: invarianceTestScalar }
-			CheckBox { name: "invarianceTestStrict" ; checked: false ; label: qsTr("Strict"); id: invarianceTestStrict }
-			CheckBox { name: "invarianceTestCustom" ; checked: false;  label: qsTr("Custom"); id: invarianceTestCustom }
+			info: qsTr("Select the levels of measurement invariance to test. Each level constrains an additional set of parameters to be equal across moderator values.")
+			CheckBox { name: "invarianceTestConfigural" ; checked: false ; label: qsTr("Configural"); id: invarianceTestConfigural; info: qsTr("Test configural invariance: same factor structure across groups but all parameters free.") }
+			CheckBox { name: "invarianceTestMetric" ; checked: false ; label: qsTr("Metric"); id: invarianceTestMetric; info: qsTr("Test metric invariance: constrain factor loadings to be equal across groups.") }
+			CheckBox { name: "invarianceTestScalar" ; checked: false ; label: qsTr("Scalar"); id: invarianceTestScalar; info: qsTr("Test scalar invariance: constrain factor loadings and intercepts to be equal across groups.") }
+			CheckBox { name: "invarianceTestStrict" ; checked: false ; label: qsTr("Strict"); id: invarianceTestStrict; info: qsTr("Test strict invariance: constrain factor loadings, intercepts, and residual variances to be equal across groups.") }
+			CheckBox { name: "invarianceTestCustom" ; checked: false;  label: qsTr("Custom"); id: invarianceTestCustom; info: qsTr("Define a custom set of parameter constraints for invariance testing.") }
 		}
 
 		property var firstLayerValues: [invarianceTestConfigural, invarianceTestMetric, invarianceTestScalar, invarianceTestStrict, invarianceTestCustom].filter(x => x.checked).map(x => ({value: x.name, label: x.label}))
@@ -189,6 +201,7 @@ Form
 			optionKeyLabel: "keyLabel"
 			id: modFirstLayer
 			addItemManually: false
+			info: qsTr("For each invariance level, specify which individual measurement parameters should be tested for moderation effects.")
 			rowComponent: TabView
 			{
 				id: modSecondLayer
@@ -242,10 +255,12 @@ Form
 	Section
 	{
 		title: qsTr("Output Options")
+		info: qsTr("Select additional output tables and parameter estimates to display.")
 
 		Group
 		{
 			title: qsTr("Parameter Estimates")
+			info: qsTr("Select which measurement model parameter estimates to display in the output.")
 			DoubleField
 			{
 				name: "parameterEstimatesAlphaLevel"
@@ -253,17 +268,18 @@ Form
 				negativeValues: false
 				decimals: 4
 				defaultValue: 0.05
+				info: qsTr("Significance level for flagging parameter estimates.")
 			}
-			CheckBox { name: "parameterEstimatesLoadings"; label: qsTr("Loadings") }
-			CheckBox { name: "parameterEstimatesIntercepts"; label: qsTr("Intercepts") }
-			CheckBox { name: "parameterEstimatesResidualVariances"; label: qsTr("Residual variances") }
-			CheckBox { name: "parameterEstimatesFactorVariance"; label: qsTr("Factor variances") }
-			CheckBox { name: "parameterEstimatesFactorMeans"; label: qsTr("Factor means") }
-			CheckBox { name: "parameterEstimatesFactorCovariances"; label: qsTr("Factor covariances") }
+			CheckBox { name: "parameterEstimatesLoadings"; label: qsTr("Loadings"); info: qsTr("Display factor loading estimates.") }
+			CheckBox { name: "parameterEstimatesIntercepts"; label: qsTr("Intercepts"); info: qsTr("Display intercept estimates for observed indicators.") }
+			CheckBox { name: "parameterEstimatesResidualVariances"; label: qsTr("Residual variances"); info: qsTr("Display residual variance estimates for observed indicators.") }
+			CheckBox { name: "parameterEstimatesFactorVariance"; label: qsTr("Factor variances"); info: qsTr("Display latent factor variance estimates.") }
+			CheckBox { name: "parameterEstimatesFactorMeans"; label: qsTr("Factor means"); info: qsTr("Display latent factor mean estimates.") }
+			CheckBox { name: "parameterEstimatesFactorCovariances"; label: qsTr("Factor covariances"); info: qsTr("Display latent factor covariance estimates.") }
 
 		}
 
-		CheckBox { label: qsTr("Show syntax")         ; name: "showSyntax" }
+		CheckBox { label: qsTr("Show syntax")         ; name: "showSyntax"; info: qsTr("Display the lavaan syntax used to estimate the model.") }
 
 	}
 
@@ -272,6 +288,7 @@ Form
 	{
 		title: qsTr("Plots")
 		id: plots
+		info: qsTr("Configure marginal effects plots showing how measurement parameters change as a function of the moderator variables.")
 
 		TabView
 		{

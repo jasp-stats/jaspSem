@@ -587,7 +587,7 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL, 
 
 .additionalFitTables <- function(modelContainer, dataset, options, ready) {
 
-  fitinds <- createJaspTable(gettext("Fit indices"))
+  fitinds <- createJaspTable(gettext("Fit Indices"))
   fitinds$dependOn("additionalFitMeasures")
 
   fitinds$addColumnInfo(name = "index", title = gettext("Index"), type = "string")

@@ -660,7 +660,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   if (!is.null(modelContainer[["fittab"]])) return()
 
-  fittab <- createJaspTable(title = gettext("Model fit"))
+  fittab <- createJaspTable(title = gettext("Model Fit"))
   fittab$dependOn(c("models", "warnings"))
   fittab$position <- 0
 
@@ -948,7 +948,7 @@ checkLavaanModel <- function(model, availableVars) {
   indtab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
   indtab$addColumnInfo(name = "label",    title = "",                    type = "string")
   indtab$addColumnInfo(name = "est",      title = estTitle,   type = "number")
-  indtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number")
+  indtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number")
   indtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
   indtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
   indtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
@@ -959,7 +959,7 @@ checkLavaanModel <- function(model, availableVars) {
   pecont[["ind"]] <- indtab
 
   # Structural Model
-  regtab <- createJaspTable(title = gettext("Regression coefficients"))
+  regtab <- createJaspTable(title = gettext("Regression Coefficients"))
 
   if (options[["group"]] != "")
     regtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -980,7 +980,7 @@ checkLavaanModel <- function(model, availableVars) {
 
 
   # Latent variances
-  lvartab <- createJaspTable(title = gettext("Factor variances"))
+  lvartab <- createJaspTable(title = gettext("Factor Variances"))
 
   if (options[["group"]] != "")
     lvartab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -999,7 +999,7 @@ checkLavaanModel <- function(model, availableVars) {
   pecont[["lvar"]] <- lvartab
 
   # Latent covariances
-  lcovtab <- createJaspTable(title = gettext("Factor covariances"))
+  lcovtab <- createJaspTable(title = gettext("Factor Covariances"))
 
   if (options[["group"]] != "")
     lcovtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -1018,7 +1018,7 @@ checkLavaanModel <- function(model, availableVars) {
   pecont[["lcov"]] <- lcovtab
 
   # Residual variances
-  vartab <- createJaspTable(title = gettext("Residual variances"))
+  vartab <- createJaspTable(title = gettext("Residual Variances"))
 
   if (options[["group"]] != "")
     vartab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -1037,7 +1037,7 @@ checkLavaanModel <- function(model, availableVars) {
   pecont[["var"]] <- vartab
 
   # Residual covariances
-  covtab <- createJaspTable(title = gettext("Residual covariances"))
+  covtab <- createJaspTable(title = gettext("Residual Covariances"))
 
   if (options[["group"]] != "")
     covtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -1107,7 +1107,7 @@ checkLavaanModel <- function(model, availableVars) {
 
   originalSyntaxTable <- modelContainer[["originalSyntax"]][["object"]][[1]]
   if (nrow(originalSyntaxTable[originalSyntaxTable$op == ":=",]) > 0) {
-    deftab <- createJaspTable(title = gettext("Defined parameters"))
+    deftab <- createJaspTable(title = gettext("Defined Parameters"))
     allTables[[length(allTables) + 1]] <- deftab
 
     deftab$addColumnInfo(name = "lhs",      title = gettext("Name"),       type = "string")
@@ -1122,7 +1122,7 @@ checkLavaanModel <- function(model, availableVars) {
 
     pecont[["def"]] <- deftab
   } else {
-    indefftab <- createJaspTable(title = gettext("Indirect effects"))
+    indefftab <- createJaspTable(title = gettext("Indirect Effects"))
     allTables[[length(allTables) + 1]] <- indefftab
 
     if (options[["group"]] != "")
@@ -1140,7 +1140,7 @@ checkLavaanModel <- function(model, availableVars) {
 
     pecont[["indeff"]] <- indefftab
 
-    totefftab <- createJaspTable(title = gettext("Total effects"))
+    totefftab <- createJaspTable(title = gettext("Total Effects"))
     allTables[[length(allTables) + 1]] <- totefftab
 
     if (options[["group"]] != "")
@@ -1452,7 +1452,7 @@ checkLavaanModel <- function(model, availableVars) {
   modelContainer[["addfit"]] <- fitContainer
 
   # Fit indices
-  fitinds <- createJaspTable(gettext("Fit indices"))
+  fitinds <- createJaspTable(gettext("Fit Indices"))
   fitContainer[["fitMeasures"]] <- fitinds
 
   fitinds$addColumnInfo(name = "index", title = gettext("Index"), type = "string")
@@ -1531,7 +1531,7 @@ checkLavaanModel <- function(model, availableVars) {
   fitinds$addFootnote(fnote)
 
   # a table only with the T-size stuff
-  ftsize <- createJaspTable(gettext("T-size fit indices"))
+  ftsize <- createJaspTable(gettext("T-Size Fit Indices"))
   ftsize$addCitation("Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural Equation Models. *Structural Equation Modeling: A Multidisciplinary Journal, 24*(1), 148-153, https://doi.org/10.1080/10705511.2016.1225260")
   fitContainer[["fitTSize"]] <- ftsize
 
@@ -1685,7 +1685,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (!options[["ave"]] || !is.null(modelContainer[["AVE"]])) return()
 
   # init table
-  avetab <- createJaspTable(gettext("Average variance extracted"))
+  avetab <- createJaspTable(gettext("Average Variance Extracted"))
   if (options[["group"]] != "")
     avetab$addColumnInfo(name = "group", title = gettext("Group"), type = "string", combine = TRUE)
   avetab$addColumnInfo(name = "factor", title = gettext("Latent"), type = "string")
@@ -1944,7 +1944,7 @@ checkLavaanModel <- function(model, availableVars) {
 .semHtmtTables <- function(fit, model, parentContainer, options, ready, dataset) {
   if (is.null(model)) {
     htmtcont <- parentContainer
-    title <- gettext("Heterotrait-monotrait ratio")
+    title <- gettext("Heterotrait-Monotrait Ratio")
   } else {
     htmtcont <- createJaspContainer(model[["name"]], initCollapsed = TRUE)
     title <- ""
@@ -2013,7 +2013,7 @@ checkLavaanModel <- function(model, availableVars) {
 .semMardiasCoefficient <- function(modelContainer, dataset, options, ready) {
   if (!options[["mardiasCoefficient"]] || !is.null(modelContainer[["semMardiasTable"]])) return()
 
-  mardiatab <- createJaspTable(title = gettext("Mardia's coefficients"))
+  mardiatab <- createJaspTable(title = gettext("Mardia's Coefficients"))
   mardiatab$position <- .2
 
   mardiatab$addColumnInfo(name = "Type",        title = "",                      type = "string")
@@ -2076,7 +2076,7 @@ checkLavaanModel <- function(model, availableVars) {
   if (!(options[["observedCovariance"]] || options[["impliedCovariance"]] ||
         options[["residualCovariance"]] || options[["standardizedResidual"]]) || !is.null(modelContainer[["covars"]])) return()
 
-  covars <- createJaspContainer(gettext("Covariance tables"))
+  covars <- createJaspContainer(gettext("Covariance Tables"))
   covars$position <- 3
   covars$dependOn(c("observedCovariance", "impliedCovariance", "residualCovariance",
                     "standardizedResidual", "models"))
@@ -2107,28 +2107,28 @@ checkLavaanModel <- function(model, availableVars) {
     # without groups, these are tables
 
     if (options[["observedCovariance"]]) {
-      octab <- createJaspTable("Observed covariance matrix")
+      octab <- createJaspTable(gettext("Observed Covariance Matrix"))
       octab$dependOn("observedCovariance")
       octab$position <- 1
       cocont[["observed"]] <- octab
     }
 
     if (options[["impliedCovariance"]]) {
-      ictab <- createJaspTable("Implied covariance matrix")
+      ictab <- createJaspTable(gettext("Implied Covariance Matrix"))
       ictab$dependOn("impliedCovariance")
       ictab$position <- 2
       cocont[["implied"]] <- ictab
     }
 
     if (options[["residualCovariance"]]) {
-      rctab <- createJaspTable("Residuals covariance matrix")
+      rctab <- createJaspTable(gettext("Residual Covariance Matrix"))
       rctab$dependOn("residualCovariance")
       rctab$position <- 3
       cocont[["residual"]] <- rctab
     }
 
     if (options[["standardizedResidual"]]) {
-      srtab <- createJaspTable("Standardized residuals covariance matrix")
+      srtab <- createJaspTable(gettext("Standardized Residual Covariance Matrix"))
       srtab$dependOn("standardizedResidual")
       srtab$position <- 4
       cocont[["stdres"]] <- srtab
@@ -2139,28 +2139,28 @@ checkLavaanModel <- function(model, availableVars) {
     # with multiple groups these become containers
 
     if (options[["observedCovariance"]]) {
-      occont <- createJaspContainer("Observed covariance matrix", initCollapsed = TRUE)
+      occont <- createJaspContainer(gettext("Observed Covariance Matrix"), initCollapsed = TRUE)
       occont$dependOn("observedCovariance")
       occont$position <- 1
       cocont[["observed"]] <- occont
     }
 
     if (options[["impliedCovariance"]]) {
-      iccont <- createJaspContainer("Implied covariance matrix", initCollapsed = TRUE)
+      iccont <- createJaspContainer(gettext("Implied Covariance Matrix"), initCollapsed = TRUE)
       iccont$dependOn("impliedCovariance")
       iccont$position <- 2
       cocont[["implied"]] <- iccont
     }
 
     if (options[["residualCovariance"]]) {
-      rccont <- createJaspContainer("Residuals covariance matrix", initCollapsed = TRUE)
+      rccont <- createJaspContainer(gettext("Residual Covariance Matrix"), initCollapsed = TRUE)
       rccont$dependOn("residualCovariance")
       rccont$position <- 3
       cocont[["residual"]] <- rccont
     }
 
     if (options[["standardizedResidual"]]) {
-      srcont <- createJaspContainer("Standardized residuals covariance matrix", initCollapsed = TRUE)
+      srcont <- createJaspContainer(gettext("Standardized Residual Covariance Matrix"), initCollapsed = TRUE)
       srcont$dependOn("standardizedResidual")
       srcont$position <- 4
       cocont[["stdres"]] <- srcont
@@ -2338,7 +2338,7 @@ checkLavaanModel <- function(model, availableVars) {
 .semMI <- function(modelContainer, dataset, options, ready) {
   if (!options[["modificationIndex"]] || !is.null(modelContainer[["modindices"]])) return()
 
-  modindices <- createJaspContainer(gettext("Modification indices"))
+  modindices <- createJaspContainer(gettext("Modification Indices"))
   modindices$position <- 4
   modindices$dependOn(c("modificationIndex", "modificationIndexHiddenLow", "modificationIndexThreshold", "models"))
 
@@ -2369,12 +2369,12 @@ checkLavaanModel <- function(model, availableVars) {
   semModIndicesTable$addColumnInfo(name = "op",        title = "",                    type = "string")
   semModIndicesTable$addColumnInfo(name = "rhs",       title = "",                    type = "string")
   if (options[["group"]] != "")
-    semModIndicesTable$addColumnInfo(name = "group",   title = gettext("group"),      type = "string")
-  semModIndicesTable$addColumnInfo(name = "mi",        title = gettext("mi"),         type = "number")
-  semModIndicesTable$addColumnInfo(name = "epc",       title = gettext("epc"),        type = "number")
-  semModIndicesTable$addColumnInfo(name = "sepc.lv",   title = gettext("sepc (lv)"),  type = "number")
-  semModIndicesTable$addColumnInfo(name = "sepc.all",  title = gettext("sepc (all)"), type = "number")
-  semModIndicesTable$addColumnInfo(name = "sepc.nox",  title = gettext("sepc (nox)"), type = "number")
+    semModIndicesTable$addColumnInfo(name = "group",   title = gettext("Group"),      type = "string")
+  semModIndicesTable$addColumnInfo(name = "mi",        title = gettext("MI"),         type = "number")
+  semModIndicesTable$addColumnInfo(name = "epc",       title = gettext("EPC"),        type = "number")
+  semModIndicesTable$addColumnInfo(name = "sepc.lv",   title = gettext("SEPC (lv)"),  type = "number")
+  semModIndicesTable$addColumnInfo(name = "sepc.all",  title = gettext("SEPC (all)"), type = "number")
+  semModIndicesTable$addColumnInfo(name = "sepc.nox",  title = gettext("SEPC (nox)"), type = "number")
 
   semModIndicesTable$showSpecifiedColumnsOnly <- TRUE
 
@@ -2412,7 +2412,7 @@ checkLavaanModel <- function(model, availableVars) {
 .semSensitivity <- function(modelContainer, dataset, options, ready) {
   if (!options[["sensitivityAnalysis"]] || !is.null(modelContainer[["sensitivity"]])) return()
 
-  sensitivity <- createJaspContainer(gettext("Sensitivity analysis"))
+  sensitivity <- createJaspContainer(gettext("Sensitivity Analysis"))
   sensitivity$position <- 4.1
   sensitivity$dependOn(c("sensitivityAnalysis", "searchAlgorithm", "optimizerFunction", "sizeOfSolutionArchive", "numberOfAnts", "alpha", "maxIterations", "setSeed", "seed", "models"))
 
@@ -2439,7 +2439,7 @@ checkLavaanModel <- function(model, availableVars) {
 
 
   # Summary of sensitivity analysis
-  sensumtab <- createJaspTable(title = gettext("Summary of sensitivity analysis"))
+  sensumtab <- createJaspTable(title = gettext("Summary of Sensitivity Analysis"))
 
   if (options[["group"]] != "")
     sensumtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
@@ -2592,7 +2592,7 @@ checkLavaanModel <- function(model, availableVars) {
 
 
   # Sensitivity parameters that led to a change in significance
-  senpartab <- createJaspTable(title = gettext("Sensitivity parameters that led to a change in significance"))
+  senpartab <- createJaspTable(title = gettext("Sensitivity Parameters That Led to a Change in Significance"))
 
   if (options[["group"]] != "")
     senpartab$addColumnInfo(name = "group", title = gettext("Group"), type = "string", combine = TRUE)
@@ -2670,7 +2670,7 @@ checkLavaanModel <- function(model, availableVars) {
   # }
 
   # Summary of sensitivity parameters
-  sensumpartab <- createJaspTable(title = gettext("Summary of sensitivity parameters"))
+  sensumpartab <- createJaspTable(title = gettext("Summary of Sensitivity Parameters"))
 
   if (options[["group"]] != "")
     sensumpartab$addColumnInfo(name = "group", title = gettext("Group"), type = "string", combine = TRUE)
@@ -2700,7 +2700,7 @@ checkLavaanModel <- function(model, availableVars) {
 .semPathPlot <- function(modelContainer, dataset, options, ready) {
   if (!options[["pathPlot"]] || !ready || !is.null(modelContainer[["plot"]])) return()
 
-  pcont <- createJaspContainer(gettext("Path diagram"))
+  pcont <- createJaspContainer(gettext("Path Diagram"))
   pcont$position <- 7
   pcont$dependOn(c("pathPlot", "pathPlotParameter", "pathPlotLegend", "models", "pathPlotParameterStandardized"))
 
@@ -2721,7 +2721,7 @@ checkLavaanModel <- function(model, availableVars) {
 
 .semCreatePathPlot <- function(fit, modelname, parentContainer, options, ready) {
   if (is.null(modelname)) {
-    modelname <- gettext("Path diagram")
+    modelname <- gettext("Path Diagram")
   }
 
   if (options[["group"]] == "") {

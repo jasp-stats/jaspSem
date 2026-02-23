@@ -195,7 +195,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 .mimicFitTable <- function(modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["fittab"]])) return()
 
-  fittab <- createJaspTable(title = gettext("Chi-square test"))
+  fittab <- createJaspTable(title = gettext("Chi-Square Test"))
   fittab$position <- 0
 
   fittab$addColumnInfo(name="Model", title = "",                      type = "string")
@@ -235,7 +235,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 
 .mimicParTable <- function(modelContainer, options, ready) {
   if (!is.null(modelContainer[["parest"]])) return()
-  modelContainer[["parest"]] <- pecont <- createJaspContainer(gettext("Parameter estimates"))
+  modelContainer[["parest"]] <- pecont <- createJaspContainer(gettext("Parameter Estimates"))
   pecont$dependOn(options = c("ciLevel", "bootstrapCiType"))
   pecont$position <- 0.5
 
@@ -246,7 +246,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 
   bettab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string")
   bettab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
-  bettab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
+  bettab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
   bettab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   bettab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   bettab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -262,7 +262,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 
   lamtab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
   lamtab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
-  lamtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
+  lamtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
   lamtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   lamtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   lamtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -340,7 +340,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 .mimicPathPlot <- function(modelContainer, dataset, options, ready) {
   if (!options$pathPlot || !ready || !is.null(modelContainer[["plot"]])) return()
 
-  plt <- createJaspPlot(title = gettext("Path plot"), width = 600, height = 400)
+  plt <- createJaspPlot(title = gettext("Path Plot"), width = 600, height = 400)
   plt$dependOn(options = c("pathPlot", "pathPlotParameter", "pathPlotLegend"))
   plt$position <- 2
 

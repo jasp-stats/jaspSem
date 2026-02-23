@@ -6,7 +6,7 @@ Description
 	title : 		qsTr("SEM")
 	description:	qsTr("Evaluate latent data structures with Yves Rosseel’s lavaan program")
 	icon:			"sem-latreg.svg"
-	preloadData:	false
+	preloadData:	true
 	hasWrappers: 	true
 
 	Analysis
@@ -21,7 +21,6 @@ Description
 		title:	qsTr("Partial Least Squares SEM")
 		qml:	"PLSSEM.qml"
 		func:	"PLSSEM"
-		preloadData: true
 	}
 
 	Analysis
@@ -50,6 +49,5 @@ Description
 		title: qsTr("MNLFA")
 		qml: "ModeratedNonLinearFactorAnalysis.qml"
 		func: "ModeratedNonLinearFactorAnalysis"
-		preloadData: true
 	}
 }
