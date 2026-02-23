@@ -410,6 +410,7 @@ if (isMacOS) {
 
 
 # Configural invariance with loadings, factor variance/means/covariances, fit per group
+# Uses simplified moderator setup (Age + squared only) for faster convergence (~15s vs ~225s)
 options2 <- options
 options2$invarianceTestConfigural <- TRUE
 options2$invarianceTestScalar     <- FALSE
@@ -420,6 +421,13 @@ options2$parameterEstimatesResidualVariances <- FALSE
 options2$parameterEstimatesFactorVariance    <- TRUE
 options2$parameterEstimatesFactorMeans       <- TRUE
 options2$parameterEstimatesFactorCovariances <- TRUE
+
+# Simplified moderators: Age + squared only (no Male, no interaction)
+options2$moderators <- list(
+  list(variable = "Age", moderatorSquaredEffect = TRUE, moderatorCubicEffect = FALSE)
+)
+options2$moderators.types <- c("scale")
+options2$moderatorInteractionTerms <- list()
 
 # Update individual moderations for configural
 options2$includeIndividualModerationsList <- list(
@@ -527,8 +535,8 @@ test_that("Configural invariance fit table results match", {
   table <- results2[["results"]][["fitContainer"]][["collection"]][["fitContainer_invFitTable"]][["data"]]
   if (isMacOS) {
     jaspTools::expect_equal_tables(table,
-                                   list(109630.101875, 110028.109494168, 109514.101875, 58, 109631.079449632,
-                                        109843.798800276, "Configural"))
+                                   list(110750.546348301, 111196.589369783, 110620.546348301, 65,
+                                        110751.773114101, 110990.034281801, "Configural"))
   } else {
     expect_true(!is.null(table))
   }
@@ -544,17 +552,14 @@ test_that("Configural factor variance table results match", {
   table <- results2[["results"]][["mainContainer"]][["collection"]][["mainContainer_globalParameterContainer"]][["collection"]][["mainContainer_globalParameterContainer_Configural"]][["collection"]][["mainContainer_globalParameterContainer_Configural_fvTable"]][["data"]]
   if (isMacOS) {
     jaspTools::expect_equal_tables(table,
-                                   list(0.532676683524698, 0.77837493292571, "Age", 0.643911622670088,
-                                        "Factor 1", 5.38198031918569e-06, 0.0623051274748882, 0.112103086409582,
-                                        6.3894530930541, "Male", 0.846331738859306, "Factor 1", 0.871490435084536,
-                                        0.872900377580528, 0.711065357738871, 1.19878443686349, "Age_x_Male",
-                                        0.92326273857994, "Factor 1", 0.549025374478376, 0.12301736471709,
-                                        1.01857363320427, 1.18888253846439, "Age_squared", 1.10043827934909,
-                                        "Factor 1", 0.0152430729707058, 0.0434037038641479, "", "",
-                                        "Age", 0.359898335678741, "Factor 2", "", "", "", "", "Male",
-                                        0.456223975800164, "Factor 2", "", "", "", "", "Age_x_Male",
-                                        0.987560238529586, "Factor 2", "", "", "", "", "Age_squared",
-                                        1.29247653291302, "Factor 2", "", ""))
+                                   list(1.08331308523565, 1.65928141774314, "Age", 1.34071670084679,
+                                        "Factor 1", 0.00702411310741757, 0.145826350898154, 0.511029823553375,
+                                        0.785480541670386, "Age_squared", 0.633564505488136, "Factor 1",
+                                        3.15729676789722e-05, 0.0694780466327939, 0.178631637186566,
+                                        0.66501509918342, "Age", 0.344663221015705, "Factor 2",
+                                        0.00149063776278924, 0.115577193480205, 1.07360222788718,
+                                        1.34470928899678, "Age_squared", 1.20153355697106, "Factor 2",
+                                        0.00139158860273825, 0.0690153588391524))
   } else {
     expect_true(!is.null(table))
   }
@@ -564,15 +569,14 @@ test_that("Configural factor means table results match", {
   table <- results2[["results"]][["mainContainer"]][["collection"]][["mainContainer_globalParameterContainer"]][["collection"]][["mainContainer_globalParameterContainer_Configural"]][["collection"]][["mainContainer_globalParameterContainer_Configural_fmTable"]][["data"]]
   if (isMacOS) {
     jaspTools::expect_equal_tables(table,
-                                   list("", "", "Age", 1.86976762318969, "Factor 1", "", "", "", "", "Male",
-                                        -1.70257279018573, "Factor 1", "", "", -2.16817681506917, 1.06637907952546,
-                                        "Age_x_Male", -0.550898867771854, "Factor 1", 0.504370330395776,
-                                        0.825156972298571, -0.171566542276445, 0.123473953353127, "Age_squared",
-                                        -0.0240462944616587, "Factor 1", 0.749362029127892, 0.0752668156039635,
-                                        "", "", "Age", 0.781167148919985, "Factor 2", "", "", "", "",
-                                        "Male", 1.30503314816448, "Factor 2", "", "", "", "", "Age_x_Male",
-                                        -0.164820615408313, "Factor 2", "", "", "", "", "Age_squared",
-                                        -0.0594753746606537, "Factor 2", "", ""))
+                                   list(-0.11797505313098, 0.0702015237324405, "Age", -0.0238867646992695,
+                                        "Factor 1", 0.618774499028364, 0.0480051108968667, -0.0520716012405416,
+                                        0.143649915681573, "Age_squared", 0.0457891572205155, "Factor 1",
+                                        0.35910631756296, 0.0499298758716845, -0.81636702891802,
+                                        3.34030668490767, "Age", 1.26196982799482, "Factor 2",
+                                        0.234009601602057, 1.06039543241942, -0.41875922337702,
+                                        0.152742711494277, "Age_squared", -0.133008255941372, "Factor 2",
+                                        0.361609370989496, 0.145793988914906))
   } else {
     expect_true(!is.null(table))
   }
@@ -582,12 +586,12 @@ test_that("Configural factor covariances table results match", {
   table <- results2[["results"]][["mainContainer"]][["collection"]][["mainContainer_globalParameterContainer"]][["collection"]][["mainContainer_globalParameterContainer_Configural"]][["collection"]][["mainContainer_globalParameterContainer_Configural_covTable"]][["data"]]
   if (isMacOS) {
     jaspTools::expect_equal_tables(table,
-                                   list(0.0561400914299918, 0.199429211144, "Baseline", 0.127784651286996,
-                                        0.000472685785173788, 0.0365540185544875, "", "", "Age", -0.0263198772566827,
-                                        "", "", "", "", "Male", -0.0154432858963612, "", "", -0.106516821915126,
-                                        0.0547054736300884, "Age_x_Male", -0.0259056741425186, 0.528782526524825,
-                                        0.0411288923717259, "", "", "Age_squared", 0.0250047188491346,
-                                        "", ""))
+                                   list(0.112585558030865, 0.191798849309964, "Baseline", 0.152192203670414,
+                                        5.01820807130571e-14, 0.0202078435889444, -0.00594763537821141,
+                                        0.0829403488440276, "Age", 0.0384963567329081, 0.0895690404524621,
+                                        0.0226759228545463, -0.058200776839228, -0.00901014210274764,
+                                        "Age_squared", -0.0336054594709878, 0.00740701381776465,
+                                        0.0125488618986088))
   } else {
     expect_true(!is.null(table))
   }
@@ -597,22 +601,15 @@ test_that("Fit per group table has data", {
   table <- results2[["results"]][["groupContainer"]][["collection"]][["groupContainer_checkModelFitPerGroupTable"]][["data"]]
   if (isMacOS) {
     jaspTools::expect_equal_tables(table,
-                                   list(1628, 0.97778795824664, 49.0228529406467, 8, "Male_0:Age_nominal_1:Age_x_Male_nominal_1:Age_squared_nominal_1",
-                                        6.2939756739766e-08, 0.0561229817199524, 0.0407322258776629,
-                                        643, 0.982043505706005, 23.8330889295756, 8, "Male_0:Age_nominal_2:Age_x_Male_nominal_1:Age_squared_nominal_1",
-                                        0.00244418442668215, 0.0554794753664046, 0.047719532797256,
-                                        317, 0.97809319056567, 14.8789242756421, 8, "Male_0:Age_nominal_1:Age_x_Male_nominal_1:Age_squared_nominal_2",
-                                        0.0615429008069905, 0.0520817585380339, 0.0503364248041806,
-                                        97, 0.940577053943037, 16.0630238785912, 8, "Male_0:Age_nominal_2:Age_x_Male_nominal_1:Age_squared_nominal_2",
-                                        0.0414868785936976, 0.101933775996507, 0.0695680121995393, 1754,
-                                        0.947009442037605, 128.003790771617, 8, "Male_1:Age_nominal_2:Age_x_Male_nominal_2:Age_squared_nominal_1",
-                                        0, 0.0924778436482069, 0.0546765358580967, 1913, 0.97198620904555,
-                                        74.3387163683241, 8, "Male_1:Age_nominal_1:Age_x_Male_nominal_1:Age_squared_nominal_1",
-                                        6.69020394639119e-13, 0.0658386706429718, 0.0461067737321225,
-                                        214, 0.940578327178694, 22.8259958861586, 8, "Male_1:Age_nominal_1:Age_x_Male_nominal_1:Age_squared_nominal_2",
-                                        0.00359498010500803, 0.0930593591533234, 0.0827842870984544,
-                                        494, 0.951760716536376, 44.5920261766308, 8, "Male_1:Age_nominal_2:Age_x_Male_nominal_2:Age_squared_nominal_2",
-                                        4.39663623064135e-07, 0.0962243001293451, 0.0508178877899054))
+                                   list(3541, 0.962855543637305, 167.949620595439, 8,
+                                        "Age_nominal_1:Age_squared_nominal_1", 0, 0.0751421557319197,
+                                        0.05283866976707, 2397, 0.952922234559455, 160.894167907472, 8,
+                                        "Age_nominal_2:Age_squared_nominal_1", 0, 0.0892928015988366,
+                                        0.0549013968491845, 531, 0.959623320824042, 30.8625752101873, 8,
+                                        "Age_nominal_1:Age_squared_nominal_2", 0.00014863914358354,
+                                        0.073361857591604, 0.0631340931013203, 591, 0.954701825269132,
+                                        49.3382567247161, 8, "Age_nominal_2:Age_squared_nominal_2",
+                                        5.47570161435473e-08, 0.093505540527225, 0.0502803502483288))
   } else {
     expect_true(!is.null(table))
     expect_true(length(table) > 0)
