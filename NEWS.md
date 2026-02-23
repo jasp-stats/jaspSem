@@ -1,5 +1,6 @@
 # jaspSem (development version)
 
+## [Pull Request #360](https://github.com/jasp-stats/jaspSem/pull/360)
 - Replace help files with inline `info` fields on all QML controls across SEM, Mediation Analysis, MIMIC, PLS-SEM, and MNLFA
 - Standardize all table, plot, and container titles to Title Case across all R files
 - Wrap missing user-visible strings in `gettext()` for internationalization
