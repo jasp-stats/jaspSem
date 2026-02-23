@@ -284,7 +284,8 @@ checkCSemModel <- function(model, availableVars) {
       }
       # resample
       options(future.globals.method.default = "ordered",
-              future.globals.method         = "ordered")
+              future.globals.method         = "ordered",
+              future.globals.maxSize        = Inf)
       fit <- try(cSEM::resamplecSEMResults(.object = fit,
                                            .R = options[["bootstrapSamples"]],
                                            .user_funs = tickFunction,
@@ -518,7 +519,7 @@ checkCSemModel <- function(model, availableVars) {
 
   # create loadings table
   loadingTab <- createJaspTable(title = gettext("Loadings"))
-  loadingTab$info <- gettext("Outer loadings (correlations) between indicators and their constructs. Loadings above 0.708 indicate that the construct explains more than 50%% of the indicator's variance.")
+  loadingTab$info <- gettextf("Outer loadings (correlations) between indicators and their constructs. Loadings above 0.708 indicate that the construct explains more than 50%% of the indicator's variance.")
 
   if (options[["group"]] != "")
     loadingTab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)

@@ -65,3 +65,4 @@ jasp_dev_work_dir/
 
 # test problem files
 tests/testthat/_problems/
+.positai

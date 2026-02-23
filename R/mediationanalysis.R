@@ -17,7 +17,7 @@
 
 MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rosseel, Y. (2012). lavaan: An R Package for Structural Equation Modeling. Journal of Statistical Software, 48(2), 1-36. URL http://www.jstatsoft.org/v48/i02/")
-  
+
 
   # Read dataset
   dataset <- .medReadData(dataset, options)
@@ -433,7 +433,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 }
 
 .medTotIndTable <- function(modelContainer, options, ready) {
-  if (!options[["totalIndirectEffect"]] || !length(options$mediators) > 1) return()
+  if (!options[["totalIndirectEffect"]] || length(options[["mediators"]]) <= 1) return()
 
   ttitab <- createJaspTable(title = gettext("Total indirect effects"))
   ttitab$info <- gettext("Total indirect effects summed across all mediators for each predictor-outcome pair. When there are multiple mediators, this gives the combined strength of all indirect pathways.")

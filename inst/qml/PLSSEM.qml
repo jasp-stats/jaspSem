@@ -126,7 +126,7 @@ Form
 				info: qsTr("Select the error calculation method.")
 				RadioButton { value: "none";		label: qsTr("None"); checked: true;	info: qsTr("Do not compute standard errors or confidence intervals.") }
 				RadioButton {
-							value: "bootstrap";	label: qsTr("Bootstrap"); checked: true
+							value: "bootstrap";	label: qsTr("Bootstrap"); 
 							info: qsTr("Compute standard errors and confidence intervals using bootstrap resampling.")
 							IntegerField
 							{
