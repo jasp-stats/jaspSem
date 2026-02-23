@@ -276,3 +276,94 @@ test_that("Residual variances table results match", {
                                       -0.0399776999941945, 0.393824053017031, 0.176923176511418, 0.109883564718275,
                                       0.110665746011916, "y4", 1.59871670220673))
 })
+
+
+# Quadratic growth with all optional outputs
+options3 <- options
+options3$quadratic             <- TRUE
+options3$additionalFitMeasures <- TRUE
+options3$rSquared              <- TRUE
+options3$impliedCovariance     <- TRUE
+options3$residualCovariance    <- TRUE
+options3$syntax                <- TRUE
+options3$curvePlot             <- TRUE
+options3$pathPlot              <- TRUE
+
+set.seed(1)
+results3 <- jaspTools::runAnalysis("LatentGrowthCurve", testthat::test_path("poldem_grouped.csv"), options3, makeTests = FALSE)
+
+test_that("Quadratic latent curve table has correct structure", {
+  # NOTE: exact values not tested because the quadratic model produces negative variances
+  # and can converge to different local optima across runs
+  table <- results3[["results"]][["modelContainer"]][["collection"]][["modelContainer_partabs"]][["collection"]][["modelContainer_partabs_latcur"]][["data"]]
+  expect_equal(length(table), 6)
+  labels <- sapply(table, function(row) row[["component"]])
+  types  <- sapply(table, function(row) row[["param"]])
+  expect_equal(labels, c("Intercept", "Intercept", "Linear slope", "Linear slope", "Quadratic slope", "Quadratic slope"))
+  expect_equal(types,  c("Mean", "Variance", "Mean", "Variance", "Mean", "Variance"))
+})
+
+test_that("Additional fit measures table results match", {
+  table <- results3[["results"]][["modelContainer"]][["collection"]][["modelContainer_fitIndices"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("Comparative Fit Index (CFI)", 0.859848311804056, "Tucker-Lewis Index (TLI)",
+                                      0.34595878841893, "Bentler-Bonett Non-normed Fit Index (NNFI)",
+                                      0.34595878841893, "Bentler-Bonett Normed Fit Index (NFI)", 0.854314001958123,
+                                      "Parsimony Normed Fit Index (PNFI)", 0.183067286133883, "Bollen's Relative Fit Index (RFI)",
+                                      0.320132009137905, "Bollen's Incremental Fit Index (IFI)", 0.868202657710421,
+                                      "Relative Noncentrality Index (RNI)", 0.859848311804056, "Root mean square error of approximation (RMSEA)",
+                                      0.328776940788045, "RMSEA 90% CI lower bound", 0.222855445658039,
+                                      "RMSEA 90% CI upper bound", 0.44682992305614, "RMSEA p-value",
+                                      2.74098924707422e-05, "Standardized root mean square residual (SRMR)",
+                                      0.110884553767486, "Hoelter's critical N (\u03B1 = .05)",
+                                      22.4523640739803, "Hoelter's critical N (\u03B1 = .01)",
+                                      32.1430179628636, "Goodness of fit index (GFI)", 0.951665034033744,
+                                      "McDonald fit index (MFI)", 0.850320947738198, "Expected cross validation index (ECVI)",
+                                      0.870949497048504, "Log-likelihood", -698.619539754982, "Number of free parameters",
+                                      19, "Akaike (AIC)", 1435.23907950996, "Bayesian (BIC)", 1479.27135366715,
+                                      "Sample-size adjusted Bayesian (SSABIC)", 1419.38835974857))
+})
+
+test_that("R-squared table results match", {
+  table <- results3[["results"]][["modelContainer"]][["collection"]][["modelContainer_rsquared"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("y1", "", "y2", 0.167939386500449, "y3", 0.392059398679358, "y4",
+                                      -0.606294027492821))
+})
+
+test_that("Implied covariance table results match", {
+  table <- results3[["results"]][["modelContainer"]][["collection"]][["modelContainer_impliedCovTab"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("", "", 6.78632108886267, "", "", "", "", "", 6.13538851199859,
+                                      17.7312477719085, "", "", "", "", 5.7745274807624, 4.38177197317977,
+                                      11.3956331777628, "", "", "", 5.99378295934392, 10.3473798134326,
+                                      6.03250683495574, 11.4644638754404, "", 1.949678538072, 0.897531861127889,
+                                      0.884161212109168, 1.15203565891163, 1.70115520153528, 0.249955555555555,
+                                      -0.189515866666667, -0.238678218688687, 0.0210765120842407,
+                                      -0.0530634658926051, -0.461098152619225))
+})
+
+test_that("Residual covariance table results match", {
+  table <- results3[["results"]][["modelContainer"]][["collection"]][["modelContainer_rescov"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("", "", 0.000530466692885589, "", "", "", "", "", 0.0326268136014054,
+                                      -2.35915615117634, "", "", "", "", -0.0135416022735049, 1.3790085248548,
+                                      -0.77490174609429, "", "", "", 0.0136802746294089, -0.965600705346711,
+                                      0.56626174174086, -0.395111315001229, "", 0, 0.0017693188721104,
+                                      0.270054316946833, -0.126811462707632, 0.112360610585651, 0,
+                                      0, 0.000580440910909863, 0.0885472692490925, -0.0415792772185059,
+                                      0.0368416571525587))
+})
+
+test_that("Model syntax is shown", {
+  syntax <- results3[["results"]][["modelContainer"]][["collection"]][["modelContainer_model_syntax"]]
+  expect_true(!is.null(syntax))
+})
+
+test_that("Curve plot is created", {
+  expect_true(!is.null(results3[["results"]][["modelContainer"]][["collection"]][["modelContainer_curveplot"]][["data"]]))
+})
+
+test_that("Path plot is created", {
+  expect_true(!is.null(results3[["results"]][["modelContainer"]][["collection"]][["modelContainer_pathplot"]][["data"]]))
+})

@@ -279,3 +279,36 @@ test_that("Total effects table results match", {
                                       "<unicode>", 0.0999482490400043, "contNormal", 0.0978855272669042,
                                       1.64510456659475))
 })
+
+
+# R-squared, path plot, syntax
+test_that("R-squared, path plot, and syntax work", {
+  options <- jaspTools::analysisOptions("MediationAnalysis")
+  options$predictors             <- "contcor1"
+  options$mediators              <- "contcor2"
+  options$outcomes               <- "contNormal"
+  options$emulation              <- "lavaan"
+  options$estimator              <- "ml"
+  options$errorCalculationMethod <- "standard"
+  options$ciLevel                <- 0.95
+  options$naAction               <- "fiml"
+  options$rSquared               <- TRUE
+  options$pathPlot               <- TRUE
+  options$syntax                 <- TRUE
+
+  set.seed(1)
+  results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options, makeTests = FALSE)
+
+  # R-squared table
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_rsquared"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("contNormal", 0.0355299165169844, "contcor2", 0.431662223819312))
+
+  # Path plot
+  expect_true(!is.null(results[["results"]][["modelContainer"]][["collection"]][["modelContainer_plot"]][["data"]]))
+
+  # Model syntax
+  syntax <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_syntax"]]
+  expect_true(!is.null(syntax))
+  expect_equal(syntax[["title"]], "Model syntax")
+})

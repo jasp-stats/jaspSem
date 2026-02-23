@@ -571,3 +571,43 @@ test_that("R-Squared table results match", {
                                       "VAL", 0.758514799820926, 0.762394080145088, "SAT", 0.583411462155354,
                                       0.586757554828805, "LOY"))
 })
+
+
+# Endogenous indicator prediction
+test_that("Endogenous indicator prediction works", {
+  # cSEM::predict() uses the future package which may fail if this option is unset
+  oldOpt <- getOption("future.globals.method.default")
+  options("future.globals.method.default" = "ordered")
+  on.exit(options("future.globals.method.default" = oldOpt), add = TRUE)
+
+  options <- jaspTools::analysisOptions("PLSSEM")
+  model <- "
+    ind60 =~ x1 + x2 + x3
+    dem60 =~ y1 + y2 + y3 + y4
+    dem65 =~ y5 + y6 + y7 + y8
+    dem60 ~ ind60
+    dem65 ~ ind60 + dem60
+  "
+  options$models <- list(list(name = "Model1", syntax = list(model = model, columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))))
+  options$group                          <- ""
+  options$innerWeightingScheme           <- "path"
+  options$convergenceCriterion           <- "absoluteDifference"
+  options$setSeed                        <- TRUE
+  options$seed                           <- 123
+  options$endogenousIndicatorPrediction  <- TRUE
+  options$kFolds                         <- 5
+  options$repetitions                    <- 3
+  options$benchmark                      <- "lm"
+
+  set.seed(1)
+  results <- jaspTools::runAnalysis("PLSSEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = FALSE)
+
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_predict"]][["collection"]][["modelContainer_predict_metrics"]][["data"]]
+  # k-fold cross-validation is stochastic; test structure and reasonableness
+  expect_equal(length(table), 8)
+  indicators <- sapply(table, function(row) row[["indicator"]])
+  expect_equal(indicators, c("y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))
+  # All Q² predict values should be present and numeric
+  qSquares <- sapply(table, function(row) row[["q2"]])
+  expect_true(all(is.numeric(qSquares)))
+})
