@@ -588,6 +588,7 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL, 
 .additionalFitTables <- function(modelContainer, dataset, options, ready) {
 
   fitinds <- createJaspTable(gettext("Fit Indices"))
+  fitinds$info <- gettext("Detailed model fit indices. Includes incremental fit indices (CFI, TLI, NFI) comparing the model to the independence model, parsimony-adjusted indices, the RMSEA with confidence interval and close-fit test, SRMR, and information criteria (AIC, BIC, log-likelihood). CFI and TLI values above 0.95, RMSEA below 0.06, and SRMR below 0.08 suggest good fit.")
   fitinds$dependOn("additionalFitMeasures")
 
   fitinds$addColumnInfo(name = "index", title = gettext("Index"), type = "string")

@@ -275,6 +275,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 .medParTable <- function(modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["parest"]])) return()
   modelContainer[["parest"]] <- pecont <- createJaspContainer(gettext("Parameter Estimates"))
+  pecont$info <- gettext("Parameter estimates from the mediation model, organized by direct effects, indirect effects, and total effects.")
   pecont$dependOn(options = c("ciLevel", "bootstrapCiType"))
   pecont$position <- 0
 
@@ -282,6 +283,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
   ## direct effects
   dirtab <- createJaspTable(title = gettext("Direct effects"))
+  dirtab$info <- gettext("Direct effects of predictors on outcomes, bypassing all mediators (the c or c' path). A significant direct effect indicates that the predictor influences the outcome independently of the mediation pathway.")
 
   dirtab$addColumnInfo(name = "lhs",      title = "",                    type = "string")
   dirtab$addColumnInfo(name = "op",       title = "",                    type = "string")
@@ -300,6 +302,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
   ## indirect effects
   indtab <- createJaspTable(title = gettext("Indirect effects"))
+  indtab$info <- gettext("Indirect effects of predictors on outcomes transmitted through mediators. Each indirect effect is the product of the path coefficients along the mediation pathway (a \u00d7 b). A significant indirect effect indicates that mediation occurs through that pathway.")
 
   indtab$addColumnInfo(name = "x",        title = "",                    type = "string")
   indtab$addColumnInfo(name = "op1",      title = "",                    type = "string")
@@ -319,6 +322,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
   ## total effects
   tottab <- createJaspTable(title = gettext("Total Effects"))
+  tottab$info <- gettext("Total effects combining the direct effect and all indirect effects for each predictor-outcome pair. The total effect equals the sum of the direct and indirect effects (c = c' + a \u00d7 b).")
 
   tottab$addColumnInfo(name = "lhs",      title = "",                    type = "string")
   tottab$addColumnInfo(name = "op",       title = "",                    type = "string")
@@ -432,6 +436,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   if (!options[["totalIndirectEffect"]] || !length(options$mediators) > 1) return()
 
   ttitab <- createJaspTable(title = gettext("Total indirect effects"))
+  ttitab$info <- gettext("Total indirect effects summed across all mediators for each predictor-outcome pair. When there are multiple mediators, this gives the combined strength of all indirect pathways.")
   ttitab$dependOn("totalIndirectEffect")
 
   estTitle <- ifelse(options[["standardizedEstimate"]], gettext("Std. estimate"), gettext("Estimate"))
@@ -491,6 +496,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   if (!options[["residualCovariance"]] || !length(c(options$mediators, options$outcomes)) > 2) return()
 
   restab <- createJaspTable(title = gettext("Residual covariances"))
+  restab$info <- gettext("Estimated residual covariances between endogenous variables (mediators and outcomes). These represent shared variance not accounted for by the model's directed paths.")
   restab$dependOn("residualCovariance")
 
   estTitle <- ifelse(options[["standardizedEstimate"]], gettext("Std. estimate"), gettext("Estimate"))
@@ -547,6 +553,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   if (!options[["pathCoefficient"]]) return()
 
   pathtab <- createJaspTable(title = gettext("Path coefficients"))
+  pathtab$info <- gettext("Individual path coefficients in the mediation model. These include the a paths (predictor to mediator) and b paths (mediator to outcome), which constitute the building blocks of indirect effects.")
   pathtab$dependOn("pathCoefficient")
 
   estTitle <- ifelse(options[["standardizedEstimate"]], gettext("Std. estimate"), gettext("Estimate"))
@@ -615,6 +622,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   if (!options$rSquared || !is.null(modelContainer[["rsquared"]])) return()
 
   tabr2 <- createJaspTable(gettext("R-Squared"))
+  tabr2$info <- gettext("Proportion of variance in each mediator and outcome variable explained by its predictors in the mediation model.")
   tabr2$addColumnInfo(name = "__var__", title = "", type = "string")
   tabr2$addColumnInfo(name = "rsq", title = "R\u00B2", type = "number", format = "sf:4;dp:3")
   tabr2$dependOn(options = "rSquared")
@@ -633,6 +641,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   if (!options$pathPlot || !ready || !is.null(modelContainer[["plot"]])) return()
 
   plt <- createJaspPlot(title = gettext("Path Plot"), width = 600, height = 400)
+  plt$info <- gettext("Visual representation of the mediation model showing predictors, mediators, outcomes, directed paths, and (optionally) parameter estimates.")
   plt$dependOn(options = c("pathPlot", "pathPlotParameter", "pathPlotLegend"))
   plt$position <- 2
 
@@ -749,6 +758,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 .medSyntax <- function(modelContainer, options, ready) {
   if (!options$syntax || !ready) return()
   modelContainer[["syntax"]] <- createJaspHtml(.medToLavMod(options, FALSE), class = "jasp-code", title = gettext("Model syntax"))
+  modelContainer[["syntax"]]$info <- gettext("The lavaan model syntax automatically generated from the mediation analysis specification. This shows the exact model fitted, including labeled direct and indirect effect parameters.")
   modelContainer[["syntax"]]$dependOn("syntax")
   modelContainer[["syntax"]]$position <- 3
 }
