@@ -766,9 +766,9 @@ results <- jaspTools::runAnalysis("SEM", data, options, makeTests = FALSE)
 test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(707.570148255052, 721.47507693627, 3.33066907387547e-14, 0, "Model1",
-                                      75, "", "", "", "", 6, 6, 1095.63355300897, 1109.53848169019,
-                                      0, 0, "Model2", 75, "", "", 0, 0, 6, 6))
+                                 list(709.023697474126, 722.928626155344, 0, 0, "Model1", 75, "",
+                                      "", "", "", 6, 6, 816.268480294992, 830.17340897621,
+                                      2.33146835171283e-13, 0, "Model2", 75, "", "", 0, 0, 6, 6))
 })
 
 
