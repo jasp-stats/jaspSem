@@ -1,5 +1,5 @@
-import QtQuick		2.12
-import JASP.Module	1.0
+import QtQuick
+import JASP.Module
 
 Upgrades
 {
@@ -118,7 +118,7 @@ Upgrades
 		}
 
 		ChangeRename {	from:	"fixManifestInterceptsToZero";	to:		"manifestInterceptFixedToZero"		}
-		ChangeRename {	from:	"fixLatentInterceptsToZero";	to:		"latentInterceptFixedToZero"		}
+		ChangeRename {	from:	"fixlatentInterceptsToZero";	to:		"latentInterceptFixedToZero"		}
 		ChangeRename {	from:	"omitResidualSingleIndicator";	to:		"residualSingleIndicatorOmitted"	}
 		ChangeRename {	from:	"residualVariances";			to:		"residualVariance"					}
 		ChangeRename {	from:	"correlateExogenousLatents";	to:		"exogenousLatentCorrelation"		}
@@ -445,4 +445,6 @@ Upgrades
 		ChangeRename {	from:	"eq_lvcovariances";				to:		"equalLatentCovariance"				}
 		ChangeRename {	from:	"group.partial";				to:		"freeParameters"					}
 	}
+
+
 }

@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2023-01-14 02:47\n"
-"PO-Revision-Date: 2023-01-07 10:35+0000\n"
+"POT-Creation-Date: 2026-02-21 03:26\n"
+"PO-Revision-Date: 2026-01-25 09:30+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "gl/>\n"
@@ -16,10 +16,98 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.15.1-dev\n"
+"X-Generator: Weblate 5.16-dev\n"
 "X-Virgin-Header: remove this line if you change anything in the header.\n"
 "X-Language: gl_ES\n"
 "X-Source-Language: C\n"
+
+msgid "Fit indices"
+msgstr "Índices de axuste"
+
+msgid "Index"
+msgstr "Índice"
+
+msgid "Value"
+msgstr "Valor"
+
+msgid "Comparative Fit Index (CFI)"
+msgstr "Índice de Axuste Comparativo (IAC, CFI)"
+
+msgid "Tucker-Lewis Index (TLI)"
+msgstr "Índice de Tucker-Lewis (ITL, TLI)"
+
+msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
+msgstr "Índice de Axuste Non Normalizado de Bentler-Bonett (NNFI)"
+
+msgid "Bentler-Bonett Normed Fit Index (NFI)"
+msgstr "Índice de Axuste Normalizado de Bentler-Bonett (NFI)"
+
+msgid "Parsimony Normed Fit Index (PNFI)"
+msgstr "Índice de Axuste Normalizado de Parquidade (PNFI)"
+
+msgid "Bollen's Relative Fit Index (RFI)"
+msgstr "Índice de Axuste Relativo de Bollen (RFI)"
+
+msgid "Bollen's Incremental Fit Index (IFI)"
+msgstr "Índice de Axuste Gradual de Bollen (IFI)"
+
+msgid "Relative Noncentrality Index (RNI)"
+msgstr "Índice de Non Centrado Relativo (RNI)"
+
+msgid "Root mean square error of approximation (RMSEA)"
+msgstr "Raíz do erro de aproximación cadrado medio (REACM, RMSEA)"
+
+msgid "RMSEA 90%% CI lower bound"
+msgstr "Límite inferior do IC do 90%% da REACM"
+
+msgid "RMSEA 90%% CI upper bound"
+msgstr "Límite superior do IC do 90%% de REACM"
+
+msgid "RMSEA p-value"
+msgstr "Valor P da REACM"
+
+msgid "Standardized root mean square residual (SRMR)"
+msgstr "Raíz do erro cadrado medio estandarizado (RECMS, SRMR)"
+
+msgid "Hoelter's critical N (%s = .05)"
+msgstr "N crítico de Hoelter (%s = .05)"
+
+msgid "Hoelter's critical N (%s = .01)"
+msgstr "N crítico de Hoelter (%s = .01)"
+
+msgid "Goodness of fit index (GFI)"
+msgstr "Índice da bondade do axuste (IBA, GFI)"
+
+msgid "McDonald fit index (MFI)"
+msgstr "Índice do axuste de McDonald (MFI)"
+
+msgid "Expected cross validation index (ECVI)"
+msgstr "Índice de validación cruzada agardada (IVCA, ECVI)"
+
+msgid "Log-likelihood"
+msgstr "Log-Verosimilitude"
+
+msgid "Number of free parameters"
+msgstr "Número de parámetros libres"
+
+msgid "Akaike (AIC)"
+msgstr "Criterio de Información de Akaike (AIC)"
+
+msgid "Bayesian (BIC)"
+msgstr "Criterio de Información Baiesiano (BIC)"
+
+msgid "Sample-size adjusted Bayesian (SSABIC)"
+msgstr "BIC axustado ao tamaño da mostra (SSABIC)"
+
+msgid "# Factors"
+msgstr "# Factores"
+
+msgid ""
+"Robust standard errors are not available for variance-covariance matrix "
+"input."
+msgstr ""
+"Os erros padrón robustos non están dispoñibles para unha matriz de entrada "
+"de varianzas-covarianzas."
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "Non se puido estimar o modelo debido á non converxencia."
@@ -27,7 +115,7 @@ msgstr "Non se puido estimar o modelo debido á non converxencia."
 msgid "The model could not be estimated: No degrees of freedom left."
 msgstr "Non se puido estimar o modelo: Non quedan graos de liberdade."
 
-msgid "Chi-square Test"
+msgid "Chi-square test"
 msgstr "Proba Khi-cadrado"
 
 msgid "Baseline model"
@@ -45,20 +133,23 @@ msgstr "Aviso."
 msgid "Parameter estimates"
 msgstr "Estimacións dos parámetros"
 
+msgid "Std. estimate"
+msgstr "Estimación tipificada"
+
+msgid "Estimate"
+msgstr "Estimar"
+
 msgid "Component"
 msgstr "Compoñente"
 
 msgid "Parameter"
 msgstr "Parámetro"
 
-msgid "Estimate"
-msgstr "Estimar"
-
-msgid "Std. Error"
+msgid "Std. error"
 msgstr "Erro padrón"
 
 msgid "z-value"
-msgstr "valor z"
+msgstr "Valor z"
 
 msgid "p"
 msgstr "p"
@@ -66,23 +157,11 @@ msgstr "p"
 msgid "Lower"
 msgstr "Inferior"
 
-msgid "95%% Confidence Interval"
-msgstr "Intervalo co 95%% de Confianza"
+msgid "%s%% Confidence Interval"
+msgstr "Intervalo co %s%% de confianza"
 
 msgid "Latent covariances"
 msgstr "Covarianzas latentes"
-
-msgid "LV"
-msgstr "LV"
-
-msgid "Std. Est."
-msgstr "Est. Típ."
-
-msgid "All"
-msgstr "Todo"
-
-msgid "No X"
-msgstr "Sen X"
 
 msgid "Predictor"
 msgstr "Preditor"
@@ -114,96 +193,6 @@ msgstr ""
 "A varianza dos erros é negativa. Isto pode indicar unha mala especificación "
 "do modelo."
 
-msgid "Additional Fit measures"
-msgstr "Medidas Adicionais de Axuste"
-
-msgid "Fit indices"
-msgstr "Índices de axuste"
-
-msgid "Index"
-msgstr "Índice"
-
-msgid "Value"
-msgstr "Valor"
-
-msgid "Information criteria"
-msgstr "Criterios de información"
-
-msgid "Other fit measures"
-msgstr "Outras medidas de axuste"
-
-msgid "Metric"
-msgstr "Métrica"
-
-msgid "Comparative Fit Index (CFI)"
-msgstr "Índice de Axuste Comparativo (IAC, CFI)"
-
-msgid "Tucker-Lewis Index (TLI)"
-msgstr "Índice de Tucker-Lewis (ITL, TLI)"
-
-msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
-msgstr "Índice de Axuste Non Normalizado de Bentler-Bonett (NNFI)"
-
-msgid "Bentler-Bonett Normed Fit Index (NFI)"
-msgstr "Índice de Axuste Normalizado de Bentler-Bonett (NFI)"
-
-msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr "Índice de Axuste Normalizado de Parquidade (PNFI)"
-
-msgid "Bollen's Relative Fit Index (RFI)"
-msgstr "Índice de Axuste Relativo de Bollen (RFI)"
-
-msgid "Bollen's Incremental Fit Index (IFI)"
-msgstr "Índice de Axuste Gradual de Bollen (IFI)"
-
-msgid "Relative Noncentrality Index (RNI)"
-msgstr "Índice de Non Centrado Relativo (RNI)"
-
-msgid "Log-likelihood"
-msgstr "Log-Verosimilitude"
-
-msgid "Number of free parameters"
-msgstr "Número de parámetros libres"
-
-msgid "Akaike (AIC)"
-msgstr "Criterio de Información de Akaike (AIC)"
-
-msgid "Bayesian (BIC)"
-msgstr "Criterio de Información Baiesiano (BIC)"
-
-msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr "BIC axustado ao tamaño da mostra (SSABIC)"
-
-msgid "Root mean square error of approximation (RMSEA)"
-msgstr "Raíz do erro de aproximación cadrado medio (REACM, RMSEA)"
-
-msgid "RMSEA 90%% CI lower bound"
-msgstr "Límite inferior do IC do 90%% da REACM"
-
-msgid "RMSEA 90%% CI upper bound"
-msgstr "Límite superior do IC do 90%% de REACM"
-
-msgid "RMSEA p-value"
-msgstr "valor p da REACM"
-
-msgid "Standardized root mean square residual (SRMR)"
-msgstr "Raíz do erro cadrado medio estandarizado (RECMS, SRMR)"
-
-msgid "Hoelter's critical N (%s = .05)"
-msgstr "N crítico de Hoelter (%s = .05)"
-
-msgid "Hoelter's critical N (%s = .01)"
-msgstr "N crítico de Hoelter (%s = .01)"
-
-msgid "Goodness of fit index (GFI)"
-msgstr "Índice da bondade do axuste (IBA, GFI)"
-
-msgid "McDonald fit index (MFI)"
-msgstr "Índice do axuste de McDonald (MFI)"
-
-msgid "Expected cross validation index (ECVI)"
-msgstr "Índice de validación cruzada agardada (IVCA, ECVI)"
-
 msgid "R-Squared"
 msgstr "R-cadrado"
 
@@ -230,9 +219,6 @@ msgstr "Curva + varianza"
 
 msgid "Curve + parameter uncertainty"
 msgstr "Curva + incerteza de parámetros"
-
-msgid "FIML only available with ML-type estimators."
-msgstr "MVIC só está dispoñible con estimadores de tipo MV."
 
 msgid ""
 "Not all exogenous variables are admissible. Inadmissible exogenous "
@@ -265,11 +251,11 @@ msgstr ""
 "Mensaxe:\n"
 "%s"
 
+msgid "Estimation failed"
+msgstr "Fallou a estimación"
+
 msgid "Direct effects"
 msgstr "Efectos directos"
-
-msgid "%s%% Confidence Interval"
-msgstr "Intervalo co %s%% de Confianza"
 
 msgid "Upper"
 msgstr "Superior"
@@ -286,39 +272,14 @@ msgstr "Covarianzas dos erros"
 msgid "Path coefficients"
 msgstr "Coeficientes da ruta"
 
-msgid "Delta method"
-msgstr "Método Delta"
-
-msgid "Robust"
-msgstr "Robusto"
-
-msgid "percentile bootstrap"
-msgstr "percentil de Bootstrap"
-
-msgid "normal theory bootstrap"
-msgstr "bootstrap de teoría Normal"
-
-msgid "bias-corrected percentile bootstrap"
-msgstr "percentil de Bootstrap con nesgo corrixido"
-
-msgid "normal theory"
-msgstr "teoría Normal"
-
-msgid "robust"
-msgstr "robusto"
-
-msgid "%1$s standard errors, %2$s confidence intervals."
-msgstr "%1$s erros padrón, %2$s intervalos de confianza."
+msgid "Estimator is %s."
+msgstr "O estimador é %s."
 
 msgid ""
-"%1$s standard errors, %2$s confidence intervals, %3$s estimator. NB: Not all "
-"bootstrap samples were successful: CI based on %4$.0f samples."
+"%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
 msgstr ""
-"%1$s erros padrón, %2$s intervalos de confianza, %3$s estimador. NB: Non "
-"foron válidas todas as mostras do Bootstrap: IC baseado en %4$.0f mostras."
-
-msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
-msgstr "%1$s erros padrón, %2$s intervalos de confianza, %3$s estimador."
+"%1$s Non foron válidas todas as mostras do Bootstrap: IC baseado en %2$.0f "
+"mostras."
 
 msgid "Path plot"
 msgstr "Gráfica de rutas"
@@ -327,14 +288,21 @@ msgid ""
 "Currently it is not possible to plot mediation models with ordinal "
 "variables. The plot could not be generated."
 msgstr ""
+"Actualmente non é posible debuxar modelos de mediación con variables "
+"ordinais. A gráfica non pode xerarse."
 
 msgid ""
 "The plot could not be generated. The underlying code resulted in the "
 "following error message: %s"
 msgstr ""
+"A gráfica non pode xerarse. O código subxacente dá como resultado a seguinte "
+"mensaxe de fallo: %s"
 
 msgid "Model syntax"
 msgstr "Sintaxe do modelo"
+
+msgid "FIML only available with ML-type estimators."
+msgstr "MVIC só está dispoñible con estimadores de tipo MV."
 
 msgid ""
 "Estimation failed! Message: The model did not converge. Try using a "
@@ -342,9 +310,6 @@ msgid ""
 msgstr ""
 "Fallou a estimación! Mensaxe: O modelo non converxe. Trata de usar un "
 "estimador distinto ou de especificar outro modelo MIMIC."
-
-msgid "Chi Square test"
-msgstr "Proba Khi-cadrado"
 
 msgid "df"
 msgstr "gl"
@@ -355,17 +320,8 @@ msgstr "&#967;&sup2;"
 msgid "Factor model"
 msgstr "Modelo de factores"
 
-msgid "Additional fit measures"
-msgstr "Medidas adicionais de axuste"
-
 msgid "Predictor coefficients"
 msgstr "Coeficientes do preditor"
-
-msgid "Standardized"
-msgstr "Tipificado"
-
-msgid "Endo"
-msgstr "Endo"
 
 msgid "Indicator coefficients"
 msgstr "Coeficientes de indicadores"
@@ -373,14 +329,186 @@ msgstr "Coeficientes de indicadores"
 msgid "Indicator"
 msgstr "Indicador"
 
-msgid "Latent"
-msgstr "Latente"
-
 msgid "Model plot not available with ordinal variables"
 msgstr "A gráfica do modelo non está dispoñible con variables ordinais"
 
+msgid ""
+"Specify both factor indicator variables and moderator variables to run the "
+"analysis."
+msgstr ""
+"Especificar tanto as variables indicativas dos factores como as variables "
+"moderadoras, para executar a análise."
+
+msgid "Check the 'Sync Analysis' box to run the analysis."
+msgstr "Marca o cadro 'Análise Sincr' para executar a análise."
+
+msgid ""
+"The moderator variable '%s' already has '_squared' in its name. Please "
+"rename the variable before proceeding."
+msgstr ""
+"A variable moderadora '%s' xa ten '_squared' no seu nome. Por favor, volve "
+"nomear a variable antes de continuar."
+
+msgid ""
+"The moderator variable '%s' already has '_cubic' in its name. Please rename "
+"the variable before proceeding."
+msgstr ""
+"A variable moderadora '%s' xa ten '_cubic' no seu nome. Por favor, volve "
+"nomear a variable antes de continuar."
+
+msgid "Fitting invariance model"
+msgstr "Axustar o modelo de invarianza"
+
+msgid "Fit per Group Test"
+msgstr "Axuste por Proba de grupos"
+
+msgid "Group Model"
+msgstr "Modelo de grupos"
+
+msgid "Error in fit per group test. Internal error message(s): %s"
+msgstr "Fallo no axuste por proba de grupos. Mensaxe(s) de fallo interno: %s"
+
+msgid "N"
+msgstr "N"
+
+msgid "RMSEA"
+msgstr "REACM (RMSEA)"
+
+msgid "CFI"
+msgstr "IAC (CFI)"
+
+msgid "SRMR"
+msgstr "RECMT (SRMR)"
+
+msgid "The model for group %s did not converge."
+msgstr "O modelo para o grupo %s no converxeu."
+
+msgid "Global Invariance Fit"
+msgstr "Axuste de invarianza global"
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "n(Par)"
+msgstr "n(Par)"
+
+msgid "Fit (-2LL)"
+msgstr "Axuste (-2LV)"
+
+msgid "AIC"
+msgstr "AIC"
+
+msgid "SAAIC"
+msgstr "SAAIC"
+
+msgid "BIC"
+msgstr "BIC"
+
+msgid "SABIC"
+msgstr "SABIC"
+
+msgid "Choose one of the global invariance tests to perform the test."
+msgstr "Elixe unha das probas de invarianza global para realizar a proba."
+
+msgid "Δ(LL)"
+msgstr "Δ(LV)"
+
+msgid "Δ(df)"
+msgstr "Δ(gl)"
+
+msgid "%1$s Error in fitting the %2$s model. Internal error message(s): %3$s"
+msgstr "%1$s Fallo ao axustar o modelo %2$s. Mensaxe(s) de fallo interno: %3$s"
+
+msgid "Parameter Estimates"
+msgstr "Estimacións dos parámetros"
+
+msgid "The %s model could not be fitted"
+msgstr "O modelo %s no se puido axustar"
+
+msgid "Loadings"
+msgstr "Cargas"
+
+msgid "Factor"
+msgstr "Factor"
+
+msgid "Effect"
+msgstr "Efecto"
+
+msgid "Std. Error"
+msgstr "Erro padrón"
+
+msgid "Intercepts"
+msgstr "Constantes"
+
+msgid "Residual Variances"
+msgstr "Varianzas dos erros"
+
+msgid "Factor Variances"
+msgstr "Varianzas dos Factores"
+
+msgid "Factor Means"
+msgstr "Medias dos Factores"
+
+msgid "Factor Covariances"
+msgstr "Covarianzas dos Factores"
+
+msgid "Parameter Plots"
+msgstr "Gráficas de Parámetros"
+
+msgid "total"
+msgstr "Total"
+
+msgid "Parameter Value"
+msgstr "Valor de Parámetro"
+
+msgid "Model Syntax"
+msgstr "Sintaxe do modelo"
+
+msgid "Nothing to print."
+msgstr "Nada que presentar."
+
+msgid "addedGroupVariable"
+msgstr "Variable de grupo engadida"
+
+msgid "Column name %s already exists in the dataset"
+msgstr "O nome %s de columna xa existe no conxunto de datos"
+
+msgid "# LOADINGS BLOCK"
+msgstr "# BLOQUE de CARGAS"
+
+msgid "Baseline"
+msgstr "Punto de partida"
+
+msgid "# FACTOR VARIANCES BLOCK"
+msgstr "# BLOQUE de VARIANZAS de FACTORES"
+
+msgid "# FACTOR MEANS BLOCK"
+msgstr "# BLOQUE de MEDIAS de FACTORES"
+
+msgid "# INTERCEPTS BLOCK"
+msgstr "# BLOQUE de CONSTANTES"
+
+msgid "# RESIDUAL VARIANCES BLOCK"
+msgstr "# BLOQUE de VARIANZAS de ERROS"
+
+msgid "# FACTOR COVARIANCES BLOCK"
+msgstr "# BLOQUE de COVARIANZAS de FACTORES"
+
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "A variable de agrupamento ten menos de 3 observacións no grupo %s"
+
+msgid "Enter a model"
+msgstr "Introducir un modelo"
+
+msgid "Variable(s) in model syntax not recognized: %s"
+msgstr "Variable(s) non recoñecida(s) na sintaxe do modelo: %s"
+
+msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
+msgstr ""
+"Usar '~~' non se admite para covarianzas compostas. En troques, intenta '~'"
+
+msgid "Using '~~' is not supported. Try '~' instead"
+msgstr "Non se admite usar '~~'. En troques, intenta '~'"
 
 msgid "Estimation failed Message: %s"
 msgstr "Mensaxe de fallo da estimación: %s"
@@ -388,47 +516,40 @@ msgstr "Mensaxe de fallo da estimación: %s"
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr "Fallou a estimación! Mensaxe: O modelo %s non converxeu!"
 
-msgid "Model fit"
+msgid "Model Fit"
 msgstr "Axuste do modelo"
 
 msgid "Group"
 msgstr "Grupo"
 
-msgid "AIC"
-msgstr "AIC"
+msgid "Distance Measure"
+msgstr "Medida de distancia"
 
-msgid "BIC"
-msgstr "BIC"
+msgid "Test Statistic"
+msgstr "Estatístico de proba"
 
-msgid "n"
-msgstr "n"
+msgid "Critical Value (%s%% Quantile)"
+msgstr "Valor crítico (Cuantil do %s%%)"
 
-msgid "χ²"
-msgstr "χ²"
+msgid "Model selection criteria could not be computed: %s"
+msgstr "Non se poden calcular os Criterios de Selección de modelos: %s"
 
-msgid "Baseline test"
-msgstr "Proba de referencia"
+msgid "Model selection criteria could not be computed for group %1$s: %2$s"
+msgstr ""
+"Non se poden calcular os Criterios de Selección de modelos para o grupo "
+"%1$s: %2$s"
 
-msgid "Δχ²"
-msgstr "Δχ²"
+msgid "At least one result is inadmissible."
+msgstr "Cando menos un resultado non é admisible."
 
-msgid "Difference test"
-msgstr "Proba de diferenzas"
+msgid "Denotes the fit of the model including a saturated structural model."
+msgstr "Denota o axuste do modelo incluíndo un modelo estrutural saturado."
 
-msgid "Δdf"
-msgstr "Δgl"
-
-msgid "WARNING! model %1$s: %2$s"
-msgstr "AVISO! %1$s modelo: %2$s"
-
-msgid "WARNING! model %1$s, group %2$s: %3$s"
-msgstr "AVISO! %1$s modelo, %2$s grupo: %3$s"
-
-msgid "Weigths"
+msgid "Weights"
 msgstr "Ponderacións"
 
-msgid "Factor Loadings"
-msgstr "Cargas dos Factores"
+msgid "Construct"
+msgstr "Constructo"
 
 msgid "Regression Coefficients"
 msgstr "Coeficientes da Regresión"
@@ -436,28 +557,20 @@ msgstr "Coeficientes da Regresión"
 msgid "Outcome"
 msgstr "Resultado"
 
-msgid "f²"
-msgstr "f²"
-
-msgid "Total effects"
+msgid "Total Effects"
 msgstr "Efectos totais"
+
+msgid "Residual Correlations"
+msgstr "Correlacións dos erros"
+
+msgid "VIF"
+msgstr "FIV"
+
+msgid "VIF could not be computed."
+msgstr "Non se poden calcular os FIV."
 
 msgid "Endogenous Indicator Prediction"
 msgstr "Predición de Indicadores Endóxenos"
-
-msgid ""
-"The target model uses the same weighting approach as the benchmark model, "
-"please choose another benchmark."
-msgstr ""
-"O modelo obxectivo utiliza o mesmo enfoque de ponderación que o modelo de "
-"referencia; por favor, elixe outra referencia."
-
-msgid ""
-"For the predicted indicator scores table(s), please select a single "
-"benchmark or 'none'."
-msgstr ""
-"Para as táboas de puntuacións de indicadores preditos, por favor, elixe unha "
-"única referencia ou 'ningunha'."
 
 msgid "Prediction Metrics"
 msgstr "Métricas de Predición"
@@ -465,11 +578,8 @@ msgstr "Métricas de Predición"
 msgid "Target MAE"
 msgstr "EAM (MAE) obxectivo"
 
-msgid "Linear model MAE"
-msgstr "EAM (MAE) do modelo linear"
-
-msgid "PLS-PM MAE"
-msgstr "EAM (MAE) de MCP-MR (PLS-PM)"
+msgid "LM MAE"
+msgstr "EAM (MAE) de ML"
 
 msgid "GSCA MAE"
 msgstr "EAM (MAE) de GSCA"
@@ -483,11 +593,8 @@ msgstr "EAM (MAE) de MAXVAR"
 msgid "Target RMSE"
 msgstr "RECM (RMSE) obxectivo"
 
-msgid "Linear model RMSE"
-msgstr "RECM (RMSE) do modelo linear"
-
-msgid "PLS-PM RMSE"
-msgstr "RECM (RMSE) de MCP-MR (PLS-PM)"
+msgid "LM RMSE"
+msgstr "RECM (RMSE) de ML"
 
 msgid "GSCA RMSE"
 msgstr "RECM (RMSE) de GSCA"
@@ -498,8 +605,8 @@ msgstr "RECM (RMSE) de CP (PCA)"
 msgid "MAXVAR RMSE"
 msgstr "RECM (RMSE) de MAXVAR"
 
-msgid "Target Q2 prediction"
-msgstr "Predición Q2 obxectivo"
+msgid "Target Q2 Prediction"
+msgstr "Predición de Q2 obxectivo"
 
 msgid ""
 "There are not enough observations for each k-fold, try setting 'cross-"
@@ -513,30 +620,6 @@ msgstr "Están tódalas variables indicadoras fixadas como 'escala'?"
 
 msgid "Prediction failed Message: %1$s"
 msgstr "Mensaxe de fallo da predición: %1$s"
-
-msgid "Indicator Scores"
-msgstr "Puntuacións de Indicadores"
-
-msgid "Actual scores"
-msgstr "Puntuacións actuais"
-
-msgid "Predicted scores"
-msgstr "Puntuacións preditas"
-
-msgid "Target residuals"
-msgstr "Erros obxectivo"
-
-msgid "benchmark"
-msgstr "referencia"
-
-msgid "lm"
-msgstr "lm"
-
-msgid "Linear model"
-msgstr "Modelo linear"
-
-msgid "residuals"
-msgstr "Erros"
 
 msgid "Additional Fit Measures"
 msgstr "Medidas Adicionais de Axuste"
@@ -556,8 +639,14 @@ msgstr "Distancia xeodésica"
 msgid "Squared Euclidean distance"
 msgstr "Distancia Euclídea cadrada"
 
-msgid "Maximum likelihood-based dinstance"
+msgid "Maximum likelihood-based distance"
 msgstr "Distancia baseada na Máxima-Verosimilitude"
+
+msgid "Model assessment could not be computed: %s"
+msgstr "Non se pode calcular a avaliación de modelos: %s"
+
+msgid "Model assessment could not be computed for group %1$s: %2$s"
+msgstr "Non se pode calcular a avaliación de modelos para o grupo %1$s: %2$s"
 
 msgid "Reliability Measures"
 msgstr "Medidas de Fiabilidade"
@@ -584,12 +673,13 @@ msgid "Observed construct correlation matrix"
 msgstr "Matriz de correlacións de construcións observadas"
 
 msgid "Implied construct correlation matrix"
-msgstr "Matriz de correlacións de construcións implicadas"
+msgstr "Matriz de correlacións de constructos implicados"
 
-msgid "FIML missing data handling only available with ML-type estimators"
-msgstr ""
-"O manexo de datos ausentes de MVIC só está dispoñible con estimadores de "
-"tipo MV"
+msgid "Implied indicator correlations could not be computed: %s"
+msgstr "Non se poden calcular as correlacións de indicadores implicados: %s"
+
+msgid "Implied construct correlations could not be computed: %s"
+msgstr "Non se poden calcular as correlacións de constructos implicados: %s"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
@@ -610,83 +700,113 @@ msgid ""
 "Not more cases than number of variables. Is your data a variance-covariance "
 "matrix?"
 msgstr ""
-"Non hai máis casos que o número de variables. Son os teus datos dunha matriz "
-"de varianzas-covarianzas?"
+"Non hai máis casos que o número de variables. Son teus datos unha matriz de "
+"varianzas-covarianzas?"
+
+msgid ""
+"When conditioning estimation on exogenous covariates, the 'Exogenous "
+"covariate(s) fixed' box must be checked."
+msgstr ""
+"Cando se condiciona a estimación segundo covariantes esóxenas, a caixa "
+"'Covariante(s) esóxena(s) fixada(s)' debe estar marcada."
+
+msgid ""
+"Bootstrapped standard errors are not yet available when 'Condition on "
+"exogenous covariate(s)' box is checked."
+msgstr ""
+"Os erros padrón de Bootstrapp aínda non están dispoñibles cando está marcada "
+"a caixa 'Condición segundo covariante(s) esóxena(s)'."
 
 msgid "Invalid model specification. Did you pass a variable name as a string?"
 msgstr ""
 "Especificación incorrecta de modelo. Indicaches un nome de variable como "
 "cadea de texto?"
 
-msgid "One or more variables are constants or contain only missing values"
-msgstr "Unha ou máis variables son constantes, ou conteñen só valores ausentes"
+msgid "One or more variables are constants or contain only missing values."
+msgstr ""
+"Unha ou máis variables son constantes, ou conteñen só valores ausentes."
+
+msgid "Estimation failed. Message: %s"
+msgstr "Fallou a estimación. Mensaxe: %s"
+
+msgid "Estimation failed! Message: %s did not converge!"
+msgstr "Fallou a estimación! Mensaxe: %s non converxeu!"
+
+msgid "Estimation failed! Message: %s has negative degrees of freedom."
+msgstr ""
+"Fallou a estimación! Mensaxe: %s ten un número de graos de liberdade "
+"negativo."
+
+msgid "Model fit"
+msgstr "Axuste do modelo"
+
+msgid "n(Observations)"
+msgstr "n(Observacións)"
+
+msgid "Total"
+msgstr "Total"
+
+msgid "n(Parameters)"
+msgstr "n(Parámetros)"
+
+msgid "Free"
+msgstr "Libres"
+
+msgid "Baseline test"
+msgstr "Proba de referencia"
+
+msgid "Difference test"
+msgstr "Proba de diferenzas"
+
+msgid "%1$sdf"
+msgstr "%1$sgl"
 
 msgid ""
-"Missing data handling '%s' is not supported for categorical data,\n"
-"                        please select another method under 'Missing data "
-"handling'\n"
-"                        within the 'Estimation options' tab"
+"%sFitting the model resulted in warnings. Check the 'Show warnings' box in "
+"the Output Options to see the warnings."
 msgstr ""
-"O manexo '%s' de datos ausentes non se admite para datos con categorías;\n"
-"                        por favor, escolle outro método en 'Manexo de datos "
-"ausentes'\n"
-"                        na lapela de 'Opcións de estimación'"
+"%s O axuste do modelo dá como resultado alertas. Comproba a caixa 'Amosar "
+"alertas' nas Opcións de Saída de Resultados para ver as alertas."
 
-msgid "Estimation failed! Message: Model %s has negative degrees of freedom."
-msgstr ""
-"Fallou a estimación! Mensaxe: O modelo %s ten un número de graos de "
-"liberdade negativo."
+msgid "A total of %g cases were removed due to missing values."
+msgstr "Un total de %g casos elimináronse debido a valores ausentes."
 
-msgid "&#916;&#967;&sup2;"
-msgstr "&#916;&#967;&sup2;"
+msgid "Model test is %s."
+msgstr "A proba do modelo é %s."
 
-msgid "&#916;df"
-msgstr "&#916;gl"
+msgid "Information matrix is %s."
+msgstr "A matriz de información é %s."
+
+msgid "Standard errors are %s."
+msgstr "Os erros padrón son %s."
 
 msgid ""
-"A total of %g cases were removed due to missing values. You can avoid this "
-"by choosing 'FIML' under 'Missing Data Handling' in the Estimation options."
+"%s The AIC, BIC and additional information criteria are only available with "
+"ML-type estimators."
 msgstr ""
-"Eliminouse un total de %g casos debido á ausencia de valores. Podes evitar "
-"isto escollendo 'MVIC (FIML)' baixo 'Manexo de Datos Ausentes' nas opcións "
-"de Estimación."
+"%s Os criterios AIC, BIC e de información adicional só están dispoñibles con "
+"estimadores de tipo MV."
 
-msgid "Satorra-Bentler scaled test-statistic"
-msgstr "Estatístico de proba escalado de Satorra-Bentler"
+msgid "all"
+msgstr "Todo"
 
-msgid "Yuan-Bentler scaled test-statistic"
-msgstr "Estatístico de proba escalado de Yuan-Bentler"
+msgid "<b>Warnings:</b> %s"
+msgstr "<b>Avisos:</b> %s"
 
-msgid "Yuan-Bentler (Mplus) scaled test-statistic"
-msgstr "Estatístico de proba escalado (Mplus) de Yuan-Bentler"
+msgid "Factor Loadings"
+msgstr "Cargas dos Factores"
 
-msgid "mean and variance adjusted test-statistic"
-msgstr "estatístico de proba axustado en media e varianza"
-
-msgid "scaled and shifted test-statistic"
-msgstr "estatístico de proba escalado e desprazado"
-
-msgid "bootstrap (Bollen-Stine) probability value"
-msgstr "valor da probabilidade de Bootstrap (Bollen-Stine)"
-
-msgid "Model tests based on %s."
-msgstr "Probas do modelo baseadas en %s."
-
-msgid ""
-"The AIC, BIC and additional information criteria are only available with ML-"
-"type estimators"
-msgstr ""
-"Os criterios AIC, BIC e de información adicional só están dispoñibles con "
-"estimadores de tipo MV"
+msgid "Latent"
+msgstr "Latente"
 
 msgid "Regression coefficients"
 msgstr "Coeficientes da regresión"
 
 msgid "Factor variances"
-msgstr "Varianzas dos factores"
+msgstr "Varianzas dos Factores"
 
 msgid "Factor covariances"
-msgstr "Covarianzas dos factores"
+msgstr "Covarianzas dos Factores"
 
 msgid "Variables"
 msgstr "Variables"
@@ -694,8 +814,14 @@ msgstr "Variables"
 msgid "Residual variances"
 msgstr "Varianzas dos erros"
 
-msgid "Means"
-msgstr "Medias"
+msgid "Missing data method 'FIML' forces meanstructure."
+msgstr "O método 'MVIC' de datos ausentes forza a estrutura media."
+
+msgid "Thresholds"
+msgstr "Lindeiros"
+
+msgid "Threshold"
+msgstr "Lindeiro"
 
 msgid "Defined parameters"
 msgstr "Parámetros definidos"
@@ -703,35 +829,44 @@ msgstr "Parámetros definidos"
 msgid "Name"
 msgstr "Nome"
 
-msgid "T-size CFI"
-msgstr "Tamaño T do IAC (CFI)"
+msgid "Total effects"
+msgstr "Efectos totais"
 
-msgid ""
-"The T-size equivalents of the conventional CFI cut-off values (poor < 0.90 < "
-"fair < 0.95 < close) are <b>poor < %1$s < fair < %2$s < close</b> for model: "
-"%3$s"
-msgstr ""
-"Os equivalentes de tamaño T aos valores de corte do IAC (CFI) convencional "
-"(malo < 0.90 < razoable < 0.95 < próximo) son <b>malo < %1$s < razoable < "
-"%2$s < próximo</b> para o modelo: %3$s"
+msgid "%s Fit indices are based on the scaled test statistic."
+msgstr "%s Os indicadores do axuste baséanse no estatístico de proba escalado."
 
-msgid "T-size CFI is computed for <i>%s = 0.05</i>"
-msgstr "O tamaño T do IAC (CFI) calcúlase para <i>%s = 0.05</i>"
+msgid "T-size fit indices"
+msgstr "Índices de axuste de tamaño T"
 
-msgid "T-size RMSEA"
-msgstr "Tamaño T da REACM (RMSEA)"
+msgid "Poor-fair limit"
+msgstr "Límite deficiente-aceptable"
 
-msgid ""
-"The T-size equivalents of the conventional RMSEA cut-off values (close < "
-"0.05 < fair < 0.08 < poor) are <b>close < %1$s < fair < %2$s < poor</b> for "
-"model: %3$s"
-msgstr ""
-"Os equivalentes de tamaño T aos valores de corte da REACM (RMSEA) "
-"convencional (próximo < 0.05 < razoable < 0.08 < malo) son <b>próximo < %1$s "
-"< razoable < %2$s < malo</b> para o modelo: %3$s"
+msgid "Fair-close limit"
+msgstr "Límite aceptable-próximo"
 
-msgid "T-size RMSEA is computed for <i>%s = 0.05</i>"
-msgstr "O tamaño T da REACM (RMSEA) calcúlase para <i>%s = 0.05</i>"
+msgid "T-size statistics are computed for <i>%s = 0.05</i>."
+msgstr "Os estatísticos de tamaño T calcúlanse para <i>%s = 0.05</i>."
+
+msgid "Average variance extracted"
+msgstr "Varianza media extraída"
+
+msgid "AVE"
+msgstr "VME (AVE)"
+
+msgid "Reliability"
+msgstr "Fiabilidade"
+
+msgid "Coefficient α"
+msgstr "Coeficiente α"
+
+msgid "Coefficient ω"
+msgstr "Coeficiente ω"
+
+msgid "Heterotrait-Monotrait Ratio"
+msgstr "Cociente Heterotrazo-Monotrazo"
+
+msgid "Heterotrait-monotrait ratio"
+msgstr "Cociente Heterotrazo-Monotrazo"
 
 msgid "Mardia's coefficients"
 msgstr "Coeficientes de Mardia"
@@ -750,10 +885,17 @@ msgstr ""
 "de todos os modelos."
 
 msgid ""
-"Not all used variables are numeric. Mardia's coefficients not available."
+"Not all used variables are continuous: Mardia's coefficients not available."
 msgstr ""
-"Non todas as variables utilizadas son numéricas. O coeficiente de Mardia non "
+"Non todas as variables utilizadas son continuas: o coeficiente de Mardia non "
 "está dispoñible."
+
+msgid ""
+"The data covariance matrix could not be inverted: Mardia's coefficients not "
+"available."
+msgstr ""
+"A matriz de covarianzas dos datos non pode inverterse: o coeficiente de "
+"Mardia non está dispoñible."
 
 msgid "Skewness"
 msgstr "Asimetría"
@@ -808,8 +950,353 @@ msgstr "sepc (all)"
 msgid "sepc (nox)"
 msgstr "sepc (nox)"
 
+msgid "Sensitivity analysis"
+msgstr "Análise de Sensibilidade"
+
+msgid "Summary of sensitivity analysis"
+msgstr "Resumo da análise de Sensibilidade"
+
+msgid "Path"
+msgstr "Ruta"
+
+msgid "Standardized estimate"
+msgstr "Estimación tipificada"
+
+msgid "Original model"
+msgstr "Modelo inicial"
+
+msgid "p*"
+msgstr "p*"
+
+msgid "Sensitivity model"
+msgstr "Modelo de Sensibilidade"
+
+msgid "Min"
+msgstr "Mín"
+
+msgid "Max"
+msgstr "Máx"
+
+msgid ""
+"Please include at least one regression path in the model to perform a "
+"sensitivity analysis."
+msgstr ""
+"Por favor, inclúe cando menos unha ruta de regresión no modelo para realizar "
+"a análise de sensibilidade."
+
+msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
+msgstr "Realizando a análise de sensibilidade (modelo: %1$s, grupo: %2$s)"
+
+msgid "Performing sensitivity analysis (model: %1$s)"
+msgstr "Realizando a análise de sensibilidade (modelo: %1$s)"
+
+msgid "Sensitivity parameters that led to a change in significance"
+msgstr "Parámetros de Sensibilidade que levaron a un cambio na significación"
+
+msgid "Sensitivity parameters"
+msgstr "Parámetros de Sensibilidade"
+
+msgid "Summary of sensitivity parameters"
+msgstr "Resumo dos parámetros de Sensibilidade"
+
+msgid "Sensitivity parameter"
+msgstr "Parámetro de Sensibilidade"
+
 msgid "Path diagram"
 msgstr "Diagrama de ruta"
+
+msgid "Satorra-Bentler"
+msgstr "Satorra-Bentler"
+
+msgid "Yuan-Bentler"
+msgstr "Yuan-Bentler"
+
+msgid "Yuan-Bentler Mplus"
+msgstr "Estatístico de proba escalado (Mplus) de Yuan-Bentler"
+
+msgid "mean and variance-adjusted"
+msgstr "Media e varianza axustada"
+
+msgid "scaled and shifted"
+msgstr "Escalada e desprazada"
+
+msgid "bootstrap (Bollen-Stine)"
+msgstr "Bootstrap (Bollen-Stine)"
+
+msgid "Browne residual based (ADF)"
+msgstr "Baseado no erro de Browne (ADF)"
+
+msgid "Browne residual based (NT)"
+msgstr "Baseado no erro de Browne (NT)"
+
+msgid "robust"
+msgstr "robusto"
+
+msgid "robust Huber-White"
+msgstr "Huber-White robusto"
+
+msgid "first-order"
+msgstr "Primeira orde"
+
+#~ msgid "n"
+#~ msgstr "n"
+
+#~ msgid ""
+#~ "Model plot not available when there is at least one exogenous covariate "
+#~ "and the 'Exogenous covariate(s) fixed' box is checked."
+#~ msgstr ""
+#~ "Gráfica de modelo non dispoñible cando hai ao menos unha covariante "
+#~ "esóxena, e está marcada a caixa 'Covariante(s) esóxena(s) fixada(s)'."
+
+#~ msgid ""
+#~ "When mean structure is included, at least one of the checkboxes to fix "
+#~ "the intercepts to zero has to be checked"
+#~ msgstr ""
+#~ "Cando se inclúe a estrutura media, debe estar marcado cando menos un dos "
+#~ "cadradiños para fixar as constantes como cero"
+
+#~ msgid "%s%% Confidence interval"
+#~ msgstr "Intervalo co %s%% de confianza"
+
+#~ msgid "WARNING! %1$s: %2$s"
+#~ msgstr "AVISO! %1$s: %2$s"
+
+#~ msgid "WARNING! %1$s, group %2$s: %3$s"
+#~ msgstr "AVISO! %1$s, %2$s grupo: %3$s"
+
+#~ msgid ""
+#~ "The target model uses the same weighting approach as the benchmark model, "
+#~ "please choose another benchmark."
+#~ msgstr ""
+#~ "O modelo obxectivo utiliza o mesmo enfoque de ponderación que o modelo de "
+#~ "referencia; por favor, elixe outra referencia."
+
+#~ msgid ""
+#~ "For the predicted indicator scores table(s), please select a single "
+#~ "benchmark or 'none'."
+#~ msgstr ""
+#~ "Para as táboas de puntuacións de indicadores preditos, por favor, elixe "
+#~ "unha única referencia ou 'ningunha'."
+
+#~ msgid "Linear model MAE"
+#~ msgstr "EAM (MAE) do modelo linear"
+
+#~ msgid "Linear model RMSE"
+#~ msgstr "RECM (RMSE) do modelo linear"
+
+#~ msgid "Indicator Scores"
+#~ msgstr "Puntuacións de Indicadores"
+
+#~ msgid "Actual scores"
+#~ msgstr "Puntuacións actuais"
+
+#~ msgid "Predicted scores"
+#~ msgstr "Puntuacións preditas"
+
+#~ msgid "Target residuals"
+#~ msgstr "Erros obxectivo"
+
+#~ msgid "benchmark"
+#~ msgstr "referencia"
+
+#~ msgid "lm"
+#~ msgstr "lm"
+
+#~ msgid "residuals"
+#~ msgstr "Erros"
+
+#~ msgid ""
+#~ "Katerina M. Marcoulides & Ke-Hai Yuan (2017) New Ways to Evaluate "
+#~ "Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural "
+#~ "Equation Models. *Structural Equation Modeling: A Multidisciplinary "
+#~ "Journal, 24*(1), 148-153, https://doi.org/10.1080/10705511.2016.1225260"
+#~ msgstr ""
+#~ "Katerina M. Marcoulides & Ke-Hai Yuan (2017): New Ways to Evaluate "
+#~ "Goodness of Fit: A Note on Using Equivalence Testing to Assess Structural "
+#~ "Equation Models. *Structural Equation Modeling: A Multidisciplinary "
+#~ "Journal, 24*(1), 148-153, https://doi.org/10.1080/10705511.2016.1225260"
+
+#~ msgid "95%% Confidence Interval"
+#~ msgstr "Intervalo co 95%% de Confianza"
+
+#~ msgid "LV"
+#~ msgstr "LV"
+
+#~ msgid "Std. Est."
+#~ msgstr "Est. Típ."
+
+#~ msgid "All"
+#~ msgstr "Todo"
+
+#~ msgid "No X"
+#~ msgstr "Sen X"
+
+#~ msgid "Additional Fit measures"
+#~ msgstr "Medidas Adicionais de Axuste"
+
+#~ msgid "Other fit measures"
+#~ msgstr "Outras medidas de axuste"
+
+#~ msgid "Metric"
+#~ msgstr "Métrica"
+
+#~ msgid "Delta method"
+#~ msgstr "Método Delta"
+
+#~ msgid "Robust"
+#~ msgstr "Robusto"
+
+#~ msgid "percentile bootstrap"
+#~ msgstr "percentil de Bootstrap"
+
+#~ msgid "normal theory bootstrap"
+#~ msgstr "bootstrap de teoría Normal"
+
+#~ msgid "bias-corrected percentile bootstrap"
+#~ msgstr "percentil de Bootstrap con nesgo corrixido"
+
+#~ msgid "normal theory"
+#~ msgstr "teoría Normal"
+
+#~ msgid "%1$s standard errors, %2$s confidence intervals."
+#~ msgstr "%1$s erros padrón, %2$s intervalos de confianza."
+
+#~ msgid "%1$s standard errors, %2$s confidence intervals, %3$s estimator."
+#~ msgstr "%1$s erros padrón, %2$s intervalos de confianza, %3$s estimador."
+
+#~ msgid "Chi Square test"
+#~ msgstr "Proba Khi-cadrado"
+
+#~ msgid "Additional fit measures"
+#~ msgstr "Medidas adicionais de axuste"
+
+#~ msgid "Standardized"
+#~ msgstr "Tipificado"
+
+#~ msgid "Endo"
+#~ msgstr "Endo"
+
+#~ msgid "FIML missing data handling only available with ML-type estimators"
+#~ msgstr ""
+#~ "O manexo de datos ausentes de MVIC só está dispoñible con estimadores de "
+#~ "tipo MV"
+
+#~ msgid ""
+#~ "Missing data handling '%s' is not supported for categorical data,\n"
+#~ "                        please select another method under 'Missing data "
+#~ "handling'\n"
+#~ "                        within the 'Estimation options' tab"
+#~ msgstr ""
+#~ "O manexo '%s' de datos ausentes non se admite para datos con categorías;\n"
+#~ "                        por favor, escolle outro método en 'Manexo de "
+#~ "datos ausentes'\n"
+#~ "                        na lapela de 'Opcións de estimación'"
+
+#~ msgid ""
+#~ "A total of %g cases were removed due to missing values. You can avoid "
+#~ "this by choosing 'FIML' under 'Missing Data Handling' in the Estimation "
+#~ "options."
+#~ msgstr ""
+#~ "Eliminouse un total de %g casos debido á ausencia de valores. Podes "
+#~ "evitar isto escollendo 'MVIC (FIML)' baixo 'Manexo de Datos Ausentes' nas "
+#~ "opcións de Estimación."
+
+#~ msgid "Yuan-Bentler scaled test-statistic"
+#~ msgstr "Estatístico de proba escalado de Yuan-Bentler"
+
+#~ msgid "Baseline tests based on %s."
+#~ msgstr "Probas de referencia baseadas en %s."
+
+#~ msgid ""
+#~ "Baseline tests based on %s. Difference tests based on a function of two "
+#~ "standard test-statistics."
+#~ msgstr ""
+#~ "Probas de referencia baseadas en %s. Probas de diferenza baseadas nunha "
+#~ "función de dous estatísticos de proba estándar."
+
+#~ msgid "T-size CFI"
+#~ msgstr "Tamaño T do IAC (CFI)"
+
+#~ msgid ""
+#~ "T-size CFI is computed for <i>%1$s = 0.05</i>. The T-size equivalents of "
+#~ "the\n"
+#~ "                                      conventional CFI cut-off values "
+#~ "(poor < 0.90 < fair < 0.95 < close) are <b>poor\n"
+#~ "                                      < %2$s < fair < %3$s < close</b> "
+#~ "for model: %4$s."
+#~ msgstr ""
+#~ "O tamaño do IAC (CFI) calcúlase para <i>%1$s = 0.05</i>. Os equivalentes "
+#~ "de tamaño T aos\n"
+#~ "                                      valores de corte do IAC "
+#~ "convencional (malo < 0.90 < razoable < 0.95 < próximo) son <b>malo\n"
+#~ "                                      < %2$s < razoable < %3$s < próximo</"
+#~ "b> para o modelo: %4$s."
+
+#~ msgid ""
+#~ "The T-size equivalents of the conventional CFI cut-off values\n"
+#~ "                                        (poor < 0.90 < fair < 0.95 < "
+#~ "close) are <b>poor < %1$s < fair < %2$s <\n"
+#~ "                                        close</b> for model: %3$s."
+#~ msgstr ""
+#~ "Os equivalentes de tamaño T aos valores de corte do IAC (CFI) "
+#~ "convencional\n"
+#~ "                                        (malo < 0.90 < razoable < 0.95 < "
+#~ "próximo) son <b>malo < %1$s < razoable < %2$s <\n"
+#~ "                                        próximo</b> para o modelo: %3$s."
+
+#~ msgid "T-size RMSEA"
+#~ msgstr "Tamaño T da REACM (RMSEA)"
+
+#~ msgid ""
+#~ "T-size RMSEA is computed for <i>%1$s = 0.05</i>. The T-size equivalents "
+#~ "of the\n"
+#~ "                                        conventional RMSEA cut-off values "
+#~ "(close < 0.05 < fair < 0.08 < poor) are\n"
+#~ "                                        <b>close < %2$s < fair < %3$s < "
+#~ "poor</b> for model: %4$s."
+#~ msgstr ""
+#~ "O REACM (RMSEA) de tamaño T calcúlase para <i>%1$s = 0.05</i>. Os "
+#~ "equivalentes de tamaño T aos\n"
+#~ "                                        valores de corte da REACM "
+#~ "convencional (próximo < 0.05 < razoable < 0.08 < malo) son\n"
+#~ "                                        <b>próximo < %2$s < razoable < "
+#~ "%3$s < malo</b> para o modelo: %4$s."
+
+#~ msgid ""
+#~ "The T-size equivalents of the conventional RMSEA cut-off values\n"
+#~ "                                          (close < 0.05 < fair < 0.08 < "
+#~ "poor) are <b>close < %1$s < fair < %2$s\n"
+#~ "                                          < poor</b> for model: %3$s."
+#~ msgstr ""
+#~ "Os equivalentes de tamaño T aos valores de corte da REACM (RMSEA) "
+#~ "convencional\n"
+#~ "                                          (próximo < 0.05 < razoable < "
+#~ "0.08 < malo) son <b>próximo < %1$s < razoable < %2$s\n"
+#~ "                                          < malo</b> para o modelo: %3$s."
+
+#~ msgid "&#916;&#967;&sup2;"
+#~ msgstr "&#916;&#967;&sup2;"
+
+#~ msgid "&#916;df"
+#~ msgstr "&#916;gl"
+
+#~ msgid "Means"
+#~ msgstr "Medias"
+
+#~ msgid "T-size RMSEA is computed for <i>%s = 0.05</i>"
+#~ msgstr "O tamaño T da REACM (RMSEA) calcúlase para <i>%s = 0.05</i>"
+
+#~ msgid "χ²"
+#~ msgstr "χ²"
+
+#~ msgid "Δχ²"
+#~ msgstr "Δχ²"
+
+#~ msgid "Δdf"
+#~ msgstr "Δgl"
+
+#~ msgid "f²"
+#~ msgstr "f²"
 
 #~ msgid "RMSEA 90% CI lower bound"
 #~ msgstr "Límite inferior do IC do 90% da REACM"

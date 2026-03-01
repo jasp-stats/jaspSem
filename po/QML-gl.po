@@ -13,16 +13,8 @@ msgid "Background confounders"
 msgstr "Factores perturbadores de fondo"
 
 msgctxt "MediationAnalysis|"
-msgid "Normal theory"
-msgstr "Teoría Normal"
-
-msgctxt "MediationAnalysis|"
 msgid "Lavaan syntax"
 msgstr "Sintaxe Lavaan"
-
-msgctxt "MediationAnalysis|"
-msgid "Full Information Maximum Likelihood"
-msgstr "Máxima-Verosimilitude con Información Completa"
 
 msgctxt "MediationAnalysis|"
 msgid "Outcome"
@@ -33,32 +25,16 @@ msgid "Parameter estimates"
 msgstr "Estimacións dos parámetros"
 
 msgctxt "MediationAnalysis|"
-msgid "Percentile"
-msgstr "Percentil"
-
-msgctxt "MediationAnalysis|"
-msgid "Missing value handling"
-msgstr "Manexo de valores ausentes"
-
-msgctxt "MediationAnalysis|"
 msgid "Additional parameter estimates"
 msgstr "Estimacións dos parámetros adicionais"
 
 msgctxt "MediationAnalysis|"
 msgid "Mediators"
-msgstr "Mediadores"
-
-msgctxt "MediationAnalysis|"
-msgid "Replications"
-msgstr "Réplicas"
+msgstr "Mediadoras"
 
 msgctxt "MediationAnalysis|"
 msgid "Total indirect effects"
 msgstr "Efectos indirectos totais"
-
-msgctxt "MediationAnalysis|"
-msgid "Bias-corrected percentile"
-msgstr "Percentil con nesgo corrixido"
 
 msgctxt "MediationAnalysis|"
 msgid "Standardized estimates"
@@ -102,10 +78,6 @@ msgid "Timings"
 msgstr "Instantes"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Model Options"
-msgstr "Opcións do Modelo"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Growth curve shape"
 msgstr "Forma da curva de crecemento"
 
@@ -134,10 +106,6 @@ msgid "Additional Output"
 msgstr "Saída Adicional de Resultados"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Additional Fit Measures"
-msgstr "Medidas Adicionais de Axuste"
-
-msgctxt "LatentGrowthCurve|"
 msgid "R-Squared"
 msgstr "R-cadrado"
 
@@ -162,30 +130,6 @@ msgid "Plots"
 msgstr "Gráficas"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Color palette"
-msgstr "Paleta de cores"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Colorblind"
-msgstr "Daltónica"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Colorblind Alt."
-msgstr "Daltónica Alternativa"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Viridis"
-msgstr "Violeta"
-
-msgctxt "LatentGrowthCurve|"
-msgid "ggplot2"
-msgstr "GGplot2"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Gray"
-msgstr "Gris"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Curve plot"
 msgstr "Gráfica da curva"
 
@@ -198,100 +142,8 @@ msgid "Model plot"
 msgstr "Gráfica do modelo"
 
 msgctxt "LatentGrowthCurve|"
-msgid "Show parameters"
-msgstr "Amosar os parámetros"
-
-msgctxt "LatentGrowthCurve|"
 msgid "Show means"
 msgstr "Amosar as medias"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Advanced"
-msgstr "Avanzado"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Emulation"
-msgstr "Emulación"
-
-msgctxt "LatentGrowthCurve|"
-msgid "None"
-msgstr "Ningún"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Mplus"
-msgstr "Mplus"
-
-msgctxt "LatentGrowthCurve|"
-msgid "EQS"
-msgstr "EQS"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Missing value handling"
-msgstr "Manexo de valores ausentes"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Full Information Maximum Likelihood"
-msgstr "Máxima-Verosimilitude con Información Completa"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Exclude cases listwise"
-msgstr "Excluír casos segundo a lista"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Error calculation"
-msgstr "Cálculo do erro"
-
-msgctxt "LatentGrowthCurve|"
-msgid "CI width"
-msgstr "Largo do IC"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Method"
-msgstr "Método"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Standard"
-msgstr "Típico"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Robust"
-msgstr "Robusto"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Bootstrap CI"
-msgstr "IC Bootstrap"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Bootstrap samples"
-msgstr "Mostras de Bootstrap"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Estimator"
-msgstr "Estimador"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Auto"
-msgstr "Auto"
-
-msgctxt "LatentGrowthCurve|"
-msgid "ML"
-msgstr "MV"
-
-msgctxt "LatentGrowthCurve|"
-msgid "GLS"
-msgstr "MCX (GLS)"
-
-msgctxt "LatentGrowthCurve|"
-msgid "WLS"
-msgstr "MCP (WLS)"
-
-msgctxt "LatentGrowthCurve|"
-msgid "ULS"
-msgstr "MCSP (ULS)"
-
-msgctxt "LatentGrowthCurve|"
-msgid "DWLS"
-msgstr "MCPD (DWLS)"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Options"
@@ -316,14 +168,6 @@ msgstr "Varianzas dos erros"
 msgctxt "LatentGrowthCurve|"
 msgid "Correlate exogenous latents"
 msgstr "Correlacionar variables latentes esóxenas"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Add thresholdds"
-msgstr "Engadir limiares"
-
-msgctxt "LatentGrowthCurve|"
-msgid "Add scalings parameters"
-msgstr "Engadir os parámetros de escala"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Correlate dependent variables"
@@ -354,30 +198,6 @@ msgid "Residual covariances"
 msgstr "Covarianzas dos erros"
 
 msgctxt "MediationAnalysis|"
-msgid "Confidence intervals"
-msgstr "Intervalos de confianza"
-
-msgctxt "MediationAnalysis|"
-msgid "Method"
-msgstr "Método"
-
-msgctxt "MediationAnalysis|"
-msgid "Standard"
-msgstr "Típico"
-
-msgctxt "MediationAnalysis|"
-msgid "Robust"
-msgstr "Robusto"
-
-msgctxt "MediationAnalysis|"
-msgid "Bootstrap"
-msgstr "Bootstrap"
-
-msgctxt "MediationAnalysis|"
-msgid "Type"
-msgstr "Tipo"
-
-msgctxt "MediationAnalysis|"
 msgid "Plots"
 msgstr "Gráficas"
 
@@ -388,58 +208,6 @@ msgstr "Gráfica do modelo"
 msgctxt "MediationAnalysis|"
 msgid "Legend"
 msgstr "Lenda"
-
-msgctxt "MediationAnalysis|"
-msgid "Advanced"
-msgstr "Avanzado"
-
-msgctxt "MediationAnalysis|"
-msgid "Exclude cases listwise"
-msgstr "Excluír casos segundo a lista"
-
-msgctxt "MediationAnalysis|"
-msgid "Emulation"
-msgstr "Emulación"
-
-msgctxt "MediationAnalysis|"
-msgid "None"
-msgstr "Ningún"
-
-msgctxt "MediationAnalysis|"
-msgid "Mplus"
-msgstr "Mplus"
-
-msgctxt "MediationAnalysis|"
-msgid "EQS"
-msgstr "EQS"
-
-msgctxt "MediationAnalysis|"
-msgid "Estimator"
-msgstr "Estimador"
-
-msgctxt "MediationAnalysis|"
-msgid "Auto"
-msgstr "Auto"
-
-msgctxt "MediationAnalysis|"
-msgid "ML"
-msgstr "MV"
-
-msgctxt "MediationAnalysis|"
-msgid "GLS"
-msgstr "MCX (GLS)"
-
-msgctxt "MediationAnalysis|"
-msgid "WLS"
-msgstr "MCP (WLS)"
-
-msgctxt "MediationAnalysis|"
-msgid "ULS"
-msgstr "MCSP (ULS)"
-
-msgctxt "MediationAnalysis|"
-msgid "DWLS"
-msgstr "MCPD (DWLS)"
 
 msgctxt "Mimic|"
 msgid "Indicators"
@@ -470,46 +238,6 @@ msgid "Additional fit measures"
 msgstr "Medidas adicionais de axuste"
 
 msgctxt "Mimic|"
-msgid "Confidence intervals"
-msgstr "Intervalos de confianza"
-
-msgctxt "Mimic|"
-msgid "Method"
-msgstr "Método"
-
-msgctxt "Mimic|"
-msgid "Standard"
-msgstr "Típico"
-
-msgctxt "Mimic|"
-msgid "Robust"
-msgstr "Robusto"
-
-msgctxt "Mimic|"
-msgid "Bootstrap"
-msgstr "Bootstrap"
-
-msgctxt "Mimic|"
-msgid "Replications"
-msgstr "Réplicas"
-
-msgctxt "Mimic|"
-msgid "Type"
-msgstr "Tipo"
-
-msgctxt "Mimic|"
-msgid "Bias-corrected percentile"
-msgstr "Percentil con nesgo corrixido"
-
-msgctxt "Mimic|"
-msgid "Percentile"
-msgstr "Percentil"
-
-msgctxt "Mimic|"
-msgid "Normal theory"
-msgstr "Teoría Normal"
-
-msgctxt "Mimic|"
 msgid "Plots"
 msgstr "Gráficas"
 
@@ -524,66 +252,6 @@ msgstr "Estimacións dos parámetros"
 msgctxt "Mimic|"
 msgid "Legend"
 msgstr "Lenda"
-
-msgctxt "Mimic|"
-msgid "Advanced"
-msgstr "Avanzado"
-
-msgctxt "Mimic|"
-msgid "Missing value handling"
-msgstr "Manexo de valores ausentes"
-
-msgctxt "Mimic|"
-msgid "Full Information Maximum Likelihood"
-msgstr "Máxima-Verosimilitude con Información Completa"
-
-msgctxt "Mimic|"
-msgid "Exclude cases listwise"
-msgstr "Excluír casos segundo a lista"
-
-msgctxt "Mimic|"
-msgid "Emulation"
-msgstr "Emulación"
-
-msgctxt "Mimic|"
-msgid "None"
-msgstr "Ningún"
-
-msgctxt "Mimic|"
-msgid "Mplus"
-msgstr "Mplus"
-
-msgctxt "Mimic|"
-msgid "EQS"
-msgstr "EQS"
-
-msgctxt "Mimic|"
-msgid "Estimator"
-msgstr "Estimador"
-
-msgctxt "Mimic|"
-msgid "Auto"
-msgstr "Auto"
-
-msgctxt "Mimic|"
-msgid "ML"
-msgstr "MV"
-
-msgctxt "Mimic|"
-msgid "GLS"
-msgstr "MCX (GLS)"
-
-msgctxt "Mimic|"
-msgid "WLS"
-msgstr "MCP (WLS)"
-
-msgctxt "Mimic|"
-msgid "ULS"
-msgstr "MCSP (ULS)"
-
-msgctxt "Mimic|"
-msgid "DWLS"
-msgstr "MCPD (DWLS)"
 
 msgctxt "SEM|"
 msgid "Model 1"
@@ -608,10 +276,6 @@ msgstr "Tamaño da mostra"
 msgctxt "SEM|"
 msgid "Sampling weights"
 msgstr "Ponderacións da mostraxe"
-
-msgctxt "SEM|"
-msgid "Output options"
-msgstr "Opcións da saída de resultados"
 
 msgctxt "SEM|"
 msgid "Additional fit measures"
@@ -667,7 +331,7 @@ msgstr "Agochar os índices menores"
 
 msgctxt "SEM|"
 msgid "Threshold"
-msgstr "Limiar"
+msgstr "Lindeiro"
 
 msgctxt "SEM|"
 msgid "Model Options"
@@ -694,56 +358,8 @@ msgid "None"
 msgstr "Ningún"
 
 msgctxt "SEM|"
-msgid "Include mean structure"
-msgstr "Incluír a estrutura media"
-
-msgctxt "SEM|"
-msgid "Fix manifest intercepts to zero"
-msgstr "Fixar en 0, as ordenadas na orixe declaradas"
-
-msgctxt "SEM|"
-msgid "Fix latent intercepts to zero"
-msgstr "Fixar en 0, as ordenadas na orixe latentes"
-
-msgctxt "SEM|"
 msgid "Assume factors uncorrelated"
 msgstr "Supoñer factores incorrelacionados"
-
-msgctxt "SEM|"
-msgid "Fix exogenous covariates"
-msgstr "Fixar as covariantes esóxenas"
-
-msgctxt "SEM|"
-msgid "Omit residual single indicator"
-msgstr "Omitir o índice único de erro"
-
-msgctxt "SEM|"
-msgid "Include residual variances"
-msgstr "Incluír as varianzas dos erros"
-
-msgctxt "SEM|"
-msgid "Correlate exogenous latents"
-msgstr "Correlacionar variables latentes esóxenas"
-
-msgctxt "SEM|"
-msgid "Correlate dependent variables"
-msgstr "Correlacionar variables dependentes"
-
-msgctxt "SEM|"
-msgid "Add thresholds"
-msgstr "Engadir limiares"
-
-msgctxt "SEM|"
-msgid "Add scaling parameters"
-msgstr "Engadir parámetros de escala"
-
-msgctxt "SEM|"
-msgid "Constrain EFA blocks"
-msgstr "Restrinxir os bloques EFA"
-
-msgctxt "SEM|"
-msgid "Estimation options"
-msgstr "Opcións de estimación"
 
 msgctxt "SEM|"
 msgid "Information matrix"
@@ -758,10 +374,6 @@ msgid "Observed"
 msgstr "Observado"
 
 msgctxt "SEM|"
-msgid "Error calculation"
-msgstr "Cálculo do erro"
-
-msgctxt "SEM|"
 msgid "Standard"
 msgstr "Típico"
 
@@ -772,14 +384,6 @@ msgstr "Robusto"
 msgctxt "SEM|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
-
-msgctxt "SEM|"
-msgid "Bootstrap samples"
-msgstr "Mostras de Bootstrap"
-
-msgctxt "SEM|"
-msgid "Type"
-msgstr "Tipo"
 
 msgctxt "SEM|"
 msgid "Bias-corrected percentile"
@@ -804,10 +408,6 @@ msgstr "Tipificar as variables antes da estimación"
 msgctxt "SEM|"
 msgid "Estimator"
 msgstr "Estimador"
-
-msgctxt "SEM|"
-msgid "Auto"
-msgstr "Auto"
 
 msgctxt "SEM|"
 msgid "ML"
@@ -846,10 +446,6 @@ msgid "Yuan-Bentler"
 msgstr "Yuan-Bentler"
 
 msgctxt "SEM|"
-msgid "Mean and Variance adjusted"
-msgstr "Media e Varianza axustadas"
-
-msgctxt "SEM|"
 msgid "Scaled and shifted"
 msgstr "Escalada e desprazada"
 
@@ -862,12 +458,8 @@ msgid "Missing data handling"
 msgstr "Manexo de datos ausentes"
 
 msgctxt "SEM|"
-msgid "FIML"
-msgstr "MVIC (FIML)"
-
-msgctxt "SEM|"
 msgid "Listwise deletion"
-msgstr "Eliminación segundo lista"
+msgstr "Eliminación por lista"
 
 msgctxt "SEM|"
 msgid "Pairwise"
@@ -884,10 +476,6 @@ msgstr "Dúas etapas robusto"
 msgctxt "SEM|"
 msgid "Doubly robust"
 msgstr "Dobre robusto"
-
-msgctxt "SEM|"
-msgid "Emulation"
-msgstr "Emulación"
 
 msgctxt "SEM|"
 msgid "Mplus"
@@ -941,22 +529,6 @@ msgctxt "SEM|"
 msgid "Release constraints (one per line)"
 msgstr "Librar restricións (unha por liña)"
 
-msgctxt "SEM|"
-msgid ""
-"This analysis was created with an older version of JASP (or a dynamic "
-"module). Since then, there were changes in the lavaan package that runs the "
-"analysis. Specifically, the lavaan syntax for equality constraints in "
-"multigroup analysis is now interpreted differently. Proceed with caution! "
-"More details about the update can be found at https://groups.google.com/g/"
-"lavaan/c/HSavF8oaW5M"
-msgstr ""
-"Esta análise creouse cunha versión máis antiga de JASP (ou cun módulo "
-"dinámico). Dende entón, houbo trocos no paquete Lavaan que executa a "
-"análise. En concreto, a sintaxe Lavaan para as restricións de igualdade en "
-"análises multigrupo, agora interprétanse de xeito diferente. Continúa con "
-"precaución! Podes obter máis detalles sobre a actualización en https://"
-"groups.google.com/g/lavaan/c/HSavF8oaW5M"
-
 msgctxt "Description|"
 msgid "MIMIC Model"
 msgstr "Modelo MIMIC"
@@ -974,52 +546,12 @@ msgid "Partial Least Squares SEM"
 msgstr "MES (SEM) de Mínimos Cadrados Parciais"
 
 msgctxt "PLSSEM|"
-msgid "Model 1"
-msgstr "Modelo 1"
-
-msgctxt "PLSSEM|"
 msgid "Model"
 msgstr "Modelo"
 
 msgctxt "PLSSEM|"
 msgid "Ignore structural model"
 msgstr "Ignorar o modelo estrutural"
-
-msgctxt "PLSSEM|"
-msgid "Disattenuate composite correlations"
-msgstr "Desatenuar as correlacións compostas"
-
-msgctxt "PLSSEM|"
-msgid "Approach correction factors"
-msgstr "Aproximar os factores de corrección"
-
-msgctxt "PLSSEM|"
-msgid "Squared Euclidean distance"
-msgstr "Distancia Euclídea cadrada"
-
-msgctxt "PLSSEM|"
-msgid "Weighted Euclidean distance"
-msgstr "Distancia Euclídea ponderada"
-
-msgctxt "PLSSEM|"
-msgid "Fisher transformed"
-msgstr "Fisher transformada"
-
-msgctxt "PLSSEM|"
-msgid "Arithmetic mean"
-msgstr "Media aritmética"
-
-msgctxt "PLSSEM|"
-msgid "Geometric mean"
-msgstr "Media xeométrica"
-
-msgctxt "PLSSEM|"
-msgid "Harmonic mean"
-msgstr "Media armónica"
-
-msgctxt "PLSSEM|"
-msgid "Geometric-harmonic mean"
-msgstr "Media xeométrica-armónica"
 
 msgctxt "PLSSEM|"
 msgid "Grouping Variable"
@@ -1038,68 +570,24 @@ msgid "None"
 msgstr "Ningún"
 
 msgctxt "PLSSEM|"
-msgid "Robust"
-msgstr "Robusto"
-
-msgctxt "PLSSEM|"
 msgid "Bootstrap"
 msgstr "Bootstrap"
-
-msgctxt "PLSSEM|"
-msgid "Bootstrap samples"
-msgstr "Mostras de Bootstrap"
 
 msgctxt "PLSSEM|"
 msgid "Confidence intervals"
 msgstr "Intervalos de confianza"
 
 msgctxt "PLSSEM|"
-msgid "Weighting approach"
-msgstr "Enfoque de ponderación"
-
-msgctxt "PLSSEM|"
-msgid "PLS-PM"
-msgstr "MCP-MR (PLS-PM)"
-
-msgctxt "PLSSEM|"
 msgid "GSCA"
 msgstr "GSCA"
-
-msgctxt "PLSSEM|"
-msgid "SUMCORR"
-msgstr "SUMCORR"
 
 msgctxt "PLSSEM|"
 msgid "MAXVAR"
 msgstr "MAXVAR"
 
 msgctxt "PLSSEM|"
-msgid "SSQCORR"
-msgstr "SSQCORR"
-
-msgctxt "PLSSEM|"
-msgid "MINVAR"
-msgstr "MINVAR"
-
-msgctxt "PLSSEM|"
-msgid "GENVAR"
-msgstr "GENVAR"
-
-msgctxt "PLSSEM|"
 msgid "PCA"
 msgstr "CP (PCA)"
-
-msgctxt "PLSSEM|"
-msgid "Unit"
-msgstr "Unidade"
-
-msgctxt "PLSSEM|"
-msgid "Bartlett"
-msgstr "Bartlett"
-
-msgctxt "PLSSEM|"
-msgid "Regression"
-msgstr "Regresión"
 
 msgctxt "PLSSEM|"
 msgid "Inner weighting scheme"
@@ -1134,18 +622,6 @@ msgid "Relative difference"
 msgstr "Diferenza relativa"
 
 msgctxt "PLSSEM|"
-msgid "Correlation matrix"
-msgstr "Matriz de correlacións"
-
-msgctxt "PLSSEM|"
-msgid "Pearson"
-msgstr "Pearson"
-
-msgctxt "PLSSEM|"
-msgid "Spearman"
-msgstr "Spearman"
-
-msgctxt "PLSSEM|"
 msgid "Handling of inadmissibles"
 msgstr "Manexo dos non permitidos"
 
@@ -1162,32 +638,12 @@ msgid "Drop"
 msgstr "Quitar"
 
 msgctxt "PLSSEM|"
-msgid "Handling of flipped signs"
-msgstr "Manexo dos signos trocados"
-
-msgctxt "PLSSEM|"
-msgid "Individual"
-msgstr "Individual"
-
-msgctxt "PLSSEM|"
-msgid "Individual re-estimation"
-msgstr "Nova estimación individual"
-
-msgctxt "PLSSEM|"
-msgid "Construct re-estimation"
-msgstr "Nova estimación de construcións"
-
-msgctxt "PLSSEM|"
 msgid "Output"
 msgstr "Saída de resultados"
 
 msgctxt "PLSSEM|"
 msgid "R-squared"
 msgstr "R-cadrado"
-
-msgctxt "PLSSEM|"
-msgid "Additional fit measures"
-msgstr "Medidas adicionais de axuste"
 
 msgctxt "PLSSEM|"
 msgid "Mardia's coefficient"
@@ -1242,5 +698,847 @@ msgid "All"
 msgstr "Todo"
 
 msgctxt "PLSSEM|"
-msgid "Show predicted scores"
-msgstr "Amosar as puntuacións preditas"
+msgid "Samples"
+msgstr "Mostras"
+
+msgctxt "SEM|"
+msgid "Average variance extracted (AVE)"
+msgstr "Varianza media extraída (VME, AVE)"
+
+msgctxt "SEM|"
+msgid "Heterotrait-monotrait ratio (HTMT)"
+msgstr "Cociente Heterotrazo-Monotrazo (HTMT)"
+
+msgctxt "SEM|"
+msgid "Reliability measures"
+msgstr "Medidas de Fiabilidade"
+
+msgctxt "SEM|"
+msgid "Thresholds"
+msgstr "Lindeiros"
+
+msgctxt "SEM|"
+msgid "Estimation Options"
+msgstr "Opcións da estimación"
+
+msgctxt "SEM|"
+msgid "Output Options"
+msgstr "Opcións da saída de resultados"
+
+msgctxt "SEM|"
+msgid "Sensitivity Analysis"
+msgstr "Análise de Sensibilidade"
+
+msgctxt "SEM|"
+msgid "Run sensitivity analysis"
+msgstr "Executar a análise de Sensibilidade"
+
+msgctxt "SEM|"
+msgid "Search algorithm"
+msgstr "Algoritmo de procura"
+
+msgctxt "SEM|"
+msgid "Ant colony optimization"
+msgstr "Optimización Colonia de Formigas"
+
+msgctxt "SEM|"
+msgid "Number of ants"
+msgstr "Número de formigas"
+
+msgctxt "SEM|"
+msgid "Size of the solution archive"
+msgstr "Tamaño do ficheiro da solución"
+
+msgctxt "SEM|"
+msgid "Convergence rate threshold"
+msgstr "Lindeiro da taxa de converxencia"
+
+msgctxt "SEM|"
+msgid "Tabu search"
+msgstr "Procura Tabú"
+
+msgctxt "SEM|"
+msgid "Optimizer function"
+msgstr "Función do optimizador"
+
+msgctxt "SEM|"
+msgid "% change mean estimate"
+msgstr "Estimación media da % cambio"
+
+msgctxt "SEM|"
+msgid "Change of p-value"
+msgstr "Cambio no valor P"
+
+msgctxt "SEM|"
+msgid "Distance of p-value from alpha"
+msgstr "Distancia do valor P a alfa"
+
+msgctxt "SEM|"
+msgid "Change of RMSEA"
+msgstr "Cambio na REACM (RMSEA)"
+
+msgctxt "SEM|"
+msgid "Distance of RMSEA from 0.05"
+msgstr "Distancia de REACM a 0.05"
+
+msgctxt "SEM|"
+msgid "Significance level"
+msgstr "Nivel de significación"
+
+msgctxt "SEM|"
+msgid "Maximum number of iterations"
+msgstr "Número máximo de iteracións"
+
+msgctxt "Advanced|"
+msgid "Advanced"
+msgstr "Avanzado"
+
+msgctxt "Advanced|"
+msgid "Missing value handling"
+msgstr "Manexo de valores ausentes"
+
+msgctxt "Advanced|"
+msgid "(FI)ML"
+msgstr "MV(IC)"
+
+msgctxt "Advanced|"
+msgid "Listwise"
+msgstr "Por lista"
+
+msgctxt "Advanced|"
+msgid "Mimic"
+msgstr "Imitar"
+
+msgctxt "Advanced|"
+msgid "Lavaan"
+msgstr "Lavaan"
+
+msgctxt "Advanced|"
+msgid "Mplus"
+msgstr "Mplus"
+
+msgctxt "Advanced|"
+msgid "EQS"
+msgstr "EQS"
+
+msgctxt "Advanced|"
+msgid "Estimator"
+msgstr "Estimador"
+
+msgctxt "Advanced|"
+msgid "Default"
+msgstr "Por defecto"
+
+msgctxt "Advanced|"
+msgid "ML"
+msgstr "MV"
+
+msgctxt "Advanced|"
+msgid "GLS"
+msgstr "MCX (GLS)"
+
+msgctxt "Advanced|"
+msgid "WLS"
+msgstr "MCP (WLS)"
+
+msgctxt "Advanced|"
+msgid "ULS"
+msgstr "MCSP (ULS)"
+
+msgctxt "Advanced|"
+msgid "DWLS"
+msgstr "MCPD (DWLS)"
+
+msgctxt "ErrorCalculation|"
+msgid "Confidence intervals"
+msgstr "Intervalos de confianza"
+
+msgctxt "ErrorCalculation|"
+msgid "Method"
+msgstr "Método"
+
+msgctxt "ErrorCalculation|"
+msgid "Standard"
+msgstr "Típico"
+
+msgctxt "ErrorCalculation|"
+msgid "Robust"
+msgstr "Robusto"
+
+msgctxt "ErrorCalculation|"
+msgid "Bootstrap"
+msgstr "Bootstrap"
+
+msgctxt "ErrorCalculation|"
+msgid "Replications"
+msgstr "Réplicas"
+
+msgctxt "ErrorCalculation|"
+msgid "Type"
+msgstr "Tipo"
+
+msgctxt "ErrorCalculation|"
+msgid "Bias-corrected percentile"
+msgstr "Percentil con nesgo corrixido"
+
+msgctxt "ErrorCalculation|"
+msgid "Percentile"
+msgstr "Percentil"
+
+msgctxt "ErrorCalculation|"
+msgid "Normal theory"
+msgstr "Teoría Normal"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Estimation Options"
+msgstr "Opcións da estimación"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Additional fit measures"
+msgstr "Medidas adicionais de axuste"
+
+msgctxt "LatentGrowthCurve|"
+msgid "All"
+msgstr "Todo"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Latents"
+msgstr "Latentes"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Except exogenous covariates"
+msgstr "Agás covariantes esóxenas"
+
+msgctxt "MediationAnalysis|"
+msgid "All"
+msgstr "Todo"
+
+msgctxt "MediationAnalysis|"
+msgid "Latents"
+msgstr "Latentes"
+
+msgctxt "MediationAnalysis|"
+msgid "Except exogenous covariates"
+msgstr "Agás covariantes esóxenas"
+
+msgctxt "Mimic|"
+msgid "All"
+msgstr "Todo"
+
+msgctxt "Mimic|"
+msgid "Latents"
+msgstr "Latentes"
+
+msgctxt "Mimic|"
+msgid "Except exogenous covariates"
+msgstr "Agás covariantes esóxenas"
+
+msgctxt "SEM|"
+msgid "Mean structure"
+msgstr "Estrutura media"
+
+msgctxt "SEM|"
+msgid "Latent means fixed to zero"
+msgstr "Medias de latentes fixadas en cero"
+
+msgctxt "SEM|"
+msgid "Manifest intercepts fixed to zero"
+msgstr "Constantes de declaradas fixadas en cero"
+
+msgctxt "SEM|"
+msgid "Mean of manifest intercepts fixed to zero"
+msgstr "Media de constantes de declaradas fixada en cero"
+
+msgctxt "SEM|"
+msgid "Exogenous covariate(s) fixed"
+msgstr "Covariante(s) esóxena(s) fixada(s)"
+
+msgctxt "SEM|"
+msgid "Residual single indicator omitted"
+msgstr "Omitiuse o índice individual do erro"
+
+msgctxt "SEM|"
+msgid "Residual variances included"
+msgstr "Varianzas dos erros incluídas"
+
+msgctxt "SEM|"
+msgid "Exogenous latents correlated"
+msgstr "Latentes esóxenas correlacionadas"
+
+msgctxt "SEM|"
+msgid "Dependent variables correlated"
+msgstr "Variables dependentes correlacionadas"
+
+msgctxt "SEM|"
+msgid "Scaling parameters"
+msgstr "Parámetros de escalado"
+
+msgctxt "SEM|"
+msgid "EFA blocks constrained"
+msgstr "Bloques AFE restrinxidos"
+
+msgctxt "SEM|"
+msgid "Default"
+msgstr "Por defecto"
+
+msgctxt "SEM|"
+msgid "DLS"
+msgstr "MCPD(DLS)"
+
+msgctxt "SEM|"
+msgid "MLM"
+msgstr "MVM(MLM)"
+
+msgctxt "SEM|"
+msgid "MLMV"
+msgstr "MVMV(MLMV)"
+
+msgctxt "SEM|"
+msgid "MLMVS"
+msgstr "MVMVS(MLMVS)"
+
+msgctxt "SEM|"
+msgid "MLF"
+msgstr "MVPO(MLF)"
+
+msgctxt "SEM|"
+msgid "MLR"
+msgstr "MVR(MLR)"
+
+msgctxt "SEM|"
+msgid "WLSM"
+msgstr "MCPM(WLSM)"
+
+msgctxt "SEM|"
+msgid "WLSMV"
+msgstr "MCPMV(WLSMV)"
+
+msgctxt "SEM|"
+msgid "ULSM"
+msgstr "MCNPM(ULSM)"
+
+msgctxt "SEM|"
+msgid "ULSMV"
+msgstr "MCNPMV(ULSMV)"
+
+msgctxt "SEM|"
+msgid "Click for more information"
+msgstr "Fai clic para máis información"
+
+msgctxt "SEM|"
+msgid "Yuan-Bentler Mplus"
+msgstr "Estatístico de proba escalado (Mplus) de Yuan-Bentler"
+
+msgctxt "SEM|"
+msgid "Mean and variance adjusted"
+msgstr "Media e varianza axustada"
+
+msgctxt "SEM|"
+msgid "Browne residual based (ADF)"
+msgstr "Baseado no erro de Browne (ADF)"
+
+msgctxt "SEM|"
+msgid "Browne residual based (NT)"
+msgstr "Baseado no erro de Browne (NT)"
+
+msgctxt "SEM|"
+msgid "     Bootstrap samples"
+msgstr "     Mostras de Bootstrap"
+
+msgctxt "SEM|"
+msgid "First order"
+msgstr "Primeira orde"
+
+msgctxt "SEM|"
+msgid "Standard errors"
+msgstr "Erros padrón"
+
+msgctxt "SEM|"
+msgid "Robust Huber-White"
+msgstr "Huber-White robusto"
+
+msgctxt "SEM|"
+msgid "     Type"
+msgstr "     Tipo"
+
+msgctxt "SEM|"
+msgid "(FI)ML"
+msgstr "MV(IC)"
+
+msgctxt "SEM|"
+msgid "Mimic"
+msgstr "Imitar"
+
+msgctxt "SEM|"
+msgid "Lavaan"
+msgstr "Lavaan"
+
+msgctxt "SEM|"
+msgid "All"
+msgstr "Todo"
+
+msgctxt "SEM|"
+msgid "Latents"
+msgstr "Latentes"
+
+msgctxt "SEM|"
+msgid "Except exogenous covariates"
+msgstr "Agás covariantes esóxenas"
+
+msgctxt "SEM|"
+msgid "Show warnings"
+msgstr "Amosar avisos"
+
+msgctxt "SEM|"
+msgid "SD of deviance / old estimate"
+msgstr "DP da desviación / estimación anterior"
+
+msgctxt "PLSSEM|"
+msgid "Consistent partial least squares"
+msgstr "Mínimos cadrados parciais consistentes"
+
+msgctxt "PLSSEM|"
+msgid "Tolerance"
+msgstr "Tolerancia"
+
+msgctxt "PLSSEM|"
+msgid "Add construct scores to data"
+msgstr "Engadir puntuacións dos construtos aos datos"
+
+msgctxt "SEM|"
+msgid "Standardized"
+msgstr "Tipificado"
+
+msgctxt "Advanced|"
+msgid "Select the method for handling missing data in estimation"
+msgstr "Seleccionar o método para manexar os datos ausentes na estimación"
+
+msgctxt "Advanced|"
+msgid "Use Full Information Maximum Likelihood to handle missing data"
+msgstr ""
+"Usar Máxima Verosimilitude con Información Completa para manexar os datos "
+"ausentes"
+
+msgctxt "Advanced|"
+msgid "Exclude cases with missing data (listwise deletion)"
+msgstr "Excluír os casos con datos ausentes (eliminación por lista)"
+
+msgctxt "Advanced|"
+msgid "Select the software to emulate estimation behavior"
+msgstr "Escoller o software para emular o comportamento da estimación"
+
+msgctxt "Advanced|"
+msgid "Use Lavaan default estimation method"
+msgstr "Usar o método de estimación predeterminado de Lavaan"
+
+msgctxt "Advanced|"
+msgid "Emulate Mplus estimation methods"
+msgstr "Emular os métodos de estimación de Mplus"
+
+msgctxt "Advanced|"
+msgid "Emulate EQS estimation methods"
+msgstr "Emular os métodos de estimación de EQS"
+
+msgctxt "Advanced|"
+msgid "Choose the estimator for model fitting"
+msgstr "Elixir o estimador para o axuste do modelo"
+
+msgctxt "Advanced|"
+msgid "Use the default estimator based on the model and data"
+msgstr "Usar o estimador predeterminado baseado no modelo e nos datos"
+
+msgctxt "Advanced|"
+msgid "Maximum Likelihood estimator"
+msgstr "Estimador de Máxima Verosimilitude"
+
+msgctxt "Advanced|"
+msgid "Generalized Least Squares estimator"
+msgstr "Estimador de Mínimos Cadrados Xeneralizados"
+
+msgctxt "Advanced|"
+msgid "Weighted Least Squares estimator"
+msgstr "Estimador de Mínimos Cadrados Ponderados"
+
+msgctxt "Advanced|"
+msgid "Unweighted Least Squares estimator"
+msgstr "Estimador de Mínimos Cadrados Non Ponderados"
+
+msgctxt "Advanced|"
+msgid "Diagonally Weighted Least Squares estimator"
+msgstr "Estimador de Mínimos Cadrados Ponderados Diagonalmente"
+
+msgctxt "ErrorCalculation|"
+msgid "Set the confidence level for the interval estimates"
+msgstr "Establecer o nivel de confianza para as estimacións de intervalos"
+
+msgctxt "ErrorCalculation|"
+msgid ""
+"Select the method for calculating standard errors and confidence intervals"
+msgstr ""
+"Seleccionar o método para calcular erros padrón e intervalos de confianza"
+
+msgctxt "ErrorCalculation|"
+msgid "Use standard maximum likelihood estimation for standard errors"
+msgstr ""
+"Usar a estimación de Máxima Verosimilitude estándar para os erros padrón"
+
+msgctxt "ErrorCalculation|"
+msgid "Use robust estimation for standard errors"
+msgstr "Usar a estimación Robusta para os erros padrón"
+
+msgctxt "ErrorCalculation|"
+msgid ""
+"Use bootstrap method for estimating standard errors and confidence intervals"
+msgstr ""
+"Usar o método Bootstrap para estimar erros padrón e intervalos de confianza"
+
+msgctxt "ErrorCalculation|"
+msgid "Specify the number of bootstrap samples"
+msgstr "Especificar o número de mostras para Bootstrap"
+
+msgctxt "ErrorCalculation|"
+msgid "Select the type of bootstrap confidence interval to compute"
+msgstr "Seleccionar o tipo de intervalo de confianza de Bootstrap a calcular"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Variables to include in the latent growth curve model"
+msgstr "Variables a incluír no modelo da curva de crecemento latente"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Variables to use as regressors in the model"
+msgstr "Variables a usar no modelo como regresores"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Categorical variables acting as factors"
+msgstr "Variables con categorías funcionando como factores"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Variable timing"
+msgstr "Temporización de variable"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Specify the timing for the variable"
+msgstr "Especificar a temporización para a variable"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Options for configuring model estimation"
+msgstr "Opcións para configurar a estimación do modelo"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Select components to include in the growth curve"
+msgstr "Seleccionar as compoñentes a incluír na curva de crecemento"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include an intercept in the model"
+msgstr "Incluír unha constante no modelo"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include a linear component in the model"
+msgstr "Incluír unha compoñente linear no modelo"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include a quadratic component in the model"
+msgstr "Incluír unha compoñente cuadrática no modelo"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include a cubic component in the model"
+msgstr "Incluír unha compoñente cúbica no modelo"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include covariance between latent growth components"
+msgstr "Incluír a covarianza entre compoñentes do crecemento latente"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Options for additional output"
+msgstr "Opcións para resultados adicionais"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Display additional model fit measures"
+msgstr "Presentar medidas adicionais de axuste do modelo"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Display R-squared values for variables"
+msgstr "Presentar os valores de R-cadrado para as variables"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include standardized estimates in the output"
+msgstr "Incluír estimacións tipificadas no resultado"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Select the type of standardized estimates to include"
+msgstr "Seleccionar o tipo de estimacións tipificadas a incluír"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include all standardized estimates"
+msgstr "Incluír tódalas estimacións tipificadas"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Include standardized estimates for latent variables only"
+msgstr "Incluír estimacións tipificadas só para variables latentes"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Exclude standardized estimates for exogenous covariates"
+msgstr "Excluír estimacións tipificadas para variables esóxenas"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Display the implied covariance matrix"
+msgstr "Presentar a matriz de covarianzas implícita"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Display the residual covariance matrix"
+msgstr "Presentar a matriz de covarianzas dos erros"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Show the lavaan model syntax"
+msgstr "Amosar a sintaxe do modelo de Lavaan"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Options for generating plots"
+msgstr "Opcións para xerar gráficas"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Configure plot options for the analysis"
+msgstr "Configurar as opcións das gráficas para a análise"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Select a color palette for the plots"
+msgstr "Seleccionar a paleta de cores para as gráficas"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Generate a curve plot of the growth trajectories"
+msgstr "Xerar unha gráfica curva para as traxectorias de crecemento"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Select a categorical variable to color the curves"
+msgstr "Seleccionar unha variable con categorías para colorear as curvas"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Set the maximum number of lines to display in the curve plot"
+msgstr "Establecer o número máximo de liñas a presentar na gráfica da curva"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Generate a path diagram of the model"
+msgstr "Xerar un diagrama de rutas do modelo"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Display parameter estimates in the model plot"
+msgstr "Presentar as estimacións dos parámetros na gráfica do modelo"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Display means in the model plot"
+msgstr "Presentar as medias na gráfica do modelo"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Additional modeling options"
+msgstr "Opcións adicionais da modelización"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Add thresholds"
+msgstr "Engadir lindeiros"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Add scaling parameters"
+msgstr "Engadir parámetros de escalado"
+
+msgctxt "SEM|"
+msgid "Condition on exogenous covariate(s)"
+msgstr "Condición segundo covariante(s) esóxena(s)"
+
+msgctxt "SEM|"
+msgid "Set a random seed:"
+msgstr "Establecer unha semente aleatoria:"
+
+#, qt-format
+msgctxt "SEM|"
+msgid ""
+"This analysis was created with an older version of JASP (or a dynamic "
+"module). Since then, there were changes in the lavaan package that runs the "
+"analysis. Specifically, the lavaan syntax for equality constraints in "
+"multigroup analysis is now interpreted differently. Proceed with caution! "
+"More details about the update can be found at %1"
+msgstr ""
+"Esta análise creouse cunha versión antiga de JASP (ou cun módulo dinámico). "
+"Dende entón houbo trocos no paquete Lavaan que executa a análise. En "
+"concreto, a sintaxe Lavaan para as restricións de igualdade na análise "
+"multigrupo interprétase agora de xeito diferente. Actúa con tento! Podes "
+"atopar máis detalles sobre a actualización en %1"
+
+msgctxt "PLSSEM|"
+msgid "Overall model fit"
+msgstr "Axuste global do modelo"
+
+msgctxt "PLSSEM|"
+msgid "Bootstrap samples"
+msgstr "Mostras de Bootstrap"
+
+msgctxt "PLSSEM|"
+msgid "Significance level"
+msgstr "Nivel de significación"
+
+msgctxt "PLSSEM|"
+msgid "Saturated structural model"
+msgstr "Modelo estrutural saturado"
+
+msgctxt "LatentGrowthCurve|"
+msgid "Show parameter estimates"
+msgstr "Amosar as estimacións dos parámetros"
+
+msgctxt "Description|"
+msgid "MNLFA"
+msgstr "AFNLM"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Loadings"
+msgstr "Cargas"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Intercepts"
+msgstr "Constantes"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Residual variances"
+msgstr "Varianzas dos erros"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Variances"
+msgstr "Varianzas"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Means"
+msgstr "Medias"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Covariances"
+msgstr "Covarianzas"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderation"
+msgstr "Moderación"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderators"
+msgstr "Moderadores"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Square   Cubic"
+msgstr "Cadrado   Cúbico"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "<b>Start/Sync Analysis</b>"
+msgstr "<b>Iniciar/Sincr análise</b>"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Assumption Check"
+msgstr "Comprobar supostos"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Check model fit per group"
+msgstr "Comprobar axuste de modelos por grupo"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Split continuous variables into groups:"
+msgstr "Separar variables continuas en grupos:"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Add group variable to data"
+msgstr "Engadir variable de grupos aos datos"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Interaction Terms"
+msgstr "Termos de interacción"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Include"
+msgstr "Incluír"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderation Options"
+msgstr "Opcións de moderación"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Invariance Tests"
+msgstr "Probas de invarianza"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Configural"
+msgstr "Configural"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Metric"
+msgstr "Métrica"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Scalar"
+msgstr "Escalar"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Strict"
+msgstr "Estrito"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Custom"
+msgstr "Personalizado"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Include Individual Moderations"
+msgstr "Incluír moderacións individuais"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Indicators"
+msgstr "Indicadores"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factors"
+msgstr "Factores"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Display Plot"
+msgstr "Presentar gráfica"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Output Options"
+msgstr "Opcións da saída de resultados"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Parameter Estimates"
+msgstr "Estimacións dos parámetros"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Significance level"
+msgstr "Nivel de significación"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factor variances"
+msgstr "Varianzas dos Factores"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factor means"
+msgstr "Medias dos Factores"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factor covariances"
+msgstr "Covarianzas dos Factores"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Show syntax"
+msgstr "Amosar sintaxe"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Plots"
+msgstr "Gráficas"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderator 1"
+msgstr "Moderador 1"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderator 2"
+msgstr "Moderador 2"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Display plot"
+msgstr "Presentar gráfica"
+
+msgctxt "PLSSEM|"
+msgid "Additional fit measures"
+msgstr "Medidas adicionais de axuste"

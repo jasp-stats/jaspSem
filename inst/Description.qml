@@ -1,18 +1,13 @@
-import QtQuick 		2.12
-import JASP.Module 	1.0
+import QtQuick
+import JASP.Module
 
 Description
 {
-	name:			"jaspSem"
 	title : 		qsTr("SEM")
 	description:	qsTr("Evaluate latent data structures with Yves Rosseel’s lavaan program")
 	icon:			"sem-latreg.svg"
-	version:		"0.17.0"
-	author:			"JASP Team"
-	maintainer:		"JASP Team <info@jasp-stats.org>"
-	website:		"https://github.com/jasp-stats/jaspSem/"
-	license:		"GPL (>= 2)"
-	hasWrappers:	true
+	preloadData:	false
+	hasWrappers: 	true
 
 	Analysis
 	{
@@ -26,6 +21,7 @@ Description
 		title:	qsTr("Partial Least Squares SEM")
 		qml:	"PLSSEM.qml"
 		func:	"PLSSEM"
+		preloadData: true
 	}
 
 	Analysis 
@@ -54,6 +50,13 @@ Description
 		title:	qsTr("Latent Growth")
 		qml:	"LatentGrowthCurve.qml"
 		func:	"LatentGrowthCurve"
-		//enabled: false
+	}
+
+	Analysis
+	{
+		title: qsTr("MNLFA")
+		qml: "ModeratedNonLinearFactorAnalysis.qml"
+		func: "ModeratedNonLinearFactorAnalysis"
+		preloadData: true
 	}
 }
