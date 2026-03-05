@@ -355,6 +355,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 
   # create a qgraph object using semplot
   po <- .lavToPlotObj(modelContainer[["model"]][["object"]])
+  .patchRtLayout()
   pp <- jaspBase:::.suppressGrDevice(semPlot::semPaths(
     object         = po,
     layout         = "tree2",

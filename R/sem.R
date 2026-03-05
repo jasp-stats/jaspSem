@@ -2744,6 +2744,8 @@ checkLavaanModel <- function(model, availableVars) {
 
   # create a qgraph object using semplot
   po <- .lavToPlotObj(fit)
+  # Patch semPlot:::rtLayout to fix drop=FALSE bug with single-edge models (igraph >= 2.0)
+  .patchRtLayout()
   pp <- .suppressGrDevice(semPlot::semPaths(
     object         = po,
     layout         = "tree2",
