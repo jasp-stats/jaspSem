@@ -725,23 +725,83 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
   confounds_idx <- which(node_names %in% options$confounds)
   predictor_idx <- which(node_names %in% options$predictors)
   dependent_idx <- which(node_names %in% options$outcomes)
+  edge_list     <- plt$Edgelist
+
+  if (is.null(edge_list)) return(plt)
+
+  if (is.data.frame(edge_list)) {
+    edge_data <- edge_list
+  } else if (is.matrix(edge_list)) {
+    edge_data <- as.data.frame(edge_list, stringsAsFactors = FALSE)
+  } else if (is.list(edge_list)) {
+    edge_data <- as.data.frame(edge_list, stringsAsFactors = FALSE)
+  } else if (is.atomic(edge_list) && !is.null(names(edge_list))) {
+    edge_data <- as.data.frame(as.list(edge_list), stringsAsFactors = FALSE)
+  } else {
+    return(plt)
+  }
+
+  n_edges <- nrow(edge_data)
+  if (n_edges == 0) return(plt)
+
+  edge_from <- if ("from" %in% names(edge_data)) edge_data[["from"]] else edge_data[[1]]
+  edge_from <- suppressWarnings(as.integer(edge_from))
+  edge_from[is.na(edge_from)] <- -1L
+
+  edge_bidirectional <- if ("bidirectional" %in% names(edge_data)) edge_data[["bidirectional"]] else FALSE
+  edge_bidirectional <- rep_len(as.logical(edge_bidirectional), n_edges)
+  edge_bidirectional[is.na(edge_bidirectional)] <- FALSE
+
+  edge_options <- plt$graphAttributes$Edges
+  if (is.null(edge_options)) return(plt)
+  if (!is.list(edge_options))
+    edge_options <- as.list(edge_options)
+
+  edge_labels <- edge_options$labels
+  if (is.null(edge_labels))
+    edge_labels <- rep("", n_edges)
+  edge_labels <- as.character(rep_len(edge_labels, n_edges))
+
+  edge_lty <- edge_options$lty
+  if (is.null(edge_lty))
+    edge_lty <- rep(1, n_edges)
+  edge_lty <- rep_len(edge_lty, n_edges)
+
+  edge_color <- edge_options$color
+  if (is.null(edge_color))
+    edge_color <- rep("black", n_edges)
+  edge_color <- as.character(rep_len(edge_color, n_edges))
+
+  edge_label_position <- edge_options$edge.label.position
+  if (is.null(edge_label_position))
+    edge_label_position <- rep(0.5, n_edges)
+  edge_label_position <- rep_len(edge_label_position, n_edges)
 
   if (options$pathPlotParameter) {
     # change big numbers to scientific notation
-    labs <- vapply(plt$graphAttributes$Edges$labels, function(lab) format(as.numeric(lab), digits = 2), "")
-    plt$graphAttributes$Edges$labels <- labs
+    edge_labels <- vapply(edge_labels, function(label) {
+      label_num <- suppressWarnings(as.numeric(label))
+      if (is.na(label_num))
+        label
+      else
+        format(label_num, digits = 2)
+    }, "")
   }
 
   # remove focus from confounder edges
-  confound_edges <- plt$Edgelist$from %in% confounds_idx
-  plt$graphAttributes$Edges$labels[confound_edges] <- ""
-  plt$graphAttributes$Edges$lty[confound_edges] <- 3
-  plt$graphAttributes$Edges$color[confound_edges] <- "#888888FF"
+  confound_edges <- edge_from %in% confounds_idx
+  edge_labels[confound_edges] <- ""
+  edge_lty[confound_edges] <- 3
+  edge_color[confound_edges] <- "#888888FF"
 
   # place unidirectional edge labels at 1/3
-  uni_edges <- !plt$Edgelist$bidirectional
-  plt$graphAttributes$Edges$edge.label.position[uni_edges] <- 1/3
+  uni_edges <- !edge_bidirectional
+  edge_label_position[uni_edges] <- 1/3
 
+  plt$graphAttributes$Edges$labels <- edge_labels
+  plt$graphAttributes$Edges$lty <- edge_lty
+  plt$graphAttributes$Edges$color <- edge_color
+  plt$graphAttributes$Edges$edge.label.position <- edge_label_position
 
   return(plt)
 }
