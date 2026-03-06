@@ -43,6 +43,7 @@ BayesianSEM <- function(
           meanStructure = FALSE,
           models = list(list(name = "Model 1", syntax = "")),
           orthogonal = FALSE,
+          posteriorPredictivePvalue = FALSE,
           seed = 1,
           setSeed = FALSE,
           warnings = FALSE) {

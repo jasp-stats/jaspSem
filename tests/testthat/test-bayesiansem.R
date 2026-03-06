@@ -39,6 +39,7 @@ options$latentInterceptFixedToZero  <- TRUE
 options$orthogonal                  <- FALSE
 options$warnings                    <- FALSE
 options$additionalFitMeasures       <- TRUE
+options$posteriorPredictivePvalue   <- TRUE
 
 set.seed(123)
 results <- jaspTools::runAnalysis("BayesianSEM", testthat::test_path("poldem_grouped.csv"), options)
@@ -49,13 +50,18 @@ test_that("Bayesian SEM runs without critical errors", {
   expect_true(!is.null(results[["results"]][["modelContainer"]]))
 })
 
-test_that("Model fit table is created", {
+test_that("Model fit table is created with PPP", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   expect_true(!is.null(table))
   expect_true(length(table) > 0)
   expect_true("Model" %in% names(table[[1]]))
   hasBayesianFit <- any(c("DIC", "WAIC", "LOO") %in% names(table[[1]]))
   expect_true(hasBayesianFit)
+  # PPP column
+  expect_true("PPP" %in% names(table[[1]]))
+  ppp <- table[[1]][["PPP"]]
+  expect_true(is.numeric(ppp))
+  expect_true(ppp >= 0 && ppp <= 1)
 })
 
 test_that("Single-group fit table has npar and nfree columns", {

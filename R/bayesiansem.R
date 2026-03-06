@@ -109,7 +109,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("models", "meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero",
+    modelContainer$dependOn(c("meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero",
                               "factorScaling", "orthogonal", "group",
                               "equalLoading", "equalIntercept", "equalResidual", "equalResidualCovariance",
                               "equalMean", "equalThreshold", "equalRegression", "equalLatentVariance", "equalLatentCovariance",
@@ -123,22 +123,25 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
 .bayesiansemComputeResults <- function(modelContainer, dataset, options) {
 
-  # find reusable results
-  oldmodels  <- modelContainer[["models"]][["object"]]
-  oldresults <- modelContainer[["results"]][["object"]]
+  # find reusable results by matching on syntax (the only field that affects the fit)
+  oldSyntaxes <- modelContainer[["syntaxes"]][["object"]]
+  oldresults  <- modelContainer[["results"]][["object"]]
   oldwarnings <- modelContainer[["warnings"]][["object"]]
-  reuse <- match(options[["models"]], oldmodels)
+  newSyntaxes <- vapply(options[["models"]], `[[`, "", "syntax")
 
-  if (identical(reuse, seq_along(reuse))) return(oldresults) # reuse everything
+  reuse <- integer(0)
+  if (!is.null(oldSyntaxes) && !is.null(oldresults)) {
+    reuse <- match(newSyntaxes, oldSyntaxes)
+    if (!anyNA(reuse)) return(oldresults[reuse]) # reuse everything
+  }
 
-  # create results list
-  results <- vector("list", length(options[["models"]]))
+  # create results list, prefill from cache where possible
+  results  <- vector("list", length(options[["models"]]))
   warnings <- vector("list", length(options[["models"]]))
 
-  if (any(!is.na(reuse))) {
-    # where possible, prefill results with old results
-    results[seq_along(reuse)] <- oldresults[reuse]
-    warnings[seq_along(reuse)] <- ifelse(is.null(oldwarnings[reuse]), list(NULL), oldwarnings[reuse])
+  for (i in which(!is.na(reuse))) {
+    results[[i]]  <- oldresults[[reuse[i]]]
+    warnings[[i]] <- if (!is.null(oldwarnings)) oldwarnings[[reuse[i]]] else NULL
   }
 
   # generate blavaan options list
@@ -146,6 +149,9 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   for (i in seq_along(results)) {
     if (!is.null(results[[i]])) next # existing model is reused
+
+    modelName <- options[["models"]][[i]][["name"]]
+    startProgressbar(1, label = gettextf("Estimating %s", modelName))
 
     # create options
     blavaanArgs <- blavaanOptions
@@ -180,14 +186,15 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
     results[[i]] <- fit$value
     warnings[i] <- ifelse(is.null(fit$warnings), list(NULL), fit$warnings)
+    progressbarTick()
   }
 
   # store in model container
   if (!modelContainer$getError()) {
-    modelContainer[["results"]] <- createJaspState(results)
+    modelContainer[["results"]]  <- createJaspState(results)
     modelContainer[["results"]]$dependOn(optionsFromObject = modelContainer)
-    modelContainer[["models"]]  <- createJaspState(options[["models"]])
-    modelContainer[["models"]]$dependOn(optionsFromObject = modelContainer)
+    modelContainer[["syntaxes"]] <- createJaspState(newSyntaxes)
+    modelContainer[["syntaxes"]]$dependOn(optionsFromObject = modelContainer)
     modelContainer[["warnings"]] <- createJaspState(warnings)
     modelContainer[["warnings"]]$dependOn(optionsFromObject = modelContainer)
   }
@@ -290,14 +297,13 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 # output functions
 
 .bayesiansemFitTab <- function(jaspResults, modelContainer, dataset, options, ready) {
-
-  if (!is.null(modelContainer[["fittab"]])) return()
-
   fittab <- createJaspTable(title = gettext("Model Fit"))
-  fittab$dependOn(c("models", "warnings"))
+  fittab$dependOn(c("models", "warnings", "posteriorPredictivePvalue"))
   fittab$position <- 0
 
   fittab$addColumnInfo(name = "Model",    title = "",                            type = "string" , combine = TRUE)
+  if (options[["posteriorPredictivePvalue"]])
+    fittab$addColumnInfo(name = "PPP",    title = gettext("PPP"),                type = "number")
   fittab$addColumnInfo(name = "DIC",      title = gettext("DIC"),                type = "number" )
   fittab$addColumnInfo(name = "WAIC",     title = gettext("WAIC"),               type = "number" )
   fittab$addColumnInfo(name = "LOO",      title = gettext("LOO"),                type = "number" )
@@ -346,6 +352,18 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   dtFill <- data.frame(matrix(ncol = 0, nrow = length(rownames_data)))
   dtFill[["Model"]]    <- rownames_data
+  if (options[["posteriorPredictivePvalue"]]) {
+    startProgressbar(length(blavaanResults), label = gettext("Computing posterior predictive p-values"))
+    pppValues <- numeric(length(blavaanResults))
+    for (j in seq_along(blavaanResults)) {
+      pppValues[j] <- tryCatch({
+        ppmcResult <- blavaan::ppmc(blavaanResults[[j]], fit.measures = "chisq")
+        as.numeric(ppmcResult@PPP[["fit.indices"]]["chisq"])
+      }, error = function(e) NA_real_)
+      progressbarTick()
+    }
+    dtFill[["PPP"]] <- pppValues
+  }
   dtFill[["DIC"]]      <- sapply(fitMeasures, function(x) x$DIC)
   dtFill[["WAIC"]]     <- sapply(fitMeasures, function(x) x$WAIC)
   dtFill[["LOO"]]      <- sapply(fitMeasures, function(x) x$looic)
@@ -357,6 +375,8 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   if (nchar(fnote) > 0) {
     fittab$addFootnote(message = fnote)
   }
+  if (options[["posteriorPredictivePvalue"]])
+    modelContainer$addCitation("Levy, R. (2011). Bayesian data-model fit assessment for structural equation modeling. Structural Equation Modeling, 18(4), 663-685. doi:10.1080/10705511.2011.607723")
 
 }
 
