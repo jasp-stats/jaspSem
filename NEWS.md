@@ -3,7 +3,7 @@
 ## [Pull Request #365](https://github.com/jasp-stats/jaspSem/pull/365):
 - MIMIC: add residual variances and predictor covariances tables to output
 - MIMIC: add option to freely estimate exogenous predictor variances and covariances (fixed.x)
-- SEM: fix path plot for simple regression model
+- Fix path plot for simple regression models across SEM, MIMIC, LGCM, and Mediation Analysis
 
 
 
