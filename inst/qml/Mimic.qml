@@ -69,6 +69,16 @@ Form
 
 		Common.ErrorCalculation{}
 
+		Group
+		{
+			CheckBox
+			{
+				name:    "fixedX"
+				label:   qsTr("Fix exogenous predictor variances and covariances")
+				checked: true
+				info:    qsTr("When checked, predictor variances and covariances are fixed to sample values. Uncheck to freely estimate them.")
+			}
+		}
   }
 
 	Section 
