@@ -1,5 +1,8 @@
 # jaspSem (development version)
 
+## [Pull Request]
+- New analysis: Bayesian structural equation modeling (bsem) 
+
 ## [Pull Request #248](https://github.com/jasp-stats/jaspSem/pull/248):
 - Major changes to SEM: 
   - ordinal data fully supported
