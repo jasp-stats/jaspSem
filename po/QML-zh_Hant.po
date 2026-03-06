@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2026-03-06 11:56+0000\n"
+"PO-Revision-Date: 2026-03-07 03:22+0000\n"
 "Last-Translator: 陳正昌 <chencc99@gmail.com>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-qml/zh_Hant/>\n"
@@ -1099,15 +1099,15 @@ msgstr "離差的標準差 / 舊估計值"
 
 msgctxt "PLSSEM|"
 msgid "Consistent partial least squares"
-msgstr ""
+msgstr "一致偏最小平方法"
 
 msgctxt "PLSSEM|"
 msgid "Tolerance"
-msgstr ""
+msgstr "容忍度"
 
 msgctxt "PLSSEM|"
 msgid "Add construct scores to data"
-msgstr ""
+msgstr "增加構面分數到資料中"
 
 msgctxt "SEM|"
 msgid "Standardized"
@@ -1359,7 +1359,7 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Overall model fit"
-msgstr ""
+msgstr "模型整體適配度"
 
 msgctxt "PLSSEM|"
 msgid "Bootstrap samples"
