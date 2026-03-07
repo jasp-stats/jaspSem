@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2026-03-07 03:22+0000\n"
+"Last-Translator: 陳正昌 <chencc99@gmail.com>\n"
+"Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
+"projects/jasp/jaspsem-qml/zh_Hant/>\n"
+"Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.17-dev\n"
 "X-Language: zh_Hant\n"
 "X-Qt-Contexts: true\n"
 
@@ -61,7 +67,7 @@ msgstr "球形"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Covarying latent curve"
-msgstr "共變之前在曲線"
+msgstr "共變之潛在曲線"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Additional Output"
@@ -1093,15 +1099,15 @@ msgstr "離差的標準差 / 舊估計值"
 
 msgctxt "PLSSEM|"
 msgid "Consistent partial least squares"
-msgstr ""
+msgstr "一致偏最小平方法"
 
 msgctxt "PLSSEM|"
 msgid "Tolerance"
-msgstr ""
+msgstr "容忍度"
 
 msgctxt "PLSSEM|"
 msgid "Add construct scores to data"
-msgstr ""
+msgstr "增加構面分數到資料中"
 
 msgctxt "SEM|"
 msgid "Standardized"
@@ -1353,7 +1359,7 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid "Overall model fit"
-msgstr ""
+msgstr "模型整體適配度"
 
 msgctxt "PLSSEM|"
 msgid "Bootstrap samples"
