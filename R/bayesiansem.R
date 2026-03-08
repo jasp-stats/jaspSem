@@ -604,9 +604,8 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   if (length(warns) > 0) {
     if (length(unique(warns)) == 1) warns <- warns[1] # all warnings across models are the same
-    warns <- sub("^[^:]*: ?", "", warns)
-    warns <- gsub("\n", "", warns)
-    warns <- paste(warns, collapse = ".")
+    warns <- trimws(gsub("\\s+", " ", warns))
+    warns <- paste(warns, collapse = ". ")
 
     warnings <- createJaspHtml(text = gettextf("<b>Warnings:</b> %s", warns))
 
