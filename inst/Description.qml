@@ -8,6 +8,12 @@ Description
 	icon:			"sem-latreg.svg"
 	hasWrappers: 	true
 
+	GroupTitle
+	{
+		title:	qsTr("Classical")
+		icon:	"sem-latreg.svg"
+	}
+
 	Analysis
 	{
 		title:	qsTr("Structural Equation Modeling")
@@ -55,10 +61,14 @@ Description
 	}
 	
 	Separator {}
-
+	GroupTitle
+	{
+		title:	qsTr("Bayesian")
+		icon:	"sem-latreg-bayesian.svg"
+	}
 	Analysis
 	{
-		title:	qsTr("Bayesian Structural Equation Modeling")
+		title:	qsTr("Structural Equation Modeling")
 		qml:	"BayesianSEM.qml"
 		func:	"BayesianSEM"		
 		preloadData: true
