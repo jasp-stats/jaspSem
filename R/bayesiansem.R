@@ -29,18 +29,20 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   # check for errors
   .bayesiansemCheckErrors(dataset, options, ready, modelContainer)
 
+  # Compute results (before output builders, cached in modelContainer)
+  .bayesiansemComputeResults(jaspResults, modelContainer, dataset, options, ready)
+
   # Output functions
   .bayesiansemFitTab(jaspResults, modelContainer, dataset, options, ready)
-  .bayesiansemAdditionalFits(modelContainer, dataset, options, ready)
-  .bayesiansemWarningsHtml(modelContainer, dataset, options, ready)
-  .bayesiansemParameters(modelContainer, dataset, options, ready)
+  .bayesiansemAdditionalFits(jaspResults, modelContainer, dataset, options, ready)
+  .bayesiansemWarningsHtml(jaspResults, modelContainer, dataset, options, ready)
+  .bayesiansemParameters(jaspResults, modelContainer, dataset, options, ready)
 }
 
 # helper functions
-.bayesiansemPrepOpts <- function(options) {
 
-  # Handle both current format (syntax is a plain string from TextArea) and
-  # old ListBase format (syntax is a list with "model" key)
+.bayesiansemPrepOpts <- function(options) {
+  # backwards compatibility after changes to bouncontrollavaantextarea.cpp
   fixModel <- function(model) {
     if (is.character(model[["syntax"]])) return(model)
     newModel <- c(model[1], model[[2]])
@@ -104,54 +106,74 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   return()
 }
 
+# dependencies that affect the model fit (MCMC / model specification options)
+.bsemModelDeps <- c("meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero",
+                     "factorScaling", "orthogonal", "group",
+                     "equalLoading", "equalIntercept", "equalResidual", "equalResidualCovariance",
+                     "equalMean", "equalThreshold", "equalRegression", "equalLatentVariance", "equalLatentCovariance",
+                     "mcmcBurnin", "mcmcSamples", "mcmcChains", "mcmcThin",
+                     "setSeed", "seed")
+
 .bayesiansemModelContainer <- function(jaspResults) {
   if (!is.null(jaspResults[["modelContainer"]])) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero",
-                              "factorScaling", "orthogonal", "group",
-                              "equalLoading", "equalIntercept", "equalResidual", "equalResidualCovariance",
-                              "equalMean", "equalThreshold", "equalRegression", "equalLatentVariance", "equalLatentCovariance",
-                              "mcmcBurnin", "mcmcSamples", "mcmcChains", "mcmcThin",
-                              "setSeed", "seed"))
+    modelContainer$dependOn(.bsemModelDeps)
     jaspResults[["modelContainer"]] <- modelContainer
   }
 
   return(modelContainer)
 }
 
-.bayesiansemComputeResults <- function(modelContainer, dataset, options) {
+.bayesiansemComputeResults <- function(jaspResults, modelContainer, dataset, options, ready) {
 
-  # find reusable results by matching on syntax (the only field that affects the fit)
-  oldSyntaxes <- modelContainer[["syntaxes"]][["object"]]
-  oldresults  <- modelContainer[["results"]][["object"]]
-  oldwarnings <- modelContainer[["warnings"]][["object"]]
-  newSyntaxes <- vapply(options[["models"]], `[[`, "", "syntax")
+  if (!ready) return()
 
-  reuse <- integer(0)
-  if (!is.null(oldSyntaxes) && !is.null(oldresults)) {
-    reuse <- match(newSyntaxes, oldSyntaxes)
-    if (!anyNA(reuse)) return(oldresults[reuse]) # reuse everything
+  oldmodels   <- modelContainer[["bsemCachedModels"]][["object"]]
+  oldresults  <- modelContainer[["bsemCachedResults"]][["object"]]
+  oldwarnings <- modelContainer[["bsemCachedWarnings"]][["object"]]
+
+  # all filtered models match cache: nothing to do, display elements survive
+  if (!is.null(oldresults) && .bsemModelsIdentical(options[["models"]], oldmodels))
+    return()
+
+  # match old models element-wise
+  reuse <- .bsemMatchModels(options[["models"]], oldmodels)
+
+  # only reorder needed (subset/permutation of cached models)
+  if (!anyNA(reuse) && !is.null(oldresults)) {
+    modelContainer[["bsemCachedResults"]]$object  <- oldresults[reuse]
+    modelContainer[["bsemCachedModels"]]$object   <- options[["models"]]
+    modelContainer[["bsemCachedWarnings"]]$object <- oldwarnings[reuse]
+    .bayesiansemNullDisplayElements(modelContainer)
+    return()
   }
+
+  # models changed: NULL display elements so builders recreate them
+  .bayesiansemNullDisplayElements(modelContainer)
 
   # create results list, prefill from cache where possible
   results  <- vector("list", length(options[["models"]]))
   warnings <- vector("list", length(options[["models"]]))
 
-  for (i in which(!is.na(reuse))) {
-    results[[i]]  <- oldresults[[reuse[i]]]
-    warnings[[i]] <- if (!is.null(oldwarnings)) oldwarnings[[reuse[i]]] else NULL
+  if (any(!is.na(reuse)) && !is.null(oldresults)) {
+    for (i in which(!is.na(reuse))) {
+      results[[i]]  <- oldresults[[reuse[i]]]
+      warnings[[i]] <- if (!is.null(oldwarnings)) oldwarnings[[reuse[i]]] else NULL
+    }
   }
+
+  # count how many models need fitting for the progressbar
+  nToFit <- sum(vapply(results, is.null, TRUE))
+  if (nToFit > 0)
+    startProgressbar(nToFit, label = gettext("Estimating models..."))
 
   # generate blavaan options list
   blavaanOptions <- .bayesiansemOptionsToBlavOptions(options, dataset)
 
   for (i in seq_along(results)) {
     if (!is.null(results[[i]])) next # existing model is reused
-
-    modelName <- options[["models"]][[i]][["name"]]
-    startProgressbar(1, label = gettextf("Estimating %s", modelName))
 
     # create options
     blavaanArgs <- blavaanOptions
@@ -180,7 +202,6 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
       modelContainer$setError(paste0("Error in \"", options[["models"]][[i]][["name"]], "\" - ",
                                      .decodeVarsInMessage(names(dataset), errmsg)))
-      modelContainer$dependOn("models")
       break
     }
 
@@ -189,17 +210,42 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     progressbarTick()
   }
 
-  # store in model container
+  # store in modelContainer
   if (!modelContainer$getError()) {
-    modelContainer[["results"]]  <- createJaspState(results)
-    modelContainer[["results"]]$dependOn(optionsFromObject = modelContainer)
-    modelContainer[["syntaxes"]] <- createJaspState(newSyntaxes)
-    modelContainer[["syntaxes"]]$dependOn(optionsFromObject = modelContainer)
-    modelContainer[["warnings"]] <- createJaspState(warnings)
-    modelContainer[["warnings"]]$dependOn(optionsFromObject = modelContainer)
+    modelContainer[["bsemCachedResults"]]  <- createJaspState(results)
+    modelContainer[["bsemCachedResults"]]$dependOn(optionsFromObject = modelContainer)
+    modelContainer[["bsemCachedModels"]]   <- createJaspState(options[["models"]])
+    modelContainer[["bsemCachedModels"]]$dependOn(optionsFromObject = modelContainer)
+    modelContainer[["bsemCachedWarnings"]] <- createJaspState(warnings)
+    modelContainer[["bsemCachedWarnings"]]$dependOn(optionsFromObject = modelContainer)
   }
+}
 
-  return(results)
+# compare models by name + syntax only (other fields like 'value' change between invocations)
+.bsemModelsIdentical <- function(newModels, oldModels) {
+  if (is.null(oldModels) || length(newModels) != length(oldModels)) return(FALSE)
+  for (i in seq_along(newModels)) {
+    if (newModels[[i]][["name"]]   != oldModels[[i]][["name"]])   return(FALSE)
+    if (newModels[[i]][["syntax"]] != oldModels[[i]][["syntax"]]) return(FALSE)
+  }
+  TRUE
+}
+
+.bsemMatchModels <- function(newModels, oldModels) {
+  if (is.null(oldModels)) return(rep(NA_integer_, length(newModels)))
+  vapply(newModels, function(m) {
+    for (j in seq_along(oldModels))
+      if (m[["name"]] == oldModels[[j]][["name"]] && m[["syntax"]] == oldModels[[j]][["syntax"]])
+        return(j)
+    NA_integer_
+  }, integer(1))
+}
+
+.bayesiansemNullDisplayElements <- function(modelContainer) {
+  modelContainer[["fittab"]]       <- NULL
+  modelContainer[["addfit"]]       <- NULL
+  modelContainer[["warningsHtml"]] <- NULL
+  modelContainer[["params"]]       <- NULL
 }
 
 .bayesiansemOptionsToBlavOptions <- function(options, dataset) {
@@ -297,8 +343,10 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 # output functions
 
 .bayesiansemFitTab <- function(jaspResults, modelContainer, dataset, options, ready) {
+  if (!is.null(modelContainer[["fittab"]])) return()
+
   fittab <- createJaspTable(title = gettext("Model Fit"))
-  fittab$dependOn(c("models", "warnings", "posteriorPredictivePvalue"))
+  fittab$dependOn(c("warnings", "posteriorPredictivePvalue"))
   fittab$position <- 0
 
   fittab$addColumnInfo(name = "Model",    title = "",                            type = "string" , combine = TRUE)
@@ -316,14 +364,15 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   if (!ready) return()
 
   # add data to the table!
-  blavaanResults <- .bayesiansemComputeResults(modelContainer, dataset, options)
+  blavaanResults <- modelContainer[["bsemCachedResults"]][["object"]]
+  if (is.null(blavaanResults)) return()
 
   if (modelContainer$getError()) return()
 
   # handle the warnings
   fnote <- ""
 
-  warns <- unlist(modelContainer[["warnings"]][["object"]])
+  warns <- unlist(modelContainer[["bsemCachedWarnings"]][["object"]])
   if (length(warns) > 0 && !options[["warnings"]]) {
     fnote <- gettextf("%sFitting the model resulted in warnings. Check the 'Show warnings' box in the Output Options to see the warnings. ", fnote)
   }
@@ -353,15 +402,36 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   dtFill <- data.frame(matrix(ncol = 0, nrow = length(rownames_data)))
   dtFill[["Model"]]    <- rownames_data
   if (options[["posteriorPredictivePvalue"]]) {
-    startProgressbar(length(blavaanResults), label = gettext("Computing posterior predictive p-values"))
-    pppValues <- numeric(length(blavaanResults))
+    # reuse cached PPP values by model matching
+    oldPpp       <- modelContainer[["bsemCachedPppValues"]][["object"]]
+    oldPppModels <- modelContainer[["bsemCachedPppModels"]][["object"]]
+    pppReuse     <- .bsemMatchModels(options[["models"]], oldPppModels)
+
+    pppValues <- rep(NA_real_, length(blavaanResults))
+    if (any(!is.na(pppReuse)) && !is.null(oldPpp)) {
+      for (j in which(!is.na(pppReuse)))
+        pppValues[j] <- oldPpp[[pppReuse[j]]]
+    }
+
+    nPppToCompute <- sum(is.na(pppValues))
+    if (nPppToCompute > 0)
+      startProgressbar(nPppToCompute, label = gettext("Computing posterior predictive p-values..."))
+
     for (j in seq_along(blavaanResults)) {
+      if (!is.na(pppValues[j])) next
       pppValues[j] <- tryCatch({
+        options("future.globals.method.default" = c("ordered", "dfs"))
         ppmcResult <- blavaan::ppmc(blavaanResults[[j]], fit.measures = "chisq")
         as.numeric(ppmcResult@PPP[["fit.indices"]]["chisq"])
       }, error = function(e) NA_real_)
       progressbarTick()
     }
+
+    modelContainer[["bsemCachedPppValues"]] <- createJaspState(pppValues)
+    modelContainer[["bsemCachedPppValues"]]$dependOn(optionsFromObject = modelContainer)
+    modelContainer[["bsemCachedPppModels"]] <- createJaspState(options[["models"]])
+    modelContainer[["bsemCachedPppModels"]]$dependOn(optionsFromObject = modelContainer)
+
     dtFill[["PPP"]] <- pppValues
   }
   dtFill[["DIC"]]      <- sapply(fitMeasures, function(x) x$DIC)
@@ -380,19 +450,19 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
 }
 
-.bayesiansemAdditionalFits <- function(modelContainer, dataset, options, ready) {
+.bayesiansemAdditionalFits <- function(jaspResults, modelContainer, dataset, options, ready) {
 
   if (!isTRUE(options[["additionalFitMeasures"]]) || !is.null(modelContainer[["addfit"]])) return()
 
   fitContainer <- createJaspContainer(gettext("Additional Fit Measures"))
-  fitContainer$dependOn(c("additionalFitMeasures", "models"))
+  fitContainer$dependOn("additionalFitMeasures")
   fitContainer$position <- 0.5
   modelContainer[["addfit"]] <- fitContainer
 
   if (!ready || modelContainer$getError()) return()
 
-  blavaanResults <- .bayesiansemComputeResults(modelContainer, dataset, options)
-  if (modelContainer$getError()) return()
+  blavaanResults <- modelContainer[["bsemCachedResults"]][["object"]]
+  if (is.null(blavaanResults)) return()
 
   # Fit baseline (null) model for incremental indices (BCFI, BTLI, BNFI)
   baselineResults <- .bayesiansemFitBaseline(modelContainer, blavaanResults, dataset, options)
@@ -466,14 +536,25 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   #' Fit a null (baseline) model for incremental Bayesian fit indices.
   #' Returns a list of baseline fits (one per target model).
 
-  if (!is.null(modelContainer[["baselineResults"]])) {
-    return(modelContainer[["baselineResults"]][["object"]])
-  }
+  oldBaselineModels  <- modelContainer[["bsemCachedBaselineModels"]][["object"]]
+  oldBaselineResults <- modelContainer[["bsemCachedBaselineResults"]][["object"]]
+  reuse <- .bsemMatchModels(options[["models"]], oldBaselineModels)
+
+  if (!anyNA(reuse) && !is.null(oldBaselineResults))
+    return(oldBaselineResults[reuse])
 
   baselineResults <- vector("list", length(blavaanResults))
+  if (any(!is.na(reuse)) && !is.null(oldBaselineResults)) {
+    for (i in which(!is.na(reuse)))
+      baselineResults[[i]] <- oldBaselineResults[[reuse[i]]]
+  }
+
   blavaanOptions <- .bayesiansemOptionsToBlavOptions(options, dataset)
 
   for (i in seq_along(blavaanResults)) {
+    if (!is.null(baselineResults[[i]]))
+      next
+
     ovNames <- lavaan::lavNames(blavaanResults[[i]], "ov")
 
     # Null model: free variances and intercepts, all covariances = 0
@@ -504,19 +585,21 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   }
 
   # Cache for reuse
-  modelContainer[["baselineResults"]] <- createJaspState(baselineResults)
-  modelContainer[["baselineResults"]]$dependOn(optionsFromObject = modelContainer)
+  modelContainer[["bsemCachedBaselineResults"]] <- createJaspState(baselineResults)
+  modelContainer[["bsemCachedBaselineResults"]]$dependOn(optionsFromObject = modelContainer)
+  modelContainer[["bsemCachedBaselineModels"]]  <- createJaspState(options[["models"]])
+  modelContainer[["bsemCachedBaselineModels"]]$dependOn(optionsFromObject = modelContainer)
 
   return(baselineResults)
 }
 
-.bayesiansemWarningsHtml <- function(modelContainer, dataset, options, ready) {
+.bayesiansemWarningsHtml <- function(jaspResults, modelContainer, dataset, options, ready) {
 
   if (!options[["warnings"]] || !is.null(modelContainer[["warningsHtml"]])) return()
 
   if (!ready || modelContainer$getError()) return()
 
-  warnings <- modelContainer[["warnings"]][["object"]]
+  warnings <- modelContainer[["bsemCachedWarnings"]][["object"]]
   warns <- unlist(warnings)
 
   if (length(warns) > 0) {
@@ -536,25 +619,24 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   return()
 }
 
-.bayesiansemParameters <- function(modelContainer, dataset, options, ready) {
+.bayesiansemParameters <- function(jaspResults, modelContainer, dataset, options, ready) {
 
   if (!is.null(modelContainer[["params"]])) return()
   if (modelContainer$getError()) return()
 
   params <- createJaspContainer(gettext("Parameter Estimates"))
   params$position <- 1
-  params$dependOn(c("ciLevel", "models"))
+  params$dependOn("ciLevel")
 
   modelContainer[["params"]] <- params
 
-  if (length(options[["models"]]) < 2) {
-    .bayesiansemParameterTables(modelContainer[["results"]][["object"]][[1]], NULL, params, options, ready, modelContainer, dataset)
-  } else {
+  cachedResults <- modelContainer[["bsemCachedResults"]][["object"]]
 
+  if (length(options[["models"]]) < 2) {
+    .bayesiansemParameterTables(cachedResults[[1]], NULL, params, options, ready, modelContainer, dataset)
+  } else {
     for (i in seq_along(options[["models"]])) {
-      fit <- modelContainer[["results"]][["object"]][[i]]
-      model <- options[["models"]][[i]]
-      .bayesiansemParameterTables(fit, model, params, options, ready, modelContainer, dataset)
+      .bayesiansemParameterTables(cachedResults[[i]], options[["models"]][[i]], params, options, ready, modelContainer, dataset)
     }
   }
 }
