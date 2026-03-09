@@ -1792,6 +1792,35 @@ checkLavaanModel <- function(model, availableVars) {
   }
 }
 
+.semMeasurementModelOmega <- function(fit, higherOrder, ordScale) {
+  partab  <- lavaan::parameterTable(fit)
+  inds    <- unique(partab[partab$op == "=~", "rhs"])
+  latents <- unique(partab[partab$op == "=~", "lhs"])
+  endoFac <- intersect(unique(partab[partab$op == "~", "lhs"]), latents)
+
+  trueArg <- stats::setNames(as.list(endoFac), endoFac)
+
+  omega <- semTools::compRelSEM(fit, tau.eq = FALSE, higher = higherOrder,
+                                return.total = TRUE, simplify = TRUE,
+                                ord.scale = ordScale, true = trueArg)
+
+  if (length(endoFac) == 0 || !".TOTAL." %in% names(omega))
+    return(omega)
+
+  lambdaRows <- partab[partab$op == "=~", ]
+  Lambda     <- matrix(0, length(inds), length(latents),
+                       dimnames = list(inds, latents))
+  for (i in seq_len(nrow(lambdaRows)))
+    Lambda[lambdaRows$rhs[i], lambdaRows$lhs[i]] <- lambdaRows$est[i]
+
+  Psi     <- lavaan::lavInspect(fit, "cov.lv")[latents, latents, drop = FALSE]
+  S       <- lavaan::lavInspect(fit, "sampstat")$cov[inds, inds, drop = FALSE]
+
+  impliedFac <- sum(Lambda %*% Psi %*% t(Lambda))
+  omega[".TOTAL."] <- impliedFac / sum(S)
+  omega
+}
+
 .semReliability <- function(modelContainer, dataset, options, ready) {
   if (!options[["reliability"]] || !is.null(modelContainer[["reliability"]])) return()
 
@@ -1813,7 +1842,7 @@ checkLavaanModel <- function(model, availableVars) {
     }
   }
 
-  reliabilitytab$dependOn(c("reliability", "models"))
+  reliabilitytab$dependOn(c("reliability", "measurementModelReliability", "models"))
   reliabilitytab$position <- .95
 
   modelContainer[["reliability"]] <- reliabilitytab
@@ -1825,28 +1854,54 @@ checkLavaanModel <- function(model, availableVars) {
 
     if (length(options[["models"]]) < 2) {
 
-      parTable <- lavaan::parameterTable(modelContainer[["results"]][["object"]][[1]])
+      fitObj   <- modelContainer[["results"]][["object"]][[1]]
+      parTable <- lavaan::parameterTable(fitObj)
       parTable <- parTable[parTable$op == "=~",]
       higherOrder <- unique(parTable[!parTable$rhs %in% names(dataset),]$lhs)
+      ordScale <- !isTRUE(lavaan::lavInspect(fitObj, "options")$categorical)
 
-      reliability_alpha          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[1]], tau.eq = TRUE, return.total = TRUE)
-      reliability_omega          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[1]], tau.eq = FALSE, higher = higherOrder, return.total = TRUE)
-      reliabilitytab[["factor"]] <- names(reliability_omega)
-      reliabilitytab[["reliabilityAlpha"]]     <- reliability_alpha
-      reliabilitytab[["reliabilityOmega"]]     <- reliability_omega
+      rel <- try({
+        list(
+          alpha = semTools::compRelSEM(fitObj, tau.eq = TRUE, return.total = TRUE, simplify = TRUE, ord.scale = ordScale),
+          omega = if (isTRUE(options[["measurementModelReliability"]]))
+                    .semMeasurementModelOmega(fitObj, higherOrder, ordScale)
+                  else
+                    semTools::compRelSEM(fitObj, tau.eq = FALSE, higher = higherOrder, return.total = TRUE, simplify = TRUE, ord.scale = ordScale)
+        )
+      })
+      if (inherits(rel, "try-error")) {
+        reliabilitytab$setError(conditionMessage(attr(rel, "condition")))
+        return()
+      }
+      reliabilitytab[["factor"]]           <- names(rel$omega)
+      reliabilitytab[["reliabilityAlpha"]] <- rel$alpha
+      reliabilitytab[["reliabilityOmega"]] <- rel$omega
 
     } else {
       alphalist <- list()
       omegalist <- list()
       for (i in seq_along(options[["models"]])) {
-        parTable <- lavaan::parameterTable(modelContainer[["results"]][["object"]][[i]])
+        fitObj   <- modelContainer[["results"]][["object"]][[i]]
+        parTable <- lavaan::parameterTable(fitObj)
         parTable <- parTable[parTable$op == "=~",]
         higherOrder <- unique(parTable[!parTable$rhs %in% names(dataset),]$lhs)
+        ordScale <- !isTRUE(lavaan::lavInspect(fitObj, "options")$categorical)
 
-        reliability_alpha          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[i]], tau.eq = TRUE, higher = higherOrder, return.total = TRUE)
-        reliability_omega          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[i]], tau.eq = FALSE, higher = higherOrder, return.total = TRUE)
-        alphalist[[i]] <- reliability_alpha
-        omegalist[[i]] <- reliability_omega
+        rel <- try({
+          list(
+            alpha = semTools::compRelSEM(fitObj, tau.eq = TRUE,  higher = higherOrder, return.total = TRUE, simplify = TRUE, ord.scale = ordScale),
+            omega = if (isTRUE(options[["measurementModelReliability"]]))
+                      .semMeasurementModelOmega(fitObj, higherOrder, ordScale)
+                    else
+                      semTools::compRelSEM(fitObj, tau.eq = FALSE, higher = higherOrder, return.total = TRUE, simplify = TRUE, ord.scale = ordScale)
+          )
+        })
+        if (inherits(rel, "try-error")) {
+          reliabilitytab$setError(conditionMessage(attr(rel, "condition")))
+          return()
+        }
+        alphalist[[i]] <- rel$alpha
+        omegalist[[i]] <- rel$omega
       }
       alphadf <- data.frame("factor" = unique(unlist(lapply(omegalist, names))))
       omegadf <- data.frame("factor" = unique(unlist(lapply(omegalist, names))))
@@ -1862,14 +1917,29 @@ checkLavaanModel <- function(model, availableVars) {
         }
       }
   } else {
+    if (isTRUE(options[["measurementModelReliability"]]))
+      reliabilitytab$addFootnote(gettext("Measurement-model reliability is not yet supported with grouping; default omega values are shown."))
+
     if (length(options[["models"]]) < 2) {
 
-      parTable <- lavaan::parameterTable(modelContainer[["results"]][["object"]][[1]])
+      fitObj   <- modelContainer[["results"]][["object"]][[1]]
+      parTable <- lavaan::parameterTable(fitObj)
       parTable <- parTable[parTable$op == "=~",]
       higherOrder <- unique(parTable[!parTable$rhs %in% names(dataset),]$lhs)
+      ordScale <- !isTRUE(lavaan::lavInspect(fitObj, "options")$categorical)
 
-      reliability_alpha          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[1]], tau.eq = TRUE, higher = higherOrder, return.total = TRUE)
-      reliability_omega          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[1]], tau.eq = FALSE, higher = higherOrder, return.total = TRUE)
+      rel <- try({
+        list(
+          alpha = semTools::compRelSEM(fitObj, tau.eq = TRUE,  higher = higherOrder, return.total = TRUE, simplify = TRUE, ord.scale = ordScale),
+          omega = semTools::compRelSEM(fitObj, tau.eq = FALSE, higher = higherOrder, return.total = TRUE, simplify = TRUE, ord.scale = ordScale)
+        )
+      })
+      if (inherits(rel, "try-error")) {
+        reliabilitytab$setError(conditionMessage(attr(rel, "condition")))
+        return()
+      }
+      reliability_alpha <- rel$alpha
+      reliability_omega <- rel$omega
       groups <- reliability_alpha[, "group"]
       reliability_alpha <- reliability_alpha[, -1]
       if(length(higherOrder > 0))
@@ -1886,14 +1956,24 @@ checkLavaanModel <- function(model, availableVars) {
       alphalist <- list()
       omegalist <- list()
       for (i in seq_along(options[["models"]])) {
-        parTable <- lavaan::parameterTable(modelContainer[["results"]][["object"]][[i]])
+        fitObj   <- modelContainer[["results"]][["object"]][[i]]
+        parTable <- lavaan::parameterTable(fitObj)
         parTable <- parTable[parTable$op == "=~",]
         higherOrder <- unique(parTable[!parTable$rhs %in% names(dataset),]$lhs)
+        ordScale <- !isTRUE(lavaan::lavInspect(fitObj, "options")$categorical)
 
-        reliability_alpha          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[i]], tau.eq = TRUE, higher = higherOrder, return.total = TRUE)
-        reliability_omega          <- semTools::compRelSEM(modelContainer[["results"]][["object"]][[i]], tau.eq = FALSE, higher = higherOrder, return.total = TRUE)
-        alphalist[[i]] <- reliability_alpha
-        omegalist[[i]] <- reliability_omega
+        rel <- try({
+          list(
+            alpha = semTools::compRelSEM(fitObj, tau.eq = TRUE,  higher = higherOrder, return.total = TRUE, simplify = TRUE, ord.scale = ordScale),
+            omega = semTools::compRelSEM(fitObj, tau.eq = FALSE, higher = higherOrder, return.total = TRUE, simplify = TRUE, ord.scale = ordScale)
+          )
+        })
+        if (inherits(rel, "try-error")) {
+          reliabilitytab$setError(conditionMessage(attr(rel, "condition")))
+          return()
+        }
+        alphalist[[i]] <- rel$alpha
+        omegalist[[i]] <- rel$omega
       }
       # for each group, find all variable names in each model
       groups <- unique(unlist(lapply(alphalist, function(reliability_alpha) { reliability_alpha[, "group"] })))
