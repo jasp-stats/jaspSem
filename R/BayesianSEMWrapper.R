@@ -22,6 +22,7 @@ BayesianSEM <- function(
           version = "0.95",
           additionalFitMeasures = FALSE,
           ciLevel = 0.95,
+          convergenceDiagnostics = FALSE,
           dataType = "raw",
           equalIntercept = FALSE,
           equalLatentCovariance = FALSE,
@@ -46,6 +47,8 @@ BayesianSEM <- function(
           posteriorPredictivePvalue = FALSE,
           seed = 1,
           setSeed = FALSE,
+          tracePlots = FALSE,
+          tracePlotsType = "all",
           warnings = FALSE) {
 
    defaultArgCalls <- formals(jaspSem::BayesianSEM)
