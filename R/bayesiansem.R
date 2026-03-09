@@ -37,6 +37,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   .bayesiansemAdditionalFits(jaspResults, modelContainer, dataset, options, ready)
   .bayesiansemWarningsHtml(jaspResults, modelContainer, dataset, options, ready)
   .bayesiansemParameters(jaspResults, modelContainer, dataset, options, ready)
+  .bayesiansemTracePlots(jaspResults, modelContainer, dataset, options, ready)
 }
 
 # helper functions
@@ -246,6 +247,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   modelContainer[["addfit"]]       <- NULL
   modelContainer[["warningsHtml"]] <- NULL
   modelContainer[["params"]]       <- NULL
+  modelContainer[["traceplots"]]   <- NULL
 }
 
 .bayesiansemOptionsToBlavOptions <- function(options, dataset) {
@@ -625,7 +627,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   params <- createJaspContainer(gettext("Parameter Estimates"))
   params$position <- 1
-  params$dependOn("ciLevel")
+  params$dependOn(c("ciLevel", "convergenceDiagnostics"))
 
   modelContainer[["params"]] <- params
 
@@ -682,6 +684,27 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     paramTable$ci.upper[fixedIdx] <- paramTable$est[fixedIdx]
   }
 
+  # Extract convergence diagnostics (Rhat & ESS) per free parameter
+  paramTable$rhat <- NA_real_
+  paramTable$neff <- NA_real_
+  if (options[["convergenceDiagnostics"]]) {
+    rhatVec <- tryCatch(blavaan::blavInspect(fit, "rhat"), error = function(e) NULL)
+    neffVec <- tryCatch(blavaan::blavInspect(fit, "neff"), error = function(e) NULL)
+    freeIdx <- which(paramTable$free > 0)
+    if (!is.null(rhatVec)) {
+      for (j in seq_along(freeIdx)) {
+        if (j <= length(rhatVec))
+          paramTable$rhat[freeIdx[j]] <- rhatVec[j]
+      }
+    }
+    if (!is.null(neffVec)) {
+      for (j in seq_along(freeIdx)) {
+        if (j <= length(neffVec))
+          paramTable$neff[freeIdx[j]] <- neffVec[j]
+      }
+    }
+  }
+
   # Map group numbers to group labels for multigroup models
   if (isTRUE(options[["group"]] != "")) {
     groupLabels <- lavaan::lavInspect(fit, "group.label")
@@ -705,8 +728,15 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     tab$addColumnInfo(name = "se",         title = gettext("Post. SD"),    type = "number")
     tab$addColumnInfo(name = "ci.lower",   title = gettext("Lower"),       type = "number", overtitle = ciOvertitle)
     tab$addColumnInfo(name = "ci.upper",   title = gettext("Upper"),       type = "number", overtitle = ciOvertitle)
+    if (options[["convergenceDiagnostics"]]) {
+      tab$addColumnInfo(name = "rhat",     title = gettext("Rhat"),        type = "number", format = "sf:4;dp:3")
+      tab$addColumnInfo(name = "neff",     title = gettext("ESS"),         type = "number", format = "dp:0")
+      if (any(data$rhat > 1.05, na.rm = TRUE))
+        tab$addFootnote(gettext("Some parameters have Rhat > 1.05, indicating potential non-convergence."))
+    }
     cols <- c("lhs", "label", "est", "se", "ci.lower", "ci.upper")
-    if (!is.null(rhsTitle)) cols <- c("lhs", "rhs", cols[-1])
+    if (options[["convergenceDiagnostics"]]) cols <- c(cols, "rhat", "neff")
+    if (!is.null(rhsTitle)) cols <- c("lhs", "rhs", cols[!cols %in% c("lhs")])
     if (hasGroup) cols <- c("group", cols)
     tab$setData(data[, cols])
     pecont[[key]] <- tab
@@ -752,5 +782,110 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   if (!is.null(model)) {
     parentContainer[[model[["name"]]]] <- pecont
+  }
+}
+
+# Traceplots ----
+
+.bayesiansemTracePlots <- function(jaspResults, modelContainer, dataset, options, ready) {
+  if (!options[["tracePlots"]])               return()
+  if (!is.null(modelContainer[["traceplots"]])) return()
+  if (!ready || modelContainer$getError())    return()
+
+  traceCont <- createJaspContainer(gettext("Traceplots"))
+  traceCont$dependOn(c("tracePlots", "tracePlotsType"))
+  traceCont$position <- 2
+  modelContainer[["traceplots"]] <- traceCont
+
+  cachedResults <- modelContainer[["bsemCachedResults"]][["object"]]
+  if (is.null(cachedResults)) return()
+
+  if (length(options[["models"]]) < 2) {
+    .bayesiansemTraceplotsForFit(cachedResults[[1]], NULL, traceCont, options)
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      .bayesiansemTraceplotsForFit(cachedResults[[i]], options[["models"]][[i]], traceCont, options)
+    }
+  }
+}
+
+.bayesiansemTraceplotsForFit <- function(fit, model, parentContainer, options) {
+  if (is.null(model)) {
+    container <- parentContainer
+  } else {
+    container <- createJaspContainer(model[["name"]], initCollapsed = TRUE)
+    parentContainer[[model[["name"]]]] <- container
+  }
+
+  mcmcDraws <- tryCatch(blavaan::blavInspect(fit, "mcmc"), error = function(e) NULL)
+  if (is.null(mcmcDraws)) return()
+
+  paramTable  <- lavaan::parameterTable(fit)
+  freeIdx     <- which(paramTable$free > 0)
+  latentVars  <- unique(paramTable$lhs[paramTable$op == "=~"])
+  selectedType <- options[["tracePlotsType"]]
+
+  # parameter groups mirroring the parameter table structure
+  groups <- list(
+    loadings    = list(title = "Factor Loadings",          op = "=~", filter = NULL),
+    regressions = list(title = "Regression Coefficients",  op = "~",  filter = NULL),
+    variances   = list(title = "Variances",                op = "~~", filter = "same"),
+    covariances = list(title = "Covariances",              op = "~~", filter = "diff"),
+    intercepts  = list(title = "Intercepts",               op = "~1", filter = NULL)
+  )
+
+  plotIdx <- 0
+  for (key in names(groups)) {
+    if (selectedType != "all" && selectedType != key) next
+
+    g    <- groups[[key]]
+    mask <- paramTable$op == g$op & paramTable$free > 0
+    if (!is.null(g$filter)) {
+      if (g$filter == "same") mask <- mask & paramTable$lhs == paramTable$rhs
+      if (g$filter == "diff") mask <- mask & paramTable$lhs != paramTable$rhs
+    }
+    if (key == "intercepts" && !options[["meanStructure"]]) next
+    if (sum(mask) == 0) next
+
+    plotIdx <- plotIdx + 1
+
+    # build parameter labels
+    labels  <- paste0(paramTable$lhs[mask], paramTable$op[mask], paramTable$rhs[mask])
+    mcmcCols <- match(which(mask), freeIdx)
+    mcmcCols <- mcmcCols[!is.na(mcmcCols)]
+    if (length(mcmcCols) == 0) next
+
+    # long-format data for ggplot: Chain x Iteration x Parameter x Value
+    dfList <- lapply(seq_along(mcmcDraws), function(ch) {
+      mat <- as.matrix(mcmcDraws[[ch]])
+      data.frame(
+        Chain     = factor(ch),
+        Iteration = rep(seq_len(nrow(mat)), length(mcmcCols)),
+        Parameter = rep(labels[!is.na(match(which(mask), freeIdx))], each = nrow(mat)),
+        Value     = as.vector(mat[, mcmcCols, drop = FALSE])
+      )
+    })
+    df <- do.call(rbind, dfList)
+
+    nParams <- length(mcmcCols)
+    height  <- max(320, 160 * ceiling(nParams / 2))
+
+    plt <- createJaspPlot(
+      title  = gettext(g$title),
+      width  = 600,
+      height = height
+    )
+    plt$position <- plotIdx
+
+    plotObj <- ggplot2::ggplot(df, ggplot2::aes(x = .data[["Iteration"]], y = .data[["Value"]],
+                                                color = .data[["Chain"]])) +
+      ggplot2::geom_line(alpha = 0.7, linewidth = 0.3) +
+      ggplot2::facet_wrap(~ Parameter, scales = "free_y", ncol = 2) +
+      ggplot2::labs(x = gettext("Iteration"), y = gettext("Value")) +
+      jaspGraphs::themeJaspRaw(legend.position = "none") +
+      jaspGraphs::scale_JASPcolor_discrete()
+
+    plt$plotObject <- plotObj
+    container[[key]] <- plt
   }
 }
