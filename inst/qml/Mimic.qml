@@ -73,9 +73,17 @@ Form
 		{
 			CheckBox
 			{
+				id:      includePredictorCovariances
+				name:    "includePredictorCovariances"
+				label:   qsTr("Include predictor covariances")
+				checked: true
+				info:    qsTr("When checked, all pairwise covariances between predictors are included in the model syntax.")
+			}
+			CheckBox
+			{
 				name:    "fixedX"
 				label:   qsTr("Fix exogenous predictor variances and covariances")
-				checked: true
+				checked: !includePredictorCovariances.checked
 				info:    qsTr("When checked, predictor variances and covariances are fixed to sample values. Uncheck to freely estimate them.")
 			}
 		}

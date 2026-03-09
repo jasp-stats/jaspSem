@@ -107,6 +107,12 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 
 .mimicComputeResults <- function(modelContainer, dataset, options, ready) {
 
+  # convert binary factors to ordered so lavaan can compute polychoric correlations
+  for (pred in options[["predictors"]]) {
+    if (is.factor(dataset[[pred]]) && !is.ordered(dataset[[pred]]))
+      dataset[[pred]] <- as.ordered(dataset[[pred]])
+  }
+
   miss <- if (anyNA(dataset)) options[["naAction"]] else "listwise"
 
   mimicResult <- try(lavaan::sem(
@@ -172,7 +178,18 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
     )
   )
 
-  return(paste(header, measurement, structural, sep = "\n"))
+  covariances <- .mimicPredictorCovariances(options)
+
+  return(paste(header, measurement, structural, covariances, sep = "\n"))
+}
+
+.mimicPredictorCovariances <- function(options) {
+  if (!isTRUE(options[["includePredictorCovariances"]])) return("")
+  preds <- options[["predictors"]]
+  if (length(preds) < 2) return("")
+
+  pairs <- utils::combn(preds, 2, simplify = FALSE)
+  paste(vapply(pairs, function(p) paste(" ", p[1], "~~", p[2]), character(1)), collapse = "\n")
 }
 
 # Output functions ----
@@ -185,7 +202,8 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
     modelContainer$dependOn(c(
       "predictors", "indicators", "includemeanstructure",
       "bootstrapSamples", "emulation", "errorCalculationMethod", "estimator",
-      "naAction", "fixedX", "standardizedEstimate", "standardizedEstimateType")
+      "naAction", "fixedX", "includePredictorCovariances",
+      "standardizedEstimate", "standardizedEstimateType")
     )
     jaspResults[["modelContainer"]] <- modelContainer
   }
@@ -289,19 +307,21 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   pecont[["var"]] <- vartab
 
   ## predictor covariances
-  covtab <- createJaspTable(title = gettext("Predictor covariances"))
+  if (isTRUE(options[["includePredictorCovariances"]])) {
+    covtab <- createJaspTable(title = gettext("Predictor covariances"))
 
-  covtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),  type = "string")
-  covtab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
-  covtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
-  covtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
-  covtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
-  covtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-  covtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
-                       overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+    covtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),  type = "string")
+    covtab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
+    covtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
+    covtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
+    covtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
+    covtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
+    covtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+                         overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
-  pecont[["cov"]] <- covtab
+    pecont[["cov"]] <- covtab
+  }
 
   if (!ready || modelContainer$getError()) return()
 
@@ -363,17 +383,19 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   }
 
   # predictor covariances (~~ where lhs != rhs)
-  pe_cov <- pe[pe$op == "~~" & pe$lhs != pe$rhs, ]
-  if (nrow(pe_cov) == 0) {
-    pecont[["cov"]] <- NULL
-  } else {
-    covtab[["lhs"]]      <- paste(pe_cov$lhs, "\u2013", pe_cov$rhs)
-    covtab[["est"]]      <- pe_cov$est
-    covtab[["se"]]       <- pe_cov$se
-    covtab[["z"]]        <- pe_cov$z
-    covtab[["pvalue"]]   <- pe_cov$pvalue
-    covtab[["ci.lower"]] <- pe_cov$ci.lower
-    covtab[["ci.upper"]] <- pe_cov$ci.upper
+  if (isTRUE(options[["includePredictorCovariances"]])) {
+    pe_cov <- pe[pe$op == "~~" & pe$lhs != pe$rhs, ]
+    if (nrow(pe_cov) == 0) {
+      pecont[["cov"]] <- NULL
+    } else {
+      covtab[["lhs"]]      <- paste(pe_cov$lhs, "\u2013", pe_cov$rhs)
+      covtab[["est"]]      <- pe_cov$est
+      covtab[["se"]]       <- pe_cov$se
+      covtab[["z"]]        <- pe_cov$z
+      covtab[["pvalue"]]   <- pe_cov$pvalue
+      covtab[["ci.lower"]] <- pe_cov$ci.lower
+      covtab[["ci.upper"]] <- pe_cov$ci.upper
+    }
   }
 
 }
