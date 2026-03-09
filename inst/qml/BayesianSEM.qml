@@ -136,6 +136,33 @@ Form
 			title: qsTr("Other")
 			SetSeed {}
 		}
+
+		Group
+		{
+			title: qsTr("Diagnostics")
+			CheckBox { name: "convergenceDiagnostics"; label: qsTr("Convergence diagnostics (Rhat, ESS)"); info: qsTr("Add Rhat and effective sample size columns to parameter estimate tables.") }
+			CheckBox
+			{
+				name: "tracePlots"
+				label: qsTr("Traceplots")
+				info: qsTr("Display traceplots of MCMC chains for model parameters.")
+				DropDown
+				{
+					name: "tracePlotsType"
+					label: qsTr("Parameter type")
+					info: qsTr("Select which parameter type to display traceplots for.")
+					values:
+					[
+						{ label: qsTr("All"),						value: "all"			},
+						{ label: qsTr("Factor loadings"),			value: "loadings"		},
+						{ label: qsTr("Regression coefficients"),	value: "regressions"	},
+						{ label: qsTr("Variances"),					value: "variances"		},
+						{ label: qsTr("Covariances"),				value: "covariances"	},
+						{ label: qsTr("Intercepts"),				value: "intercepts"		}
+					]
+				}
+			}
+		}
 	}
 
 	Section
