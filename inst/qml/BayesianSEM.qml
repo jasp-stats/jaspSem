@@ -167,6 +167,67 @@ Form
 
 	Section
 	{
+		title: qsTr("Prior Options")
+		info: qsTr("Configure prior distributions for model parameters.")
+
+
+		Group
+		{
+			Layout.rowSpan: 2
+			title: qsTr("Location Parameters \u2014 Normal(mean, sd)")
+			info: qsTr("Normal prior distributions for location parameters.")
+			columns: 3
+
+			Text { text: qsTr("Loadings (\u03BB)") }
+			DoubleField { name: "priorLoadingParam1";			label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for factor loadings.") }
+			DoubleField { name: "priorLoadingParam2";			label: qsTr("sd");		defaultValue: 10;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for factor loadings.") }
+
+			Text { text: qsTr("Regressions (\u03B2)") }
+			DoubleField { name: "priorRegressionParam1";		label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for regression coefficients.") }
+			DoubleField { name: "priorRegressionParam2";		label: qsTr("sd");		defaultValue: 10;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for regression coefficients.") }
+
+			Text { text: qsTr("Obs. intercepts (\u03BD)") }
+			DoubleField { name: "priorObservedInterceptParam1";	label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for observed variable intercepts.") }
+			DoubleField { name: "priorObservedInterceptParam2";	label: qsTr("sd");		defaultValue: 32;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for observed variable intercepts.") }
+
+			Text { text: qsTr("Lat. intercepts (\u03B1)") }
+			DoubleField { name: "priorLatentInterceptParam1";	label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for latent variable intercepts.") }
+			DoubleField { name: "priorLatentInterceptParam2";	label: qsTr("sd");		defaultValue: 10;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for latent variable intercepts.") }
+
+			Text { text: qsTr("Thresholds (\u03C4)") }
+			DoubleField { name: "priorThresholdParam1";			label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for thresholds.") }
+			DoubleField { name: "priorThresholdParam2";			label: qsTr("sd");		defaultValue: 1.5;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for thresholds.") }
+		}
+
+		Group
+		{
+			title: qsTr("Scale Parameters \u2014 Gamma(shape, rate) on SD")
+			info: qsTr("Gamma prior distributions on the standard deviation scale.")
+			columns: 3
+
+			Text { text: qsTr("Residual SD (\u03B8)") }
+			DoubleField { name: "priorResidualSdParam1";	label: qsTr("shape");	defaultValue: 1;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Shape parameter of the gamma prior for residual standard deviations.") }
+			DoubleField { name: "priorResidualSdParam2";	label: qsTr("rate");	defaultValue: 0.5;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Rate parameter of the gamma prior for residual standard deviations.") }
+
+			Text { text: qsTr("Latent SD (\u03C8)") }
+			DoubleField { name: "priorLatentSdParam1";		label: qsTr("shape");	defaultValue: 1;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Shape parameter of the gamma prior for latent variable standard deviations.") }
+			DoubleField { name: "priorLatentSdParam2";		label: qsTr("rate");	defaultValue: 0.5;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Rate parameter of the gamma prior for latent variable standard deviations.") }
+		}
+
+		Group
+		{
+			title: qsTr("Correlation Parameters \u2014 Beta(\u03B1, \u03B2)")
+			info: qsTr("Beta prior distribution for correlation parameters.")
+			columns: 3
+
+			Text { text: qsTr("Correlations (\u03C1)") }
+			DoubleField { name: "priorCorrelationParam1";	label: qsTr("\u03B1");	defaultValue: 1;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Alpha parameter of the beta prior for correlations.") }
+			DoubleField { name: "priorCorrelationParam2";	label: qsTr("\u03B2");	defaultValue: 1;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Beta parameter of the beta prior for correlations.") }
+		}
+	}
+
+	Section
+	{
 		title: qsTr("Output Options")
 		info: qsTr("Options for additional output in the results.")
 
@@ -203,19 +264,32 @@ Form
 			}
 			Group
 			{
+				id:      constraints
 				visible: grpvar.value != ""
 				title: qsTr("Equality Constraints")
 				info: qsTr("Constrain selected parameter types to be equal across groups.")
-				CheckBox { name: "equalLoading";				label: qsTr("Loadings");				info: qsTr("Constrain factor loadings to be equal across groups.") }
-				CheckBox { name: "equalIntercept";			label: qsTr("Intercepts");				info: qsTr("Constrain intercepts to be equal across groups.") }
-				CheckBox { name: "equalResidual";			label: qsTr("Residuals");				info: qsTr("Constrain residual variances to be equal across groups.") }
-				CheckBox { name: "equalResidualCovariance";	label: qsTr("Residual covariances");	info: qsTr("Constrain residual covariances to be equal across groups.") }
-				CheckBox { name: "equalMean";				label: qsTr("Means");					info: qsTr("Constrain means to be equal across groups.") }
-				CheckBox { name: "equalThreshold";			label: qsTr("Thresholds");				info: qsTr("Constrain thresholds to be equal across groups.") }
-				CheckBox { name: "equalRegression";			label: qsTr("Regressions");				info: qsTr("Constrain regression coefficients to be equal across groups.") }
-				CheckBox { name: "equalLatentVariance";		label: qsTr("Latent variances");		info: qsTr("Constrain latent variances to be equal across groups.") }
-				CheckBox { name: "equalLatentCovariance";	label: qsTr("Latent covariances");		info: qsTr("Constrain latent covariances to be equal across groups.") }
+				CheckBox { id: eq_loadings;            name: "equalLoading";            label: qsTr("Loadings");             info: qsTr("Constrain factor loadings to be equal across groups.") }
+				CheckBox { id: eq_intercepts;          name: "equalIntercept";          label: qsTr("Intercepts");           info: qsTr("Constrain intercepts to be equal across groups.") }
+				CheckBox { id: eq_residuals;           name: "equalResidual";           label: qsTr("Residuals");            info: qsTr("Constrain residual variances to be equal across groups.") }
+				CheckBox { id: eq_residualcovariances; name: "equalResidualCovariance"; label: qsTr("Residual covariances"); info: qsTr("Constrain residual covariances to be equal across groups.") }
+				CheckBox { id: eq_means;               name: "equalMean";               label: qsTr("Means");                info: qsTr("Constrain means to be equal across groups.") }
+				CheckBox { id: eq_thresholds;          name: "equalThreshold";          label: qsTr("Thresholds");           info: qsTr("Constrain thresholds to be equal across groups.") }
+				CheckBox { id: eq_regressions;         name: "equalRegression";         label: qsTr("Regressions");          info: qsTr("Constrain regression coefficients to be equal across groups.") }
+				CheckBox { id: eq_variances;           name: "equalLatentVariance";     label: qsTr("Latent variances");     info: qsTr("Constrain latent variances to be equal across groups.") }
+				CheckBox { id: eq_lvcovariances;       name: "equalLatentCovariance";   label: qsTr("Latent covariances");   info: qsTr("Constrain latent covariances to be equal across groups.") }
 			}
+		}
+		TextArea
+		{
+			name:     "freeParameters"
+			title:    qsTr("Release constraints (one per line)")
+			width:    250
+			height:   constraints.height + grpvar.height
+			textType: JASP.TextTypeLavaan
+			info:     qsTr("Specify parameters to release from equality constraints using lavaan syntax, one per line.")
+			visible:  eq_loadings.checked || eq_intercepts.checked || eq_residuals.checked ||
+								eq_residualcovariances.checked || eq_means.checked || eq_thresholds.checked ||
+								eq_regressions.checked || eq_variances.checked || eq_lvcovariances.checked
 		}
 	}
 }
