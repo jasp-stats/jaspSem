@@ -113,7 +113,16 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
                      "equalLoading", "equalIntercept", "equalResidual", "equalResidualCovariance",
                      "equalMean", "equalThreshold", "equalRegression", "equalLatentVariance", "equalLatentCovariance",
                      "mcmcBurnin", "mcmcSamples", "mcmcChains", "mcmcThin",
-                     "setSeed", "seed")
+                     "setSeed", "seed",
+                     "priorLoadingParam1", "priorLoadingParam2",
+                     "priorRegressionParam1", "priorRegressionParam2",
+                     "priorObservedInterceptParam1", "priorObservedInterceptParam2",
+                     "priorLatentInterceptParam1", "priorLatentInterceptParam2",
+                     "priorThresholdParam1", "priorThresholdParam2",
+                     "priorResidualSdParam1", "priorResidualSdParam2",
+                     "priorLatentSdParam1", "priorLatentSdParam2",
+                     "priorCorrelationParam1", "priorCorrelationParam2",
+                     "freeParameters")
 
 .bayesiansemModelContainer <- function(jaspResults) {
   if (!is.null(jaspResults[["modelContainer"]])) {
@@ -176,14 +185,11 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   for (i in seq_along(results)) {
     if (!is.null(results[[i]])) next # existing model is reused
 
-    # create options
-    blavaanArgs <- blavaanOptions
-    originalSyntax <- .bayesiansemTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
-    blavaanArgs[["model"]] <- originalSyntax
+    blavaanArgs            <- blavaanOptions
+    blavaanArgs[["model"]] <- .bayesiansemTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
 
-    if (options[["dataType"]] == "raw") {
+    if (options[["dataType"]] == "raw")
       blavaanArgs[["data"]] <- dataset
-    }
 
     # fit the model with blavaan
     # blavaan/Stan corrupts future.globals.method.default to NULL after MCMC runs;
@@ -250,6 +256,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   modelContainer[["traceplots"]]   <- NULL
 }
 
+
 .bayesiansemOptionsToBlavOptions <- function(options, dataset) {
   #' mapping the QML options from JASP to blavaan options
   blavaanOptions <- list()
@@ -296,6 +303,14 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
                                          "lv.variances", "lv.covariances")[equality_constraints]
   }
 
+  # group.partial (release constraints)
+  if (isTRUE(options[["group"]] != "") &&
+      !is.null(options[["freeParameters"]]) &&
+      options[["freeParameters"]][["model"]] != "") {
+    splitted <- strsplit(options[["freeParameters"]][["model"]], "[\\n,;]+", perl = TRUE)[[1]]
+    blavaanOptions[["group.partial"]] <- splitted
+  }
+
   # Bayesian-specific options for blavaan
   blavaanOptions[["burnin"]]   <- if (!is.null(options[["mcmcBurnin"]]))   options[["mcmcBurnin"]]   else 500L
   blavaanOptions[["sample"]]   <- if (!is.null(options[["mcmcSamples"]])) options[["mcmcSamples"]] else 1000L
@@ -310,7 +325,38 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     blavaanOptions[["seed"]] <- options[["seed"]]
   }
 
+  # Prior specification
+  blavaanOptions[["dp"]] <- .bayesiansemBuildDpriors(options)
+
   return(blavaanOptions)
+}
+
+.bayesiansemBuildDpriors <- function(options) {
+  # validate scale parameters are strictly positive
+  scaleOpts <- c("priorLoadingParam2", "priorRegressionParam2", "priorObservedInterceptParam2",
+                 "priorLatentInterceptParam2", "priorThresholdParam2",
+                 "priorResidualSdParam1", "priorResidualSdParam2",
+                 "priorLatentSdParam1", "priorLatentSdParam2",
+                 "priorCorrelationParam1", "priorCorrelationParam2")
+  for (opt in scaleOpts) {
+    if (isTRUE(options[[opt]] <= 0))
+      .quitAnalysis(gettextf("Prior parameter '%s' must be strictly positive.", opt))
+  }
+
+  fmt <- function(dist, p1, p2, suffix = "")
+    paste0(dist, "(", p1, ",", p2, ")", suffix)
+
+  blavaan::dpriors(
+    target = "stan",
+    lambda = fmt("normal", options[["priorLoadingParam1"]],           options[["priorLoadingParam2"]]),
+    beta   = fmt("normal", options[["priorRegressionParam1"]],        options[["priorRegressionParam2"]]),
+    nu     = fmt("normal", options[["priorObservedInterceptParam1"]], options[["priorObservedInterceptParam2"]]),
+    alpha  = fmt("normal", options[["priorLatentInterceptParam1"]],   options[["priorLatentInterceptParam2"]]),
+    tau    = fmt("normal", options[["priorThresholdParam1"]],         options[["priorThresholdParam2"]]),
+    theta  = fmt("gamma",  options[["priorResidualSdParam1"]],        options[["priorResidualSdParam2"]], "[sd]"),
+    psi    = fmt("gamma",  options[["priorLatentSdParam1"]],          options[["priorLatentSdParam2"]],  "[sd]"),
+    rho    = fmt("beta",   options[["priorCorrelationParam1"]],       options[["priorCorrelationParam2"]])
+  )
 }
 
 .bayesiansemTranslateModel <- function(syntax, dataset) {
@@ -724,6 +770,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     if (!is.null(rhsTitle))
       tab$addColumnInfo(name = "rhs",      title = gettext(rhsTitle),      type = "string")
     tab$addColumnInfo(name = "label",      title = "",                     type = "string")
+    tab$addColumnInfo(name = "prior",      title = gettext("Prior"),       type = "string")
     tab$addColumnInfo(name = "est",        title = gettext("Post. Mean"),  type = "number")
     tab$addColumnInfo(name = "se",         title = gettext("Post. SD"),    type = "number")
     tab$addColumnInfo(name = "ci.lower",   title = gettext("Lower"),       type = "number", overtitle = ciOvertitle)
@@ -734,7 +781,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
       if (any(data$rhat > 1.05, na.rm = TRUE))
         tab$addFootnote(gettext("Some parameters have Rhat > 1.05, indicating potential non-convergence."))
     }
-    cols <- c("lhs", "label", "est", "se", "ci.lower", "ci.upper")
+    cols <- c("lhs", "label", "prior", "est", "se", "ci.lower", "ci.upper")
     if (options[["convergenceDiagnostics"]]) cols <- c(cols, "rhat", "neff")
     if (!is.null(rhsTitle)) cols <- c("lhs", "rhs", cols[!cols %in% c("lhs")])
     if (hasGroup) cols <- c("group", cols)
@@ -882,6 +929,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
       ggplot2::geom_line(alpha = 0.7, linewidth = 0.3) +
       ggplot2::facet_wrap(~ Parameter, scales = "free_y", ncol = 2) +
       ggplot2::labs(x = gettext("Iteration"), y = gettext("Value")) +
+      jaspGraphs::geom_rangeframe(sides = "bl") +
       jaspGraphs::themeJaspRaw(legend.position = "none") +
       jaspGraphs::scale_JASPcolor_discrete()
 
