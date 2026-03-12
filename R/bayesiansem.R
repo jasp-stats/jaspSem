@@ -113,7 +113,16 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
                      "equalLoading", "equalIntercept", "equalResidual", "equalResidualCovariance",
                      "equalMean", "equalThreshold", "equalRegression", "equalLatentVariance", "equalLatentCovariance",
                      "mcmcBurnin", "mcmcSamples", "mcmcChains", "mcmcThin",
-                     "setSeed", "seed")
+                     "setSeed", "seed",
+                     "priorType",
+                     "priorLoadingParam1", "priorLoadingParam2",
+                     "priorRegressionParam1", "priorRegressionParam2",
+                     "priorObservedInterceptParam1", "priorObservedInterceptParam2",
+                     "priorLatentInterceptParam1", "priorLatentInterceptParam2",
+                     "priorThresholdParam1", "priorThresholdParam2",
+                     "priorResidualSdParam1", "priorResidualSdParam2",
+                     "priorLatentSdParam1", "priorLatentSdParam2",
+                     "priorCorrelationParam1", "priorCorrelationParam2")
 
 .bayesiansemModelContainer <- function(jaspResults) {
   if (!is.null(jaspResults[["modelContainer"]])) {
@@ -310,7 +319,38 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     blavaanOptions[["seed"]] <- options[["seed"]]
   }
 
+  # Prior specification
+  blavaanOptions[["dp"]] <- .bayesiansemBuildDpriors(options)
+
   return(blavaanOptions)
+}
+
+.bayesiansemBuildDpriors <- function(options) {
+  # validate scale parameters are strictly positive
+  scaleOpts <- c("priorLoadingParam2", "priorRegressionParam2", "priorObservedInterceptParam2",
+                 "priorLatentInterceptParam2", "priorThresholdParam2",
+                 "priorResidualSdParam1", "priorResidualSdParam2",
+                 "priorLatentSdParam1", "priorLatentSdParam2",
+                 "priorCorrelationParam1", "priorCorrelationParam2")
+  for (opt in scaleOpts) {
+    if (isTRUE(options[[opt]] <= 0))
+      .quitAnalysis(gettextf("Prior parameter '%s' must be strictly positive.", opt))
+  }
+
+  fmt <- function(dist, p1, p2, suffix = "")
+    paste0(dist, "(", p1, ",", p2, ")", suffix)
+
+  blavaan::dpriors(
+    target = "stan",
+    lambda = fmt("normal", options[["priorLoadingParam1"]],           options[["priorLoadingParam2"]]),
+    beta   = fmt("normal", options[["priorRegressionParam1"]],        options[["priorRegressionParam2"]]),
+    nu     = fmt("normal", options[["priorObservedInterceptParam1"]], options[["priorObservedInterceptParam2"]]),
+    alpha  = fmt("normal", options[["priorLatentInterceptParam1"]],   options[["priorLatentInterceptParam2"]]),
+    tau    = fmt("normal", options[["priorThresholdParam1"]],         options[["priorThresholdParam2"]]),
+    theta  = fmt("gamma",  options[["priorResidualSdParam1"]],        options[["priorResidualSdParam2"]], "[sd]"),
+    psi    = fmt("gamma",  options[["priorLatentSdParam1"]],          options[["priorLatentSdParam2"]],  "[sd]"),
+    rho    = fmt("beta",   options[["priorCorrelationParam1"]],       options[["priorCorrelationParam2"]])
+  )
 }
 
 .bayesiansemTranslateModel <- function(syntax, dataset) {
@@ -724,6 +764,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     if (!is.null(rhsTitle))
       tab$addColumnInfo(name = "rhs",      title = gettext(rhsTitle),      type = "string")
     tab$addColumnInfo(name = "label",      title = "",                     type = "string")
+    tab$addColumnInfo(name = "prior",      title = gettext("Prior"),       type = "string")
     tab$addColumnInfo(name = "est",        title = gettext("Post. Mean"),  type = "number")
     tab$addColumnInfo(name = "se",         title = gettext("Post. SD"),    type = "number")
     tab$addColumnInfo(name = "ci.lower",   title = gettext("Lower"),       type = "number", overtitle = ciOvertitle)
@@ -734,7 +775,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
       if (any(data$rhat > 1.05, na.rm = TRUE))
         tab$addFootnote(gettext("Some parameters have Rhat > 1.05, indicating potential non-convergence."))
     }
-    cols <- c("lhs", "label", "est", "se", "ci.lower", "ci.upper")
+    cols <- c("lhs", "label", "prior", "est", "se", "ci.lower", "ci.upper")
     if (options[["convergenceDiagnostics"]]) cols <- c(cols, "rhat", "neff")
     if (!is.null(rhsTitle)) cols <- c("lhs", "rhs", cols[!cols %in% c("lhs")])
     if (hasGroup) cols <- c("group", cols)

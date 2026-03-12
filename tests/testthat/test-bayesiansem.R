@@ -40,6 +40,23 @@ options$orthogonal                  <- FALSE
 options$warnings                    <- FALSE
 options$additionalFitMeasures       <- TRUE
 options$posteriorPredictivePvalue   <- TRUE
+options$priorType                          <- "default"
+options$priorLoadingParam1                 <- 0
+options$priorLoadingParam2                 <- 10
+options$priorRegressionParam1              <- 0
+options$priorRegressionParam2              <- 10
+options$priorObservedInterceptParam1       <- 0
+options$priorObservedInterceptParam2       <- 32
+options$priorLatentInterceptParam1         <- 0
+options$priorLatentInterceptParam2         <- 10
+options$priorThresholdParam1               <- 0
+options$priorThresholdParam2               <- 1.5
+options$priorResidualSdParam1              <- 1
+options$priorResidualSdParam2              <- 0.5
+options$priorLatentSdParam1                <- 1
+options$priorLatentSdParam2                <- 0.5
+options$priorCorrelationParam1             <- 1
+options$priorCorrelationParam2             <- 1
 
 set.seed(123)
 results <- jaspTools::runAnalysis("BayesianSEM", testthat::test_path("poldem_grouped.csv"), options)
