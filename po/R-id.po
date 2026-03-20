@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.95.5\n"
 "POT-Creation-Date: 2026-02-21 03:26\n"
-"PO-Revision-Date: 2026-03-20 12:46+0000\n"
+"PO-Revision-Date: 2026-03-21 03:24+0000\n"
 "Last-Translator: Zahid Rizky Fakhri <zahidrizkyfakhri@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/jasp/jaspsem-"
 "r/id/>\n"
@@ -125,7 +125,7 @@ msgid "Std. estimate"
 msgstr ""
 
 msgid "Estimate"
-msgstr ""
+msgstr "Estimasi"
 
 msgid "Component"
 msgstr ""
@@ -140,10 +140,10 @@ msgid "z-value"
 msgstr ""
 
 msgid "p"
-msgstr ""
+msgstr "p"
 
 msgid "Lower"
-msgstr ""
+msgstr "Bawah"
 
 msgid "%s%% Confidence Interval"
 msgstr ""
@@ -158,7 +158,7 @@ msgid "Variable"
 msgstr ""
 
 msgid "Intercept"
-msgstr ""
+msgstr "Intersepsi"
 
 msgid "Linear slope"
 msgstr ""
@@ -224,7 +224,7 @@ msgid "Direct effects"
 msgstr ""
 
 msgid "Upper"
-msgstr ""
+msgstr "Atas"
 
 msgid "Indirect effects"
 msgstr ""
@@ -335,13 +335,13 @@ msgid "Fit (-2LL)"
 msgstr ""
 
 msgid "AIC"
-msgstr ""
+msgstr "AIC"
 
 msgid "SAAIC"
 msgstr ""
 
 msgid "BIC"
-msgstr ""
+msgstr "BIC"
 
 msgid "SABIC"
 msgstr ""
