@@ -50,7 +50,7 @@ Form
 			info: qsTr("Select the type of data to be used in the analysis.")
 			RadioButton { value: "raw"; label: qsTr("Raw"); checked: true; info: qsTr("Use raw data for the analysis.") }
 		}
-		Item {}
+		// Item {}
 		CheckBox
 		{
 			name: "runAnalysis"
@@ -58,7 +58,6 @@ Form
 			checked: true
 			info: qsTr("Pause expensive model fitting until this option is checked.")
 		}
-	
 	}
 
 
@@ -173,7 +172,8 @@ Form
 						{ label: qsTr("Regression coefficients"),	value: "regressions"	},
 						{ label: qsTr("Variances"),					value: "variances"		},
 						{ label: qsTr("Covariances"),				value: "covariances"	},
-						{ label: qsTr("Intercepts"),				value: "intercepts"		}
+						{ label: qsTr("Intercepts"),				value: "intercepts"		},
+						{ label: qsTr("Thresholds"),				value: "thresholds"		}
 					]
 				}
 			}
