@@ -73,7 +73,7 @@ Description
 		title:	qsTr("Bayesian Structural Equation Modeling")
 		menu: qsTr("Structural Equation Modeling")
 		qml:	"BayesianSEM.qml"
-		func:	"BayesianSEM"		
+		func:	"BayesianSEM"	
 		preloadData: true
 	}
 }

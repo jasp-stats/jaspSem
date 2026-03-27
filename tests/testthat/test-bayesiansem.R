@@ -275,7 +275,7 @@ options_mm$models <- list(
 options("future.globals.method.default" = c("ordered", "dfs"))
 set.seed(321)
 results <- jaspTools::runAnalysis("BayesianSEM", testthat::test_path("poldem_grouped.csv"), options_mm,
-                                     makeTests = TRUE)
+                                     makeTests = FALSE)
 
 test_that("Model Fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
