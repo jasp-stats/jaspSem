@@ -170,19 +170,6 @@ Form
 		title: qsTr("Prior Options")
 		info: qsTr("Configure prior distributions for model parameters.")
 
-		DropDown
-		{
-			name: "priorType"
-			label: qsTr("Prior type")
-			info: qsTr("Select the type of prior distributions to use.")
-			values:
-			[
-				{ label: qsTr("blavaan-Default"),			value: "default"			},
-				{ label: qsTr("Unit-information"),	value: "unitInformation"	}
-			]
-		}
-
-		Group{}
 
 		Group
 		{
@@ -277,19 +264,32 @@ Form
 			}
 			Group
 			{
+				id:      constraints
 				visible: grpvar.value != ""
 				title: qsTr("Equality Constraints")
 				info: qsTr("Constrain selected parameter types to be equal across groups.")
-				CheckBox { name: "equalLoading";				label: qsTr("Loadings");				info: qsTr("Constrain factor loadings to be equal across groups.") }
-				CheckBox { name: "equalIntercept";			label: qsTr("Intercepts");				info: qsTr("Constrain intercepts to be equal across groups.") }
-				CheckBox { name: "equalResidual";			label: qsTr("Residuals");				info: qsTr("Constrain residual variances to be equal across groups.") }
-				CheckBox { name: "equalResidualCovariance";	label: qsTr("Residual covariances");	info: qsTr("Constrain residual covariances to be equal across groups.") }
-				CheckBox { name: "equalMean";				label: qsTr("Means");					info: qsTr("Constrain means to be equal across groups.") }
-				CheckBox { name: "equalThreshold";			label: qsTr("Thresholds");				info: qsTr("Constrain thresholds to be equal across groups.") }
-				CheckBox { name: "equalRegression";			label: qsTr("Regressions");				info: qsTr("Constrain regression coefficients to be equal across groups.") }
-				CheckBox { name: "equalLatentVariance";		label: qsTr("Latent variances");		info: qsTr("Constrain latent variances to be equal across groups.") }
-				CheckBox { name: "equalLatentCovariance";	label: qsTr("Latent covariances");		info: qsTr("Constrain latent covariances to be equal across groups.") }
+				CheckBox { id: eq_loadings;            name: "equalLoading";            label: qsTr("Loadings");             info: qsTr("Constrain factor loadings to be equal across groups.") }
+				CheckBox { id: eq_intercepts;          name: "equalIntercept";          label: qsTr("Intercepts");           info: qsTr("Constrain intercepts to be equal across groups.") }
+				CheckBox { id: eq_residuals;           name: "equalResidual";           label: qsTr("Residuals");            info: qsTr("Constrain residual variances to be equal across groups.") }
+				CheckBox { id: eq_residualcovariances; name: "equalResidualCovariance"; label: qsTr("Residual covariances"); info: qsTr("Constrain residual covariances to be equal across groups.") }
+				CheckBox { id: eq_means;               name: "equalMean";               label: qsTr("Means");                info: qsTr("Constrain means to be equal across groups.") }
+				CheckBox { id: eq_thresholds;          name: "equalThreshold";          label: qsTr("Thresholds");           info: qsTr("Constrain thresholds to be equal across groups.") }
+				CheckBox { id: eq_regressions;         name: "equalRegression";         label: qsTr("Regressions");          info: qsTr("Constrain regression coefficients to be equal across groups.") }
+				CheckBox { id: eq_variances;           name: "equalLatentVariance";     label: qsTr("Latent variances");     info: qsTr("Constrain latent variances to be equal across groups.") }
+				CheckBox { id: eq_lvcovariances;       name: "equalLatentCovariance";   label: qsTr("Latent covariances");   info: qsTr("Constrain latent covariances to be equal across groups.") }
 			}
+		}
+		TextArea
+		{
+			name:     "freeParameters"
+			title:    qsTr("Release constraints (one per line)")
+			width:    250
+			height:   constraints.height + grpvar.height
+			textType: JASP.TextTypeLavaan
+			info:     qsTr("Specify parameters to release from equality constraints using lavaan syntax, one per line.")
+			visible:  eq_loadings.checked || eq_intercepts.checked || eq_residuals.checked ||
+								eq_residualcovariances.checked || eq_means.checked || eq_thresholds.checked ||
+								eq_regressions.checked || eq_variances.checked || eq_lvcovariances.checked
 		}
 	}
 }

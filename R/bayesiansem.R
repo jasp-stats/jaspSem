@@ -114,7 +114,6 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
                      "equalMean", "equalThreshold", "equalRegression", "equalLatentVariance", "equalLatentCovariance",
                      "mcmcBurnin", "mcmcSamples", "mcmcChains", "mcmcThin",
                      "setSeed", "seed",
-                     "priorType",
                      "priorLoadingParam1", "priorLoadingParam2",
                      "priorRegressionParam1", "priorRegressionParam2",
                      "priorObservedInterceptParam1", "priorObservedInterceptParam2",
@@ -122,7 +121,8 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
                      "priorThresholdParam1", "priorThresholdParam2",
                      "priorResidualSdParam1", "priorResidualSdParam2",
                      "priorLatentSdParam1", "priorLatentSdParam2",
-                     "priorCorrelationParam1", "priorCorrelationParam2")
+                     "priorCorrelationParam1", "priorCorrelationParam2",
+                     "freeParameters")
 
 .bayesiansemModelContainer <- function(jaspResults) {
   if (!is.null(jaspResults[["modelContainer"]])) {
@@ -185,14 +185,11 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   for (i in seq_along(results)) {
     if (!is.null(results[[i]])) next # existing model is reused
 
-    # create options
-    blavaanArgs <- blavaanOptions
-    originalSyntax <- .bayesiansemTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
-    blavaanArgs[["model"]] <- originalSyntax
+    blavaanArgs            <- blavaanOptions
+    blavaanArgs[["model"]] <- .bayesiansemTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
 
-    if (options[["dataType"]] == "raw") {
+    if (options[["dataType"]] == "raw")
       blavaanArgs[["data"]] <- dataset
-    }
 
     # fit the model with blavaan
     # blavaan/Stan corrupts future.globals.method.default to NULL after MCMC runs;
@@ -259,6 +256,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   modelContainer[["traceplots"]]   <- NULL
 }
 
+
 .bayesiansemOptionsToBlavOptions <- function(options, dataset) {
   #' mapping the QML options from JASP to blavaan options
   blavaanOptions <- list()
@@ -303,6 +301,14 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     blavaanOptions[["group.equal"]] <- c("loadings", "intercepts", "means", "thresholds", "regressions",
                                          "residuals", "residual.covariances",
                                          "lv.variances", "lv.covariances")[equality_constraints]
+  }
+
+  # group.partial (release constraints)
+  if (isTRUE(options[["group"]] != "") &&
+      !is.null(options[["freeParameters"]]) &&
+      options[["freeParameters"]][["model"]] != "") {
+    splitted <- strsplit(options[["freeParameters"]][["model"]], "[\\n,;]+", perl = TRUE)[[1]]
+    blavaanOptions[["group.partial"]] <- splitted
   }
 
   # Bayesian-specific options for blavaan
@@ -923,6 +929,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
       ggplot2::geom_line(alpha = 0.7, linewidth = 0.3) +
       ggplot2::facet_wrap(~ Parameter, scales = "free_y", ncol = 2) +
       ggplot2::labs(x = gettext("Iteration"), y = gettext("Value")) +
+      jaspGraphs::geom_rangeframe(sides = "bl") +
       jaspGraphs::themeJaspRaw(legend.position = "none") +
       jaspGraphs::scale_JASPcolor_discrete()
 
