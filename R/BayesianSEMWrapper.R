@@ -24,6 +24,7 @@ BayesianSEM <- function(
           ciLevel = 0.95,
           convergenceDiagnostics = FALSE,
           dataType = "raw",
+          runAnalysis = TRUE,
           equalIntercept = FALSE,
           equalLatentCovariance = FALSE,
           equalLatentVariance = FALSE,

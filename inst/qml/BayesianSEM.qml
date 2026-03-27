@@ -38,14 +38,29 @@ Form
 		content: TextArea { name: "syntax"; width: models.width; textType: JASP.TextTypeLavaan; showLineNumber: true; info: qsTr("Enter the model specification in lavaan syntax.") }
 	}
 
-	RadioButtonGroup
+
+	Group
 	{
-		title: qsTr("Data")
-		name: "dataType"
 		columns: 2
-		info: qsTr("Select the type of data to be used in the analysis.")
-		RadioButton { value: "raw"; label: qsTr("Raw"); checked: true; info: qsTr("Use raw data for the analysis.") }
+		RadioButtonGroup
+		{
+			title: qsTr("Data")
+			name: "dataType"
+			columns: 2
+			info: qsTr("Select the type of data to be used in the analysis.")
+			RadioButton { value: "raw"; label: qsTr("Raw"); checked: true; info: qsTr("Use raw data for the analysis.") }
+		}
+		Item {}
+		CheckBox
+		{
+			name: "runAnalysis"
+			label: qsTr("Run analysis")
+			checked: true
+			info: qsTr("Pause expensive model fitting until this option is checked.")
+		}
+	
 	}
+
 
 	Section
 	{
