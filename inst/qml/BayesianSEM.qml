@@ -150,34 +150,6 @@ Form
 			title: qsTr("Other")
 			SetSeed {}
 		}
-
-		Group
-		{
-			title: qsTr("Diagnostics")
-			CheckBox { name: "convergenceDiagnostics"; label: qsTr("Convergence diagnostics (Rhat, ESS)"); info: qsTr("Add Rhat and effective sample size columns to parameter estimate tables.") }
-			CheckBox
-			{
-				name: "tracePlots"
-				label: qsTr("Traceplots")
-				info: qsTr("Display traceplots of MCMC chains for model parameters.")
-				DropDown
-				{
-					name: "tracePlotsType"
-					label: qsTr("Parameter type")
-					info: qsTr("Select which parameter type to display traceplots for.")
-					values:
-					[
-						{ label: qsTr("All"),						value: "all"			},
-						{ label: qsTr("Factor loadings"),			value: "loadings"		},
-						{ label: qsTr("Regression coefficients"),	value: "regressions"	},
-						{ label: qsTr("Variances"),					value: "variances"		},
-						{ label: qsTr("Covariances"),				value: "covariances"	},
-						{ label: qsTr("Intercepts"),				value: "intercepts"		},
-						{ label: qsTr("Thresholds"),				value: "thresholds"		}
-					]
-				}
-			}
-		}
 	}
 
 	Section
@@ -248,15 +220,86 @@ Form
 
 		Group
 		{
-			CheckBox { name: "posteriorPredictivePvalue";	label: qsTr("Posterior predictive p-value");	info: qsTr("Compute the posterior predictive p-value (PPP) using the chi-square discrepancy measure to assess global model fit.") }
-			CheckBox { name: "additionalFitMeasures";		label: qsTr("Additional fit measures");			info: qsTr("Display additional Bayesian model fit measures.") }
-			CheckBox { name: "warnings";					label: qsTr("Show warnings"); checked: false;	info: qsTr("Display any warnings generated during the analysis.") }
-
 			CIField
 			{
 				text: qsTr("Credible interval")
 				name: "ciLevel"
 				info: qsTr("Width of the Bayesian credible interval for parameter estimates.")
+			}
+			CheckBox { name: "posteriorPredictivePvalue";	label: qsTr("Posterior predictive p-value");	info: qsTr("Compute the posterior predictive p-value (PPP) using the chi-square discrepancy measure to assess global model fit.") }
+			CheckBox { name: "additionalFitMeasures";		label: qsTr("Additional fit measures");			info: qsTr("Display additional Bayesian model fit measures.") }
+			CheckBox { name: "warnings";					label: qsTr("Show warnings"); checked: false;	info: qsTr("Display any warnings generated during the analysis.") }
+		}
+		Group
+		{
+			CheckBox
+			{
+				name: "priorPredictivePlots"
+				id: priorPredictivePlots
+				label: qsTr("Prior predictive plots")
+				info: qsTr("Draw prior predictive replicated datasets and compare them to the observed data.")
+
+				IntegerField
+				{
+					visible : priorPredictivePlots.checked
+					name: "priorPredictiveBurnin"
+					label: qsTr("Burn-in")
+					defaultValue: 20
+					min: 0
+					max: 5000
+					info: qsTr("Number of initial prior predictive MCMC iterations discarded before collecting samples.")
+				}
+
+				IntegerField
+				{
+					visible : priorPredictivePlots.checked
+					name: "priorPredictiveSamples"
+					id: priorPredictiveSamples
+					label: qsTr("Samples")
+					defaultValue: 200
+					min: 1
+					max: 10000
+					info: qsTr("Number of prior predictive MCMC samples to draw after the burn-in period.")
+				}
+
+				IntegerField
+				{
+					visible : priorPredictivePlots.checked
+					name: "priorPredictiveReplicates"
+					label: qsTr("Replicates")
+					defaultValue: 50
+					min: 1
+					max: priorPredictiveSamples
+					info: qsTr("Number of prior predictive replicated datasets to overlay in the plot.")
+				}
+			}
+		}
+
+		Group
+		{
+			title: qsTr("MCMC Diagnostics")
+			CheckBox { name: "convergenceDiagnostics"; label: qsTr("Convergence diagnostics (Rhat, ESS)"); info: qsTr("Add Rhat and effective sample size columns to parameter estimate tables.") }
+			CheckBox
+			{
+				name: "tracePlots"
+				label: qsTr("Traceplots")
+				info: qsTr("Display traceplots of MCMC chains for model parameters.")
+				DropDown
+				{
+					name: "tracePlotsType"
+					label: qsTr("Parameter type")
+					info: qsTr("Select which parameter type to display traceplots for.")
+					values:
+					[
+						{ label: qsTr("All"),						value: "all"			},
+						{ label: qsTr("Factor loadings"),			value: "loadings"		},
+						{ label: qsTr("Regression coefficients"),	value: "regressions"	},
+						{ label: qsTr("Variances"),					value: "variances"		},
+						{ label: qsTr("Covariances"),				value: "covariances"	},
+						{ label: qsTr("Intercepts"),				value: "intercepts"		},
+						{ label: qsTr("Thresholds"),				value: "thresholds"		}
+					]
+				}
 			}
 		}
 	}

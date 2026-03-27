@@ -32,6 +32,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   # Compute results (before output builders, cached in modelContainer)
   modelContainer <- .bayesiansemComputeResults(jaspResults, modelContainer, dataset, options, ready, runAllowed)
+  modelContainer <- .bayesiansemComputePriorResults(jaspResults, modelContainer, dataset, options, ready, runAllowed)
 
   # Output functions
   .bayesiansemFitTab(jaspResults, modelContainer, dataset, options, ready)
@@ -39,6 +40,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   .bayesiansemWarningsHtml(jaspResults, modelContainer, dataset, options, ready)
   .bayesiansemParameters(jaspResults, modelContainer, dataset, options, ready)
   .bayesiansemTracePlots(jaspResults, modelContainer, dataset, options, ready)
+  .bayesiansemPriorPredictivePlots(jaspResults, modelContainer, dataset, options, ready)
 }
 
 # helper functions
@@ -148,6 +150,44 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   stats::setNames(lapply(.bsemModelDeps, function(dep) options[[dep]]), .bsemModelDeps)
 }
 
+.bsemCurrentPriorFitOptionSignature <- function(options) {
+  priorSampling <- .bayesiansemPriorPredictiveSamplingOptions(options)
+
+  list(
+    fitOptions = .bsemCurrentFitOptionSignature(options),
+    prisamp    = TRUE,
+    burnin     = priorSampling[["burnin"]],
+    sample     = priorSampling[["sample"]],
+    n.chains   = priorSampling[["n.chains"]]
+  )
+}
+
+.bayesiansemFitGroupLabels <- function(fit, options) {
+  if (!isTRUE(options[["group"]] != ""))
+    return(gettext("All data"))
+
+  labels <- tryCatch(lavaan::lavInspect(fit, "group.label"), error = function(e) character())
+  if (length(labels) < 1)
+    return(gettext("All data"))
+
+  labels
+}
+
+.bayesiansemFormatEstimationError <- function(fitError, dataset, modelName, prefix) {
+  err <- .extractErrorMessage(fitError)
+  err <- sub("^[^:]*: ?", "", err)
+
+  if (err == "..constant..")
+    err <- gettext("Invalid model specification. Did you pass a variable name as a string?")
+  if (grepl(c("no variance"), err))
+    err <- gettext("One or more variables are constants or contain only missing values. ")
+
+  errmsg <- gettextf(prefix, err)
+
+  paste0("Error in \"", modelName, "\" - ",
+         .decodeVarsInMessage(names(dataset), errmsg))
+}
+
 .bayesiansemComputeResults <- function(jaspResults, modelContainer, dataset, options, ready, runAllowed) {
 
   if (!ready) {
@@ -225,17 +265,14 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     fit <- try(.withWarnings(do.call(blavaan::blavaan, blavaanArgs)))
 
     if (isTryError(fit)) {
-      err <- .extractErrorMessage(fit)
-      err <- sub("^[^:]*: ?", "", err)
-      if (err == "..constant..")
-        err <- gettext("Invalid model specification. Did you pass a variable name as a string?")
-      if (grepl(c("no variance"), err))
-        err <- gettext("One or more variables are constants or contain only missing values. ")
-
-      errmsg <- gettextf("Estimation failed. Message: %s", err)
-
-      modelContainer$setError(paste0("Error in \"", options[["models"]][[i]][["name"]], "\" - ",
-                                     .decodeVarsInMessage(names(dataset), errmsg)))
+      modelContainer$setError(
+        .bayesiansemFormatEstimationError(
+          fit,
+          dataset,
+          options[["models"]][[i]][["name"]],
+          gettext("Estimation failed. Message: %s")
+        )
+      )
       break
     }
 
@@ -251,6 +288,97 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     modelContainer[["bsemCachedWarnings"]] <- createJaspState(warnings)
     modelContainer[["bsemCachedFitSignature"]] <- createJaspState(fitOptSig)
   }
+
+  return(modelContainer)
+}
+
+.bayesiansemComputePriorResults <- function(jaspResults, modelContainer, dataset, options, ready, runAllowed) {
+
+  if (!isTRUE(options[["priorPredictivePlots"]]))
+    return(modelContainer)
+
+  if (!ready)
+    return(modelContainer)
+
+  if (!runAllowed)
+    return(modelContainer)
+
+  oldmodels   <- modelContainer[["bsemCachedPriorModels"]][["object"]]
+  oldresults  <- modelContainer[["bsemCachedPriorResults"]][["object"]]
+  oldwarnings <- modelContainer[["bsemCachedPriorWarnings"]][["object"]]
+  olderror    <- modelContainer[["bsemCachedPriorError"]][["object"]]
+  oldFitSig   <- modelContainer[["bsemCachedPriorFitSignature"]][["object"]]
+  fitOptSig   <- .bsemCurrentPriorFitOptionSignature(options)
+  fitOptsSame <- identical(fitOptSig, oldFitSig)
+
+  if (fitOptsSame && .bsemModelsIdentical(options[["models"]], oldmodels) &&
+      (!is.null(oldresults) || !is.null(olderror)))
+    return(modelContainer)
+
+  reuse <- if (fitOptsSame) .bsemMatchModels(options[["models"]], oldmodels) else rep(NA_integer_, length(options[["models"]]))
+
+  if (!anyNA(reuse) && !is.null(oldresults) && is.null(olderror)) {
+    modelContainer[["bsemCachedPriorResults"]]$object  <- oldresults[reuse]
+    modelContainer[["bsemCachedPriorModels"]]$object   <- options[["models"]]
+    modelContainer[["bsemCachedPriorWarnings"]]$object <- oldwarnings[reuse]
+    if (!is.null(modelContainer[["bsemCachedPriorFitSignature"]]))
+      modelContainer[["bsemCachedPriorFitSignature"]]$object <- fitOptSig
+    .bayesiansemNullPriorPredictiveElements(modelContainer)
+    return(modelContainer)
+  }
+
+  results    <- vector("list", length(options[["models"]]))
+  warnings   <- vector("list", length(options[["models"]]))
+  priorError <- NULL
+
+  if (fitOptsSame && any(!is.na(reuse)) && !is.null(oldresults)) {
+    for (i in which(!is.na(reuse))) {
+      results[[i]]  <- oldresults[[reuse[i]]]
+      warnings[[i]] <- if (!is.null(oldwarnings)) oldwarnings[[reuse[i]]] else NULL
+    }
+  }
+
+  nToFit <- sum(vapply(results, is.null, TRUE))
+  if (nToFit > 0)
+    startProgressbar(nToFit, label = gettext("Estimating prior predictive models..."))
+
+  blavaanOptions <- .bayesiansemOptionsToBlavOptions(options, dataset, prisamp = TRUE)
+
+  for (i in seq_along(results)) {
+    if (!is.null(results[[i]]))
+      next
+
+    blavaanArgs            <- blavaanOptions
+    blavaanArgs[["model"]] <- .bayesiansemTranslateModel(options[["models"]][[i]][["syntax"]], dataset)
+
+    if (options[["dataType"]] == "raw")
+      blavaanArgs[["data"]] <- dataset
+
+    options("future.globals.method.default" = c("ordered", "dfs"))
+    fit <- try(.withWarnings(do.call(blavaan::blavaan, blavaanArgs)))
+
+    if (isTryError(fit)) {
+      priorError <- .bayesiansemFormatEstimationError(
+        fit,
+        dataset,
+        options[["models"]][[i]][["name"]],
+        gettext("Prior predictive estimation failed. Message: %s")
+      )
+      break
+    }
+
+    results[[i]]  <- fit$value
+    warnings[[i]] <- ifelse(is.null(fit$warnings), list(NULL), fit$warnings)
+    progressbarTick()
+  }
+
+  modelContainer[["bsemCachedPriorResults"]]        <- createJaspState(results)
+  modelContainer[["bsemCachedPriorModels"]]         <- createJaspState(options[["models"]])
+  modelContainer[["bsemCachedPriorWarnings"]]       <- createJaspState(warnings)
+  modelContainer[["bsemCachedPriorError"]]          <- createJaspState(priorError)
+  modelContainer[["bsemCachedPriorFitSignature"]]   <- createJaspState(fitOptSig)
+
+  .bayesiansemNullPriorPredictiveElements(modelContainer)
 
   return(modelContainer)
 }
@@ -281,10 +409,22 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   modelContainer[["warningsHtml"]] <- NULL
   modelContainer[["params"]]       <- NULL
   modelContainer[["traceplots"]]   <- NULL
+  modelContainer[["priorPredictivePlots"]] <- NULL
 }
 
+.bayesiansemNullPriorPredictiveElements <- function(modelContainer) {
+  modelContainer[["priorPredictivePlots"]] <- NULL
+}
 
-.bayesiansemOptionsToBlavOptions <- function(options, dataset) {
+.bayesiansemPriorPredictiveSamplingOptions <- function(options) {
+  list(
+    burnin   = max(0L, if (!is.null(options[["priorPredictiveBurnin"]]))  as.integer(options[["priorPredictiveBurnin"]])  else 20L),
+    sample   = max(1L, if (!is.null(options[["priorPredictiveSamples"]])) as.integer(options[["priorPredictiveSamples"]]) else 50L),
+    n.chains = 1L
+  )
+}
+
+.bayesiansemOptionsToBlavOptions <- function(options, dataset, prisamp = FALSE) {
   #' mapping the QML options from JASP to blavaan options
   blavaanOptions <- list()
 
@@ -339,13 +479,21 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   }
 
   # Bayesian-specific options for blavaan
-  blavaanOptions[["burnin"]]   <- if (!is.null(options[["mcmcBurnin"]]))   options[["mcmcBurnin"]]   else 500L
-  blavaanOptions[["sample"]]   <- if (!is.null(options[["mcmcSamples"]])) options[["mcmcSamples"]] else 1000L
-  blavaanOptions[["n.chains"]] <- if (!is.null(options[["mcmcChains"]]))  options[["mcmcChains"]]  else 3L
+  if (isTRUE(prisamp)) {
+    priorSampling <- .bayesiansemPriorPredictiveSamplingOptions(options)
+    blavaanOptions[["burnin"]]   <- priorSampling[["burnin"]]
+    blavaanOptions[["sample"]]   <- priorSampling[["sample"]]
+    blavaanOptions[["n.chains"]] <- priorSampling[["n.chains"]]
+  } else {
+    blavaanOptions[["burnin"]]   <- if (!is.null(options[["mcmcBurnin"]]))   options[["mcmcBurnin"]]   else 500L
+    blavaanOptions[["sample"]]   <- if (!is.null(options[["mcmcSamples"]]))  options[["mcmcSamples"]]  else 1000L
+    blavaanOptions[["n.chains"]] <- if (!is.null(options[["mcmcChains"]]))   options[["mcmcChains"]]   else 3L
+  }
   blavaanOptions[["target"]]   <- "stan"
+  blavaanOptions[["prisamp"]]  <- isTRUE(prisamp)
 
   thinVal <- if (!is.null(options[["mcmcThin"]])) options[["mcmcThin"]] else 1L
-  if (thinVal > 1L)
+  if (!isTRUE(prisamp) && thinVal > 1L)
     blavaanOptions[["bcontrol"]] <- list(thin = thinVal)
 
   if (isTRUE(options[["setSeed"]])) {
@@ -430,7 +578,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   fittab$addColumnInfo(name = "DIC",      title = gettext("DIC"),                type = "number" )
   fittab$addColumnInfo(name = "WAIC",     title = gettext("WAIC"),               type = "number" )
   fittab$addColumnInfo(name = "LOO",      title = gettext("LOO"),                type = "number" )
-  fittab$addColumnInfo(name = "N",        title = gettext("n(Observations)"),    type = "integer")
+  fittab$addColumnInfo(name = "N",        title = gettext("n(Obs.)"),            type = "integer")
   fittab$addColumnInfo(name = "npar",     title = gettext("Total"),              overtitle = gettext("n(Parameters)"), type = "integer")
   fittab$addColumnInfo(name = "nfree",    title = gettext("Free"),               overtitle = gettext("n(Parameters)"), type = "integer")
 
@@ -897,54 +1045,81 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   mcmcDraws <- tryCatch(blavaan::blavInspect(fit, "mcmc"), error = function(e) NULL)
   if (is.null(mcmcDraws)) return()
 
-  paramTable  <- lavaan::parameterTable(fit)
-  freeIdx     <- which(paramTable$free > 0)
-  latentVars  <- unique(paramTable$lhs[paramTable$op == "=~"])
-  selectedType <- options[["tracePlotsType"]]
+  groupLabels <- .bayesiansemFitGroupLabels(fit, options)
 
-  # parameter groups mirroring the parameter table structure
+  if (length(groupLabels) > 1L) {
+    for (groupIdx in seq_along(groupLabels)) {
+      groupCont <- createJaspContainer(groupLabels[[groupIdx]])
+      groupCont$position <- groupIdx
+      container[[paste0("group", groupIdx)]] <- groupCont
+
+      .bayesiansemTraceplotParameterPlots(fit, mcmcDraws, groupCont, options, groupIdx = groupIdx)
+    }
+  } else {
+    .bayesiansemTraceplotParameterPlots(fit, mcmcDraws, container, options)
+  }
+}
+
+.bayesiansemTraceplotParameterPlots <- function(fit, mcmcDraws, container, options, groupIdx = NULL) {
+  paramTable    <- lavaan::parameterTable(fit)
+  freeIdx       <- which(paramTable$free > 0)
+  selectedType  <- options[["tracePlotsType"]]
+
   groups <- list(
-    loadings    = list(title = "Factor Loadings",          op = "=~", filter = NULL),
-    regressions = list(title = "Regression Coefficients",  op = "~",  filter = NULL),
-    variances   = list(title = "Variances",                op = "~~", filter = "same"),
-    covariances = list(title = "Covariances",              op = "~~", filter = "diff"),
-    intercepts  = list(title = "Intercepts",               op = "~1", filter = NULL),
-    thresholds  = list(title = "Thresholds",               op = "|",  filter = NULL)
+    loadings    = list(title = "Factor Loadings",         op = "=~", filter = NULL),
+    regressions = list(title = "Regression Coefficients", op = "~",  filter = NULL),
+    variances   = list(title = "Variances",               op = "~~", filter = "same"),
+    covariances = list(title = "Covariances",             op = "~~", filter = "diff"),
+    intercepts  = list(title = "Intercepts",              op = "~1", filter = NULL),
+    thresholds  = list(title = "Thresholds",              op = "|",  filter = NULL)
   )
 
   plotIdx <- 0
   for (key in names(groups)) {
-    if (selectedType != "all" && selectedType != key) next
+    if (selectedType != "all" && selectedType != key)
+      next
 
     g    <- groups[[key]]
     mask <- paramTable$op == g$op & paramTable$free > 0
+
+    if (!is.null(groupIdx))
+      mask <- mask & paramTable$group == groupIdx
+
     if (!is.null(g$filter)) {
-      if (g$filter == "same") mask <- mask & paramTable$lhs == paramTable$rhs
-      if (g$filter == "diff") mask <- mask & paramTable$lhs != paramTable$rhs
+      if (g$filter == "same")
+        mask <- mask & paramTable$lhs == paramTable$rhs
+      if (g$filter == "diff")
+        mask <- mask & paramTable$lhs != paramTable$rhs
     }
-    if (key == "intercepts" && !options[["meanStructure"]]) next
-    if (sum(mask) == 0) next
 
-    plotIdx <- plotIdx + 1
+    if (key == "intercepts" && !options[["meanStructure"]])
+      next
 
-    # build parameter labels
-    labels  <- paste0(paramTable$lhs[mask], paramTable$op[mask], paramTable$rhs[mask])
-    mcmcCols <- match(which(mask), freeIdx)
-    mcmcCols <- mcmcCols[!is.na(mcmcCols)]
-    if (length(mcmcCols) == 0) next
+    if (sum(mask) == 0)
+      next
 
-    # long-format data for ggplot: Chain x Iteration x Parameter x Value
+    rowIdx   <- which(mask)
+    mcmcCols <- match(rowIdx, freeIdx)
+    keepCols <- !is.na(mcmcCols)
+    if (!any(keepCols))
+      next
+
+    rowIdx   <- rowIdx[keepCols]
+    mcmcCols <- mcmcCols[keepCols]
+    labels   <- paste0(paramTable$lhs[rowIdx], paramTable$op[rowIdx], paramTable$rhs[rowIdx])
+
     dfList <- lapply(seq_along(mcmcDraws), function(ch) {
       mat <- as.matrix(mcmcDraws[[ch]])
       data.frame(
         Chain     = factor(ch),
         Iteration = rep(seq_len(nrow(mat)), length(mcmcCols)),
-        Parameter = rep(labels[!is.na(match(which(mask), freeIdx))], each = nrow(mat)),
+        Parameter = rep(labels, each = nrow(mat)),
         Value     = as.vector(mat[, mcmcCols, drop = FALSE])
       )
     })
     df <- do.call(rbind, dfList)
 
+    plotIdx <- plotIdx + 1
     nParams <- length(mcmcCols)
     height  <- max(320, 160 * ceiling(nParams / 2))
 
@@ -967,4 +1142,344 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     plt$plotObject <- plotObj
     container[[key]] <- plt
   }
+}
+
+# Prior predictive plots ----
+
+.bayesiansemPriorPredictivePlots <- function(jaspResults, modelContainer, dataset, options, ready) {
+  if (!isTRUE(options[["priorPredictivePlots"]]))             return()
+  if (!is.null(modelContainer[["priorPredictivePlots"]]))     return()
+  if (!ready || modelContainer$getError())                    return()
+
+  priorCont <- createJaspContainer(gettext("Prior Predictive Plots"))
+  priorCont$dependOn(c("priorPredictivePlots", "priorPredictiveBurnin", "priorPredictiveSamples", "priorPredictiveReplicates"))
+  priorCont$position <- 3
+  modelContainer[["priorPredictivePlots"]] <- priorCont
+
+  priorError <- modelContainer[["bsemCachedPriorError"]][["object"]]
+  if (!is.null(priorError)) {
+    priorCont$setError(priorError)
+    return()
+  }
+
+  cachedResults <- modelContainer[["bsemCachedPriorResults"]][["object"]]
+  if (is.null(cachedResults) || length(cachedResults) == 0)
+    return()
+
+  if (length(options[["models"]]) < 2) {
+    .bayesiansemPriorPredictivePlotForFit(cachedResults[[1]], NULL, priorCont, dataset, options)
+  } else {
+    for (i in seq_along(options[["models"]])) {
+      .bayesiansemPriorPredictivePlotForFit(cachedResults[[i]], options[["models"]][[i]], priorCont, dataset, options)
+    }
+  }
+}
+
+.bayesiansemPriorPredictivePlotForFit <- function(fit, model, parentContainer, dataset, options) {
+  if (is.null(fit))
+    return()
+
+  if (is.null(model)) {
+    container <- parentContainer
+  } else {
+    container <- createJaspContainer(model[["name"]], initCollapsed = TRUE)
+    parentContainer[[model[["name"]]]] <- container
+  }
+
+  plotData <- tryCatch(
+    .bayesiansemBuildPriorPredictiveData(fit, dataset, options),
+    error = function(e) e
+  )
+
+  if (inherits(plotData, "error")) {
+    plt <- createJaspPlot(title = gettext("Observed vs. Prior Predictive"), width = 650, height = 320)
+    plt$position <- 1
+    container[["plot"]] <- plt
+    plt$setError(gettextf("Could not create prior predictive plot: %s", plotData$message))
+    return()
+  }
+
+  groups <- plotData[["groups"]]
+  hasGroups <- length(groups) > 1L
+
+  if (hasGroups) {
+    for (groupIdx in seq_along(groups)) {
+      groupCont <- createJaspContainer(names(groups)[groupIdx])
+      groupCont$position <- groupIdx
+      container[[paste0("group", groupIdx)]] <- groupCont
+
+      .bayesiansemPriorPredictiveGroupPlot(groups[[groupIdx]], groupCont)
+    }
+  } else {
+    .bayesiansemPriorPredictiveGroupPlot(groups[[1]], container)
+  }
+}
+
+.bayesiansemBuildPriorPredictiveData <- function(fit, dataset, options) {
+  ovNames <- lavaan::lavNames(fit, "ov")
+  if (length(ovNames) < 1)
+    stop(gettext("No observed variables available for prior predictive plotting."))
+
+  observedData <- dataset[, ovNames, drop = FALSE]
+  numericMask  <- vapply(observedData, is.numeric, TRUE)
+  if (!any(numericMask))
+    stop(gettext("Prior predictive plots are only available for numeric observed variables."))
+
+  ovNames         <- ovNames[numericMask]
+  decodedOvNames  <- jaspBase::decodeColNames(ovNames)
+  numericIdx      <- which(numericMask)
+  requestedReps   <- .bayesiansemPriorPredictiveReplicateCount(fit, options)
+  sampledData     <- blavaan::sampleData(fit, nrep = requestedReps)
+  sampledData     <- .bayesiansemNormalizeSampledData(sampledData)
+  observedByGroup <- .bayesiansemObservedDataByGroup(fit, dataset, ovNames, options)
+
+  observedLabel <- gettext("Observed")
+  priorLabel    <- gettext("Prior predictive")
+  hasGroups     <- length(observedByGroup) > 1
+
+  observedLong <- lapply(seq_along(observedByGroup), function(groupIdx) {
+    obs <- observedByGroup[[groupIdx]]
+    data.frame(
+      Group    = names(observedByGroup)[groupIdx],
+      Variable = rep(decodedOvNames, each = nrow(obs)),
+      Value    = as.vector(as.matrix(obs[, ovNames, drop = FALSE])),
+      Series   = observedLabel
+    )
+  })
+  observedLong <- do.call(rbind, observedLong)
+
+  simulatedLong <- lapply(seq_along(sampledData), function(repIdx) {
+    repData <- sampledData[[repIdx]]
+    repLong <- lapply(seq_along(observedByGroup), function(groupIdx) {
+      simMat <- as.matrix(repData[[groupIdx]])
+      if (ncol(simMat) < max(numericIdx))
+        stop(gettext("Prior predictive sampled data do not match the observed variable structure."))
+
+      data.frame(
+        Group     = names(observedByGroup)[groupIdx],
+        Variable  = rep(decodedOvNames, each = nrow(simMat)),
+        Value     = as.vector(simMat[, numericIdx, drop = FALSE]),
+        Series    = priorLabel,
+        Replicate = factor(repIdx)
+      )
+    })
+    do.call(rbind, repLong)
+  })
+  simulatedLong <- do.call(rbind, simulatedLong)
+
+  groupLevels <- names(observedByGroup)
+
+  observedCurves <- .bayesiansemPriorPredictiveDensityCurves(
+    observedLong,
+    splitVars      = c("Group", "Variable"),
+    groupLevels    = groupLevels,
+    variableLevels = decodedOvNames
+  )
+
+  simulatedCurves <- .bayesiansemPriorPredictiveDensityCurves(
+    simulatedLong,
+    splitVars      = c("Group", "Variable", "Replicate"),
+    groupLevels    = groupLevels,
+    variableLevels = decodedOvNames
+  )
+
+  if (nrow(observedCurves) < 1)
+    stop(gettext("Observed data do not contain enough finite variation for prior predictive plotting."))
+
+  if (nrow(simulatedCurves) < 1)
+    stop(gettext("Prior predictive sampled data do not contain enough finite variation for plotting."))
+
+  groupedCurves <- .bayesiansemPriorPredictiveGroupedCurves(
+    observedCurves,
+    simulatedCurves,
+    groupLevels    = groupLevels,
+    variableLevels = decodedOvNames
+  )
+
+  if (length(groupedCurves) < 1)
+    stop(gettext("Prior predictive sampled data do not contain enough finite variation for plotting."))
+
+  list(
+    groups    = groupedCurves,
+    hasGroups = hasGroups
+  )
+}
+
+.bayesiansemPriorPredictiveReplicateCount <- function(fit, options) {
+  requested <- if (!is.null(options[["priorPredictiveReplicates"]])) as.integer(options[["priorPredictiveReplicates"]]) else 50L
+  requested <- max(1L, requested)
+
+  mcmcDraws <- tryCatch(blavaan::blavInspect(fit, "mcmc"), error = function(e) NULL)
+  available <- if (is.null(mcmcDraws)) requested else sum(vapply(mcmcDraws, nrow, integer(1)))
+
+  max(1L, min(requested, available))
+}
+
+.bayesiansemNormalizeSampledData <- function(sampledData) {
+  if (length(sampledData) < 1)
+    return(sampledData)
+
+  if (is.matrix(sampledData[[1]]) || is.data.frame(sampledData[[1]]))
+    return(lapply(sampledData, function(x) list(x)))
+
+  sampledData
+}
+
+.bayesiansemPriorPredictiveDensityCurves <- function(data, splitVars, groupLevels, variableLevels) {
+  if (nrow(data) < 1)
+    return(data.frame())
+
+  splitIdx <- split(
+    seq_len(nrow(data)),
+    interaction(data[, splitVars, drop = FALSE], drop = TRUE, lex.order = TRUE)
+  )
+
+  curves <- lapply(splitIdx, function(idx) {
+    slice <- data[idx, , drop = FALSE]
+    dens  <- .bayesiansemDensityCurveForVector(slice[["Value"]])
+
+    if (is.null(dens))
+      return(NULL)
+
+    out <- data.frame(
+      Group    = slice[["Group"]][1],
+      Variable = slice[["Variable"]][1],
+      Value    = dens[["x"]],
+      Density  = dens[["y"]],
+      Series   = slice[["Series"]][1],
+      Curve    = paste(slice[1, splitVars, drop = TRUE], collapse = "__")
+    )
+
+    if ("Replicate" %in% names(slice))
+      out[["Replicate"]] <- slice[["Replicate"]][1]
+
+    out
+  })
+
+  curves <- Filter(Negate(is.null), curves)
+  if (length(curves) < 1)
+    return(data.frame())
+
+  curves <- do.call(rbind, curves)
+  curves[["Group"]]    <- factor(curves[["Group"]], levels = groupLevels)
+  curves[["Variable"]] <- factor(curves[["Variable"]], levels = variableLevels)
+
+  curves
+}
+
+.bayesiansemDensityCurveForVector <- function(values) {
+  values <- values[is.finite(values)]
+
+  if (length(values) < 2 || length(unique(values)) < 2)
+    return(NULL)
+
+  tryCatch(stats::density(values), error = function(e) NULL)
+}
+
+.bayesiansemPriorPredictiveGroupedCurves <- function(observedCurves, simulatedCurves, groupLevels, variableLevels) {
+  groupedCurves <- stats::setNames(lapply(groupLevels, function(groupLabel) {
+    vars <- lapply(variableLevels, function(variableLabel) {
+      observedVar <- observedCurves[as.character(observedCurves[["Group"]]) == groupLabel &
+                                      as.character(observedCurves[["Variable"]]) == variableLabel, , drop = FALSE]
+      simulatedVar <- simulatedCurves[as.character(simulatedCurves[["Group"]]) == groupLabel &
+                                        as.character(simulatedCurves[["Variable"]]) == variableLabel, , drop = FALSE]
+
+      if (nrow(observedVar) < 1 || nrow(simulatedVar) < 1)
+        return(NULL)
+
+      list(
+        variableLabel   = variableLabel,
+        observedCurves  = observedVar,
+        simulatedCurves = simulatedVar
+      )
+    })
+
+    vars <- Filter(Negate(is.null), vars)
+    if (length(vars) < 1)
+      return(NULL)
+
+    stats::setNames(vars, vapply(vars, function(x) x[["variableLabel"]], character(1)))
+  }), groupLevels)
+
+  groupedCurves <- Filter(Negate(is.null), groupedCurves)
+  if (length(groupedCurves) < 1)
+    return(groupedCurves)
+
+  groupedCurves
+}
+
+.bayesiansemPriorPredictiveGroupPlot <- function(groupData, container) {
+  priorLabel    <- gettext("Prior predictive")
+  observedLabel <- gettext("Observed")
+  nVars <- length(groupData)
+
+  observedCurves  <- do.call(rbind, lapply(groupData, function(x) x[["observedCurves"]]))
+  simulatedCurves <- do.call(rbind, lapply(groupData, function(x) x[["simulatedCurves"]]))
+  variableLevels  <- vapply(groupData, function(x) x[["variableLabel"]], character(1))
+
+  observedCurves[["Variable"]]  <- factor(as.character(observedCurves[["Variable"]]), levels = variableLevels)
+  simulatedCurves[["Variable"]] <- factor(as.character(simulatedCurves[["Variable"]]), levels = variableLevels)
+
+  plt <- createJaspPlot(
+    title  = "",
+    width  = 650,
+    height = max(320, 180 * ceiling(nVars / 2))
+  )
+  plt$position <- 1
+
+  plotObj <- ggplot2::ggplot() +
+    ggplot2::geom_line(
+      data      = simulatedCurves,
+      mapping   = ggplot2::aes(x = .data[["Value"]],
+                               y = .data[["Density"]],
+                               group = .data[["Curve"]],
+                               color = .data[["Series"]]),
+      alpha     = 0.15,
+      linewidth = 0.3,
+      na.rm     = TRUE
+    ) +
+    ggplot2::geom_line(
+      data      = observedCurves,
+      mapping   = ggplot2::aes(x = .data[["Value"]],
+                               y = .data[["Density"]],
+                               group = .data[["Curve"]],
+                               color = .data[["Series"]]),
+      linewidth = 0.9,
+      na.rm     = TRUE
+    ) +
+    ggplot2::facet_wrap(~ Variable, scales = "free", ncol = 2, strip.position = "bottom") +
+    ggplot2::labs(
+      x     = "",
+      y     = gettext("Density"),
+      color = ""
+    ) +
+    ggplot2::scale_y_continuous(breaks = NULL) +
+    ggplot2::scale_color_manual(
+      values = stats::setNames(c("#4C78A8", "#D55E00"), c(priorLabel, observedLabel))
+    ) +
+    jaspGraphs::geom_rangeframe(sides = "bl") +
+    jaspGraphs::themeJaspRaw() +
+    ggplot2::theme(
+      axis.text.y      = ggplot2::element_blank(),
+      axis.ticks.y     = ggplot2::element_blank(),
+      axis.line.y      = ggplot2::element_line(),
+      strip.text.x = ggplot2::element_text(size = 14),
+      strip.placement  = "outside"
+    )
+
+  plt$plotObject <- plotObj
+  container[["plot"]] <- plt
+}
+
+.bayesiansemObservedDataByGroup <- function(fit, dataset, ovNames, options) {
+  if (!isTRUE(options[["group"]] != "")) {
+    observed <- list(dataset[, ovNames, drop = FALSE])
+    names(observed) <- gettext("All data")
+    return(observed)
+  }
+
+  groupLabels <- lavaan::lavInspect(fit, "group.label")
+  groupFac    <- factor(as.character(dataset[[options[["group"]]]]), levels = groupLabels)
+  observed    <- split(dataset[, ovNames, drop = FALSE], groupFac, drop = FALSE)
+  observed
 }
