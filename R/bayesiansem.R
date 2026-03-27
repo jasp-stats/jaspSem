@@ -908,7 +908,8 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     regressions = list(title = "Regression Coefficients",  op = "~",  filter = NULL),
     variances   = list(title = "Variances",                op = "~~", filter = "same"),
     covariances = list(title = "Covariances",              op = "~~", filter = "diff"),
-    intercepts  = list(title = "Intercepts",               op = "~1", filter = NULL)
+    intercepts  = list(title = "Intercepts",               op = "~1", filter = NULL),
+    thresholds  = list(title = "Thresholds",               op = "|",  filter = NULL)
   )
 
   plotIdx <- 0
