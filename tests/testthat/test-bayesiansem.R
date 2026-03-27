@@ -165,6 +165,10 @@ options$posteriorPredictivePvalue   <- FALSE
 options$convergenceDiagnostics      <- FALSE
 options$tracePlots                  <- FALSE
 options_mg_released_loading <- options
+options_mg_released_loading$priorPredictivePlots     <- TRUE
+options_mg_released_loading$priorPredictiveBurnin    <- 20L
+options_mg_released_loading$priorPredictiveSamples   <- 50L
+options_mg_released_loading$priorPredictiveReplicates <- 10L
 options_mg_released_loading$group                 <- "group"
 options_mg_released_loading$equalLoading          <- TRUE
 options_mg_released_loading$additionalFitMeasures <- FALSE
@@ -255,6 +259,30 @@ test_that("Residual Variances table results match", {
                                       10.9892949594862, 6.61687809750709, 2, "", "y3", "gamma(1,0.5)[sd]",
                                       1.83177431854201, 0.927800412500054, 6.88193136567574, 3.45120056767015,
                                       2, "", "y4", "gamma(1,0.5)[sd]", 1.47141035823601))
+})
+
+test_that("Multigroup prior predictive plots create separate group containers", {
+  ppCont <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_priorPredictivePlots"]][["collection"]]
+
+  expect_true("modelContainer_priorPredictivePlots_group1" %in% names(ppCont))
+  expect_true("modelContainer_priorPredictivePlots_group2" %in% names(ppCont))
+
+  group1Plot <- ppCont[["modelContainer_priorPredictivePlots_group1"]][["collection"]][["modelContainer_priorPredictivePlots_group1_plot"]][["data"]]
+  group2Plot <- ppCont[["modelContainer_priorPredictivePlots_group2"]][["collection"]][["modelContainer_priorPredictivePlots_group2_plot"]][["data"]]
+
+  expect_true(!is.null(group1Plot))
+  expect_true(!is.null(group2Plot))
+  expect_true(group1Plot %in% names(results[["state"]][["figures"]]))
+  expect_true(group2Plot %in% names(results[["state"]][["figures"]]))
+})
+
+test_that("Prior predictive plot styling matches expectations", {
+  ppCont   <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_priorPredictivePlots"]][["collection"]]
+  plotName <- ppCont[["modelContainer_priorPredictivePlots_group1"]][["collection"]][["modelContainer_priorPredictivePlots_group1_plot"]][["data"]]
+  plotObj  <- results[["state"]][["figures"]][[plotName]][["obj"]]
+
+  expect_equal(plotObj$labels$y, "Density")
+  expect_equal(plotObj$labels$x, "")
 })
 
 
