@@ -674,6 +674,7 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
     return()
   }
 
+  .patchRtLayout()
   pp <- jaspBase:::.suppressGrDevice(semPlot::semPaths(
     object         = po,
     layout         = rbind(deps_l, medi_l, pred_l, conf_l),

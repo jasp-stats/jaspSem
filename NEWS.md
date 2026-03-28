@@ -1,5 +1,12 @@
 # jaspSem (development version)
 
+## [Pull Request #365](https://github.com/jasp-stats/jaspSem/pull/365):
+- MIMIC: add residual variances and predictor covariances tables to output
+- MIMIC: add option to freely estimate exogenous predictor variances and covariances (fixed.x)
+- Fix path plot for simple regression models across SEM, MIMIC, LGCM, and Mediation Analysis
+
+
+
 ## [Pull Request #248](https://github.com/jasp-stats/jaspSem/pull/248):
 - Major changes to SEM: 
   - ordinal data fully supported

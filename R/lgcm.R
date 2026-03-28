@@ -596,7 +596,10 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   if (!ready || modelContainer$getError()) return()
 
   lgcmResult <- modelContainer[["model"]][["object"]]
-  png() # semplot opens a device even though we specify doNotPlot, so we hack.
+  # semPlot opens a device even though we specify DoNotPlot, so we redirect to a temp file
+  grDevices::png(tempfile(fileext = ".png"))
+  on.exit(grDevices::dev.off())
+  .patchRtLayout()
   pathplot <- semPlot::semPaths(
     object         = .lavToPlotObj(lgcmResult),
     DoNotPlot      = TRUE,
@@ -611,7 +614,6 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     lty            = 2,
     title          = FALSE
   )
-  dev.off()
 
   modelContainer[["pathplot"]]$plotObject <- pathplot
 }
