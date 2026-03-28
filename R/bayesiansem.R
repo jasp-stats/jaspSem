@@ -270,7 +270,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
           fit,
           dataset,
           options[["models"]][[i]][["name"]],
-          gettext("Estimation failed. Message: %s")
+          gettextf("Estimation failed. Message: %%")
         )
       )
       break
@@ -362,7 +362,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
         fit,
         dataset,
         options[["models"]][[i]][["name"]],
-        gettext("Prior predictive estimation failed. Message: %s")
+        gettextf("Prior predictive estimation failed. Message: %%")
       )
       break
     }
