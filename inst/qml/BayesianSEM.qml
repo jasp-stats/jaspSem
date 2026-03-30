@@ -227,6 +227,7 @@ Form
 				info: qsTr("Width of the Bayesian credible interval for parameter estimates.")
 			}
 			CheckBox { name: "posteriorPredictivePvalue";	label: qsTr("Posterior predictive p-value");	info: qsTr("Compute the posterior predictive p-value (PPP) using the chi-square discrepancy measure to assess global model fit.") }
+			CheckBox { name: "looComparison";				label: qsTr("LOO model comparison");			checked: false;	info: qsTr("Compare multiple model tabs using leave-one-out predictive performance.") }
 			CheckBox { name: "additionalFitMeasures";		label: qsTr("Additional fit measures");			info: qsTr("Display additional Bayesian model fit measures.") }
 			CheckBox { name: "warnings";					label: qsTr("Show warnings"); checked: false;	info: qsTr("Display any warnings generated during the analysis.") }
 		}

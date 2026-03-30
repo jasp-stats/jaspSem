@@ -568,20 +568,26 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 .bayesiansemFitTab <- function(jaspResults, modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["fittab"]])) return()
 
+  showLooComparison <- isTRUE(options[["looComparison"]]) && length(options[["models"]]) >= 2
+
   fittab <- createJaspTable(title = gettext("Model Fit"))
-  fittab$dependOn(c("warnings", "posteriorPredictivePvalue"))
+  fittab$dependOn(c("warnings", "posteriorPredictivePvalue", "looComparison"))
   fittab$position <- 0
 
   fittab$addColumnInfo(name = "Model",    title = "",                            type = "string" , combine = TRUE)
+  fittab$addColumnInfo(name = "N",        title = gettext("n(Obs.)"),            type = "integer")
+  fittab$addColumnInfo(name = "npar",     title = gettext("Total"),              overtitle = gettext("n(Parameters)"), type = "integer")
+  fittab$addColumnInfo(name = "nfree",    title = gettext("Free"),               overtitle = gettext("n(Parameters)"), type = "integer")
   if (options[["posteriorPredictivePvalue"]])
     fittab$addColumnInfo(name = "PPP",    title = gettext("PPP"),                type = "number")
   fittab$addColumnInfo(name = "DIC",      title = gettext("DIC"),                type = "number" )
   fittab$addColumnInfo(name = "WAIC",     title = gettext("WAIC"),               type = "number" )
   fittab$addColumnInfo(name = "LOO",      title = gettext("LOO"),                type = "number" )
-  fittab$addColumnInfo(name = "N",        title = gettext("n(Obs.)"),            type = "integer")
-  fittab$addColumnInfo(name = "npar",     title = gettext("Total"),              overtitle = gettext("n(Parameters)"), type = "integer")
-  fittab$addColumnInfo(name = "nfree",    title = gettext("Free"),               overtitle = gettext("n(Parameters)"), type = "integer")
-
+  if (showLooComparison) {
+    fittab$addColumnInfo(name = "Rank",      title = gettext("Rank"),            type = "integer")
+    fittab$addColumnInfo(name = "elpdDiff",  title = gettext("ELPD diff"),       type = "number" )
+    fittab$addColumnInfo(name = "seDiff",    title = gettext("SE diff"),         type = "number" )
+  }
   modelContainer[["fittab"]] <- fittab
 
   if (!ready) return()
@@ -660,6 +666,60 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   dtFill[["DIC"]]      <- sapply(fitMeasures, function(x) x$DIC)
   dtFill[["WAIC"]]     <- sapply(fitMeasures, function(x) x$WAIC)
   dtFill[["LOO"]]      <- sapply(fitMeasures, function(x) x$looic)
+
+  if (showLooComparison && length(blavaanResults) >= 2) {
+    looValues  <- dtFill[["LOO"]]
+    finiteLoo  <- is.finite(looValues)
+    compFailed <- FALSE
+
+    dtFill[["Rank"]]     <- NA_integer_
+    dtFill[["elpdDiff"]] <- NA_real_
+    dtFill[["seDiff"]]   <- NA_real_
+
+    if (any(finiteLoo)) {
+      rankIdx <- order(looValues[finiteLoo], seq_along(looValues)[finiteLoo])
+      dtFill[["Rank"]][which(finiteLoo)[rankIdx]] <- seq_along(rankIdx)
+
+      bestIdx <- which(finiteLoo)[rankIdx[1]]
+
+      dtFill[["elpdDiff"]][bestIdx] <- 0
+      dtFill[["seDiff"]][bestIdx]   <- 0
+
+      for (j in which(finiteLoo)) {
+        if (j == bestIdx) next
+
+        compRes <- tryCatch({
+          suppressWarnings(
+            capture.output(
+              comparison <- blavaan::blavCompare(blavaanResults[[bestIdx]], blavaanResults[[j]])
+            )
+          )
+          comparison$diff_loo
+        }, error = function(e) NULL)
+
+        if (is.null(compRes) || nrow(compRes) < 2) {
+          compFailed <- TRUE
+          next
+        }
+
+        dtFill[["elpdDiff"]][j] <- as.numeric(compRes[2, "elpd_diff"])
+        dtFill[["seDiff"]][j]   <- as.numeric(compRes[2, "se_diff"])
+      }
+
+      fnote <- paste0(
+        fnote,
+        gettext("LOO comparison ranks models by leave-one-out predictive performance. ELPD differences are relative to the best model; more negative values indicate worse expected out-of-sample performance. ")
+      )
+
+      if (compFailed) {
+        fnote <- paste0(
+          fnote,
+          gettext("LOO comparison could not be computed for one or more models. ")
+        )
+      }
+    }
+  }
+
   dtFill[["N"]]        <- Ns
   dtFill[["npar"]]     <- npar
   dtFill[["nfree"]]    <- nfree
