@@ -46,6 +46,7 @@ options$orthogonal                  <- FALSE
 options$warnings                    <- FALSE
 options$additionalFitMeasures       <- TRUE
 options$posteriorPredictivePvalue   <- TRUE
+options$looComparison               <- FALSE
 options$convergenceDiagnostics      <- TRUE
 options$tracePlots                  <- TRUE
 options$tracePlotsType              <- "loadings"
@@ -106,6 +107,9 @@ test_that("Fit Indices table results match", {
 
 test_that("Model Fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
+  expect_false("Rank" %in% names(table))
+  expect_false("elpdDiff" %in% names(table))
+  expect_false("seDiff" %in% names(table))
   expect_bsem_table(table,
                                  list(1919.57818952403, 1918.40775635642, "Model 1", 75, 0.2075, 1918.27705443898,
                                       22, 22))
@@ -305,6 +309,7 @@ model_no_reg <- "
 
 options_mm <- options
 options_mm$additionalFitMeasures <- FALSE
+options_mm$looComparison         <- TRUE
 options_mm$models <- list(
   list(name = "Model 1", syntax = list(model = model,        columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4"))),
   list(name = "Model 2", syntax = list(model = model_no_reg, columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4")))
@@ -315,12 +320,27 @@ set.seed(321)
 results <- jaspTools::runAnalysis("BayesianSEM", testthat::test_path("poldem_grouped.csv"), options_mm,
                                      makeTests = FALSE)
 
-test_that("Model Fit table results match", {
+test_that("Model Fit table adds LOO comparison for multiple models", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
-  expect_bsem_table(table,
-                                 list(1919.57818952403, 1918.40775635642, "Model 1", 75, 1918.27705443898,
-                                      22, 22, 1920.52798775365, 1920.00505745772, "Model 2", 75, 1919.87919157792,
-                                      22, 22))
+  expect_equal(length(table), 2L)
+  expect_true(all(vapply(table, function(row) all(c("Rank", "elpdDiff", "seDiff") %in% names(row)), TRUE)))
+
+  ranks     <- vapply(table, function(row) row$Rank, integer(1))
+  elpdDiffs <- vapply(table, function(row) row$elpdDiff, numeric(1))
+  seDiffs   <- vapply(table, function(row) row$seDiff, numeric(1))
+
+  expect_equal(sort(ranks), c(1L, 2L))
+
+  bestRow  <- which(ranks == 1L)
+  worseRow <- which(ranks == 2L)
+
+  expect_length(bestRow, 1L)
+  expect_length(worseRow, 1L)
+  expect_equal(elpdDiffs[bestRow], 0)
+  expect_equal(seDiffs[bestRow], 0)
+  expect_lte(elpdDiffs[worseRow], 0)
+  expect_true(is.finite(seDiffs[worseRow]))
+  expect_gte(seDiffs[worseRow], 0)
 })
 
 test_that("Factor Loadings table results match", {
