@@ -3,6 +3,14 @@
     "r-mcptools": {
       "command": "Rscript",
       "args": ["-e", "source('.claude/mcp-server.R')"]
+    }, 
+    "statsvault-search": {
+      "command": "/Users/julius/Packages/StatsVault/.venv/bin/python",
+      "args": [
+        "-m",
+        "src.search.mcp_server"
+      ],
+      "cwd": "/Users/julius/Packages/StatsVault"
     }
   }
 }
