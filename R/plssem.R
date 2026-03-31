@@ -15,6 +15,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+.plsSemBootstrapTick <- function(.object) {
+  progressbarTick()
+  c(0, 0)
+}
+
 PLSSEMInternal <- function(jaspResults, dataset, options, ...) {
   jaspResults$addCitation("Rademaker ME, Schuberth F (2020). cSEM: Composite-Based Structural Equation Modeling. Package version: 0.4.0, https://m-e-rademaker.github.io/cSEM/.")
 
@@ -276,18 +281,13 @@ checkCSemModel <- function(model, availableVars) {
 
       startProgressbar(options[["bootstrapSamples"]], "Resampling")
 
-      # argument .user_funs in cSEM::resamplecSEMResults only accepts a function with .object as input and a vector as output; c(0,0) does not have any other function
-      tickFunction <- function(.object)
-      {
-        progressbarTick()
-        return(c(0,0))
-      }
+      # argument .user_funs in cSEM::resamplecSEMResults only accepts a function with .object as input and a vector as output
       # resample
       options(future.globals.method.default = "ordered",
               future.globals.method         = "ordered")
       fit <- try(cSEM::resamplecSEMResults(.object = fit,
                                            .R = options[["bootstrapSamples"]],
-                                           .user_funs = tickFunction,
+                                           .user_funs = .plsSemBootstrapTick,
                                            .resample_method = "bootstrap",
                                            .handle_inadmissibles = options[["handlingOfInadmissibles"]],
                                            .sign_change_option = "none",

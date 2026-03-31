@@ -55,3 +55,8 @@ renv_build.R
 
 # dev mode files
 jasp_dev_work_dir/
+
+# machine-specific AI agent config (not committed)
+.mcp.json
+.vscode/mcp.json
+.claude/settings.local.json
