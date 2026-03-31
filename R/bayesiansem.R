@@ -23,7 +23,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   options <- .bayesiansemPrepOpts(options)
 
   ready      <- .bayesiansemHasRunnableModels(options)
-  runAllowed <- ready && isTRUE(options[["runAnalysis"]])
+  runAllowed <- ready && options[["runAnalysis"]]
 
   modelContainer <- .bayesiansemModelContainer(jaspResults)
 
@@ -98,7 +98,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   }
 
   # Check whether grouping variable is a grouping variable
-  if (isTRUE(options[["group"]] != "")) {
+  if (options[["group"]] != "") {
     groupfac <- factor(dataset[[options[["group"]]]])
     factab <- table(groupfac)
     if (any(factab < 3)) {
@@ -163,7 +163,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 }
 
 .bayesiansemFitGroupLabels <- function(fit, options) {
-  if (!isTRUE(options[["group"]] != ""))
+  if (options[["group"]] == "")
     return(gettext("All data"))
 
   labels <- tryCatch(lavaan::lavInspect(fit, "group.label"), error = function(e) character())
@@ -191,7 +191,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 .bayesiansemComputeResults <- function(jaspResults, modelContainer, dataset, options, ready, runAllowed) {
 
   if (!ready) {
-    if (isTRUE(options[["runAnalysis"]]))
+    if (options[["runAnalysis"]])
       modelContainer <- .bayesiansemResetModelContainer(jaspResults)
     return(modelContainer)
   }
@@ -294,7 +294,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
 .bayesiansemComputePriorResults <- function(jaspResults, modelContainer, dataset, options, ready, runAllowed) {
 
-  if (!isTRUE(options[["priorPredictivePlots"]]))
+  if (!options[["priorPredictivePlots"]])
     return(modelContainer)
 
   if (!ready)
@@ -429,12 +429,9 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   blavaanOptions <- list()
 
   # model features
-  # blavaan always estimates mean structure internally; setting meanstructure = FALSE
-  # triggers a warning ("missing argument ml forces meanstructure = TRUE").
-  # Always pass TRUE to avoid the warning; the meanStructure option controls display only.
-  blavaanOptions[["meanstructure"]]   <- TRUE
-  blavaanOptions[["int.ov.free"]]     <- !options[["manifestInterceptFixedToZero"]]
-  blavaanOptions[["int.lv.free"]]     <- !options[["latentInterceptFixedToZero"]]
+  blavaanOptions[["meanstructure"]]   <- options[["meanStructure"]]
+  blavaanOptions[["int.ov.free"]]     <- options[["meanStructure"]] && !options[["manifestInterceptFixedToZero"]]
+  blavaanOptions[["int.lv.free"]]     <- options[["meanStructure"]] && !options[["latentInterceptFixedToZero"]]
   blavaanOptions[["orthogonal"]]      <- options[["orthogonal"]]
   blavaanOptions[["std.lv"]]          <- options[["factorScaling"]] == "factorVariance"
   blavaanOptions[["auto.fix.first"]]  <- options[["factorScaling"]] == "factorLoading"
@@ -448,7 +445,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   blavaanOptions[["auto.delta"]]     <- TRUE
 
   # group variable
-  if (isTRUE(options[["group"]] != "")) {
+  if (options[["group"]] != "") {
     blavaanOptions[["group"]] <- options[["group"]]
   }
 
@@ -464,14 +461,14 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     options[["equalLatentVariance"]],
     options[["equalLatentCovariance"]]
   )
-  if (isTRUE(options[["group"]] != "") && any(equality_constraints)) {
+  if (options[["group"]] != "" && any(equality_constraints)) {
     blavaanOptions[["group.equal"]] <- c("loadings", "intercepts", "means", "thresholds", "regressions",
                                          "residuals", "residual.covariances",
                                          "lv.variances", "lv.covariances")[equality_constraints]
   }
 
   # group.partial (release constraints)
-  if (isTRUE(options[["group"]] != "") &&
+  if (options[["group"]] != "" &&
       !is.null(options[["freeParameters"]]) &&
       options[["freeParameters"]][["model"]] != "") {
     splitted <- strsplit(options[["freeParameters"]][["model"]], "[\\n,;]+", perl = TRUE)[[1]]
@@ -479,7 +476,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   }
 
   # Bayesian-specific options for blavaan
-  if (isTRUE(prisamp)) {
+  if (prisamp) {
     priorSampling <- .bayesiansemPriorPredictiveSamplingOptions(options)
     blavaanOptions[["burnin"]]   <- priorSampling[["burnin"]]
     blavaanOptions[["sample"]]   <- priorSampling[["sample"]]
@@ -490,13 +487,13 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     blavaanOptions[["n.chains"]] <- if (!is.null(options[["mcmcChains"]]))   options[["mcmcChains"]]   else 3L
   }
   blavaanOptions[["target"]]   <- "stan"
-  blavaanOptions[["prisamp"]]  <- isTRUE(prisamp)
+  blavaanOptions[["prisamp"]]  <- prisamp
 
   thinVal <- if (!is.null(options[["mcmcThin"]])) options[["mcmcThin"]] else 1L
-  if (!isTRUE(prisamp) && thinVal > 1L)
+  if (!prisamp && thinVal > 1L)
     blavaanOptions[["bcontrol"]] <- list(thin = thinVal)
 
-  if (isTRUE(options[["setSeed"]])) {
+  if (options[["setSeed"]]) {
     blavaanOptions[["seed"]] <- options[["seed"]]
   }
 
@@ -514,7 +511,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
                  "priorLatentSdParam1", "priorLatentSdParam2",
                  "priorCorrelationParam1", "priorCorrelationParam2")
   for (opt in scaleOpts) {
-    if (isTRUE(options[[opt]] <= 0))
+    if (options[[opt]] <= 0)
       .quitAnalysis(gettextf("Prior parameter '%s' must be strictly positive.", opt))
   }
 
@@ -568,7 +565,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 .bayesiansemFitTab <- function(jaspResults, modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["fittab"]])) return()
 
-  showLooComparison <- isTRUE(options[["looComparison"]]) && length(options[["models"]]) >= 2
+  showLooComparison <- options[["looComparison"]] && length(options[["models"]]) >= 2
 
   fittab <- createJaspTable(title = gettext("Model Fit"))
   fittab$dependOn(c("warnings", "posteriorPredictivePvalue", "looComparison"))
@@ -582,11 +579,12 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     fittab$addColumnInfo(name = "PPP",    title = gettext("PPP"),                type = "number")
   fittab$addColumnInfo(name = "DIC",      title = gettext("DIC"),                type = "number" )
   fittab$addColumnInfo(name = "WAIC",     title = gettext("WAIC"),               type = "number" )
-  fittab$addColumnInfo(name = "LOO",      title = gettext("LOO"),                type = "number" )
+  fittab$addColumnInfo(name = "LOO",      title = gettext("LOO"),                type = "number",
+                       overtitle = if (showLooComparison) gettext("LOO") else NULL)
   if (showLooComparison) {
-    fittab$addColumnInfo(name = "Rank",      title = gettext("Rank"),            type = "integer")
-    fittab$addColumnInfo(name = "elpdDiff",  title = gettext("ELPD diff"),       type = "number" )
-    fittab$addColumnInfo(name = "seDiff",    title = gettext("SE diff"),         type = "number" )
+    fittab$addColumnInfo(name = "Rank",      title = gettext("Rank"),            overtitle = gettext("LOO"), type = "integer")
+    fittab$addColumnInfo(name = "elpdDiff",  title = gettext("ELPD diff"),       overtitle = gettext("LOO"), type = "number" )
+    fittab$addColumnInfo(name = "seDiff",    title = gettext("SE diff"),         overtitle = gettext("LOO"), type = "number" )
   }
   modelContainer[["fittab"]] <- fittab
 
@@ -735,7 +733,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
 .bayesiansemAdditionalFits <- function(jaspResults, modelContainer, dataset, options, ready) {
 
-  if (!isTRUE(options[["additionalFitMeasures"]]) || !is.null(modelContainer[["addfit"]])) return()
+  if (!options[["additionalFitMeasures"]] || !is.null(modelContainer[["addfit"]])) return()
 
   fitContainer <- createJaspContainer(gettext("Additional Fit Measures"))
   fitContainer$dependOn("additionalFitMeasures")
@@ -990,14 +988,14 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   }
 
   # Map group numbers to group labels for multigroup models
-  if (isTRUE(options[["group"]] != "")) {
+  if (options[["group"]] != "") {
     groupLabels <- lavaan::lavInspect(fit, "group.label")
     paramTable$group <- ifelse(paramTable$group == 0, "", groupLabels[paramTable$group])
   }
 
   # Helper: create and attach a parameter table only when it has rows
   ciOvertitle <- gettextf("%s%% Credible interval", options[["ciLevel"]] * 100)
-  hasGroup <- isTRUE(options[["group"]] != "")
+  hasGroup <- options[["group"]] != ""
 
   .makeParamTable <- function(key, title, lhsTitle, data, rhsTitle = NULL) {
     if (nrow(data) == 0) return()
@@ -1207,7 +1205,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 # Prior predictive plots ----
 
 .bayesiansemPriorPredictivePlots <- function(jaspResults, modelContainer, dataset, options, ready) {
-  if (!isTRUE(options[["priorPredictivePlots"]]))             return()
+  if (!options[["priorPredictivePlots"]])                     return()
   if (!is.null(modelContainer[["priorPredictivePlots"]]))     return()
   if (!ready || modelContainer$getError())                    return()
 
@@ -1532,7 +1530,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 }
 
 .bayesiansemObservedDataByGroup <- function(fit, dataset, ovNames, options) {
-  if (!isTRUE(options[["group"]] != "")) {
+  if (options[["group"]] == "") {
     observed <- list(dataset[, ovNames, drop = FALSE])
     names(observed) <- gettext("All data")
     return(observed)
