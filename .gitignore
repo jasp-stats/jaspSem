@@ -56,7 +56,6 @@ renv_build.R
 # dev mode files
 jasp_dev_work_dir/
 
-<<<<<<< HEAD
 # AI assistant configs
 .claude/
 .mcp.json
@@ -67,9 +66,8 @@ jasp_dev_work_dir/
 # test problem files
 tests/testthat/_problems/
 .positai
-=======
 # machine-specific AI agent config (not committed)
 .mcp.json
 .vscode/mcp.json
 .claude/settings.local.json
->>>>>>> 88fbdb1 (add bayesian sem first try)
+.claude/plans/

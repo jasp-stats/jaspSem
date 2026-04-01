@@ -26,6 +26,17 @@ Form
 
 	columns: 1
 
+	// UI-0 = zero-centered unit information; half = half SD; positive/negative = directional
+	property var uiPriorValues:
+	[
+		{ label: qsTr("UI-0"),                value: "ui0"             },
+		{ label: qsTr("UI-0-half"),           value: "ui0Half"         },
+		{ label: qsTr("UI-0-positive"),       value: "ui0Positive"     },
+		{ label: qsTr("UI-0-negative"),       value: "ui0Negative"     },
+		{ label: qsTr("UI-0-half-positive"),  value: "ui0HalfPositive" },
+		{ label: qsTr("UI-0-half-negative"),  value: "ui0HalfNegative" }
+	]
+
 	TabView
 	{
 		id: models
@@ -79,7 +90,7 @@ Form
 					{ label: qsTr("None"),				value: "none"			}
 				]
 			}
-			
+
 			CheckBox { name: "orthogonal"; label: qsTr("Assume factors uncorrelated"); checked: false; info: qsTr("Assume that all latent factors are uncorrelated.") }
 
 			CheckBox
@@ -158,88 +169,98 @@ Form
 		title: qsTr("Prior Options")
 		info: qsTr("Configure prior distributions for model parameters.")
 
-		RadioButtonGroup
+		RowLayout
 		{
-			name:                 "priorSpecification"
-			title:                qsTr("Prior specification")
-			radioButtonsOnSameRow: true
-			info:                 qsTr("Select how prior distributions are specified for model parameters.")
+			Layout.columnSpan: 2
 
-			RadioButton { value: "default";    label: qsTr("Default");     checked: true; id: priorDefault    }
-			RadioButton { value: "nonDefault"; label: qsTr("Non-default"); id: priorNonDefault }
+			RadioButtonGroup
+			{
+				name:                 "priorSpecification"
+				title:                qsTr("Prior Specification")
+				radioButtonsOnSameRow: true
+				info:                 qsTr("Select how prior distributions are specified for model parameters.")
+
+				RadioButton { value: "default";    label: qsTr("Default");     checked: true; id: priorDefault    }
+				RadioButton { value: "nonDefault"; label: qsTr("Non-default"); id: priorNonDefault }
+			}
+
+			HelpButton
+			{
+				visible:  priorNonDefault.checked
+				toolTip:  qsTr("Click for more information on unit information prior variants")
+				helpPage: "forQml/tooltipUiPriors"
+			}
 		}
-
-		// === DEFAULT: manual prior fields ===
+			
 		Group
 		{
 			visible: priorDefault.checked
+			Layout.rowSpan: 2
+			title: qsTr("Location Parameters \u2014 Normal(mean, sd)")
+			info: qsTr("Normal prior distributions for location parameters.")
+			columns: 3
 
-			Group
-			{
-				Layout.rowSpan: 2
-				title: qsTr("Location Parameters \u2014 Normal(mean, sd)")
-				info: qsTr("Normal prior distributions for location parameters.")
-				columns: 3
+			Text { text: qsTr("Loadings (\u03BB)") }
+			DoubleField { name: "priorLoadingParam1";			label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for factor loadings.") }
+			DoubleField { name: "priorLoadingParam2";			label: qsTr("sd");		defaultValue: 10;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for factor loadings.") }
 
-				Text { text: qsTr("Loadings (\u03BB)") }
-				DoubleField { name: "priorLoadingParam1";			label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for factor loadings.") }
-				DoubleField { name: "priorLoadingParam2";			label: qsTr("sd");		defaultValue: 10;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for factor loadings.") }
+			Text { text: qsTr("Regressions (\u03B2)") }
+			DoubleField { name: "priorRegressionParam1";		label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for regression coefficients.") }
+			DoubleField { name: "priorRegressionParam2";		label: qsTr("sd");		defaultValue: 10;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for regression coefficients.") }
 
-				Text { text: qsTr("Regressions (\u03B2)") }
-				DoubleField { name: "priorRegressionParam1";		label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for regression coefficients.") }
-				DoubleField { name: "priorRegressionParam2";		label: qsTr("sd");		defaultValue: 10;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for regression coefficients.") }
+			Text { text: qsTr("Obs. intercepts (\u03BD)") }
+			DoubleField { name: "priorObservedInterceptParam1";	label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for observed variable intercepts.") }
+			DoubleField { name: "priorObservedInterceptParam2";	label: qsTr("sd");		defaultValue: 32;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for observed variable intercepts.") }
 
-				Text { text: qsTr("Obs. intercepts (\u03BD)") }
-				DoubleField { name: "priorObservedInterceptParam1";	label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for observed variable intercepts.") }
-				DoubleField { name: "priorObservedInterceptParam2";	label: qsTr("sd");		defaultValue: 32;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for observed variable intercepts.") }
+			Text { text: qsTr("Lat. intercepts (\u03B1)") }
+			DoubleField { name: "priorLatentInterceptParam1";	label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for latent variable intercepts.") }
+			DoubleField { name: "priorLatentInterceptParam2";	label: qsTr("sd");		defaultValue: 10;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for latent variable intercepts.") }
 
-				Text { text: qsTr("Lat. intercepts (\u03B1)") }
-				DoubleField { name: "priorLatentInterceptParam1";	label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for latent variable intercepts.") }
-				DoubleField { name: "priorLatentInterceptParam2";	label: qsTr("sd");		defaultValue: 10;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for latent variable intercepts.") }
+			Text { text: qsTr("Thresholds (\u03C4)") }
+			DoubleField { name: "priorThresholdParam1";			label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for thresholds.") }
+			DoubleField { name: "priorThresholdParam2";			label: qsTr("sd");		defaultValue: 1.5;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for thresholds.") }
+		}
 
-				Text { text: qsTr("Thresholds (\u03C4)") }
-				DoubleField { name: "priorThresholdParam1";			label: qsTr("mean");	defaultValue: 0;	min: -1000;	max: 1000;	decimals: 2;	info: qsTr("Mean of the normal prior for thresholds.") }
-				DoubleField { name: "priorThresholdParam2";			label: qsTr("sd");		defaultValue: 1.5;	min: 0;		max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Standard deviation of the normal prior for thresholds.") }
-			}
+		Group
+		{
+			visible: priorDefault.checked
+			title: qsTr("Scale Parameters \u2014 Gamma(shape, rate) on SD")
+			info: qsTr("Gamma prior distributions on the standard deviation scale.")
+			columns: 3
 
-			Group
-			{
-				title: qsTr("Scale Parameters \u2014 Gamma(shape, rate) on SD")
-				info: qsTr("Gamma prior distributions on the standard deviation scale.")
-				columns: 3
+			Text { text: qsTr("Residual SD (\u03B8)") }
+			DoubleField { name: "priorResidualSdParam1";	label: qsTr("shape");	defaultValue: 1;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Shape parameter of the gamma prior for residual standard deviations.") }
+			DoubleField { name: "priorResidualSdParam2";	label: qsTr("rate");	defaultValue: 0.5;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Rate parameter of the gamma prior for residual standard deviations.") }
 
-				Text { text: qsTr("Residual SD (\u03B8)") }
-				DoubleField { name: "priorResidualSdParam1";	label: qsTr("shape");	defaultValue: 1;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Shape parameter of the gamma prior for residual standard deviations.") }
-				DoubleField { name: "priorResidualSdParam2";	label: qsTr("rate");	defaultValue: 0.5;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Rate parameter of the gamma prior for residual standard deviations.") }
+			Text { text: qsTr("Latent SD (\u03C8)") }
+			DoubleField { name: "priorLatentSdParam1";		label: qsTr("shape");	defaultValue: 1;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Shape parameter of the gamma prior for latent variable standard deviations.") }
+			DoubleField { name: "priorLatentSdParam2";		label: qsTr("rate");	defaultValue: 0.5;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Rate parameter of the gamma prior for latent variable standard deviations.") }
+		}
 
-				Text { text: qsTr("Latent SD (\u03C8)") }
-				DoubleField { name: "priorLatentSdParam1";		label: qsTr("shape");	defaultValue: 1;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Shape parameter of the gamma prior for latent variable standard deviations.") }
-				DoubleField { name: "priorLatentSdParam2";		label: qsTr("rate");	defaultValue: 0.5;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Rate parameter of the gamma prior for latent variable standard deviations.") }
-			}
+		Group
+		{
+			visible: priorDefault.checked
+			title: qsTr("Correlation Parameters \u2014 Beta(\u03B1, \u03B2)")
+			info: qsTr("Beta prior distribution for correlation parameters.")
+			columns: 3
 
-			Group
-			{
-				title: qsTr("Correlation Parameters \u2014 Beta(\u03B1, \u03B2)")
-				info: qsTr("Beta prior distribution for correlation parameters.")
-				columns: 3
-
-				Text { text: qsTr("Correlations (\u03C1)") }
-				DoubleField { name: "priorCorrelationParam1";	label: qsTr("\u03B1");	defaultValue: 1;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Alpha parameter of the beta prior for correlations.") }
-				DoubleField { name: "priorCorrelationParam2";	label: qsTr("\u03B2");	defaultValue: 1;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Beta parameter of the beta prior for correlations.") }
-			}
+			Text { text: qsTr("Correlations (\u03C1)") }
+			DoubleField { name: "priorCorrelationParam1";	label: qsTr("\u03B1");	defaultValue: 1;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Alpha parameter of the beta prior for correlations.") }
+			DoubleField { name: "priorCorrelationParam2";	label: qsTr("\u03B2");	defaultValue: 1;	min: 0;	max: 1000;	decimals: 2;	inclusive: JASP.None;	info: qsTr("Beta parameter of the beta prior for correlations.") }
 		}
 
 		// === NON-DEFAULT: Unit Information priors ===
 		Group
 		{
 			visible: priorNonDefault.checked
-
+			Layout.columnSpan: 2
+			
 			RadioButtonGroup
 			{
-				name:                 "priorUiScope"
-				title:                qsTr("Scope")
+				name:                  "priorUiScope"
+				title:                 qsTr("Scope")
 				radioButtonsOnSameRow: true
-				info:                 qsTr("Apply unit information priors globally, per parameter type, or per individual parameter.")
+				info:                  qsTr("Apply unit information priors globally, per parameter type, or per individual parameter.")
 
 				RadioButton { value: "global";    label: qsTr("Global");        checked: true; id: scopeGlobal    }
 				RadioButton { value: "group";     label: qsTr("Per type");      id: scopeGroup     }
@@ -247,115 +268,55 @@ Form
 			}
 
 			// Global: single dropdown for all parameters
-			Group
+			DropDown
 			{
 				visible: scopeGlobal.checked
-
-				DropDown
-				{
-					name:  "priorUiGlobal"
-					label: qsTr("Prior")
-					info:  qsTr("Unit information prior variant applied to all parameters.")
-					values:
-					[
-						{ label: qsTr("UI-0"),                value: "ui0"             },
-						{ label: qsTr("UI-0-half"),           value: "ui0Half"         },
-						{ label: qsTr("UI-0-positive"),       value: "ui0Positive"     },
-						{ label: qsTr("UI-0-negative"),       value: "ui0Negative"     },
-						{ label: qsTr("UI-0-half-positive"),  value: "ui0HalfPositive" },
-						{ label: qsTr("UI-0-half-negative"),  value: "ui0HalfNegative" }
-					]
-				}
+				name:   "priorUiGlobal"
+				label:  qsTr("Prior")
+				info:   qsTr("Unit information prior variant applied to all parameters.")
+				values: uiPriorValues
 			}
+			
 
 			// Per type: one dropdown per parameter class
-			Group
+			DropDown {visible: scopeGroup.checked; name: "priorUiGroupLoadings";      label: qsTr("Loadings (\u03BB)");        info: qsTr("Unit information prior variant for factor loadings.");             values: uiPriorValues }
+			DropDown {visible: scopeGroup.checked; name: "priorUiGroupRegressions";   label: qsTr("Regressions (\u03B2)");     info: qsTr("Unit information prior variant for regression coefficients.");     values: uiPriorValues }
+			DropDown {visible: scopeGroup.checked; name: "priorUiGroupObsIntercepts"; label: qsTr("Obs. intercepts (\u03BD)"); info: qsTr("Unit information prior variant for observed variable intercepts.");  values: uiPriorValues }
+			DropDown {visible: scopeGroup.checked; name: "priorUiGroupLatIntercepts"; label: qsTr("Lat. intercepts (\u03B1)"); info: qsTr("Unit information prior variant for latent variable intercepts.");   values: uiPriorValues }
+			DropDown {visible: scopeGroup.checked; name: "priorUiGroupThresholds";    label: qsTr("Thresholds (\u03C4)");      info: qsTr("Unit information prior variant for thresholds.");                  values: uiPriorValues }
+			DropDown {visible: scopeGroup.checked; name: "priorUiGroupResidual";      label: qsTr("Residual SD (\u03B8)");     info: qsTr("Unit information prior variant for residual standard deviations."); values: uiPriorValues }
+			DropDown {visible: scopeGroup.checked; name: "priorUiGroupLatent";        label: qsTr("Latent SD (\u03C8)");       info: qsTr("Unit information prior variant for latent standard deviations.");   values: uiPriorValues }
+			DropDown {visible: scopeGroup.checked; name: "priorUiGroupCorrelations";  label: qsTr("Correlations (\u03C1)");    info: qsTr("Unit information prior variant for correlations.");                values: uiPriorValues }
+
+
+			ComponentsList
 			{
-				visible: scopeGroup.checked
-				info: qsTr("Set unit information prior variant for each parameter type.")
-
-				DropDown
+				visible:          scopeParameter.checked
+				name:             "priorUiParameters"
+				preferredWidth:   form.width
+				headerLabels: 		[qsTr("Parameter"), qsTr("Unit Information Prior")]
+				addItemManually:  true
+				minimumItems:     1
+				info:             qsTr("Specify parameters in lavaan syntax and assign a prior variant to each.")
+				rowComponent: RowLayout
 				{
-					name: "priorUiGroupLoadings";		label: qsTr("Loadings (\u03BB)")
-					values: [ { label: qsTr("UI-0"), value: "ui0" }, { label: qsTr("UI-0-half"), value: "ui0Half" }, { label: qsTr("UI-0-positive"), value: "ui0Positive" }, { label: qsTr("UI-0-negative"), value: "ui0Negative" }, { label: qsTr("UI-0-half-positive"), value: "ui0HalfPositive" }, { label: qsTr("UI-0-half-negative"), value: "ui0HalfNegative" } ]
-				}
-				DropDown
-				{
-					name: "priorUiGroupRegressions";	label: qsTr("Regressions (\u03B2)")
-					values: [ { label: qsTr("UI-0"), value: "ui0" }, { label: qsTr("UI-0-half"), value: "ui0Half" }, { label: qsTr("UI-0-positive"), value: "ui0Positive" }, { label: qsTr("UI-0-negative"), value: "ui0Negative" }, { label: qsTr("UI-0-half-positive"), value: "ui0HalfPositive" }, { label: qsTr("UI-0-half-negative"), value: "ui0HalfNegative" } ]
-				}
-				DropDown
-				{
-					name: "priorUiGroupObsIntercepts";	label: qsTr("Obs. intercepts (\u03BD)")
-					values: [ { label: qsTr("UI-0"), value: "ui0" }, { label: qsTr("UI-0-half"), value: "ui0Half" }, { label: qsTr("UI-0-positive"), value: "ui0Positive" }, { label: qsTr("UI-0-negative"), value: "ui0Negative" }, { label: qsTr("UI-0-half-positive"), value: "ui0HalfPositive" }, { label: qsTr("UI-0-half-negative"), value: "ui0HalfNegative" } ]
-				}
-				DropDown
-				{
-					name: "priorUiGroupLatIntercepts";	label: qsTr("Lat. intercepts (\u03B1)")
-					values: [ { label: qsTr("UI-0"), value: "ui0" }, { label: qsTr("UI-0-half"), value: "ui0Half" }, { label: qsTr("UI-0-positive"), value: "ui0Positive" }, { label: qsTr("UI-0-negative"), value: "ui0Negative" }, { label: qsTr("UI-0-half-positive"), value: "ui0HalfPositive" }, { label: qsTr("UI-0-half-negative"), value: "ui0HalfNegative" } ]
-				}
-				DropDown
-				{
-					name: "priorUiGroupThresholds";		label: qsTr("Thresholds (\u03C4)")
-					values: [ { label: qsTr("UI-0"), value: "ui0" }, { label: qsTr("UI-0-half"), value: "ui0Half" }, { label: qsTr("UI-0-positive"), value: "ui0Positive" }, { label: qsTr("UI-0-negative"), value: "ui0Negative" }, { label: qsTr("UI-0-half-positive"), value: "ui0HalfPositive" }, { label: qsTr("UI-0-half-negative"), value: "ui0HalfNegative" } ]
-				}
-				DropDown
-				{
-					name: "priorUiGroupResidual";		label: qsTr("Residual SD (\u03B8)")
-					values: [ { label: qsTr("UI-0"), value: "ui0" }, { label: qsTr("UI-0-half"), value: "ui0Half" }, { label: qsTr("UI-0-positive"), value: "ui0Positive" }, { label: qsTr("UI-0-negative"), value: "ui0Negative" }, { label: qsTr("UI-0-half-positive"), value: "ui0HalfPositive" }, { label: qsTr("UI-0-half-negative"), value: "ui0HalfNegative" } ]
-				}
-				DropDown
-				{
-					name: "priorUiGroupLatent";			label: qsTr("Latent SD (\u03C8)")
-					values: [ { label: qsTr("UI-0"), value: "ui0" }, { label: qsTr("UI-0-half"), value: "ui0Half" }, { label: qsTr("UI-0-positive"), value: "ui0Positive" }, { label: qsTr("UI-0-negative"), value: "ui0Negative" }, { label: qsTr("UI-0-half-positive"), value: "ui0HalfPositive" }, { label: qsTr("UI-0-half-negative"), value: "ui0HalfNegative" } ]
-				}
-				DropDown
-				{
-					name: "priorUiGroupCorrelations";	label: qsTr("Correlations (\u03C1)")
-					values: [ { label: qsTr("UI-0"), value: "ui0" }, { label: qsTr("UI-0-half"), value: "ui0Half" }, { label: qsTr("UI-0-positive"), value: "ui0Positive" }, { label: qsTr("UI-0-negative"), value: "ui0Negative" }, { label: qsTr("UI-0-half-positive"), value: "ui0HalfPositive" }, { label: qsTr("UI-0-half-negative"), value: "ui0HalfNegative" } ]
-				}
-			}
-
-			// Per parameter: ComponentsList with lavaan syntax input + prior dropdown per row
-			Group
-			{
-				visible: scopeParameter.checked
-
-				ComponentsList
-				{
-					name:            "priorUiParameters"
-					title:           qsTr("Parameters")
-					addItemManually: true
-					optionKey:       "parameter"
-					info:            qsTr("Specify parameters in lavaan syntax and assign a prior variant to each.")
-
-					rowComponent: Group
+					TextField
 					{
-						columns: 2
+						name:                  "priorUiParameterName"
+						label:                 ""
+						placeholderText:       qsTr("e.g. f1 =~ x1")
+						fieldWidth:            250
+						Layout.preferredWidth: 300 * jaspTheme.uiScale
+						info:                  qsTr("Parameter in lavaan syntax.")
+					}
 
-						TextField
-						{
-							name:            "parameter"
-							label:           ""
-							placeholderText: qsTr("e.g. f1 =~ x1")
-							fieldWidth:      140
-							info:            qsTr("Parameter in lavaan syntax.")
-						}
-
-						DropDown
-						{
-							name:   "prior"
-							label:  ""
-							values:
-							[
-								{ label: qsTr("UI-0"),                value: "ui0"             },
-								{ label: qsTr("UI-0-half"),           value: "ui0Half"         },
-								{ label: qsTr("UI-0-positive"),       value: "ui0Positive"     },
-								{ label: qsTr("UI-0-negative"),       value: "ui0Negative"     },
-								{ label: qsTr("UI-0-half-positive"),  value: "ui0HalfPositive" },
-								{ label: qsTr("UI-0-half-negative"),  value: "ui0HalfNegative" }
-							]
-						}
+					DropDown
+					{
+						name:                  "priorUiParameterPrior"
+						label:                 ""
+						Layout.preferredWidth: 200 * jaspTheme.uiScale
+						info:                  qsTr("Unit information prior variant for this parameter.")
+						values:                uiPriorValues
 					}
 				}
 			}
