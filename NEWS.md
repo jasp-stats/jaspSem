@@ -1,5 +1,13 @@
 # jaspSem (development version)
 
+## [Pull Request #360](https://github.com/jasp-stats/jaspSem/pull/360)
+- Replace help files with inline `info` fields on all QML controls across SEM, Mediation Analysis, MIMIC, PLS-SEM, and MNLFA
+- Standardize all table, plot, and container titles to Title Case across all R files
+- Wrap missing user-visible strings in `gettext()` for internationalization
+- Fix `initCollapsed` parameter placement in PLS-SEM correlation containers
+- Enable `preloadData` for all analyses
+- Fix "Residuals" → "Residual" in covariance matrix titles for consistency
+
 ## [Pull Request #248](https://github.com/jasp-stats/jaspSem/pull/248):
 - Major changes to SEM: 
   - ordinal data fully supported

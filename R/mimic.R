@@ -195,7 +195,8 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 .mimicFitTable <- function(modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["fittab"]])) return()
 
-  fittab <- createJaspTable(title = gettext("Chi-square test"))
+  fittab <- createJaspTable(title = gettext("Chi-Square Test"))
+  fittab$info <- gettext("Chi-square goodness-of-fit test for the MIMIC model. Both the baseline (independence) model and the factor model with predictors are shown. A non-significant chi-square for the factor model indicates adequate fit.")
   fittab$position <- 0
 
   fittab$addColumnInfo(name="Model", title = "",                      type = "string")
@@ -235,7 +236,8 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 
 .mimicParTable <- function(modelContainer, options, ready) {
   if (!is.null(modelContainer[["parest"]])) return()
-  modelContainer[["parest"]] <- pecont <- createJaspContainer(gettext("Parameter estimates"))
+  modelContainer[["parest"]] <- pecont <- createJaspContainer(gettext("Parameter Estimates"))
+  pecont$info <- gettext("Parameter estimates for the MIMIC (Multiple Indicators, Multiple Causes) model. The model has observed predictors influencing a latent variable, which in turn is measured by observed indicators.")
   pecont$dependOn(options = c("ciLevel", "bootstrapCiType"))
   pecont$position <- 0.5
 
@@ -243,10 +245,11 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 
   ## betas
   bettab <- createJaspTable(title = gettext("Predictor coefficients"))
+  bettab$info <- gettext("Regression coefficients of the observed predictor (cause) variables on the latent variable. These represent the direct effects of each predictor on the latent construct.")
 
   bettab$addColumnInfo(name = "rhs",      title = gettext("Predictor"),  type = "string")
   bettab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
-  bettab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
+  bettab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
   bettab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   bettab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   bettab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -259,10 +262,11 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 
   ## lambdas
   lamtab <- createJaspTable(title = gettext("Indicator coefficients"))
+  lamtab$info <- gettext("Factor loadings of the latent variable on its observed indicators. These represent how strongly each indicator reflects the underlying latent construct.")
 
   lamtab$addColumnInfo(name = "rhs",      title = gettext("Indicator"),  type = "string")
   lamtab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
-  lamtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
+  lamtab$addColumnInfo(name = "se",       title = gettext("Std. Error"), type = "number", format = "sf:4;dp:3")
   lamtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
   lamtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   lamtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
@@ -323,6 +327,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   if (!options$rSquared || !is.null(modelContainer[["rsquared"]])) return()
 
   tabr2 <- createJaspTable(gettext("R-Squared"))
+  tabr2$info <- gettext("Proportion of variance explained in the latent variable (by the predictors) and in each indicator (by the latent variable).")
   tabr2$addColumnInfo(name = "__var__", title = "", type = "string")
   tabr2$addColumnInfo(name = "rsq", title = "R\u00B2", type = "number", format = "sf:4;dp:3")
   tabr2$dependOn(options = "rSquared")
@@ -340,7 +345,8 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 .mimicPathPlot <- function(modelContainer, dataset, options, ready) {
   if (!options$pathPlot || !ready || !is.null(modelContainer[["plot"]])) return()
 
-  plt <- createJaspPlot(title = gettext("Path plot"), width = 600, height = 400)
+  plt <- createJaspPlot(title = gettext("Path Plot"), width = 600, height = 400)
+  plt$info <- gettext("Path diagram of the MIMIC model showing observed predictors (causes), the latent variable, and its observed indicators.")
   plt$dependOn(options = c("pathPlot", "pathPlotParameter", "pathPlotLegend"))
   plt$position <- 2
 
@@ -380,6 +386,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 .mimicSyntax <- function(modelContainer, options, ready) {
   if (!options$syntax || !ready) return()
   modelContainer[["syntax"]] <- createJaspHtml(.mimicToLavMod(options, FALSE), class = "jasp-code", title = gettext("Model syntax"))
+  modelContainer[["syntax"]]$info <- gettext("The lavaan model syntax specifying the MIMIC model structure, including the measurement model and the regression of the latent variable on the predictors.")
   modelContainer[["syntax"]]$dependOn("syntax")
   modelContainer[["syntax"]]$position <- 3
 }

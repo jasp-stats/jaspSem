@@ -223,13 +223,15 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 
 .lgcmFitTable <- function(modelContainer, dataset, options, ready) {
   if (!is.null(modelContainer[["maintab"]])) return()
-  maintab <- createJaspTable(gettext("Chi-square test"))
-  maintab$addColumnInfo(name = "mod",    title = "Model",        type = "string")
+  maintab <- createJaspTable(gettext("Chi-Square Test"))
+  maintab$info <- gettext("Chi-square goodness-of-fit test comparing the growth curve model to the baseline (independence) model. A non-significant p-value for the growth curve model suggests adequate fit to the data.")
+  maintab$addColumnInfo(name = "mod",    title = gettext("Model"),        type = "string")
   maintab$addColumnInfo(name = "chisq",  title = "\u03a7\u00b2", type = "number", format = "dp:3")
-  maintab$addColumnInfo(name = "df",     title = "df",           type = "integer")
-  maintab$addColumnInfo(name = "pvalue", title = "p",            type = "number", format = "dp:3;p:.001")
+  maintab$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
+  maintab$addColumnInfo(name = "pvalue", title = gettext("p"),            type = "number", format = "dp:3;p:.001")
 
-  modelContainer[["maintab"]] <- createJaspContainer("Model fit")
+  modelContainer[["maintab"]] <- createJaspContainer(gettext("Model Fit"))
+  modelContainer[["maintab"]]$info <- gettext("Model fit statistics for the latent growth curve model.")
   modelContainer[["maintab"]]$position <- 1
   modelContainer[["maintab"]][["chisqtab"]] <- maintab
 
@@ -264,8 +266,9 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   partabs <- if (!is.null(modelContainer[["partabs"]])) {
     modelContainer[["partabs"]]
   } else {
-    modelContainer[["partabs"]] <- createJaspContainer(gettext("Parameter estimates"))
+    modelContainer[["partabs"]] <- createJaspContainer(gettext("Parameter Estimates"))
   }
+  partabs$info <- gettext("Parameter estimates for the latent growth curve model, including growth factor means, variances, covariances, and regression coefficients.")
   partabs$dependOn(c("ciLevel", "bootstrapCiType"))
   partabs$position <- 2
 
@@ -273,33 +276,35 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 
   # create tables
   # latent curve
-  latcur <- createJaspTable("Latent curve")
+  latcur <- createJaspTable(gettext("Latent Curve"))
+  latcur$info <- gettext("Means and variances of the latent growth factors (e.g., intercept, slope). The intercept mean represents the average starting level, the slope mean the average rate of change, and their variances reflect individual differences in starting level and change.")
   latcur$addColumnInfo("component", title = gettext("Component"),  type = "string", combine = TRUE)
   latcur$addColumnInfo("param",     title = gettext("Parameter"),  type = "string")
   latcur$addColumnInfo("est",       title = estTitle,   type = "number", format = "dp:3")
-  latcur$addColumnInfo("se" ,       title = gettext("Std. error"), type = "number", format = "dp:3")
+  latcur$addColumnInfo("se" ,       title = gettext("Std. Error"), type = "number", format = "dp:3")
   latcur$addColumnInfo("zval",      title = gettext("z-value"),    type = "number", format = "dp:3")
   latcur$addColumnInfo("pval",      title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   latcur$addColumnInfo("cilo",      title = gettext("Lower"),      type = "number", format = "dp:3",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-  latcur$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
+  latcur$addColumnInfo("ciup",      title = gettext("Upper") ,     type = "number", format = "dp:3",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
   modelContainer[["partabs"]][["latcur"]] <- latcur
 
   # covariance
   if (options[["covaryingLatentCurve"]]) {
-    latcov <- createJaspTable(gettext("Latent covariances"))
+    latcov <- createJaspTable(gettext("Latent Covariances"))
+    latcov$info <- gettext("Covariances between latent growth factors. For example, a positive intercept-slope covariance indicates that individuals with higher starting values tend to show steeper change over time.")
     latcov$addColumnInfo("lhs",  title = "", type = "string")
     latcov$addColumnInfo("sep",  title = "", type = "separator")
     latcov$addColumnInfo("rhs",  title = "", type = "string")
     latcov$addColumnInfo("est",  title = estTitle,   type = "number", format = "dp:3")
-    latcov$addColumnInfo("se" ,  title = gettext("Std. error"), type = "number", format = "dp:3")
+    latcov$addColumnInfo("se" ,  title = gettext("Std. Error"), type = "number", format = "dp:3")
     latcov$addColumnInfo("zval", title = gettext("z-value"),    type = "number", format = "dp:3")
     latcov$addColumnInfo("pval", title = gettext("p"),          type = "number", format = "dp:3;p:.001")
     latcov$addColumnInfo("cilo", title = gettext("Lower"),      type = "number", format = "dp:3",
                          overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-    latcov$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
+    latcov$addColumnInfo("ciup",      title = gettext("Upper") ,     type = "number", format = "dp:3",
                          overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
     modelContainer[["partabs"]][["latcov"]] <- latcov
@@ -308,16 +313,17 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 
   # regressions
   if (length(c(options[["regressions"]], options[["categorical"]])) > 0) {
-    latreg <- createJaspTable("Regressions")
+    latreg <- createJaspTable(gettext("Regressions"))
+    latreg$info <- gettext("Regression coefficients of covariates predicting the latent growth factors. These show how external variables relate to individual differences in initial level and rate of change.")
     latreg$addColumnInfo("component", title = gettext("Component"),  type = "string", combine = TRUE)
     latreg$addColumnInfo("predictor", title = gettext("Predictor"),  type = "string")
     latreg$addColumnInfo("est",       title = estTitle,   type = "number", format = "dp:3")
-    latreg$addColumnInfo("se" ,       title = gettext("Std. error"), type = "number", format = "dp:3")
+    latreg$addColumnInfo("se" ,       title = gettext("Std. Error"), type = "number", format = "dp:3")
     latreg$addColumnInfo("zval",      title = gettext("z-value"),    type = "number", format = "dp:3")
     latreg$addColumnInfo("pval",      title = gettext("p"),          type = "number", format = "dp:3;p:.001")
     latreg$addColumnInfo("cilo",      title = gettext("Lower"),      type = "number", format = "dp:3",
                          overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-    latreg$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
+    latreg$addColumnInfo("ciup",      title = gettext("Upper") ,     type = "number", format = "dp:3",
                          overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
 
@@ -325,15 +331,16 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   }
 
   # residual variances
-  resvar <- createJaspTable("Residual variances")
+  resvar <- createJaspTable(gettext("Residual Variances"))
+  resvar$info <- gettext("Time-specific residual variances of the observed variables. These represent measurement error plus occasion-specific variance not captured by the growth factors. Negative values may indicate model misspecification.")
   resvar$addColumnInfo("var",  title = gettext("Variable"),   type = "string")
   resvar$addColumnInfo("est",  title = estTitle,   type = "number", format = "dp:3")
-  resvar$addColumnInfo("se" ,  title = gettext("Std. error"), type = "number", format = "dp:3")
+  resvar$addColumnInfo("se" ,  title = gettext("Std. Error"), type = "number", format = "dp:3")
   resvar$addColumnInfo("zval", title = gettext("z-value"),    type = "number", format = "dp:3")
   resvar$addColumnInfo("pval", title = gettext("p"),          type = "number", format = "dp:3;p:.001")
   resvar$addColumnInfo("cilo", title = gettext("Lower"),      type = "number", format = "dp:3",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-  resvar$addColumnInfo("ciup",      title = "Upper" ,     type = "number", format = "dp:3",
+  resvar$addColumnInfo("ciup",      title = gettext("Upper") ,     type = "number", format = "dp:3",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
   modelContainer[["partabs"]][["resvar"]] <- resvar
@@ -448,8 +455,9 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   if (!options[["rSquared"]] || !is.null(modelContainer[["rsquared"]])) return()
 
   tabr2 <- createJaspTable(gettext("R-Squared"))
+  tabr2$info <- gettext("Proportion of variance in each observed variable at each time point explained by the latent growth factors.")
   tabr2$position <- 3.5
-  tabr2$addColumnInfo(name = "__var__", title = "Variable", type = "string")
+  tabr2$addColumnInfo(name = "__var__", title = gettext("Variable"), type = "string")
   tabr2$addColumnInfo(name = "rsq",     title = "R\u00B2",  type = "number", format = "sf:4;dp:3")
   tabr2$dependOn("rSquared")
   modelContainer[["rsquared"]] <- tabr2
@@ -466,7 +474,8 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 
 .lgcmImpliedCovTable <- function(modelContainer, dataset, options, ready) {
   if (!options[["impliedCovariance"]]) return()
-  tab <- createJaspTable(gettext("Implied covariance matrix"))
+  tab <- createJaspTable(gettext("Implied Covariance Matrix"))
+  tab$info <- gettext("Model-implied covariance matrix from the latent growth curve model.")
   tab$dependOn("impliedCovariance")
   tab$position <- 4
   modelContainer[["impliedCovTab"]] <- tab
@@ -489,7 +498,8 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 
 .lgcmResidualCovTable <- function(modelContainer, dataset, options, ready) {
   if (!options[["residualCovariance"]]) return()
-  tab <- createJaspTable(gettext("Residual covariance matrix"))
+  tab <- createJaspTable(gettext("Residual Covariance Matrix"))
+  tab$info <- gettext("Difference between the observed and model-implied covariance matrices. Small residuals indicate the growth curve model adequately reproduces the observed covariances.")
   tab$dependOn("residualCovariance")
   tab$position <- 5
   modelContainer[["rescov"]] <- tab
@@ -512,7 +522,8 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 
 .lgcmCurvePlot <- function(modelContainer, dataset, options, ready) {
   if (!options[["curvePlot"]] || !is.null(modelContainer[["curveplot"]])) return()
-  curveplot <- createJaspPlot(title = gettext("Curve plot"), width = 480, height = 320)
+  curveplot <- createJaspPlot(title = gettext("Curve Plot"), width = 480, height = 320)
+  curveplot$info <- gettext("Individual predicted growth trajectories over time. Each line represents a participant's estimated trajectory based on the latent growth factors.")
   curveplot$dependOn(c("curvePlot", "curvePlotCategorical", "curvePlotMaxLines", "colorPalette"))
   curveplot$position <- 8
   modelContainer[["curveplot"]] <- curveplot
@@ -589,7 +600,8 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
 .lgcmPathPlot <- function(modelContainer, dataset, options, ready) {
   if (!options$pathPlot || !is.null(modelContainer[["pathplot"]])) return()
 
-  modelContainer[["pathplot"]] <- createJaspPlot(title = gettext("Model plot"), height = 500, width = 640)
+  modelContainer[["pathplot"]] <- createJaspPlot(title = gettext("Model Plot"), height = 500, width = 640)
+  modelContainer[["pathplot"]]$info <- gettext("Path diagram of the latent growth curve model showing the growth factors, their loadings on observed time points, and any covariates.")
   modelContainer[["pathplot"]]$dependOn(c("pathPlot", "pathPlotMean", "pathPlotParameter"))
   modelContainer[["pathplot"]]$position <- 9
 
@@ -623,16 +635,17 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     text         = .lgcmOptionsToMod(options, FALSE),
     class        = "jasp-code",
     position     = 10,
-    title        = "Model Syntax",
+    title        = gettext("Model Syntax"),
     dependencies = "syntax"
   )
+  modelContainer[["model_syntax"]]$info <- gettext("The lavaan model syntax for the growth curve model, showing fixed factor loadings that define the growth trajectory shape.")
 }
 
 # Unused functions ----
 .lgcmMisfitPlot <- function(modelContainer, dataset, options, ready) {
   if (!options[["misfitPlot"]] || !is.null(modelContainer[["misfitplot"]])) return()
   wh <- 50 + 50*length(options[["variables"]])
-  misplot <- createJaspPlot(title = gettext("Misfit plot"), width = wh, height = wh)
+  misplot <- createJaspPlot(title = gettext("Misfit Plot"), width = wh, height = wh)
   misplot$dependOn("misfitPlot")
   misplot$position <- 9
   modelContainer[["misfitplot"]] <- misplot
