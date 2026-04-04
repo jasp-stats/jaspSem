@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2026-04-02 11:02+0000\n"
+"Last-Translator: 陳正昌 <chencc99@gmail.com>\n"
+"Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
+"projects/jasp/jaspsem-qml/zh_Hant/>\n"
+"Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.17-dev\n"
 "X-Language: zh_Hant\n"
 "X-Qt-Contexts: true\n"
 
@@ -1165,121 +1171,121 @@ msgstr "對角加權最小平方估計量"
 
 msgctxt "ErrorCalculation|"
 msgid "Set the confidence level for the interval estimates"
-msgstr ""
+msgstr "設定區間估計的信心水準"
 
 msgctxt "ErrorCalculation|"
 msgid ""
 "Select the method for calculating standard errors and confidence intervals"
-msgstr ""
+msgstr "選擇計算標準誤與信賴區間的方法"
 
 msgctxt "ErrorCalculation|"
 msgid "Use standard maximum likelihood estimation for standard errors"
-msgstr ""
+msgstr "使用標準最大概似估計法計算標準誤"
 
 msgctxt "ErrorCalculation|"
 msgid "Use robust estimation for standard errors"
-msgstr ""
+msgstr "使用穩健估計法計算標準誤"
 
 msgctxt "ErrorCalculation|"
 msgid ""
 "Use bootstrap method for estimating standard errors and confidence intervals"
-msgstr ""
+msgstr "使用自助法（bootstrap）估計標準誤與信賴區間"
 
 msgctxt "ErrorCalculation|"
 msgid "Specify the number of bootstrap samples"
-msgstr ""
+msgstr "指定自助法（bootstrap）樣本的數量"
 
 msgctxt "ErrorCalculation|"
 msgid "Select the type of bootstrap confidence interval to compute"
-msgstr ""
+msgstr "選擇要計算的自助法（bootstrap）信賴區間類型"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Variables to include in the latent growth curve model"
-msgstr ""
+msgstr "要納入潛在成長曲線模型的變數"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Variables to use as regressors in the model"
-msgstr ""
+msgstr "模型中用作迴歸變項的變數"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Categorical variables acting as factors"
-msgstr ""
+msgstr "作為因子的分類變數"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Variable timing"
-msgstr ""
+msgstr "變數的測量時點"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Specify the timing for the variable"
-msgstr ""
+msgstr "指定該變數的測量時點"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Options for configuring model estimation"
-msgstr ""
+msgstr "模型估計設定選項"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Select components to include in the growth curve"
-msgstr ""
+msgstr "選擇納入成長曲線的組成部分"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Include an intercept in the model"
-msgstr ""
+msgstr "在模型中納入截距"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Include a linear component in the model"
-msgstr ""
+msgstr "在模型中納入線性成分"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Include a quadratic component in the model"
-msgstr ""
+msgstr "在模型中納入二次成分"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Include a cubic component in the model"
-msgstr ""
+msgstr "在模型中納入三次成分"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Include covariance between latent growth components"
-msgstr ""
+msgstr "納入潛在成長成分之間的共變數"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Options for additional output"
-msgstr ""
+msgstr "附加輸出選項"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Display additional model fit measures"
-msgstr ""
+msgstr "顯示額外的模型適配度指標"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Display R-squared values for variables"
-msgstr ""
+msgstr "顯示各變數的R平方值"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Include standardized estimates in the output"
-msgstr ""
+msgstr "在輸出中納入標準化估計值"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Select the type of standardized estimates to include"
-msgstr ""
+msgstr "選擇要納入的標準化估計值類型"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Include all standardized estimates"
-msgstr ""
+msgstr "納入所有標準化估計值"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Include standardized estimates for latent variables only"
-msgstr ""
+msgstr "僅納入潛在變數的標準化估計值"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Exclude standardized estimates for exogenous covariates"
-msgstr ""
+msgstr "排除外生共變數的標準化估計值"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Display the implied covariance matrix"
-msgstr ""
+msgstr "顯示隱含共變數矩陣"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Display the residual covariance matrix"
-msgstr ""
+msgstr "顯示殘差共變數矩陣"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Show the lavaan model syntax"
@@ -1287,11 +1293,11 @@ msgstr "顯示 Lavaan 語法"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Options for generating plots"
-msgstr ""
+msgstr "繪圖生成選項"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Configure plot options for the analysis"
-msgstr ""
+msgstr "設定分析的繪圖選項"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Select a color palette for the plots"
@@ -1299,27 +1305,27 @@ msgstr "為圖表選擇一個色彩調色盤"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Generate a curve plot of the growth trajectories"
-msgstr ""
+msgstr "產生成長軌跡的曲線圖"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Select a categorical variable to color the curves"
-msgstr ""
+msgstr "選擇一個類別變數以為曲線著色"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Set the maximum number of lines to display in the curve plot"
-msgstr ""
+msgstr "設定曲線圖中顯示的最大線條數量"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Generate a path diagram of the model"
-msgstr ""
+msgstr "產生模型的路徑圖"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Display parameter estimates in the model plot"
-msgstr ""
+msgstr "在模型圖中顯示參數估計值"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Display means in the model plot"
-msgstr ""
+msgstr "在模型圖中顯示平均數"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Additional modeling options"
@@ -1327,11 +1333,11 @@ msgstr "其他建模選項"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Add thresholds"
-msgstr ""
+msgstr "加入閾值"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Add scaling parameters"
-msgstr ""
+msgstr "加入尺度參數"
 
 msgctxt "SEM|"
 msgid "Condition on exogenous covariate(s)"
@@ -1350,6 +1356,9 @@ msgid ""
 "multigroup analysis is now interpreted differently. Proceed with caution! "
 "More details about the update can be found at %1"
 msgstr ""
+"此分析是使用較舊版本的 JASP（或動態模組）建立。此後，用於執行分析的 lavaan 套"
+"件已發生變更。特別是在多群組分析中，lavaan 對等式限制（equality constraints）"
+"的語法解讀方式已不同。請謹慎處理！有關此次更新的更多細節，請參見 %1"
 
 msgctxt "PLSSEM|"
 msgid "Overall model fit"
@@ -1357,18 +1366,16 @@ msgstr "模型整體適配度"
 
 msgctxt "PLSSEM|"
 msgid "Bootstrap samples"
-msgstr ""
+msgstr "自助法樣本數"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Significance level"
 msgstr "顯著水準"
 
 msgctxt "PLSSEM|"
 msgid "Saturated structural model"
-msgstr ""
+msgstr "飽和結構模型"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Show parameter estimates"
 msgstr "顯示參數估計值"
@@ -1377,167 +1384,158 @@ msgctxt "Description|"
 msgid "MNLFA"
 msgstr ""
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Loadings"
-msgstr "因素負荷量"
+msgstr "負荷量"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Intercepts"
 msgstr "截距"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Residual variances"
 msgstr "殘差變異量"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Variances"
-msgstr ""
+msgstr "變異數"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Means"
 msgstr "平均數"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Covariances"
-msgstr ""
+msgstr "共變數"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Moderation"
-msgstr ""
+msgstr "調節作用"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Moderators"
-msgstr ""
+msgstr "調節變項"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Square   Cubic"
-msgstr ""
+msgstr "二次　三次"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "<b>Start/Sync Analysis</b>"
-msgstr ""
+msgstr "<b>開始/同步分析</b>"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Assumption Check"
-msgstr ""
+msgstr "假設檢定"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Check model fit per group"
-msgstr ""
+msgstr "檢查各群組的模型適配度"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Split continuous variables into groups:"
-msgstr ""
+msgstr "將連續變數分組："
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Add group variable to data"
-msgstr ""
+msgstr "將群組變數加入資料"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Interaction Terms"
-msgstr ""
+msgstr "交互作用項"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Include"
-msgstr ""
+msgstr "納入"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Moderation Options"
-msgstr ""
+msgstr "調節作用選項"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Invariance Tests"
-msgstr ""
+msgstr "不變性檢定"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Configural"
-msgstr ""
+msgstr "構型不變性"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Metric"
-msgstr ""
+msgstr "度量不變性"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Scalar"
-msgstr ""
+msgstr "截距不變性"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Strict"
-msgstr ""
+msgstr "嚴格不變性"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Custom"
-msgstr ""
+msgstr "自訂"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Include Individual Moderations"
-msgstr ""
+msgstr "納入個別調節作用"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Indicators"
-msgstr "題項"
+msgstr "指標"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Factors"
-msgstr ""
+msgstr "因素"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Display Plot"
-msgstr ""
+msgstr "顯示圖表"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Output Options"
 msgstr "輸出選項"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "參數估計值"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Significance level"
 msgstr "顯著水準"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Factor variances"
-msgstr ""
+msgstr "因素變異數"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Factor means"
-msgstr ""
+msgstr "因素平均數"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Factor covariances"
-msgstr ""
+msgstr "因素共變數"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Show syntax"
-msgstr ""
+msgstr "顯示語法"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Plots"
 msgstr "圖"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Moderator 1"
-msgstr ""
+msgstr "調節變項 1"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Moderator 2"
-msgstr ""
+msgstr "調節變項 2"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Display plot"
-msgstr ""
+msgstr "顯示圖表"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Additional fit measures"
 msgstr "其他配適指標"
