@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2026-04-08 17:09+0000\n"
+"Last-Translator: 陳正昌 <chencc99@gmail.com>\n"
+"Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
+"projects/jasp/jaspsem-qml/zh_Hant/>\n"
+"Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.17-dev\n"
 "X-Language: zh_Hant\n"
 "X-Qt-Contexts: true\n"
 
@@ -541,7 +547,7 @@ msgstr "路徑係數"
 
 msgctxt "Description|"
 msgid "Partial Least Squares SEM"
-msgstr "PLS SEM"
+msgstr "偏最小平方結構方程模型"
 
 msgctxt "PLSSEM|"
 msgid "Model"
@@ -1093,7 +1099,7 @@ msgstr "離差的標準差 / 舊估計值"
 
 msgctxt "PLSSEM|"
 msgid "Consistent partial least squares"
-msgstr "一致偏最小平方法"
+msgstr "一致性偏最小平方法"
 
 msgctxt "PLSSEM|"
 msgid "Tolerance"
