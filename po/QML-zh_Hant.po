@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2026-04-12 13:09+0000\n"
+"Last-Translator: 陳正昌 <chencc99@gmail.com>\n"
+"Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
+"projects/jasp/jaspsem-qml/zh_Hant/>\n"
+"Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 5.17-dev\n"
 "X-Language: zh_Hant\n"
 "X-Qt-Contexts: true\n"
 
@@ -157,7 +163,7 @@ msgstr "結果變項"
 
 msgctxt "MediationAnalysis|"
 msgid "Background confounders"
-msgstr "控制變項(此設定將預測變數視為內生變項)"
+msgstr "背景干擾變項"
 
 msgctxt "MediationAnalysis|"
 msgid "Options"
@@ -425,7 +431,7 @@ msgstr "對角線加權最小平方法 (DWLS)"
 
 msgctxt "SEM|"
 msgid "PML"
-msgstr "部分最大概似法 (PML)"
+msgstr "成對最大概似法 (PML)"
 
 msgctxt "SEM|"
 msgid "Model test"
@@ -905,7 +911,7 @@ msgstr "潛在變數"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Except exogenous covariates"
-msgstr "除外生共變數外"
+msgstr "排除外生共變量"
 
 msgctxt "MediationAnalysis|"
 msgid "All"
@@ -917,7 +923,7 @@ msgstr "潛在變項"
 
 msgctxt "MediationAnalysis|"
 msgid "Except exogenous covariates"
-msgstr "除外生共變數外"
+msgstr "排除外生共變量"
 
 msgctxt "Mimic|"
 msgid "All"
@@ -929,7 +935,7 @@ msgstr "潛在變項"
 
 msgctxt "Mimic|"
 msgid "Except exogenous covariates"
-msgstr "除外生共變數外"
+msgstr "排除外生共變量"
 
 msgctxt "SEM|"
 msgid "Mean structure"
@@ -965,7 +971,7 @@ msgstr "估計外生潛在變數間的相關性"
 
 msgctxt "SEM|"
 msgid "Dependent variables correlated"
-msgstr "估計依變數間的相關性"
+msgstr "估計依變數間的相關"
 
 msgctxt "SEM|"
 msgid "Scaling parameters"
@@ -981,43 +987,43 @@ msgstr "預設"
 
 msgctxt "SEM|"
 msgid "DLS"
-msgstr "對角加權最小平方法"
+msgstr "分配加權最小平方法 (DLS)"
 
 msgctxt "SEM|"
 msgid "MLM"
-msgstr "多層次模型"
+msgstr "穩健最大概似法 (MLM)"
 
 msgctxt "SEM|"
 msgid "MLMV"
-msgstr "最大概似法的均值與變異數調整法"
+msgstr "最大概似法的均值與變異數調整法 (MLMV)"
 
 msgctxt "SEM|"
 msgid "MLMVS"
-msgstr "最大概似法的均值與變異數調整及尺度修正法"
+msgstr "最大概似法的均值與變異數調整及尺度修正法 (MLMVS)"
 
 msgctxt "SEM|"
 msgid "MLF"
-msgstr "固定效應最大概似法"
+msgstr "一階導數標準誤之最大概似估計 (MLF)"
 
 msgctxt "SEM|"
 msgid "MLR"
-msgstr "具穩健標準誤的最大概似法"
+msgstr "具穩健標準誤的最大概似法 (MLR)"
 
 msgctxt "SEM|"
 msgid "WLSM"
-msgstr "加權最小平方法的均值調整"
+msgstr "加權最小平方法的均值調整 (WLSM)"
 
 msgctxt "SEM|"
 msgid "WLSMV"
-msgstr "加權最小平方法的均值與變異數調整"
+msgstr "加權最小平方法的均值與變異數調整 (WLSMV)"
 
 msgctxt "SEM|"
 msgid "ULSM"
-msgstr "未加權最小平方法的均值"
+msgstr "未加權最小平方法的均值 (ULSM)"
 
 msgctxt "SEM|"
 msgid "ULSMV"
-msgstr "未加權最小平方法的均值與變異數調整法"
+msgstr "未加權最小平方法的均值與變異數調整法 (ULSMV)"
 
 msgctxt "SEM|"
 msgid "Click for more information"
@@ -1025,7 +1031,7 @@ msgstr "更多訊息"
 
 msgctxt "SEM|"
 msgid "Yuan-Bentler Mplus"
-msgstr "Yuan-Bentler 修正"
+msgstr "Yuan-Bentler (Mplus) 量尺化檢定統計數"
 
 msgctxt "SEM|"
 msgid "Mean and variance adjusted"
@@ -1081,7 +1087,7 @@ msgstr "只針對潛在變項"
 
 msgctxt "SEM|"
 msgid "Except exogenous covariates"
-msgstr "除外生共變數外"
+msgstr "排除外生共變量"
 
 msgctxt "SEM|"
 msgid "Show warnings"
