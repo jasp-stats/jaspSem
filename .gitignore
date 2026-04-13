@@ -71,3 +71,4 @@ tests/testthat/_problems/
 .vscode/mcp.json
 .claude/settings.local.json
 .claude/plans/
+.positai
