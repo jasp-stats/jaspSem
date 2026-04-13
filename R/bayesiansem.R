@@ -127,7 +127,14 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
                     "priorResidualSdParam1", "priorResidualSdParam2",
                     "priorLatentSdParam1", "priorLatentSdParam2",
                     "priorCorrelationParam1", "priorCorrelationParam2",
-                    "freeParameters")
+                    "freeParameters",
+                    "priorSpecification",
+                    "priorUiScope", "priorUiGlobal",
+                    "priorUiGroupLoadings", "priorUiGroupRegressions",
+                    "priorUiGroupObsIntercepts", "priorUiGroupLatIntercepts",
+                    "priorUiGroupThresholds", "priorUiGroupResidual",
+                    "priorUiGroupLatent", "priorUiGroupCorrelations",
+                    "priorUiParameters")
 
 .bayesiansemModelContainer <- function(jaspResults) {
   if (!is.null(jaspResults[["modelContainer"]])) {
