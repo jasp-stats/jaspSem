@@ -4,12 +4,13 @@
 > 
 > This document follows a modified [Keep a Changelog](https://keepachangelog.com/) format adapted for the R/JASP ecosystem. Releases are listed in reverse chronological order (newest first).
 > As an example see [jaspModuleTemplate](https://github.com/jasp-stats/jaspModuleTemplate/blob/master/NEWS.md)
-> * **Adding New Changes (For Contributors):** All new commits should be logged at the very top of the file under the `# jaspModuleTemplate (development version)` header. Place your bullet point under the appropriate category (`## Added`, `## Fixed`, etc.). 
-> * **Issue References:** Please reference the relevant GitHub Issue (if any) at the end of your line (e.g., `([Issue #19](https://github.com/jasp-stats/jaspModuleTemplate/issues/19)`). 
-> * **Format Categories:** >   * **Added:** New template features, QML examples, or build tools.
->   * **Changed:** Updates to default configurations, boilerplate code, or dependencies. 
->   * **Fixed:** Bug fixes in the build pipeline, R wrappers, or QML layouts.
->   * **Deprecated / Removed:** Outdated template components or legacy code.
+> * **Adding New Changes (For Contributors):** All new commits should be logged at the very top of the file under the `# jaspSem (development version)` header. Place your bullet point under the appropriate category (`## Added`, `## Fixed`, etc.). 
+> * **Issue References:** Please reference the relevant GitHub Issue (if any) at the end of your line (e.g., `([Issue #19](https://github.com/jasp-stats/jaspSem/issues/19)`). 
+> * **Format Categories:**
+>   * **Added:** New features, analyses, or options.
+>   * **Changed:** Updates to default configurations, existing behaviour, or dependencies.
+>   * **Fixed:** Bug fixes.
+>   * **Deprecated / Removed:** Removed features or legacy code.
 
 
 ---
@@ -32,20 +33,39 @@
 
 # jaspModuleTemplate 0.2.0
 ## Added
-* Added NEWS.md
-* Added workflow to remind users to update their `NEWS.md`.
-* Added workflow to auto-bump version when user does not do so.
+* MIMIC: residual variances and predictor covariances tables ([PR #365](https://github.com/jasp-stats/jaspSem/pull/365))
+* MIMIC: option to freely estimate exogenous predictor variances and covariances (`fixed.x`) ([PR #365](https://github.com/jasp-stats/jaspSem/pull/365), [#4120](https://github.com/jasp-stats/jasp-issues/issues/4120))
+
+## Fixed
+* SEM: indirect effects table showed encoded column names instead of variable names in path models ([#4219](https://github.com/jasp-stats/jasp-issues/issues/4219))
+* SEM: path plot for simple regression model across SEM, MIMIC, LGCM, and Mediation Analysis ([PR #365](https://github.com/jasp-stats/jaspSem/pull/365), [#4109](https://github.com/jasp-stats/jasp-issues/issues/4109))
+* SEM: AVE and CR values regression ([PR #365](https://github.com/jasp-stats/jaspSem/pull/365), [#4201](https://github.com/jasp-stats/jasp-issues/issues/4201))
+
 
 ---
 
-# jaspModuleTemplate 0.1.0
+# jaspSem 0.19.2
 
 ## Added
-* Initial examples to showcase JASP module development
+* SEM: full support for ordinal data ([PR #248](https://github.com/jasp-stats/jaspSem/pull/248))
+* SEM: expanded estimator and test options ([PR #248](https://github.com/jasp-stats/jaspSem/pull/248))
+* SEM: CIs for standardized estimates, including bootstrapped CIs ([PR #248](https://github.com/jasp-stats/jaspSem/pull/248))
+* SEM: thresholds table ([PR #248](https://github.com/jasp-stats/jaspSem/pull/248))
 
 ## Changed
-* Use best practices for checking input ([Issue #19](https://github.com/jasp-stats/jaspModuleTemplate/issues/19)).
-* The main results table now defaults to displaying 95% Confidence Intervals for effect sizes.
+* SEM: restructured estimation options for conciseness ([PR #248](https://github.com/jasp-stats/jaspSem/pull/248))
+* SEM: restructured additional fit measures table ([PR #248](https://github.com/jasp-stats/jaspSem/pull/248))
+* SEM: lavaan warnings surfaced in output ([PR #248](https://github.com/jasp-stats/jaspSem/pull/248))
 
 ## Fixed
-* Remove deprecated dependencies from qml files ([Issue #14](https://github.com/jasp-stats/jaspModuleTemplate/issues/14)).
+* SEM: various bug fixes ([PR #248](https://github.com/jasp-stats/jaspSem/pull/248)):
+  [#2644](https://github.com/jasp-stats/jasp-issues/issues/2644),
+  [#1259](https://github.com/jasp-stats/jasp-issues/issues/1259),
+  [#959](https://github.com/jasp-stats/jasp-issues/issues/959),
+  [#1484](https://github.com/jasp-stats/jasp-issues/issues/1484),
+  [#2740](https://github.com/jasp-stats/jasp-issues/issues/2740),
+  [#1102](https://github.com/jasp-stats/jasp-issues/issues/1102),
+  [#2182](https://github.com/jasp-stats/INTERNAL-jasp/issues/2182),
+  [#2879](https://github.com/jasp-stats/jasp-issues/issues/2879),
+  [#2905](https://github.com/jasp-stats/jasp-issues/issues/2905),
+  [#2908](https://github.com/jasp-stats/jasp-issues/issues/2908)
