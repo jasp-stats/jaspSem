@@ -1434,7 +1434,13 @@ checkLavaanModel <- function(model, availableVars) {
 
       path <- list()
       for (idx in 1:nrow(pe_indeff)) {
-        path[[idx]] <- gsub("_", " \u2192 ", pe_indeff[idx, "lhs"])
+        pathStr <- pe_indeff[idx, "lhs"]
+        matches <- regmatches(pathStr, gregexpr("JaspColumn_[0-9]+_Encoded", pathStr))
+        if (length(matches[[1]]) > 0) {
+          decoded_matches <- sapply(matches[[1]], jaspBase::decodeColNames)
+          regmatches(pathStr, gregexpr("JaspColumn_[0-9]+_Encoded", pathStr)) <- list(decoded_matches)
+        }
+        path[[idx]] <- gsub("_", " \u2192 ", pathStr)
         for (group in groups)
           path[[idx]] <- gsub(paste0(" ", group, " \u2192"), "", path[[idx]])
       }
