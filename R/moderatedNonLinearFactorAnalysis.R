@@ -94,6 +94,20 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   # convert the whole data to numeric
   dataset <- as.data.frame(lapply(dataset, function(x) as.numeric(as.character(x))))
 
+  # optionally center or z-standardize the indicator variables
+  if (!is.null(options[["indicatorPreprocessing"]]) && options[["indicatorPreprocessing"]] != "none") {
+    indicators <- unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)
+    indicators <- unique(indicators)
+    indicators <- indicators[nzchar(indicators) & indicators %in% colnames(dataset)]
+    for (v in indicators) {
+      x <- as.numeric(dataset[[v]])
+      dataset[[v]] <- switch(options[["indicatorPreprocessing"]],
+                             center      = x - mean(x, na.rm = TRUE),
+                             standardize = as.numeric(scale(x)),
+                             x)
+    }
+  }
+
   # scale the continuous moderators
   mods <- unlist(lapply(options[["moderators"]], `[[`, "variable"), use.names = FALSE)
   mods.types <- options[["moderators.types"]]
@@ -154,7 +168,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   dataState <- dataset
   dataState <- createJaspState(dataState)
   dataState$dependOn(options = c("factors", "moderators", "moderatorInteractionTerms", "moderatorInteractionTermsInclude",
-                                 "moderatorSquaredEffect", "moderatorCubicEffect"))
+                                 "moderatorSquaredEffect", "moderatorCubicEffect", "indicatorPreprocessing"))
   jaspResults[["dataState"]] <- dataState
 
   return(dataset)
@@ -250,7 +264,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     jaspResults[["mainContainer"]]$dependOn(options = c(
       "factors", "moderators", "moderatorInteractionTerms", "moderatorInteractionTermsInclude",
       "moderatorSquaredEffect", "moderatorCubicEffect",
-      "factorsUncorrelated", "interceptsFixedToZero", "packageMimiced", "estimator", "naAction"))
+      "indicatorPreprocessing"))
     jaspResults[["mainContainer"]]$position <- 3
   }
   return()
@@ -501,7 +515,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   invFitTable$addColumnInfo(name = "Npar",     title = gettext("n(Par)"),  type = "integer")
   # invFitTable$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
   invFitTable$addColumnInfo(name = "Fit",     title = gettext("Fit (-2LL)"),  type = "number")
-  invFitTable$addColumnInfo(name = "statusCode", title = gettext("Status"),   type = "string")
   invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number")
   invFitTable$addColumnInfo(name = "SAAIC",   title = gettext("SAAIC"),            type = "number")
   invFitTable$addColumnInfo(name = "BIC",   title = gettext("BIC"),            type = "number")
@@ -530,7 +543,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   invFitTable$addColumnInfo(name = "Npar",     title = gettext("n(Par)"),  type = "integer")
   # invFitTable$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
   invFitTable$addColumnInfo(name = "Fit",     title = gettext("Fit (-2LL)"),  type = "number", format = "dp:3")
-  invFitTable$addColumnInfo(name = "statusCode", title = gettext("Status"),   type = "string")
   invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number", format = "dp:3")
   invFitTable$addColumnInfo(name = "SAAIC",   title = gettext("SAAIC"),            type = "number", format = "dp:3")
   invFitTable$addColumnInfo(name = "BIC",   title = gettext("BIC"),            type = "number", format = "dp:3")
@@ -575,7 +587,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         Npar     = NA,
         # df    = NA,
         Fit   = NA,
-        statusCode = .mnlfaStatusLabel(results[[i]]),
         AIC   = NA,
         SAAIC = NA,
         BIC   = NA,
@@ -589,7 +600,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         Npar     = summ$estimatedParameters,
         # df    = summ$degreesOfFreedom,
         Fit   = summ$Minus2LogLikelihood,
-        statusCode = .mnlfaStatusLabel(results[[i]]),
         AIC   = ics["AIC:", "par"],
         SAAIC = ics["AIC:", "sample"],
         BIC   = ics["BIC:", "par"],
@@ -628,7 +638,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           Npar     = NA,
           # df    = NA,
           Fit   = NA,
-          statusCode = .mnlfaStatusLabel(fit),
           AIC   = NA,
           SAAIC = NA,
           BIC   = NA,
@@ -648,7 +657,6 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           Npar     = summ$estimatedParameters,
           # df    = summ$degreesOfFreedom,
           Fit   = summ$Minus2LogLikelihood,
-          statusCode = .mnlfaStatusLabel(fit),
           AIC   = ics["AIC:", "par"],
           SAAIC = ics["AIC:", "sample"],
           BIC   = ics["BIC:", "par"],
@@ -676,6 +684,14 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   invFitTable$setData(dtFill)
   if (nzchar(errmsg))
     invFitTable$addFootnote(errmsg)
+
+  for (nm in names(results)) {
+    fit <- results[[nm]]
+    if (jaspBase::isTryError(fit)) next
+    status <- .mnlfaStatusLabel(fit)
+    if (status == gettext("OK")) next
+    invFitTable$addFootnote(gettextf("%1$s: optimizer status '%2$s'.", nm, status))
+  }
 
   anyWarnings <- any(vapply(results, function(fit) {
     if (jaspBase::isTryError(fit)) return(FALSE)
@@ -2538,7 +2554,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   m2ll <- if (length(m2ll) == 1) as.numeric(m2ll) else NA_real_
   df   <- out$degreesOfFreedom %||% out$df %||% NA_integer_
   k    <- out$estimatedParameters
-  if (is.null(k) || !is.finite(k)) k <- NA_integer_
+  if (is.null(k) || !is.finite(k)) k <- length(est)
+  if (!is.finite(k) || k == 0) k <- NA_integer_
 
   # >>> YOUR preferred N source <<<
   N <- tryCatch(out$data[[1]]$numObs, error = function(e) NA_real_)

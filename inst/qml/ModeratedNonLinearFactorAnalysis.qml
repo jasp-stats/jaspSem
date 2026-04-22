@@ -241,6 +241,22 @@ Form
 
 	Section
 	{
+		title: qsTr("Estimation Options")
+
+		RadioButtonGroup
+		{
+			name:  "indicatorPreprocessing"
+			title: qsTr("Indicator preprocessing")
+
+			RadioButton { value: "none";        label: qsTr("None");           checked: true }
+			RadioButton { value: "center";      label: qsTr("Center")                        }
+			RadioButton { value: "standardize"; label: qsTr("Z-standardize")                 }
+		}
+	}
+
+
+	Section
+	{
 		title: qsTr("Output Options")
 
 		Group
@@ -263,8 +279,11 @@ Form
 
 		}
 
-		CheckBox { label: qsTr("Show syntax")         ; name: "showSyntax" }
-		CheckBox { label: qsTr("Show warnings")       ; name: "warnings" }
+		Group
+		{
+			CheckBox { label: qsTr("Show syntax")   ; name: "showSyntax" }
+			CheckBox { label: qsTr("Show warnings") ; name: "warnings"   }
+		}
 
 	}
 

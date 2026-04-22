@@ -19,6 +19,8 @@ options <- list(
   splitContinuousVariablesIntoGroups = 2,
 
   showSyntax = FALSE,
+  warnings   = FALSE,
+  indicatorPreprocessing = "none",
 
   ## ===============================
   ## Factors
