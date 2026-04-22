@@ -65,6 +65,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (runAnalysis) {
     .mnlfaCallGlobalInvarianceTests(jaspResults, dataset, options, ready)
     .mnlfaGlobalInvarianceFitTable(jaspResults, dataset, options, ready)
+    .mnlfaWarningsHtml(jaspResults, options, ready)
     .mnlfaGlobalInvarianceParameterTables(jaspResults, dataset, options, ready)
     .mnlfaPrintSyntax(jaspResults, dataset, options, ready)
 
@@ -400,7 +401,14 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   modelObj <- .generateSyntax(factorList, moderators, type = testName, removeMod)
   script <- mxsem::mxsem(model = modelObj$model, data = dataset, scale_loadings = FALSE, scale_latent_variances = FALSE)
   .ensureImxReportProgress()
-  fit <- try(OpenMx::mxRun(script))
+  fitW <- try(.withWarnings(OpenMx::mxRun(script)))
+  if (jaspBase::isTryError(fitW)) {
+    fit <- fitW
+  } else {
+    fit <- fitW$value
+    attr(fit, "mxWarnings") <- if (length(fitW$warnings) > 0)
+      vapply(fitW$warnings, conditionMessage, character(1)) else character(0)
+  }
 
   fitState <- createJaspState(fit)
 
@@ -493,6 +501,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   invFitTable$addColumnInfo(name = "Npar",     title = gettext("n(Par)"),  type = "integer")
   # invFitTable$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
   invFitTable$addColumnInfo(name = "Fit",     title = gettext("Fit (-2LL)"),  type = "number")
+  invFitTable$addColumnInfo(name = "statusCode", title = gettext("Status"),   type = "string")
   invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number")
   invFitTable$addColumnInfo(name = "SAAIC",   title = gettext("SAAIC"),            type = "number")
   invFitTable$addColumnInfo(name = "BIC",   title = gettext("BIC"),            type = "number")
@@ -521,10 +530,13 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   invFitTable$addColumnInfo(name = "Npar",     title = gettext("n(Par)"),  type = "integer")
   # invFitTable$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
   invFitTable$addColumnInfo(name = "Fit",     title = gettext("Fit (-2LL)"),  type = "number", format = "dp:3")
+  invFitTable$addColumnInfo(name = "statusCode", title = gettext("Status"),   type = "string")
   invFitTable$addColumnInfo(name = "AIC",   title = gettext("AIC"),            type = "number", format = "dp:3")
   invFitTable$addColumnInfo(name = "SAAIC",   title = gettext("SAAIC"),            type = "number", format = "dp:3")
   invFitTable$addColumnInfo(name = "BIC",   title = gettext("BIC"),            type = "number", format = "dp:3")
   invFitTable$addColumnInfo(name = "SABIC", title = gettext("SABIC"),          type = "number", format = "dp:3")
+
+  invFitTable$dependOn("warnings")
 
   results <- list(Configural = jaspResults[["mainContainer"]][["invarianceTestConfiguralState"]][["object"]],
                   Metric = jaspResults[["mainContainer"]][["invarianceTestMetricState"]][["object"]],
@@ -563,6 +575,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         Npar     = NA,
         # df    = NA,
         Fit   = NA,
+        statusCode = .mnlfaStatusLabel(results[[i]]),
         AIC   = NA,
         SAAIC = NA,
         BIC   = NA,
@@ -576,6 +589,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
         Npar     = summ$estimatedParameters,
         # df    = summ$degreesOfFreedom,
         Fit   = summ$Minus2LogLikelihood,
+        statusCode = .mnlfaStatusLabel(results[[i]]),
         AIC   = ics["AIC:", "par"],
         SAAIC = ics["AIC:", "sample"],
         BIC   = ics["BIC:", "par"],
@@ -614,6 +628,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           Npar     = NA,
           # df    = NA,
           Fit   = NA,
+          statusCode = .mnlfaStatusLabel(fit),
           AIC   = NA,
           SAAIC = NA,
           BIC   = NA,
@@ -633,6 +648,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
           Npar     = summ$estimatedParameters,
           # df    = summ$degreesOfFreedom,
           Fit   = summ$Minus2LogLikelihood,
+          statusCode = .mnlfaStatusLabel(fit),
           AIC   = ics["AIC:", "par"],
           SAAIC = ics["AIC:", "sample"],
           BIC   = ics["BIC:", "par"],
@@ -658,10 +674,57 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
   invFitTable$setData(dtFill)
-  invFitTable$addFootnote(errmsg)
+  if (nzchar(errmsg))
+    invFitTable$addFootnote(errmsg)
+
+  anyWarnings <- any(vapply(results, function(fit) {
+    if (jaspBase::isTryError(fit)) return(FALSE)
+    length(attr(fit, "mxWarnings")) > 0
+  }, logical(1)))
+
+  if (anyWarnings && !options[["warnings"]]) {
+    invFitTable$addFootnote(gettext("Fitting the model resulted in warnings. Check the 'Show warnings' box in the Output Options to see the warnings."))
+  }
 
   return()
 
+}
+
+.mnlfaWarningsHtml <- function(jaspResults, options, ready) {
+
+  if (!ready) return()
+  if (!options[["warnings"]]) return()
+  if (is.null(jaspResults[["fitContainer"]])) return()
+  if (!is.null(jaspResults[["fitContainer"]][["warningsHtml"]])) return()
+
+  results <- list(Configural = jaspResults[["mainContainer"]][["invarianceTestConfiguralState"]][["object"]],
+                  Metric     = jaspResults[["mainContainer"]][["invarianceTestMetricState"]][["object"]],
+                  Scalar     = jaspResults[["mainContainer"]][["invarianceTestScalarState"]][["object"]],
+                  Strict     = jaspResults[["mainContainer"]][["invarianceTestStrictState"]][["object"]],
+                  Custom     = jaspResults[["mainContainer"]][["invarianceTestCustomState"]][["object"]])
+
+  results <- results[sapply(results, function(x) !is.null(x))]
+  if (length(results) == 0) return()
+
+  msgs <- character(0)
+  for (nm in names(results)) {
+    fit <- results[[nm]]
+    if (jaspBase::isTryError(fit)) next
+    w <- attr(fit, "mxWarnings")
+    if (length(w) == 0) next
+    w <- gsub("\n", " ", w)
+    msgs <- c(msgs, sprintf("<li><b>%s:</b> %s</li>", nm, paste(unique(w), collapse = " ")))
+  }
+
+  if (length(msgs) == 0) return()
+
+  htmlText <- paste0("<b>", gettext("Warnings:"), "</b><ul>", paste(msgs, collapse = ""), "</ul>")
+  warningsHtml <- createJaspHtml(text = htmlText)
+  warningsHtml$dependOn("warnings")
+  warningsHtml$position <- 0.5
+  jaspResults[["fitContainer"]][["warningsHtml"]] <- warningsHtml
+
+  return()
 }
 
 
@@ -2440,6 +2503,18 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   out
 }
 
+.mnlfaStatusLabel <- function(fit) {
+  if (jaspBase::isTryError(fit)) return(gettext("Error"))
+  code <- tryCatch(fit@output$status$code, error = function(e) NA)
+  if (is.null(code) || length(code) == 0 || is.na(code)) return(gettext("Unknown"))
+  switch(as.character(code),
+         "0" = gettext("OK"),
+         "1" = gettext("OK/Gradient"),
+         "5" = gettext("Non-convex Hessian"),
+         "6" = gettext("Unchecked"),
+         gettextf("Code %s", code))
+}
+
 .mxSummaryFixed <- function(model, ...) {
 
   out <- model@output
@@ -2462,14 +2537,15 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   m2ll <- out$Minus2LogLikelihood %||% out$fit
   m2ll <- if (length(m2ll) == 1) as.numeric(m2ll) else NA_real_
   df   <- out$degreesOfFreedom %||% out$df %||% NA_integer_
-  k    <- out$estimatedParameters %||% sum(!is.na(se)) %||% length(est)
+  k    <- out$estimatedParameters
+  if (is.null(k) || !is.finite(k)) k <- NA_integer_
 
   # >>> YOUR preferred N source <<<
   N <- tryCatch(out$data[[1]]$numObs, error = function(e) NA_real_)
 
   # regular ICs
-  AIC_par <- if (is.finite(m2ll)) m2ll + 2 * k else NA_real_
-  BIC_par <- if (is.finite(m2ll) && is.finite(N) && N > 0) m2ll + log(N) * k else NA_real_
+  AIC_par <- if (is.finite(m2ll) && is.finite(k)) m2ll + 2 * k else NA_real_
+  BIC_par <- if (is.finite(m2ll) && is.finite(k) && is.finite(N) && N > 0) m2ll + log(N) * k else NA_real_
 
   # sample-size adjusted variants
   # AICc (common small-sample adjustment)
@@ -2478,7 +2554,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   } else NA_real_
 
   # SABIC (SEM-style sample-size adjusted BIC)
-  BIC_sample <- if (is.finite(m2ll) && is.finite(N) && N > 0) {
+  BIC_sample <- if (is.finite(m2ll) && is.finite(k) && is.finite(N) && N > 0) {
     m2ll + log((N + 2) / 24) * k
   } else NA_real_
 

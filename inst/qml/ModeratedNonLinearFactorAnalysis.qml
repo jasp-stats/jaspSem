@@ -264,6 +264,7 @@ Form
 		}
 
 		CheckBox { label: qsTr("Show syntax")         ; name: "showSyntax" }
+		CheckBox { label: qsTr("Show warnings")       ; name: "warnings" }
 
 	}
 
