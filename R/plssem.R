@@ -1136,7 +1136,7 @@ checkCSemModel <- function(model, availableVars) {
   if("MAXVAR" %in% benchmarks)
     metricstab$addColumnInfo(name = "maeMAXVAR", title = gettext("MAXVAR MAE"),       type = "number")
 
-  metricstab$addColumnInfo(name = "rmse", title = gettext(" Target RMSE"), type = "number")
+  metricstab$addColumnInfo(name = "rmse", title = gettext("Target RMSE"), type = "number")
 
   if("lm" %in% benchmarks)
     metricstab$addColumnInfo(name = "rmselm",     title = gettext("LM RMSE"), type = "number")
@@ -1347,19 +1347,19 @@ checkCSemModel <- function(model, availableVars) {
   # create rsquared table
   tabr2 <- createJaspTable(gettext("R-Squared"))
   if (options[["group"]] != "")
-    tabr2$addColumnInfo(name = "grp", title = "Group", type = "string", combine = TRUE)
-  tabr2$addColumnInfo(name = "var", title = "Outcome", type = "string")
+    tabr2$addColumnInfo(name = "grp", title = gettext("Group"), type = "string", combine = TRUE)
+  tabr2$addColumnInfo(name = "var", title = gettext("Outcome"), type = "string")
   if (length(options[["models"]]) < 2) {
-    tabr2$addColumnInfo(name = "rsq", title = "R\u00B2", type = "number")
-    tabr2$addColumnInfo(name = "adjustedRsq", title = "Adjusted R\u00B2", type = "number")
+    tabr2$addColumnInfo(name = "rsq", title = gettext("R\u00B2"), type = "number")
+    tabr2$addColumnInfo(name = "adjustedRsq", title = gettext("Adjusted R\u00B2"), type = "number")
   } else {
     for (i in seq_along(options[["models"]])) {
       tabr2$addColumnInfo(name = paste0("rsq_", i), title = options[["models"]][[i]][["name"]],
-                          overtitle = "R\u00B2", type = "number")
+                          overtitle = gettext("R\u00B2"), type = "number")
     }
     for (i in seq_along(options[["models"]])) {
       tabr2$addColumnInfo(name = paste0("adjustedRsq_", i), title = options[["models"]][[i]][["name"]],
-                          overtitle = "Adjusted R\u00B2", type = "number")
+                          overtitle = gettext("Adjusted R\u00B2"), type = "number")
     }
   }
 
@@ -1498,8 +1498,8 @@ checkCSemModel <- function(model, availableVars) {
   # init table
   tabrho <- createJaspTable(gettext("Reliability Measures"))
   if (options[["group"]] != "")
-    tabrho$addColumnInfo(name = "grp", title = "Group",  type = "string", combine = TRUE)
-  tabrho$addColumnInfo(name = "var",   title = "Latent", type = "string")
+    tabrho$addColumnInfo(name = "grp", title = gettext("Group"),  type = "string", combine = TRUE)
+  tabrho$addColumnInfo(name = "var",   title = gettext("Latent"), type = "string")
   if (length(options[["models"]]) < 2) {
     tabrho$addColumnInfo(name = "rhoT",           title = gettextf("Cronbach's %s", "\u03B1"),                type = "number")
     tabrho$addColumnInfo(name = "rhoCmm",         title = gettextf("J%1$sreskog's %2$s","\u00F6", "\u03C1" ), type = "number")
@@ -1673,7 +1673,7 @@ checkCSemModel <- function(model, availableVars) {
         options[["observedConstructCorrelation"]] || options[["impliedConstructCorrelation"]]) ||
       !is.null(modelContainer[["cors"]])) return()
 
-  cors <- createJaspContainer(gettext("Correlation tables"))
+  cors <- createJaspContainer(gettext("Correlation Tables"))
   cors$position <- 3
   cors$dependOn(c("observedIndicatorCorrelation",
                     "impliedIndicatorCorrelation",
@@ -1707,28 +1707,28 @@ checkCSemModel <- function(model, availableVars) {
     # without groups, these are tables
 
     if (options[["observedIndicatorCorrelation"]]) {
-      oictab <- createJaspTable(gettext("Observed indicator correlation matrix"))
+      oictab <- createJaspTable(gettext("Observed Indicator Correlation Matrix"))
       oictab$dependOn("observedIndicatorCorrelation")
       oictab$position <- 1
       corcont[["observedInd"]] <- oictab
     }
 
     if (options[["impliedIndicatorCorrelation"]]) {
-      iictab <- createJaspTable(gettext("Implied indicator correlation matrix"))
+      iictab <- createJaspTable(gettext("Implied Indicator Correlation Matrix"))
       iictab$dependOn("impliedIndicatorCorrelation")
       iictab$position <- 2
       corcont[["impliedInd"]] <- iictab
     }
 
     if (options[["observedConstructCorrelation"]]) {
-      occtab <- createJaspTable(gettext("Observed construct correlation matrix"))
+      occtab <- createJaspTable(gettext("Observed Construct Correlation Matrix"))
       occtab$dependOn("observedConstructCorrelation")
       occtab$position <- 3
       corcont[["observedCon"]] <- occtab
     }
 
     if (options[["impliedConstructCorrelation"]]) {
-      icctab <- createJaspTable(gettext("Implied construct correlation matrix"))
+      icctab <- createJaspTable(gettext("Implied Construct Correlation Matrix"))
       icctab$dependOn("impliedConstructCorrelation")
       icctab$position <- 4
       corcont[["impliedCon"]] <- icctab
@@ -1739,28 +1739,28 @@ checkCSemModel <- function(model, availableVars) {
     # with multiple groups these become containers
 
     if (options[["observedIndicatorCorrelation"]]) {
-      oiccont <- createJaspContainer(gettext("Observed indicator correlation matrix", initCollapsed = TRUE))
+      oiccont <- createJaspContainer(gettext("Observed Indicator Correlation Matrix"), initCollapsed = TRUE)
       oiccont$dependOn("observedIndicatorCorrelation")
       oiccont$position <- 1
       corcont[["observedInd"]] <- oiccont
     }
 
     if (options[["impliedIndicatorCorrelation"]]) {
-      iiccont <- createJaspContainer(gettext("Implied indicator correlation matrix", initCollapsed = TRUE))
+      iiccont <- createJaspContainer(gettext("Implied Indicator Correlation Matrix"), initCollapsed = TRUE)
       iiccont$dependOn("impliedIndicatorCorrelation")
       iiccont$position <- 2
       corcont[["impliedInd"]] <- iiccont
     }
 
     if (options[["observedConstructCorrelation"]]) {
-      occcont <- createJaspContainer(gettext("Observed construct correlation matrix", initCollapsed = TRUE))
+      occcont <- createJaspContainer(gettext("Observed Construct Correlation Matrix"), initCollapsed = TRUE)
       occcont$dependOn("observedConstructCorrelation")
       occcont$position <- 3
       corcont[["observedCon"]] <- occcont
     }
 
     if (options[["impliedConstructCorrelation"]]) {
-      icccont <- createJaspContainer(gettext("Implied construct correlation matrix", initCollapsed = TRUE))
+      icccont <- createJaspContainer(gettext("Implied Construct Correlation Matrix"), initCollapsed = TRUE)
       icccont$dependOn("impliedConstructCorrelation")
       icccont$position <- 4
       corcont[["impliedCon"]] <- icccont
