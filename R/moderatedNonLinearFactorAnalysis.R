@@ -734,7 +734,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   if (length(msgs) == 0) return()
 
-  htmlText <- paste0("<b>", gettext("Warnings:"), "</b><ul>", paste(msgs, collapse = ""), "</ul>")
+  htmlText <- paste0("<b>", gettext("Warnings (from R):"), "</b><ul>", paste(msgs, collapse = ""), "</ul>")
   warningsHtml <- createJaspHtml(text = htmlText)
   warningsHtml$dependOn("warnings")
   warningsHtml$position <- 0.5
