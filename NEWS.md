@@ -21,25 +21,21 @@
 * MNLFA: new **Estimation Options** section with an **Indicator preprocessing** option (None / Center / Z-standardize) that transforms all indicator variables before the mxsem script is built.
 * MNLFA: new **Show warnings** checkbox in the Output Options section that prints captured OpenMx warning text above the Global Invariance Fit table.
 * MNLFA: Global Invariance Fit table now adds a per-model footnote whenever the OpenMx optimizer status is anything other than OK (e.g. "Non-convex Hessian", "OK/Gradient").
+* MIMIC: residual variances and predictor covariances tables ([PR #365](https://github.com/jasp-stats/jaspSem/pull/365))
+* MIMIC: option to freely estimate exogenous predictor variances and covariances (`fixed.x`) ([PR #365](https://github.com/jasp-stats/jaspSem/pull/365), [#4120](https://github.com/jasp-stats/jasp-issues/issues/4120))
+* All analyses: added contextual help text to all output tables, containers, and QML controls ([PR #360](https://github.com/jasp-stats/jaspSem/pull/360))
 
 ## Fixed
 * MNLFA: fixed a bug where the estimated-parameter count `k` silently under-counted when the Hessian was singular (some SEs were `NA`). The wrong `k` propagated into AIC, BIC, SABIC, and Δdf, producing incorrect LRT p-values. `k` now matches `summary(mxRun(...))$estimatedParameters`.
 * MNLFA: OpenMx warnings from `mxRun()` are no longer silently swallowed.
-
-## Changed
-* MNLFA: removed dead dependencies (`factorsUncorrelated`, `interceptsFixedToZero`, `packageMimiced`, `estimator`, `naAction`) from the main container — they were listed but never read anywhere in MNLFA code.
-
----
-
-# jaspModuleTemplate 0.2.0
-## Added
-* MIMIC: residual variances and predictor covariances tables ([PR #365](https://github.com/jasp-stats/jaspSem/pull/365))
-* MIMIC: option to freely estimate exogenous predictor variances and covariances (`fixed.x`) ([PR #365](https://github.com/jasp-stats/jaspSem/pull/365), [#4120](https://github.com/jasp-stats/jasp-issues/issues/4120))
-
-## Fixed
 * SEM: indirect effects table showed encoded column names instead of variable names in path models ([#4219](https://github.com/jasp-stats/jasp-issues/issues/4219))
 * SEM: path plot for simple regression model across SEM, MIMIC, LGCM, and Mediation Analysis ([PR #365](https://github.com/jasp-stats/jaspSem/pull/365), [#4109](https://github.com/jasp-stats/jasp-issues/issues/4109))
 * SEM: AVE and CR values regression ([PR #365](https://github.com/jasp-stats/jaspSem/pull/365), [#4201](https://github.com/jasp-stats/jasp-issues/issues/4201))
+* PLSSEM: fixed untranslated column headers ([PR #360](https://github.com/jasp-stats/jaspSem/pull/360))
+* PLSSEM: removed memory cap in parallel model fitting ([PR #360](https://github.com/jasp-stats/jaspSem/pull/360))
+
+## Changed
+* MNLFA: removed dead dependencies (`factorsUncorrelated`, `interceptsFixedToZero`, `packageMimiced`, `estimator`, `naAction`) from the main container — they were listed but never read anywhere in MNLFA code.
 
 
 ---
