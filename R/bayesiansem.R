@@ -21,7 +21,6 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   # Read dataset
   options <- .bayesiansemPrepOpts(options)
-  dataset <- .bayesiansemReadData(dataset, options)
 
   ready   <- .bayesiansemIsReady(dataset, options)
 
@@ -32,6 +31,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   # Output functions
   .bayesiansemFitTab(jaspResults, modelContainer, dataset, options, ready)
+  .bayesiansemAdditionalFits(modelContainer, dataset, options, ready)
   .bayesiansemWarningsHtml(modelContainer, dataset, options, ready)
   .bayesiansemParameters(modelContainer, dataset, options, ready)
 }
@@ -39,8 +39,10 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 # helper functions
 .bayesiansemPrepOpts <- function(options) {
 
-  # backwards compatibility after changes to bouncontrollavaantextarea.cpp
+  # Handle both current format (syntax is a plain string from TextArea) and
+  # old ListBase format (syntax is a list with "model" key)
   fixModel <- function(model) {
+    if (is.character(model[["syntax"]])) return(model)
     newModel <- c(model[1], model[[2]])
     names(newModel)[names(newModel) == "model"] <- "syntax"
     return(newModel)
@@ -53,28 +55,12 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   return(options)
 }
 
-.bayesiansemReadData <- function(dataset, options) {
-  if (!is.null(dataset)) return(dataset)
-
-  if (options[["dataType"]] == "raw") {
-    variablesToRead <- if (options[["group"]] == "") character() else options[["group"]]
-    for (model in options[["models"]])
-      variablesToRead <- unique(c(variablesToRead, model[["columns"]]))
-
-    dataset <- .readDataSetToEnd(columns = variablesToRead)
-  } else {
-    dataset <- .readDataSetToEnd(all.columns = TRUE)
-  }
-
-  return(dataset)
-}
-
 .bayesiansemIsReady <- function(dataset, options) {
 
   if (length(options[["models"]]) < 1) return(FALSE)
 
   for (m in options[["models"]])
-    if (length(m[["columns"]]) > 0)
+    if (nchar(trimws(m[["syntax"]])) > 0)
       return(TRUE)
 
   return(FALSE)
@@ -104,7 +90,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   }
 
   # Check whether grouping variable is a grouping variable
-  if (options[["group"]] != "") {
+  if (isTRUE(options[["group"]] != "")) {
     groupfac <- factor(dataset[[options[["group"]]]])
     factab <- table(groupfac)
     if (any(factab < 3)) {
@@ -115,12 +101,6 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     }
   }
 
-  # Check variance covariance matrix input and its implications:
-  if (options[["dataType"]] == "varianceCovariance") {
-    modelContainer$setError(gettext("Variance-covariance matrix input not yet supported for Bayesian SEM"))
-    return()
-  }
-
   return()
 }
 
@@ -129,8 +109,8 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     modelContainer <- jaspResults[["modelContainer"]]
   } else {
     modelContainer <- createJaspContainer()
-    modelContainer$dependOn(c("meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero",
-                              "factorScaling", "orthogonal", "group", "dataType",
+    modelContainer$dependOn(c("models", "meanStructure", "manifestInterceptFixedToZero", "latentInterceptFixedToZero",
+                              "factorScaling", "orthogonal", "group",
                               "mcmcBurnin", "mcmcSamples", "mcmcChains", "mcmcThin",
                               "userGaveSeed", "bootSeed"))
     jaspResults[["modelContainer"]] <- modelContainer
@@ -222,18 +202,29 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   blavaanOptions[["std.lv"]]          <- options[["factorScaling"]] == "factorVariance"
   blavaanOptions[["auto.fix.first"]]  <- options[["factorScaling"]] == "factorLoading"
 
+  # auto-settings matching bsem() defaults (required when calling blavaan() directly)
+  blavaanOptions[["auto.fix.single"]] <- TRUE
+  blavaanOptions[["auto.var"]]        <- TRUE
+  blavaanOptions[["auto.cov.lv.x"]]  <- TRUE
+  blavaanOptions[["auto.cov.y"]]     <- TRUE
+  blavaanOptions[["auto.th"]]        <- TRUE
+  blavaanOptions[["auto.delta"]]     <- TRUE
+
   # group variable
-  if (options[["group"]] != "") {
+  if (isTRUE(options[["group"]] != "")) {
     blavaanOptions[["group"]] <- options[["group"]]
   }
 
   # Bayesian-specific options for blavaan
-  blavaanOptions[["burnin"]] <- if (!is.null(options[["mcmcBurnin"]])) options[["mcmcBurnin"]] else 500
-  blavaanOptions[["sample"]] <- if (!is.null(options[["mcmcSamples"]])) options[["mcmcSamples"]] else 1000
-  blavaanOptions[["n.chains"]] <- if (!is.null(options[["mcmcChains"]])) options[["mcmcChains"]] else 3
-  blavaanOptions[["thin"]] <- if (!is.null(options[["mcmcThin"]])) options[["mcmcThin"]] else 1
-  blavaanOptions[["target"]] <- "stan"
-  
+  blavaanOptions[["burnin"]]   <- if (!is.null(options[["mcmcBurnin"]]))   options[["mcmcBurnin"]]   else 500L
+  blavaanOptions[["sample"]]   <- if (!is.null(options[["mcmcSamples"]])) options[["mcmcSamples"]] else 1000L
+  blavaanOptions[["n.chains"]] <- if (!is.null(options[["mcmcChains"]]))  options[["mcmcChains"]]  else 3L
+  blavaanOptions[["target"]]   <- "stan"
+
+  thinVal <- if (!is.null(options[["mcmcThin"]])) options[["mcmcThin"]] else 1L
+  if (thinVal > 1L)
+    blavaanOptions[["bcontrol"]] <- list(thin = thinVal)
+
   if (options[["userGaveSeed"]]) {
     blavaanOptions[["seed"]] <- options[["bootSeed"]]
   }
@@ -282,7 +273,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
 
   fittab$addColumnInfo(name = "Model",    title = "",                            type = "string" , combine = TRUE)
 
-  if (options[["group"]] != "") {
+  if (isTRUE(options[["group"]] != "")) {
     fittab$addColumnInfo(name = "group",    title = gettext("Group"),              type = "string" )
   }
   fittab$addColumnInfo(name = "DIC",      title = gettext("DIC"),                type = "number" )
@@ -321,8 +312,8 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   # Extract Bayesian fit indices
   fitMeasures <- lapply(blavaanResults, function(fit) {
     tryCatch({
-      fm <- blavaan::blavFitIndices(fit)
-      list(DIC = fm["DIC"], WAIC = fm["WAIC"], looic = fm["looic"])
+      fm <- lavaan::fitMeasures(fit, c("dic", "waic", "looic"))
+      list(DIC = as.numeric(fm[["dic"]]), WAIC = as.numeric(fm[["waic"]]), looic = as.numeric(fm[["looic"]]))
     }, error = function(e) {
       list(DIC = NA, WAIC = NA, looic = NA)
     })
@@ -341,6 +332,136 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     fittab$addFootnote(message = fnote)
   }
 
+}
+
+.bayesiansemAdditionalFits <- function(modelContainer, dataset, options, ready) {
+
+  if (!isTRUE(options[["additionalFitMeasures"]]) || !is.null(modelContainer[["addfit"]])) return()
+
+  fitContainer <- createJaspContainer(gettext("Additional Fit Measures"))
+  fitContainer$dependOn(c("additionalFitMeasures", "models"))
+  fitContainer$position <- 0.5
+  modelContainer[["addfit"]] <- fitContainer
+
+  if (!ready || modelContainer$getError()) return()
+
+  blavaanResults <- .bayesiansemComputeResults(modelContainer, dataset, options)
+  if (modelContainer$getError()) return()
+
+  # Fit baseline (null) model for incremental indices (BCFI, BTLI, BNFI)
+  baselineResults <- .bayesiansemFitBaseline(modelContainer, blavaanResults, dataset, options)
+
+  ciLevel <- if (!is.null(options[["ciLevel"]])) options[["ciLevel"]] else 0.95
+
+  for (i in seq_along(blavaanResults)) {
+    modelName <- options[["models"]][[i]][["name"]]
+
+    fitTable <- createJaspTable(title = if (length(blavaanResults) > 1) modelName else gettext("Fit indices"))
+    fitTable$position <- i
+
+    fitTable$addColumnInfo(name = "index",  title = gettext("Index"),   type = "string")
+    fitTable$addColumnInfo(name = "eap",    title = gettext("EAP"),     type = "number", format = "sf:4;dp:3")
+    fitTable$addColumnInfo(name = "median", title = gettext("Median"),  type = "number", format = "sf:4;dp:3")
+    fitTable$addColumnInfo(name = "sd",     title = gettext("Post. SD"), type = "number", format = "sf:4;dp:3")
+    fitTable$addColumnInfo(name = "lower",  title = gettext("Lower"),   type = "number", format = "sf:4;dp:3",
+                           overtitle = gettextf("%s%% Credible interval", round(ciLevel * 100)))
+    fitTable$addColumnInfo(name = "upper",  title = gettext("Upper"),   type = "number", format = "sf:4;dp:3",
+                           overtitle = gettextf("%s%% Credible interval", round(ciLevel * 100)))
+
+    fitContainer[[paste0("fitTable_", i)]] <- fitTable
+
+    bfi <- tryCatch({
+      baseline <- if (!is.null(baselineResults)) baselineResults[[i]] else NULL
+      blavaan::blavFitIndices(blavaanResults[[i]],
+                              baseline.model = baseline,
+                              pD = "loo",
+                              fit.measures = "all")
+    }, error = function(e) {
+      fitTable$addFootnote(gettextf("Could not compute fit indices: %s", e$message))
+      NULL
+    })
+
+    if (is.null(bfi)) next
+
+    # Extract summary
+    bfiSummary <- summary(bfi, central.tendency = c("mean", "median"),
+                          prob = ciLevel)
+
+    indexLabels <- c(
+      "BRMSEA"       = gettext("Bayesian RMSEA"),
+      "BGammaHat"    = gettext("Bayesian Gamma Hat"),
+      "adjBGammaHat" = gettext("Bayesian Adj. Gamma Hat"),
+      "BMc"          = gettext("Bayesian McDonald's Centrality"),
+      "BCFI"         = gettext("Bayesian CFI"),
+      "BTLI"         = gettext("Bayesian TLI"),
+      "BNFI"         = gettext("Bayesian NFI")
+    )
+
+    availableIndices <- rownames(bfiSummary)
+    rows <- data.frame(
+      index  = unname(indexLabels[availableIndices]),
+      eap    = bfiSummary[, "EAP"],
+      median = bfiSummary[, "Median"],
+      sd     = bfiSummary[, "SD"],
+      lower  = bfiSummary[, "lower"],
+      upper  = bfiSummary[, "upper"],
+      stringsAsFactors = FALSE
+    )
+
+    fitTable$setData(rows)
+
+    fitTable$addFootnote(gettext("Fit indices based on the deviance evaluated at the posterior mean (Garnier-Villarreal & Jorgensen, 2020)."))
+  }
+
+  fitContainer$addCitation("Garnier-Villarreal, M., & Jorgensen, T. D. (2020). Adapting Fit Indices for Bayesian Structural Equation Modeling: Comparison to Maximum Likelihood. Psychological Methods, 25(1), 46-70.")
+}
+
+.bayesiansemFitBaseline <- function(modelContainer, blavaanResults, dataset, options) {
+  #' Fit a null (baseline) model for incremental Bayesian fit indices.
+  #' Returns a list of baseline fits (one per target model).
+
+  if (!is.null(modelContainer[["baselineResults"]])) {
+    return(modelContainer[["baselineResults"]][["object"]])
+  }
+
+  baselineResults <- vector("list", length(blavaanResults))
+  blavaanOptions <- .bayesiansemOptionsToBlavOptions(options, dataset)
+
+  for (i in seq_along(blavaanResults)) {
+    ovNames <- lavaan::lavNames(blavaanResults[[i]], "ov")
+
+    # Null model: free variances and intercepts, all covariances = 0
+    nullSyntax <- paste(
+      c(paste0(ovNames, " ~~ ", ovNames),
+        paste0(ovNames, " ~ 1")),
+      collapse = "\n"
+    )
+
+    nullArgs <- blavaanOptions
+    nullArgs[["model"]] <- nullSyntax
+    if (options[["dataType"]] == "raw") {
+      nullArgs[["data"]] <- dataset
+    }
+    # Override settings unsuitable for null model
+    nullArgs[["auto.cov.lv.x"]] <- FALSE
+    nullArgs[["auto.cov.y"]]    <- FALSE
+    nullArgs[["orthogonal"]]    <- FALSE
+    nullArgs[["std.lv"]]        <- FALSE
+    nullArgs[["auto.fix.first"]] <- FALSE
+
+    nullFit <- tryCatch(
+      do.call(blavaan::blavaan, nullArgs),
+      error = function(e) NULL
+    )
+
+    baselineResults[[i]] <- nullFit
+  }
+
+  # Cache for reuse
+  modelContainer[["baselineResults"]] <- createJaspState(baselineResults)
+  modelContainer[["baselineResults"]]$dependOn(optionsFromObject = modelContainer)
+
+  return(baselineResults)
 }
 
 .bayesiansemWarningsHtml <- function(modelContainer, dataset, options, ready) {
@@ -403,7 +524,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   # Measurement model
   indtab <- createJaspTable(title = gettext("Factor Loadings"))
 
-  if (options[["group"]] != "")
+  if (isTRUE(options[["group"]] != ""))
     indtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
   indtab$addColumnInfo(name = "lhs",      title = gettext("Latent"),     type = "string", combine = TRUE)
@@ -412,16 +533,16 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   indtab$addColumnInfo(name = "est",      title = gettext("Post. Mean"), type = "number")
   indtab$addColumnInfo(name = "se",       title = gettext("Post. SD"),   type = "number")
   indtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
   indtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
 
   pecont[["ind"]] <- indtab
 
   # Structural Model
   regtab <- createJaspTable(title = gettext("Regression coefficients"))
 
-  if (options[["group"]] != "")
+  if (isTRUE(options[["group"]] != ""))
     regtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
   regtab$addColumnInfo(name = "lhs",      title = gettext("Outcome"),    type = "string", combine = TRUE)
@@ -430,16 +551,16 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   regtab$addColumnInfo(name = "est",      title = gettext("Post. Mean"), type = "number")
   regtab$addColumnInfo(name = "se",       title = gettext("Post. SD"),   type = "number")
   regtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
   regtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
 
   pecont[["reg"]] <- regtab
 
   # Latent variances
   lvartab <- createJaspTable(title = gettext("Factor variances"))
 
-  if (options[["group"]] != "")
+  if (isTRUE(options[["group"]] != ""))
     lvartab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
   lvartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
@@ -447,16 +568,16 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   lvartab$addColumnInfo(name = "est",      title = gettext("Post. Mean"), type = "number")
   lvartab$addColumnInfo(name = "se",       title = gettext("Post. SD"),   type = "number")
   lvartab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Credible interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
   lvartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Credible interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
 
   pecont[["lvar"]] <- lvartab
 
   # Latent covariances
   lcovtab <- createJaspTable(title = gettext("Factor covariances"))
 
-  if (options[["group"]] != "")
+  if (isTRUE(options[["group"]] != ""))
     lcovtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
   lcovtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
@@ -464,16 +585,16 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   lcovtab$addColumnInfo(name = "est",      title = gettext("Post. Mean"), type = "number")
   lcovtab$addColumnInfo(name = "se",       title = gettext("Post. SD"),   type = "number")
   lcovtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Credible interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
   lcovtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Credible interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
 
   pecont[["lcov"]] <- lcovtab
 
   # Residual variances
   vartab <- createJaspTable(title = gettext("Residual variances"))
 
-  if (options[["group"]] != "")
+  if (isTRUE(options[["group"]] != ""))
     vartab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
   vartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
@@ -481,16 +602,16 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   vartab$addColumnInfo(name = "est",      title = gettext("Post. Mean"), type = "number")
   vartab$addColumnInfo(name = "se",       title = gettext("Post. SD"),   type = "number")
   vartab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
   vartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
 
   pecont[["var"]] <- vartab
 
   # Residual covariances
   covtab <- createJaspTable(title = gettext("Residual covariances"))
 
-  if (options[["group"]] != "")
+  if (isTRUE(options[["group"]] != ""))
     covtab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
   covtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),   type = "string")
@@ -498,9 +619,9 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
   covtab$addColumnInfo(name = "est",      title = gettext("Post. Mean"), type = "number")
   covtab$addColumnInfo(name = "se",       title = gettext("Post. SD"),   type = "number")
   covtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
   covtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                       overtitle = gettextf("%s%% Credible interval", options$ciLevel * 100))
+                       overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
 
   pecont[["cov"]] <- covtab
 
@@ -512,7 +633,7 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     mutab <- createJaspTable(title = gettext("Intercepts"))
     allTables[[length(allTables) + 1]] <- mutab
 
-    if (options[["group"]] != "")
+    if (isTRUE(options[["group"]] != ""))
       mutab$addColumnInfo(name = "group",  title = gettext("Group"),      type = "string", combine = TRUE)
 
     mutab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
@@ -520,38 +641,46 @@ BayesianSEMInternal <- function(jaspResults, dataset, options, ...) {
     mutab$addColumnInfo(name = "est",      title = gettext("Post. Mean"), type = "number")
     mutab$addColumnInfo(name = "se",       title = gettext("Post. SD"),   type = "number")
     mutab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
-                        overtitle = gettextf("%s%% Credible interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
     mutab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
-                        overtitle = gettextf("%s%% Credible interval", options$ciLevel * 100))
+                        overtitle = gettextf("%s%% Credible interval", options[["ciLevel"]] * 100))
 
     pecont[["mu"]] <- mutab
   }
 
   # Extract parameter estimates from blavaan fit
-  # Get parameter table with posterior summaries
-  paramTable <- tryCatch({
-    blavaan::parameterestimates(fit, level = options[["ciLevel"]])
-  }, error = function(e) {
-    # Fallback: use summary if parameterestimates fails
-    summ <- summary(fit)
-    if (is.list(summ) && !is.null(summ$PE)) {
-      summ$PE
-    } else {
-      lavaan::parameterTable(fit)
-    }
-  })
-  
-  # Ensure required columns exist
-  if (!"label" %in% colnames(paramTable)) {
+  # parameterTable provides est (posterior mean) and se (posterior SD)
+  # CIs must be computed from MCMC samples
+  paramTable <- lavaan::parameterTable(fit)
+
+  # Ensure label column exists
+  if (!"label" %in% colnames(paramTable))
     paramTable$label <- ""
-  }
-  
-  # Handle different column naming conventions
-  if ("post.sd" %in% colnames(paramTable) && !"se" %in% colnames(paramTable)) {
-    paramTable$se <- paramTable$post.sd
-  }
-  if (!"est" %in% colnames(paramTable) && "Estimate" %in% colnames(paramTable)) {
-    paramTable$est <- paramTable$Estimate
+
+  # Compute credible intervals from MCMC draws
+  ciProbs <- c((1 - options[["ciLevel"]]) / 2, 1 - (1 - options[["ciLevel"]]) / 2)
+  mcmcDraws <- tryCatch(blavaan::blavInspect(fit, "mcmc"), error = function(e) NULL)
+
+  paramTable$ci.lower <- NA_real_
+  paramTable$ci.upper <- NA_real_
+
+  if (!is.null(mcmcDraws)) {
+    allDraws <- do.call(rbind, mcmcDraws)
+    mcmcNames <- colnames(allDraws)
+    # MCMC columns match free parameters in order via lhs+op+rhs naming
+    freeIdx <- which(paramTable$free > 0)
+    for (j in seq_along(freeIdx)) {
+      i <- freeIdx[j]
+      if (j <= ncol(allDraws)) {
+        ci <- quantile(allDraws[, j], probs = ciProbs, na.rm = TRUE)
+        paramTable$ci.lower[i] <- ci[1]
+        paramTable$ci.upper[i] <- ci[2]
+      }
+    }
+    # Fixed parameters: CI equals the point estimate
+    fixedIdx <- which(paramTable$free == 0 & !is.na(paramTable$est))
+    paramTable$ci.lower[fixedIdx] <- paramTable$est[fixedIdx]
+    paramTable$ci.upper[fixedIdx] <- paramTable$est[fixedIdx]
   }
 
   # Split by parameter type and fill tables
