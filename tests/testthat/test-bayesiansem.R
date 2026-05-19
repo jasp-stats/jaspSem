@@ -1,43 +1,43 @@
 context("Bayesian Structural Equation Modeling")
 
-# Note: These tests use reduced MCMC settings for faster execution
-# In production, use default or higher values for more reliable estimates
+# Note: MCMC sampling is stochastic; snapshot tests are not used.
+# Tests verify structural output only. Reduced MCMC settings for speed.
 
-# Basic test with simple model
-options <- jaspTools::analysisOptions("BayesianSEM")
-options$models <- list(list(
-  name = "Model1", 
-  syntax = list(model = "
+model <- "
 # latent variable definitions
   ind60 =~ x1 + x2 + x3
   dem60 =~ y1 + y2 + y3 + y4
 # regressions
   dem60 ~ ind60
-", 
-  columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4"))
+"
+
+options <- jaspTools::analysisOptions("BayesianSEM")
+options$models <- list(list(
+  name   = "Model 1",
+  syntax = list(model = model, columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4"))
 ))
-options$mcmcBurnin <- 100    # Reduced for faster testing (default: 500)
-options$mcmcSamples <- 200   # Reduced for faster testing (default: 1000)
-options$mcmcChains <- 2      # Reduced for faster testing (default: 3)
-options$mcmcThin <- 1
-options$group <- ""
-options$dataType <- "raw"
-options$factorScaling <- "factorLoading"
-options$ciLevel <- 0.95
-options$meanStructure <- FALSE
+options$mcmcBurnin   <- 100L
+options$mcmcSamples  <- 200L
+options$mcmcChains   <- 2L
+options$mcmcThin     <- 1L
+options$group        <- ""
+options$dataType     <- "raw"
+options$factorScaling               <- "factorLoading"
+options$ciLevel                     <- 0.95
+options$meanStructure               <- FALSE
 options$manifestInterceptFixedToZero <- FALSE
-options$latentInterceptFixedToZero <- TRUE
-options$orthogonal <- FALSE
-options$warnings <- FALSE
+options$latentInterceptFixedToZero  <- TRUE
+options$orthogonal                  <- FALSE
+options$warnings                    <- FALSE
 
 set.seed(123)
-results <- jaspTools::runAnalysis("BayesianSEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = FALSE)
+results <- jaspTools::runAnalysis("BayesianSEM", testthat::test_path("poldem_grouped.csv"), options)
 
 
 test_that("Bayesian SEM runs without critical errors", {
   # Check that analysis completed
-  expect_true(is.null(results[["results"]][["error"]]) || results[["results"]][["error"]] == FALSE)
-  
+  expect_true(results[["status"]] == "complete")
+
   # Check that model container exists
   expect_true(!is.null(results[["results"]][["modelContainer"]]))
 })
@@ -45,10 +45,10 @@ test_that("Bayesian SEM runs without critical errors", {
 test_that("Model fit table is created", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   expect_true(!is.null(table))
-  expect_true(nrow(table) > 0)
-  expect_true("Model" %in% names(table))
-  # Bayesian fit indices should be present (at least one)
-  hasBayesianFit <- any(c("DIC", "WAIC", "LOO") %in% names(table))
+  expect_true(length(table) > 0)
+  expect_true("Model" %in% names(table[[1]]))
+  # Bayesian fit indices should be present
+  hasBayesianFit <- any(c("DIC", "WAIC", "LOO") %in% names(table[[1]]))
   expect_true(hasBayesianFit)
 })
 
@@ -61,24 +61,54 @@ test_that("Parameter estimates container is created", {
 
 test_that("Parameter tables have expected structure", {
   parcont <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]]
-  
+
   # Check for factor loadings table
-  if (!is.null(parcont[["modelContainer_params_ind"]])) {
-    indtab <- parcont[["modelContainer_params_ind"]][["data"]]
-    if (!is.null(indtab) && nrow(indtab) > 0) {
-      # Should have posterior summaries
-      expect_true("est" %in% names(indtab)) # posterior mean
-      expect_true("se" %in% names(indtab))  # posterior SD
-    }
-  }
-  
+  indtab <- parcont[["modelContainer_params_ind"]][["data"]]
+  expect_true(!is.null(indtab))
+  expect_true(length(indtab) > 0)
+  expect_true("est" %in% names(indtab[[1]]))  # posterior mean
+  expect_true("se" %in% names(indtab[[1]]))   # posterior SD
+
   # Check for regression coefficients table
-  if (!is.null(parcont[["modelContainer_params_reg"]])) {
-    regtab <- parcont[["modelContainer_params_reg"]][["data"]]
-    if (!is.null(regtab) && nrow(regtab) > 0) {
-      expect_true("est" %in% names(regtab))
-      expect_true("se" %in% names(regtab))
-    }
-  }
+  regtab <- parcont[["modelContainer_params_reg"]][["data"]]
+  expect_true(!is.null(regtab))
+  expect_true(length(regtab) > 0)
+  expect_true("est" %in% names(regtab[[1]]))
+  expect_true("se" %in% names(regtab[[1]]))
+})
+
+
+# Additional fit measures test (separate run with additionalFitMeasures = TRUE)
+options2 <- options
+options2$additionalFitMeasures <- TRUE
+
+set.seed(456)
+results2 <- jaspTools::runAnalysis("BayesianSEM", testthat::test_path("poldem_grouped.csv"), options2)
+
+test_that("Additional Bayesian fit measures table is created", {
+  expect_true(results2[["status"]] == "complete")
+
+  addfit <- results2[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]]
+  expect_true(!is.null(addfit))
+
+  fitTable <- addfit[["collection"]][["modelContainer_addfit_fitTable_1"]][["data"]]
+  expect_true(!is.null(fitTable))
+  expect_true(length(fitTable) == 7)  # BRMSEA, BGammaHat, adjBGammaHat, BMc, BCFI, BTLI, BNFI
+
+  # Check structure of each row
+  firstRow <- fitTable[[1]]
+  expect_true(all(c("index", "eap", "median", "sd", "lower", "upper") %in% names(firstRow)))
+
+  # Check all indices are named
+  indexNames <- vapply(fitTable, function(x) x$index, "")
+  expect_true("Bayesian RMSEA" %in% indexNames)
+  expect_true("Bayesian CFI" %in% indexNames)
+  expect_true("Bayesian TLI" %in% indexNames)
+  expect_true("Bayesian NFI" %in% indexNames)
+
+  # Check values are numeric and in reasonable range
+  eapValues <- vapply(fitTable, function(x) x$eap, 0)
+  expect_true(all(is.finite(eapValues)))
+  expect_true(all(eapValues >= 0 & eapValues <= 1))
 })
 

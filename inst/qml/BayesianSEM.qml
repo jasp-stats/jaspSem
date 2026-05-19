@@ -162,7 +162,8 @@ Form
 		Group
 		{
 			title: qsTr("Additional output")
-			CheckBox { name: "warnings"; label: qsTr("Show warnings"); checked: false }
+			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures") }
+			CheckBox { name: "warnings";					label: qsTr("Show warnings"); checked: false }
 		}
 	}
 }
