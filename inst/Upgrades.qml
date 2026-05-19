@@ -268,6 +268,27 @@ Upgrades
 
 	Upgrade
 	{
+		functionName: "BayesianSEM"
+		fromVersion: "0.96.4.1"
+		toVersion:   "0.96.5"
+
+		ChangeJS
+		{
+			name:       "priorSpecification"
+			jsFunction: function(options)
+			{
+				switch(options["priorSpecification"])
+				{
+					case "default":    return "estimation";
+					case "nonDefault": return "testing";
+					default:           return options["priorSpecification"];
+				}
+			}
+		}
+	}
+
+	Upgrade
+	{
 		functionName: "SEM"
 		fromVersion: "0.16.4"
 		toVersion: "0.17.0"
