@@ -175,13 +175,13 @@ Form
 
 			RadioButtonGroup
 			{
-				name:                 "priorSpecification"
-				title:                qsTr("Prior Specification")
-				radioButtonsOnSameRow: true
-				info:                 qsTr("Select how prior distributions are specified for model parameters.")
+				name:    "priorSpecification"
+				title:   qsTr("Prior Specification")
+				columns: 2
+				info:    qsTr("Select how prior distributions are specified for model parameters.")
 
-				RadioButton { value: "default";    label: qsTr("Default");     checked: true; id: priorDefault    }
-				RadioButton { value: "nonDefault"; label: qsTr("Non-default"); id: priorNonDefault }
+				RadioButton { value: "estimation"; label: qsTr("Estimation"); checked: true; id: priorDefault    }
+				RadioButton { value: "testing";    label: qsTr("Testing");    id: priorNonDefault }
 			}
 
 			HelpButton
@@ -257,10 +257,10 @@ Form
 			
 			RadioButtonGroup
 			{
-				name:                  "priorUiScope"
-				title:                 qsTr("Scope")
-				radioButtonsOnSameRow: true
-				info:                  qsTr("Apply unit information priors globally, per parameter type, or per individual parameter.")
+				name:    "priorUiScope"
+				title:   qsTr("Scope")
+				columns: 3
+				info:    qsTr("Apply unit information priors globally, per parameter type, or per individual parameter.")
 
 				RadioButton { value: "global";    label: qsTr("Global");        checked: true; id: scopeGlobal    }
 				RadioButton { value: "group";     label: qsTr("Per type");      id: scopeGroup     }
@@ -345,10 +345,11 @@ Form
 		{
 			CheckBox
 			{
-				name: "priorPredictivePlots"
-				id: priorPredictivePlots
-				label: qsTr("Prior predictive plots")
-				info: qsTr("Draw prior predictive replicated datasets and compare them to the observed data.")
+				name:    "priorPredictivePlots"
+				id:      priorPredictivePlots
+				label:   qsTr("Prior predictive plots")
+				enabled: priorNonDefault.checked
+				info:    qsTr("Draw prior predictive replicated datasets and compare them to the observed data. Only available when Prior Specification is set to Testing.")
 
 				IntegerField
 				{
