@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.95.5\n"
 "POT-Creation-Date: 2026-05-09 03:54\n"
-"PO-Revision-Date: 2026-04-16 07:37+0000\n"
-"Last-Translator: Zahid Rizky Fakhri <zahidrizkyfakhri@gmail.com>\n"
+"PO-Revision-Date: 2026-05-17 06:11+0000\n"
+"Last-Translator: Arif Budiman <arifpedia@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/jasp/jaspsem-"
 "r/id/>\n"
 "Language: id\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.17.1-dev\n"
+"X-Generator: Weblate 2026.6.dev0\n"
 
 msgid "Fit Indices"
 msgstr ""
@@ -186,13 +186,13 @@ msgid "z-value"
 msgstr ""
 
 msgid "Lower"
-msgstr "Bawah"
+msgstr "Batas Bawah"
 
 msgid "%s%% Confidence Interval"
 msgstr ""
 
 msgid "Upper"
-msgstr "Atas"
+msgstr "Batas Atas"
 
 msgid "Latent Covariances"
 msgstr ""
@@ -240,7 +240,7 @@ msgid "Cubic slope"
 msgstr ""
 
 msgid "Mean"
-msgstr "Rerata"
+msgstr "Rata-rata"
 
 msgid "Variance"
 msgstr "Varians"
@@ -767,7 +767,7 @@ msgid ""
 msgstr ""
 
 msgid "Group"
-msgstr "Grup"
+msgstr "Kelompok"
 
 msgid "Distance Measure"
 msgstr ""
@@ -797,7 +797,7 @@ msgid ""
 msgstr ""
 
 msgid "Weights"
-msgstr ""
+msgstr "Bobot"
 
 msgid ""
 "Outer weights relating observed indicators to their composite constructs. "
@@ -1214,7 +1214,7 @@ msgid ""
 msgstr ""
 
 msgid "Name"
-msgstr ""
+msgstr "Nama"
 
 msgid "Indirect Effects"
 msgstr ""
@@ -1340,10 +1340,10 @@ msgid ""
 msgstr ""
 
 msgid "Skewness"
-msgstr ""
+msgstr "Kecondongan"
 
 msgid "Kurtosis"
-msgstr ""
+msgstr "Kurtosis"
 
 msgid "Covariance Tables"
 msgstr ""
@@ -1459,10 +1459,10 @@ msgid "Sensitivity model"
 msgstr ""
 
 msgid "Min"
-msgstr ""
+msgstr "Min"
 
 msgid "Max"
-msgstr ""
+msgstr "Maks"
 
 msgid ""
 "Please include at least one regression path in the model to perform a "
