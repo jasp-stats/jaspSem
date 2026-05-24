@@ -19,7 +19,7 @@ options <- list(
   emulation = "lavaan",
   errorCalculationMethod = "standard",
   estimator = "default",
-  fixedX = TRUE,
+  fixPredictorVariancesAndCovariances = TRUE,
   includePredictorCovariances = TRUE,
   indicators = c("y1", "y2", "y3", "y4", "y5", "y6"),
   indicators.types = c("scale", "scale", "scale", "scale", "scale", "scale"),
@@ -104,15 +104,15 @@ test_that("Predictor covariances table results match", {
                                       26.6245013591312))
 })
 
-# fixedX = FALSE: freely estimate predictor variances and covariances
+# fixPredictorVariancesAndCovariances = FALSE: freely estimate predictor variances and covariances
 options2         <- options
-options2$fixedX  <- FALSE
+options2$fixPredictorVariancesAndCovariances  <- FALSE
 options2$standardizedEstimate <- FALSE
 
 set.seed(1)
 results2 <- jaspTools::runAnalysis("MIMIC", testthat::test_path("poldem_grouped.csv"), options2, makeTests = FALSE)
 
-test_that("Predictor covariances have SEs when fixedX is FALSE", {
+test_that("Predictor covariances have SEs when fixPredictorVariancesAndCovariances is FALSE", {
   table <- results2[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_cov"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(0.645448754445758, 1.30886149855849, 0.977155126502126, "x1 \u2013 x2",
@@ -123,7 +123,7 @@ test_that("Predictor covariances have SEs when fixedX is FALSE", {
                                       5.61072276419455))
 })
 
-test_that("Residual variances have SEs for predictors when fixedX is FALSE", {
+test_that("Residual variances have SEs for predictors when fixPredictorVariancesAndCovariances is FALSE", {
   table <- results2[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]][["collection"]][["modelContainer_parest_var"]][["data"]]
   jaspTools::expect_equal_tables(table,
                                  list(1.03398100790029, 2.58125512377407, 1.80761806583718, "y1", 4.66102037943728e-06,

@@ -123,7 +123,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
     estimator       = options$estimator,
     missing         = miss,
     std.lv          = TRUE,
-    fixed.x         = options[["fixedX"]]
+    fixed.x         = options[["fixPredictorVariancesAndCovariances"]]
   ))
 
   if (inherits(mimicResult, "try-error")) {
@@ -202,7 +202,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
     modelContainer$dependOn(c(
       "predictors", "indicators", "includemeanstructure",
       "bootstrapSamples", "emulation", "errorCalculationMethod", "estimator",
-      "naAction", "fixedX", "includePredictorCovariances",
+      "naAction", "fixPredictorVariancesAndCovariances", "includePredictorCovariances",
       "standardizedEstimate", "standardizedEstimateType")
     )
     jaspResults[["modelContainer"]] <- modelContainer
@@ -299,13 +299,13 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
   vartab <- createJaspTable(title = gettext("Residual variances"))
 
   vartab$addColumnInfo(name = "lhs",      title = gettext("Variable"),   type = "string")
-  vartab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
-  vartab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
-  vartab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
-  vartab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
-  vartab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+  vartab$addColumnInfo(name = "est",      title = estTitle,              type = "number")
+  vartab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number")
+  vartab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
+  vartab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+  vartab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-  vartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+  vartab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                        overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
   pecont[["var"]] <- vartab
@@ -315,13 +315,13 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
     covtab <- createJaspTable(title = gettext("Predictor covariances"))
 
     covtab$addColumnInfo(name = "lhs",      title = gettext("Variables"),  type = "string")
-    covtab$addColumnInfo(name = "est",      title = estTitle,   type = "number", format = "sf:4;dp:3")
-    covtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number", format = "sf:4;dp:3")
-    covtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number", format = "sf:4;dp:3")
-    covtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "number", format = "dp:3;p:.001")
-    covtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number", format = "sf:4;dp:3",
+    covtab$addColumnInfo(name = "est",      title = estTitle,              type = "number")
+    covtab$addColumnInfo(name = "se",       title = gettext("Std. error"), type = "number")
+    covtab$addColumnInfo(name = "z",        title = gettext("z-value"),    type = "number")
+    covtab$addColumnInfo(name = "pvalue",   title = gettext("p"),          type = "pvalue")
+    covtab$addColumnInfo(name = "ci.lower", title = gettext("Lower"),      type = "number",
                          overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
-    covtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number", format = "sf:4;dp:3",
+    covtab$addColumnInfo(name = "ci.upper", title = gettext("Upper"),      type = "number",
                          overtitle = gettextf("%s%% Confidence Interval", options$ciLevel * 100))
 
     pecont[["cov"]] <- covtab

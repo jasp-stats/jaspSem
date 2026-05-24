@@ -80,8 +80,8 @@ options$informationMatrix <- "expected"
 options$naAction          <- "fiml"
 options$modelTest         <- "standard"
 options$reliability       <- TRUE
-options$ave               <- TRUE
-options$htmt              <- TRUE
+options$averageVarianceExtracted  <- TRUE
+options$heterotraitMonotraitRatio <- TRUE
 results <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = FALSE)
 
 

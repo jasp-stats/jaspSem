@@ -1705,7 +1705,7 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 .semAve <- function(modelContainer, dataset, options, ready) {
-  if (!options[["ave"]] || !is.null(modelContainer[["AVE"]])) return()
+  if (!options[["averageVarianceExtracted"]] || !is.null(modelContainer[["AVE"]])) return()
 
   # init table
   avetab <- createJaspTable(gettext("Average Variance Extracted"))
@@ -1722,7 +1722,7 @@ checkLavaanModel <- function(model, availableVars) {
     }
   }
 
-  avetab$dependOn(c("ave", "models"))
+  avetab$dependOn(c("averageVarianceExtracted", "models"))
   avetab$position <- .9
 
   modelContainer[["AVE"]] <- avetab
@@ -2024,12 +2024,12 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 .semHtmt <- function(modelContainer, dataset, options, ready) {
-  if (!options[["htmt"]] || !is.null(modelContainer[["htmt"]])) return()
+  if (!options[["heterotraitMonotraitRatio"]] || !is.null(modelContainer[["htmt"]])) return()
 
 
   htmt <- createJaspContainer()
   htmt$position <- 0.95
-  htmt$dependOn(c("htmt", "naAction", "models"))
+  htmt$dependOn(c("heterotraitMonotraitRatio", "naAction", "models"))
 
   modelContainer[["htmt"]] <- htmt
 

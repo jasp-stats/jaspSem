@@ -58,7 +58,7 @@ MIMIC <- function(
           emulation = "lavaan",
           errorCalculationMethod = "standard",
           estimator = "default",
-          fixedX = TRUE,
+          fixPredictorVariancesAndCovariances = TRUE,
           indicators = list(types = list(), value = list()),
           naAction = "fiml",
           pathPlot = FALSE,
