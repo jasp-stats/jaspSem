@@ -86,7 +86,7 @@ Form
 			}
 			CheckBox
 			{
-				name:    "fixedX"
+				name:    "fixPredictorVariancesAndCovariances"
 				label:   qsTr("Fix exogenous predictor variances and covariances")
 				checked: !includePredictorCovariances.checked
 				info:    qsTr("When checked, predictor variances and covariances are fixed to sample values. Uncheck to freely estimate them.")
