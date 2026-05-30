@@ -1,9 +1,15 @@
 msgid ""
 msgstr ""
+"PO-Revision-Date: 2026-05-29 13:12+0000\n"
+"Last-Translator: 陳正昌 <chencc99@gmail.com>\n"
+"Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
+"projects/jasp/jaspsem-qml/zh_Hant/>\n"
+"Language: zh_Hant\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Weblate 2026.6.dev0\n"
 "X-Language: zh_Hant\n"
 "X-Qt-Contexts: true\n"
 
@@ -205,7 +211,7 @@ msgstr "圖例"
 
 msgctxt "Mimic|"
 msgid "Indicators"
-msgstr "題項"
+msgstr "指標"
 
 msgctxt "Mimic|"
 msgid "Predictors"
@@ -213,7 +219,7 @@ msgstr "預測變項"
 
 msgctxt "Mimic|"
 msgid "Options"
-msgstr "設定"
+msgstr "選項"
 
 msgctxt "Mimic|"
 msgid "Standardized estimates"
@@ -529,7 +535,7 @@ msgstr "運用 lavaan套件驗證潛在變項間的因果關係"
 
 msgctxt "Description|"
 msgid "MIMIC Model"
-msgstr "MIMIC 模型"
+msgstr "多指標多原因 (MIMIC) 模型"
 
 msgctxt "Description|"
 msgid "Latent Growth"
@@ -1372,7 +1378,7 @@ msgstr "顯示參數估計值"
 
 msgctxt "Description|"
 msgid "MNLFA"
-msgstr ""
+msgstr "調節非線性因素分析"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Loadings"
