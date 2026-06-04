@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
 "POT-Creation-Date: 2026-05-09 03:54\n"
-"PO-Revision-Date: 2026-05-27 11:11+0000\n"
+"PO-Revision-Date: 2026-06-05 00:31+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "es/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2026.6.dev0\n"
+"X-Generator: Weblate 2026.6\n"
 
 msgid "Fit Indices"
 msgstr "Índices de ajuste"
@@ -917,7 +917,7 @@ msgstr "Variable(s) no reconocida(s) en la sintaxis del modelo: %s"
 
 msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
 msgstr ""
-"Usar '~~' no se admite para covarianzas compuestas. En su lugar, intenta '~'"
+"Usar '~~' no se admite para covarianzas combinadas. En su lugar, intenta '~'"
 
 msgid "Using '~~' is not supported. Try '~' instead"
 msgstr "Non se admite usar '~~'. En su lugar, intenta '~'"
@@ -971,6 +971,9 @@ msgid ""
 "loadings, inner model path coefficients, total effects, and residual "
 "correlations."
 msgstr ""
+"Estimaciones de parámetros para el modelo PLS-SEM, incluyendo ponderaciones "
+"externas, cargas externas, coeficientes internos de las rutas del modelo, "
+"efectos totales y correlaciones de errores."
 
 msgid "Weights"
 msgstr "Ponderaciones"
@@ -980,6 +983,10 @@ msgid ""
 "Weights determine how indicators are combined to form construct scores and "
 "reflect each indicator's relative contribution."
 msgstr ""
+"Ponderaciones externas que relacionan los indicadores observados con sus "
+"constructos combinados. Las ponderaciones determinan cómo se combinan los "
+"indicadores para formar puntuaciones de los constructos y reflejar la "
+"contribución relativa de cada indicador."
 
 msgid "Construct"
 msgstr "Constructo"
@@ -989,6 +996,9 @@ msgid ""
 "Loadings above 0.708 indicate that the construct explains more than 50%% of "
 "the indicator's variance."
 msgstr ""
+"Cargas externas (correlaciones) entre los indicadores y sus constructos. "
+"Cargas por encima de 0.708 indican que el constructo explica más del 50% de "
+"la varianza del indicador."
 
 msgid "Regression Coefficients"
 msgstr "Coeficientes de Regresión"
@@ -998,6 +1008,9 @@ msgid ""
 "indicates the substantive impact of removing each predictor: 0.02 (small), "
 "0.15 (medium), 0.35 (large)."
 msgstr ""
+"Coeficientes internos de las rutas del modelo entre constructos. La magnitud "
+"f² del efecto indica el impacto sustancial de eliminar cada predictor: 0.02 "
+"(pequeño), 0.15 (medio), 0.35 (grande)."
 
 msgid "Outcome"
 msgstr "Resultado"
@@ -1005,6 +1018,7 @@ msgstr "Resultado"
 msgid ""
 "Total effects combining direct and all indirect paths between constructs."
 msgstr ""
+"Efectos totales combinando rutas directas e indirectas entre constructos."
 
 msgid "Residual Correlations"
 msgstr "Correlaciones de los errores"
@@ -1013,6 +1027,9 @@ msgid ""
 "Residual correlations between indicators after accounting for the construct "
 "model. These represent correlated measurement errors between indicator pairs."
 msgstr ""
+"Correlaciones de los errores entre los indicadores después de tener en "
+"cuenta el modelo de constructos. Esto representa los errores correlacionados "
+"de medición entre parejas de indicadores."
 
 msgid "VIF"
 msgstr "FIV"
@@ -1028,6 +1045,9 @@ msgid ""
 "prediction metrics assess how well the PLS-SEM model predicts indicator "
 "scores out of sample."
 msgstr ""
+"Predicción validada cruzada de los indicadores endógenos utilizando "
+"PLSpredict. Las métricas de predicción juzgan cómo de bien predice el modelo "
+"PLS-SEM las puntuaciones de los indicadores fuera de la muestra."
 
 msgid "Prediction Metrics"
 msgstr "Métricas de Predicción"
@@ -1038,6 +1058,11 @@ msgid ""
 "less than using the training sample mean. When benchmarks are included, "
 "lower MAE/RMSE than the benchmark suggests the PLS-SEM model predicts better."
 msgstr ""
+"Métricas de predicción: EAM (error absoluto medio), RECM (raíz del error "
+"cuadrado medio) y Q² para indicadores endógenos. Q² > 0 indica que el error "
+"de predicción es menor que usando la media muestral de entrenamiento. Cuando "
+"se incluyen referencias, EAM/RECM inferiores a las referencias sugieren que "
+"el modelo PLS-SEM predice mejor."
 
 msgid "Target MAE"
 msgstr "EAM (MAE) objetivo"
@@ -1094,6 +1119,10 @@ msgid ""
 "geometric mean of AVE and R², and bootstrap-based distance measures (dG, dL, "
 "dML)."
 msgstr ""
+"Medidas adicionales de ajuste del modelo para PLS-SEM. Incluye IAC, IBA, "
+"REACM, RECMS para la matriz de correlaciones de indicadores implícitos en el "
+"modelo, Bondad-de-Ajuste (BdA) como media geométrica de VEM y R², y medidas "
+"de distancia basadas en bootstrap (dG, dL, dMV)."
 
 msgid "Hoelter's critical N (CN)"
 msgstr "N crítico de Hoelter (NC)"
@@ -1125,13 +1154,16 @@ msgid ""
 "structural model. Values of 0.75, 0.50, and 0.25 are considered substantial, "
 "moderate, and weak."
 msgstr ""
+"R² y R²-ajustado para cada constructo endógeno. R² representa la proporción "
+"de la varianza del constructo explicada por sus predictores en el modelo "
+"estructural. Valores de 0.75, 0.50 y 0.25 se consideran sustancial, moderada "
+"y débil."
 
-#, fuzzy
 msgid "R²"
-msgstr "f²"
+msgstr "R²"
 
 msgid "Adjusted R²"
-msgstr ""
+msgstr "R²-ajustado"
 
 msgid "Reliability Measures"
 msgstr "Medidas de Fiabilidad"
@@ -1142,6 +1174,11 @@ msgid ""
 "measure for PLS-SEM. Dijkstra-Henseler's ρ_A is a consistent reliability "
 "estimate. Values above 0.70 indicate acceptable reliability."
 msgstr ""
+"Medidas de fiabilidad de los constructos. La α de Cronbach asume "
+"ponderaciones iguales de los indicadores (equivalencia de tau). La ρ de "
+"Jöreskog utiliza las cargas externas y es la medida preferida para PLS-SEM. "
+"La ρ_A de Dijkstra-Henseler es una estimación consistente de fiabilidad. "
+"Valores por encima de 0.70 indican una fiabilidad aceptable."
 
 msgid "Latent"
 msgstr "Latente"
@@ -1155,7 +1192,6 @@ msgstr "%2$s de J%1$sreskog"
 msgid "Dijkstra-Henseler's %s"
 msgstr "%s de Dijkstra-Henseler"
 
-#, fuzzy
 msgid "Correlation Tables"
 msgstr "Tablas de correlaciones"
 
@@ -1165,14 +1201,12 @@ msgid ""
 "at the indicator and construct level."
 msgstr ""
 
-#, fuzzy
 msgid "Observed Indicator Correlation Matrix"
 msgstr "Matriz de correlaciones de indicadores observados"
 
 msgid "Sample correlation matrix of the observed indicator variables."
 msgstr ""
 
-#, fuzzy
 msgid "Implied Indicator Correlation Matrix"
 msgstr "Matriz de correlaciones de indicadores implicados"
 
@@ -1374,7 +1408,6 @@ msgid ""
 "indicate model misspecification."
 msgstr ""
 
-#, fuzzy
 msgid "Residual Covariances"
 msgstr "Covarianzas de los errores"
 
@@ -1405,7 +1438,6 @@ msgstr ""
 msgid "Threshold"
 msgstr "Umbral"
 
-#, fuzzy
 msgid "Defined Parameters"
 msgstr "Parámetros definidos"
 
@@ -1418,7 +1450,6 @@ msgstr ""
 msgid "Name"
 msgstr "Nombre"
 
-#, fuzzy
 msgid "Indirect Effects"
 msgstr "Efectos indirectos"
 
@@ -1449,7 +1480,6 @@ msgid "%s Fit indices are based on the scaled test statistic."
 msgstr ""
 "%s Los indicadores del ajuste se basan en el estadístico de prueba escalado."
 
-#, fuzzy
 msgid "T-Size Fit Indices"
 msgstr "Índices de ajuste de tamaño T"
 
@@ -1475,7 +1505,6 @@ msgid ""
 "indicating more variance explained."
 msgstr ""
 
-#, fuzzy
 msgid "Average Variance Extracted"
 msgstr "Media de la varianza extraída"
 
@@ -1513,8 +1542,11 @@ msgid ""
 "discriminant validity. HTMT values below 0.85 (conservative) or 0.90 "
 "(liberal) suggest that constructs are empirically distinct from each other."
 msgstr ""
+"Proporción Heterotraza-Monotraza (HTMT) de correlaciones para juzgar la "
+"validez discriminante. Los valores de HTMT por debajo de 0.85 (conservador) "
+"o 0.90 (libre) sugieren que los constructos son empíricamente distintos unos "
+"de otros."
 
-#, fuzzy
 msgid "Mardia's Coefficients"
 msgstr "Coeficientes de Mardia"
 
@@ -1557,7 +1589,6 @@ msgstr "Asimetría"
 msgid "Kurtosis"
 msgstr "Curtosis"
 
-#, fuzzy
 msgid "Covariance Tables"
 msgstr "Tablas de covarianzas"
 
@@ -1566,9 +1597,8 @@ msgid ""
 "matrices helps evaluate local model fit."
 msgstr ""
 
-#, fuzzy
 msgid "Observed Covariance Matrix"
-msgstr "Matriz de covarianzas implícitas"
+msgstr "Matriz de covarianzas observadas"
 
 msgid ""
 "Sample covariance matrix of the observed variables used for model estimation."
@@ -1584,9 +1614,8 @@ msgid ""
 "residuals indicate that the model reproduces the observed covariances well."
 msgstr ""
 
-#, fuzzy
 msgid "Standardized Residual Covariance Matrix"
-msgstr "Matriz de covarianzas de los errores"
+msgstr "Matriz de covarianzas de los errores tipificados"
 
 msgid ""
 "Standardized residual covariances. Values exceeding |2| may indicate "
@@ -1640,15 +1669,12 @@ msgstr ""
 msgid "SEPC (lv)"
 msgstr ""
 
-#, fuzzy
 msgid "SEPC (all)"
-msgstr "sepc (all)"
+msgstr "SEPC (all)"
 
-#, fuzzy
 msgid "SEPC (nox)"
-msgstr "sepc (nox)"
+msgstr "SEPC (nox)"
 
-#, fuzzy
 msgid "Sensitivity Analysis"
 msgstr "Análisis de Sensibilidad"
 
@@ -1658,7 +1684,6 @@ msgid ""
 "change when an unobserved common cause is introduced."
 msgstr ""
 
-#, fuzzy
 msgid "Summary of Sensitivity Analysis"
 msgstr "Resumen del análisis de Sensibilidad"
 
@@ -1702,10 +1727,8 @@ msgstr "Realizando el análisis de sensibilidad (modelo: %1$s, grupo: %2$s)"
 msgid "Performing sensitivity analysis (model: %1$s)"
 msgstr "Realizando el análisis de sensibilidad (modelo: %1$s)"
 
-#, fuzzy
 msgid "Sensitivity Parameters That Led to a Change in Significance"
-msgstr ""
-"Parámetros de Sensibilidad que llevaron a un cambio en la significación"
+msgstr "Parámetros de Sensibilidad que llevaron a un cambio en la significación"
 
 msgid ""
 "Phantom variable coefficients from sensitivity models where the statistical "
@@ -1715,7 +1738,6 @@ msgstr ""
 msgid "Sensitivity parameters"
 msgstr "Parámetros de Sensibilidad"
 
-#, fuzzy
 msgid "Summary of Sensitivity Parameters"
 msgstr "Resumen de los parámetros de Sensibilidad"
 
@@ -1728,7 +1750,6 @@ msgstr ""
 msgid "Sensitivity parameter"
 msgstr "Parámetro de Sensibilidad"
 
-#, fuzzy
 msgid "Path Diagram"
 msgstr "Diagrama de ruta"
 
