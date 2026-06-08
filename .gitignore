@@ -44,6 +44,9 @@ docs/
 # translation temp files
 po/*~
 
+# R plot artifacts
+Rplots.pdf
+
 # OSX files
 *.DS_Store
 Thumbs.db
