@@ -336,16 +336,29 @@ Form
 
 		Group
 		{
-			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures");	info: qsTr("Display a table with various fit measures including CFI, TLI, RMSEA, SRMR, and information criteria.") }
+			CheckBox { name: "additionalFitMeasures";	label: qsTr("Additional fit measures");				info: qsTr("Display a table with various fit measures including CFI, TLI, RMSEA, SRMR, and information criteria.") }
 			CheckBox { name: "rSquared";				label: qsTr("R-squared");							info: qsTr("Display the explained variance in each dependent variable.") }
-			CheckBox { name: "ave";						label: qsTr("Average variance extracted (AVE)");	info: qsTr("Display the amount of variance captured by a construct relative to measurement error. Used to evaluate convergent validity.") }
-			CheckBox { name: "htmt";					label: qsTr("Heterotrait-monotrait ratio (HTMT)");	info: qsTr("Display the HTMT ratio to assess discriminant validity between constructs.") }
-			CheckBox { name: "reliability";				label: qsTr("Reliability measures");				info: qsTr("Display reliability metrics such as coefficient alpha and composite (omega) reliability per latent variable.") }
+			CheckBox { name: "averageVarianceExtracted";	label: qsTr("Average variance extracted (AVE)");	info: qsTr("Display the amount of variance captured by a construct relative to measurement error. Used to evaluate convergent validity.") }
+			CheckBox { name: "heterotraitMonotraitRatio";	label: qsTr("Heterotrait-monotrait ratio (HTMT)");	info: qsTr("Display the HTMT ratio to assess discriminant validity between constructs.") }
+			CheckBox
+			{
+				name:  "reliability"
+				label: qsTr("Reliability measures")
+				info:  qsTr("Display reliability metrics such as coefficient alpha and composite (omega) reliability per latent variable.")
+
+				CheckBox
+				{
+					name:    "measurementModelReliability"
+					label:   qsTr("Measurement-model reliability")
+					checked: false
+					info:    qsTr("Treats each latent factor's common-factor variance as true-score variance, ignoring structural regressions among latent variables. Only affects coefficient \u03C9.")
+				}
+			}
 			CheckBox { name: "mardiasCoefficient";		label: qsTr("Mardia's coefficient");				info: qsTr("Display Mardia's multivariate skewness and kurtosis coefficients to assess multivariate normality.") }
 			CheckBox { name: "observedCovariance";		label: qsTr("Observed covariances");				info: qsTr("Display the observed covariance matrix calculated from the data.") }
-			CheckBox { name: "impliedCovariance";		label: qsTr("Implied covariances");				info: qsTr("Display the model-implied covariance matrix based on estimated parameters.") }
+			CheckBox { name: "impliedCovariance";		label: qsTr("Implied covariances");					info: qsTr("Display the model-implied covariance matrix based on estimated parameters.") }
 			CheckBox { name: "residualCovariance";		label: qsTr("Residual covariances");				info: qsTr("Display residual covariances (observed minus implied).") }
-			CheckBox { name: "standardizedResidual"; 	label: qsTr("Standardized residuals");			info: qsTr("Display the standardized residual covariance matrix.") }
+			CheckBox { name: "standardizedResidual"; 	label: qsTr("Standardized residuals");				info: qsTr("Display the standardized residual covariance matrix.") }
 		}
 
 		Group

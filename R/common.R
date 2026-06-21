@@ -152,6 +152,20 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL, 
   return(semPlotMod)
 }
 
+# Patch semPlot:::rtLayout to add drop = FALSE when subsetting the edgelist.
+# Without this, models with a single directed edge (e.g., simple regression)
+# cause igraph::graph_from_edgelist to fail because the matrix drops to a vector.
+.patchRtLayout <- function() {
+  fixed <- function(roots, GroupPars, Edgelist, layout, exoMan) {
+    Edgelist <- Edgelist[GroupPars$edge != "<->", , drop = FALSE]
+    Graph <- igraph::graph.edgelist(Edgelist, FALSE)
+    Layout <- igraph::layout.reingold.tilford(Graph, root = roots, circular = FALSE)
+    return(Layout)
+  }
+  environment(fixed) <- asNamespace("semPlot")
+  utils::assignInNamespace("rtLayout", fixed, ns = "semPlot")
+}
+
 .sa.aco <- function (data = NULL, sample.cov, sample.nobs, model, sens.model,
                      opt.fun, d = NULL, paths = NULL, verbose = TRUE, max.value = Inf,
                      max.iter = 1000, e = 1e-10, n.of.ants = 10, k = 100, q = 1e-04,
