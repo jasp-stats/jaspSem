@@ -426,7 +426,28 @@ checkLavaanModel <- function(model, availableVars) {
   }
 
   # estimation options
-  lavOptions[["estimator"]]   <- options[["estimator"]]
+  # WLSMV does not support bootstrap; switch to DWLS when bootstrap is requested
+  estimator <- options[["estimator"]]
+  if (identical(estimator, "wlsmv") && options[["errorCalculationMethod"]] == "bootstrap") {
+    estimator <- "dwls"
+  }
+  lavOptions[["estimator"]]   <- estimator
+
+  # For DWLS/WLSMV estimators, identify binary variables and treat them as ordered (categorical)
+  if (identical(estimator, "dwls") || identical(estimator, "wlsmv")) {
+    binaryVars <- character(0)
+    for (col in colnames(dataset)) {
+      if (is.integer(dataset[[col]]) || is.factor(dataset[[col]])) {
+        uniqueVals <- unique(stats::na.omit(dataset[[col]]))
+        if (length(uniqueVals) == 2L) {
+          binaryVars <- c(binaryVars, col)
+        }
+      }
+    }
+    if (length(binaryVars) > 0) {
+      lavOptions[["ordered"]] <- binaryVars
+    }
+  }
   lavOptions[["se"]]        <- switch(options[["errorCalculationMethod"]],
                                    "default" = "default",
                                    "bootstrap" = "standard",
