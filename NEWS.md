@@ -1,15 +1,16 @@
 # jaspSem Changelog
 
 > **HOW TO READ AND UPDATE THIS CHANGELOG:**
-> 
+>
 > This document follows a modified [Keep a Changelog](https://keepachangelog.com/) format adapted for the R/JASP ecosystem. Releases are listed in reverse chronological order (newest first).
 > As an example see [jaspModuleTemplate](https://github.com/jasp-stats/jaspModuleTemplate/blob/master/NEWS.md)
-> * **Adding New Changes (For Contributors):** All new commits should be logged at the very top of the file under the `# jaspModuleTemplate (development version)` header. Place your bullet point under the appropriate category (`## Added`, `## Fixed`, etc.). 
-> * **Issue References:** Please reference the relevant GitHub Issue (if any) at the end of your line (e.g., `([Issue #19](https://github.com/jasp-stats/jaspModuleTemplate/issues/19)`). 
-> * **Format Categories:** >   * **Added:** New template features, QML examples, or build tools.
->   * **Changed:** Updates to default configurations, boilerplate code, or dependencies. 
->   * **Fixed:** Bug fixes in the build pipeline, R wrappers, or QML layouts.
->   * **Deprecated / Removed:** Outdated template components or legacy code.
+> * **Adding New Changes (For Contributors):** All new commits should be logged at the very top of the file under the `# jaspSem (development version)` header. Place your bullet point under the appropriate category (`## Added`, `## Fixed`, etc.).
+> * **Issue References:** Please reference the relevant GitHub Issue (if any) at the end of your line (e.g., `([Issue #19](https://github.com/jasp-stats/jaspSem/issues/19))`).
+> * **Format Categories:**
+>   * **Added:** New analyses, QML options, or features.
+>   * **Changed:** Updates to default configurations, behavior, or dependencies.
+>   * **Fixed:** Bug fixes.
+>   * **Deprecated / Removed:** Outdated components or legacy code.
 
 
 ---
@@ -17,6 +18,7 @@
 # jaspSem (development version)
 
 ## Added
+* New analysis: Bayesian structural equation modeling (BSEM).
 * MNLFA: new **Estimation Options** section with an **Indicator preprocessing** option (None / Center / Z-standardize) that transforms all indicator variables before the mxsem script is built.
 * MNLFA: new **Show warnings** checkbox in the Output Options section that prints captured OpenMx warning text above the Global Invariance Fit table.
 * MNLFA: Global Invariance Fit table now adds a per-model footnote whenever the OpenMx optimizer status is anything other than OK (e.g. "Non-convex Hessian", "OK/Gradient").
@@ -30,22 +32,27 @@
 
 ---
 
-# jaspModuleTemplate 0.2.0
-## Added
-* Added NEWS.md
-* Added workflow to remind users to update their `NEWS.md`.
-* Added workflow to auto-bump version when user does not do so.
-
----
-
-# jaspModuleTemplate 0.1.0
+# jaspSem 0.20.0
 
 ## Added
-* Initial examples to showcase JASP module development
+* SEM: full support for ordinal data ([Pull Request #248](https://github.com/jasp-stats/jaspSem/pull/248)).
+* SEM: more options for estimators and tests.
+* SEM: CIs for standardized estimates, especially for bootstrapping.
+* SEM: thresholds table.
+* SEM: lavaan warnings shown when relevant.
 
 ## Changed
-* Use best practices for checking input ([Issue #19](https://github.com/jasp-stats/jaspModuleTemplate/issues/19)).
-* The main results table now defaults to displaying 95% Confidence Intervals for effect sizes.
+* SEM: estimation options restructured to be more concise.
+* SEM: additional fit measures table restructured.
 
 ## Fixed
-* Remove deprecated dependencies from qml files ([Issue #14](https://github.com/jasp-stats/jaspModuleTemplate/issues/14)).
+* SEM: [jasp-issues #2644](https://github.com/jasp-stats/jasp-issues/issues/2644).
+* SEM: [jasp-issues #1259](https://github.com/jasp-stats/jasp-issues/issues/1259).
+* SEM: [jasp-issues #959](https://github.com/jasp-stats/jasp-issues/issues/959).
+* SEM: [jasp-issues #1484](https://github.com/jasp-stats/jasp-issues/issues/1484).
+* SEM: [jasp-issues #2740](https://github.com/jasp-stats/jasp-issues/issues/2740).
+* SEM: [jasp-issues #1102](https://github.com/jasp-stats/jasp-issues/issues/1102).
+* SEM: [jasp-issues #2879](https://github.com/jasp-stats/jasp-issues/issues/2879).
+* SEM: [jasp-issues #2905](https://github.com/jasp-stats/jasp-issues/issues/2905).
+* SEM: [jasp-issues #2908](https://github.com/jasp-stats/jasp-issues/issues/2908).
+* SEM: [INTERNAL-jasp #2182](https://github.com/jasp-stats/INTERNAL-jasp/issues/2182).
