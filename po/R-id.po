@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.95.5\n"
 "POT-Creation-Date: 2026-05-09 03:54\n"
-"PO-Revision-Date: 2026-06-13 03:56+0000\n"
+"PO-Revision-Date: 2026-07-02 11:09+0000\n"
 "Last-Translator: Zahid Rizky Fakhri <zahidrizkyfakhri@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/jasp/jaspsem-"
 "r/id/>\n"
@@ -180,16 +180,16 @@ msgid "Parameter"
 msgstr "Parameter"
 
 msgid "Std. Error"
-msgstr ""
+msgstr "Galat Std."
 
 msgid "z-value"
-msgstr ""
+msgstr "nilai-z"
 
 msgid "Lower"
 msgstr "Batas Bawah"
 
 msgid "%s%% Confidence Interval"
-msgstr ""
+msgstr "%s%% Interval Kepercayaan"
 
 msgid "Upper"
 msgstr "Batas Atas"
@@ -213,7 +213,7 @@ msgid ""
 msgstr ""
 
 msgid "Predictor"
-msgstr ""
+msgstr "Prediktor"
 
 msgid "Residual Variances"
 msgstr ""
@@ -375,7 +375,7 @@ msgid ""
 msgstr ""
 
 msgid "Residual covariances"
-msgstr ""
+msgstr "Kovarians residu"
 
 msgid ""
 "Estimated residual covariances between endogenous variables (mediators and "
@@ -384,7 +384,7 @@ msgid ""
 msgstr ""
 
 msgid "Path coefficients"
-msgstr ""
+msgstr "Koefisien jalur"
 
 msgid ""
 "Individual path coefficients in the mediation model. These include the a "
@@ -424,7 +424,7 @@ msgid ""
 msgstr ""
 
 msgid "Model syntax"
-msgstr ""
+msgstr "Sintaksis model"
 
 msgid ""
 "The lavaan model syntax automatically generated from the mediation analysis "
@@ -447,7 +447,7 @@ msgid ""
 msgstr ""
 
 msgid "&#967;&sup2;"
-msgstr ""
+msgstr "&#967;&sup2;"
 
 msgid "Factor model"
 msgstr ""
@@ -538,7 +538,7 @@ msgid "N"
 msgstr "N"
 
 msgid "RMSEA"
-msgstr ""
+msgstr "RMSEA"
 
 msgid "CFI"
 msgstr ""
@@ -560,7 +560,7 @@ msgid ""
 msgstr ""
 
 msgid "Type"
-msgstr ""
+msgstr "Jenis"
 
 msgid "n(Par)"
 msgstr ""
