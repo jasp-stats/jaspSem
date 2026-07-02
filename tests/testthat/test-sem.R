@@ -119,6 +119,36 @@ test_that("Average variance extracted table results match", {
 })
 
 
+# Latent-only stats (HTMT / AVE / reliability) must not crash on a factor-less regression model
+optionsNoLatent <- jaspTools::analysisOptions("SEM")
+optionsNoLatent$models <- list(list(name = "Model1",
+  syntax = list(model = "x1 ~ x2 + x3 + y1", columns = c("x1", "x2", "x3", "y1"))))
+optionsNoLatent$emulation         <- "lavaan"
+optionsNoLatent$estimator         <- "default"
+optionsNoLatent$group             <- ""
+optionsNoLatent$samplingWeights   <- ""
+optionsNoLatent$informationMatrix <- "expected"
+optionsNoLatent$naAction          <- "fiml"
+optionsNoLatent$modelTest         <- "standard"
+optionsNoLatent$reliability                <- TRUE
+optionsNoLatent$averageVarianceExtracted   <- TRUE
+optionsNoLatent$heterotraitMonotraitRatio  <- TRUE
+resultsNoLatent <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), optionsNoLatent, makeTests = FALSE)
+
+test_that("Latent-only stats degrade gracefully on a regression-only model", {
+  expect_equal(resultsNoLatent[["status"]], "complete")
+
+  coll  <- resultsNoLatent[["results"]][["modelContainer"]][["collection"]]
+  htmt  <- coll[["modelContainer_htmt"]][["collection"]][["modelContainer_htmt_htmttab"]][["error"]][["errorMessage"]]
+  ave   <- coll[["modelContainer_AVE"]][["error"]][["errorMessage"]]
+  rel   <- coll[["modelContainer_reliability"]][["error"]][["errorMessage"]]
+
+  expect_match(htmt, "at least two latent variables")
+  expect_match(ave,  "at least one latent variable")
+  expect_match(rel,  "at least one latent variable")
+})
+
+
 # Multigroup, multimodel SEM works
 options <- jaspTools::analysisOptions("SEM")
 options$emulation                   = "lavaan"

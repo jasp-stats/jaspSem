@@ -1704,6 +1704,12 @@ checkLavaanModel <- function(model, availableVars) {
   }
 }
 
+# number of latent variables in a fitted lavaan object (0 for pure regression / non-lavaan)
+.semFitLatentCount <- function(fit) {
+  if (!inherits(fit, "lavaan")) return(0L)
+  length(lavaan::lavNames(fit, "lv"))
+}
+
 .semAve <- function(modelContainer, dataset, options, ready) {
   if (!options[["averageVarianceExtracted"]] || !is.null(modelContainer[["AVE"]])) return()
 
@@ -1728,6 +1734,12 @@ checkLavaanModel <- function(model, availableVars) {
   modelContainer[["AVE"]] <- avetab
 
   if (!ready || modelContainer$getError()) return()
+
+  # AVE requires latent variables; a factor-less model (e.g. a pure regression) has none
+  if (all(vapply(modelContainer[["results"]][["object"]], .semFitLatentCount, integer(1)) == 0)) {
+    avetab$setError(gettext("Average variance extracted requires a model with at least one latent variable."))
+    return()
+  }
 
   # compute data and fill table
   if (options[["group"]] == "") {
@@ -1854,6 +1866,12 @@ checkLavaanModel <- function(model, availableVars) {
   modelContainer[["reliability"]] <- reliabilitytab
 
   if (!ready || modelContainer$getError()) return()
+
+  # reliability requires latent variables; a factor-less model (e.g. a pure regression) has none
+  if (all(vapply(modelContainer[["results"]][["object"]], .semFitLatentCount, integer(1)) == 0)) {
+    reliabilitytab$setError(gettext("Reliability requires a model with at least one latent variable."))
+    return()
+  }
 
   # compute data and fill table
   if (options[["group"]] == "") {
@@ -2033,6 +2051,8 @@ checkLavaanModel <- function(model, availableVars) {
 
   modelContainer[["htmt"]] <- htmt
 
+  if (!ready || modelContainer$getError()) return()
+
   if (length(options[["models"]]) < 2) {
     .semHtmtTables(modelContainer[["results"]][["object"]][[1]], NULL, htmt, options, ready, dataset)
   } else {
@@ -2058,20 +2078,34 @@ checkLavaanModel <- function(model, availableVars) {
   htmttab <- createJaspTable(title = title)
   htmttab$info <- gettext("Heterotrait-Monotrait (HTMT) ratio of correlations for assessing discriminant validity. HTMT values below 0.85 (conservative) or 0.90 (liberal) suggest that constructs are empirically distinct from each other.")
   htmtcont[["htmttab"]] <- htmttab
+  # attach the container now so a setError below still renders in the multi-model/grouped case
+  if (!is.null(model)) parentContainer[[model[["name"]]]] <- htmtcont
+
+  # parse the model syntax once (shared by the grouped and non-grouped branches)
+  lavOptions  <- .semOptionsToLavOptions(options, dataset)
+  syntax      <- if (is.null(model)) options[["models"]][[1]][["syntax"]] else model[["syntax"]]
+  parTable    <- lavaan::lavaanify(.semTranslateModel(syntax, dataset))
+  latents     <- parTable[parTable$op == "=~", ]
+  higherOrder <- unique(latents[!latents$rhs %in% names(dataset), ]$lhs)
+  lavmodel    <- parTable[!parTable$lhs %in% higherOrder, ]
+
+  # HTMT is a ratio between constructs, so it needs at least two latent variables
+  if (length(unique(latents$lhs)) < 2) {
+    htmttab$setError(gettext("The heterotrait-monotrait ratio requires a model with at least two latent variables."))
+    return()
+  }
 
   if (options[["group"]] == "") {
-    lavOptions <- .semOptionsToLavOptions(options, dataset)
-    lavmodel <- ifelse(is.null(model), .semTranslateModel(options[["models"]][[1]][["syntax"]], dataset), .semTranslateModel(model[["syntax"]], dataset))
 
-    parTable <- lavaan::lavaanify(lavmodel)
-    latents  <- parTable[parTable$op == "=~",]
-    higherOrder <- unique(latents[!latents$rhs %in% names(dataset),]$lhs)
-    lavmodel <- parTable[!parTable$lhs %in% higherOrder, ]
-
-    if (options[["dataType"]] == "raw") {
-      htmt_result <- semTools::htmt(model = lavmodel, data = dataset, missing = lavOptions[["missing"]])
-    } else {
-      htmt_result <- semTools::htmt(model = lavmodel, sample.cov = .semDataCovariance(dataset, model), missing = lavOptions[["missing"]])
+    htmt_result <- try(
+      if (options[["dataType"]] == "raw")
+        semTools::htmt(model = lavmodel, data = dataset, missing = lavOptions[["missing"]])
+      else
+        semTools::htmt(model = lavmodel, sample.cov = .semDataCovariance(dataset, model), missing = lavOptions[["missing"]])
+    )
+    if (isTryError(htmt_result)) {
+      htmttab$setError(.extractErrorMessage(htmt_result))
+      return()
     }
     htmt_result[upper.tri(htmt_result)] <- NA
 
@@ -2082,14 +2116,6 @@ checkLavaanModel <- function(model, availableVars) {
     htmttab$addRows(htmt_result, rowNames = colnames(htmt_result))
 
   } else {
-
-    lavOptions <- .semOptionsToLavOptions(options, dataset)
-    lavmodel <- ifelse(is.null(model), .semTranslateModel(options[["models"]][[1]][["syntax"]], dataset), .semTranslateModel(model[["syntax"]], dataset))
-
-    parTable <- lavaan::lavaanify(lavmodel)
-    latents  <- parTable[parTable$op == "=~",]
-    higherOrder <- unique(latents[!latents$rhs %in% names(dataset),]$lhs)
-    lavmodel <- parTable[!parTable$lhs %in% higherOrder, ]
 
     # prepare the columns
     lvNames <- unique(lavmodel[lavmodel$op == "=~", "lhs"])
@@ -2103,7 +2129,11 @@ checkLavaanModel <- function(model, availableVars) {
 
       dataset_per_group <- dataset[dataset[, options[["group"]]] == group, ]
 
-      htmt_result <- semTools::htmt(model = lavmodel, data = dataset_per_group, missing = lavOptions[["missing"]])
+      htmt_result <- try(semTools::htmt(model = lavmodel, data = dataset_per_group, missing = lavOptions[["missing"]]))
+      if (isTryError(htmt_result)) {
+        htmttab$setError(.extractErrorMessage(htmt_result))
+        return()
+      }
       htmt_result[upper.tri(htmt_result)] <- NA
       groupCol <- data.frame(group = c(group, rep(NA, nrow(htmt_result) - 1)))
       htmtFill <- cbind(groupCol, as.data.frame(htmt_result))
@@ -2113,7 +2143,6 @@ checkLavaanModel <- function(model, availableVars) {
     htmttab$setData(fillMat)
 
   }
-  if (!is.null(model)) parentContainer[[model[["name"]]]] <- htmtcont
 }
 
 .semMardiasCoefficient <- function(modelContainer, dataset, options, ready) {
