@@ -2835,7 +2835,7 @@
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspBase",
       "RemoteRef": "master",
-      "RemoteSha": "244c661b7a4cdcc9aca0aacbf5555881d90c0985"
+      "RemoteSha": "f1944101ee749e3fcd605defca2e014ade4b3534"
     },
     "jaspGraphs": {
       "Package": "jaspGraphs",
@@ -2873,7 +2873,7 @@
       "RemoteUsername": "jasp-stats",
       "RemoteRepo": "jaspGraphs",
       "RemoteRef": "master",
-      "RemoteSha": "512b08e7d9a59086face0569626268eca3f3087c"
+      "RemoteSha": "aebeafe01da55d32d8ebd9cfe8a6241247d0a3b1"
     },
     "jpeg": {
       "Package": "jpeg",
