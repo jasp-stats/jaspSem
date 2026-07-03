@@ -43,7 +43,7 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
   .semHtmt(modelContainer, dataset, options, ready)
   .semMardiasCoefficient(modelContainer, dataset, options, ready)
   .semCov(modelContainer, dataset, options, ready)
-  .semMI(modelContainer, datset, options, ready)
+  .semMI(modelContainer, dataset, options, ready)
   .semSensitivity(modelContainer, dataset, options, ready)
   .semPathPlot(modelContainer, dataset, options, ready)
 }
@@ -2529,8 +2529,13 @@ checkLavaanModel <- function(model, availableVars) {
 
   if (!ready || !inherits(fit, "lavaan")) return()
 
-  # Extract modidffication indices:
-  semModIndResult <- lavaan:::modificationIndices(fit)
+  # Extract modification indices (can fail, e.g. singular information matrix in categorical/near-unidentified models)
+  semModIndResult <- try(lavaan::modificationIndices(fit), silent = TRUE)
+
+  if (isTryError(semModIndResult)) {
+    semModIndicesTable$setError(gettext("The modification indices could not be computed, most likely because the model's information matrix is singular. This often indicates that the model is not identified (for example, with ordinal indicators combined with (near-)collinear predictors)."))
+    return()
+  }
 
   ### Remove NA:
   semModIndResult <- semModIndResult[!is.na(semModIndResult$mi), , drop=FALSE]
