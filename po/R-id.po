@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.95.5\n"
 "POT-Creation-Date: 2026-05-09 03:54\n"
-"PO-Revision-Date: 2026-07-02 22:45+0000\n"
+"PO-Revision-Date: 2026-07-04 03:54+0000\n"
 "Last-Translator: Zahid Rizky Fakhri <zahidrizkyfakhri@gmail.com>\n"
 "Language-Team: Indonesian <https://hosted.weblate.org/projects/jasp/jaspsem-"
 "r/id/>\n"
@@ -25,93 +25,95 @@ msgid ""
 msgstr ""
 
 msgid "Index"
-msgstr ""
+msgstr "Indeks"
 
 msgid "Value"
 msgstr "Nilai"
 
 msgid "Comparative Fit Index (CFI)"
-msgstr ""
+msgstr "Indeks Penyesuaian Komparatif (CFI)"
 
 msgid "Tucker-Lewis Index (TLI)"
-msgstr ""
+msgstr "Indeks Tucker-Lewis (TLI)"
 
 msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
-msgstr ""
+msgstr "Indeks Penyesuaian Non-ternormal Bentler-Bonett N(NFI)"
 
 msgid "Bentler-Bonett Normed Fit Index (NFI)"
-msgstr ""
+msgstr "Indeks Penyesuaian Ternormal Bentler-Bonett (NFI)"
 
 msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr ""
+msgstr "Indeks Penyesuaian Ternormal Parsimony (PNFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
-msgstr ""
+msgstr "Indeks Penyesuaian Relatif Bollen (RFI)"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
-msgstr ""
+msgstr "Indeks Penyesuaian Inkremental Bollen (IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
-msgstr ""
+msgstr "Indeks Nonkepusatan Relatif (RNI)"
 
 msgid "Root mean square error of approximation (RMSEA)"
-msgstr ""
+msgstr "Galat kuadrat rerata akar dari perkiraan (RMSEA)"
 
 msgid "RMSEA 90%% CI lower bound"
-msgstr ""
+msgstr "RMSEA 90%% batas bawah CI"
 
 msgid "RMSEA 90%% CI upper bound"
-msgstr ""
+msgstr "RMSEA 90%% batas atas CI"
 
 msgid "RMSEA p-value"
-msgstr ""
+msgstr "Nilai-p RMSEA"
 
 msgid "Standardized root mean square residual (SRMR)"
-msgstr ""
+msgstr "Residu kuadrat rerata akar terstandardisasi (SRMR)"
 
 msgid "Hoelter's critical N (%s = .05)"
-msgstr ""
+msgstr "Kritis N Hoetler (%s = .05)"
 
 msgid "Hoelter's critical N (%s = .01)"
-msgstr ""
+msgstr "Kritis N Hoetler (%s = .01)"
 
 msgid "Goodness of fit index (GFI)"
-msgstr ""
+msgstr "Indeks kesesuaian (GFI)"
 
 msgid "McDonald fit index (MFI)"
-msgstr ""
+msgstr "Indeks penyesuaian McDonald (MFI)"
 
 msgid "Expected cross validation index (ECVI)"
-msgstr ""
+msgstr "Indeks validasi lintas terharapkan (ECVI)"
 
 msgid "Log-likelihood"
 msgstr "Log-kemungkinan"
 
 msgid "Number of free parameters"
-msgstr ""
+msgstr "Jumlah parameter bebas"
 
 msgid "Akaike (AIC)"
-msgstr ""
+msgstr "Akaike (AIC)"
 
 msgid "Bayesian (BIC)"
-msgstr ""
+msgstr "Bayes (BIC)"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr ""
+msgstr "Bayes disesuaikan ukuran sampel (SSABIC)"
 
 msgid "# Factors"
-msgstr ""
+msgstr "# Faktor"
 
 msgid ""
 "Robust standard errors are not available for variance-covariance matrix "
 "input."
 msgstr ""
+"Galat standar kekuatan tidak tersedia untuk masukan matriks varians-"
+"kovarians."
 
 msgid "The model could not be estimated due to nonconvergence."
-msgstr ""
+msgstr "Model tidak dapat diestimasi karena nonkonvergensi."
 
 msgid "The model could not be estimated: No degrees of freedom left."
-msgstr ""
+msgstr "Model tidak dapat diestimasi: Tidak ada derajat kebebasan tersisa."
 
 msgid "Chi-Square Test"
 msgstr ""
@@ -132,19 +134,19 @@ msgid "p"
 msgstr "p"
 
 msgid "Model Fit"
-msgstr ""
+msgstr "Penyesuaian Model"
 
 msgid "Model fit statistics for the latent growth curve model."
 msgstr ""
 
 msgid "Baseline model"
-msgstr ""
+msgstr "Model dasar"
 
 msgid "Growth curve model"
 msgstr ""
 
 msgid "The model is not admissible: %s"
-msgstr ""
+msgstr "Model tidak dapat diterima: %s"
 
 msgid "Warning."
 msgstr ""
@@ -158,7 +160,7 @@ msgid ""
 msgstr ""
 
 msgid "Std. estimate"
-msgstr ""
+msgstr "Estimasi std."
 
 msgid "Estimate"
 msgstr "Estimasi"
@@ -174,7 +176,7 @@ msgid ""
 msgstr ""
 
 msgid "Component"
-msgstr ""
+msgstr "Komponen"
 
 msgid "Parameter"
 msgstr "Parameter"
@@ -250,7 +252,7 @@ msgid ""
 msgstr ""
 
 msgid "R-Squared"
-msgstr ""
+msgstr "R-Kuadrat"
 
 msgid ""
 "Proportion of variance in each observed variable at each time point "
@@ -450,7 +452,7 @@ msgid "&#967;&sup2;"
 msgstr "&#967;&sup2;"
 
 msgid "Factor model"
-msgstr ""
+msgstr "Model faktor"
 
 msgid ""
 "Parameter estimates for the MIMIC (Multiple Indicators, Multiple Causes) "
@@ -477,7 +479,7 @@ msgid ""
 msgstr ""
 
 msgid "Indicator"
-msgstr ""
+msgstr "Indikator"
 
 msgid ""
 "Proportion of variance explained in the latent variable (by the predictors) "
@@ -541,10 +543,10 @@ msgid "RMSEA"
 msgstr "RMSEA"
 
 msgid "CFI"
-msgstr ""
+msgstr "CFI"
 
 msgid "SRMR"
-msgstr ""
+msgstr "SRMR"
 
 msgid "The model for group %s did not converge."
 msgstr ""
@@ -632,7 +634,7 @@ msgid "Effect"
 msgstr "Efek"
 
 msgid "Intercepts"
-msgstr ""
+msgstr "Intersep"
 
 msgid ""
 "Indicator intercepts and their moderation effects. Significant moderation "
@@ -667,7 +669,7 @@ msgid ""
 msgstr ""
 
 msgid "Factor Covariances"
-msgstr ""
+msgstr "Kovarians Faktor"
 
 msgid ""
 "Latent factor covariances and their moderation effects. Significant "
@@ -697,7 +699,7 @@ msgid "addedGroupVariable"
 msgstr ""
 
 msgid "Column name %s already exists in the dataset"
-msgstr ""
+msgstr "Nama kolom %s sudah ada di rangkaian data"
 
 msgid "# LOADINGS BLOCK"
 msgstr ""
@@ -1050,6 +1052,8 @@ msgid ""
 "Not more cases than number of variables. Is your data a variance-covariance "
 "matrix?"
 msgstr ""
+"Kasus tidak lebih dari jumlah variabel. Apakah data Anda matriks varians-"
+"kovarians?"
 
 msgid ""
 "When conditioning estimation on exogenous covariates, the 'Exogenous "
@@ -1138,7 +1142,7 @@ msgid ""
 msgstr ""
 
 msgid "Factor Loadings"
-msgstr ""
+msgstr "Pemuatan Faktor"
 
 msgid ""
 "Factor loadings from the measurement model (=~ operator). Each loading "
@@ -1192,7 +1196,7 @@ msgid "Missing data method 'FIML' forces meanstructure."
 msgstr ""
 
 msgid "Thresholds"
-msgstr ""
+msgstr "Ambang Batas"
 
 msgid ""
 "Threshold parameters for ordinal observed variables. These define the cut-"
@@ -1201,7 +1205,7 @@ msgid ""
 msgstr ""
 
 msgid "Threshold"
-msgstr ""
+msgstr "Ambang Batas"
 
 #, fuzzy
 msgid "Defined Parameters"
@@ -1281,10 +1285,10 @@ msgid ""
 msgstr ""
 
 msgid "AVE"
-msgstr ""
+msgstr "AVE"
 
 msgid "Reliability"
-msgstr ""
+msgstr "Keandalan"
 
 msgid ""
 "Composite reliability coefficients for each latent construct. Coefficient α "
@@ -1395,7 +1399,7 @@ msgid "The standardized residual covariance matrices could not be computed"
 msgstr ""
 
 msgid "Modification Indices"
-msgstr ""
+msgstr "Indeks Modifikasi"
 
 msgid ""
 "Modification indices (MI) estimate the expected decrease in the model chi-"
@@ -1414,7 +1418,7 @@ msgid "MI"
 msgstr ""
 
 msgid "EPC"
-msgstr ""
+msgstr "EPC"
 
 msgid "SEPC (lv)"
 msgstr ""
