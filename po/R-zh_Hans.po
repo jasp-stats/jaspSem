@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
 "POT-Creation-Date: 2026-05-09 03:54\n"
-"PO-Revision-Date: 2025-11-06 02:51+0000\n"
-"Last-Translator: \"Cheng R. Zhu\" <zcr@users.noreply.hosted.weblate.org>\n"
+"PO-Revision-Date: 2026-07-10 05:01+0000\n"
+"Last-Translator: 陳正昌 <chencc99@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-r/zh_Hans/>\n"
 "Language: zh_Hans\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.15-dev\n"
+"X-Generator: Weblate 2026.7.1.dev0\n"
 
 #, fuzzy
 msgid "Fit Indices"
@@ -87,7 +87,7 @@ msgid "Expected cross validation index (ECVI)"
 msgstr ""
 
 msgid "Log-likelihood"
-msgstr ""
+msgstr "对数似然值"
 
 msgid "Number of free parameters"
 msgstr ""
@@ -130,7 +130,7 @@ msgid "Model"
 msgstr "生长曲线模型"
 
 msgid "df"
-msgstr "df"
+msgstr "自由度"
 
 msgid "p"
 msgstr "p"
@@ -162,9 +162,8 @@ msgid ""
 "factor means, variances, covariances, and regression coefficients."
 msgstr ""
 
-#, fuzzy
 msgid "Std. estimate"
-msgstr "参数估计"
+msgstr "标准化估计值"
 
 msgid "Estimate"
 msgstr "估计"
@@ -195,7 +194,7 @@ msgid "Lower"
 msgstr "下界"
 
 msgid "%s%% Confidence Interval"
-msgstr ""
+msgstr "%s%% 置信区间"
 
 msgid "Upper"
 msgstr "上界"
@@ -222,9 +221,8 @@ msgstr ""
 msgid "Predictor"
 msgstr ""
 
-#, fuzzy
 msgid "Residual Variances"
-msgstr "方差"
+msgstr "残差方差"
 
 msgid ""
 "Time-specific residual variances of the observed variables. These represent "
@@ -385,7 +383,7 @@ msgid ""
 msgstr ""
 
 msgid "Residual covariances"
-msgstr ""
+msgstr "残差协方差"
 
 msgid ""
 "Estimated residual covariances between endogenous variables (mediators and "
@@ -394,7 +392,7 @@ msgid ""
 msgstr ""
 
 msgid "Path coefficients"
-msgstr ""
+msgstr "路径系数"
 
 msgid ""
 "Individual path coefficients in the mediation model. These include the a "
@@ -434,7 +432,7 @@ msgid ""
 msgstr ""
 
 msgid "Model syntax"
-msgstr ""
+msgstr "模型语法"
 
 msgid ""
 "The lavaan model syntax automatically generated from the mediation analysis "
@@ -549,7 +547,7 @@ msgid "N"
 msgstr ""
 
 msgid "RMSEA"
-msgstr ""
+msgstr "近似误差均方根 （RMSEA）"
 
 msgid "CFI"
 msgstr ""
@@ -1107,7 +1105,7 @@ msgid "n(Observations)"
 msgstr ""
 
 msgid "Total"
-msgstr ""
+msgstr "总计"
 
 #, fuzzy
 msgid "n(Parameters)"
@@ -1197,9 +1195,8 @@ msgid ""
 "indicate model misspecification."
 msgstr ""
 
-#, fuzzy
 msgid "Residual Covariances"
-msgstr "方差"
+msgstr "残差协方差"
 
 msgid ""
 "Residual covariances between observed variables (~~ operator). These "
