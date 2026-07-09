@@ -6,6 +6,12 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Language: zh_Hans\n"
 "X-Qt-Contexts: true\n"
+"PO-Revision-Date: 2026-07-10 06:01+0000\n"
+"Last-Translator: 陳正昌 <chencc99@gmail.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
+"projects/jasp/jaspsem-qml/zh_Hans/>\n"
+"Language: zh_Hans\n"
+"X-Generator: Weblate 2026.7.1.dev0\n"
 
 msgctxt "Description|"
 msgid "SEM"
@@ -847,10 +853,9 @@ msgctxt "Advanced|"
 msgid "WLS"
 msgstr "加权最小二乘法(WLS)"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "ULS"
-msgstr "加权最小二乘法 (ULS)"
+msgstr "未加权最小二乘法 (ULS)"
 
 #, fuzzy
 msgctxt "Advanced|"
@@ -1518,7 +1523,7 @@ msgstr "输出选项"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "参数估计"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Significance level"
