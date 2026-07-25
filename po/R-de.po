@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
 "POT-Creation-Date: 2026-07-11 03:47\n"
-"PO-Revision-Date: 2026-07-12 05:01+0000\n"
-"Last-Translator: 陳正昌 <chencc99@gmail.com>\n"
+"PO-Revision-Date: 2026-07-26 09:01+0000\n"
+"Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
 "de/>\n"
 "Language: de\n"
@@ -12,9 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n==0 ? 0 : n==1 ? 0 : 1;\n"
-"X-Generator: Weblate 2026.7.1.dev0\n"
+"X-Generator: Weblate 2026.8.dev0\n"
 
-#, fuzzy
 msgid "Fit Indices"
 msgstr "Anpassungsindikatoren"
 
@@ -117,7 +116,6 @@ msgstr "Das Modell konnte nicht geschätzt werden durch fehlende Konvergenz."
 msgid "The model could not be estimated: No degrees of freedom left."
 msgstr "Das Modell konnte nicht geschätzt werden: Keine Freiheitsgrade übrig."
 
-#, fuzzy
 msgid "Chi-Square Test"
 msgstr "Chi-Quadrat-Test"
 
@@ -127,9 +125,8 @@ msgid ""
 "curve model suggests adequate fit to the data."
 msgstr ""
 
-#, fuzzy
 msgid "Model"
-msgstr "Modell-Anpassung"
+msgstr "Modell"
 
 msgid "df"
 msgstr "df"
@@ -141,7 +138,7 @@ msgid "Model Fit"
 msgstr "Modell-Anpassung"
 
 msgid "Model fit statistics for the latent growth curve model."
-msgstr ""
+msgstr "Modellanpassungsstatistiken für das latente Wachstumskurvenmodell."
 
 msgid "Baseline model"
 msgstr "Baseline-Modell"
@@ -162,6 +159,9 @@ msgid ""
 "Parameter estimates for the latent growth curve model, including growth "
 "factor means, variances, covariances, and regression coefficients."
 msgstr ""
+"Parameterschätzungen für das latente Wachstumskurvenmodell, einschließlich "
+"Wachstumsfaktor-Mittelwerte, Varianzen, Kovarianzen und "
+"Regressionskoeffizienten."
 
 msgid "Std. estimate"
 msgstr "Std.-Schätzung"
@@ -169,9 +169,8 @@ msgstr "Std.-Schätzung"
 msgid "Estimate"
 msgstr "Schätzung"
 
-#, fuzzy
 msgid "Latent Curve"
-msgstr "Latent"
+msgstr "Latente Kurve"
 
 msgid ""
 "Means and variances of the latent growth factors (e.g., intercept, slope). "
@@ -179,6 +178,11 @@ msgid ""
 "average rate of change, and their variances reflect individual differences "
 "in starting level and change."
 msgstr ""
+"Mittelwerte und Varianzen der latenten Wachstumsfaktoren (z.B. Konstante, "
+"Steigung). Der Konstanten-Mittelwert stellt die durchschnittliche "
+"Startstniveau dar, die Steigung bedeutet die durchschnittliche "
+"Änderungsrate, und ihre Varianzen spiegeln individuelle Unterschiede in "
+"Startniveau und Änderung wider."
 
 msgid "Component"
 msgstr "Komponente"
@@ -201,7 +205,6 @@ msgstr "%s%% Konfidenzintervall"
 msgid "Upper"
 msgstr "Obergrenze"
 
-#, fuzzy
 msgid "Latent Covariances"
 msgstr "Latente Kovarianzen"
 
@@ -210,16 +213,21 @@ msgid ""
 "slope covariance indicates that individuals with higher starting values tend "
 "to show steeper change over time."
 msgstr ""
+"Kovarianzen zwischen latenten Wachstumsfaktoren. Eine positive Konstante-"
+"Steigung-Kovarianz zeigt beispielsweise, dass Individuen mit höheren "
+"Ausgangswerten im Laufe der Zeit eher steilere Veränderungen zeigen."
 
-#, fuzzy
 msgid "Regressions"
-msgstr "Regressionskoeffizienten"
+msgstr "Regressionen"
 
 msgid ""
 "Regression coefficients of covariates predicting the latent growth factors. "
 "These show how external variables relate to individual differences in "
 "initial level and rate of change."
 msgstr ""
+"Regressionskoeffizienten von Kovariaten, die die latenten Wachstumsfaktoren "
+"vorhersagen. Diese zeigen, wie sich externe Variablen auf einzelne "
+"Unterschiede im Anfangsniveau und der Änderungsrate beziehen."
 
 msgid "Predictor"
 msgstr "Prädiktor"
