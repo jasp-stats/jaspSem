@@ -189,6 +189,9 @@ Form
 
 		property var firstLayerValues: [invarianceTestConfigural, invarianceTestMetric, invarianceTestScalar, invarianceTestStrict, invarianceTestCustom].filter(x => x.checked).map(x => ({value: x.name, label: x.label}))
 
+		// only re-evaluate third-layer values when the factor COUNT changes, not on every factorsTitles mutation (rename, indicators)
+		readonly property int factorCount: factors.factorsTitles.length
+
 		TabView
 		{
 			Layout.columnSpan: 1
@@ -221,7 +224,7 @@ Form
 					addItemManually: false
 					optionKey: "keyValue"
 					optionKeyLabel: "keyLabel"
-					values: getValuesModOptions(rowValue, factors.factorsTitles.length)
+					values: getValuesModOptions(rowValue, invOpts.factorCount)
 					rowComponent: ComponentsList
 					{
 						id: modFourthLayer
@@ -338,7 +341,7 @@ Form
 					name: "plotParameterList"
 					addItemManually: false
 
-					values: getValuesModOptions(rowValue, factors.factorsTitles.length)
+					values: getValuesModOptions(rowValue, invOpts.factorCount)
 
 					rowComponent: ComponentsList
 					{
