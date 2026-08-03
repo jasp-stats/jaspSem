@@ -44,6 +44,9 @@ docs/
 # translation temp files
 po/*~
 
+# R plot artifacts
+Rplots.pdf
+
 # OSX files
 *.DS_Store
 Thumbs.db
@@ -55,3 +58,14 @@ renv_build.R
 
 # dev mode files
 jasp_dev_work_dir/
+
+# AI assistant configs
+.claude/
+.mcp.json
+.vscode/mcp.json
+.github/copilot-instructions.md
+.github/instructions/
+
+# test problem files
+tests/testthat/_problems/
+.positai

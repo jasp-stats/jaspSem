@@ -80,8 +80,8 @@ options$informationMatrix <- "expected"
 options$naAction          <- "fiml"
 options$modelTest         <- "standard"
 options$reliability       <- TRUE
-options$ave               <- TRUE
-options$htmt              <- TRUE
+options$averageVarianceExtracted  <- TRUE
+options$heterotraitMonotraitRatio <- TRUE
 results <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = FALSE)
 
 
@@ -91,6 +91,17 @@ test_that("Reliability table results match", {
                                  list("ind60", 0.902334680203149, 0.943689529177281, "dem60", 0.858794528217608,
                                       0.167859510809001, "dem65", 0.882739385479519, 0.824105408667229,
                                       ".TOTAL.", 0.91494164193877, 0.322839343402656))
+})
+
+test_that("Measurement-model reliability table results match", {
+  optionsMM <- options
+  optionsMM$measurementModelReliability <- TRUE
+  resultsMM <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), optionsMM, makeTests = FALSE)
+  table <- resultsMM[["results"]][["modelContainer"]][["collection"]][["modelContainer_reliability"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("ind60", 0.902334680203149, 0.943689529177281, "dem60", 0.858794528217608,
+                                      0.841180031323842, "dem65", 0.882739385479519, 0.857554082053553,
+                                      ".TOTAL.", 0.91494164193877, 0.919205826035811))
 })
 
 test_that("Heterotrait-monotrait ratio table results match", {
@@ -105,6 +116,36 @@ test_that("Average variance extracted table results match", {
   jaspTools::expect_equal_tables(table,
                                  list(0.858801124923028, "ind60", 0.597128634982681, "dem60", 0.640021172021486,
                                       "dem65"))
+})
+
+
+# Latent-only stats (HTMT / AVE / reliability) must not crash on a factor-less regression model
+optionsNoLatent <- jaspTools::analysisOptions("SEM")
+optionsNoLatent$models <- list(list(name = "Model1",
+  syntax = list(model = "x1 ~ x2 + x3 + y1", columns = c("x1", "x2", "x3", "y1"))))
+optionsNoLatent$emulation         <- "lavaan"
+optionsNoLatent$estimator         <- "default"
+optionsNoLatent$group             <- ""
+optionsNoLatent$samplingWeights   <- ""
+optionsNoLatent$informationMatrix <- "expected"
+optionsNoLatent$naAction          <- "fiml"
+optionsNoLatent$modelTest         <- "standard"
+optionsNoLatent$reliability                <- TRUE
+optionsNoLatent$averageVarianceExtracted   <- TRUE
+optionsNoLatent$heterotraitMonotraitRatio  <- TRUE
+resultsNoLatent <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), optionsNoLatent, makeTests = FALSE)
+
+test_that("Latent-only stats degrade gracefully on a regression-only model", {
+  expect_equal(resultsNoLatent[["status"]], "complete")
+
+  coll  <- resultsNoLatent[["results"]][["modelContainer"]][["collection"]]
+  htmt  <- coll[["modelContainer_htmt"]][["collection"]][["modelContainer_htmt_htmttab"]][["error"]][["errorMessage"]]
+  ave   <- coll[["modelContainer_AVE"]][["error"]][["errorMessage"]]
+  rel   <- coll[["modelContainer_reliability"]][["error"]][["errorMessage"]]
+
+  expect_match(htmt, "at least two latent variables")
+  expect_match(ave,  "at least one latent variable")
+  expect_match(rel,  "at least one latent variable")
 })
 
 
@@ -766,9 +807,9 @@ results <- jaspTools::runAnalysis("SEM", data, options, makeTests = FALSE)
 test_that("Model fit table results match", {
   table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
   jaspTools::expect_equal_tables(table,
-                                 list(707.570148255052, 721.47507693627, 3.33066907387547e-14, 0, "Model1",
-                                      75, "", "", "", "", 6, 6, 1095.63355300897, 1109.53848169019,
-                                      0, 0, "Model2", 75, "", "", 0, 0, 6, 6))
+                                 list(709.023697474126, 722.928626155344, 0, 0, "Model1", 75, "",
+                                      "", "", "", 6, 6, 816.268480294992, 830.17340897621,
+                                      2.33146835171283e-13, 0, "Model2", 75, "", "", 0, 0, 6, 6))
 })
 
 
@@ -1068,4 +1109,104 @@ test_that("Summary of sensitivity parameters table results match", {
                                       0.467843048994546, 0.0319319696951054, -0.462805738408711, "dem65~phantom",
                                       2.16041463170958, 0.508721525156672, -1.30877622339889, "ind60~phantom"
                                  ))
+})
+
+
+# Multigroup SEM with loading, intercept, regression, and latent covariance equality constraints
+options <- jaspTools::analysisOptions("SEM")
+options$emulation         <- "lavaan"
+options$estimator         <- "default"
+options$group             <- "group"
+options$informationMatrix <- "expected"
+options$naAction          <- "listwise"
+options$modelTest         <- "default"
+options$samplingWeights   <- ""
+options$equalLoading           <- TRUE
+options$equalIntercept         <- TRUE
+options$equalRegression        <- TRUE
+options$equalLatentCovariance  <- TRUE
+
+modelDefault <- list(model = "
+  ind60 =~ x1 + x2 + x3
+  dem60 =~ y1 + y2 + y3 + y4
+  dem65 =~ y5 + y6 + y7 + y8
+  dem60 ~ ind60
+  dem65 ~ ind60 + dem60
+  y1 ~~ y5
+  y2 ~~ y4 + y6
+  y3 ~~ y7
+  y4 ~~ y8
+  y6 ~~ y8
+  ", columns = c("x1", "x2", "x3", "y1", "y2", "y3", "y4", "y5", "y6", "y7", "y8"))
+
+options$models <- list(list(name = "default", syntax = modelDefault))
+
+set.seed(1)
+resultsEq <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options)
+
+test_that("Equality constraints: fit table results match", {
+  table <- resultsEq[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(3195.93727697042, 3360.4789330315, 114.87362414236, 83, "default",
+                                      75, 0.0117955656694783, "all", 71, 90, 1662.72247217319, 1807.70508431117,
+                                      61.4206634603702, 83, "default", 37, 0.963595682697612, 1, 71,
+                                      90, 1751.21480479723, 1898.5975591726, 53.4529606819896, 83,
+                                      "default", 38, 0.995169555905977, 2, 71, 90))
+})
+
+test_that("Equality constraints: factor loadings show equality labels", {
+  table <- resultsEq[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_ind"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(1, 1, 1, 1, "", "dem60", "", "y1", 0, "", 0.897879576368359, 1.59841605568629,
+                                      1.24814781602732, 1, ".p5.", "dem60", 2.86592971576738e-12,
+                                      "y2", 0.178711569407314, 6.98414669048418, 0.720039579983597,
+                                      1.3056696462548, 1.0128546131192, 1, ".p6.", "dem60", 1.20539134229602e-11,
+                                      "y3", 0.149398170295622, 6.77956504497351, 0.963777357648586,
+                                      1.49779103932152, 1.23078419848505, 1, ".p7.", "dem60", 0, "y4",
+                                      0.136230483285704, 9.03457265070284, 1, 1, 1, 1, "", "dem65",
+                                      "", "y5", 0, "", 0.902973167537218, 1.56404455268417, 1.23350886011069,
+                                      1, ".p9.", "dem65", 2.58681964737661e-13, "y6", 0.168643758344898,
+                                      7.31428706414389, 0.972281846372528, 1.60283034977338, 1.28755609807296,
+                                      1, ".p10.", "dem65", 1.11022302462516e-15, "y7", 0.160857165839408,
+                                      8.00434404867227, 1.02208630193642, 1.64022919194269, 1.33115774693955,
+                                      1, ".p11.", "dem65", 0, "y8", 0.157692410391747, 8.44148265368401,
+                                      1, 1, 1, 1, "", "ind60", "", "x1", 0, "", 1.91703146863215,
+                                      2.39706687853372, 2.15704917358293, 1, ".p2.", "ind60", 0, "x2",
+                                      0.122460262966062, 17.6142784715457, 1.53079176026025, 2.10831891863736,
+                                      1.8195553394488, 1, ".p3.", "ind60", 0, "x3", 0.14733106397173,
+                                      12.3501133460758, 1, 1, 1, 2, "", "dem60", "", "y1", 0, "",
+                                      0.897879576368359, 1.59841605568629, 1.24814781602732, 2, ".p5.",
+                                      "dem60", 2.86592971576738e-12, "y2", 0.178711569407314, 6.98414669048418,
+                                      0.720039579983597, 1.3056696462548, 1.0128546131192, 2, ".p6.",
+                                      "dem60", 1.20539134229602e-11, "y3", 0.149398170295622, 6.77956504497351,
+                                      0.963777357648587, 1.49779103932152, 1.23078419848505, 2, ".p7.",
+                                      "dem60", 0, "y4", 0.136230483285704, 9.03457265070285, 1, 1,
+                                      1, 2, "", "dem65", "", "y5", 0, "", 0.902973167537218, 1.56404455268417,
+                                      1.23350886011069, 2, ".p9.", "dem65", 2.58681964737661e-13,
+                                      "y6", 0.168643758344898, 7.31428706414389, 0.972281846372528,
+                                      1.60283034977338, 1.28755609807296, 2, ".p10.", "dem65", 1.11022302462516e-15,
+                                      "y7", 0.160857165839408, 8.00434404867226, 1.02208630193642,
+                                      1.64022919194269, 1.33115774693955, 2, ".p11.", "dem65", 0,
+                                      "y8", 0.157692410391747, 8.44148265368401, 1, 1, 1, 2, "", "ind60",
+                                      "", "x1", 0, "", 1.91703146863215, 2.39706687853372, 2.15704917358293,
+                                      2, ".p2.", "ind60", 0, "x2", 0.122460262966062, 17.6142784715458,
+                                      1.53079176026025, 2.10831891863736, 1.81955533944881, 2, ".p3.",
+                                      "ind60", 0, "x3", 0.14733106397173, 12.3501133460758))
+})
+
+test_that("Equality constraints: regression coefficients match", {
+  table <- resultsEq[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_reg"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list(0.766548188098086, 2.79249963457717, 1.77952391133763, 1, "dem60",
+                                      0.000575031911574042, "ind60", 0.516833845534799, 3.44312572930716,
+                                      0.291675135601127, 1.55887991282136, 0.925277524211244, 1, "dem65",
+                                      0.00420682283183993, "ind60", 0.323272465008486, 2.86222188514248,
+                                      0.50155451140844, 0.985099832004553, 0.743327171706497, 1, "dem65",
+                                      1.68185709803481e-09, "dem60", 0.123355664800541, 6.025885985118,
+                                      -0.235581376028428, 2.25465383218978, 1.00953622808068, 2, "dem60",
+                                      0.112030881080313, "ind60", 0.63527575707025, 1.58913073078128,
+                                      -0.00799878409453547, 1.09511856837494, 0.543559892140204, 2,
+                                      "dem65", 0.0534162703472112, "ind60", 0.281412658898512, 1.9315403019458,
+                                      0.651450397707888, 1.08137847142308, 0.866414434565485, 2, "dem65",
+                                      2.88657986402541e-15, "dem60", 0.109677544359593, 7.89965201741592))
 })

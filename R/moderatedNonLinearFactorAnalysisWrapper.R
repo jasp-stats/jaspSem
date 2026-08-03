@@ -47,7 +47,9 @@ ModeratedNonLinearFactorAnalysis <- function(
     invarianceTestScalar = FALSE,
     showSyntax = FALSE,
     invarianceTestStrict = FALSE,
-    syncAnalysisBox = FALSE) {
+    syncAnalysisBox = FALSE,
+    warnings = FALSE,
+    indicatorPreprocessing = "none") {
 
   defaultArgCalls <- formals(jaspSem::ModeratedNonLinearFactorAnalysis)
   defaultArgs <- lapply(defaultArgCalls, eval)

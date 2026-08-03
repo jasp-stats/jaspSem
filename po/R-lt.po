@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.95.0\n"
-"POT-Creation-Date: 2026-02-21 03:26\n"
+"POT-Creation-Date: 2026-07-11 03:47\n"
 "PO-Revision-Date: 2025-10-20 06:17+0000\n"
 "Last-Translator: Gabija Vaitkevičiūtė <gabija.vaitkev@gmail.com>\n"
 "Language-Team: Lithuanian <https://hosted.weblate.org/projects/jasp/jaspsem-"
@@ -14,7 +14,15 @@ msgstr ""
 "(n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Weblate 5.14-dev\n"
 
-msgid "Fit indices"
+msgid "Fit Indices"
+msgstr ""
+
+msgid ""
+"Detailed model fit indices. Includes incremental fit indices (CFI, TLI, NFI) "
+"comparing the model to the independence model, parsimony-adjusted indices, "
+"the RMSEA with confidence interval and close-fit test, SRMR, and information "
+"criteria (AIC, BIC, log-likelihood). CFI and TLI values above 0.95, RMSEA "
+"below 0.06, and SRMR below 0.08 suggest good fit."
 msgstr ""
 
 msgid "Index"
@@ -108,8 +116,31 @@ msgstr "Modelis negalėjo būti įvertintas dėl nekonvergavimo."
 msgid "The model could not be estimated: No degrees of freedom left."
 msgstr "Modelio nebuvo galima įvertinti: Nebeliko laisvės laipsnių."
 
-msgid "Chi-square test"
+#, fuzzy
+msgid "Chi-Square Test"
 msgstr "Chi-kvadrato testas"
+
+msgid ""
+"Chi-square goodness-of-fit test comparing the growth curve model to the "
+"baseline (independence) model. A non-significant p-value for the growth "
+"curve model suggests adequate fit to the data."
+msgstr ""
+
+#, fuzzy
+msgid "Model"
+msgstr "Modelio tinkamumas"
+
+msgid "df"
+msgstr "df"
+
+msgid "p"
+msgstr "p"
+
+msgid "Model Fit"
+msgstr ""
+
+msgid "Model fit statistics for the latent growth curve model."
+msgstr ""
 
 msgid "Baseline model"
 msgstr ""
@@ -123,7 +154,12 @@ msgstr "Modelis nepriimtinas: %s"
 msgid "Warning."
 msgstr ""
 
-msgid "Parameter estimates"
+msgid "Parameter Estimates"
+msgstr ""
+
+msgid ""
+"Parameter estimates for the latent growth curve model, including growth "
+"factor means, variances, covariances, and regression coefficients."
 msgstr ""
 
 msgid "Std. estimate"
@@ -132,20 +168,27 @@ msgstr ""
 msgid "Estimate"
 msgstr ""
 
+msgid "Latent Curve"
+msgstr ""
+
+msgid ""
+"Means and variances of the latent growth factors (e.g., intercept, slope). "
+"The intercept mean represents the average starting level, the slope mean the "
+"average rate of change, and their variances reflect individual differences "
+"in starting level and change."
+msgstr ""
+
 msgid "Component"
 msgstr ""
 
 msgid "Parameter"
 msgstr ""
 
-msgid "Std. error"
+msgid "Std. Error"
 msgstr ""
 
 msgid "z-value"
 msgstr ""
-
-msgid "p"
-msgstr "p"
 
 msgid "Lower"
 msgstr ""
@@ -153,10 +196,37 @@ msgstr ""
 msgid "%s%% Confidence Interval"
 msgstr ""
 
-msgid "Latent covariances"
+msgid "Upper"
+msgstr ""
+
+msgid "Latent Covariances"
+msgstr ""
+
+msgid ""
+"Covariances between latent growth factors. For example, a positive intercept-"
+"slope covariance indicates that individuals with higher starting values tend "
+"to show steeper change over time."
+msgstr ""
+
+msgid "Regressions"
+msgstr ""
+
+msgid ""
+"Regression coefficients of covariates predicting the latent growth factors. "
+"These show how external variables relate to individual differences in "
+"initial level and rate of change."
 msgstr ""
 
 msgid "Predictor"
+msgstr ""
+
+msgid "Residual Variances"
+msgstr ""
+
+msgid ""
+"Time-specific residual variances of the observed variables. These represent "
+"measurement error plus occasion-specific variance not captured by the growth "
+"factors. Negative values may indicate model misspecification."
 msgstr ""
 
 msgid "Variable"
@@ -187,19 +257,53 @@ msgstr ""
 msgid "R-Squared"
 msgstr ""
 
-msgid "Implied covariance matrix"
+msgid ""
+"Proportion of variance in each observed variable at each time point "
+"explained by the latent growth factors."
 msgstr ""
 
-msgid "Residual covariance matrix"
+msgid "Implied Covariance Matrix"
 msgstr ""
 
-msgid "Curve plot"
+msgid "Model-implied covariance matrix from the latent growth curve model."
 msgstr ""
 
-msgid "Model plot"
+msgid "Residual Covariance Matrix"
 msgstr ""
 
-msgid "Misfit plot"
+msgid ""
+"Difference between the observed and model-implied covariance matrices. Small "
+"residuals indicate the growth curve model adequately reproduces the observed "
+"covariances."
+msgstr ""
+
+msgid "Curve Plot"
+msgstr ""
+
+msgid ""
+"Individual predicted growth trajectories over time. Each line represents a "
+"participant's estimated trajectory based on the latent growth factors."
+msgstr ""
+
+#, fuzzy
+msgid "Model Plot"
+msgstr "Modelio tinkamumas"
+
+msgid ""
+"Path diagram of the latent growth curve model showing the growth factors, "
+"their loadings on observed time points, and any covariates."
+msgstr ""
+
+#, fuzzy
+msgid "Model Syntax"
+msgstr "Modelio tinkamumas"
+
+msgid ""
+"The lavaan model syntax for the growth curve model, showing fixed factor "
+"loadings that define the growth trajectory shape."
+msgstr ""
+
+msgid "Misfit Plot"
 msgstr ""
 
 msgid "Curve + variance + uncertainty"
@@ -235,22 +339,64 @@ msgstr ""
 msgid "Estimation failed"
 msgstr ""
 
+msgid ""
+"Parameter estimates from the mediation model, organized by direct effects, "
+"indirect effects, and total effects."
+msgstr ""
+
 msgid "Direct effects"
 msgstr ""
 
-msgid "Upper"
+msgid ""
+"Direct effects of predictors on outcomes, bypassing all mediators (the c or "
+"c' path). A significant direct effect indicates that the predictor "
+"influences the outcome independently of the mediation pathway."
 msgstr ""
 
 msgid "Indirect effects"
 msgstr ""
 
+msgid ""
+"Indirect effects of predictors on outcomes transmitted through mediators. "
+"Each indirect effect is the product of the path coefficients along the "
+"mediation pathway (a × b). A significant indirect effect indicates that "
+"mediation occurs through that pathway."
+msgstr ""
+
+msgid "Total Effects"
+msgstr ""
+
+msgid ""
+"Total effects combining the direct effect and all indirect effects for each "
+"predictor-outcome pair. The total effect equals the sum of the direct and "
+"indirect effects (c = c' + a × b)."
+msgstr ""
+
 msgid "Total indirect effects"
+msgstr ""
+
+msgid ""
+"Total indirect effects summed across all mediators for each predictor-"
+"outcome pair. When there are multiple mediators, this gives the combined "
+"strength of all indirect pathways."
 msgstr ""
 
 msgid "Residual covariances"
 msgstr ""
 
+msgid ""
+"Estimated residual covariances between endogenous variables (mediators and "
+"outcomes). These represent shared variance not accounted for by the model's "
+"directed paths."
+msgstr ""
+
 msgid "Path coefficients"
+msgstr ""
+
+msgid ""
+"Individual path coefficients in the mediation model. These include the a "
+"paths (predictor to mediator) and b paths (mediator to outcome), which "
+"constitute the building blocks of indirect effects."
 msgstr ""
 
 msgid "Estimator is %s."
@@ -260,7 +406,17 @@ msgid ""
 "%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
 msgstr ""
 
-msgid "Path plot"
+msgid ""
+"Proportion of variance in each mediator and outcome variable explained by "
+"its predictors in the mediation model."
+msgstr ""
+
+msgid "Path Plot"
+msgstr ""
+
+msgid ""
+"Visual representation of the mediation model showing predictors, mediators, "
+"outcomes, directed paths, and (optionally) parameter estimates."
 msgstr ""
 
 msgid ""
@@ -276,6 +432,12 @@ msgstr ""
 msgid "Model syntax"
 msgstr ""
 
+msgid ""
+"The lavaan model syntax automatically generated from the mediation analysis "
+"specification. This shows the exact model fitted, including labeled direct "
+"and indirect effect parameters."
+msgstr ""
+
 msgid "FIML only available with ML-type estimators."
 msgstr ""
 
@@ -284,8 +446,11 @@ msgid ""
 "different estimator or specify an other MIMIC model."
 msgstr ""
 
-msgid "df"
-msgstr "df"
+msgid ""
+"Chi-square goodness-of-fit test for the MIMIC model. Both the baseline "
+"(independence) model and the factor model with predictors are shown. A non-"
+"significant chi-square for the factor model indicates adequate fit."
+msgstr ""
 
 msgid "&#967;&sup2;"
 msgstr ""
@@ -293,16 +458,62 @@ msgstr ""
 msgid "Factor model"
 msgstr ""
 
+msgid ""
+"Parameter estimates for the MIMIC (Multiple Indicators, Multiple Causes) "
+"model. The model has observed predictors influencing a latent variable, "
+"which in turn is measured by observed indicators."
+msgstr ""
+
 msgid "Predictor coefficients"
+msgstr ""
+
+msgid ""
+"Regression coefficients of the observed predictor (cause) variables on the "
+"latent variable. These represent the direct effects of each predictor on the "
+"latent construct."
 msgstr ""
 
 msgid "Indicator coefficients"
 msgstr ""
 
+msgid ""
+"Factor loadings of the latent variable on its observed indicators. These "
+"represent how strongly each indicator reflects the underlying latent "
+"construct."
+msgstr ""
+
 msgid "Indicator"
 msgstr ""
 
+msgid "Residual variances"
+msgstr ""
+
+msgid "Std. error"
+msgstr ""
+
+msgid "Predictor covariances"
+msgstr ""
+
+msgid "Variables"
+msgstr ""
+
+msgid ""
+"Proportion of variance explained in the latent variable (by the predictors) "
+"and in each indicator (by the latent variable)."
+msgstr ""
+
+msgid ""
+"Path diagram of the MIMIC model showing observed predictors (causes), the "
+"latent variable, and its observed indicators."
+msgstr ""
+
 msgid "Model plot not available with ordinal variables"
+msgstr ""
+
+msgid ""
+"The lavaan model syntax specifying the MIMIC model structure, including the "
+"measurement model and the regression of the latent variable on the "
+"predictors."
 msgstr ""
 
 msgid ""
@@ -329,6 +540,12 @@ msgstr ""
 msgid "Fit per Group Test"
 msgstr ""
 
+msgid ""
+"CFA fit statistics computed separately for each group defined by the "
+"moderator. This checks whether the baseline factor model fits adequately "
+"within each group before testing invariance."
+msgstr ""
+
 msgid "Group Model"
 msgstr ""
 
@@ -352,6 +569,13 @@ msgid "The model for group %s did not converge."
 msgstr "Modelis negalėjo būti įvertintas dėl nekonvergavimo."
 
 msgid "Global Invariance Fit"
+msgstr ""
+
+msgid ""
+"Comparison of MNLFA invariance models (configural, metric, scalar, strict) "
+"using -2 log-likelihood difference tests. Significant differences indicate "
+"that the more constrained model fits significantly worse, suggesting non-"
+"invariance at that level."
 msgstr ""
 
 msgid "Type"
@@ -387,7 +611,25 @@ msgstr ""
 msgid "%1$s Error in fitting the %2$s model. Internal error message(s): %3$s"
 msgstr ""
 
-msgid "Parameter Estimates"
+msgid "OK"
+msgstr ""
+
+msgid "%1$s: optimizer status '%2$s'."
+msgstr ""
+
+msgid ""
+"Fitting the model resulted in warnings. Check the 'Show warnings' box in the "
+"Output Options to see the warnings."
+msgstr ""
+
+msgid "Warnings (from R):"
+msgstr ""
+
+msgid ""
+"Parameter estimates from the MNLFA invariance models. Moderation effects "
+"show how each parameter varies as a function of the moderator variable. "
+"Estimates on 'Effect' rows represent the linear change in the parameter per "
+"unit change in the moderator."
 msgstr ""
 
 #, fuzzy
@@ -397,6 +639,12 @@ msgstr "Modelis negalėjo būti įvertintas dėl nekonvergavimo."
 msgid "Loadings"
 msgstr ""
 
+msgid ""
+"Factor loadings and their moderation effects. Significant moderation effects "
+"indicate that the relationship between the latent factor and its indicator "
+"varies across levels of the moderator (metric non-invariance)."
+msgstr ""
+
 #, fuzzy
 msgid "Factor"
 msgstr "# Veiksniai"
@@ -404,26 +652,58 @@ msgstr "# Veiksniai"
 msgid "Effect"
 msgstr ""
 
-msgid "Std. Error"
-msgstr ""
-
 msgid "Intercepts"
 msgstr ""
 
-msgid "Residual Variances"
+msgid ""
+"Indicator intercepts and their moderation effects. Significant moderation "
+"effects indicate that the item difficulty or baseline level varies across "
+"the moderator (scalar non-invariance)."
+msgstr ""
+
+msgid ""
+"Indicator residual variances and their moderation effects. Estimates are on "
+"the log scale internally and back-transformed for display. Significant "
+"moderation indicates that measurement precision varies across the moderator "
+"(strict non-invariance)."
 msgstr ""
 
 msgid "Factor Variances"
+msgstr ""
+
+msgid ""
+"Latent factor variances and their moderation effects. Estimates are on the "
+"log scale internally and back-transformed for display. Significant "
+"moderation indicates that the spread of the latent trait changes across the "
+"moderator."
 msgstr ""
 
 #, fuzzy
 msgid "Factor Means"
 msgstr "# Veiksniai"
 
+msgid ""
+"Latent factor means and their moderation effects. Significant moderation "
+"indicates that the average level of the latent trait differs across the "
+"moderator."
+msgstr ""
+
 msgid "Factor Covariances"
 msgstr ""
 
+msgid ""
+"Latent factor covariances and their moderation effects. Significant "
+"moderation indicates that the relationship between latent factors varies "
+"across the moderator."
+msgstr ""
+
 msgid "Parameter Plots"
+msgstr ""
+
+msgid ""
+"Plots showing how model parameters (loadings, intercepts, variances) vary as "
+"a function of the moderator variable. Each plot displays the estimated "
+"parameter value across the range of the moderator."
 msgstr ""
 
 msgid "total"
@@ -431,10 +711,6 @@ msgstr ""
 
 msgid "Parameter Value"
 msgstr ""
-
-#, fuzzy
-msgid "Model Syntax"
-msgstr "Modelio tinkamumas"
 
 msgid "Nothing to print."
 msgstr ""
@@ -466,6 +742,24 @@ msgstr ""
 msgid "# FACTOR COVARIANCES BLOCK"
 msgstr ""
 
+msgid "Error"
+msgstr ""
+
+msgid "Unknown"
+msgstr ""
+
+msgid "OK/Gradient"
+msgstr ""
+
+msgid "Non-convex Hessian"
+msgstr ""
+
+msgid "Unchecked"
+msgstr ""
+
+msgid "Code %s"
+msgstr ""
+
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr ""
 
@@ -487,7 +781,11 @@ msgstr ""
 msgid "Estimation failed! Message: Model %s did not converge!"
 msgstr ""
 
-msgid "Model Fit"
+msgid ""
+"Overall model fit test using bootstrap-based distance measures. The test "
+"statistic is compared to a critical value obtained from bootstrapping. If "
+"the test statistic exceeds the critical value, the model is rejected at the "
+"chosen significance level."
 msgstr ""
 
 msgid "Group"
@@ -514,22 +812,52 @@ msgstr ""
 msgid "Denotes the fit of the model including a saturated structural model."
 msgstr ""
 
+msgid ""
+"Parameter estimates for the PLS-SEM model, including outer weights, outer "
+"loadings, inner model path coefficients, total effects, and residual "
+"correlations."
+msgstr ""
+
 msgid "Weights"
+msgstr ""
+
+msgid ""
+"Outer weights relating observed indicators to their composite constructs. "
+"Weights determine how indicators are combined to form construct scores and "
+"reflect each indicator's relative contribution."
 msgstr ""
 
 msgid "Construct"
 msgstr ""
 
+msgid ""
+"Outer loadings (correlations) between indicators and their constructs. "
+"Loadings above 0.708 indicate that the construct explains more than 50%% of "
+"the indicator's variance."
+msgstr ""
+
 msgid "Regression Coefficients"
+msgstr ""
+
+msgid ""
+"Inner model path coefficients between constructs. The f² effect size "
+"indicates the substantive impact of removing each predictor: 0.02 (small), "
+"0.15 (medium), 0.35 (large)."
 msgstr ""
 
 msgid "Outcome"
 msgstr ""
 
-msgid "Total Effects"
+msgid ""
+"Total effects combining direct and all indirect paths between constructs."
 msgstr ""
 
 msgid "Residual Correlations"
+msgstr ""
+
+msgid ""
+"Residual correlations between indicators after accounting for the construct "
+"model. These represent correlated measurement errors between indicator pairs."
 msgstr ""
 
 msgid "VIF"
@@ -541,7 +869,20 @@ msgstr ""
 msgid "Endogenous Indicator Prediction"
 msgstr ""
 
+msgid ""
+"Cross-validated prediction of endogenous indicators using PLSpredict. The "
+"prediction metrics assess how well the PLS-SEM model predicts indicator "
+"scores out of sample."
+msgstr ""
+
 msgid "Prediction Metrics"
+msgstr ""
+
+msgid ""
+"MAE (mean absolute error), RMSE (root mean squared error), and Q² prediction "
+"metrics for endogenous indicators. Q² > 0 indicates that prediction error is "
+"less than using the training sample mean. When benchmarks are included, "
+"lower MAE/RMSE than the benchmark suggests the PLS-SEM model predicts better."
 msgstr ""
 
 msgid "Target MAE"
@@ -591,6 +932,13 @@ msgstr ""
 msgid "Additional Fit Measures"
 msgstr ""
 
+msgid ""
+"Additional model fit measures for PLS-SEM. Includes CFI, GFI, RMSEA, SRMR "
+"for the model-implied indicator correlation matrix, Goodness-of-Fit (GoF) as "
+"geometric mean of AVE and R², and bootstrap-based distance measures (dG, dL, "
+"dML)."
+msgstr ""
+
 msgid "Hoelter's critical N (CN)"
 msgstr ""
 
@@ -615,7 +963,30 @@ msgstr ""
 msgid "Model assessment could not be computed for group %1$s: %2$s"
 msgstr ""
 
+msgid ""
+"R² and adjusted R² for each endogenous construct. R² represents the "
+"proportion of variance in the construct explained by its predictors in the "
+"structural model. Values of 0.75, 0.50, and 0.25 are considered substantial, "
+"moderate, and weak."
+msgstr ""
+
+msgid "R²"
+msgstr ""
+
+msgid "Adjusted R²"
+msgstr ""
+
 msgid "Reliability Measures"
+msgstr ""
+
+msgid ""
+"Construct reliability measures. Cronbach's α assumes equal indicator weights "
+"(tau-equivalence). Jöreskog's ρ uses the outer loadings and is the preferred "
+"measure for PLS-SEM. Dijkstra-Henseler's ρ_A is a consistent reliability "
+"estimate. Values above 0.70 indicate acceptable reliability."
+msgstr ""
+
+msgid "Latent"
 msgstr ""
 
 msgid "Cronbach's %s"
@@ -627,19 +998,57 @@ msgstr ""
 msgid "Dijkstra-Henseler's %s"
 msgstr ""
 
-msgid "Correlation tables"
+msgid "Correlation Tables"
 msgstr ""
 
-msgid "Observed indicator correlation matrix"
+msgid ""
+"Observed and model-implied correlation matrices for indicators and "
+"constructs. Comparing observed and implied matrices helps assess model fit "
+"at the indicator and construct level."
 msgstr ""
 
-msgid "Implied indicator correlation matrix"
+msgid "Observed Indicator Correlation Matrix"
 msgstr ""
 
-msgid "Observed construct correlation matrix"
+msgid "Sample correlation matrix of the observed indicator variables."
 msgstr ""
 
-msgid "Implied construct correlation matrix"
+msgid "Implied Indicator Correlation Matrix"
+msgstr ""
+
+msgid ""
+"Model-implied correlation matrix of the indicator variables. Closeness to "
+"the observed matrix indicates good model fit at the indicator level."
+msgstr ""
+
+msgid "Observed Construct Correlation Matrix"
+msgstr ""
+
+msgid "Sample correlation matrix of the composite construct scores."
+msgstr ""
+
+msgid "Implied Construct Correlation Matrix"
+msgstr ""
+
+msgid ""
+"Model-implied correlation matrix of the constructs. Closeness to the "
+"observed construct correlations indicates good structural model fit."
+msgstr ""
+
+msgid ""
+"Sample correlation matrix of the observed indicator variables, shown per "
+"group."
+msgstr ""
+
+msgid ""
+"Model-implied correlation matrix of the indicator variables, shown per group."
+msgstr ""
+
+msgid ""
+"Sample correlation matrix of the composite construct scores, shown per group."
+msgstr ""
+
+msgid "Model-implied correlation matrix of the constructs, shown per group."
 msgstr ""
 
 msgid "Implied indicator correlations could not be computed: %s"
@@ -691,8 +1100,11 @@ msgstr ""
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
 msgstr ""
 
-msgid "Model fit"
-msgstr "Modelio tinkamumas"
+msgid ""
+"Model fit statistics including AIC, BIC, number of parameters, and a chi-"
+"square test for exact fit. A non-significant chi-square suggests the model "
+"fits the data well, though this test is sensitive to sample size."
+msgstr ""
 
 msgid "n(Observations)"
 msgstr ""
@@ -743,25 +1155,58 @@ msgstr ""
 msgid "<b>Warnings:</b> %s"
 msgstr ""
 
+msgid ""
+"Parameter estimates from the structural equation model, organized by type: "
+"factor loadings, regression coefficients, variances, covariances, and "
+"additional parameters."
+msgstr ""
+
 msgid "Factor Loadings"
 msgstr ""
 
-msgid "Latent"
+msgid ""
+"Factor loadings from the measurement model (=~ operator). Each loading "
+"reflects how strongly a latent variable is related to its observed "
+"indicator. The first indicator loading is typically fixed to 1 to set the "
+"scale of the latent variable."
 msgstr ""
 
-msgid "Regression coefficients"
+msgid ""
+"Regression coefficients from the structural part of the model (~ operator). "
+"These represent directed effects of predictors on outcomes among latent and/"
+"or observed variables."
 msgstr ""
 
-msgid "Factor variances"
+msgid ""
+"Estimated variances of the latent variables. For exogenous latent variables "
+"these are total variances; for endogenous latent variables these are "
+"residual variances (the variance not explained by predictors)."
 msgstr ""
 
-msgid "Factor covariances"
+msgid ""
+"Estimated covariances between latent variables (~~ operator). These "
+"represent undirected associations between latent variables."
 msgstr ""
 
-msgid "Variables"
+msgid ""
+"Residual variances of the observed variables: the variance not explained by "
+"the latent variables. Negative residual variances (Heywood cases) may "
+"indicate model misspecification."
 msgstr ""
 
-msgid "Residual variances"
+msgid "Residual Covariances"
+msgstr ""
+
+msgid ""
+"Residual covariances between observed variables (~~ operator). These "
+"represent correlated errors, i.e., shared variance between indicators not "
+"accounted for by the latent variables."
+msgstr ""
+
+msgid ""
+"Intercept (mean) parameters for observed and latent variables in the mean "
+"structure. For observed variables, these are the expected values when all "
+"predictors are zero."
 msgstr ""
 
 msgid "Missing data method 'FIML' forces meanstructure."
@@ -770,22 +1215,64 @@ msgstr ""
 msgid "Thresholds"
 msgstr ""
 
+msgid ""
+"Threshold parameters for ordinal observed variables. These define the cut-"
+"points on the underlying continuous distribution that separate the observed "
+"categories."
+msgstr ""
+
 msgid "Threshold"
 msgstr ""
 
-msgid "Defined parameters"
+msgid "Defined Parameters"
+msgstr ""
+
+msgid ""
+"User-defined parameters specified with the := operator. These are functions "
+"of existing model parameters, such as indirect effects or sums of "
+"coefficients. Standard errors are computed using the Delta method."
 msgstr ""
 
 msgid "Name"
 msgstr ""
 
-msgid "Total effects"
+msgid "Indirect Effects"
+msgstr ""
+
+msgid ""
+"Indirect effects of predictors on outcomes transmitted through mediating "
+"variables. These are computed as the product of the path coefficients along "
+"the indirect pathway."
+msgstr ""
+
+msgid ""
+"Total effects combining direct and all indirect effects of predictors on "
+"outcomes."
+msgstr ""
+
+msgid ""
+"Additional model fit indices and information criteria for evaluating overall "
+"model quality."
+msgstr ""
+
+msgid ""
+"Model fit indices including incremental indices (CFI, TLI, NFI), absolute "
+"indices (RMSEA, SRMR, GFI), and information criteria (AIC, BIC). Common "
+"guidelines: CFI/TLI > .95, RMSEA < .06, SRMR < .08 indicate good fit, though "
+"these should be interpreted cautiously."
 msgstr ""
 
 msgid "%s Fit indices are based on the scaled test statistic."
 msgstr ""
 
-msgid "T-size fit indices"
+msgid "T-Size Fit Indices"
+msgstr ""
+
+msgid ""
+"T-size equivalence testing fit indices (Marcoulides & Yuan, 2017). These "
+"provide data-driven cutoff values for CFI and RMSEA that replace "
+"conventional rules of thumb. The poor-fair and fair-close limits define "
+"ranges for interpreting fit."
 msgstr ""
 
 msgid "Poor-fair limit"
@@ -797,13 +1284,38 @@ msgstr ""
 msgid "T-size statistics are computed for <i>%s = 0.05</i>."
 msgstr ""
 
-msgid "Average variance extracted"
+msgid ""
+"Proportion of variance in each endogenous variable explained by its "
+"predictors in the model. Values range from 0 to 1, with higher values "
+"indicating more variance explained."
+msgstr ""
+
+msgid "Average Variance Extracted"
+msgstr ""
+
+msgid ""
+"Average Variance Extracted (AVE) measures the amount of variance captured by "
+"a latent construct relative to measurement error. AVE values above 0.5 "
+"indicate adequate convergent validity, meaning the construct explains more "
+"than half the variance of its indicators."
 msgstr ""
 
 msgid "AVE"
 msgstr ""
 
+msgid ""
+"Average variance extracted requires a model with at least one latent "
+"variable."
+msgstr ""
+
 msgid "Reliability"
+msgstr ""
+
+msgid ""
+"Composite reliability coefficients for each latent construct. Coefficient α "
+"(alpha) assumes tau-equivalence (equal loadings), while coefficient ω "
+"(omega) allows for congeneric indicators (unequal loadings) and is generally "
+"preferred. Values above 0.7 are commonly considered acceptable."
 msgstr ""
 
 msgid "Coefficient α"
@@ -812,13 +1324,36 @@ msgstr ""
 msgid "Coefficient ω"
 msgstr ""
 
+msgid "Reliability requires a model with at least one latent variable."
+msgstr ""
+
+msgid ""
+"Measurement-model reliability is not yet supported with grouping; default "
+"omega values are shown."
+msgstr ""
+
 msgid "Heterotrait-Monotrait Ratio"
 msgstr ""
 
-msgid "Heterotrait-monotrait ratio"
+msgid ""
+"Heterotrait-Monotrait (HTMT) ratio of correlations for assessing "
+"discriminant validity. HTMT values below 0.85 (conservative) or 0.90 "
+"(liberal) suggest that constructs are empirically distinct from each other."
 msgstr ""
 
-msgid "Mardia's coefficients"
+msgid ""
+"The heterotrait-monotrait ratio requires a model with at least two latent "
+"variables."
+msgstr ""
+
+msgid "Mardia's Coefficients"
+msgstr ""
+
+msgid ""
+"Mardia's multivariate skewness and kurtosis coefficients for assessing "
+"whether the data meet the multivariate normality assumption. Significant "
+"values suggest non-normality, which may affect chi-square tests and standard "
+"errors under ML estimation."
 msgstr ""
 
 msgid "Coefficient"
@@ -847,7 +1382,37 @@ msgstr ""
 msgid "Kurtosis"
 msgstr ""
 
-msgid "Covariance tables"
+msgid "Covariance Tables"
+msgstr ""
+
+msgid ""
+"Observed, model-implied, and residual covariance matrices. Comparing these "
+"matrices helps evaluate local model fit."
+msgstr ""
+
+msgid "Observed Covariance Matrix"
+msgstr ""
+
+msgid ""
+"Sample covariance matrix of the observed variables used for model estimation."
+msgstr ""
+
+msgid ""
+"Model-implied covariance matrix derived from the estimated parameters. Close "
+"correspondence with the observed covariance matrix indicates good model fit."
+msgstr ""
+
+msgid ""
+"Difference between the observed and model-implied covariance matrices. Small "
+"residuals indicate that the model reproduces the observed covariances well."
+msgstr ""
+
+msgid "Standardized Residual Covariance Matrix"
+msgstr ""
+
+msgid ""
+"Standardized residual covariances. Values exceeding |2| may indicate "
+"localized areas of poor fit for specific pairs of variables."
 msgstr ""
 
 msgid ""
@@ -866,34 +1431,60 @@ msgstr ""
 msgid "The standardized residual covariance matrices could not be computed"
 msgstr ""
 
-msgid "Modification indices"
-msgstr ""
-
 msgid "Modification Indices"
 msgstr ""
 
-msgid "group"
+msgid ""
+"Modification indices (MI) estimate the expected decrease in the model chi-"
+"square statistic if a currently fixed parameter were freed. The expected "
+"parameter change (EPC) indicates the approximate value of the freed "
+"parameter."
 msgstr ""
 
-msgid "mi"
+msgid ""
+"MI is the expected chi-square decrease if a fixed parameter is freed. EPC is "
+"the expected parameter change. SEPC columns show standardized versions (lv = "
+"latent only, all = fully, nox = excluding exogenous observed)."
 msgstr ""
 
-msgid "epc"
+msgid "MI"
 msgstr ""
 
-msgid "sepc (lv)"
+msgid "EPC"
 msgstr ""
 
-msgid "sepc (all)"
+msgid "SEPC (lv)"
 msgstr ""
 
-msgid "sepc (nox)"
+msgid "SEPC (all)"
 msgstr ""
 
-msgid "Sensitivity analysis"
+msgid "SEPC (nox)"
 msgstr ""
 
-msgid "Summary of sensitivity analysis"
+msgid ""
+"The modification indices could not be computed, most likely because the "
+"model's information matrix is singular. This often indicates that the model "
+"is not identified (for example, with ordinal indicators combined with "
+"(near-)collinear predictors)."
+msgstr ""
+
+msgid "Sensitivity Analysis"
+msgstr ""
+
+msgid ""
+"Sensitivity analysis using phantom variables to assess the robustness of "
+"path estimates to unmeasured confounding. Evaluates whether conclusions "
+"change when an unobserved common cause is introduced."
+msgstr ""
+
+msgid "Summary of Sensitivity Analysis"
+msgstr ""
+
+msgid ""
+"Summary of how path estimates and their significance change when phantom "
+"variables representing unmeasured confounders are introduced. P* denotes the "
+"p-value from the sensitivity model."
 msgstr ""
 
 msgid "Path"
@@ -928,19 +1519,35 @@ msgstr ""
 msgid "Performing sensitivity analysis (model: %1$s)"
 msgstr ""
 
-msgid "Sensitivity parameters that led to a change in significance"
+msgid "Sensitivity Parameters That Led to a Change in Significance"
+msgstr ""
+
+msgid ""
+"Phantom variable coefficients from sensitivity models where the statistical "
+"significance of a path changed compared to the original model."
 msgstr ""
 
 msgid "Sensitivity parameters"
 msgstr ""
 
-msgid "Summary of sensitivity parameters"
+msgid "Summary of Sensitivity Parameters"
+msgstr ""
+
+msgid ""
+"Summary statistics (mean, min, max) of the phantom variable coefficients "
+"across all sensitivity analyses, indicating the range of unmeasured "
+"confounding explored."
 msgstr ""
 
 msgid "Sensitivity parameter"
 msgstr ""
 
-msgid "Path diagram"
+msgid "Path Diagram"
+msgstr ""
+
+msgid ""
+"Graphical representation of the model showing latent variables (circles), "
+"observed variables (squares), and the paths between them."
 msgstr ""
 
 msgid "Satorra-Bentler"

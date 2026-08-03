@@ -152,6 +152,20 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL, 
   return(semPlotMod)
 }
 
+# Patch semPlot:::rtLayout to add drop = FALSE when subsetting the edgelist.
+# Without this, models with a single directed edge (e.g., simple regression)
+# cause igraph::graph_from_edgelist to fail because the matrix drops to a vector.
+.patchRtLayout <- function() {
+  fixed <- function(roots, GroupPars, Edgelist, layout, exoMan) {
+    Edgelist <- Edgelist[GroupPars$edge != "<->", , drop = FALSE]
+    Graph <- igraph::graph.edgelist(Edgelist, FALSE)
+    Layout <- igraph::layout.reingold.tilford(Graph, root = roots, circular = FALSE)
+    return(Layout)
+  }
+  environment(fixed) <- asNamespace("semPlot")
+  utils::assignInNamespace("rtLayout", fixed, ns = "semPlot")
+}
+
 .sa.aco <- function (data = NULL, sample.cov, sample.nobs, model, sens.model,
                      opt.fun, d = NULL, paths = NULL, verbose = TRUE, max.value = Inf,
                      max.iter = 1000, e = 1e-10, n.of.ants = 10, k = 100, q = 1e-04,
@@ -587,7 +601,8 @@ lavBootstrap <- function(fit, samples = 1000, standard = FALSE, typeStd = NULL, 
 
 .additionalFitTables <- function(modelContainer, dataset, options, ready) {
 
-  fitinds <- createJaspTable(gettext("Fit indices"))
+  fitinds <- createJaspTable(gettext("Fit Indices"))
+  fitinds$info <- gettext("Detailed model fit indices. Includes incremental fit indices (CFI, TLI, NFI) comparing the model to the independence model, parsimony-adjusted indices, the RMSEA with confidence interval and close-fit test, SRMR, and information criteria (AIC, BIC, log-likelihood). CFI and TLI values above 0.95, RMSEA below 0.06, and SRMR below 0.08 suggest good fit.")
   fitinds$dependOn("additionalFitMeasures")
 
   fitinds$addColumnInfo(name = "index", title = gettext("Index"), type = "string")

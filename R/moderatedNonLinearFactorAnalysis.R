@@ -65,6 +65,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (runAnalysis) {
     .mnlfaCallGlobalInvarianceTests(jaspResults, dataset, options, ready)
     .mnlfaGlobalInvarianceFitTable(jaspResults, dataset, options, ready)
+    .mnlfaWarningsHtml(jaspResults, options, ready)
     .mnlfaGlobalInvarianceParameterTables(jaspResults, dataset, options, ready)
     .mnlfaPrintSyntax(jaspResults, dataset, options, ready)
 
@@ -92,6 +93,20 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   # convert the whole data to numeric
   dataset <- as.data.frame(lapply(dataset, function(x) as.numeric(as.character(x))))
+
+  # optionally center or z-standardize the indicator variables
+  if (!is.null(options[["indicatorPreprocessing"]]) && options[["indicatorPreprocessing"]] != "none") {
+    indicators <- unlist(lapply(options[["factors"]], `[[`, "indicators"), use.names = FALSE)
+    indicators <- unique(indicators)
+    indicators <- indicators[nzchar(indicators) & indicators %in% colnames(dataset)]
+    for (v in indicators) {
+      x <- as.numeric(dataset[[v]])
+      dataset[[v]] <- switch(options[["indicatorPreprocessing"]],
+                             center      = x - mean(x, na.rm = TRUE),
+                             standardize = as.numeric(scale(x)),
+                             x)
+    }
+  }
 
   # scale the continuous moderators
   mods <- unlist(lapply(options[["moderators"]], `[[`, "variable"), use.names = FALSE)
@@ -153,7 +168,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   dataState <- dataset
   dataState <- createJaspState(dataState)
   dataState$dependOn(options = c("factors", "moderators", "moderatorInteractionTerms", "moderatorInteractionTermsInclude",
-                                 "moderatorSquaredEffect", "moderatorCubicEffect"))
+                                 "moderatorSquaredEffect", "moderatorCubicEffect", "indicatorPreprocessing"))
   jaspResults[["dataState"]] <- dataState
 
   return(dataset)
@@ -249,7 +264,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     jaspResults[["mainContainer"]]$dependOn(options = c(
       "factors", "moderators", "moderatorInteractionTerms", "moderatorInteractionTermsInclude",
       "moderatorSquaredEffect", "moderatorCubicEffect",
-      "factorsUncorrelated", "interceptsFixedToZero", "packageMimiced", "estimator", "naAction"))
+      "indicatorPreprocessing"))
     jaspResults[["mainContainer"]]$position <- 3
   }
   return()
@@ -400,7 +415,14 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   modelObj <- .generateSyntax(factorList, moderators, type = testName, removeMod)
   script <- mxsem::mxsem(model = modelObj$model, data = dataset, scale_loadings = FALSE, scale_latent_variances = FALSE)
   .ensureImxReportProgress()
-  fit <- try(OpenMx::mxRun(script))
+  fitW <- try(.withWarnings(OpenMx::mxRun(script)))
+  if (jaspBase::isTryError(fitW)) {
+    fit <- fitW
+  } else {
+    fit <- fitW$value
+    attr(fit, "mxWarnings") <- if (length(fitW$warnings) > 0)
+      vapply(fitW$warnings, conditionMessage, character(1)) else character(0)
+  }
 
   fitState <- createJaspState(fit)
 
@@ -427,6 +449,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (!options[["checkModelFitPerGroup"]]) return()
 
   fitPerGroupTable <- createJaspTable(gettext("Fit per Group Test"))
+  fitPerGroupTable$info <- gettext("CFA fit statistics computed separately for each group defined by the moderator. This checks whether the baseline factor model fits adequately within each group before testing invariance.")
   fitPerGroupTable$addColumnInfo(name = "model", title = gettext("Group Model"), type = "string")
 
   groupContainer <- createJaspContainer()
@@ -489,6 +512,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     return()
 
   invFitTable <- createJaspTable(gettext("Global Invariance Fit"))
+  invFitTable$info <- gettext("Comparison of MNLFA invariance models (configural, metric, scalar, strict) using -2 log-likelihood difference tests. Significant differences indicate that the more constrained model fits significantly worse, suggesting non-invariance at that level.")
   invFitTable$addColumnInfo(name = "type",  title = gettext("Type"),           type = "string")
   invFitTable$addColumnInfo(name = "Npar",     title = gettext("n(Par)"),  type = "integer")
   # invFitTable$addColumnInfo(name = "df",     title = gettext("df"),           type = "integer")
@@ -515,6 +539,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
   invFitTable <- createJaspTable(gettext("Global Invariance Fit"))
+  invFitTable$info <- gettext("Comparison of MNLFA invariance models (configural, metric, scalar, strict) using -2 log-likelihood difference tests. Significant differences indicate that the more constrained model fits significantly worse, suggesting non-invariance at that level.")
   jaspResults[["fitContainer"]][["invFitTable"]] <- invFitTable
 
   invFitTable$addColumnInfo(name = "type",  title = gettext("Type"),           type = "string")
@@ -525,6 +550,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   invFitTable$addColumnInfo(name = "SAAIC",   title = gettext("SAAIC"),            type = "number", format = "dp:3")
   invFitTable$addColumnInfo(name = "BIC",   title = gettext("BIC"),            type = "number", format = "dp:3")
   invFitTable$addColumnInfo(name = "SABIC", title = gettext("SABIC"),          type = "number", format = "dp:3")
+
+  invFitTable$dependOn("warnings")
 
   results <- list(Configural = jaspResults[["mainContainer"]][["invarianceTestConfiguralState"]][["object"]],
                   Metric = jaspResults[["mainContainer"]][["invarianceTestMetricState"]][["object"]],
@@ -658,10 +685,65 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   }
 
   invFitTable$setData(dtFill)
-  invFitTable$addFootnote(errmsg)
+  if (nzchar(errmsg))
+    invFitTable$addFootnote(errmsg)
+
+  for (nm in names(results)) {
+    fit <- results[[nm]]
+    if (jaspBase::isTryError(fit)) next
+    status <- .mnlfaStatusLabel(fit)
+    if (status == gettext("OK")) next
+    invFitTable$addFootnote(gettextf("%1$s: optimizer status '%2$s'.", nm, status))
+  }
+
+  anyWarnings <- any(vapply(results, function(fit) {
+    if (jaspBase::isTryError(fit)) return(FALSE)
+    length(attr(fit, "mxWarnings")) > 0
+  }, logical(1)))
+
+  if (anyWarnings && !options[["warnings"]]) {
+    invFitTable$addFootnote(gettext("Fitting the model resulted in warnings. Check the 'Show warnings' box in the Output Options to see the warnings."))
+  }
 
   return()
 
+}
+
+.mnlfaWarningsHtml <- function(jaspResults, options, ready) {
+
+  if (!ready) return()
+  if (!options[["warnings"]]) return()
+  if (is.null(jaspResults[["fitContainer"]])) return()
+  if (!is.null(jaspResults[["fitContainer"]][["warningsHtml"]])) return()
+
+  results <- list(Configural = jaspResults[["mainContainer"]][["invarianceTestConfiguralState"]][["object"]],
+                  Metric     = jaspResults[["mainContainer"]][["invarianceTestMetricState"]][["object"]],
+                  Scalar     = jaspResults[["mainContainer"]][["invarianceTestScalarState"]][["object"]],
+                  Strict     = jaspResults[["mainContainer"]][["invarianceTestStrictState"]][["object"]],
+                  Custom     = jaspResults[["mainContainer"]][["invarianceTestCustomState"]][["object"]])
+
+  results <- results[sapply(results, function(x) !is.null(x))]
+  if (length(results) == 0) return()
+
+  msgs <- character(0)
+  for (nm in names(results)) {
+    fit <- results[[nm]]
+    if (jaspBase::isTryError(fit)) next
+    w <- attr(fit, "mxWarnings")
+    if (length(w) == 0) next
+    w <- gsub("\n", " ", w)
+    msgs <- c(msgs, sprintf("<li><b>%s:</b> %s</li>", nm, paste(unique(w), collapse = " ")))
+  }
+
+  if (length(msgs) == 0) return()
+
+  htmlText <- paste0("<b>", gettext("Warnings (from R):"), "</b><ul>", paste(msgs, collapse = ""), "</ul>")
+  warningsHtml <- createJaspHtml(text = htmlText)
+  warningsHtml$dependOn("warnings")
+  warningsHtml$position <- 0.5
+  jaspResults[["fitContainer"]][["warningsHtml"]] <- warningsHtml
+
+  return()
 }
 
 
@@ -681,6 +763,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (length(results) == 0) return()
 
   globalParameterContainer <- createJaspContainer(gettext("Parameter Estimates"), initCollapsed = TRUE)
+  globalParameterContainer$info <- gettext("Parameter estimates from the MNLFA invariance models. Moderation effects show how each parameter varies as a function of the moderator variable. Estimates on 'Effect' rows represent the linear change in the parameter per unit change in the moderator.")
   globalParameterContainer$position <- 3
 
   # NEW: get nested paths for moderation include list (same trick as before)
@@ -747,6 +830,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     allLoads <- loadPosition | loadPositionNoMod
     if (sum(loadPosition) + sum(loadPositionNoMod) > 0) { # are loadings even there
       loadTable <- createJaspTable(gettext("Loadings"))
+      loadTable$info <- gettext("Factor loadings and their moderation effects. Significant moderation effects indicate that the relationship between the latent factor and its indicator varies across levels of the moderator (metric non-invariance).")
       cont[["loadTable"]] <- loadTable
       loadTable$addColumnInfo(name = "factor", title = gettext("Factor"), type = "string", combine = TRUE)
       loadTable$addColumnInfo(name = "indicator", title = gettext("Indicator"), type = "string", combine = TRUE)
@@ -793,6 +877,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     intPosition <- grepl("^int_", parNames)
     if (sum(intPosition) > 0) { # are intercepts even there
       intTable <- createJaspTable(gettext("Intercepts"))
+      intTable$info <- gettext("Indicator intercepts and their moderation effects. Significant moderation effects indicate that the item difficulty or baseline level varies across the moderator (scalar non-invariance).")
       cont[["intTable"]] <- intTable
       intTable$addColumnInfo(name = "indicator", title = gettext("Indicator"), type = "string", combine = TRUE)
       intTable$addColumnInfo(name = "effect", title = gettext("Effect"), type = "number")
@@ -843,6 +928,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     resPosition <- grepl("^res_", parNames)
     if (sum(resPosition) > 0) { # are residualVariances even specified
       resTable <- createJaspTable(gettext("Residual Variances"))
+      resTable$info <- gettext("Indicator residual variances and their moderation effects. Estimates are on the log scale internally and back-transformed for display. Significant moderation indicates that measurement precision varies across the moderator (strict non-invariance).")
       cont[["resTable"]] <- resTable
       resTable$addColumnInfo(name = "indicator", title = gettext("Indicator"), type = "string", combine = TRUE)
       resTable$addColumnInfo(name = "effect", title = gettext("Effect"), type = "number")
@@ -891,6 +977,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     fvPosition <- grepl("^var_", parNames)
     if (sum(fvPosition) > 0) { # are factor variances even specified
       fvTable <- createJaspTable(gettext("Factor Variances"))
+      fvTable$info <- gettext("Latent factor variances and their moderation effects. Estimates are on the log scale internally and back-transformed for display. Significant moderation indicates that the spread of the latent trait changes across the moderator.")
       cont[["fvTable"]] <- fvTable
       fvTable$addColumnInfo(name = "factor", title = gettext("Factor"), type = "string", combine = TRUE)
       fvTable$addColumnInfo(name = "effect", title = gettext("Effect"), type = "number")
@@ -937,6 +1024,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     fmPosition <- grepl("^mean_", parNames)
     if (sum(fmPosition) > 0) { # are factor variances even specified
       fmTable <- createJaspTable(gettext("Factor Means"))
+      fmTable$info <- gettext("Latent factor means and their moderation effects. Significant moderation indicates that the average level of the latent trait differs across the moderator.")
       cont[["fmTable"]] <- fmTable
       fmTable$addColumnInfo(name = "factor", title = gettext("Factor"), type = "string", combine = TRUE)
       fmTable$addColumnInfo(name = "effect", title = gettext("Effect"), type = "number")
@@ -987,6 +1075,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     covPosition <- grepl("^rho_", parNames)
     if (sum(covPosition) > 0) { # are factor covariances
       covTable <- createJaspTable(gettext("Factor Covariances"))
+      covTable$info <- gettext("Latent factor covariances and their moderation effects. Significant moderation indicates that the relationship between latent factors varies across the moderator.")
       cont[["covTable"]] <- covTable
       covTable$addColumnInfo(name = "effect", title = gettext("Effect"), type = "number")
       # covTable$addColumnInfo(name = "param", title = gettext("Parameter"), type = "string")
@@ -1021,6 +1110,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (!is.null(jaspResults[["plotContainer"]])) return()
 
   plotContainer <- createJaspContainer(gettext("Parameter Plots"))
+  plotContainer$info <- gettext("Plots showing how model parameters (loadings, intercepts, variances) vary as a function of the moderator variable. Each plot displays the estimated parameter value across the range of the moderator.")
   plotContainer$position <- 3
   plotContainer$dependOn(optionsFromObject = jaspResults[["mainContainer"]][["globalParameterContainer"]],
                          options = c("plotModelList", "includePlot"))
@@ -2440,6 +2530,18 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   out
 }
 
+.mnlfaStatusLabel <- function(fit) {
+  if (jaspBase::isTryError(fit)) return(gettext("Error"))
+  code <- tryCatch(fit@output$status$code, error = function(e) NA)
+  if (is.null(code) || length(code) == 0 || is.na(code)) return(gettext("Unknown"))
+  switch(as.character(code),
+         "0" = gettext("OK"),
+         "1" = gettext("OK/Gradient"),
+         "5" = gettext("Non-convex Hessian"),
+         "6" = gettext("Unchecked"),
+         gettextf("Code %s", code))
+}
+
 .mxSummaryFixed <- function(model, ...) {
 
   out <- model@output
@@ -2462,14 +2564,16 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   m2ll <- out$Minus2LogLikelihood %||% out$fit
   m2ll <- if (length(m2ll) == 1) as.numeric(m2ll) else NA_real_
   df   <- out$degreesOfFreedom %||% out$df %||% NA_integer_
-  k    <- out$estimatedParameters %||% sum(!is.na(se)) %||% length(est)
+  k    <- out$estimatedParameters
+  if (is.null(k) || !is.finite(k)) k <- length(est)
+  if (!is.finite(k) || k == 0) k <- NA_integer_
 
   # >>> YOUR preferred N source <<<
   N <- tryCatch(out$data[[1]]$numObs, error = function(e) NA_real_)
 
   # regular ICs
-  AIC_par <- if (is.finite(m2ll)) m2ll + 2 * k else NA_real_
-  BIC_par <- if (is.finite(m2ll) && is.finite(N) && N > 0) m2ll + log(N) * k else NA_real_
+  AIC_par <- if (is.finite(m2ll) && is.finite(k)) m2ll + 2 * k else NA_real_
+  BIC_par <- if (is.finite(m2ll) && is.finite(k) && is.finite(N) && N > 0) m2ll + log(N) * k else NA_real_
 
   # sample-size adjusted variants
   # AICc (common small-sample adjustment)
@@ -2478,7 +2582,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   } else NA_real_
 
   # SABIC (SEM-style sample-size adjusted BIC)
-  BIC_sample <- if (is.finite(m2ll) && is.finite(N) && N > 0) {
+  BIC_sample <- if (is.finite(m2ll) && is.finite(k) && is.finite(N) && N > 0) {
     m2ll + log((N + 2) / 24) * k
   } else NA_real_
 
