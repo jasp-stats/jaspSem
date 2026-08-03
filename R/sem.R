@@ -221,6 +221,19 @@ checkLavaanModel <- function(model, availableVars) {
                    USE.NAMES = FALSE)])
 }
 
+.semOrderedVars <- function(dataset, syntaxTable) {
+  observedEndogenous <- lavaan::lavNames(syntaxTable, type = "ov.nox")
+  observedEndogenous <- intersect(observedEndogenous, colnames(dataset))
+
+  isBinary <- vapply(observedEndogenous, function(variable) {
+    values <- dataset[[variable]]
+    (is.integer(values) || is.factor(values)) &&
+      length(unique(stats::na.omit(values))) == 2L
+  }, logical(1))
+
+  observedEndogenous[isBinary]
+}
+
 .semModelContainer <- function(jaspResults) {
   if (!is.null(jaspResults[["modelContainer"]])) {
     modelContainer <- jaspResults[["modelContainer"]]
@@ -275,6 +288,12 @@ checkLavaanModel <- function(model, availableVars) {
       fit <- lavaan::sem(model = originalSyntax, data = dataset, group = options[["group"]])
       syntaxTable <- lavaan::parTable(fit)
     }
+
+    # DWLS/WLSMV require categorical handling to be explicit. Only observed
+    # endogenous binary variables in the current model should be ordered;
+    # exogenous and unused binary columns must not affect its estimation.
+    if (options[["estimator"]] %in% c("dwls", "wlsmv"))
+      lavArgs[["ordered"]] <- .semOrderedVars(dataset, syntaxTable)
 
     if (nrow(syntaxTable[syntaxTable$op == ":=",]) == 0) {
       regressions <- syntaxTable[syntaxTable$op == "~",]
@@ -426,28 +445,8 @@ checkLavaanModel <- function(model, availableVars) {
   }
 
   # estimation options
-  # WLSMV does not support bootstrap; switch to DWLS when bootstrap is requested
-  estimator <- options[["estimator"]]
-  if (identical(estimator, "wlsmv") && options[["errorCalculationMethod"]] == "bootstrap") {
-    estimator <- "dwls"
-  }
-  lavOptions[["estimator"]]   <- estimator
+  lavOptions[["estimator"]]   <- options[["estimator"]]
 
-  # For DWLS/WLSMV estimators, identify binary variables and treat them as ordered (categorical)
-  if (identical(estimator, "dwls") || identical(estimator, "wlsmv")) {
-    binaryVars <- character(0)
-    for (col in colnames(dataset)) {
-      if (is.integer(dataset[[col]]) || is.factor(dataset[[col]])) {
-        uniqueVals <- unique(stats::na.omit(dataset[[col]]))
-        if (length(uniqueVals) == 2L) {
-          binaryVars <- c(binaryVars, col)
-        }
-      }
-    }
-    if (length(binaryVars) > 0) {
-      lavOptions[["ordered"]] <- binaryVars
-    }
-  }
   lavOptions[["se"]]        <- switch(options[["errorCalculationMethod"]],
                                    "default" = "default",
                                    "bootstrap" = "standard",
