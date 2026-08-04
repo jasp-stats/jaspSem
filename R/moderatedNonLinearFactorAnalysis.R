@@ -71,10 +71,17 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
     # plots
     .mnlfaPlot(jaspResults, dataset, options, ready)
+
+    # inside the sync gate: the factor scores come from the invariance model fits, which are
+    # only computed here. Writing them also changes the data set, so it should follow an
+    # explicit run rather than any option change.
+    .mnlfaAddFactorScoresToData(jaspResults, dataset, options)
   }
 
   .mnlfaFitPerGroupTable(jaspResults, dataset, options, readyForFitPerGroup)
 
+  # stays outside the sync gate, like .mnlfaFitPerGroup() and its table: the grouping variable
+  # comes from the per-group fit, which is computed regardless of the sync box
   .mnlfaAddGroupingVariableToData(jaspResults, dataset, options)
 
   return()
@@ -1535,6 +1542,212 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   return()
 
+}
+
+
+.mnlfaAddFactorScoresToData <- function(jaspResults, dataset, options) {
+
+  # isTRUE guards against the option being absent, e.g. when an older .jasp file is loaded
+  if (!is.null(jaspResults[["addedFactorScoresContainer"]]) || !isTRUE(options[["addFactorScoresToData"]]))
+    return()
+
+  modelName <- options[["factorScoresModel"]]
+  if (is.null(modelName) || !nzchar(modelName))
+    return()
+
+  fit <- jaspResults[["mainContainer"]][[paste0(modelName, "State")]][["object"]]
+  map <- jaspResults[["mainContainer"]][[paste0(modelName, "ModelState")]][["object"]][["map"]]
+  if (is.null(fit) || is.null(map) || jaspBase::isTryError(fit))
+    return()
+
+  factorList        <- lapply(options[["factors"]], `[[`, "indicators")
+  names(factorList) <- vapply(options[["factors"]], `[[`, character(1), "name")
+  factorTitles      <- vapply(options[["factors"]], `[[`, character(1), "title")
+
+  scoreResult <- try(.mnlfaFactorScores(OpenMx::omxGetParameters(fit), map, factorList, dataset))
+  if (jaspBase::isTryError(scoreResult))
+    return()
+
+  container <- createJaspContainer()
+  container$dependOn(optionsFromObject = jaspResults[["mainContainer"]][[paste0(modelName, "State")]],
+                     options = c("addFactorScoresToData", "factorScoresModel", "factorScoresPrefix",
+                                 "addFactorScoreStandardErrors"))
+
+  prefix    <- options[["factorScoresPrefix"]]
+  columns   <- as.list(as.data.frame(scoreResult[["scores"]]))
+  colNamesR <- paste(prefix, factorTitles, sep = "_")
+
+  if (isTRUE(options[["addFactorScoreStandardErrors"]])) {
+    columns   <- c(columns, as.list(as.data.frame(scoreResult[["standardErrors"]])))
+    colNamesR <- c(colNamesR, paste(prefix, factorTitles, gettext("se"), sep = "_"))
+  }
+
+  for (i in seq_along(colNamesR)) {
+    colNameR <- colNamesR[i]
+    if (jaspBase:::columnExists(colNameR) && !jaspBase:::columnIsMine(colNameR))
+      .quitAnalysis(gettextf("Column name %s already exists in the dataset", colNameR))
+
+    container[[colNameR]] <- jaspBase::createJaspColumn(colNameR)
+    container[[colNameR]]$setScale(columns[[i]])
+  }
+
+  jaspResults[["addedFactorScoresContainer"]] <- container
+
+  # remove columns that were created earlier but are not needed anymore
+  oldNames <- jaspResults[["createdFactorScoreNames"]][["object"]]
+  if (!is.null(oldNames)) {
+    for (oldName in setdiff(oldNames, colNamesR))
+      jaspBase:::columnDelete(oldName)
+  }
+
+  jaspResults[["createdFactorScoreNames"]] <- createJaspState(colNamesR)
+
+  return()
+}
+
+
+# Look up the data set column belonging to a moderator label from the parameter map.
+# Base moderators are stored encoded, derived terms (_x_, _squared, _cubic) decoded; the
+# map uses the same names, so a direct lookup normally succeeds. The decoded fallback
+# guards against a mismatch rather than relying on that invariant.
+.mnlfaModeratorColumn <- function(dataset, moderatorLabel, nObs) {
+
+  if (is.na(moderatorLabel) || moderatorLabel == "Baseline")
+    return(rep(1, nObs))
+
+  variableName <- sub("^data\\.", "", moderatorLabel)
+  if (variableName %in% colnames(dataset))
+    return(as.numeric(dataset[[variableName]]))
+
+  decodedIndex <- match(variableName, jaspBase::decodeColNames(colnames(dataset)))
+  if (!is.na(decodedIndex))
+    return(as.numeric(dataset[[colnames(dataset)[decodedIndex]]]))
+
+  stop(gettextf("Moderator column '%s' was not found in the data set.", variableName))
+}
+
+
+# Closed-form regression (EAP) factor scores for a moderated nonlinear factor model.
+# Every model-implied parameter is person specific, so for each row i:
+#
+#   eta_i = mu_i + Psi_i Lambda_i' (Lambda_i Psi_i Lambda_i' + Theta_i)^-1 (y_i - nu_i - Lambda_i mu_i)
+#
+# OpenMx::mxFactorScores() cannot be used: it does not refresh definition variables that
+# appear inline inside an mxAlgebra, which is exactly what mxsem generates. Every person
+# would silently be scored using the first data row's moderator values.
+#
+# Pure function of (estimates, map, factorList, dataset) so it can be tested without fitting.
+.mnlfaFactorScores <- function(estimates, map, factorList, dataset) {
+
+  factorNames <- names(factorList)
+  itemNames   <- unique(unlist(factorList, use.names = FALSE))
+  nObs        <- nrow(dataset)
+  nFactors    <- length(factorNames)
+
+  # one moderated parameter evaluated for every row: baseline + sum(slope * moderator)
+  linearPredictor <- function(mapRows, coefficientColumn) {
+
+    if (is.null(mapRows) || nrow(mapRows) == 0)
+      return(rep(0, nObs))
+
+    moderatorLabels <- if ("moderator" %in% colnames(mapRows)) mapRows[["moderator"]] else rep(NA, nrow(mapRows))
+    designMatrix    <- vapply(moderatorLabels, .mnlfaModeratorColumn, numeric(nObs),
+                              dataset = dataset, nObs = nObs)
+
+    coefficients <- unname(estimates[mapRows[[coefficientColumn]]])
+    coefficients[is.na(coefficients)] <- 0
+
+    return(as.vector(matrix(designMatrix, nrow = nObs) %*% coefficients))
+  }
+
+  # evaluate every parameter of one map block, one column per item or factor
+  perParameter <- function(mapBlock, keyColumn, coefficientColumn, keyValues) {
+
+    result <- matrix(0, nObs, length(keyValues), dimnames = list(NULL, keyValues))
+    if (is.null(mapBlock) || nrow(mapBlock) == 0)
+      return(result)
+
+    for (i in seq_along(keyValues)) {
+      mapRows <- mapBlock[mapBlock[[keyColumn]] == keyValues[i], , drop = FALSE]
+      if (nrow(mapRows) > 0)
+        result[, i] <- linearPredictor(mapRows, coefficientColumn)
+    }
+
+    return(result)
+  }
+
+  intercepts        <-     perParameter(map[["intercepts"]],        "variable", "interceptCoefficient", itemNames)
+  residualVariances <- exp(perParameter(map[["residualVariances"]], "variable", "residualCoefficient",  itemNames))
+  factorVariances   <- exp(perParameter(map[["variances"]],         "factor",   "varianceCoefficient",  factorNames))
+  factorMeans       <-     perParameter(map[["means"]],             "factor",   "meanCoefficient",      factorNames)
+
+  # loadings need both keys, so they are filled per (item, factor) pair present in the model
+  loadings   <- array(0, c(nObs, length(itemNames), nFactors), dimnames = list(NULL, itemNames, factorNames))
+  loadingMap <- map[["loadings"]]
+  if (!is.null(loadingMap) && nrow(loadingMap) > 0) {
+    loadingPairs <- unique(loadingMap[c("variable", "factor")])
+    for (i in seq_len(nrow(loadingPairs))) {
+      mapRows <- loadingMap[loadingMap[["variable"]] == loadingPairs[["variable"]][i] &
+                            loadingMap[["factor"]]   == loadingPairs[["factor"]][i], , drop = FALSE]
+      loadings[, loadingPairs[["variable"]][i], loadingPairs[["factor"]][i]] <-
+        linearPredictor(mapRows, "loadingCoefficient")
+    }
+  }
+
+  # latent covariance matrix: with two factors the covariance is moderated as tanh(rho),
+  # with three or more factors the covariances are single fixed parameters cov_<a>_<b>
+  latentCovariance <- array(0, c(nObs, nFactors, nFactors))
+  for (i in seq_len(nFactors))
+    latentCovariance[, i, i] <- factorVariances[, i]
+
+  covarianceMap <- map[["covariances"]]
+  if (nFactors > 1 && !is.null(covarianceMap) && nrow(covarianceMap) > 0) {
+    if (nFactors == 2) {
+      covariance <- tanh(linearPredictor(covarianceMap, "covarianceCoefficient"))
+      latentCovariance[, 1, 2] <- latentCovariance[, 2, 1] <- covariance
+    } else {
+      for (i in seq_len(nFactors - 1)) {
+        for (j in seq(i + 1, nFactors)) {
+          # build the name instead of splitting on "_": factor names may contain underscores
+          covariance <- estimates[paste0("cov_", factorNames[i], "_", factorNames[j])]
+          if (is.na(covariance)) next
+          latentCovariance[, i, j] <- latentCovariance[, j, i] <- covariance
+        }
+      }
+    }
+  }
+
+  observed       <- as.matrix(dataset[, itemNames, drop = FALSE])
+  scores         <- matrix(NA_real_, nObs, nFactors, dimnames = list(NULL, factorNames))
+  standardErrors <- scores
+
+  for (i in seq_len(nObs)) {
+
+    # each row is scored from its own non-missing indicators
+    isObserved <- !is.na(observed[i, ])
+    if (!any(isObserved)) next
+
+    lambda <- matrix(loadings[i, isObserved, ], ncol = nFactors)
+    psi    <- matrix(latentCovariance[i, , ], nFactors, nFactors)
+    theta  <- diag(residualVariances[i, isObserved], sum(isObserved))
+    mu     <- factorMeans[i, ]
+
+    gain <- try(psi %*% t(lambda) %*% solve(lambda %*% psi %*% t(lambda) + theta), silent = TRUE)
+    if (jaspBase::isTryError(gain)) next
+
+    scores[i, ] <- mu + gain %*% (observed[i, isObserved] - intercepts[i, isObserved] - lambda %*% mu)
+
+    # A negative posterior variance means the latent covariance matrix is not positive
+    # definite (with three or more factors the covariances are unbounded free parameters,
+    # so nothing enforces this). Report NA rather than clamping to zero, which would claim
+    # perfect precision for an improper solution.
+    posteriorVariance <- diag(psi - gain %*% lambda %*% psi)
+    posteriorVariance[posteriorVariance < 0 & posteriorVariance > -sqrt(.Machine$double.eps)] <- 0
+    posteriorVariance[posteriorVariance < 0] <- NA_real_
+    standardErrors[i, ] <- sqrt(posteriorVariance)
+  }
+
+  return(list(scores = scores, standardErrors = standardErrors))
 }
 
 

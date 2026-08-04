@@ -304,6 +304,43 @@ Form
 			CheckBox { label: qsTr("Show warnings") ; name: "warnings"   }
 		}
 
+		Group
+		{
+			title: qsTr("Factor Scores")
+			info:  qsTr("Append estimated factor scores to the data set, so they can be used in further analyses.")
+
+			CheckBox
+			{
+				name:  "addFactorScoresToData"
+				label: qsTr("Add factor scores to data")
+				info:  qsTr("Adds one column per latent factor to the data set, containing the estimated factor score of each case. Scores are computed under the selected model, so they account for the moderation of the measurement parameters. Note that the scores are on the metric of the (possibly centered or standardized) indicators, and that they are shrunken towards a case-specific prior mean that itself depends on the moderators.")
+
+				DropDown
+				{
+					name:   "factorScoresModel"
+					label:  qsTr("From model")
+					values: invOpts.firstLayerValues
+					info:   qsTr("The invariance model whose parameter estimates are used to compute the factor scores.")
+				}
+
+				TextField
+				{
+					name:         "factorScoresPrefix"
+					label:        qsTr("Column name prefix")
+					defaultValue: "FS"
+					fieldWidth:   80
+					info:         qsTr("Prefix for the added columns. Each column is named prefix_factor.")
+				}
+
+				CheckBox
+				{
+					name:  "addFactorScoreStandardErrors"
+					label: qsTr("Add standard errors")
+					info:  qsTr("Also add one column per factor containing the standard error of each estimated factor score. These vary across cases, because the measurement precision depends on the moderators and on which indicators are observed.")
+				}
+			}
+		}
+
 	}
 
 

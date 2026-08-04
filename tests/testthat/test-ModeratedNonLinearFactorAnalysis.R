@@ -617,3 +617,113 @@ test_that("Fit per group table has data", {
   }
 })
 
+
+##### FACTOR SCORES #####
+# .mnlfaFactorScores is a pure function of (estimates, map, factorList, dataset), so the
+# tests below do not depend on the optimizer and give identical results on every platform.
+
+mnlfaScoreFixture <- function(seed = 1, nObs = 150) {
+  set.seed(seed)
+  items      <- paste0("x", 1:6)
+  factorList <- list(F1 = items[1:3], F2 = items[4:6])
+
+  dataset <- data.frame(mod = rnorm(nObs), male = rbinom(nObs, 1, 0.5))
+  for (item in items) dataset[[item]] <- rnorm(nObs)
+
+  modelObj  <- jaspSem:::.generateSyntax(factorList, c("mod", "male"), "invarianceTestConfigural", NULL)
+  coefNames <- unlist(lapply(modelObj$map, function(mapBlock) {
+    coefColumn <- grep("Coefficient$", colnames(mapBlock), value = TRUE)
+    if (length(coefColumn) == 0) NULL else mapBlock[[coefColumn]]
+  }), use.names = FALSE)
+  coefNames <- setdiff(unique(coefNames), "fixed")
+
+  list(estimates  = setNames(seq(0.05, 0.5, length.out = length(coefNames)), coefNames),
+       map        = modelObj$map,
+       factorList = factorList,
+       dataset    = dataset)
+}
+
+test_that("Factor scores are invariant to row order", {
+  # This is the failure mode of OpenMx::mxFactorScores on these models: it does not refresh
+  # definition variables written inline in an mxAlgebra, so scores depend on row position.
+  fx   <- mnlfaScoreFixture()
+  perm <- sample(nrow(fx$dataset))
+
+  full     <- jaspSem:::.mnlfaFactorScores(fx$estimates, fx$map, fx$factorList, fx$dataset)
+  permuted <- jaspSem:::.mnlfaFactorScores(fx$estimates, fx$map, fx$factorList, fx$dataset[perm, ])
+
+  expect_equal(unname(permuted$scores),         unname(full$scores[perm, ]))
+  expect_equal(unname(permuted$standardErrors), unname(full$standardErrors[perm, ]))
+})
+
+test_that("A case's factor score does not depend on other cases", {
+  fx   <- mnlfaScoreFixture()
+  full <- jaspSem:::.mnlfaFactorScores(fx$estimates, fx$map, fx$factorList, fx$dataset)
+  more <- jaspSem:::.mnlfaFactorScores(fx$estimates, fx$map, fx$factorList,
+                                       rbind(fx$dataset, fx$dataset[1, ]))
+
+  expect_equal(unname(more$scores[seq_len(nrow(fx$dataset)), ]), unname(full$scores))
+})
+
+test_that("Equal response patterns with different moderators get different factor scores", {
+  fx      <- mnlfaScoreFixture()
+  tied    <- fx$dataset[c(1, 1), ]
+  tied$mod <- c(-2, 2)
+
+  scores <- jaspSem:::.mnlfaFactorScores(fx$estimates, fx$map, fx$factorList, tied)$scores
+  expect_false(isTRUE(all.equal(scores[1, ], scores[2, ])))
+
+  # identical moderators must give identical scores
+  same <- jaspSem:::.mnlfaFactorScores(fx$estimates, fx$map, fx$factorList, fx$dataset[c(1, 1), ])$scores
+  expect_equal(same[1, ], same[2, ])
+})
+
+test_that("Missing indicators increase the factor score standard error", {
+  fx <- mnlfaScoreFixture()
+  complete <- jaspSem:::.mnlfaFactorScores(fx$estimates, fx$map, fx$factorList, fx$dataset)
+
+  incomplete        <- fx$dataset
+  incomplete[1:20, "x1"] <- NA
+  partial <- jaspSem:::.mnlfaFactorScores(fx$estimates, fx$map, fx$factorList, incomplete)
+
+  expect_true(all(partial$standardErrors[1:20, ] >= complete$standardErrors[1:20, ] - 1e-12))
+
+  # a case without any observed indicator cannot be scored
+  empty <- fx$dataset
+  empty[1, paste0("x", 1:6)] <- NA
+  expect_true(all(is.na(jaspSem:::.mnlfaFactorScores(fx$estimates, fx$map, fx$factorList, empty)$scores[1, ])))
+})
+
+test_that("Factor scores match OpenMx regression scores when moderators are constant", {
+  # OpenMx::mxFactorScores evaluates inline definition variables only once, so it is correct
+  # exactly when every row shares the same moderator values. Within that regime it is a valid
+  # independent reference. The comparison is relative, so it does not depend on the optimizer.
+  skip_if_not_installed("mxsem")
+
+  dataset    <- read.csv(testthat::test_path("AttractDat.csv"))[1:400, ]
+  items      <- c("AgeImportant", "AttractiveImportant", "PhysicalbuildImportant",
+                  "TrustImportant", "EmotionalconnImportant", "OpennessImportant")
+  factorList <- list(F1 = items[1:3], F2 = items[4:6])
+  modelObj   <- jaspSem:::.generateSyntax(factorList, "Age", "invarianceTestConfigural", NULL)
+
+  for (moderatorValue in c(-1, 0, 1)) {
+    constantData        <- dataset[, c("Age", items)]
+    constantData[["Age"]] <- moderatorValue
+
+    # holding the moderator constant leaves the moderation slopes unidentified, which is
+    # fine here (both methods score the same estimates) but makes the optimizer complain
+    fit <- suppressWarnings(suppressMessages(OpenMx::mxRun(
+      mxsem::mxsem(modelObj$model, data = constantData,
+                   scale_loadings = FALSE, scale_latent_variances = FALSE), silent = TRUE)))
+
+    own <- jaspSem:::.mnlfaFactorScores(OpenMx::omxGetParameters(fit), modelObj$map,
+                                        factorList, constantData)
+    ref <- suppressWarnings(OpenMx::mxFactorScores(fit, "Regression"))
+
+    expect_equal(unname(own$scores), unname(ref[, , 1]), tolerance = 1e-8)
+
+    finiteSe <- is.finite(ref[, , 2]) & is.finite(own$standardErrors)
+    expect_equal(own$standardErrors[finiteSe], ref[, , 2][finiteSe], tolerance = 1e-8)
+  }
+})
+
