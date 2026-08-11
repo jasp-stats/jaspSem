@@ -23,7 +23,7 @@ msgid ""
 "the RMSEA with confidence interval and close-fit test, SRMR, and information "
 "criteria (AIC, BIC, log-likelihood). CFI and TLI values above 0.95, RMSEA "
 "below 0.06, and SRMR below 0.08 suggest good fit."
-msgstr ""
+msgstr "详细的模型拟合指数。包括将模型与独立模型比较的增量拟合指数（CFI、TLI、NFI）、简约调整指数、带有置信区间和接近拟合检验的 RMSEA、SRMR，以及信息准则（AIC、BIC、对数似然）。CFI 和 TLI 值高于 0.95、RMSEA 低于 0.06、SRMR 低于 0.08 表明拟合良好。"
 
 #, fuzzy
 msgid "Index"
@@ -33,87 +33,87 @@ msgid "Value"
 msgstr "值"
 
 msgid "Comparative Fit Index (CFI)"
-msgstr ""
+msgstr "比较拟合指数 (CFI)"
 
 msgid "Tucker-Lewis Index (TLI)"
-msgstr ""
+msgstr "Tucker-Lewis 指数 (TLI)"
 
 msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
-msgstr ""
+msgstr "Bentler-Bonett 非规范拟合指数 (NNFI)"
 
 msgid "Bentler-Bonett Normed Fit Index (NFI)"
-msgstr ""
+msgstr "Bentler-Bonett 规范拟合指数 (NFI)"
 
 msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr ""
+msgstr "简约规范拟合指数 (PNFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
-msgstr ""
+msgstr "Bollen 相对拟合指数 (RFI)"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
-msgstr ""
+msgstr "Bollen 增量拟合指数 (IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
-msgstr ""
+msgstr "相对非中心性指数 (RNI)"
 
 msgid "Root mean square error of approximation (RMSEA)"
-msgstr ""
+msgstr "近似误差均方根 (RMSEA)"
 
 msgid "RMSEA 90%% CI lower bound"
-msgstr ""
+msgstr "RMSEA 90%% 置信区间下限"
 
 msgid "RMSEA 90%% CI upper bound"
-msgstr ""
+msgstr "RMSEA 90%% 置信区间上限"
 
 msgid "RMSEA p-value"
-msgstr ""
+msgstr "RMSEA p 值"
 
 msgid "Standardized root mean square residual (SRMR)"
-msgstr ""
+msgstr "标准化残差均方根 (SRMR)"
 
 msgid "Hoelter's critical N (%s = .05)"
-msgstr ""
+msgstr "Hoelter 临界 N（%s = .05）"
 
 msgid "Hoelter's critical N (%s = .01)"
-msgstr ""
+msgstr "Hoelter 临界 N（%s = .01）"
 
 msgid "Goodness of fit index (GFI)"
-msgstr ""
+msgstr "拟合优度指数 (GFI)"
 
 msgid "McDonald fit index (MFI)"
-msgstr ""
+msgstr "McDonald 拟合指数 (MFI)"
 
 msgid "Expected cross validation index (ECVI)"
-msgstr ""
+msgstr "预期交叉验证指数 (ECVI)"
 
 msgid "Log-likelihood"
 msgstr "对数似然值"
 
 msgid "Number of free parameters"
-msgstr ""
+msgstr "自由参数数量"
 
 msgid "Akaike (AIC)"
-msgstr ""
+msgstr "赤池 Akaike（AIC）"
 
 msgid "Bayesian (BIC)"
-msgstr ""
+msgstr "贝叶斯（BIC）"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr ""
+msgstr "样本量调整的贝叶斯信息准则（SSABIC）"
 
 msgid "# Factors"
-msgstr ""
+msgstr "# 因子"
 
 msgid ""
 "Robust standard errors are not available for variance-covariance matrix "
 "input."
-msgstr ""
+msgstr "对于方差-协方差矩阵输入，不提供稳健标准误。"
 
 msgid "The model could not be estimated due to nonconvergence."
 msgstr "由于不收敛，该模型无法估计。"
 
 msgid "The model could not be estimated: No degrees of freedom left."
-msgstr ""
+msgstr "模型无法估计：没有剩余自由度。"
 
 #, fuzzy
 msgid "Chi-Square Test"
@@ -123,7 +123,7 @@ msgid ""
 "Chi-square goodness-of-fit test comparing the growth curve model to the "
 "baseline (independence) model. A non-significant p-value for the growth "
 "curve model suggests adequate fit to the data."
-msgstr ""
+msgstr "将生长曲线模型与基准（独立）模型进行比较的卡方拟合优度检验。生长曲线模型的p值不显著表明对数据拟合良好。"
 
 #, fuzzy
 msgid "Model"
@@ -136,10 +136,10 @@ msgid "p"
 msgstr "p"
 
 msgid "Model Fit"
-msgstr ""
+msgstr "模型拟合"
 
 msgid "Model fit statistics for the latent growth curve model."
-msgstr ""
+msgstr "潜在生长曲线模型的模型拟合统计量。"
 
 msgid "Baseline model"
 msgstr "基准模型"
@@ -148,10 +148,10 @@ msgid "Growth curve model"
 msgstr "生长曲线模型"
 
 msgid "The model is not admissible: %s"
-msgstr ""
+msgstr "该模型不可接受：%s"
 
 msgid "Warning."
-msgstr ""
+msgstr "警告。"
 
 #, fuzzy
 msgid "Parameter Estimates"
@@ -160,7 +160,7 @@ msgstr "参数估计"
 msgid ""
 "Parameter estimates for the latent growth curve model, including growth "
 "factor means, variances, covariances, and regression coefficients."
-msgstr ""
+msgstr "潜生长曲线模型的参数估计，包括生长因子均值、方差、协方差和回归系数。"
 
 msgid "Std. estimate"
 msgstr "标准化估计值"
@@ -169,17 +169,17 @@ msgid "Estimate"
 msgstr "估计"
 
 msgid "Latent Curve"
-msgstr ""
+msgstr "潜在曲线"
 
 msgid ""
 "Means and variances of the latent growth factors (e.g., intercept, slope). "
 "The intercept mean represents the average starting level, the slope mean the "
 "average rate of change, and their variances reflect individual differences "
 "in starting level and change."
-msgstr ""
+msgstr "潜生长因子（例如截距、斜率）的均值和方差。截距均值代表平均起始水平，斜率均值代表平均变化速率，其方差反映起始水平和变化的个体差异。"
 
 msgid "Component"
-msgstr ""
+msgstr "成分"
 
 msgid "Parameter"
 msgstr "参数"
@@ -207,19 +207,19 @@ msgid ""
 "Covariances between latent growth factors. For example, a positive intercept-"
 "slope covariance indicates that individuals with higher starting values tend "
 "to show steeper change over time."
-msgstr ""
+msgstr "潜生长因子之间的协方差。例如，正的截距-斜率协方差表明起始值较高的个体往往随时间呈现更陡的变化。"
 
 msgid "Regressions"
-msgstr ""
+msgstr "回归"
 
 msgid ""
 "Regression coefficients of covariates predicting the latent growth factors. "
 "These show how external variables relate to individual differences in "
 "initial level and rate of change."
-msgstr ""
+msgstr "预测潜生长因子的协变量回归系数。这些系数表明外部变量如何与初始水平和变化速率的个体差异相关联。"
 
 msgid "Predictor"
-msgstr ""
+msgstr "预测变量"
 
 msgid "Residual Variances"
 msgstr "残差方差"
@@ -228,7 +228,7 @@ msgid ""
 "Time-specific residual variances of the observed variables. These represent "
 "measurement error plus occasion-specific variance not captured by the growth "
 "factors. Negative values may indicate model misspecification."
-msgstr ""
+msgstr "观测变量在各时间点的残差方差。这些代表测量误差加上生长因子未捕获的场合特定方差。负值可能表明模型设定错误。"
 
 msgid "Variable"
 msgstr "变量"
@@ -253,21 +253,21 @@ msgstr "方差"
 
 msgid ""
 "Residual variance is negative. This may indicate model misspecification."
-msgstr ""
+msgstr "残差方差为负。这可能表明模型设定错误。"
 
 msgid "R-Squared"
-msgstr ""
+msgstr "R平方"
 
 msgid ""
 "Proportion of variance in each observed variable at each time point "
 "explained by the latent growth factors."
-msgstr ""
+msgstr "每个时间点每个观测变量由潜生长因子解释的方差比例。"
 
 msgid "Implied Covariance Matrix"
-msgstr ""
+msgstr "隐含协方差矩阵"
 
 msgid "Model-implied covariance matrix from the latent growth curve model."
-msgstr ""
+msgstr "来自潜生长曲线模型的模型隐含协方差矩阵。"
 
 #, fuzzy
 msgid "Residual Covariance Matrix"
@@ -277,64 +277,64 @@ msgid ""
 "Difference between the observed and model-implied covariance matrices. Small "
 "residuals indicate the growth curve model adequately reproduces the observed "
 "covariances."
-msgstr ""
+msgstr "观测协方差矩阵与模型隐含协方差矩阵之间的差异。残差小表明生长曲线模型充分重现了观测协方差。"
 
 msgid "Curve Plot"
-msgstr ""
+msgstr "曲线图"
 
 msgid ""
 "Individual predicted growth trajectories over time. Each line represents a "
 "participant's estimated trajectory based on the latent growth factors."
-msgstr ""
+msgstr "个体随时间推移的预测生长轨迹。每条线代表基于潜生长因子估计的某个参与者的轨迹。"
 
 msgid "Model Plot"
-msgstr ""
+msgstr "模型图"
 
 msgid ""
 "Path diagram of the latent growth curve model showing the growth factors, "
 "their loadings on observed time points, and any covariates."
-msgstr ""
+msgstr "潜生长曲线模型的路径图，显示生长因子、其在观测时间点上的载荷以及任何协变量。"
 
 msgid "Model Syntax"
-msgstr ""
+msgstr "模型语法"
 
 msgid ""
 "The lavaan model syntax for the growth curve model, showing fixed factor "
 "loadings that define the growth trajectory shape."
-msgstr ""
+msgstr "生长曲线模型的 lavaan 模型语法，显示定义生长轨迹形状的固定因子载荷。"
 
 msgid "Misfit Plot"
-msgstr ""
+msgstr "失拟图"
 
 msgid "Curve + variance + uncertainty"
-msgstr ""
+msgstr "曲线 + 方差 + 不确定性"
 
 msgid "Curve + variance"
-msgstr ""
+msgstr "曲线 + 方差"
 
 msgid "Curve + parameter uncertainty"
-msgstr ""
+msgstr "曲线 + 参数不确定性"
 
 msgid ""
 "Not all exogenous variables are admissible. Inadmissible exogenous "
 "variables: %s. Only binary or continuous exogenous variables allowed."
-msgstr ""
+msgstr "并非所有外生变量都可接受。不可接受的外生变量：%s。仅允许二分类或连续的外生变量。"
 
 msgid ""
 "Not all endogenous variables are admissible. Inadmissible endogenous "
 "variables: %s. Only scale or ordinal endogenous variables allowed."
-msgstr ""
+msgstr "并非所有内生变量都可接受。不可接受的内生变量：%s。仅允许连续型（标度）或有序型内生变量。"
 
 msgid ""
 "FIML missing value handling only available when all endogenous variables are "
 "of scale type. Ordinal endogenous variables in the model: %s"
-msgstr ""
+msgstr "仅当所有内生变量均为连续型时，才可使用 FIML 缺失值处理。模型中的有序内生变量：%s"
 
 msgid ""
 "Estimation failed\n"
 "Message:\n"
 "%s"
-msgstr ""
+msgstr "估计失败\n消息：\n%s"
 
 #, fuzzy
 msgid "Estimation failed"
@@ -343,44 +343,44 @@ msgstr "估计"
 msgid ""
 "Parameter estimates from the mediation model, organized by direct effects, "
 "indirect effects, and total effects."
-msgstr ""
+msgstr "中介模型的参数估计，按直接效应、间接效应和总效应组织。"
 
 msgid "Direct effects"
-msgstr ""
+msgstr "直接效应"
 
 msgid ""
 "Direct effects of predictors on outcomes, bypassing all mediators (the c or "
 "c' path). A significant direct effect indicates that the predictor "
 "influences the outcome independently of the mediation pathway."
-msgstr ""
+msgstr "预测变量绕过所有中介变量（c 或 c' 路径）对结果的直接影响。显著的直接效应表明预测变量独立于中介路径影响结果。"
 
 msgid "Indirect effects"
-msgstr ""
+msgstr "间接效应"
 
 msgid ""
 "Indirect effects of predictors on outcomes transmitted through mediators. "
 "Each indirect effect is the product of the path coefficients along the "
 "mediation pathway (a × b). A significant indirect effect indicates that "
 "mediation occurs through that pathway."
-msgstr ""
+msgstr "预测变量经由中介变量传递的对结果的间接效应。每个间接效应是中介路径上路径系数的乘积（a × b）。显著的间接效应表明通过该路径发生了中介作用。"
 
 msgid "Total Effects"
-msgstr ""
+msgstr "总效应"
 
 msgid ""
 "Total effects combining the direct effect and all indirect effects for each "
 "predictor-outcome pair. The total effect equals the sum of the direct and "
 "indirect effects (c = c' + a × b)."
-msgstr ""
+msgstr "每个预测变量-结果对的直接效应与所有间接效应组合而成的总效应。总效应等于直接与间接效应之和（c = c' + a × b）。"
 
 msgid "Total indirect effects"
-msgstr ""
+msgstr "总间接效应"
 
 msgid ""
 "Total indirect effects summed across all mediators for each predictor-"
 "outcome pair. When there are multiple mediators, this gives the combined "
 "strength of all indirect pathways."
-msgstr ""
+msgstr "每个预测变量-结果对中跨所有中介变量求和的总间接效应。当有多个中介变量时，这给出所有间接路径的综合强度。"
 
 msgid "Residual covariances"
 msgstr "残差协方差"
@@ -389,7 +389,7 @@ msgid ""
 "Estimated residual covariances between endogenous variables (mediators and "
 "outcomes). These represent shared variance not accounted for by the model's "
 "directed paths."
-msgstr ""
+msgstr "内生变量（中介变量和结果）之间的估计残差协方差。这些代表模型有向路径未解释的共享方差。"
 
 msgid "Path coefficients"
 msgstr "路径系数"
@@ -398,19 +398,19 @@ msgid ""
 "Individual path coefficients in the mediation model. These include the a "
 "paths (predictor to mediator) and b paths (mediator to outcome), which "
 "constitute the building blocks of indirect effects."
-msgstr ""
+msgstr "中介模型中的个别路径系数。这些包括 a 路径（预测变量到中介变量）和 b 路径（中介变量到结果），它们是间接效应的基本组成部分。"
 
 msgid "Estimator is %s."
-msgstr ""
+msgstr "估计量为 %s。"
 
 msgid ""
 "%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
-msgstr ""
+msgstr "%1$s 并非所有自助抽样样本都成功：置信区间基于 %2$.0f 个样本。"
 
 msgid ""
 "Proportion of variance in each mediator and outcome variable explained by "
 "its predictors in the mediation model."
-msgstr ""
+msgstr "中介模型中每个中介变量和结果变量由其预测变量解释的方差比例。"
 
 #, fuzzy
 msgid "Path Plot"
@@ -419,17 +419,17 @@ msgstr "参数"
 msgid ""
 "Visual representation of the mediation model showing predictors, mediators, "
 "outcomes, directed paths, and (optionally) parameter estimates."
-msgstr ""
+msgstr "中介模型的视觉表示，显示预测变量、中介变量、结果、有向路径以及（可选）参数估计。"
 
 msgid ""
 "Currently it is not possible to plot mediation models with ordinal "
 "variables. The plot could not be generated."
-msgstr ""
+msgstr "目前无法绘制含有序变量的中介模型。无法生成该图。"
 
 msgid ""
 "The plot could not be generated. The underlying code resulted in the "
 "following error message: %s"
-msgstr ""
+msgstr "无法生成该图。底层代码导致以下错误消息：%s"
 
 msgid "Model syntax"
 msgstr "模型语法"
@@ -438,54 +438,54 @@ msgid ""
 "The lavaan model syntax automatically generated from the mediation analysis "
 "specification. This shows the exact model fitted, including labeled direct "
 "and indirect effect parameters."
-msgstr ""
+msgstr "由中介分析设定自动生成的 lavaan 模型语法。这显示了精确拟合的模型，包括已标记的直接和间接效应参数。"
 
 msgid "FIML only available with ML-type estimators."
-msgstr ""
+msgstr "FIML 仅适用于 ML 类型估计量。"
 
 msgid ""
 "Estimation failed! Message: The model did not converge. Try using a "
 "different estimator or specify an other MIMIC model."
-msgstr ""
+msgstr "估计失败！消息：模型未收敛。请尝试使用不同的估计量或指定另一个 MIMIC 模型。"
 
 msgid ""
 "Chi-square goodness-of-fit test for the MIMIC model. Both the baseline "
 "(independence) model and the factor model with predictors are shown. A non-"
 "significant chi-square for the factor model indicates adequate fit."
-msgstr ""
+msgstr "MIMIC 模型的卡方拟合优度检验。同时显示基准（独立）模型和含预测变量的因子模型。因子模型的卡方不显著表明拟合良好。"
 
 msgid "&#967;&sup2;"
-msgstr ""
+msgstr "&#967;&sup2;"
 
 msgid "Factor model"
-msgstr ""
+msgstr "因子模型"
 
 msgid ""
 "Parameter estimates for the MIMIC (Multiple Indicators, Multiple Causes) "
 "model. The model has observed predictors influencing a latent variable, "
 "which in turn is measured by observed indicators."
-msgstr ""
+msgstr "MIMIC（多指标、多原因）模型的参数估计。该模型中的观测预测变量影响潜变量，而潜变量又由观测指标测量。"
 
 msgid "Predictor coefficients"
-msgstr ""
+msgstr "预测变量系数"
 
 msgid ""
 "Regression coefficients of the observed predictor (cause) variables on the "
 "latent variable. These represent the direct effects of each predictor on the "
 "latent construct."
-msgstr ""
+msgstr "观测预测（原因）变量对潜变量的回归系数。这些代表每个预测变量对潜在构念的直接效应。"
 
 msgid "Indicator coefficients"
-msgstr ""
+msgstr "指标系数"
 
 msgid ""
 "Factor loadings of the latent variable on its observed indicators. These "
 "represent how strongly each indicator reflects the underlying latent "
 "construct."
-msgstr ""
+msgstr "潜变量在其观测指标上的因子载荷。这些代表每个指标反映潜在构念的强度。"
 
 msgid "Indicator"
-msgstr ""
+msgstr "指标"
 
 #, fuzzy
 msgid "Residual variances"
@@ -500,163 +500,163 @@ msgid "Predictor covariances"
 msgstr "方差"
 
 msgid "Variables"
-msgstr ""
+msgstr "变量"
 
 msgid ""
 "Proportion of variance explained in the latent variable (by the predictors) "
 "and in each indicator (by the latent variable)."
-msgstr ""
+msgstr "潜变量中（由预测变量）解释的方差比例以及每个指标中（由潜变量）解释的方差比例。"
 
 msgid ""
 "Path diagram of the MIMIC model showing observed predictors (causes), the "
 "latent variable, and its observed indicators."
-msgstr ""
+msgstr "MIMIC 模型的路径图，显示观测预测变量（原因）、潜变量及其观测指标。"
 
 msgid "Model plot not available with ordinal variables"
-msgstr ""
+msgstr "含有序变量时不可用模型图"
 
 msgid ""
 "The lavaan model syntax specifying the MIMIC model structure, including the "
 "measurement model and the regression of the latent variable on the "
 "predictors."
-msgstr ""
+msgstr "指定 MIMIC 模型结构的 lavaan 模型语法，包括测量模型以及潜变量对预测变量的回归。"
 
 msgid ""
 "Specify both factor indicator variables and moderator variables to run the "
 "analysis."
-msgstr ""
+msgstr "请同时指定因子指标变量和调节变量以运行分析。"
 
 msgid "Check the 'Sync Analysis' box to run the analysis."
-msgstr ""
+msgstr "请勾选“同步分析”方框以运行分析。"
 
 msgid ""
 "The moderator variable '%s' already has '_squared' in its name. Please "
 "rename the variable before proceeding."
-msgstr ""
+msgstr "调节变量“%s”的名称中已包含“_squared”。请先重命名该变量再继续。"
 
 msgid ""
 "The moderator variable '%s' already has '_cubic' in its name. Please rename "
 "the variable before proceeding."
-msgstr ""
+msgstr "调节变量“%s”的名称中已包含“_cubic”。请先重命名该变量再继续。"
 
 msgid "Fitting invariance model"
-msgstr ""
+msgstr "拟合不变性模型"
 
 msgid "Fit per Group Test"
-msgstr ""
+msgstr "各组的拟合检验"
 
 msgid ""
 "CFA fit statistics computed separately for each group defined by the "
 "moderator. This checks whether the baseline factor model fits adequately "
 "within each group before testing invariance."
-msgstr ""
+msgstr "由调节变量定义的每个组分别计算的 CFA 拟合统计量。在检验不变性之前，这检查基准因子模型是否在每个组内拟合良好。"
 
 #, fuzzy
 msgid "Group Model"
 msgstr "生长曲线模型"
 
 msgid "Error in fit per group test. Internal error message(s): %s"
-msgstr ""
+msgstr "各组拟合检验出错。内部错误消息：%s"
 
 msgid "N"
-msgstr ""
+msgstr "N"
 
 msgid "RMSEA"
 msgstr "近似误差均方根 （RMSEA）"
 
 msgid "CFI"
-msgstr ""
+msgstr "CFI"
 
 msgid "SRMR"
-msgstr ""
+msgstr "SRMR"
 
 #, fuzzy
 msgid "The model for group %s did not converge."
 msgstr "由于不收敛，该模型无法估计。"
 
 msgid "Global Invariance Fit"
-msgstr ""
+msgstr "全局不变性拟合"
 
 msgid ""
 "Comparison of MNLFA invariance models (configural, metric, scalar, strict) "
 "using -2 log-likelihood difference tests. Significant differences indicate "
 "that the more constrained model fits significantly worse, suggesting non-"
 "invariance at that level."
-msgstr ""
+msgstr "使用 -2 对数似然差检验对 MNLFA 不变性模型（形态、度量、标度、严格）进行比较。显著的差异表明约束更多的模型拟合明显更差，提示在该水平上存在非不变性。"
 
 msgid "Type"
-msgstr ""
+msgstr "类型"
 
 #, fuzzy
 msgid "n(Par)"
 msgstr "参数"
 
 msgid "Fit (-2LL)"
-msgstr ""
+msgstr "拟合（-2LL）"
 
 msgid "AIC"
 msgstr "AIC"
 
 msgid "SAAIC"
-msgstr ""
+msgstr "SAAIC"
 
 msgid "BIC"
 msgstr "BIC"
 
 msgid "SABIC"
-msgstr ""
+msgstr "SABIC"
 
 msgid "Choose one of the global invariance tests to perform the test."
-msgstr ""
+msgstr "请选择一种全局不变性检验来执行该检验。"
 
 msgid "Δ(LL)"
-msgstr ""
+msgstr "Δ(LL)"
 
 msgid "Δ(df)"
-msgstr ""
+msgstr "Δ(df)"
 
 msgid "%1$s Error in fitting the %2$s model. Internal error message(s): %3$s"
-msgstr ""
+msgstr "%1$s 拟合 %2$s 模型时出错。内部错误消息：%3$s"
 
 msgid "OK"
-msgstr ""
+msgstr "确定"
 
 msgid "%1$s: optimizer status '%2$s'."
-msgstr ""
+msgstr "%1$s：优化器状态“%2$s”。"
 
 msgid ""
 "Fitting the model resulted in warnings. Check the 'Show warnings' box in the "
 "Output Options to see the warnings."
-msgstr ""
+msgstr "拟合模型产生了警告。请在输出选项中勾选“显示警告”以查看警告。"
 
 msgid "Warnings (from R):"
-msgstr ""
+msgstr "警告（来自R）："
 
 msgid ""
 "Parameter estimates from the MNLFA invariance models. Moderation effects "
 "show how each parameter varies as a function of the moderator variable. "
 "Estimates on 'Effect' rows represent the linear change in the parameter per "
 "unit change in the moderator."
-msgstr ""
+msgstr "MNLFA 不变性模型的参数估计。调节效应显示每个参数如何作为调节变量的函数而变化。“效应”行上的估计值代表调节变量每变化一个单位时参数的线性变化。"
 
 #, fuzzy
 msgid "The %s model could not be fitted"
 msgstr "由于不收敛，该模型无法估计。"
 
 msgid "Loadings"
-msgstr ""
+msgstr "载荷"
 
 msgid ""
 "Factor loadings and their moderation effects. Significant moderation effects "
 "indicate that the relationship between the latent factor and its indicator "
 "varies across levels of the moderator (metric non-invariance)."
-msgstr ""
+msgstr "因子载荷及其调节效应。显著的调节效应表明潜因子与其指标之间的关系随调节变量的水平而变化（度量非不变性）。"
 
 msgid "Factor"
-msgstr ""
+msgstr "因子"
 
 msgid "Effect"
-msgstr ""
+msgstr "效应"
 
 #, fuzzy
 msgid "Intercepts"
@@ -666,14 +666,14 @@ msgid ""
 "Indicator intercepts and their moderation effects. Significant moderation "
 "effects indicate that the item difficulty or baseline level varies across "
 "the moderator (scalar non-invariance)."
-msgstr ""
+msgstr "指标截距及其调节效应。显著的调节效应表明题目难度或基线水平随调节变量变化（标度非不变性）。"
 
 msgid ""
 "Indicator residual variances and their moderation effects. Estimates are on "
 "the log scale internally and back-transformed for display. Significant "
 "moderation indicates that measurement precision varies across the moderator "
 "(strict non-invariance)."
-msgstr ""
+msgstr "指标残差方差及其调节效应。估计值在内部为对数刻度，在显示时进行逆变换。显著的调节作用表明测量精度随调节变量变化（严格非不变性）。"
 
 #, fuzzy
 msgid "Factor Variances"
@@ -684,25 +684,25 @@ msgid ""
 "log scale internally and back-transformed for display. Significant "
 "moderation indicates that the spread of the latent trait changes across the "
 "moderator."
-msgstr ""
+msgstr "潜因子方差及其调节效应。估计值在内部为对数刻度，在显示时进行逆变换。显著的调节作用表明潜在特质的离散程度随调节变量变化。"
 
 msgid "Factor Means"
-msgstr ""
+msgstr "因子均值"
 
 msgid ""
 "Latent factor means and their moderation effects. Significant moderation "
 "indicates that the average level of the latent trait differs across the "
 "moderator."
-msgstr ""
+msgstr "潜因子均值及其调节效应。显著的调节作用表明潜在特质的平均水平随调节变量而异。"
 
 msgid "Factor Covariances"
-msgstr ""
+msgstr "因子协方差"
 
 msgid ""
 "Latent factor covariances and their moderation effects. Significant "
 "moderation indicates that the relationship between latent factors varies "
 "across the moderator."
-msgstr ""
+msgstr "潜因子协方差及其调节效应。显著的调节作用表明潜因子之间的关系随调节变量变化。"
 
 #, fuzzy
 msgid "Parameter Plots"
@@ -712,412 +712,412 @@ msgid ""
 "Plots showing how model parameters (loadings, intercepts, variances) vary as "
 "a function of the moderator variable. Each plot displays the estimated "
 "parameter value across the range of the moderator."
-msgstr ""
+msgstr "显示模型参数（载荷、截距、方差）如何作为调节变量的函数而变化的图。每幅图显示调节变量整个范围内的估计参数值。"
 
 msgid "total"
-msgstr ""
+msgstr "总计"
 
 #, fuzzy
 msgid "Parameter Value"
 msgstr "参数"
 
 msgid "Nothing to print."
-msgstr ""
+msgstr "无内容可打印。"
 
 #, fuzzy
 msgid "addedGroupVariable"
 msgstr "变量"
 
 msgid "Column name %s already exists in the dataset"
-msgstr ""
+msgstr "列名 %s 已存在于数据集中"
 
 msgid "# LOADINGS BLOCK"
-msgstr ""
+msgstr "# 载荷块"
 
 #, fuzzy
 msgid "Baseline"
 msgstr "基准模型"
 
 msgid "# FACTOR VARIANCES BLOCK"
-msgstr ""
+msgstr "# 因子方差块"
 
 msgid "# FACTOR MEANS BLOCK"
-msgstr ""
+msgstr "# 因子均值块"
 
 msgid "# INTERCEPTS BLOCK"
-msgstr ""
+msgstr "# 截距块"
 
 msgid "# RESIDUAL VARIANCES BLOCK"
-msgstr ""
+msgstr "# 残差方差块"
 
 msgid "# FACTOR COVARIANCES BLOCK"
-msgstr ""
+msgstr "# 因子协方差块"
 
 #, fuzzy
 msgid "Error"
 msgstr "标准误"
 
 msgid "Unknown"
-msgstr ""
+msgstr "未知"
 
 msgid "OK/Gradient"
-msgstr ""
+msgstr "确定/梯度"
 
 msgid "Non-convex Hessian"
-msgstr ""
+msgstr "非凸海森矩阵"
 
 msgid "Unchecked"
-msgstr ""
+msgstr "未选中"
 
 msgid "Code %s"
-msgstr ""
+msgstr "代码 %s"
 
 msgid "Grouping variable has fewer than 3 observations in group %s"
-msgstr ""
+msgstr "分组变量在组 %s 中的观测少于 3 个"
 
 msgid "Enter a model"
-msgstr ""
+msgstr "输入模型"
 
 msgid "Variable(s) in model syntax not recognized: %s"
-msgstr ""
+msgstr "模型语法中无法识别的变量：%s"
 
 msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
-msgstr ""
+msgstr "对于复合协方差不支持使用“~~”。请改用“~”"
 
 msgid "Using '~~' is not supported. Try '~' instead"
-msgstr ""
+msgstr "不支持使用“~~”。请改用“~”"
 
 msgid "Estimation failed Message: %s"
-msgstr ""
+msgstr "估计失败 消息：%s"
 
 msgid "Estimation failed! Message: Model %s did not converge!"
-msgstr ""
+msgstr "估计失败！消息：模型 %s 未收敛！"
 
 msgid ""
 "Overall model fit test using bootstrap-based distance measures. The test "
 "statistic is compared to a critical value obtained from bootstrapping. If "
 "the test statistic exceeds the critical value, the model is rejected at the "
 "chosen significance level."
-msgstr ""
+msgstr "使用基于自助法的距离度量的整体模型拟合检验。检验统计量与通过自助抽样获得的临界值进行比较。如果检验统计量超过临界值，则在所选显著性水平下拒绝该模型。"
 
 msgid "Group"
-msgstr ""
+msgstr "组"
 
 msgid "Distance Measure"
-msgstr ""
+msgstr "距离度量"
 
 msgid "Test Statistic"
-msgstr ""
+msgstr "检验统计量"
 
 msgid "Critical Value (%s%% Quantile)"
-msgstr ""
+msgstr "临界值（%s%% 分位数）"
 
 msgid "Model selection criteria could not be computed: %s"
-msgstr ""
+msgstr "无法计算模型选择准则：%s"
 
 msgid "Model selection criteria could not be computed for group %1$s: %2$s"
-msgstr ""
+msgstr "无法为组 %1$s 计算模型选择准则：%2$s"
 
 msgid "At least one result is inadmissible."
-msgstr ""
+msgstr "至少有一个结果不可接受。"
 
 msgid "Denotes the fit of the model including a saturated structural model."
-msgstr ""
+msgstr "表示包含饱和结构模型的模型拟合。"
 
 msgid ""
 "Parameter estimates for the PLS-SEM model, including outer weights, outer "
 "loadings, inner model path coefficients, total effects, and residual "
 "correlations."
-msgstr ""
+msgstr "PLS-SEM 模型的参数估计，包括外部权重、外部载荷、内部模型路径系数、总效应和残差相关。"
 
 msgid "Weights"
-msgstr ""
+msgstr "权重"
 
 msgid ""
 "Outer weights relating observed indicators to their composite constructs. "
 "Weights determine how indicators are combined to form construct scores and "
 "reflect each indicator's relative contribution."
-msgstr ""
+msgstr "将观测指标与其复合构念联系起来的权重。权重决定如何将指标组合成构念得分，并反映每个指标的相对贡献。"
 
 msgid "Construct"
-msgstr ""
+msgstr "构念"
 
 msgid ""
 "Outer loadings (correlations) between indicators and their constructs. "
 "Loadings above 0.708 indicate that the construct explains more than 50%% of "
 "the indicator's variance."
-msgstr ""
+msgstr "指标与其构念之间的外部载荷（相关）。载荷高于 0.708 表明构念解释了指标方差的 50%% 以上。"
 
 msgid "Regression Coefficients"
-msgstr ""
+msgstr "回归系数"
 
 msgid ""
 "Inner model path coefficients between constructs. The f² effect size "
 "indicates the substantive impact of removing each predictor: 0.02 (small), "
 "0.15 (medium), 0.35 (large)."
-msgstr ""
+msgstr "构念之间的内部模型路径系数。f² 效应量表示移除每个预测变量的实质性影响：0.02（小）、0.15（中）、0.35（大）。"
 
 msgid "Outcome"
-msgstr ""
+msgstr "结果"
 
 msgid ""
 "Total effects combining direct and all indirect paths between constructs."
-msgstr ""
+msgstr "结合构念之间直接路径和所有间接路径的总效应。"
 
 msgid "Residual Correlations"
-msgstr ""
+msgstr "残差相关"
 
 msgid ""
 "Residual correlations between indicators after accounting for the construct "
 "model. These represent correlated measurement errors between indicator pairs."
-msgstr ""
+msgstr "在考虑构念模型之后指标之间的残差相关。这些代表指标对之间相关的测量误差。"
 
 msgid "VIF"
-msgstr ""
+msgstr "方差膨胀因子（VIF）"
 
 msgid "VIF could not be computed."
-msgstr ""
+msgstr "无法计算 VIF。"
 
 msgid "Endogenous Indicator Prediction"
-msgstr ""
+msgstr "内生指标预测"
 
 msgid ""
 "Cross-validated prediction of endogenous indicators using PLSpredict. The "
 "prediction metrics assess how well the PLS-SEM model predicts indicator "
 "scores out of sample."
-msgstr ""
+msgstr "使用 PLSpredict 对内生指标进行交叉验证预测。预测指标评估 PLS-SEM 模型在样本外预测指标得分的表现。"
 
 msgid "Prediction Metrics"
-msgstr ""
+msgstr "预测指标"
 
 msgid ""
 "MAE (mean absolute error), RMSE (root mean squared error), and Q² prediction "
 "metrics for endogenous indicators. Q² > 0 indicates that prediction error is "
 "less than using the training sample mean. When benchmarks are included, "
 "lower MAE/RMSE than the benchmark suggests the PLS-SEM model predicts better."
-msgstr ""
+msgstr "内生指标的 MAE（平均绝对误差）、RMSE（均方根误差）和 Q² 预测指标。Q² > 0 表明预测误差小于使用训练样本均值。当包含基准时，MAE/RMSE 低于基准表明 PLS-SEM 模型预测更好。"
 
 msgid "Target MAE"
-msgstr ""
+msgstr "目标 MAE"
 
 msgid "LM MAE"
-msgstr ""
+msgstr "LM MAE"
 
 msgid "GSCA MAE"
-msgstr ""
+msgstr "GSCA MAE"
 
 msgid "PCA MAE"
-msgstr ""
+msgstr "PCA MAE"
 
 msgid "MAXVAR MAE"
-msgstr ""
+msgstr "MAXVAR MAE"
 
 msgid "Target RMSE"
-msgstr ""
+msgstr "目标 RMSE"
 
 msgid "LM RMSE"
-msgstr ""
+msgstr "LM RMSE"
 
 msgid "GSCA RMSE"
-msgstr ""
+msgstr "GSCA RMSE"
 
 msgid "PCA RMSE"
-msgstr ""
+msgstr "PCA RMSE"
 
 msgid "MAXVAR RMSE"
-msgstr ""
+msgstr "MAXVAR RMSE"
 
 msgid "Target Q2 Prediction"
-msgstr ""
+msgstr "目标 Q2 预测"
 
 msgid ""
 "There are not enough observations for each k-fold, try setting 'cross-"
 "validation k-folds' to a lower number"
-msgstr ""
+msgstr "每个 k 折的观测不足，请尝试将“交叉验证 k 折”设置为较小的数值"
 
 msgid "Are all indicator variables set to 'scale'?"
-msgstr ""
+msgstr "所有指标变量是否都设置为“scale”？"
 
 msgid "Prediction failed Message: %1$s"
-msgstr ""
+msgstr "预测失败 消息：%1$s"
 
 msgid "Additional Fit Measures"
-msgstr ""
+msgstr "附加拟合度量"
 
 msgid ""
 "Additional model fit measures for PLS-SEM. Includes CFI, GFI, RMSEA, SRMR "
 "for the model-implied indicator correlation matrix, Goodness-of-Fit (GoF) as "
 "geometric mean of AVE and R², and bootstrap-based distance measures (dG, dL, "
 "dML)."
-msgstr ""
+msgstr "PLS-SEM 的附加模型拟合度量。包括模型隐含指标相关矩阵的 CFI、GFI、RMSEA、SRMR，作为 AVE 和 R² 几何平均的拟合优度（GoF），以及基于自助法的距离度量（dG、dL、dML）。"
 
 msgid "Hoelter's critical N (CN)"
-msgstr ""
+msgstr "Hoelter 临界N（CN）"
 
 msgid "Root mean square residual covariance (RMS theta)"
-msgstr ""
+msgstr "残差协方差均方根（RMS theta）"
 
 msgid "Goodness of Fit (GoF)"
-msgstr ""
+msgstr "拟合优度（GoF）"
 
 msgid "Geodesic distance"
-msgstr ""
+msgstr "测地距离"
 
 msgid "Squared Euclidean distance"
-msgstr ""
+msgstr "平方欧氏距离"
 
 msgid "Maximum likelihood-based distance"
-msgstr ""
+msgstr "基于最大似然的距离"
 
 msgid "Model assessment could not be computed: %s"
-msgstr ""
+msgstr "无法计算模型评估：%s"
 
 msgid "Model assessment could not be computed for group %1$s: %2$s"
-msgstr ""
+msgstr "无法为组 %1$s 计算模型评估：%2$s"
 
 msgid ""
 "R² and adjusted R² for each endogenous construct. R² represents the "
 "proportion of variance in the construct explained by its predictors in the "
 "structural model. Values of 0.75, 0.50, and 0.25 are considered substantial, "
 "moderate, and weak."
-msgstr ""
+msgstr "每个内生构念的 R² 和调整 R²。R² 表示结构模型中构念由其预测变量解释的方差比例。0.75、0.50 和 0.25 分别被视为较高、中等和较弱。"
 
 msgid "R²"
-msgstr ""
+msgstr "R²"
 
 msgid "Adjusted R²"
-msgstr ""
+msgstr "调整 R²"
 
 msgid "Reliability Measures"
-msgstr ""
+msgstr "信度度量"
 
 msgid ""
 "Construct reliability measures. Cronbach's α assumes equal indicator weights "
 "(tau-equivalence). Jöreskog's ρ uses the outer loadings and is the preferred "
 "measure for PLS-SEM. Dijkstra-Henseler's ρ_A is a consistent reliability "
 "estimate. Values above 0.70 indicate acceptable reliability."
-msgstr ""
+msgstr "构念信度度量。Cronbach's α 假设指标权重相等（tau 等价）。Jöreskog's ρ 使用外部载荷，是 PLS-SEM 的偏好度量。Dijkstra-Henseler's ρ_A 是一致性的信度估计。高于 0.70 的值表示信度可接受。"
 
 msgid "Latent"
-msgstr ""
+msgstr "潜在"
 
 msgid "Cronbach's %s"
-msgstr ""
+msgstr "Cronbach's %s"
 
 msgid "J%1$sreskog's %2$s"
-msgstr ""
+msgstr "J%1$sreskog's %2$s"
 
 msgid "Dijkstra-Henseler's %s"
-msgstr ""
+msgstr "Dijkstra-Henseler's %s"
 
 msgid "Correlation Tables"
-msgstr ""
+msgstr "相关表"
 
 msgid ""
 "Observed and model-implied correlation matrices for indicators and "
 "constructs. Comparing observed and implied matrices helps assess model fit "
 "at the indicator and construct level."
-msgstr ""
+msgstr "指标和构念的观测相关矩阵与模型隐含相关矩阵。比较观测矩阵和隐含矩阵有助于评估指标和构念层面的模型拟合。"
 
 msgid "Observed Indicator Correlation Matrix"
-msgstr ""
+msgstr "观测指标相关矩阵"
 
 msgid "Sample correlation matrix of the observed indicator variables."
-msgstr ""
+msgstr "观测指标变量的样本相关矩阵。"
 
 msgid "Implied Indicator Correlation Matrix"
-msgstr ""
+msgstr "隐含指标相关矩阵"
 
 msgid ""
 "Model-implied correlation matrix of the indicator variables. Closeness to "
 "the observed matrix indicates good model fit at the indicator level."
-msgstr ""
+msgstr "指标变量的模型隐含相关矩阵。与观测矩阵的接近程度表明指标层面的模型拟合良好。"
 
 msgid "Observed Construct Correlation Matrix"
-msgstr ""
+msgstr "观测构念相关矩阵"
 
 msgid "Sample correlation matrix of the composite construct scores."
-msgstr ""
+msgstr "复合构念得分的样本相关矩阵。"
 
 msgid "Implied Construct Correlation Matrix"
-msgstr ""
+msgstr "隐含构念相关矩阵"
 
 msgid ""
 "Model-implied correlation matrix of the constructs. Closeness to the "
 "observed construct correlations indicates good structural model fit."
-msgstr ""
+msgstr "构念的模型隐含相关矩阵。与观测构念相关的接近程度表明结构模型拟合良好。"
 
 msgid ""
 "Sample correlation matrix of the observed indicator variables, shown per "
 "group."
-msgstr ""
+msgstr "观测指标变量的样本相关矩阵，按组显示。"
 
 msgid ""
 "Model-implied correlation matrix of the indicator variables, shown per group."
-msgstr ""
+msgstr "指标变量的模型隐含相关矩阵，按组显示。"
 
 msgid ""
 "Sample correlation matrix of the composite construct scores, shown per group."
-msgstr ""
+msgstr "复合构念得分的样本相关矩阵，按组显示。"
 
 msgid "Model-implied correlation matrix of the constructs, shown per group."
-msgstr ""
+msgstr "构念的模型隐含相关矩阵，按组显示。"
 
 msgid "Implied indicator correlations could not be computed: %s"
-msgstr ""
+msgstr "无法计算隐含指标相关：%s"
 
 msgid "Implied construct correlations could not be computed: %s"
-msgstr ""
+msgstr "无法计算隐含构念相关：%s"
 
 msgid ""
 "Mean structure can not be included when data is variance-covariance matrix"
-msgstr ""
+msgstr "当数据为方差-协方差矩阵时，不能包含均值结构"
 
 msgid "Please set the sample size!"
-msgstr ""
+msgstr "请设置样本量！"
 
 msgid ""
 "Multiple group analysis not supported when data is variance-covariance matrix"
-msgstr ""
+msgstr "当数据为方差-协方差矩阵时，不支持多组分析"
 
 msgid ""
 "Not more cases than number of variables. Is your data a variance-covariance "
 "matrix?"
-msgstr ""
+msgstr "个案数不超过变量数。您的数据是否是方差-协方差矩阵？"
 
 msgid ""
 "When conditioning estimation on exogenous covariates, the 'Exogenous "
 "covariate(s) fixed' box must be checked."
-msgstr ""
+msgstr "当以外部协变量为条件进行估计时，必须勾选“固定外部协变量”方框。"
 
 msgid ""
 "Bootstrapped standard errors are not yet available when 'Condition on "
 "exogenous covariate(s)' box is checked."
-msgstr ""
+msgstr "勾选“以外部协变量为条件”方框时，尚不提供自助标准误。"
 
 msgid "Invalid model specification. Did you pass a variable name as a string?"
-msgstr ""
+msgstr "无效的模型设定。您是否将变量名称作为字符串传递？"
 
 msgid "One or more variables are constants or contain only missing values."
-msgstr ""
+msgstr "一个或多个变量为常数或仅包含缺失值。"
 
 msgid "Estimation failed. Message: %s"
-msgstr ""
+msgstr "估计失败。消息：%s"
 
 msgid "Estimation failed! Message: %s did not converge!"
-msgstr ""
+msgstr "估计失败！消息：%s 未收敛！"
 
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
-msgstr ""
+msgstr "估计失败！消息：%s 具有负自由度。"
 
 msgid ""
 "Model fit statistics including AIC, BIC, number of parameters, and a chi-"
 "square test for exact fit. A non-significant chi-square suggests the model "
 "fits the data well, though this test is sensitive to sample size."
-msgstr ""
+msgstr "模型拟合统计量，包括 AIC、BIC、参数数量以及精确拟合的卡方检验。卡方不显著表明模型与数据拟合良好，尽管该检验对样本量敏感。"
 
 msgid "n(Observations)"
-msgstr ""
+msgstr "n（观测数）"
 
 msgid "Total"
 msgstr "总计"
@@ -1127,33 +1127,33 @@ msgid "n(Parameters)"
 msgstr "参数"
 
 msgid "Free"
-msgstr ""
+msgstr "自由"
 
 msgid "Baseline test"
-msgstr ""
+msgstr "基线检验"
 
 msgid "Difference test"
-msgstr ""
+msgstr "差异检验"
 
 msgid "%1$sdf"
-msgstr ""
+msgstr "%1$sdf"
 
 msgid ""
 "%sFitting the model resulted in warnings. Check the 'Show warnings' box in "
 "the Output Options to see the warnings."
-msgstr ""
+msgstr "%s拟合模型产生了警告。请在输出选项中勾选“显示警告”以查看警告。"
 
 msgid "A total of %g cases were removed due to missing values."
-msgstr ""
+msgstr "由于缺失值，共移除了 %g 个个案。"
 
 msgid "Model test is %s."
-msgstr ""
+msgstr "模型检验为 %s。"
 
 msgid "Information matrix is %s."
-msgstr ""
+msgstr "信息矩阵为 %s。"
 
 msgid "Standard errors are %s."
-msgstr ""
+msgstr "标准误为 %s。"
 
 #, fuzzy
 msgid ""
@@ -1166,46 +1166,46 @@ msgid "all"
 msgstr "全部"
 
 msgid "<b>Warnings:</b> %s"
-msgstr ""
+msgstr "<b>警告：</b> %s"
 
 msgid ""
 "Parameter estimates from the structural equation model, organized by type: "
 "factor loadings, regression coefficients, variances, covariances, and "
 "additional parameters."
-msgstr ""
+msgstr "结构方程模型的参数估计，按类型组织：因子载荷、回归系数、方差、协方差和附加参数。"
 
 msgid "Factor Loadings"
-msgstr ""
+msgstr "因子载荷"
 
 msgid ""
 "Factor loadings from the measurement model (=~ operator). Each loading "
 "reflects how strongly a latent variable is related to its observed "
 "indicator. The first indicator loading is typically fixed to 1 to set the "
 "scale of the latent variable."
-msgstr ""
+msgstr "测量模型（=~ 运算符）的因子载荷。每个载荷反映潜变量与其观测指标相关的强度。第一个指标载荷通常固定为 1 以设定潜变量的尺度。"
 
 msgid ""
 "Regression coefficients from the structural part of the model (~ operator). "
 "These represent directed effects of predictors on outcomes among latent and/"
 "or observed variables."
-msgstr ""
+msgstr "模型结构部分（~ 运算符）的回归系数。这些代表预测变量对结果的有向效应，作用于潜变量和/或观测变量之间。"
 
 msgid ""
 "Estimated variances of the latent variables. For exogenous latent variables "
 "these are total variances; for endogenous latent variables these are "
 "residual variances (the variance not explained by predictors)."
-msgstr ""
+msgstr "潜变量的估计方差。对于外生潜变量，这些是总方差；对于内生潜变量，这些是残差方差（预测变量未解释的方差）。"
 
 msgid ""
 "Estimated covariances between latent variables (~~ operator). These "
 "represent undirected associations between latent variables."
-msgstr ""
+msgstr "潜变量之间的估计协方差（~~ 运算符）。这些代表潜变量之间无方向的关联。"
 
 msgid ""
 "Residual variances of the observed variables: the variance not explained by "
 "the latent variables. Negative residual variances (Heywood cases) may "
 "indicate model misspecification."
-msgstr ""
+msgstr "观测变量的残差方差：潜变量未解释的方差。负的残差方差（Heywood 情形）可能表明模型设定错误。"
 
 msgid "Residual Covariances"
 msgstr "残差协方差"
@@ -1214,28 +1214,28 @@ msgid ""
 "Residual covariances between observed variables (~~ operator). These "
 "represent correlated errors, i.e., shared variance between indicators not "
 "accounted for by the latent variables."
-msgstr ""
+msgstr "观测变量之间的残差协方差（~~ 运算符）。这些代表相关的误差，即潜变量未解释的指标之间的共享方差。"
 
 msgid ""
 "Intercept (mean) parameters for observed and latent variables in the mean "
 "structure. For observed variables, these are the expected values when all "
 "predictors are zero."
-msgstr ""
+msgstr "均值结构中观测变量和潜变量的截距（均值）参数。对于观测变量，这些是当所有预测变量为零时的期望值。"
 
 msgid "Missing data method 'FIML' forces meanstructure."
-msgstr ""
+msgstr "缺失数据处理方法“FIML”强制要求均值结构。"
 
 msgid "Thresholds"
-msgstr ""
+msgstr "阈值"
 
 msgid ""
 "Threshold parameters for ordinal observed variables. These define the cut-"
 "points on the underlying continuous distribution that separate the observed "
 "categories."
-msgstr ""
+msgstr "有序观测变量的阈值参数。这些定义底层连续分布上将观测类别分开的分界点。"
 
 msgid "Threshold"
-msgstr ""
+msgstr "阈值"
 
 #, fuzzy
 msgid "Defined Parameters"
@@ -1245,39 +1245,39 @@ msgid ""
 "User-defined parameters specified with the := operator. These are functions "
 "of existing model parameters, such as indirect effects or sums of "
 "coefficients. Standard errors are computed using the Delta method."
-msgstr ""
+msgstr "使用 := 运算符指定的用户定义参数。这些是现有模型参数的函数，例如间接效应或系数之和。标准误使用 Delta 方法计算。"
 
 msgid "Name"
-msgstr ""
+msgstr "名称"
 
 msgid "Indirect Effects"
-msgstr ""
+msgstr "间接效应"
 
 msgid ""
 "Indirect effects of predictors on outcomes transmitted through mediating "
 "variables. These are computed as the product of the path coefficients along "
 "the indirect pathway."
-msgstr ""
+msgstr "预测变量经由中介变量传递的对结果的间接效应。这些是沿间接路径的路径系数的乘积。"
 
 msgid ""
 "Total effects combining direct and all indirect effects of predictors on "
 "outcomes."
-msgstr ""
+msgstr "结合预测变量对结果的直接效应和所有间接效应的总效应。"
 
 msgid ""
 "Additional model fit indices and information criteria for evaluating overall "
 "model quality."
-msgstr ""
+msgstr "用于评估整体模型质量的附加模型拟合指数和信息准则。"
 
 msgid ""
 "Model fit indices including incremental indices (CFI, TLI, NFI), absolute "
 "indices (RMSEA, SRMR, GFI), and information criteria (AIC, BIC). Common "
 "guidelines: CFI/TLI > .95, RMSEA < .06, SRMR < .08 indicate good fit, though "
 "these should be interpreted cautiously."
-msgstr ""
+msgstr "模型拟合指数，包括增量指数（CFI、TLI、NFI）、绝对指数（RMSEA、SRMR、GFI）和信息准则（AIC、BIC）。常见准则：CFI/TLI > .95、RMSEA < .06、SRMR < .08 表明拟合良好，尽管应谨慎解读这些数值。"
 
 msgid "%s Fit indices are based on the scaled test statistic."
-msgstr ""
+msgstr "%s 拟合指数基于缩放后的检验统计量。"
 
 #, fuzzy
 msgid "T-Size Fit Indices"
@@ -1288,50 +1288,50 @@ msgid ""
 "provide data-driven cutoff values for CFI and RMSEA that replace "
 "conventional rules of thumb. The poor-fair and fair-close limits define "
 "ranges for interpreting fit."
-msgstr ""
+msgstr "T 规模等价检验拟合指数（Marcoulides & Yuan, 2017）。这些为 CFI 和 RMSEA 提供数据驱动的临界值，取代传统经验法则。较差-一般和一般-接近的界限定义了解释拟合优度的范围。"
 
 msgid "Poor-fair limit"
-msgstr ""
+msgstr "较差-一般界限"
 
 msgid "Fair-close limit"
-msgstr ""
+msgstr "一般-接近界限"
 
 msgid "T-size statistics are computed for <i>%s = 0.05</i>."
-msgstr ""
+msgstr "为 <i>%s = 0.05</i> 计算 T 规模统计量。"
 
 msgid ""
 "Proportion of variance in each endogenous variable explained by its "
 "predictors in the model. Values range from 0 to 1, with higher values "
 "indicating more variance explained."
-msgstr ""
+msgstr "模型中每个内生变量由其预测变量解释的方差比例。值在 0 到 1 之间，值越高表示解释的方差越多。"
 
 msgid "Average Variance Extracted"
-msgstr ""
+msgstr "平均提取方差"
 
 msgid ""
 "Average Variance Extracted (AVE) measures the amount of variance captured by "
 "a latent construct relative to measurement error. AVE values above 0.5 "
 "indicate adequate convergent validity, meaning the construct explains more "
 "than half the variance of its indicators."
-msgstr ""
+msgstr "平均提取方差（AVE）衡量潜构念相对于测量误差捕获的方差量。高于 0.5 的 AVE 值表明具有良好的收敛效度，即构念解释了其指标方差的一半以上。"
 
 msgid "AVE"
-msgstr ""
+msgstr "AVE"
 
 msgid ""
 "Average variance extracted requires a model with at least one latent "
 "variable."
-msgstr ""
+msgstr "平均提取方差要求模型至少包含一个潜变量。"
 
 msgid "Reliability"
-msgstr ""
+msgstr "信度"
 
 msgid ""
 "Composite reliability coefficients for each latent construct. Coefficient α "
 "(alpha) assumes tau-equivalence (equal loadings), while coefficient ω "
 "(omega) allows for congeneric indicators (unequal loadings) and is generally "
 "preferred. Values above 0.7 are commonly considered acceptable."
-msgstr ""
+msgstr "每个潜构念的组合信度系数。系数 α（alpha）假设tau等价（载荷相等），而系数 ω（omega）允许同源指标（载荷不等），通常更受青睐。高于 0.7 的值通常被视为可接受。"
 
 #, fuzzy
 msgid "Coefficient α"
@@ -1342,26 +1342,26 @@ msgid "Coefficient ω"
 msgstr "系数"
 
 msgid "Reliability requires a model with at least one latent variable."
-msgstr ""
+msgstr "信度要求模型至少包含一个潜变量。"
 
 msgid ""
 "Measurement-model reliability is not yet supported with grouping; default "
 "omega values are shown."
-msgstr ""
+msgstr "测量模型信度暂不支持分组；将显示默认的omega值。"
 
 msgid "Heterotrait-Monotrait Ratio"
-msgstr ""
+msgstr "异质-单质比率"
 
 msgid ""
 "Heterotrait-Monotrait (HTMT) ratio of correlations for assessing "
 "discriminant validity. HTMT values below 0.85 (conservative) or 0.90 "
 "(liberal) suggest that constructs are empirically distinct from each other."
-msgstr ""
+msgstr "用于评估区分效度的异质-单质（HTMT）相关比率。低于 0.85（保守）或 0.90（宽松）的 HTMT 值表明构念在经验上彼此不同。"
 
 msgid ""
 "The heterotrait-monotrait ratio requires a model with at least two latent "
 "variables."
-msgstr ""
+msgstr "异质-单质比率要求模型至少包含两个潜变量。"
 
 #, fuzzy
 msgid "Mardia's Coefficients"
@@ -1372,58 +1372,58 @@ msgid ""
 "whether the data meet the multivariate normality assumption. Significant "
 "values suggest non-normality, which may affect chi-square tests and standard "
 "errors under ML estimation."
-msgstr ""
+msgstr "用于评估数据是否满足多元正态性假设的 Mardia 多元偏度和峰度系数。显著的值表明非正态性，这可能会影响 ML 估计下的卡方检验和标准误。"
 
 msgid "Coefficient"
 msgstr "系数"
 
 msgid "z"
-msgstr ""
+msgstr "z"
 
 msgid ""
 "Multivariate skewness and kurtosis calculated for observed variables from "
 "all models."
-msgstr ""
+msgstr "从所有模型中计算的观测变量的多元偏度和峰度。"
 
 msgid ""
 "Not all used variables are continuous: Mardia's coefficients not available."
-msgstr ""
+msgstr "并非所有使用的变量都是连续的：Mardia 系数不可用。"
 
 msgid ""
 "The data covariance matrix could not be inverted: Mardia's coefficients not "
 "available."
-msgstr ""
+msgstr "无法对数据协方差矩阵求逆：Mardia 系数不可用。"
 
 msgid "Skewness"
-msgstr ""
+msgstr "偏度"
 
 msgid "Kurtosis"
-msgstr ""
+msgstr "峰度"
 
 msgid "Covariance Tables"
-msgstr ""
+msgstr "协方差表"
 
 msgid ""
 "Observed, model-implied, and residual covariance matrices. Comparing these "
 "matrices helps evaluate local model fit."
-msgstr ""
+msgstr "观测、模型隐含和残差协方差矩阵。比较这些矩阵有助于评估局部模型拟合。"
 
 msgid "Observed Covariance Matrix"
-msgstr ""
+msgstr "观测协方差矩阵"
 
 msgid ""
 "Sample covariance matrix of the observed variables used for model estimation."
-msgstr ""
+msgstr "用于模型估计的观测变量的样本协方差矩阵。"
 
 msgid ""
 "Model-implied covariance matrix derived from the estimated parameters. Close "
 "correspondence with the observed covariance matrix indicates good model fit."
-msgstr ""
+msgstr "从估计参数中导出的模型隐含协方差矩阵。与观测协方差矩阵的紧密对应表明模型拟合良好。"
 
 msgid ""
 "Difference between the observed and model-implied covariance matrices. Small "
 "residuals indicate that the model reproduces the observed covariances well."
-msgstr ""
+msgstr "观测协方差矩阵与模型隐含协方差矩阵之间的差异。残差小表明模型很好地重现了观测协方差。"
 
 #, fuzzy
 msgid "Standardized Residual Covariance Matrix"
@@ -1432,177 +1432,177 @@ msgstr "参数估计"
 msgid ""
 "Standardized residual covariances. Values exceeding |2| may indicate "
 "localized areas of poor fit for specific pairs of variables."
-msgstr ""
+msgstr "标准化残差协方差。超过 |2| 的值可能表明特定变量对的局部拟合不佳区域。"
 
 msgid ""
 "The standardized residual covariance table is currently unavailable when the "
 "error calculation method is 'Bootstrap'"
-msgstr ""
+msgstr "当误差计算方法为“Bootstrap”时，目前不提供标准化残差协方差表"
 
 msgid "The standardized residual covariance matrix could not be computed"
-msgstr ""
+msgstr "无法计算标准化残差协方差矩阵"
 
 msgid ""
 "The standardized residual covariance tables are currently unavailable when "
 "the error calculation method is 'Bootstrap'"
-msgstr ""
+msgstr "当误差计算方法为“Bootstrap”时，目前不提供标准化残差协方差表"
 
 msgid "The standardized residual covariance matrices could not be computed"
-msgstr ""
+msgstr "无法计算标准化残差协方差矩阵"
 
 msgid "Modification Indices"
-msgstr ""
+msgstr "修正指数"
 
 msgid ""
 "Modification indices (MI) estimate the expected decrease in the model chi-"
 "square statistic if a currently fixed parameter were freed. The expected "
 "parameter change (EPC) indicates the approximate value of the freed "
 "parameter."
-msgstr ""
+msgstr "修正指数（MI）估计如果当前固定的参数被释放，模型卡方统计量的预期下降。预期参数变化（EPC）表示被释放参数的近似值。"
 
 msgid ""
 "MI is the expected chi-square decrease if a fixed parameter is freed. EPC is "
 "the expected parameter change. SEPC columns show standardized versions (lv = "
 "latent only, all = fully, nox = excluding exogenous observed)."
-msgstr ""
+msgstr "MI 是如果释放固定参数时卡方统计量的预期下降。EPC 是预期参数变化。SEPC 列显示标准化版本（lv = 仅潜变量，all = 完全，nox = 不包括外生观测）。"
 
 msgid "MI"
-msgstr ""
+msgstr "MI"
 
 msgid "EPC"
-msgstr ""
+msgstr "EPC"
 
 msgid "SEPC (lv)"
-msgstr ""
+msgstr "SEPC（lv）"
 
 msgid "SEPC (all)"
-msgstr ""
+msgstr "SEPC（all）"
 
 msgid "SEPC (nox)"
-msgstr ""
+msgstr "SEPC（nox）"
 
 msgid ""
 "The modification indices could not be computed, most likely because the "
 "model's information matrix is singular. This often indicates that the model "
 "is not identified (for example, with ordinal indicators combined with "
 "(near-)collinear predictors)."
-msgstr ""
+msgstr "无法计算修正指数，最可能是因为模型的信息矩阵是奇异的。这通常表明模型未被识别（例如，有序指标与（接近）共线的预测变量组合时）。"
 
 msgid "Sensitivity Analysis"
-msgstr ""
+msgstr "敏感性分析"
 
 msgid ""
 "Sensitivity analysis using phantom variables to assess the robustness of "
 "path estimates to unmeasured confounding. Evaluates whether conclusions "
 "change when an unobserved common cause is introduced."
-msgstr ""
+msgstr "使用幻影变量进行敏感性分析，评估路径估计对未测量混杂的稳健性。评估当引入未观测的共同原因时结论是否改变。"
 
 msgid "Summary of Sensitivity Analysis"
-msgstr ""
+msgstr "敏感性分析摘要"
 
 msgid ""
 "Summary of how path estimates and their significance change when phantom "
 "variables representing unmeasured confounders are introduced. P* denotes the "
 "p-value from the sensitivity model."
-msgstr ""
+msgstr "当引入代表未测量混杂因素的幻影变量时，路径估计及其显著性如何变化的摘要。P* 表示敏感性模型的 p 值。"
 
 msgid "Path"
-msgstr ""
+msgstr "路径"
 
 #, fuzzy
 msgid "Standardized estimate"
 msgstr "参数估计"
 
 msgid "Original model"
-msgstr ""
+msgstr "原始模型"
 
 #, fuzzy
 msgid "p*"
 msgstr "p"
 
 msgid "Sensitivity model"
-msgstr ""
+msgstr "敏感性模型"
 
 msgid "Min"
-msgstr ""
+msgstr "最小值"
 
 msgid "Max"
-msgstr ""
+msgstr "最大值"
 
 msgid ""
 "Please include at least one regression path in the model to perform a "
 "sensitivity analysis."
-msgstr ""
+msgstr "请至少包含一个模型回归路径以执行敏感性分析。"
 
 msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
-msgstr ""
+msgstr "正在执行敏感性分析（模型：%1$s，组：%2$s）"
 
 msgid "Performing sensitivity analysis (model: %1$s)"
-msgstr ""
+msgstr "正在执行敏感性分析（模型：%1$s）"
 
 msgid "Sensitivity Parameters That Led to a Change in Significance"
-msgstr ""
+msgstr "导致显著性变化的敏感性参数"
 
 msgid ""
 "Phantom variable coefficients from sensitivity models where the statistical "
 "significance of a path changed compared to the original model."
-msgstr ""
+msgstr "来自敏感性模型的幻影变量系数，这些模型中某条路径的统计显著性相对于原始模型发生了变化。"
 
 msgid "Sensitivity parameters"
-msgstr ""
+msgstr "敏感性参数"
 
 msgid "Summary of Sensitivity Parameters"
-msgstr ""
+msgstr "敏感性参数摘要"
 
 msgid ""
 "Summary statistics (mean, min, max) of the phantom variable coefficients "
 "across all sensitivity analyses, indicating the range of unmeasured "
 "confounding explored."
-msgstr ""
+msgstr "所有敏感性分析中幻影变量系数的汇总统计量（均值、最小值、最大值），表明所探索的未测量混杂范围。"
 
 msgid "Sensitivity parameter"
-msgstr ""
+msgstr "敏感性参数"
 
 msgid "Path Diagram"
-msgstr ""
+msgstr "路径图"
 
 msgid ""
 "Graphical representation of the model showing latent variables (circles), "
 "observed variables (squares), and the paths between them."
-msgstr ""
+msgstr "模型的图形表示，显示潜变量（圆形）、观测变量（方形）以及它们之间的路径。"
 
 msgid "Satorra-Bentler"
-msgstr ""
+msgstr "Satorra-Bentler"
 
 msgid "Yuan-Bentler"
-msgstr ""
+msgstr "Yuan-Bentler"
 
 msgid "Yuan-Bentler Mplus"
-msgstr ""
+msgstr "Yuan-Bentler Mplus"
 
 msgid "mean and variance-adjusted"
-msgstr ""
+msgstr "均值和方差调整"
 
 msgid "scaled and shifted"
-msgstr ""
+msgstr "缩放和平移"
 
 msgid "bootstrap (Bollen-Stine)"
-msgstr ""
+msgstr "bootstrap（Bollen-Stine）"
 
 msgid "Browne residual based (ADF)"
-msgstr ""
+msgstr "基于 Browne 残差（ADF）"
 
 msgid "Browne residual based (NT)"
-msgstr ""
+msgstr "基于 Browne 残差（NT）"
 
 msgid "robust"
-msgstr ""
+msgstr "稳健"
 
 msgid "robust Huber-White"
-msgstr ""
+msgstr "稳健 Huber-White"
 
 msgid "first-order"
-msgstr ""
+msgstr "一阶"
 
 #~ msgid "Parameter estimates"
 #~ msgstr "参数估计"
