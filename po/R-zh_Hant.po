@@ -601,7 +601,7 @@ msgid "Error in fit per group test. Internal error message(s): %s"
 msgstr "分組擬合檢定時發生錯誤。內部錯誤訊息：%s"
 
 msgid "N"
-msgstr ""
+msgstr "N"
 
 msgid "RMSEA"
 msgstr "RMSEA"
@@ -610,7 +610,7 @@ msgid "CFI"
 msgstr "CFI"
 
 msgid "SRMR"
-msgstr ""
+msgstr "SRMR"
 
 msgid "The model for group %s did not converge."
 msgstr "群組 %s 的模型未收斂。"
@@ -640,28 +640,28 @@ msgid "AIC"
 msgstr "AIC"
 
 msgid "SAAIC"
-msgstr ""
+msgstr "樣本量調整 AIC"
 
 msgid "BIC"
 msgstr "BIC"
 
 msgid "SABIC"
-msgstr ""
+msgstr "樣本量調整 BIC"
 
 msgid "Choose one of the global invariance tests to perform the test."
 msgstr "請選擇其中一個整體不變性檢定來執行檢驗。"
 
 msgid "Δ(LL)"
-msgstr ""
+msgstr "Δ(LL)"
 
 msgid "Δ(df)"
-msgstr ""
+msgstr "Δ(df)"
 
 msgid "%1$s Error in fitting the %2$s model. Internal error message(s): %3$s"
 msgstr "擬合 %2$s 模型時發生 %1$s 錯誤。內部錯誤訊息：%3$s"
 
 msgid "OK"
-msgstr ""
+msgstr "確定"
 
 msgid "%1$s: optimizer status '%2$s'."
 msgstr "%1$s：最佳化器狀態 '%2$s'。"
@@ -820,7 +820,7 @@ msgid "Unchecked"
 msgstr "未勾選"
 
 msgid "Code %s"
-msgstr ""
+msgstr "代碼 %s"
 
 msgid "Grouping variable has fewer than 3 observations in group %s"
 msgstr "分組變數在%s組中的觀察值小於3"
@@ -966,31 +966,31 @@ msgid "Target MAE"
 msgstr "目標 MAE"
 
 msgid "LM MAE"
-msgstr ""
+msgstr "LM MAE"
 
 msgid "GSCA MAE"
-msgstr ""
+msgstr "GSCA MAE"
 
 msgid "PCA MAE"
-msgstr ""
+msgstr "PCA MAE"
 
 msgid "MAXVAR MAE"
-msgstr ""
+msgstr "MAXVAR MAE"
 
 msgid "Target RMSE"
 msgstr "目標 RMSE"
 
 msgid "LM RMSE"
-msgstr ""
+msgstr "LM RMSE"
 
 msgid "GSCA RMSE"
-msgstr ""
+msgstr "GSCA RMSE"
 
 msgid "PCA RMSE"
-msgstr ""
+msgstr "PCA RMSE"
 
 msgid "MAXVAR RMSE"
-msgstr ""
+msgstr "MAXVAR RMSE"
 
 msgid "Target Q2 Prediction"
 msgstr "目標 Q2 預測"
@@ -1053,7 +1053,7 @@ msgstr ""
 "異比例。0.75、0.50 與 0.25 分別視為高、中、低程度。"
 
 msgid "R²"
-msgstr ""
+msgstr "R²"
 
 msgid "Adjusted R²"
 msgstr "調整後 R²"
@@ -1078,10 +1078,10 @@ msgid "Cronbach's %s"
 msgstr "Cronbach %s"
 
 msgid "J%1$sreskog's %2$s"
-msgstr ""
+msgstr "J%1$sreskog 的 %2$s"
 
 msgid "Dijkstra-Henseler's %s"
-msgstr ""
+msgstr "Dijkstra-Henseler 的 %s"
 
 msgid "Correlation Tables"
 msgstr "相關係數表"
@@ -1584,13 +1584,13 @@ msgstr ""
 "示標準化版本（lv = 僅潛在變項、all = 完全標準化、nox = 排除外生觀察變項）。"
 
 msgid "MI"
-msgstr ""
+msgstr "修正指標（MI）"
 
 msgid "EPC"
-msgstr ""
+msgstr "期望參數變更（EPC）"
 
 msgid "SEPC (lv)"
-msgstr ""
+msgstr "SEPC（僅潛在變項）"
 
 msgid "SEPC (all)"
 msgstr "SEPC（完全標準化）"
