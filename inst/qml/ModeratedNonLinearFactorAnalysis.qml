@@ -323,6 +323,18 @@ Form
 					info:   qsTr("The invariance model whose parameter estimates are used to compute the factor scores.")
 				}
 
+				DropDown
+				{
+					name:  "factorScoresMethod"
+					label: qsTr("Method")
+					values:
+					[
+						{ label: qsTr("Thurstone"), value: "thurstone" },
+						{ label: qsTr("Bartlett"),  value: "bartlett"  }
+					]
+					info: qsTr("Thurstone (regression) scores have the smaller mean squared error and are recommended for most purposes, including studying the relation between the factor and the moderators. Bartlett scores are conditionally unbiased and, with more than one factor, univocal: the score for one factor does not depend on the other factors. They have a larger variance, and when the indicators are unreliable they recover the factor-moderator relation less accurately than Thurstone scores. With more than one factor, do not estimate the correlation between the factors from the exported scores: Thurstone scores overestimate it and Bartlett scores underestimate it. Use the estimated factor covariance from the model instead.")
+				}
+
 				TextField
 				{
 					name:         "factorScoresPrefix"

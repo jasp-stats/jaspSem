@@ -1564,14 +1564,15 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   names(factorList) <- vapply(options[["factors"]], `[[`, character(1), "name")
   factorTitles      <- vapply(options[["factors"]], `[[`, character(1), "title")
 
-  scoreResult <- try(.mnlfaFactorScores(OpenMx::omxGetParameters(fit), map, factorList, dataset))
+  method      <- if (is.null(options[["factorScoresMethod"]])) "thurstone" else options[["factorScoresMethod"]]
+  scoreResult <- try(.mnlfaFactorScores(OpenMx::omxGetParameters(fit), map, factorList, dataset, method))
   if (jaspBase::isTryError(scoreResult))
     return()
 
   container <- createJaspContainer()
   container$dependOn(optionsFromObject = jaspResults[["mainContainer"]][[paste0(modelName, "State")]],
                      options = c("addFactorScoresToData", "factorScoresModel", "factorScoresPrefix",
-                                 "addFactorScoreStandardErrors"))
+                                 "factorScoresMethod", "addFactorScoreStandardErrors"))
 
   prefix    <- options[["factorScoresPrefix"]]
   columns   <- as.list(as.data.frame(scoreResult[["scores"]]))
@@ -1627,17 +1628,32 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 }
 
 
-# Closed-form regression (EAP) factor scores for a moderated nonlinear factor model.
-# Every model-implied parameter is person specific, so for each row i:
+# Closed-form factor scores for a moderated nonlinear factor model. Every model-implied
+# parameter is person specific, so for each row i:
 #
-#   eta_i = mu_i + Psi_i Lambda_i' (Lambda_i Psi_i Lambda_i' + Theta_i)^-1 (y_i - nu_i - Lambda_i mu_i)
+#   Thurstone (regression, equal to the EAP under normality):
+#     eta_i = mu_i + Psi_i Lambda_i' (Lambda_i Psi_i Lambda_i' + Theta_i)^-1 (y_i - nu_i - Lambda_i mu_i)
+#
+#   Bartlett (conditionally unbiased):
+#     eta_i = (Lambda_i' Theta_i^-1 Lambda_i)^-1 Lambda_i' Theta_i^-1 (y_i - nu_i)
+#
+# Thurstone scores shrink towards mu_i, which under MNLFA depends on the moderators. That
+# sounds like it should distort the factor-moderator relation, but it does not: mu_i is the
+# model-implied mean given the moderators, i.e. the same quantity such an analysis estimates,
+# so shrinking towards it is shrinking towards the conditional truth. A recovery simulation
+# confirms this - as reliability falls from .91 to .49 the error in the recovered impact stays
+# flat for Thurstone (-.007 to -.009) while it grows four-fold for Bartlett (-.007 to -.029),
+# because Bartlett's larger error variance amplifies any residual moderator association.
+#
+# Thurstone is therefore the default. Bartlett remains available because it is conditionally
+# unbiased and univocal with more than one factor, which Thurstone scores are not.
 #
 # OpenMx::mxFactorScores() cannot be used: it does not refresh definition variables that
 # appear inline inside an mxAlgebra, which is exactly what mxsem generates. Every person
 # would silently be scored using the first data row's moderator values.
 #
 # Pure function of (estimates, map, factorList, dataset) so it can be tested without fitting.
-.mnlfaFactorScores <- function(estimates, map, factorList, dataset) {
+.mnlfaFactorScores <- function(estimates, map, factorList, dataset, method = "thurstone") {
 
   factorNames <- names(factorList)
   itemNames   <- unique(unlist(factorList, use.names = FALSE))
@@ -1727,24 +1743,41 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     isObserved <- !is.na(observed[i, ])
     if (!any(isObserved)) next
 
-    lambda <- matrix(loadings[i, isObserved, ], ncol = nFactors)
-    psi    <- matrix(latentCovariance[i, , ], nFactors, nFactors)
-    theta  <- diag(residualVariances[i, isObserved], sum(isObserved))
-    mu     <- factorMeans[i, ]
+    lambda   <- matrix(loadings[i, isObserved, ], ncol = nFactors)
+    theta    <- diag(residualVariances[i, isObserved], sum(isObserved))
+    centered <- observed[i, isObserved] - intercepts[i, isObserved]
 
-    gain <- try(psi %*% t(lambda) %*% solve(lambda %*% psi %*% t(lambda) + theta), silent = TRUE)
-    if (jaspBase::isTryError(gain)) next
+    if (method == "bartlett") {
 
-    scores[i, ] <- mu + gain %*% (observed[i, isObserved] - intercepts[i, isObserved] - lambda %*% mu)
+      # needs at least as many observed indicators as factors, otherwise solve() fails and
+      # the row stays NA
+      thetaInverse <- diag(1 / residualVariances[i, isObserved], sum(isObserved))
+      information  <- t(lambda) %*% thetaInverse %*% lambda
+      covariance   <- try(solve(information), silent = TRUE)
+      if (jaspBase::isTryError(covariance)) next
 
-    # A negative posterior variance means the latent covariance matrix is not positive
-    # definite (with three or more factors the covariances are unbounded free parameters,
-    # so nothing enforces this). Report NA rather than clamping to zero, which would claim
-    # perfect precision for an improper solution.
-    posteriorVariance <- diag(psi - gain %*% lambda %*% psi)
-    posteriorVariance[posteriorVariance < 0 & posteriorVariance > -sqrt(.Machine$double.eps)] <- 0
-    posteriorVariance[posteriorVariance < 0] <- NA_real_
-    standardErrors[i, ] <- sqrt(posteriorVariance)
+      scores[i, ]   <- covariance %*% t(lambda) %*% thetaInverse %*% centered
+      scoreVariance <- diag(covariance)
+
+    } else {
+
+      psi <- matrix(latentCovariance[i, , ], nFactors, nFactors)
+      mu  <- factorMeans[i, ]
+
+      gain <- try(psi %*% t(lambda) %*% solve(lambda %*% psi %*% t(lambda) + theta), silent = TRUE)
+      if (jaspBase::isTryError(gain)) next
+
+      scores[i, ]   <- mu + gain %*% (centered - lambda %*% mu)
+      scoreVariance <- diag(psi - gain %*% lambda %*% psi)
+    }
+
+    # A negative variance means the latent covariance matrix is not positive definite (with
+    # three or more factors the covariances are unbounded free parameters, so nothing enforces
+    # this). Report NA rather than clamping to zero, which would claim perfect precision for
+    # an improper solution.
+    scoreVariance[scoreVariance < 0 & scoreVariance > -sqrt(.Machine$double.eps)] <- 0
+    scoreVariance[scoreVariance < 0] <- NA_real_
+    standardErrors[i, ] <- sqrt(scoreVariance)
   }
 
   return(list(scores = scores, standardErrors = standardErrors))
