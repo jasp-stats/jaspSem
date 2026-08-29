@@ -243,6 +243,27 @@ Form
 				]
 			}
 
+			Rectangle
+			{
+				visible:		estimator.value == "wlsmv" && errorCalc.value == "bootstrap"
+				color:			jaspTheme.controlWarningBackgroundColor
+				width:			form.implicitWidth
+				height:			wlsmvBootstrapWarning.height
+				radius:			jaspTheme.borderRadius
+
+				Text
+				{
+					id:					wlsmvBootstrapWarning
+					text:				qsTr("WLSMV does not support bootstrap standard errors. Select DWLS to use bootstrap standard errors, or select a different standard error method.")
+					color:				jaspTheme.controlWarningTextColor
+					anchors.top:		parent.top
+					padding:			5 * jaspTheme.uiScale
+					wrapMode:			Text.Wrap
+					width:				parent.width - 10 * jaspTheme.uiScale
+					verticalAlignment:	Text.AlignVCenter
+				}
+			}
+
 			IntegerField
 			{
 				visible: errorCalc.value == "bootstrap"
