@@ -1538,8 +1538,14 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
   fitinds[["index"]] <- indexStrings
 
   fnote <- ""
-  if (testName != "standard") {
-    fnote <- gettextf("%s Fit indices are based on the scaled test statistic.", fnote)
+  scaledTests <- c("satorra.bentler", "yuan.bentler", "yuan.bentler.mplus", "mean.var.adjusted", "scaled.shifted")
+  if (any(testName %in% scaledTests)) {
+    fnote <- gettext("Fit indices are based on the scaled test statistic.")
+  } else if (!all(testName == "standard")) {
+    testLabels <- .optionsForOutput()
+    prettyName <- testLabels[["jaspNames"]][match(testName[1], testLabels[["lavNames"]])]
+    if (is.na(prettyName)) prettyName <- testName[1]
+    fnote <- gettextf("Fit indices are based on the %s test statistic.", prettyName)
   }
 
   estimateNames <- c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni",
@@ -1560,7 +1566,7 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
     }
   }
 
-  fitinds$addFootnote(fnote)
+  if (nzchar(fnote)) fitinds$addFootnote(fnote)
 
   # a table only with the T-size stuff
   ftsize <- createJaspTable(gettext("T-Size Fit Indices"))
@@ -2980,8 +2986,16 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
 
   fm <- lavaan::fitMeasures(fit, fit.measures = "all")
 
-  if (!standard) {
-    fm[c("chisq", "df", "baseline.chisq", "baseline.df", "cfi", "tli", "nnfi", "nfi", "rfi", "ifi", "rni", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue")] <- fm[c("chisq.scaled", "df.scaled", "baseline.chisq.scaled", "baseline.df.scaled", "cfi.scaled", "tli.scaled", "nnfi.scaled", "nfi.scaled",  "rfi.scaled", "ifi.scaled", "rni.scaled", "rmsea.scaled", "rmsea.ci.lower.scaled", "rmsea.ci.upper.scaled", "rmsea.pvalue.scaled")]
+  # lavaan only produces '*.scaled' fit measures for genuinely scaled test statistics
+  # (satorra.bentler, scaled.shifted, mean.var.adjusted, yuan.bentler, ...). For residual-based
+  # tests (browne.residual.nt/adf, the lavaan default for DWLS/ULS on continuous data) and the
+  # standard test the test-appropriate values already live in the unsuffixed columns, so only
+  # swap when the scaled columns are actually present.
+  haveScaled <- "cfi.scaled" %in% names(fm) && !is.na(fm[["cfi.scaled"]])
+  if (!standard && haveScaled) {
+    baseNames <- c("chisq", "df", "baseline.chisq", "baseline.df", "cfi", "tli", "nnfi", "nfi",
+                   "rfi", "ifi", "rni", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue")
+    fm[baseNames] <- fm[paste0(baseNames, ".scaled")]
     fm["pnfi"] <- NA
   }
 
