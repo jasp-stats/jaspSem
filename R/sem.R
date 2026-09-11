@@ -210,11 +210,15 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 
+.semVarTokenPattern <- function(var) {
+  #' match `var` only as a whole token in lavaan model syntax, never as a substring of a
+  #' longer name (e.g. "Factor1" must not match inside "Factor12")
+  paste0("(?<=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|^)\\Q", var, "\\E(?=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|$)")
+}
+
 .semGetUsedVars <- function(syntax, availablevars) {
   vv <- availablevars
-  findpattern <- paste0("(?<=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|^)\\Q",
-                        vv,
-                        "\\E(?=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|$)")
+  findpattern <- .semVarTokenPattern(vv)
   return(vv[vapply(findpattern,
                    function(p) stringr::str_detect(syntax, p),
                    FUN.VALUE = TRUE,
@@ -520,12 +524,15 @@ checkLavaanModel <- function(model, availableVars) {
 .semEffectsSyntax <- function(originalSyntax, syntaxTable, regressions, dataset, options) {
 
     if(options[["group"]] == "") {
-    regressionLabels <- letters[1:nrow(regressions)]
+    # a plain letters[1:n] scheme runs out at 26 regression paths (NA labels beyond that,
+    # silently breaking indirect/total effects for larger models), so use an always-unique,
+    # unlimited-count scheme instead
+    regressionLabels <- paste0("jaspEffect", seq_len(nrow(regressions)))
     if (!any(syntaxTable[, "label"] %in% regressionLabels)) {
-      regressions[, "label"] <- letters[1:nrow(regressions)]
+      regressions[, "label"] <- regressionLabels
     } else {
       while (any(syntaxTable[, "label"] %in% regressionLabels)) {
-        regressionLabels <- paste0(sample(letters, nrow(regressions)), sample(letters, nrow(regressions)))
+        regressionLabels <- paste0("jaspEffect", seq_len(nrow(regressions)), sample(1e5, 1))
       }
       regressions[, "label"] <- regressionLabels
     }
@@ -574,11 +581,31 @@ checkLavaanModel <- function(model, availableVars) {
   syntax_splitted <- stringr::str_split_1(originalSyntax, "\n")
   syntax_splitted <- unlist(lapply(syntax_splitted, trimws))
 
+  # a lavaan statement can span several physical lines (e.g. a long "lhs ~ ..." regression
+  # ending mid-line with "+"). Group continuation lines with the line that started the
+  # statement so label injection below isn't confined to a single physical line -- otherwise
+  # terms after a line break silently never get labelled.
+  startsStatementPattern <- "^[^\\s\\+\\*~=<:]+\\s*(=~|~~|<~|:=|~)"
+  statementId <- cumsum(stringr::str_detect(syntax_splitted, startsStatementPattern))
+  statementId[syntax_splitted == ""] <- NA
+
   for (j in 1:nrow(regressions)) {
-    idx <- unlist(lapply(syntax_splitted, function(x) {
-      all(c(startsWith(x, regressions[j, "lhs"]), grepl(regressions[j, "rhs"], x)))
-    }))
-    syntax_splitted[idx] <- gsub(regressions[j, "rhs"], paste0(regressions[j, "label"], "*", regressions[j, "rhs"]), syntax_splitted[idx])
+    lhs   <- regressions[j, "lhs"]
+    rhs   <- regressions[j, "rhs"]
+    label <- regressions[j, "label"]
+
+    # match the "lhs ~ ..." regression statement only (not a "lhs =~ ..." factor definition or
+    # a "lhs ~~ ..." covariance), and label rhs only where it appears as a whole token -- naive
+    # substring matching corrupts unrelated statements whenever one variable name is a text
+    # prefix of another (e.g. "Factor1" also matching inside "Factor12")
+    lhsRegressionPattern <- paste0("^\\Q", lhs, "\\E\\s*~(?!~)")
+    rhsTokenPattern      <- .semVarTokenPattern(rhs)
+
+    startLine <- which(stringr::str_detect(syntax_splitted, lhsRegressionPattern))[1]
+    if (is.na(startLine)) next
+    idx <- !is.na(statementId) & statementId == statementId[startLine]
+
+    syntax_splitted[idx] <- stringr::str_replace_all(syntax_splitted[idx], rhsTokenPattern, paste0(label, "*", rhs))
   }
   syntax <- paste0(syntax_splitted, collapse = "\n")
 
