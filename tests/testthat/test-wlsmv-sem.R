@@ -386,6 +386,61 @@ options$exogenousCovariateConditional <- TRUE
 
 results <- jaspTools::runAnalysis("SEM", bfi_ae, options)
 
+testthat::test_that("WLSMV is not silently changed when bootstrap is selected", {
+  lavOptions <- jaspSem:::.semOptionsToLavOptions(options, bfi_ae)
+
+  testthat::expect_identical(lavOptions[["estimator"]], "wlsmv")
+})
+
+testthat::test_that("DWLS orders only binary observed endogenous variables in the current model", {
+  set.seed(20260803)
+  sampleSize <- 200L
+  binaryExogenous <- rbinom(sampleSize, 1L, 0.5)
+  binaryMediator <- factor(
+    rbinom(sampleSize, 1L, stats::plogis(-0.5 + binaryExogenous)),
+    levels = 0:1
+  )
+  orderedData <- data.frame(
+    outcome = rnorm(sampleSize, as.integer(binaryMediator)),
+    binaryMediator = binaryMediator,
+    binaryExogenous = binaryExogenous,
+    unusedBinary = factor(rbinom(sampleSize, 1L, 0.5), levels = 0:1)
+  )
+  mediatorModel <- "
+    binaryMediator ~ binaryExogenous
+    outcome ~ binaryMediator + binaryExogenous
+  "
+
+  orderedVariables <- jaspSem:::.semOrderedVars(
+    orderedData,
+    lavaan::lavaanify(mediatorModel)
+  )
+
+  testthat::expect_identical(orderedVariables, "binaryMediator")
+  mediatorFit <- lavaan::sem(
+    mediatorModel,
+    data = orderedData,
+    estimator = "DWLS",
+    ordered = orderedVariables
+  )
+  testthat::expect_identical(lavaan::lavNames(mediatorFit, "ov.ord"), "binaryMediator")
+
+  continuousModel <- "outcome ~ binaryExogenous"
+  continuousOrderedVariables <- jaspSem:::.semOrderedVars(
+    orderedData,
+    lavaan::lavaanify(continuousModel)
+  )
+
+  testthat::expect_identical(continuousOrderedVariables, character(0))
+  continuousFit <- lavaan::sem(
+    continuousModel,
+    data = orderedData,
+    estimator = "DWLS",
+    ordered = continuousOrderedVariables
+  )
+  testthat::expect_s4_class(continuousFit, "lavaan")
+})
+
 test_that("Bootstrapping with conditional covariates throws the correct error",
   testthat::expect_identical(
     results[["status"]],
