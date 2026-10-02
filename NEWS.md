@@ -1,7 +1,7 @@
 # jaspSem Changelog
 
 > **HOW TO READ AND UPDATE THIS CHANGELOG:**
-> 
+>
 > This document follows a modified [Keep a Changelog](https://keepachangelog.com/) format adapted for the R/JASP ecosystem. Releases are listed in reverse chronological order (newest first).
 > As an example see [jaspModuleTemplate](https://github.com/jasp-stats/jaspModuleTemplate/blob/master/NEWS.md)
 > * **Adding New Changes (For Contributors):** All new commits should be logged at the very top of the file under the `# jaspSem (development version)` header. Place your bullet point under the appropriate category (`## Added`, `## Fixed`, etc.). 
@@ -18,6 +18,7 @@
 # jaspSem (development version)
 
 ## Added
+* New analysis: Bayesian structural equation modeling (BSEM).
 * MNLFA: new **Estimation Options** section with an **Indicator preprocessing** option (None / Center / Z-standardize) that transforms all indicator variables before the mxsem script is built.
 * MNLFA: new **Show warnings** checkbox in the Output Options section that prints captured OpenMx warning text above the Global Invariance Fit table.
 * MNLFA: Global Invariance Fit table now adds a per-model footnote whenever the OpenMx optimizer status is anything other than OK (e.g. "Non-convex Hessian", "OK/Gradient").
