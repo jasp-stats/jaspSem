@@ -904,7 +904,7 @@ msgid ""
 "the indicator's variance."
 msgstr ""
 "指標與其構念間之相關（外部負荷量）。負荷量大於 0.708 表示該構念能解釋指標超"
-"過 50% 的變異量。"
+"過 50%% 的變異量。"
 
 msgid "Regression Coefficients"
 msgstr "迴歸係數"
