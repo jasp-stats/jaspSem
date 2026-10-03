@@ -232,7 +232,7 @@
     "OpenMx": {
       "Package": "OpenMx",
       "Version": "2.22.11",
-      "Source": "Repository",
+      "Source": "URL",
       "Encoding": "UTF-8",
       "Date": "2026-02-27",
       "Title": "Extended Structural Equation Modelling",
@@ -292,7 +292,8 @@
       "NeedsCompilation": "yes",
       "Author": "Steven M. Boker [aut], Michael C. Neale [aut], Hermine H. Maes [aut], Michael J. Wilde [ctb], Michael Spiegel [aut], Timothy R. Brick [aut], Ryne Estabrook [aut], Timothy C. Bates [aut], Paras Mehta [ctb], Timo von Oertzen [ctb], Ross J. Gore [aut], Michael D. Hunter [aut], Daniel C. Hackett [ctb], Julian Karch [ctb], Andreas M. Brandmaier [ctb], Joshua N. Pritikin [aut], Mahsa Zahery [aut], Robert M. Kirkpatrick [aut, cre], Yang Wang [ctb], Ben Goodrich [ctb], Charles Driver [ctb], Jannik H. Orzek [ctb], Don van den Bergh [ctb], Massachusetts Institute of Technology [cph], S. G. Johnson [cph], Association for Computing Machinery [cph], Dieter Kraft [cph], Stefan Wilhelm [cph], Sarah Medland [cph], Carl F. Falk [cph], Matt Keller [cph], Manjunath B G [cph], The Regents of the University of California [cph], Lester Ingber [cph], Wong Shao Voon [cph], Juan Palacios [cph], Jiang Yang [cph], Gael Guennebaud [cph], Jitse Niesen [cph]",
       "Maintainer": "Robert M. Kirkpatrick <rkirkpatrick2@vcu.edu>",
-      "Repository": "CRAN"
+      "RemoteType": "url",
+      "RemoteUrl": "https://cran.r-project.org/src/contrib/Archive/OpenMx/OpenMx_2.22.11.tar.gz"
     },
     "R6": {
       "Package": "R6",
