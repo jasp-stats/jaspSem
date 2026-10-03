@@ -149,6 +149,93 @@ test_that("Latent-only stats degrade gracefully on a regression-only model", {
 })
 
 
+test_that("Standardization supports nominal multigroup labels", {
+  data <- data.frame(
+    x1 = c(11.3, 9.7, 10.3, 8.7, 11.3, 9.7, 10.3, 8.7,
+           13.9, 11.5, 12.5, 10.1, 13.9, 11.5, 12.5, 10.1),
+    x2 = c(21.7, 18.3, 20.5, 19.5, 21.7, 18.3, 20.5, 19.5,
+           23.2, 20.8, 22.2, 21.8, 23.2, 20.8, 22.2, 21.8),
+    x3 = c(31.6, 29.8, 31.6, 29.8, 30.2, 28.4, 30.2, 28.4,
+           33.6, 31.6, 33.6, 31.6, 32.4, 30.4, 32.4, 30.4),
+    x4 = c(42.1, 37.9, 42.1, 37.9, 40.5, 39.5, 40.5, 39.5,
+           43.3, 40.7, 43.3, 40.7, 42.5, 41.5, 42.5, 41.5),
+    group = rep(c("North", "South"), each = 8)
+  )
+
+  options <- jaspTools::analysisOptions("SEM")
+  options$models <- list(list(
+    name = "Model 1",
+    syntax = list(model = "f =~ x1 + x2 + x3 + x4", columns = c("x1", "x2", "x3", "x4"))
+  ))
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$group <- "group"
+  options$samplingWeights <- ""
+  options$informationMatrix <- "expected"
+  options$naAction <- "fiml"
+  options$modelTest <- "standard"
+  options$standardizedVariable <- TRUE
+
+  results <- jaspTools::runAnalysis("SEM", data, options, makeTests = FALSE)
+  expect_equal(results[["status"]], "complete")
+
+  modelContainer <- results[["results"]][["modelContainer"]][["collection"]]
+  fit <- do.call(rbind.data.frame, modelContainer[["modelContainer_fittab"]][["data"]])
+  expect_equal(as.character(fit$group), c("all", "North", "South"))
+  expect_equal(as.numeric(fit$N), c(16, 8, 8))
+  expect_equal(as.numeric(fit$Chisq[1]), 0, tolerance = 1e-6)
+  expect_equal(as.numeric(fit$Df[1]), 4)
+  expect_equal(as.numeric(fit$npar[1]), 16)
+  expect_equal(as.numeric(fit$nfree[1]), 16)
+
+  loadings <- modelContainer[["modelContainer_params"]][["collection"]][["modelContainer_params_ind"]][["data"]]
+  loadings <- do.call(rbind.data.frame, loadings)
+  expected <- list(
+    North = c(1, 1.0352562838487906, 0.9308417406594132, 1.0043160613437194),
+    South = c(1, 0.9420622225900109, 0.9927227034842471, 1.0579229796766092)
+  )
+  for (group in names(expected)) {
+    groupLoadings <- loadings[loadings$group == group, ]
+    groupLoadings <- groupLoadings[match(c("x1", "x2", "x3", "x4"), groupLoadings$rhs), ]
+    expect_equal(as.numeric(groupLoadings$est), expected[[group]], tolerance = 1e-6)
+  }
+})
+
+
+test_that("Standardization includes fixed exogenous covariates", {
+  z <- rep(c(-1, 1), 24)
+  e <- rep(c(-1, -1, 1, 1), 12)
+  data <- data.frame(
+    x = 10 + 3 * z,
+    y = 20 + 6 * z + 2 * e
+  )
+
+  options <- jaspTools::analysisOptions("SEM")
+  options$models <- list(list(
+    name = "Model 1",
+    syntax = list(model = "y ~ x", columns = c("y", "x"))
+  ))
+  options$emulation <- "lavaan"
+  options$estimator <- "default"
+  options$group <- ""
+  options$samplingWeights <- ""
+  options$informationMatrix <- "expected"
+  options$naAction <- "fiml"
+  options$modelTest <- "standard"
+  options$exogenousCovariateFixed <- TRUE
+  options$standardizedVariable <- TRUE
+
+  results <- jaspTools::runAnalysis("SEM", data, options, makeTests = FALSE)
+  expect_equal(results[["status"]], "complete")
+
+  regressions <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][["modelContainer_params_reg"]][["data"]]
+  regression <- regressions[[1]]
+  expect_equal(as.numeric(regression$est), cor(data$x, data$y), tolerance = 1e-10)
+  expectedSE <- sqrt((1 - cor(data$x, data$y)^2) / nrow(data))
+  expect_equal(as.numeric(regression$se), expectedSE, tolerance = 1e-10)
+})
+
+
 # Multigroup, multimodel SEM works
 options <- jaspTools::analysisOptions("SEM")
 options$emulation                   = "lavaan"

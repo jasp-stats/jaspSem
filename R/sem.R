@@ -290,7 +290,8 @@ checkLavaanModel <- function(model, availableVars) {
     }
     if (options[["dataType"]] == "raw") {
       if (options[["standardizedVariable"]]) {
-        dataset <- scale(dataset)
+        variablesToStandardize <- setdiff(names(dataset), options[["group"]])
+        dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
       }
       lavArgs[["data"]] <- dataset
 
