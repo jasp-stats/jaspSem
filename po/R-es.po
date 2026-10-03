@@ -1009,7 +1009,7 @@ msgid ""
 "the indicator's variance."
 msgstr ""
 "Cargas externas (correlaciones) entre los indicadores y sus constructos. "
-"Cargas por encima de 0.708 indican que el constructo explica más del 50% de "
+"Cargas por encima de 0.708 indican que el constructo explica más del 50%% de "
 "la varianza del indicador."
 
 msgid "Regression Coefficients"
