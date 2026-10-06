@@ -255,6 +255,7 @@ checkLavaanModel <- function(model, availableVars) {
   oldmodels  <- modelContainer[["models"]][["object"]]
   oldresults <- modelContainer[["results"]][["object"]]
   oldwarnings <- modelContainer[["warnings"]][["object"]]
+  oldr2 <- modelContainer[["r2"]][["object"]]
   reuse <- match(options[["models"]], oldmodels)
 
   if (identical(reuse, seq_along(reuse))) return(oldresults) # reuse everything
@@ -262,10 +263,12 @@ checkLavaanModel <- function(model, availableVars) {
   # create results list
   results <- vector("list", length(options[["models"]]))
   warnings <- vector("list", length(options[["models"]]))
+  r2s <- vector("list", length(options[["models"]]))
 
   if (any(!is.na(reuse))) {
     # where possible, prefill results with old results
     results[seq_along(reuse)] <- oldresults[reuse]
+    r2s[seq_along(reuse)] <- oldr2[reuse]
     # in order to avoid assigning NULL in some cases
     warnings[seq_along(reuse)] <- ifelse(is.null(oldwarnings[reuse]), list(NULL), oldwarnings[reuse])
   }
@@ -357,6 +360,8 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
       break
     }
 
+    r2s[[i]] <- lavaan::inspect(fit$value, "r2")
+
     if (options[["errorCalculationMethod"]] == "bootstrap") {
       type <- switch(options[["standardizedEstimateType"]],
                      "all" = "std.all",
@@ -379,6 +384,8 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
   if (!modelContainer$getError()) {
     modelContainer[["results"]] <- createJaspState(results)
     modelContainer[["results"]]$dependOn(optionsFromObject = modelContainer)
+    modelContainer[["r2"]]      <- createJaspState(r2s)
+    modelContainer[["r2"]]$dependOn(optionsFromObject = modelContainer)
     modelContainer[["models"]]  <- createJaspState(options[["models"]])
     modelContainer[["models"]]$dependOn(optionsFromObject = modelContainer)
     modelContainer[["originalSyntax"]] <- createJaspState(list(syntaxTable))
@@ -1668,14 +1675,14 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
 
     if (length(options[["models"]]) < 2) {
 
-      r2res              <- lavaan::inspect(modelContainer[["results"]][["object"]][[1]], "r2")
+      r2res              <- modelContainer[["r2"]][["object"]][[1]]
       tabr2[["__var__"]] <- names(r2res)
       tabr2[["rsq"]]     <- r2res
 
     } else {
 
       # determine variable names
-      r2li <- lapply(modelContainer[["results"]][["object"]], lavaan::inspect, what = "r2")
+      r2li <- modelContainer[["r2"]][["object"]]
 
       # generate df with these names
       r2df <- data.frame("varname__" = unique(unlist(lapply(r2li, names))))
@@ -1694,7 +1701,7 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
 
     if (length(options[["models"]]) < 2) {
 
-      r2res              <- lavaan::inspect(modelContainer[["results"]][["object"]][[1]], "r2")
+      r2res              <- modelContainer[["r2"]][["object"]][[1]]
       tabr2[["__grp__"]] <- rep(names(r2res), vapply(r2res, length, 0))
       tabr2[["__var__"]] <- unlist(lapply(r2res, names))
       tabr2[["rsq"]]     <- unlist(r2res)
@@ -1703,7 +1710,7 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
 
       # here is the most difficult case with multiple groups and multiple models
       # create a list with r2 results per model. each element is a list with ngroup elements
-      r2li <- lapply(modelContainer[["results"]][["object"]], lavaan::inspect, what = "r2")
+      r2li <- modelContainer[["r2"]][["object"]]
 
       # now comes the difficult part: determine unique variable names in each group
       # for each group, find all variable names in each model

@@ -131,6 +131,8 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
     return()
   }
 
+  modelContainer[["r2"]] <- createJaspState(lavaan::inspect(lgcmResult, "r2"))
+
   # Bootstrapping with interruptible progress bar
   if (options$errorCalculationMethod == "bootstrap") {
     type <- switch(options[["standardizedEstimateType"]],
@@ -465,7 +467,7 @@ LatentGrowthCurveInternal <- function(jaspResults, dataset, options, ...) {
   if (!ready || modelContainer$getError()) return()
 
   # get r2 of variables, excluding the latent variables.
-  r2res <- lavaan::inspect(modelContainer[["model"]][["object"]], "r2")
+  r2res <- modelContainer[["r2"]][["object"]]
   r2res <- r2res[!names(r2res) %in% c("I", "L", "Q", "C")]
   varnames <- names(r2res)
   tabr2[["__var__"]] <- varnames

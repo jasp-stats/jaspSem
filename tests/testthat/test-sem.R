@@ -1136,6 +1136,37 @@ test_that("Residual variances table results match", {
 })
 
 
+# R-squared is unaffected by bootstrapped standardized estimates
+options <- jaspTools::analysisOptions("SEM")
+options$models <- list(list(name = "Model1", syntax = list(model = "x1 ~ x2 + x3 + y1", columns = c("x1", "x2", "x3", "y1"))))
+options$emulation         <- "lavaan"
+options$estimator         <- "default"
+options$group             <- ""
+options$samplingWeights   <- ""
+options$informationMatrix <- "expected"
+options$naAction          <- "fiml"
+options$modelTest         <- "standard"
+options$rSquared          <- TRUE
+options$errorCalculationMethod    <- "bootstrap"
+options$bootstrapCiType   <- "percentile"
+options$bootstrapSamples  <- 100
+options$standardizedEstimate <- TRUE
+
+set.seed(1)
+resultsBoot <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
+
+options$errorCalculationMethod <- "default"
+options$standardizedEstimate   <- FALSE
+set.seed(1)
+resultsPlain <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
+
+test_that("R-squared is unaffected by bootstrapped standardized estimates", {
+  tableBoot  <- resultsBoot[["results"]][["modelContainer"]][["collection"]][["modelContainer_rsquared"]][["data"]]
+  tablePlain <- resultsPlain[["results"]][["modelContainer"]][["collection"]][["modelContainer_rsquared"]][["data"]]
+  expect_equal(tableBoot, tablePlain)
+})
+
+
 # Sensitivity analysis works
 options <- analysisOptions("SEM")
 options$samplingWeights <- ""
