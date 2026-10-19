@@ -1004,7 +1004,7 @@ msgid ""
 "the indicator's variance."
 msgstr ""
 "Cargas externas (correlacións) entre os indicadores e súas nocións. Cargas "
-"por enriba de 0.708 indican que a noción explica máis do 50% da varianza do "
+"por enriba de 0.708 indican que a noción explica máis do 50%% da varianza do "
 "indicador."
 
 msgid "Regression Coefficients"
