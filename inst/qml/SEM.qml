@@ -82,6 +82,7 @@ Form
 		label: qsTr("Sampling weights")
 		showVariableTypeIcon: true
 		addEmptyValue: true
+		allowedColumns: ["scale"]
 		info: qsTr("Select a variable from the dataset to use as sampling weights for each observation.")
 	}
 
