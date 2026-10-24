@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
 "POT-Creation-Date: 2026-07-11 03:47\n"
-"PO-Revision-Date: 2026-10-24 11:32+0000\n"
+"PO-Revision-Date: 2026-10-25 11:51+0000\n"
 "Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-r/zh_Hans/>\n"
@@ -13,7 +13,6 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Weblate 2026.11.dev0\n"
 
-#, fuzzy
 msgid "Fit Indices"
 msgstr "拟合指数"
 
@@ -25,7 +24,6 @@ msgid ""
 "below 0.06, and SRMR below 0.08 suggest good fit."
 msgstr "详细的模型拟合指数。包括将模型与独立模型比较的增量拟合指数（CFI、TLI、NFI）、简约调整指数、带有置信区间和接近拟合检验的 RMSEA、SRMR，以及信息准则（AIC、BIC、对数似然）。CFI 和 TLI 值高于 0.95、RMSEA 低于 0.06、SRMR 低于 0.08 表明拟合良好。"
 
-#, fuzzy
 msgid "Index"
 msgstr "指数"
 
@@ -99,7 +97,7 @@ msgid "Bayesian (BIC)"
 msgstr "贝叶斯（BIC）"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr "样本量调整的贝叶斯信息准则（SSABIC）"
+msgstr "样本量调整贝叶斯 (SSABIC)"
 
 msgid "# Factors"
 msgstr "# 因子"
@@ -115,7 +113,6 @@ msgstr "由于不收敛，该模型无法估计。"
 msgid "The model could not be estimated: No degrees of freedom left."
 msgstr "模型无法估计：没有剩余自由度。"
 
-#, fuzzy
 msgid "Chi-Square Test"
 msgstr "卡方检验"
 
@@ -125,12 +122,11 @@ msgid ""
 "curve model suggests adequate fit to the data."
 msgstr "将生长曲线模型与基准（独立）模型进行比较的卡方拟合优度检验。生长曲线模型的p值不显著表明对数据拟合良好。"
 
-#, fuzzy
 msgid "Model"
-msgstr "生长曲线模型"
+msgstr "模型"
 
 msgid "df"
-msgstr "自由度"
+msgstr "df"
 
 msgid "p"
 msgstr "p"
@@ -153,7 +149,6 @@ msgstr "该模型不可接受：%s"
 msgid "Warning."
 msgstr "警告。"
 
-#, fuzzy
 msgid "Parameter Estimates"
 msgstr "参数估计"
 
@@ -191,17 +186,16 @@ msgid "z-value"
 msgstr "z 值"
 
 msgid "Lower"
-msgstr "下界"
+msgstr "下限"
 
 msgid "%s%% Confidence Interval"
 msgstr "%s%% 置信区间"
 
 msgid "Upper"
-msgstr "上界"
+msgstr "上限"
 
-#, fuzzy
 msgid "Latent Covariances"
-msgstr "方差"
+msgstr "潜变量协方差"
 
 msgid ""
 "Covariances between latent growth factors. For example, a positive intercept-"
@@ -256,7 +250,7 @@ msgid ""
 msgstr "残差方差为负。这可能表明模型设定错误。"
 
 msgid "R-Squared"
-msgstr "R平方"
+msgstr "R²"
 
 msgid ""
 "Proportion of variance in each observed variable at each time point "
@@ -269,9 +263,8 @@ msgstr "隐含协方差矩阵"
 msgid "Model-implied covariance matrix from the latent growth curve model."
 msgstr "来自潜生长曲线模型的模型隐含协方差矩阵。"
 
-#, fuzzy
 msgid "Residual Covariance Matrix"
-msgstr "方差"
+msgstr "残差协方差矩阵"
 
 msgid ""
 "Difference between the observed and model-implied covariance matrices. Small "
@@ -336,9 +329,8 @@ msgid ""
 "%s"
 msgstr "估计失败\n消息：\n%s"
 
-#, fuzzy
 msgid "Estimation failed"
-msgstr "估计"
+msgstr "估计失败"
 
 msgid ""
 "Parameter estimates from the mediation model, organized by direct effects, "
@@ -412,9 +404,8 @@ msgid ""
 "its predictors in the mediation model."
 msgstr "中介模型中每个中介变量和结果变量由其预测变量解释的方差比例。"
 
-#, fuzzy
 msgid "Path Plot"
-msgstr "参数"
+msgstr "路径图"
 
 msgid ""
 "Visual representation of the mediation model showing predictors, mediators, "
@@ -487,17 +478,14 @@ msgstr "潜变量在其观测指标上的因子载荷。这些代表每个指标
 msgid "Indicator"
 msgstr "指标"
 
-#, fuzzy
 msgid "Residual variances"
-msgstr "残差协方差"
+msgstr "残差方差"
 
-#, fuzzy
 msgid "Std. error"
 msgstr "标准误"
 
-#, fuzzy
 msgid "Predictor covariances"
-msgstr "方差"
+msgstr "预测变量协方差"
 
 msgid "Variables"
 msgstr "变量"
@@ -551,9 +539,8 @@ msgid ""
 "within each group before testing invariance."
 msgstr "由调节变量定义的每个组分别计算的 CFA 拟合统计量。在检验不变性之前，这检查基准因子模型是否在每个组内拟合良好。"
 
-#, fuzzy
 msgid "Group Model"
-msgstr "生长曲线模型"
+msgstr "组模型"
 
 msgid "Error in fit per group test. Internal error message(s): %s"
 msgstr "各组拟合检验出错。内部错误消息：%s"
@@ -570,9 +557,8 @@ msgstr "CFI"
 msgid "SRMR"
 msgstr "SRMR"
 
-#, fuzzy
 msgid "The model for group %s did not converge."
-msgstr "由于不收敛，该模型无法估计。"
+msgstr "组 %s 的模型未收敛。"
 
 msgid "Global Invariance Fit"
 msgstr "全局不变性拟合"
@@ -587,9 +573,8 @@ msgstr "使用 -2 对数似然差检验对 MNLFA 不变性模型（形态、度�
 msgid "Type"
 msgstr "类型"
 
-#, fuzzy
 msgid "n(Par)"
-msgstr "参数"
+msgstr "n(参数)"
 
 msgid "Fit (-2LL)"
 msgstr "拟合（-2LL）"
@@ -639,9 +624,8 @@ msgid ""
 "unit change in the moderator."
 msgstr "MNLFA 不变性模型的参数估计。调节效应显示每个参数如何作为调节变量的函数而变化。“效应”行上的估计值代表调节变量每变化一个单位时参数的线性变化。"
 
-#, fuzzy
 msgid "The %s model could not be fitted"
-msgstr "由于不收敛，该模型无法估计。"
+msgstr "%s 模型无法拟合。"
 
 msgid "Loadings"
 msgstr "载荷"
@@ -658,7 +642,6 @@ msgstr "因子"
 msgid "Effect"
 msgstr "效应"
 
-#, fuzzy
 msgid "Intercepts"
 msgstr "截距"
 
@@ -675,9 +658,8 @@ msgid ""
 "(strict non-invariance)."
 msgstr "指标残差方差及其调节效应。估计值在内部为对数刻度，在显示时进行逆变换。显著的调节作用表明测量精度随调节变量变化（严格非不变性）。"
 
-#, fuzzy
 msgid "Factor Variances"
-msgstr "方差"
+msgstr "因子方差"
 
 msgid ""
 "Latent factor variances and their moderation effects. Estimates are on the "
@@ -704,9 +686,8 @@ msgid ""
 "across the moderator."
 msgstr "潜因子协方差及其调节效应。显著的调节作用表明潜因子之间的关系随调节变量变化。"
 
-#, fuzzy
 msgid "Parameter Plots"
-msgstr "参数"
+msgstr "参数图"
 
 msgid ""
 "Plots showing how model parameters (loadings, intercepts, variances) vary as "
@@ -717,16 +698,14 @@ msgstr "显示模型参数（载荷、截距、方差）如何作为调节变量
 msgid "total"
 msgstr "总计"
 
-#, fuzzy
 msgid "Parameter Value"
-msgstr "参数"
+msgstr "参数值"
 
 msgid "Nothing to print."
 msgstr "无内容可打印。"
 
-#, fuzzy
 msgid "addedGroupVariable"
-msgstr "变量"
+msgstr "addedGroupVariable"
 
 msgid "Column name %s already exists in the dataset"
 msgstr "列名 %s 已存在于数据集中"
@@ -734,9 +713,8 @@ msgstr "列名 %s 已存在于数据集中"
 msgid "# LOADINGS BLOCK"
 msgstr "# 载荷块"
 
-#, fuzzy
 msgid "Baseline"
-msgstr "基准模型"
+msgstr "基线模型"
 
 msgid "# FACTOR VARIANCES BLOCK"
 msgstr "# 因子方差块"
@@ -1121,9 +1099,8 @@ msgstr "n（观测数）"
 msgid "Total"
 msgstr "总计"
 
-#, fuzzy
 msgid "n(Parameters)"
-msgstr "参数"
+msgstr "n(参数)"
 
 msgid "Free"
 msgstr "自由"
@@ -1154,13 +1131,11 @@ msgstr "信息矩阵为 %s。"
 msgid "Standard errors are %s."
 msgstr "标准误为 %s。"
 
-#, fuzzy
 msgid ""
 "%s The AIC, BIC and additional information criteria are only available with "
 "ML-type estimators."
-msgstr "FIML 缺失数据处理仅适用于 ML 类型的估计器"
+msgstr "%s AIC、BIC 及其他信息准则仅在 ML 类型估计器下可用。"
 
-#, fuzzy
 msgid "all"
 msgstr "全部"
 
@@ -1236,9 +1211,8 @@ msgstr "有序观测变量的阈值参数。这些定义底层连续分布上将
 msgid "Threshold"
 msgstr "阈值"
 
-#, fuzzy
 msgid "Defined Parameters"
-msgstr "参数"
+msgstr "定义参数"
 
 msgid ""
 "User-defined parameters specified with the := operator. These are functions "
@@ -1278,9 +1252,8 @@ msgstr "模型拟合指数，包括增量指数（CFI、TLI、NFI）、绝对指
 msgid "%s Fit indices are based on the scaled test statistic."
 msgstr "%s 拟合指数基于缩放后的检验统计量。"
 
-#, fuzzy
 msgid "T-Size Fit Indices"
-msgstr "拟合指数"
+msgstr "T-Size 拟合指数"
 
 msgid ""
 "T-size equivalence testing fit indices (Marcoulides & Yuan, 2017). These "
@@ -1330,15 +1303,16 @@ msgid ""
 "(alpha) assumes tau-equivalence (equal loadings), while coefficient ω "
 "(omega) allows for congeneric indicators (unequal loadings) and is generally "
 "preferred. Values above 0.7 are commonly considered acceptable."
-msgstr "每个潜构念的组合信度系数。系数 α（alpha）假设tau等价（载荷相等），而系数 ω（omega）允许同源指标（载荷不等），通常更受青睐。高于 0.7 的值通常被视为可接受。"
+msgstr ""
+"每个潜构念的组合信度系数。系数 α（alpha）假设tau 等价（载荷相等），而系数 ω（"
+"omega）允许同源指标（载荷不等），通常更受青睐。高于 0.7 的值通常被视为可接受"
+"。"
 
-#, fuzzy
 msgid "Coefficient α"
-msgstr "系数"
+msgstr "系数 α"
 
-#, fuzzy
 msgid "Coefficient ω"
-msgstr "系数"
+msgstr "系数 ω"
 
 msgid "Reliability requires a model with at least one latent variable."
 msgstr "信度要求模型至少包含一个潜变量。"
@@ -1362,9 +1336,8 @@ msgid ""
 "variables."
 msgstr "异质-单质比率要求模型至少包含两个潜变量。"
 
-#, fuzzy
 msgid "Mardia's Coefficients"
-msgstr "系数"
+msgstr "Mardia 系数"
 
 msgid ""
 "Mardia's multivariate skewness and kurtosis coefficients for assessing "
@@ -1424,9 +1397,8 @@ msgid ""
 "residuals indicate that the model reproduces the observed covariances well."
 msgstr "观测协方差矩阵与模型隐含协方差矩阵之间的差异。残差小表明模型很好地重现了观测协方差。"
 
-#, fuzzy
 msgid "Standardized Residual Covariance Matrix"
-msgstr "参数估计"
+msgstr "标准化残差协方差矩阵"
 
 msgid ""
 "Standardized residual covariances. Values exceeding |2| may indicate "
@@ -1508,16 +1480,14 @@ msgstr "当引入代表未测量混杂因素的幻影变量时，路径估计及
 msgid "Path"
 msgstr "路径"
 
-#, fuzzy
 msgid "Standardized estimate"
-msgstr "参数估计"
+msgstr "标准化估计"
 
 msgid "Original model"
 msgstr "原始模型"
 
-#, fuzzy
 msgid "p*"
-msgstr "p"
+msgstr "p*"
 
 msgid "Sensitivity model"
 msgstr "敏感性模型"
