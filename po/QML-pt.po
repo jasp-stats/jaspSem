@@ -1870,8 +1870,8 @@ msgstr ""
 
 msgctxt "PLSSEM|"
 msgid ""
-"Specify the PLS-SEM model using cSEM syntax. Define measurement models (e."
-"g., 'eta1 =~ y1 + y2 + y3') and structural model (e.g., 'eta2 ~ eta1')."
+"Specify the PLS-SEM model using cSEM syntax. Define measurement models "
+"(e.g., 'eta1 =~ y1 + y2 + y3') and structural model (e.g., 'eta2 ~ eta1')."
 msgstr ""
 
 msgctxt "PLSSEM|"

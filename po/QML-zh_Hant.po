@@ -1864,8 +1864,8 @@ msgstr "設定邊際效果圖，呈現測量參數隨調節變項變化之情形
 
 msgctxt "PLSSEM|"
 msgid ""
-"Specify the PLS-SEM model using cSEM syntax. Define measurement models (e."
-"g., 'eta1 =~ y1 + y2 + y3') and structural model (e.g., 'eta2 ~ eta1')."
+"Specify the PLS-SEM model using cSEM syntax. Define measurement models "
+"(e.g., 'eta1 =~ y1 + y2 + y3') and structural model (e.g., 'eta2 ~ eta1')."
 msgstr ""
 "使用cSEM語法指定PLS-SEM模型。定義測量模型（例如「eta1 =~ y1 + y2 + y3」）與結"
 "構模型（例如「eta2 ~ eta1」）。"
