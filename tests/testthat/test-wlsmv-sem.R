@@ -407,3 +407,63 @@ test_that("Conditioning on random covariates throws the correct error",
   )
 )
 
+###-DWLS on continuous data: additional fit measures use the residual-based test-----------------------------------###
+# Regression test: lavaan's default test for estimator = "DWLS" (and "ULS") on continuous data is
+# "browne.residual.nt", which has no '*.scaled' fitMeasures. The additional-fit-measures table must
+# read the unsuffixed columns instead of blanking out CFI/TLI/RMSEA/PNFI and the T-size indices.
+
+resTestMod <- '
+f1 =~ y1 + y2 + y3 + y4 + y5
+f2 =~ y6 + y7 + y8 + y9
+'
+set.seed(1)
+resTestData <- lavaan::simulateData('
+  f1 =~ 0.8*y1 + 0.75*y2 + 0.7*y3 + 0.8*y4 + 0.75*y5
+  f2 =~ 0.8*y6 + 0.75*y7 + 0.7*y8 + 0.8*y9
+  f1 ~~ 0.4*f2
+', sample.nobs = 300L)
+
+# lavaan warns that DWLS is unusual for continuous data - that is exactly the case under test
+resTestRef <- suppressWarnings(lavaan::sem(resTestMod, data = resTestData, estimator = "dwls", meanstructure = TRUE))
+
+options <- jaspTools::analysisOptions("SEM")
+options$models <- list(list(name = "Model1", syntax = list(model = resTestMod, columns = paste0("y", 1:9))))
+options$emulation                  <- "lavaan"
+options$estimator                  <- "dwls"
+options$group                      <- ""
+options$samplingWeights            <- ""
+options$informationMatrix          <- "expected"
+options$naAction                   <- "listwise"
+options$modelTest                  <- "default"
+options$errorCalculationMethod     <- "default"
+options$meanStructure              <- TRUE
+options$latentInterceptFixedToZero <- TRUE
+options$additionalFitMeasures      <- TRUE
+
+results     <- jaspTools::runAnalysis("SEM", data = resTestData, options = options)
+resTestAddfit <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_addfit"]][["collection"]]
+
+testthat::test_that("DWLS additional fit measures fall back to the unscaled columns (no blank cells)", {
+  jaspVals <- do.call(rbind.data.frame, resTestAddfit[["modelContainer_addfit_fitMeasures"]][["data"]])[["value"]]
+  jaspVals <- suppressWarnings(as.numeric(jaspVals))
+
+  fm <- c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni", "rmsea", "rmsea.ci.lower",
+          "rmsea.ci.upper", "rmsea.pvalue", "srmr", "cn_05", "cn_01", "gfi", "mfi", "ecvi")
+  lavVals <- as.numeric(lavaan::fitMeasures(resTestRef, fit.measures = fm))
+
+  testthat::expect_false(anyNA(jaspVals))
+  testthat::expect_equal(jaspVals, lavVals)
+})
+
+testthat::test_that("DWLS additional fit measures footnote names the residual-based test", {
+  footnotes <- vapply(resTestAddfit[["modelContainer_addfit_fitMeasures"]][["footnotes"]], `[[`, character(1), "text")
+  testthat::expect_true(any(grepl("Browne residual", footnotes)))
+  testthat::expect_false(any(grepl("scaled test statistic", footnotes)))
+})
+
+testthat::test_that("DWLS T-size fit indices are populated", {
+  tsize <- do.call(rbind.data.frame, resTestAddfit[["modelContainer_addfit_fitTSize"]][["data"]])
+  testthat::expect_false(anyNA(suppressWarnings(as.numeric(tsize[["cfi"]]))))
+  testthat::expect_false(anyNA(suppressWarnings(as.numeric(tsize[["rmsea"]]))))
+})
+

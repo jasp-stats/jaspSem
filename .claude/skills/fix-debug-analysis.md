@@ -4,6 +4,8 @@ Quick reference for debugging JASP analysis functions through MCP sessions.
 
 **Note**: `browser()` and `recover()` require interactive R console and **do not work** through MCP's `btw_tool_run_r`.
 
+**Note**: Always pass `view = FALSE` to `runAnalysis()` calls made here -- it defaults to `view = TRUE`, which opens a browser tab on every call outside a testthat context (which is exactly the context these repro/debug calls run in).
+
 ---
 
 ## 1) Debugging Approaches
@@ -49,7 +51,7 @@ opts     <- jaspTools::analysisOptions(jaspFile)
 dataset  <- jaspTools::extractDatasetFromJASPFile(jaspFile)
 encoded  <- jaspTools:::encodeOptionsAndDataset(opts, dataset)
 set.seed(1)
-results  <- jaspTools::runAnalysis("AnalysisName", encoded$dataset, encoded$options, encodedDataset = TRUE)
+results  <- jaspTools::runAnalysis("AnalysisName", encoded$dataset, encoded$options, encodedDataset = TRUE, view = FALSE)
 ```
 
 If the .jasp file contains multiple analyses, `analysisOptions()` returns a list — index with `[[1]]`, `[[2]]`, etc. Pick the analysis that matches the error context.
@@ -73,7 +75,7 @@ When no .jasp file is provided, **search test files first**. Test files contain 
    dataset  <- jaspTools::extractDatasetFromJASPFile(jaspFile)
    encoded  <- jaspTools:::encodeOptionsAndDataset(opts, dataset)
    set.seed(1)
-   results  <- jaspTools::runAnalysis("AnalysisName", encoded$dataset, encoded$options, encodedDataset = TRUE)
+   results  <- jaspTools::runAnalysis("AnalysisName", encoded$dataset, encoded$options, encodedDataset = TRUE, view = FALSE)
    ```
 
    **Pattern 2 — inline options** (look for `analysisOptions("AnalysisName")` with explicit option assignments):
@@ -84,7 +86,7 @@ When no .jasp file is provided, **search test files first**. Test files contain 
    options$group      <- "contBinom"     # copy from test
    # ... copy ALL option assignments from the test ...
    set.seed(1)
-   results <- jaspTools::runAnalysis("AnalysisName", "debug.csv", options)
+   results <- jaspTools::runAnalysis("AnalysisName", "debug.csv", options, view = FALSE)
    ```
 
 3. **Modify options** to match the bug-triggering scenario (e.g., enable/disable specific checkboxes).
@@ -102,7 +104,7 @@ options <- jaspTools::analysisOptions("AnalysisName")
 options$dependent <- "contNormal"
 options$group     <- "contBinom"
 set.seed(1)
-results <- jaspTools::runAnalysis("AnalysisName", "debug.csv", options)
+results <- jaspTools::runAnalysis("AnalysisName", "debug.csv", options, view = FALSE)
 ```
 
 **Tip**: `jaspTools::analysisOptions("AnalysisName")` returns all options with their QML defaults. Inspect it with `str(options)` to understand available options and their types.
@@ -160,7 +162,7 @@ devtools::load_all()
 
 # Re-run the analysis (use same code that triggered original error)
 set.seed(1)
-results <- jaspTools::runAnalysis("AnalysisName", encoded$dataset, encoded$options, encodedDataset = TRUE)
+results <- jaspTools::runAnalysis("AnalysisName", encoded$dataset, encoded$options, encodedDataset = TRUE, view = FALSE)
 
 # Console output will show:
 # DEBUG: Saved to C:/Users/.../Temp/RtmpXXX/debug_state.rds
@@ -222,7 +224,7 @@ Once fix logic works, implement it in the source file.
 devtools::load_all()
 
 set.seed(1)
-results <- jaspTools::runAnalysis("AnalysisName", encoded$dataset, encoded$options, encodedDataset = TRUE)
+results <- jaspTools::runAnalysis("AnalysisName", encoded$dataset, encoded$options, encodedDataset = TRUE, view = FALSE)
 
 # Check overall status
 cat("Status:", results$status, "\n")
@@ -269,7 +271,7 @@ grep -r "saveRDS.*tempdir" R/
    dataset <- jaspTools::extractDatasetFromJASPFile(jaspFile)
    encoded <- jaspTools:::encodeOptionsAndDataset(opts, dataset)
    set.seed(1)
-   results <- jaspTools::runAnalysis("AnalysisName", encoded$dataset, encoded$options, encodedDataset = TRUE)
+   results <- jaspTools::runAnalysis("AnalysisName", encoded$dataset, encoded$options, encodedDataset = TRUE, view = FALSE)
    # → Status: fatalError
    ```
 
