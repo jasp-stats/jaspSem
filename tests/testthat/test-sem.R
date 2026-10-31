@@ -1297,3 +1297,48 @@ test_that("Equality constraints: regression coefficients match", {
                                       0.651450397707888, 1.08137847142308, 0.866414434565485, 2, "dem65",
                                       2.88657986402541e-15, "dem60", 0.109677544359593, 7.89965201741592))
 })
+
+test_that("Sampling weights dropdown only allows scale variables", {
+  qmlFile <- testthat::test_path("..", "..", "inst", "qml", "SEM.qml")
+  testthat::skip_if_not(file.exists(qmlFile), "SEM.qml not found")
+
+  qml   <- paste(readLines(qmlFile, warn = FALSE), collapse = "\n")
+  # DropDown block that declares name: "samplingWeights"
+  block <- regmatches(qml, regexpr("DropDown\\s*\\{[^{}]*name:\\s*\"samplingWeights\"[^{}]*\\}", qml))
+
+  testthat::expect_length(block, 1)
+  testthat::expect_match(block, "allowedColumns:\\s*\\[\\s*\"scale\"\\s*\\]")
+})
+
+test_that("Negative or missing sampling weights give a validation error", {
+  dataset <- read.csv(testthat::test_path("poldem_grouped.csv"))
+  dataset$wValid <- seq(0.5, 2, length.out = nrow(dataset))
+  dataset$wNeg   <- dataset$wValid
+  dataset$wNeg[c(3, 10)] <- -1
+  dataset$wNA    <- dataset$wValid
+  dataset$wNA[c(3, 10)]  <- NA
+
+  weightOptions <- jaspTools::analysisOptions("SEM")
+  weightOptions$models <- list(list(name = "Model1", syntax = list(model = "x1 ~ x2 + x3 + y1", columns = c("x1", "x2", "x3", "y1"))))
+  weightOptions$emulation         <- "lavaan"
+  weightOptions$estimator         <- "default"
+  weightOptions$group             <- ""
+  weightOptions$informationMatrix <- "expected"
+  weightOptions$naAction          <- "fiml"
+  weightOptions$modelTest         <- "standard"
+
+  weightOptions$samplingWeights <- "wNeg"
+  resultsNeg <- jaspTools::runAnalysis("SEM", dataset, weightOptions, view = FALSE, makeTests = FALSE)
+  expect_identical(resultsNeg[["status"]], "validationError")
+  expect_match(resultsNeg[["results"]][["errorMessage"]], "Negative numbers found in wNeg")
+
+  weightOptions$samplingWeights <- "wNA"
+  resultsNA <- jaspTools::runAnalysis("SEM", dataset, weightOptions, view = FALSE, makeTests = FALSE)
+  expect_identical(resultsNA[["status"]], "validationError")
+  expect_match(resultsNA[["results"]][["errorMessage"]], "Missing values encountered in wNA")
+
+  weightOptions$samplingWeights <- "wValid"
+  resultsValid <- jaspTools::runAnalysis("SEM", dataset, weightOptions, view = FALSE, makeTests = FALSE)
+  expect_identical(resultsValid[["status"]], "complete")
+  expect_null(resultsValid[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["error"]])
+})
