@@ -6,6 +6,12 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Language: zh_Hans\n"
 "X-Qt-Contexts: true\n"
+"PO-Revision-Date: 2026-10-26 14:51+0000\n"
+"Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
+"Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
+"projects/jasp/jaspsem-qml/zh_Hans/>\n"
+"Language: zh_Hans\n"
+"X-Generator: Weblate 2026.11.dev0\n"
 
 msgctxt "Description|"
 msgid "SEM"
@@ -41,11 +47,11 @@ msgstr "随时间变动的协变量"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Timings"
-msgstr "时期"
+msgstr "时间点"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Growth curve shape"
-msgstr "增强曲线形状"
+msgstr "增长曲线形状"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Intercept"
@@ -65,7 +71,7 @@ msgstr "三次曲线"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Covarying latent curve"
-msgstr "共变潜曲线"
+msgstr "共变潜变量曲线"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Additional Output"
@@ -73,7 +79,7 @@ msgstr "附加输出"
 
 msgctxt "LatentGrowthCurve|"
 msgid "R-Squared"
-msgstr "R平方"
+msgstr "R²"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Standardized estimates"
@@ -129,7 +135,7 @@ msgstr "省略残差单一指标"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Residual variances"
-msgstr "残余方差"
+msgstr "残差方差"
 
 msgctxt "LatentGrowthCurve|"
 msgid "Correlate exogenous latents"
@@ -197,7 +203,7 @@ msgstr "绘图"
 
 msgctxt "MediationAnalysis|"
 msgid "Model plot"
-msgstr "模型适配绘图"
+msgstr "模型适配图"
 
 msgctxt "MediationAnalysis|"
 msgid "Parameter estimates"
@@ -297,7 +303,7 @@ msgstr "残差协方差"
 
 msgctxt "SEM|"
 msgid "Standardized residuals"
-msgstr "标准化的残差"
+msgstr "标准化残差"
 
 msgctxt "SEM|"
 msgid "Mardia's coefficient"
@@ -373,7 +379,7 @@ msgstr "观测到的"
 
 msgctxt "SEM|"
 msgid "Standard"
-msgstr "标准化"
+msgstr "标准"
 
 msgctxt "SEM|"
 msgid "Robust"
@@ -381,15 +387,15 @@ msgstr "稳健性"
 
 msgctxt "SEM|"
 msgid "Bootstrap"
-msgstr "Bootstrap 自助抽样"
+msgstr "Bootstrap 抽样"
 
 msgctxt "SEM|"
 msgid "Bias-corrected percentile"
-msgstr "偏差校正百分位数"
+msgstr "偏差校正百分位法"
 
 msgctxt "SEM|"
 msgid "Percentile"
-msgstr "百分位"
+msgstr "百分位法"
 
 msgctxt "SEM|"
 msgid "Normal theory"
@@ -409,7 +415,7 @@ msgstr "估计器"
 
 msgctxt "SEM|"
 msgid "ML"
-msgstr "极大似然法(ML)"
+msgstr "最大似然法(ML)"
 
 msgctxt "SEM|"
 msgid "GLS"
@@ -421,7 +427,7 @@ msgstr "加权最小二乘法(WLS)"
 
 msgctxt "SEM|"
 msgid "ULS"
-msgstr "加权最小二乘法 (ULS)"
+msgstr "未加权最小二乘法 (ULS)"
 
 msgctxt "SEM|"
 msgid "DWLS"
@@ -429,7 +435,7 @@ msgstr "对角加权最小二乘法(DWLS)"
 
 msgctxt "SEM|"
 msgid "PML"
-msgstr "配对极大似然法 (PML)"
+msgstr "配对最大似然法 (PML)"
 
 msgctxt "SEM|"
 msgid "Model test"
@@ -569,7 +575,7 @@ msgstr "无"
 
 msgctxt "PLSSEM|"
 msgid "Bootstrap"
-msgstr "Bootstrap 自助抽样"
+msgstr "Bootstrap 抽样"
 
 msgctxt "PLSSEM|"
 msgid "Confidence intervals"
@@ -725,11 +731,11 @@ msgstr "输出选项"
 
 msgctxt "SEM|"
 msgid "Sensitivity Analysis"
-msgstr "敏感分析"
+msgstr "敏感性分析"
 
 msgctxt "SEM|"
 msgid "Run sensitivity analysis"
-msgstr "运行敏感分析"
+msgstr "运行敏感性分析"
 
 msgctxt "SEM|"
 msgid "Search algorithm"
@@ -787,12 +793,10 @@ msgctxt "SEM|"
 msgid "Maximum number of iterations"
 msgstr "最大迭代次数"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Advanced"
 msgstr "高级"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Missing value handling"
 msgstr "缺失值处理方式"
@@ -813,17 +817,14 @@ msgctxt "Advanced|"
 msgid "Lavaan"
 msgstr "Lavaan"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Mplus"
 msgstr "Mplus 方式"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "EQS"
 msgstr "EQS 方式"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "Estimator"
 msgstr "估计器"
@@ -832,17 +833,14 @@ msgctxt "Advanced|"
 msgid "Default"
 msgstr "默认"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "ML"
-msgstr "极大似然法(ML)"
+msgstr "最大似然法(ML)"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "GLS"
 msgstr "广义最小二乘法(GLS)"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "WLS"
 msgstr "加权最小二乘法(WLS)"
@@ -851,72 +849,58 @@ msgctxt "Advanced|"
 msgid "ULS"
 msgstr "未加权最小二乘法 (ULS)"
 
-#, fuzzy
 msgctxt "Advanced|"
 msgid "DWLS"
 msgstr "对角加权最小二乘法(DWLS)"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Confidence intervals"
 msgstr "置信区间"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Method"
 msgstr "方法"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Standard"
-msgstr "标准化"
+msgstr "标准"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Robust"
-msgstr "稳健性"
+msgstr "稳健"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Bootstrap"
-msgstr "Bootstrap 自助抽样"
+msgstr "Bootstrap 抽样"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Replications"
 msgstr "重复次数"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Type"
 msgstr "类型"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Bias-corrected percentile"
-msgstr "偏差校正百分位数"
+msgstr "偏差校正百分位法"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Percentile"
-msgstr "百分位"
+msgstr "百分位法"
 
-#, fuzzy
 msgctxt "ErrorCalculation|"
 msgid "Normal theory"
 msgstr "正态理论"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Estimation Options"
 msgstr "估计选项"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Additional fit measures"
 msgstr "附加拟合测度"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "All"
 msgstr "全部"
@@ -929,7 +913,6 @@ msgctxt "LatentGrowthCurve|"
 msgid "Except exogenous covariates"
 msgstr "除去外生协变量"
 
-#, fuzzy
 msgctxt "MediationAnalysis|"
 msgid "All"
 msgstr "全部"
@@ -942,7 +925,6 @@ msgctxt "MediationAnalysis|"
 msgid "Except exogenous covariates"
 msgstr "除去外生协变量"
 
-#, fuzzy
 msgctxt "Mimic|"
 msgid "All"
 msgstr "全部"
@@ -1091,7 +1073,6 @@ msgctxt "SEM|"
 msgid "Lavaan"
 msgstr "Lavaan"
 
-#, fuzzy
 msgctxt "SEM|"
 msgid "All"
 msgstr "全部"
@@ -1118,7 +1099,7 @@ msgstr "一致性偏最小二乘法"
 
 msgctxt "PLSSEM|"
 msgid "Tolerance"
-msgstr "容差"
+msgstr "容忍度"
 
 msgctxt "PLSSEM|"
 msgid "Add construct scores to data"
@@ -1391,7 +1372,6 @@ msgctxt "PLSSEM|"
 msgid "Saturated structural model"
 msgstr "饱和结构模型"
 
-#, fuzzy
 msgctxt "LatentGrowthCurve|"
 msgid "Show parameter estimates"
 msgstr "显示参数估计"
@@ -1400,26 +1380,22 @@ msgctxt "Description|"
 msgid "MNLFA"
 msgstr "MNLFA"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Loadings"
 msgstr "载荷"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Intercepts"
 msgstr "截距"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Residual variances"
-msgstr "残余方差"
+msgstr "残差方差"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Variances"
 msgstr "方差"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Means"
 msgstr "均值"
@@ -1500,7 +1476,6 @@ msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Include Individual Moderations"
 msgstr "包含个别调节"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Indicators"
 msgstr "指标"
@@ -1513,7 +1488,6 @@ msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Display Plot"
 msgstr "显示图形"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Output Options"
 msgstr "输出选项"
@@ -1542,7 +1516,6 @@ msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Show syntax"
 msgstr "显示语法"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Plots"
 msgstr "绘图"
@@ -1559,7 +1532,6 @@ msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Display plot"
 msgstr "显示图形"
 
-#, fuzzy
 msgctxt "PLSSEM|"
 msgid "Additional fit measures"
 msgstr "附加拟合测度"
@@ -1830,7 +1802,6 @@ msgid ""
 "should be tested for moderation effects."
 msgstr "对于每个不变性水平，指定应对哪些个别测量参数进行调节效应检验。"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Estimation Options"
 msgstr "估计选项"
@@ -1839,7 +1810,6 @@ msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Indicator preprocessing"
 msgstr "指标预处理"
 
-#, fuzzy
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "None"
 msgstr "无"
