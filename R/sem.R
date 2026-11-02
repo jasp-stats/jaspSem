@@ -539,60 +539,38 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
   return(syntax)
 }
 
+.semEffectLabels <- function(n, usedLabels, nGroups = 0) {
+  #' `n` unique labels for the regression paths, none of which (nor their per-group versions
+  #' "<label>_<group>") clash with a label already used in the model
+  prefix <- "jaspEffect"
+  repeat {
+    labels <- paste0(prefix, seq_len(n))
+    allLabels <- if (nGroups > 0) outer(labels, seq_len(nGroups), paste, sep = "_") else labels
+    if (!any(usedLabels %in% allLabels)) return(labels)
+    prefix <- paste0(prefix, "X")
+  }
+}
+
 .semEffectsSyntax <- function(originalSyntax, syntaxTable, regressions, dataset, options) {
 
-    if(options[["group"]] == "") {
-    # a plain letters[1:n] scheme runs out at 26 regression paths (NA labels beyond that,
-    # silently breaking indirect/total effects for larger models), so use an always-unique,
-    # unlimited-count scheme instead
-    regressionLabels <- paste0("jaspEffect", seq_len(nrow(regressions)))
-    if (!any(syntaxTable[, "label"] %in% regressionLabels)) {
-      regressions[, "label"] <- regressionLabels
-    } else {
-      while (any(syntaxTable[, "label"] %in% regressionLabels)) {
-        regressionLabels <- paste0("jaspEffect", seq_len(nrow(regressions)), sample(1e5, 1))
-      }
-      regressions[, "label"] <- regressionLabels
-    }
+  # unlimited, always-unique base labels (a plain letters[1:n] scheme runs out at 26 paths and
+  # yields NA labels beyond that); shared by the grouped and ungrouped case
+  if (options[["group"]] == "") {
+    regressions[, "label"] <- .semEffectLabels(nrow(regressions), syntaxTable[, "label"])
   } else {
     groups <- unique(dataset[, options[["group"]]])
     groupLevels <- length(groups)
     regressions <- regressions[1:(nrow(regressions) / groupLevels),]
-    regressionsPerGroup <- list()
-    labelsPerGroup <- list()
-    for (group in seq_along(groups)) {
-      regressionsPerGroup[[group]] <- regressions
-      labelsPerGroup[[group]] <- paste(letters[1:nrow(regressions)], group, sep = "")
-    }
-    if (!any(syntaxTable[, "label"] %in% unlist(labelsPerGroup))) {
-      for (group in seq_along(groups)) {
-        regressionsPerGroup[[group]][, "label"] <- labelsPerGroup[[group]]
-        labelsLetters <- NULL
-      }
-    } else {
-      while (any(syntaxTable[, "label"] %in% unlist(labelsPerGroup))) {
-        labelsLetters <- paste0(sample(letters, nrow(regressions)), sample(letters, nrow(regressions)))
-        for (group in seq_along(groups)) {
-          labelsPerGroup[[group]] <- paste(labelsLetters, group, sep = "")
-        }
-        if(!any(syntaxTable[, "label"] %in% unlist(labelsPerGroup))) {
-          for (group in seq_along(groups)) {
-            regressionsPerGroup[[group]][, "label"] <- labelsPerGroup[[group]]
-          }
-        }
-      }
-    }
-
-
-    if(is.null(labelsLetters)) {
-      for (label in 1:nrow(regressions)) {
-        regressions[label, "label"] <- .create_group_vector(letters[label], groupLevels)
-      }
-    } else {
-      for (label in seq_along(labelsLetters)) {
-        regressions[label, "label"] <- .create_group_vector(labelsLetters[label], groupLevels)
-      }
-    }
+    baseLabels <- .semEffectLabels(nrow(regressions), syntaxTable[, "label"], groupLevels)
+    # one label per path and group (used in the := definitions) ...
+    regressionsPerGroup <- lapply(seq_len(groupLevels), function(group) {
+      regressionsGroup <- regressions
+      regressionsGroup[, "label"] <- paste(baseLabels, group, sep = "_")
+      regressionsGroup
+    })
+    # ... and a c(label_1, label_2, ...) vector per path (used in the model syntax)
+    regressions[, "label"] <- vapply(baseLabels, .create_group_vector, character(1), n = groupLevels,
+                                     USE.NAMES = FALSE)
   }
 
   # add labels to syntax
@@ -619,9 +597,10 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
     lhsRegressionPattern <- paste0("^\\Q", lhs, "\\E\\s*~(?!~)")
     rhsTokenPattern      <- .semVarTokenPattern(rhs)
 
-    startLine <- which(stringr::str_detect(syntax_splitted, lhsRegressionPattern))[1]
-    if (is.na(startLine)) next
-    idx <- !is.na(statementId) & statementId == statementId[startLine]
+    # the same lhs may start several statements ("y ~ a" and "y ~ b" on separate lines)
+    startLines <- which(stringr::str_detect(syntax_splitted, lhsRegressionPattern))
+    if (length(startLines) == 0) next
+    idx <- !is.na(statementId) & statementId %in% statementId[startLines]
 
     syntax_splitted[idx] <- stringr::str_replace_all(syntax_splitted[idx], rhsTokenPattern, paste0(label, "*", rhs))
   }
@@ -668,13 +647,15 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
     }
 
     total_effects <- c()
+    # first predictor and final outcome of each indirect effect (matched exactly: a prefix match on
+    # the effect name would also pick up e.g. "x12_m_y" as an effect of "x1")
+    indirectPred <- pred
+    indirectOut  <- out
     for (pred in unique(c(pred, regressions[[group]][["rhs"]]))) {
       for (out in unique(c(out, regressions[[group]][["lhs"]]))) {
         total_effect <- NULL
         total_effect_name <- paste0("total_", groups[group], "__", pred, "__", out)
-        indirect_effect_idx <- unlist(lapply(names(indirect_effects), function(x) {
-          startsWith(x, pred) && endsWith(x, out)
-        }))
+        indirect_effect_idx <- indirectPred == pred & indirectOut == out
         if(sum(indirect_effect_idx > 0)) {
           total_effect <- paste(indirect_effects_with_parentheses[indirect_effect_idx], collapse = "+")
         }
@@ -2986,8 +2967,8 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
 }
 
 
-.create_group_vector <- function(letter, n) {
-  groups <- paste(letter, 1:n, sep="")
+.create_group_vector <- function(label, n) {
+  groups <- paste(label, 1:n, sep = "_")
   groups <- paste0(groups, collapse = ", ")
   groups <- paste0("c(", groups, ")")
   return(groups)
