@@ -104,6 +104,12 @@ SEMInternal <- function(jaspResults, dataset, options, ...) {
                type = c("infinity"), message='default', exitAnalysisIfErrors = TRUE)
   }
 
+  # sampling weights must be non-negative and complete (lavaan rejects both)
+  if (options[["dataType"]] == "raw" && options[["samplingWeights"]] != "") {
+    .hasErrors(dataset, type = c("negativeValues", "missingValues"), all.target = options[["samplingWeights"]],
+               message = "default", exitAnalysisIfErrors = TRUE)
+  }
+
   # Check whether grouping variable is a grouping variable
   if (options[["group"]] != "") {
     groupfac <- factor(dataset[[options[["group"]]]])
