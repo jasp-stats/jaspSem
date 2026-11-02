@@ -29,7 +29,7 @@ Form
 			return [{value: "loadings", label: qsTr("Loadings")}, {value: "intercepts", label: qsTr("Intercepts")}, {value: "residualVariances", label: qsTr("Residual variances")}];
 		}
 		if (factorCount == 2) {
-			return [{value: "variances", label: qsTr("Variances")}, {value: "means", label: qsTr("Means")}, {value: "covariances", label: qsTr("Covariances")}];
+			return [{value: "variances", label: qsTr("Variances")}, {value: "means", label: qsTr("Means")}, {value: "covariances", label: qsTr("Correlations")}];
 		}
 		return [{value: "variances", label: qsTr("Variances")}, {value: "means", label: qsTr("Means")}];
 	}
@@ -238,6 +238,7 @@ Form
 							CheckBox {
 								name: "includeIndividualModeration";
 								id: includeIndividualModeration
+								info: modFourthLayer.moderationParamValue == "covariances" ? qsTr("Allow the Fisher z-transformed factor correlation to depend on the moderators. When unchecked, the correlation is constant, but the covariance can still vary with the factor variances.") : ""
 								checked: 
 								(modSecondLayer.moderationInvValue == "invarianceTestConfigural" && modFourthLayer.moderationParamValue != "variances" && modFourthLayer.moderationParamValue != "means") ||
 									(modSecondLayer.moderationInvValue == "invarianceTestMetric" && modFourthLayer.moderationParamValue != "loadings" && modFourthLayer.moderationParamValue != "means") ||
@@ -291,7 +292,7 @@ Form
 			CheckBox { name: "parameterEstimatesResidualVariances"; label: qsTr("Residual variances"); info: qsTr("Display residual variance estimates for observed indicators.") }
 			CheckBox { name: "parameterEstimatesFactorVariance"; label: qsTr("Factor variances"); info: qsTr("Display latent factor variance estimates.") }
 			CheckBox { name: "parameterEstimatesFactorMeans"; label: qsTr("Factor means"); info: qsTr("Display latent factor mean estimates.") }
-			CheckBox { name: "parameterEstimatesFactorCovariances"; label: qsTr("Factor covariances"); info: qsTr("Display latent factor covariance estimates.") }
+			CheckBox { name: "parameterEstimatesFactorCovariances"; label: qsTr("Factor correlations"); info: qsTr("Display regression coefficients for Fisher z-transformed latent factor correlations.") }
 
 		}
 
