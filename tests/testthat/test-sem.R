@@ -1136,6 +1136,37 @@ test_that("Residual variances table results match", {
 })
 
 
+# R-squared is unaffected by bootstrapped standardized estimates
+options <- jaspTools::analysisOptions("SEM")
+options$models <- list(list(name = "Model1", syntax = list(model = "x1 ~ x2 + x3 + y1", columns = c("x1", "x2", "x3", "y1"))))
+options$emulation         <- "lavaan"
+options$estimator         <- "default"
+options$group             <- ""
+options$samplingWeights   <- ""
+options$informationMatrix <- "expected"
+options$naAction          <- "fiml"
+options$modelTest         <- "standard"
+options$rSquared          <- TRUE
+options$errorCalculationMethod    <- "bootstrap"
+options$bootstrapCiType   <- "percentile"
+options$bootstrapSamples  <- 100
+options$standardizedEstimate <- TRUE
+
+set.seed(1)
+resultsBoot <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
+
+options$errorCalculationMethod <- "default"
+options$standardizedEstimate   <- FALSE
+set.seed(1)
+resultsPlain <- jaspTools::runAnalysis("SEM", testthat::test_path("poldem_grouped.csv"), options, makeTests = F)
+
+test_that("R-squared is unaffected by bootstrapped standardized estimates", {
+  tableBoot  <- resultsBoot[["results"]][["modelContainer"]][["collection"]][["modelContainer_rsquared"]][["data"]]
+  tablePlain <- resultsPlain[["results"]][["modelContainer"]][["collection"]][["modelContainer_rsquared"]][["data"]]
+  expect_equal(tableBoot, tablePlain)
+})
+
+
 # Sensitivity analysis works
 options <- analysisOptions("SEM")
 options$samplingWeights <- ""
@@ -1341,4 +1372,102 @@ test_that("Negative or missing sampling weights give a validation error", {
   resultsValid <- jaspTools::runAnalysis("SEM", dataset, weightOptions, view = FALSE, makeTests = FALSE)
   expect_identical(resultsValid[["status"]], "complete")
   expect_null(resultsValid[["results"]][["modelContainer"]][["collection"]][["modelContainer_fittab"]][["error"]])
+})
+
+# Indirect/total effects: label injection into the model syntax -----------------------------------
+# regression paths are auto-labelled to build the := definitions; these cases used to silently drop
+# the Indirect/Total effects tables (lavaan rejected the enriched model, JASP fell back to the plain one)
+effectsOptions <- function(syntax, columns, group = "") {
+  options <- jaspTools::analysisOptions("SEM")
+  options$models <- list(list(name = "Model1", syntax = list(model = syntax, columns = columns)))
+  options$emulation         <- "lavaan"
+  options$estimator         <- "default"
+  options$group             <- group
+  options$samplingWeights   <- ""
+  options$informationMatrix <- "expected"
+  options$naAction          <- "listwise"
+  options$modelTest         <- "standard"
+  options
+}
+
+effectsTable <- function(results, name) {
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_params"]][["collection"]][[name]][["data"]]
+  # the group column only exists for multigroup models; single-group rows are keyed as group 1
+  keys <- vapply(table, function(row) paste(if (is.null(row[["group"]])) 1 else row[["group"]], row[["path"]]), character(1))
+  stats::setNames(lapply(table, `[[`, "est"), keys)
+}
+
+# estimate of a lavaan regression path "lhs ~ rhs"
+lavPath <- function(fit, lhs, rhs) {
+  pe <- lavaan::parameterEstimates(fit)
+  pe[pe$lhs == lhs & pe$op == "~" & pe$rhs == rhs, "est"]
+}
+
+set.seed(1)
+effectsData <- data.frame(x1 = rnorm(300), x12 = rnorm(300), x2 = rnorm(300))
+effectsData$m <- 0.5 * effectsData$x1 - 0.4 * effectsData$x12 + rnorm(300)
+effectsData$y <- 0.4 * effectsData$m + 0.2 * effectsData$x1 + 0.1 * effectsData$x2 + rnorm(300)
+
+test_that("Effects work for variable names that are prefixes of each other, multi-line and repeated-lhs statements", {
+  # "x1" is a prefix of "x12"; the first statement spans two lines; "y" starts two statements
+  syntax <- "m ~ x1 +\n  x12\ny ~ m\ny ~ x1 + x2"
+  options <- effectsOptions(syntax, c("x1", "x12", "x2", "m", "y"))
+  results <- jaspTools::runAnalysis("SEM", effectsData, options, makeTests = FALSE)
+  ref <- lavaan::sem(syntax, effectsData)
+
+  indirect <- effectsTable(results, "modelContainer_params_indeff")
+  total    <- effectsTable(results, "modelContainer_params_toteff")
+
+  expect_equal(indirect[["1 x1 → m → y"]],  lavPath(ref, "m", "x1")  * lavPath(ref, "y", "m"))
+  expect_equal(indirect[["1 x12 → m → y"]], lavPath(ref, "m", "x12") * lavPath(ref, "y", "m"))
+  expect_equal(total[["1 x1 → y"]],  lavPath(ref, "m", "x1")  * lavPath(ref, "y", "m") + lavPath(ref, "y", "x1"))
+  expect_equal(total[["1 x12 → y"]], lavPath(ref, "m", "x12") * lavPath(ref, "y", "m"))
+  expect_equal(total[["1 x2 → y"]],  lavPath(ref, "y", "x2"))
+})
+
+# more than 26 regression paths used to exhaust the letters[1:n] label scheme (NA labels)
+manyPredictors <- paste0("p", 1:30)
+manyData <- as.data.frame(matrix(rnorm(300 * 30), 300, 30, dimnames = list(NULL, manyPredictors)))
+manyData$m <- 0.4 * manyData$p1 + 0.4 * manyData$p28 + rnorm(300)
+manyData$y <- 0.5 * manyData$m + 0.2 * manyData$p1 + rnorm(300)
+manySyntax  <- paste0("m ~ ", paste(manyPredictors, collapse = " + "), "\ny ~ m + p1")
+manyColumns <- c(manyPredictors, "m", "y")
+
+test_that("Effects work with more than 26 regression paths", {
+  options <- effectsOptions(manySyntax, manyColumns)
+  results <- jaspTools::runAnalysis("SEM", manyData, options, makeTests = FALSE)
+  ref <- lavaan::sem(manySyntax, manyData)
+
+  indirect <- effectsTable(results, "modelContainer_params_indeff")
+  total    <- effectsTable(results, "modelContainer_params_toteff")
+
+  expect_length(indirect, 30)
+  expect_false(anyNA(unlist(indirect)))
+  for (predictor in c("p1", "p27", "p28", "p30")) {
+    expect_equal(indirect[[paste("1", predictor, "→ m → y")]],
+                 lavPath(ref, "m", predictor) * lavPath(ref, "y", "m"))
+  }
+  expect_equal(total[["1 p1 → y"]], lavPath(ref, "m", "p1") * lavPath(ref, "y", "m") + lavPath(ref, "y", "p1"))
+})
+
+test_that("Effects work with more than 26 regression paths in a multigroup model", {
+  manyData$group <- rep(1:2, each = 150)
+  options <- effectsOptions(manySyntax, manyColumns, group = "group")
+  results <- jaspTools::runAnalysis("SEM", manyData, options, makeTests = FALSE)
+
+  indirect <- effectsTable(results, "modelContainer_params_indeff")
+  total    <- effectsTable(results, "modelContainer_params_toteff")
+
+  expect_length(indirect, 60)
+  expect_false(anyNA(unlist(indirect)))
+  # without equality constraints the multigroup point estimates are the per-group single-group estimates
+  for (group in 1:2) {
+    ref <- lavaan::sem(manySyntax, manyData[manyData$group == group, ])
+    for (predictor in c("p1", "p27", "p28", "p30")) {
+      expect_equal(indirect[[paste(group, predictor, "→ m → y")]],
+                   lavPath(ref, "m", predictor) * lavPath(ref, "y", "m"))
+    }
+    expect_equal(total[[paste(group, "p1 → y")]],
+                 lavPath(ref, "m", "p1") * lavPath(ref, "y", "m") + lavPath(ref, "y", "p1"))
+  }
 })

@@ -216,11 +216,15 @@ checkLavaanModel <- function(model, availableVars) {
 }
 
 
+.semVarTokenPattern <- function(var) {
+  #' match `var` only as a whole token in lavaan model syntax, never as a substring of a
+  #' longer name (e.g. "Factor1" must not match inside "Factor12")
+  paste0("(?<=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|^)\\Q", var, "\\E(?=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|$)")
+}
+
 .semGetUsedVars <- function(syntax, availablevars) {
   vv <- availablevars
-  findpattern <- paste0("(?<=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|^)\\Q",
-                        vv,
-                        "\\E(?=[\\s\\+\\^\\=\\~\\<\\*\\>\\:\\%\\|\\+]|$)")
+  findpattern <- .semVarTokenPattern(vv)
   return(vv[vapply(findpattern,
                    function(p) stringr::str_detect(syntax, p),
                    FUN.VALUE = TRUE,
@@ -251,6 +255,7 @@ checkLavaanModel <- function(model, availableVars) {
   oldmodels  <- modelContainer[["models"]][["object"]]
   oldresults <- modelContainer[["results"]][["object"]]
   oldwarnings <- modelContainer[["warnings"]][["object"]]
+  oldr2 <- modelContainer[["r2"]][["object"]]
   reuse <- match(options[["models"]], oldmodels)
 
   if (identical(reuse, seq_along(reuse))) return(oldresults) # reuse everything
@@ -258,10 +263,12 @@ checkLavaanModel <- function(model, availableVars) {
   # create results list
   results <- vector("list", length(options[["models"]]))
   warnings <- vector("list", length(options[["models"]]))
+  r2s <- vector("list", length(options[["models"]]))
 
   if (any(!is.na(reuse))) {
     # where possible, prefill results with old results
     results[seq_along(reuse)] <- oldresults[reuse]
+    r2s[seq_along(reuse)] <- oldr2[reuse]
     # in order to avoid assigning NULL in some cases
     warnings[seq_along(reuse)] <- ifelse(is.null(oldwarnings[reuse]), list(NULL), oldwarnings[reuse])
   }
@@ -353,6 +360,8 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
       break
     }
 
+    r2s[[i]] <- lavaan::inspect(fit$value, "r2")
+
     if (options[["errorCalculationMethod"]] == "bootstrap") {
       type <- switch(options[["standardizedEstimateType"]],
                      "all" = "std.all",
@@ -375,6 +384,8 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
   if (!modelContainer$getError()) {
     modelContainer[["results"]] <- createJaspState(results)
     modelContainer[["results"]]$dependOn(optionsFromObject = modelContainer)
+    modelContainer[["r2"]]      <- createJaspState(r2s)
+    modelContainer[["r2"]]$dependOn(optionsFromObject = modelContainer)
     modelContainer[["models"]]  <- createJaspState(options[["models"]])
     modelContainer[["models"]]$dependOn(optionsFromObject = modelContainer)
     modelContainer[["originalSyntax"]] <- createJaspState(list(syntaxTable))
@@ -528,68 +539,70 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
   return(syntax)
 }
 
+.semEffectLabels <- function(n, usedLabels, nGroups = 0) {
+  #' `n` unique labels for the regression paths, none of which (nor their per-group versions
+  #' "<label>_<group>") clash with a label already used in the model
+  prefix <- "jaspEffect"
+  repeat {
+    labels <- paste0(prefix, seq_len(n))
+    allLabels <- if (nGroups > 0) outer(labels, seq_len(nGroups), paste, sep = "_") else labels
+    if (!any(usedLabels %in% allLabels)) return(labels)
+    prefix <- paste0(prefix, "X")
+  }
+}
+
 .semEffectsSyntax <- function(originalSyntax, syntaxTable, regressions, dataset, options) {
 
-    if(options[["group"]] == "") {
-    regressionLabels <- letters[1:nrow(regressions)]
-    if (!any(syntaxTable[, "label"] %in% regressionLabels)) {
-      regressions[, "label"] <- letters[1:nrow(regressions)]
-    } else {
-      while (any(syntaxTable[, "label"] %in% regressionLabels)) {
-        regressionLabels <- paste0(sample(letters, nrow(regressions)), sample(letters, nrow(regressions)))
-      }
-      regressions[, "label"] <- regressionLabels
-    }
+  # unlimited, always-unique base labels (a plain letters[1:n] scheme runs out at 26 paths and
+  # yields NA labels beyond that); shared by the grouped and ungrouped case
+  if (options[["group"]] == "") {
+    regressions[, "label"] <- .semEffectLabels(nrow(regressions), syntaxTable[, "label"])
   } else {
     groups <- unique(dataset[, options[["group"]]])
     groupLevels <- length(groups)
     regressions <- regressions[1:(nrow(regressions) / groupLevels),]
-    regressionsPerGroup <- list()
-    labelsPerGroup <- list()
-    for (group in seq_along(groups)) {
-      regressionsPerGroup[[group]] <- regressions
-      labelsPerGroup[[group]] <- paste(letters[1:nrow(regressions)], group, sep = "")
-    }
-    if (!any(syntaxTable[, "label"] %in% unlist(labelsPerGroup))) {
-      for (group in seq_along(groups)) {
-        regressionsPerGroup[[group]][, "label"] <- labelsPerGroup[[group]]
-        labelsLetters <- NULL
-      }
-    } else {
-      while (any(syntaxTable[, "label"] %in% unlist(labelsPerGroup))) {
-        labelsLetters <- paste0(sample(letters, nrow(regressions)), sample(letters, nrow(regressions)))
-        for (group in seq_along(groups)) {
-          labelsPerGroup[[group]] <- paste(labelsLetters, group, sep = "")
-        }
-        if(!any(syntaxTable[, "label"] %in% unlist(labelsPerGroup))) {
-          for (group in seq_along(groups)) {
-            regressionsPerGroup[[group]][, "label"] <- labelsPerGroup[[group]]
-          }
-        }
-      }
-    }
-
-
-    if(is.null(labelsLetters)) {
-      for (label in 1:nrow(regressions)) {
-        regressions[label, "label"] <- .create_group_vector(letters[label], groupLevels)
-      }
-    } else {
-      for (label in seq_along(labelsLetters)) {
-        regressions[label, "label"] <- .create_group_vector(labelsLetters[label], groupLevels)
-      }
-    }
+    baseLabels <- .semEffectLabels(nrow(regressions), syntaxTable[, "label"], groupLevels)
+    # one label per path and group (used in the := definitions) ...
+    regressionsPerGroup <- lapply(seq_len(groupLevels), function(group) {
+      regressionsGroup <- regressions
+      regressionsGroup[, "label"] <- paste(baseLabels, group, sep = "_")
+      regressionsGroup
+    })
+    # ... and a c(label_1, label_2, ...) vector per path (used in the model syntax)
+    regressions[, "label"] <- vapply(baseLabels, .create_group_vector, character(1), n = groupLevels,
+                                     USE.NAMES = FALSE)
   }
 
   # add labels to syntax
   syntax_splitted <- stringr::str_split_1(originalSyntax, "\n")
   syntax_splitted <- unlist(lapply(syntax_splitted, trimws))
 
+  # a lavaan statement can span several physical lines (e.g. a long "lhs ~ ..." regression
+  # ending mid-line with "+"). Group continuation lines with the line that started the
+  # statement so label injection below isn't confined to a single physical line -- otherwise
+  # terms after a line break silently never get labelled.
+  startsStatementPattern <- "^[^\\s\\+\\*~=<:]+\\s*(=~|~~|<~|:=|~)"
+  statementId <- cumsum(stringr::str_detect(syntax_splitted, startsStatementPattern))
+  statementId[syntax_splitted == ""] <- NA
+
   for (j in 1:nrow(regressions)) {
-    idx <- unlist(lapply(syntax_splitted, function(x) {
-      all(c(startsWith(x, regressions[j, "lhs"]), grepl(regressions[j, "rhs"], x)))
-    }))
-    syntax_splitted[idx] <- gsub(regressions[j, "rhs"], paste0(regressions[j, "label"], "*", regressions[j, "rhs"]), syntax_splitted[idx])
+    lhs   <- regressions[j, "lhs"]
+    rhs   <- regressions[j, "rhs"]
+    label <- regressions[j, "label"]
+
+    # match the "lhs ~ ..." regression statement only (not a "lhs =~ ..." factor definition or
+    # a "lhs ~~ ..." covariance), and label rhs only where it appears as a whole token -- naive
+    # substring matching corrupts unrelated statements whenever one variable name is a text
+    # prefix of another (e.g. "Factor1" also matching inside "Factor12")
+    lhsRegressionPattern <- paste0("^\\Q", lhs, "\\E\\s*~(?!~)")
+    rhsTokenPattern      <- .semVarTokenPattern(rhs)
+
+    # the same lhs may start several statements ("y ~ a" and "y ~ b" on separate lines)
+    startLines <- which(stringr::str_detect(syntax_splitted, lhsRegressionPattern))
+    if (length(startLines) == 0) next
+    idx <- !is.na(statementId) & statementId %in% statementId[startLines]
+
+    syntax_splitted[idx] <- stringr::str_replace_all(syntax_splitted[idx], rhsTokenPattern, paste0(label, "*", rhs))
   }
   syntax <- paste0(syntax_splitted, collapse = "\n")
 
@@ -634,13 +647,15 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
     }
 
     total_effects <- c()
+    # first predictor and final outcome of each indirect effect (matched exactly: a prefix match on
+    # the effect name would also pick up e.g. "x12_m_y" as an effect of "x1")
+    indirectPred <- pred
+    indirectOut  <- out
     for (pred in unique(c(pred, regressions[[group]][["rhs"]]))) {
       for (out in unique(c(out, regressions[[group]][["lhs"]]))) {
         total_effect <- NULL
         total_effect_name <- paste0("total_", groups[group], "__", pred, "__", out)
-        indirect_effect_idx <- unlist(lapply(names(indirect_effects), function(x) {
-          startsWith(x, pred) && endsWith(x, out)
-        }))
+        indirect_effect_idx <- indirectPred == pred & indirectOut == out
         if(sum(indirect_effect_idx > 0)) {
           total_effect <- paste(indirect_effects_with_parentheses[indirect_effect_idx], collapse = "+")
         }
@@ -1538,8 +1553,14 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
   fitinds[["index"]] <- indexStrings
 
   fnote <- ""
-  if (testName != "standard") {
-    fnote <- gettextf("%s Fit indices are based on the scaled test statistic.", fnote)
+  scaledTests <- c("satorra.bentler", "yuan.bentler", "yuan.bentler.mplus", "mean.var.adjusted", "scaled.shifted")
+  if (any(testName %in% scaledTests)) {
+    fnote <- gettext("Fit indices are based on the scaled test statistic.")
+  } else if (!all(testName == "standard")) {
+    testLabels <- .optionsForOutput()
+    prettyName <- testLabels[["jaspNames"]][match(testName[1], testLabels[["lavNames"]])]
+    if (is.na(prettyName)) prettyName <- testName[1]
+    fnote <- gettextf("Fit indices are based on the %s test statistic.", prettyName)
   }
 
   estimateNames <- c("cfi", "tli", "nnfi", "nfi", "pnfi", "rfi", "ifi", "rni",
@@ -1560,7 +1581,7 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
     }
   }
 
-  fitinds$addFootnote(fnote)
+  if (nzchar(fnote)) fitinds$addFootnote(fnote)
 
   # a table only with the T-size stuff
   ftsize <- createJaspTable(gettext("T-Size Fit Indices"))
@@ -1635,14 +1656,14 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
 
     if (length(options[["models"]]) < 2) {
 
-      r2res              <- lavaan::inspect(modelContainer[["results"]][["object"]][[1]], "r2")
+      r2res              <- modelContainer[["r2"]][["object"]][[1]]
       tabr2[["__var__"]] <- names(r2res)
       tabr2[["rsq"]]     <- r2res
 
     } else {
 
       # determine variable names
-      r2li <- lapply(modelContainer[["results"]][["object"]], lavaan::inspect, what = "r2")
+      r2li <- modelContainer[["r2"]][["object"]]
 
       # generate df with these names
       r2df <- data.frame("varname__" = unique(unlist(lapply(r2li, names))))
@@ -1661,7 +1682,7 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
 
     if (length(options[["models"]]) < 2) {
 
-      r2res              <- lavaan::inspect(modelContainer[["results"]][["object"]][[1]], "r2")
+      r2res              <- modelContainer[["r2"]][["object"]][[1]]
       tabr2[["__grp__"]] <- rep(names(r2res), vapply(r2res, length, 0))
       tabr2[["__var__"]] <- unlist(lapply(r2res, names))
       tabr2[["rsq"]]     <- unlist(r2res)
@@ -1670,7 +1691,7 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
 
       # here is the most difficult case with multiple groups and multiple models
       # create a list with r2 results per model. each element is a list with ngroup elements
-      r2li <- lapply(modelContainer[["results"]][["object"]], lavaan::inspect, what = "r2")
+      r2li <- modelContainer[["r2"]][["object"]]
 
       # now comes the difficult part: determine unique variable names in each group
       # for each group, find all variable names in each model
@@ -2946,8 +2967,8 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
 }
 
 
-.create_group_vector <- function(letter, n) {
-  groups <- paste(letter, 1:n, sep="")
+.create_group_vector <- function(label, n) {
+  groups <- paste(label, 1:n, sep = "_")
   groups <- paste0(groups, collapse = ", ")
   groups <- paste0("c(", groups, ")")
   return(groups)
@@ -2980,8 +3001,16 @@ dataset[variablesToStandardize] <- scale(dataset[variablesToStandardize])
 
   fm <- lavaan::fitMeasures(fit, fit.measures = "all")
 
-  if (!standard) {
-    fm[c("chisq", "df", "baseline.chisq", "baseline.df", "cfi", "tli", "nnfi", "nfi", "rfi", "ifi", "rni", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue")] <- fm[c("chisq.scaled", "df.scaled", "baseline.chisq.scaled", "baseline.df.scaled", "cfi.scaled", "tli.scaled", "nnfi.scaled", "nfi.scaled",  "rfi.scaled", "ifi.scaled", "rni.scaled", "rmsea.scaled", "rmsea.ci.lower.scaled", "rmsea.ci.upper.scaled", "rmsea.pvalue.scaled")]
+  # lavaan only produces '*.scaled' fit measures for genuinely scaled test statistics
+  # (satorra.bentler, scaled.shifted, mean.var.adjusted, yuan.bentler, ...). For residual-based
+  # tests (browne.residual.nt/adf, the lavaan default for DWLS/ULS on continuous data) and the
+  # standard test the test-appropriate values already live in the unsuffixed columns, so only
+  # swap when the scaled columns are actually present.
+  haveScaled <- "cfi.scaled" %in% names(fm) && !is.na(fm[["cfi.scaled"]])
+  if (!standard && haveScaled) {
+    baseNames <- c("chisq", "df", "baseline.chisq", "baseline.df", "cfi", "tli", "nnfi", "nfi",
+                   "rfi", "ifi", "rni", "rmsea", "rmsea.ci.lower", "rmsea.ci.upper", "rmsea.pvalue")
+    fm[baseNames] <- fm[paste0(baseNames, ".scaled")]
     fm["pnfi"] <- NA
   }
 

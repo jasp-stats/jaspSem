@@ -281,6 +281,30 @@ test_that("Total effects table results match", {
 })
 
 
+test_that("R-squared is unaffected by bootstrapped standardized estimates", {
+  options <- jaspTools::analysisOptions("MediationAnalysis")
+  options$predictors               <- "contcor1"
+  options$mediators                <- "contcor2"
+  options$outcomes                 <- "contNormal"
+  options$emulation                <- "lavaan"
+  options$estimator                <- "ml"
+  options$errorCalculationMethod   <- "bootstrap"
+  options$bootstrapSamples         <- 100
+  options$bootstrapCiType          <- "percentile"
+  options$standardizedEstimate     <- TRUE
+  options$standardizedEstimateType <- "all"
+  options$ciLevel                  <- 0.95
+  options$naAction                 <- "fiml"
+  options$rSquared                 <- TRUE
+
+  set.seed(1)
+  results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options, makeTests = FALSE)
+
+  table <- results[["results"]][["modelContainer"]][["collection"]][["modelContainer_rsquared"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+                                 list("contNormal", 0.0355299165169844, "contcor2", 0.431662223819312))
+})
+
 # R-squared, path plot, syntax
 test_that("R-squared, path plot, and syntax work", {
   options <- jaspTools::analysisOptions("MediationAnalysis")
