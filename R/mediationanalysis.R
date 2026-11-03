@@ -116,10 +116,10 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
     missing         = miss
     )))
 
-  if (inherits(medResult$value, "try-error")) {
-    errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(medResult$value, "condition")$message)
+  if (inherits(medResult, "try-error")) {
+    errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(medResult, "condition")$message)
     modelContainer$setError(.decodeVarsInMessage(names(dataset), errmsg))
-    return(medResult$value)
+    return(medResult)
   }
 
   # there seems to be cases where warnings from the model say: "model estimation failed, returning starting values"
