@@ -335,3 +335,29 @@ test_that("Estimation errors from lavaan are reported as an error message", {
   expect_length(errors, 1)
   expect_match(errors, "Estimation failed")
 })
+
+test_that("FIML with the GLS, WLS, or ULS estimator gives a validation message", {
+  options <- jaspTools::analysisOptions("MediationAnalysis")
+  options$predictors             <- "contcor1"
+  options$mediators              <- "contcor2"
+  options$outcomes               <- "debMiss30"
+  options$emulation              <- "lavaan"
+  options$errorCalculationMethod <- "standard"
+  options$ciLevel                <- 0.95
+  options$naAction               <- "fiml"
+
+  for (estimator in c("gls", "wls", "uls")) {
+    options$estimator <- estimator
+    results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options, makeTests = FALSE)
+    expect_identical(results[["status"]], "validationError")
+    expect_match(results[["results"]][["errorMessage"]],
+                 paste0("FIML missing value handling is not available for the ", toupper(estimator), " estimator"), fixed = TRUE)
+  }
+
+  # listwise deletion is available for these estimators
+  options$estimator <- "gls"
+  options$naAction  <- "listwise"
+  results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options, makeTests = FALSE)
+  expect_identical(results[["status"]], "complete")
+  expect_false(is.null(results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]]))
+})

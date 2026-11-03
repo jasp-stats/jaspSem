@@ -90,6 +90,12 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
       if (!all(admissible))
         gettextf("FIML missing value handling only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s", paste(endo[!admissible], collapse = ", "))
+    },
+
+    checkEstimatorMissing = function() {
+      # lavaan refuses full information maximum likelihood (missing = "ml") for these estimators
+      if (anyNA(dataset) && options$naAction == "fiml" && options$estimator %in% c("gls", "wls", "uls"))
+        gettextf("FIML missing value handling is not available for the %s estimator. Select listwise missing value handling or another estimator.", toupper(options$estimator))
     }
 
   )
