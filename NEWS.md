@@ -26,6 +26,7 @@
 * All analyses: added contextual help text to all output tables, containers, and QML controls ([PR #360](https://github.com/jasp-stats/jaspSem/pull/360))
 
 ## Fixed
+* Mediation analysis: estimation errors from lavaan are now shown as an error message instead of "$ operator is invalid for atomic vectors", and FIML missing value handling combined with the GLS, WLS, or ULS estimator gives a clear message.
 * SEM: sampling weights dropdown now only offers scale variables, and negative or missing weights give a clear error.
 * MNLFA: fixed a bug where the estimated-parameter count `k` silently under-counted when the Hessian was singular (some SEs were `NA`). The wrong `k` propagated into AIC, BIC, SABIC, and Δdf, producing incorrect LRT p-values. `k` now matches `summary(mxRun(...))$estimatedParameters`.
 * MNLFA: OpenMx warnings from `mxRun()` are no longer silently swallowed.
