@@ -763,7 +763,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (length(results) == 0) return()
 
   globalParameterContainer <- createJaspContainer(gettext("Parameter Estimates"), initCollapsed = TRUE)
-  globalParameterContainer$info <- gettext("Parameter estimates from the MNLFA invariance models. Moderation effects show how each parameter varies as a function of the moderator variable. Estimates on 'Effect' rows represent the linear change in the parameter per unit change in the moderator.")
+  globalParameterContainer$info <- gettext("Parameter estimates from the MNLFA invariance models. Moderation effects show how each parameter varies as a function of the moderator variable. Estimates on 'Effect' rows represent the linear change in the parameter per unit change in the moderator. For factor correlations, these coefficients are on the Fisher z scale.")
   globalParameterContainer$position <- 3
 
   # NEW: get nested paths for moderation include list (same trick as before)
@@ -1074,8 +1074,8 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
     # factor correlations
     covPosition <- grepl("^rho_", parNames)
     if (sum(covPosition) > 0) { # are factor covariances
-      covTable <- createJaspTable(gettext("Factor Covariances"))
-      covTable$info <- gettext("Latent factor covariances and their moderation effects. Significant moderation indicates that the relationship between latent factors varies across the moderator.")
+      covTable <- createJaspTable(gettext("Factor Correlations (Fisher z)"))
+      covTable$info <- gettext("Regression coefficients for Fisher z-transformed latent factor correlations. The baseline is the Fisher z-transformed correlation when all moderators are zero. Moderation coefficients describe changes on this scale. Covariances also depend on the factor standard deviations.")
       cont[["covTable"]] <- covTable
       covTable$addColumnInfo(name = "effect", title = gettext("Effect"), type = "number")
       # covTable$addColumnInfo(name = "param", title = gettext("Parameter"), type = "string")
@@ -1110,7 +1110,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (!is.null(jaspResults[["plotContainer"]])) return()
 
   plotContainer <- createJaspContainer(gettext("Parameter Plots"))
-  plotContainer$info <- gettext("Plots showing how model parameters (loadings, intercepts, variances) vary as a function of the moderator variable. Each plot displays the estimated parameter value across the range of the moderator.")
+  plotContainer$info <- gettext("Plots showing how model parameters (loadings, intercepts, variances) vary as a function of the moderator variable. Each plot displays the estimated parameter value across the range of the moderator. Factor correlations are shown on the Fisher z scale.")
   plotContainer$position <- 3
   plotContainer$dependOn(optionsFromObject = jaspResults[["mainContainer"]][["globalParameterContainer"]],
                          options = c("plotModelList", "includePlot"))
@@ -1454,8 +1454,12 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
       }
 
+      if (parameterGroup == "covariances") {
+        gg <- gg + ggplot2::ylab(gettext("Fisher z"))
+      }
       plt <- createJaspPlot(gg)
-      plt$title <- paste(parameterGroup, currentRow$value, sep = ": ")
+      plotTitle <- if (parameterGroup == "covariances") gettext("Factor Correlations (Fisher z)") else parameterGroup
+      plt$title <- paste(plotTitle, currentRow$value, sep = ": ")
       plotContainer[[paste0("plot", i)]] <- plt
     }
   }
@@ -1568,16 +1572,15 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   variancesObj <- .generateFactorVariances(factorList, moderators, moderate = factorNamesVars,
                                            removeAllModeration = removeMod$itemValue[removeMod$paramValue == "variances"])
   variancesBlock <- variancesObj$variancesBlock
+  factorVariances <- setNames(rep("1", length(factorList)), names(factorList))
+  factorVariances[variancesObj$variancesMapDf$factor] <- variancesObj$variancesMapDf$varianceParameter
 
   meansObj <- .generateFactorMeans(factorList, moderators, moderate = factorNamesMeans,
                                    removeAllModeration = removeMod$itemValue[removeMod$paramValue == "means"])
   meansBlock <- meansObj$meansBlock
 
-  covarianceObj <- .generateFactorCovariances(factorList, moderators,
-                                             removeModeration = any(removeMod$paramValue == "covariances"))
-
   if (length(names(factorList)) > 1) {
-    covarianceObj <- .generateFactorCovariances(factorList, moderators,
+    covarianceObj <- .generateFactorCovariances(factorList, moderators, factorVariances,
                                                 removeModeration = any(removeMod$paramValue == "covariances"))
   } else {
     covarianceObj <- list(covarianceBlock = "", covarianceMapDf = NULL)
@@ -2119,7 +2122,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 }
 
 
-.generateFactorCovariances <- function(factorList, moderators, removeModeration = FALSE) {
+.generateFactorCovariances <- function(factorList, moderators, factorVariances, removeModeration = FALSE) {
   factorNames <- names(factorList)
   numFactors <- length(factorNames)
   covarianceBlock <- gettext("# FACTOR COVARIANCES BLOCK \n")
@@ -2132,13 +2135,17 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   if (numFactors == 2) {
     factor1 <- factorNames[1]
     factor2 <- factorNames[2]
+    # The inverse Fisher transform is a correlation; rescale it using the factor SDs.
+    covarianceExpr <- paste0("sqrt(", factorVariances[[factor1]], ") * ",
+                             "((exp(2*rho) - 1)/(exp(2*rho) + 1)) * ",
+                             "sqrt(", factorVariances[[factor2]], ")")
 
     if (removeModeration) {
       # Baseline-only moderation (rho := rho_0)
       covarianceBlock <- paste0(covarianceBlock, "  ", factor1, " ~~ cov * ", factor2, "\n")
       covarianceBlock <- paste0(covarianceBlock, "  !rho_0;\n")
       covarianceBlock <- paste0(covarianceBlock, "  rho := rho_0\n")
-      covarianceBlock <- paste0(covarianceBlock, "  cov := (exp(2*rho) - 1)/(exp(2*rho) + 1)\n")
+      covarianceBlock <- paste0(covarianceBlock, "  cov := ", covarianceExpr, "\n")
 
       covarianceList[[rowIndex]] <- list(
         covarianceParameter = "rho",
@@ -2165,7 +2172,7 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
       covarianceBlock <- paste0(covarianceBlock, "  ", rhoExpr, "\n")
 
       # Apply the transformation for the covariance
-      covarianceBlock <- paste0(covarianceBlock, "  cov := (exp(2*rho) - 1)/(exp(2*rho) + 1)\n")
+      covarianceBlock <- paste0(covarianceBlock, "  cov := ", covarianceExpr, "\n")
 
       # Create the mapping for the covariance
       covarianceList[[rowIndex]] <- list(
