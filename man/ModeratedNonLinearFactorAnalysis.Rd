@@ -67,7 +67,7 @@ Defaults to \code{FALSE}.}
 
 \item{parameterEstimatesAlphaLevel, }{Significance level for flagging parameter estimates.}
 
-\item{parameterEstimatesFactorCovariances, }{Display latent factor covariance estimates.
+\item{parameterEstimatesFactorCovariances, }{Display regression coefficients for Fisher z-transformed latent factor correlations.
 Defaults to \code{FALSE}.}
 
 \item{parameterEstimatesFactorMeans, }{Display latent factor mean estimates.

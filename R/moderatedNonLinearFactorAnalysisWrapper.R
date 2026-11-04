@@ -38,7 +38,7 @@
 #' @param moderatorInteractionTerms, Include interaction terms between pairs of moderators.
 #' @param moderators, Variables hypothesized to moderate the measurement model parameters. Continuous moderators can optionally include squared and cubic effects.
 #' @param parameterEstimatesAlphaLevel, Significance level for flagging parameter estimates.
-#' @param parameterEstimatesFactorCovariances, Display latent factor covariance estimates.
+#' @param parameterEstimatesFactorCovariances, Display regression coefficients for Fisher z-transformed latent factor correlations.
 #'    Defaults to \code{FALSE}.
 #' @param parameterEstimatesFactorMeans, Display latent factor mean estimates.
 #'    Defaults to \code{FALSE}.
@@ -83,12 +83,7 @@ ModeratedNonLinearFactorAnalysis <- function(
           syncAnalysisBox = FALSE,
           warnings = FALSE) {
 
-   defaultArgCalls <- formals(jaspSem::ModeratedNonLinearFactorAnalysis)
-   defaultArgs <- lapply(defaultArgCalls, eval)
-   options <- as.list(match.call())[-1L]
-   options <- lapply(options, eval)
-   defaults <- setdiff(names(defaultArgs), names(options))
-   options[defaults] <- defaultArgs[defaults]
+   options <- mget(names(formals(sys.function())), envir = environment(), inherits = FALSE)
    options[["data"]] <- NULL
    options[["version"]] <- NULL
 
