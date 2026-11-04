@@ -26,9 +26,9 @@
 * All analyses: added contextual help text to all output tables, containers, and QML controls ([PR #360](https://github.com/jasp-stats/jaspSem/pull/360))
 
 ## Fixed
-* MNLFA: scale two-factor covariances by the factor standard deviations when factor variances are moderated, and clarify the Fisher z scale of correlation coefficients and plots.
 * MNLFA: fixed a bug where the estimated-parameter count `k` silently under-counted when the Hessian was singular (some SEs were `NA`). The wrong `k` propagated into AIC, BIC, SABIC, and Δdf, producing incorrect LRT p-values. `k` now matches `summary(mxRun(...))$estimatedParameters`.
 * MNLFA: OpenMx warnings from `mxRun()` are no longer silently swallowed.
+* MNLFA: scale two-factor covariances by the factor standard deviations when factor variances are moderated, and clarify the Fisher z scale of correlation coefficients and plots.
 * SEM: indirect effects table showed encoded column names instead of variable names in path models ([#4219](https://github.com/jasp-stats/jasp-issues/issues/4219))
 * SEM: path plot for simple regression model across SEM, MIMIC, LGCM, and Mediation Analysis ([PR #365](https://github.com/jasp-stats/jaspSem/pull/365), [#4109](https://github.com/jasp-stats/jasp-issues/issues/4109))
 * SEM: AVE and CR values regression ([PR #365](https://github.com/jasp-stats/jaspSem/pull/365), [#4201](https://github.com/jasp-stats/jasp-issues/issues/4201))
