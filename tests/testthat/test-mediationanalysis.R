@@ -312,3 +312,52 @@ test_that("R-squared, path plot, and syntax work", {
   expect_true(!is.null(syntax))
   expect_equal(syntax[["title"]], "Model syntax")
 })
+
+test_that("Estimation errors from lavaan are reported as an error message", {
+  options <- jaspTools::analysisOptions("MediationAnalysis")
+  options$predictors             <- "contcor1"
+  options$mediators              <- "contcor2"
+  options$outcomes               <- "contNormal"
+  options$emulation              <- "lavaan"
+  options$estimator              <- "ml"
+  options$errorCalculationMethod <- "standard"
+  options$naAction               <- "fiml"
+
+  # the outcome is not in the data, so lavaan cannot estimate the model (whatever the lavaan version)
+  dataset <- data.frame(contcor1 = c(0.5, -1.2, 0.3, 1.1, -0.4, 0.8, -0.9, 0.2),
+                        contcor2 = c(0.1, -0.7, 0.9, 0.4, -1.3, 0.6, -0.2, 1.0))
+  errors <- character()
+  modelContainer <- list(setError = function(message) errors <<- c(errors, message))
+
+  result <- jaspSem:::.medComputeResults(modelContainer, dataset, options, TRUE)
+
+  expect_s3_class(result, "try-error")
+  expect_length(errors, 1)
+  expect_match(errors, "Estimation failed")
+})
+
+test_that("FIML with the GLS, WLS, or ULS estimator gives a validation message", {
+  options <- jaspTools::analysisOptions("MediationAnalysis")
+  options$predictors             <- "contcor1"
+  options$mediators              <- "contcor2"
+  options$outcomes               <- "debMiss30"
+  options$emulation              <- "lavaan"
+  options$errorCalculationMethod <- "standard"
+  options$ciLevel                <- 0.95
+  options$naAction               <- "fiml"
+
+  for (estimator in c("gls", "wls", "uls")) {
+    options$estimator <- estimator
+    results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options, makeTests = FALSE)
+    expect_identical(results[["status"]], "validationError")
+    expect_match(results[["results"]][["errorMessage"]],
+                 paste0("FIML missing value handling is not available for the ", toupper(estimator), " estimator"), fixed = TRUE)
+  }
+
+  # listwise deletion is available for these estimators
+  options$estimator <- "gls"
+  options$naAction  <- "listwise"
+  results <- jaspTools::runAnalysis("MediationAnalysis", "test.csv", options, makeTests = FALSE)
+  expect_identical(results[["status"]], "complete")
+  expect_false(is.null(results[["results"]][["modelContainer"]][["collection"]][["modelContainer_parest"]]))
+})
