@@ -1567,10 +1567,6 @@ msgid "Means"
 msgstr ""
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
-msgid "Covariances"
-msgstr ""
-
-msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid ""
 "Define latent factors and assign observed indicator variables to each factor."
 msgstr ""
@@ -1829,14 +1825,6 @@ msgstr ""
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Display latent factor mean estimates."
-msgstr ""
-
-msgctxt "ModeratedNonLinearFactorAnalysis|"
-msgid "Factor covariances"
-msgstr ""
-
-msgctxt "ModeratedNonLinearFactorAnalysis|"
-msgid "Display latent factor covariance estimates."
 msgstr ""
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
@@ -2504,4 +2492,25 @@ msgstr ""
 
 msgctxt "SEM|"
 msgid "Maximum number of iterations for the optimization algorithm."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Correlations"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Allow the Fisher z-transformed factor correlation to depend on the "
+"moderators. When unchecked, the correlation is constant, but the covariance "
+"can still vary with the factor variances."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factor correlations"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Display regression coefficients for Fisher z-transformed latent factor "
+"correlations."
 msgstr ""

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.19.0\n"
-"POT-Creation-Date: 2026-07-11 03:47\n"
+"POT-Creation-Date: 2026-11-07 02:41\n"
 "PO-Revision-Date: 2024-08-30 13:09+0000\n"
 "Last-Translator: Katarina Kostelić <katarina.kostelic@gmail.com>\n"
 "Language-Team: Croatian <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -662,7 +662,8 @@ msgid ""
 "Parameter estimates from the MNLFA invariance models. Moderation effects "
 "show how each parameter varies as a function of the moderator variable. "
 "Estimates on 'Effect' rows represent the linear change in the parameter per "
-"unit change in the moderator."
+"unit change in the moderator. For factor correlations, these coefficients "
+"are on the Fisher z scale."
 msgstr ""
 
 #, fuzzy
@@ -721,14 +722,14 @@ msgid ""
 "moderator."
 msgstr ""
 
-#, fuzzy
-msgid "Factor Covariances"
-msgstr "Latentne kovarijance"
+msgid "Factor Correlations (Fisher z)"
+msgstr ""
 
 msgid ""
-"Latent factor covariances and their moderation effects. Significant "
-"moderation indicates that the relationship between latent factors varies "
-"across the moderator."
+"Regression coefficients for Fisher z-transformed latent factor correlations. "
+"The baseline is the Fisher z-transformed correlation when all moderators are "
+"zero. Moderation coefficients describe changes on this scale. Covariances "
+"also depend on the factor standard deviations."
 msgstr ""
 
 #, fuzzy
@@ -738,7 +739,8 @@ msgstr "Parametar"
 msgid ""
 "Plots showing how model parameters (loadings, intercepts, variances) vary as "
 "a function of the moderator variable. Each plot displays the estimated "
-"parameter value across the range of the moderator."
+"parameter value across the range of the moderator. Factor correlations are "
+"shown on the Fisher z scale."
 msgstr ""
 
 msgid "total"
@@ -747,6 +749,9 @@ msgstr ""
 #, fuzzy
 msgid "Parameter Value"
 msgstr "Parametar"
+
+msgid "Fisher z"
+msgstr ""
 
 msgid "Nothing to print."
 msgstr ""
@@ -1232,6 +1237,10 @@ msgid ""
 "these are total variances; for endogenous latent variables these are "
 "residual variances (the variance not explained by predictors)."
 msgstr ""
+
+#, fuzzy
+msgid "Factor Covariances"
+msgstr "Latentne kovarijance"
 
 msgid ""
 "Estimated covariances between latent variables (~~ operator). These "

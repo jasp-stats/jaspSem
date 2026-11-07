@@ -1395,10 +1395,6 @@ msgid "Means"
 msgstr "均值"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
-msgid "Covariances"
-msgstr "协方差"
-
-msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Moderation"
 msgstr "调节"
 
@@ -1501,10 +1497,6 @@ msgstr "因子方差"
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Factor means"
 msgstr "因子均值"
-
-msgctxt "ModeratedNonLinearFactorAnalysis|"
-msgid "Factor covariances"
-msgstr "因子协方差"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Show syntax"
@@ -1848,10 +1840,6 @@ msgstr "显示潜因子方差估计。"
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Display latent factor mean estimates."
 msgstr "显示潜因子均值估计。"
-
-msgctxt "ModeratedNonLinearFactorAnalysis|"
-msgid "Display latent factor covariance estimates."
-msgstr "显示潜因子协方差估计。"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Show warnings"
@@ -2538,3 +2526,24 @@ msgid ""
 msgstr ""
 "将每个潜因子的共同因子方差视为真分数方差，忽略潜变量之间的结构回归。仅影响系"
 "数 ω。"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Correlations"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Allow the Fisher z-transformed factor correlation to depend on the "
+"moderators. When unchecked, the correlation is constant, but the covariance "
+"can still vary with the factor variances."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factor correlations"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Display regression coefficients for Fisher z-transformed latent factor "
+"correlations."
+msgstr ""

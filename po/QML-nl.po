@@ -1442,10 +1442,6 @@ msgid "Means"
 msgstr "Gemiddelden"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
-msgid "Covariances"
-msgstr "Covarianties"
-
-msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Moderation"
 msgstr "Moderatie"
 
@@ -1551,10 +1547,6 @@ msgstr "Factorvarianties"
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Factor means"
 msgstr "Factorgemiddelden"
-
-msgctxt "ModeratedNonLinearFactorAnalysis|"
-msgid "Factor covariances"
-msgstr "Factorcovarianties"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Show syntax"
@@ -1956,10 +1948,6 @@ msgstr "Variantieschattingen van latente factoren weergeven."
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Display latent factor mean estimates."
 msgstr "Gemiddeldenschattingen van latente factoren weergeven."
-
-msgctxt "ModeratedNonLinearFactorAnalysis|"
-msgid "Display latent factor covariance estimates."
-msgstr "Covariantieschattingen van latente factoren weergeven."
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Show warnings"
@@ -2784,3 +2772,24 @@ msgstr ""
 "Behandelt de gemeenschappelijk factor-variantie van elke latente factor als "
 "ware-score variantie, waarbij structurele regressies tussen latente "
 "variabelen worden genegeerd. Heeft alleen invloed op coëfficiënt ω."
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Correlations"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Allow the Fisher z-transformed factor correlation to depend on the "
+"moderators. When unchecked, the correlation is constant, but the covariance "
+"can still vary with the factor variances."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factor correlations"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Display regression coefficients for Fisher z-transformed latent factor "
+"correlations."
+msgstr ""

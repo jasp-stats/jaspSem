@@ -1396,10 +1396,6 @@ msgid "Means"
 msgstr "平均値"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
-msgid "Covariances"
-msgstr "共分散"
-
-msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Moderation"
 msgstr "調整"
 
@@ -1502,10 +1498,6 @@ msgstr "因子の分散"
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Factor means"
 msgstr "因子の平均"
-
-msgctxt "ModeratedNonLinearFactorAnalysis|"
-msgid "Factor covariances"
-msgstr "因子の共分散"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Show syntax"
@@ -1868,10 +1860,6 @@ msgstr "潜在因子の分散の推定値を表示します。"
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Display latent factor mean estimates."
 msgstr "潜在因子の平均の推定値を表示します。"
-
-msgctxt "ModeratedNonLinearFactorAnalysis|"
-msgid "Display latent factor covariance estimates."
-msgstr "潜在因子の共分散の推定値を表示します。"
 
 msgctxt "ModeratedNonLinearFactorAnalysis|"
 msgid "Show warnings"
@@ -2610,3 +2598,24 @@ msgid ""
 msgstr ""
 "潜在変数どうしの構造的な回帰を無視して、各潜在因子の共通因子の分散を真値の分"
 "散とみなします。係数ωにのみ影響します。"
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Correlations"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Allow the Fisher z-transformed factor correlation to depend on the "
+"moderators. When unchecked, the correlation is constant, but the covariance "
+"can still vary with the factor variances."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factor correlations"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Display regression coefficients for Fisher z-transformed latent factor "
+"correlations."
+msgstr ""
