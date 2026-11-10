@@ -38,6 +38,7 @@
 
 ## Changed
 * MNLFA: removed dead dependencies (`factorsUncorrelated`, `interceptsFixedToZero`, `packageMimiced`, `estimator`, `naAction`) from the main container — they were listed but never read anywhere in MNLFA code.
+* Updated `semTools` from 0.5-8 to 0.5-9 in the lockfile; fixes `compRelSEM()` failing when the first composite has ordinal indicators. Reliability values are unchanged.
 
 
 ---
