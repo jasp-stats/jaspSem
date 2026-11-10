@@ -189,6 +189,9 @@ Form
 
 		property var firstLayerValues: [invarianceTestConfigural, invarianceTestMetric, invarianceTestScalar, invarianceTestStrict, invarianceTestCustom].filter(x => x.checked).map(x => ({value: x.name, label: x.label}))
 
+		// only re-evaluate third-layer values when the factor COUNT changes, not on every factorsTitles mutation (rename, indicators)
+		readonly property int factorCount: factors.factorsTitles.length
+
 		TabView
 		{
 			Layout.columnSpan: 1
@@ -221,7 +224,7 @@ Form
 					addItemManually: false
 					optionKey: "keyValue"
 					optionKeyLabel: "keyLabel"
-					values: getValuesModOptions(rowValue, factors.factorsTitles.length)
+					values: getValuesModOptions(rowValue, invOpts.factorCount)
 					rowComponent: ComponentsList
 					{
 						id: modFourthLayer
@@ -302,6 +305,55 @@ Form
 			CheckBox { label: qsTr("Show warnings") ; name: "warnings"   }
 		}
 
+		Group
+		{
+			title: qsTr("Factor Scores")
+			info:  qsTr("Append estimated factor scores to the data set, so they can be used in further analyses.")
+
+			CheckBox
+			{
+				name:  "addFactorScoresToData"
+				label: qsTr("Add factor scores to data")
+				info:  qsTr("Adds one column per latent factor to the data set, containing the estimated factor score of each case. Scores are computed under the selected model, so they account for the moderation of the measurement parameters. Note that the scores are on the metric of the (possibly centered or standardized) indicators, and that they are shrunken towards a case-specific prior mean that itself depends on the moderators.")
+
+				DropDown
+				{
+					name:   "factorScoresModel"
+					label:  qsTr("From model")
+					values: invOpts.firstLayerValues
+					info:   qsTr("The invariance model whose parameter estimates are used to compute the factor scores.")
+				}
+
+				DropDown
+				{
+					name:  "factorScoresMethod"
+					label: qsTr("Method")
+					values:
+					[
+						{ label: qsTr("Thurstone"), value: "thurstone" },
+						{ label: qsTr("Bartlett"),  value: "bartlett"  }
+					]
+					info: qsTr("Thurstone (regression) scores have the smaller mean squared error and are recommended for most purposes, including studying the relation between the factor and the moderators. Bartlett scores are conditionally unbiased and, with more than one factor, univocal: the score for one factor does not depend on the other factors. They have a larger variance, and when the indicators are unreliable they recover the factor-moderator relation less accurately than Thurstone scores. With more than one factor, do not estimate the correlation between the factors from the exported scores: Thurstone scores overestimate it and Bartlett scores underestimate it. Use the estimated factor covariance from the model instead.")
+				}
+
+				TextField
+				{
+					name:         "factorScoresPrefix"
+					label:        qsTr("Column name prefix")
+					defaultValue: "FS"
+					fieldWidth:   80
+					info:         qsTr("Prefix for the added columns. Each column is named prefix_factor.")
+				}
+
+				CheckBox
+				{
+					name:  "addFactorScoreStandardErrors"
+					label: qsTr("Add standard errors")
+					info:  qsTr("Also add one column per factor containing the standard error of each estimated factor score. These vary across cases, because the measurement precision depends on the moderators and on which indicators are observed.")
+				}
+			}
+		}
+
 	}
 
 
@@ -339,7 +391,7 @@ Form
 					name: "plotParameterList"
 					addItemManually: false
 
-					values: getValuesModOptions(rowValue, factors.factorsTitles.length)
+					values: getValuesModOptions(rowValue, invOpts.factorCount)
 
 					rowComponent: ComponentsList
 					{
