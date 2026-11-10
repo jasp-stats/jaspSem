@@ -1565,14 +1565,23 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
   factorTitles      <- vapply(options[["factors"]], `[[`, character(1), "title")
 
   method      <- if (is.null(options[["factorScoresMethod"]])) "thurstone" else options[["factorScoresMethod"]]
-  scoreResult <- try(.mnlfaFactorScores(OpenMx::omxGetParameters(fit), map, factorList, dataset, method))
-  if (jaspBase::isTryError(scoreResult))
-    return()
+  scoreResult <- try(.mnlfaFactorScores(OpenMx::omxGetParameters(fit), map, factorList, dataset, method), silent = TRUE)
 
   container <- createJaspContainer()
   container$dependOn(optionsFromObject = jaspResults[["mainContainer"]][[paste0(modelName, "State")]],
                      options = c("addFactorScoresToData", "factorScoresModel", "factorScoresPrefix",
                                  "factorScoresMethod", "addFactorScoreStandardErrors"))
+
+  # show the failure instead of silently adding nothing, and drop columns from an earlier run
+  # so they do not linger under settings they no longer match
+  if (jaspBase::isTryError(scoreResult)) {
+    container[["error"]] <- createJaspHtml(
+      gettextf("The factor scores could not be computed: %s", jaspBase::.extractErrorMessage(scoreResult)),
+      title = gettext("Factor Scores"))
+    jaspResults[["addedFactorScoresContainer"]] <- container
+    .mnlfaDeleteStaleFactorScoreColumns(jaspResults, character(0))
+    return()
+  }
 
   prefix    <- options[["factorScoresPrefix"]]
   columns   <- as.list(as.data.frame(scoreResult[["scores"]]))
@@ -1594,14 +1603,19 @@ ModeratedNonLinearFactorAnalysisInternal <- function(jaspResults, dataset, optio
 
   jaspResults[["addedFactorScoresContainer"]] <- container
 
-  # remove columns that were created earlier but are not needed anymore
-  oldNames <- jaspResults[["createdFactorScoreNames"]][["object"]]
-  if (!is.null(oldNames)) {
-    for (oldName in setdiff(oldNames, colNamesR))
-      jaspBase:::columnDelete(oldName)
-  }
+  .mnlfaDeleteStaleFactorScoreColumns(jaspResults, colNamesR)
 
-  jaspResults[["createdFactorScoreNames"]] <- createJaspState(colNamesR)
+  return()
+}
+
+
+# remove columns that were created earlier but are not in keepNames anymore, and remember keepNames
+.mnlfaDeleteStaleFactorScoreColumns <- function(jaspResults, keepNames) {
+
+  for (oldName in setdiff(jaspResults[["createdFactorScoreNames"]][["object"]], keepNames))
+    jaspBase:::columnDelete(oldName)
+
+  jaspResults[["createdFactorScoreNames"]] <- createJaspState(keepNames)
 
   return()
 }

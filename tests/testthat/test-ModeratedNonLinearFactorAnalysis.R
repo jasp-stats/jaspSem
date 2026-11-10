@@ -22,6 +22,12 @@ options <- list(
   warnings   = FALSE,
   indicatorPreprocessing = "none",
 
+  addFactorScoresToData        = TRUE,
+  factorScoresModel            = "invarianceTestScalar",
+  factorScoresMethod           = "thurstone",
+  factorScoresPrefix           = "FS",
+  addFactorScoreStandardErrors = TRUE,
+
   ## ===============================
   ## Factors
   ## ===============================
@@ -300,6 +306,14 @@ results <- runAnalysis(
 # Only do full numeric/plot comparison on macOS; other platforms just check for no errors
 isMacOS <- Sys.info()[["sysname"]] == "Darwin"
 
+test_that("Factor score columns are added for the selected model", {
+  # jaspTools does not write the columns themselves, so only the container is checked
+  scoreContainer <- results[["results"]][["addedFactorScoresContainer"]][["collection"]]
+  expect_setequal(names(scoreContainer),
+                  paste0("addedFactorScoresContainer_",
+                         c("FS_Factor 1", "FS_Factor 1_se", "FS_Factor 2", "FS_Factor 2_se")))
+})
+
 test_that("Global Invariance Fit table results match", {
   table <- results[["results"]][["fitContainer"]][["collection"]][["fitContainer_invFitTable"]][["data"]]
   if (isMacOS) {
@@ -418,6 +432,7 @@ options2 <- options
 options2$invarianceTestConfigural <- TRUE
 options2$invarianceTestScalar     <- FALSE
 options2$checkModelFitPerGroup    <- TRUE
+options2$addFactorScoresToData    <- FALSE # its model (Scalar) is not fitted in this run
 options2$parameterEstimatesLoadings          <- TRUE
 options2$parameterEstimatesIntercepts        <- FALSE
 options2$parameterEstimatesResidualVariances <- FALSE
@@ -725,5 +740,52 @@ test_that("Factor scores match OpenMx regression scores when moderators are cons
     finiteSe <- is.finite(ref[, , 2]) & is.finite(own$standardErrors)
     expect_equal(own$standardErrors[finiteSe], ref[, , 2][finiteSe], tolerance = 1e-8)
   }
+})
+
+# There is no OpenMx reference for the Bartlett scores: mxFactorScores(type = "ML") adds the
+# latent mean to the score (the mean of its scores is twice the factor mean), so it only
+# agrees where the latent mean is 0. The tests below use properties of the estimator instead.
+
+test_that("Bartlett scores do not depend on the latent distribution", {
+  # They use the measurement model only, unlike Thurstone scores, which shrink towards the latent mean
+  fx <- mnlfaScoreFixture()
+  latentCoefficients <- intersect(names(fx$estimates),
+                                  c(fx$map$variances$varianceCoefficient,
+                                    fx$map$means$meanCoefficient,
+                                    fx$map$covariances$covarianceCoefficient))
+  expect_gt(length(latentCoefficients), 0)
+
+  shifted <- fx$estimates
+  shifted[latentCoefficients] <- shifted[latentCoefficients] + 0.3
+
+  scores <- function(estimates, method)
+    jaspSem:::.mnlfaFactorScores(estimates, fx$map, fx$factorList, fx$dataset, method)$scores
+
+  expect_equal(scores(shifted, "bartlett"), scores(fx$estimates, "bartlett"))
+  expect_false(isTRUE(all.equal(scores(shifted, "thurstone"), scores(fx$estimates, "thurstone"))))
+})
+
+test_that("Bartlett standard errors are not smaller than Thurstone standard errors", {
+  # The Thurstone (posterior) variance is the Bartlett variance combined with the prior, so it is never larger
+  fx        <- mnlfaScoreFixture()
+  bartlett  <- jaspSem:::.mnlfaFactorScores(fx$estimates, fx$map, fx$factorList, fx$dataset, "bartlett")
+  thurstone <- jaspSem:::.mnlfaFactorScores(fx$estimates, fx$map, fx$factorList, fx$dataset, "thurstone")
+
+  finite <- is.finite(bartlett$standardErrors) & is.finite(thurstone$standardErrors)
+  expect_true(any(finite))
+  expect_true(all(bartlett$standardErrors[finite] >= thurstone$standardErrors[finite] - 1e-12))
+})
+
+test_that("Bartlett scores need at least as many observed indicators as factors", {
+  fx     <- mnlfaScoreFixture()
+  sparse <- fx$dataset
+  sparse[1, paste0("x", 2:6)] <- NA # one observed indicator, two factors
+
+  bartlett  <- jaspSem:::.mnlfaFactorScores(fx$estimates, fx$map, fx$factorList, sparse, "bartlett")
+  thurstone <- jaspSem:::.mnlfaFactorScores(fx$estimates, fx$map, fx$factorList, sparse, "thurstone")
+
+  expect_true(all(is.na(bartlett$scores[1, ])))
+  expect_true(all(is.finite(bartlett$scores[-1, ])))
+  expect_true(all(is.finite(thurstone$scores[1, ])))
 })
 
