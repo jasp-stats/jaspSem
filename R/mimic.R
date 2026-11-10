@@ -138,6 +138,8 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
     return()
   }
 
+  modelContainer[["r2"]] <- createJaspState(lavaan::inspect(mimicResult, "r2"))
+
   if (options$errorCalculationMethod == "bootstrap") {
     type <- switch(options[["standardizedEstimateType"]],
                    "all" = "std.all",
@@ -418,7 +420,7 @@ MIMICInternal <- function(jaspResults, dataset, options, ...) {
 
   if (!ready || modelContainer$getError()) return()
 
-  r2res              <- lavaan::inspect(modelContainer[["model"]][["object"]], "r2")
+  r2res              <- modelContainer[["r2"]][["object"]]
   tabr2[["__var__"]] <- names(r2res)
   tabr2[["rsq"]]     <- r2res
 }

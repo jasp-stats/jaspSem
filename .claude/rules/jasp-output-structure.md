@@ -160,8 +160,8 @@ jaspTools::expect_equal_tables(table_data,
 ## 8) Quick Reference: Navigating Results
 
 ```r
-# Run analysis
-results <- jaspTools::runAnalysis("AnalysisName", dataset, options)
+# Run analysis (view = FALSE avoids opening a browser tab)
+results <- jaspTools::runAnalysis("AnalysisName", dataset, options, view = FALSE)
 
 # Check status
 results$status  # "complete" or "fatalError"
