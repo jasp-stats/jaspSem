@@ -1,12 +1,8 @@
 msgid ""
 msgstr ""
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: bo\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Qt-Contexts: true\n"
 
 msgctxt "Description|"
@@ -1022,10 +1018,6 @@ msgid "ULSMV"
 msgstr ""
 
 msgctxt "SEM|"
-msgid "Click for more information"
-msgstr ""
-
-msgctxt "SEM|"
 msgid "Yuan-Bentler Mplus"
 msgstr ""
 
@@ -1354,10 +1346,6 @@ msgid ""
 msgstr ""
 
 msgctxt "PLSSEM|"
-msgid "Fit measures"
-msgstr ""
-
-msgctxt "PLSSEM|"
 msgid "Overall model fit"
 msgstr ""
 
@@ -1375,4 +1363,1145 @@ msgstr ""
 
 msgctxt "LatentGrowthCurve|"
 msgid "Show parameter estimates"
+msgstr ""
+
+msgctxt "Description|"
+msgid "MNLFA"
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid ""
+"One or multiple predictor variables predicting the mediators and the outcome "
+"variables."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid ""
+"Variables through which the indirect effect of the predictors on the "
+"outcomes is hypothesized to flow."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Variables predicted by the predictors and the mediators."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid ""
+"Variables explaining the predictors, mediators, and outcomes. Direct, "
+"indirect, and total effects are estimated conditional on these variables."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid ""
+"Options for standardization, additional parameter estimates, and model "
+"display."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Standardize all variables (mean = 0, sd = 1) before estimation."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Type of standardization."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Standardize based on variances of both observed and latent variables."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Standardize based on latent variable variances only."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Standardize excluding exogenous covariates."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Display the lavaan syntax used to estimate the model."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid ""
+"Display the proportion of variance explained for each endogenous variable."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Additional parameter estimate tables to display."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Display total indirect effects summed across all mediators."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Display residual covariances between variables."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Display the path coefficients of the model."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Options for generating plots of the mediation model."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Display a path diagram of the mediation model."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Display parameter estimates on the path diagram."
+msgstr ""
+
+msgctxt "MediationAnalysis|"
+msgid "Display a legend in the path diagram."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid ""
+"Observed indicator variables that define the latent variable in the MIMIC "
+"model."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid ""
+"Observed predictor variables (causes) that directly influence the latent "
+"variable."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid ""
+"Options for standardization, model syntax display, and additional output."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Standardize all variables (mean = 0, sd = 1) before estimation."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Type of standardization."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Standardize based on variances of both observed and latent variables."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Standardize based on latent variable variances only."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Standardize excluding exogenous covariates."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Display the lavaan syntax used to estimate the model."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid ""
+"Display the proportion of variance explained for each endogenous variable."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid ""
+"Display additional fit indices for evaluating model fit (e.g., CFI, TLI, "
+"RMSEA, SRMR)."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Include predictor covariances"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid ""
+"When checked, all pairwise covariances between predictors are included in "
+"the model syntax."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Fix exogenous predictor variances and covariances"
+msgstr ""
+
+msgctxt "Mimic|"
+msgid ""
+"When checked, predictor variances and covariances are fixed to sample "
+"values. Uncheck to freely estimate them."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Options for generating plots of the MIMIC model."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Display a path diagram of the MIMIC model."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Display parameter estimates on the path diagram."
+msgstr ""
+
+msgctxt "Mimic|"
+msgid "Display a legend in the path diagram."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Loadings"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Intercepts"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Residual variances"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Variances"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Means"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Covariances"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Define latent factors and assign observed indicator variables to each factor."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderation"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Specify moderator variables and their effects on measurement model "
+"parameters."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderators"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Variables hypothesized to moderate the measurement model parameters. "
+"Continuous moderators can optionally include squared and cubic effects."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Square   Cubic"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Include a quadratic (squared) effect for this moderator."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Include a cubic effect for this moderator."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "<b>Start/Sync Analysis</b>"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Click to start or synchronize the analysis. The analysis does not run "
+"automatically due to computational intensity."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Assumption Check"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Check measurement invariance assumptions by testing model fit across groups "
+"defined by the moderator variables."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Check model fit per group"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Fit the measurement model separately in each group to verify that the model "
+"fits adequately before testing moderation."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Split continuous variables into groups:"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Number of groups into which continuous moderator variables are split for the "
+"assumption check."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Add group variable to data"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Save the group variable created by splitting the continuous moderator to the "
+"dataset."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Interaction Terms"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Include"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Include interaction terms between pairs of moderators."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderation Options"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Configure invariance test levels and specify which individual parameters "
+"should be tested for moderation."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Invariance Tests"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Select the levels of measurement invariance to test. Each level constrains "
+"an additional set of parameters to be equal across moderator values."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Configural"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Test configural invariance: same factor structure across groups but all "
+"parameters free."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Metric"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Test metric invariance: constrain factor loadings to be equal across groups."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Scalar"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Test scalar invariance: constrain factor loadings and intercepts to be equal "
+"across groups."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Strict"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Test strict invariance: constrain factor loadings, intercepts, and residual "
+"variances to be equal across groups."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Custom"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Define a custom set of parameter constraints for invariance testing."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Include Individual Moderations"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"For each invariance level, specify which individual measurement parameters "
+"should be tested for moderation effects."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Indicators"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factors"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Display Plot"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Estimation Options"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Indicator preprocessing"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "None"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Center"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Z-standardize"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Output Options"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Select additional output tables and parameter estimates to display."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Parameter Estimates"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Select which measurement model parameter estimates to display in the output."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Significance level"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Significance level for flagging parameter estimates."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Display factor loading estimates."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Display intercept estimates for observed indicators."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Display residual variance estimates for observed indicators."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factor variances"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Display latent factor variance estimates."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factor means"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Display latent factor mean estimates."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Factor covariances"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Display latent factor covariance estimates."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Show syntax"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Show warnings"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Plots"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid ""
+"Configure marginal effects plots showing how measurement parameters change "
+"as a function of the moderator variables."
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderator 1"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Moderator 2"
+msgstr ""
+
+msgctxt "ModeratedNonLinearFactorAnalysis|"
+msgid "Display plot"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Specify the PLS-SEM model using cSEM syntax. Define measurement models (e."
+"g., 'eta1 =~ y1 + y2 + y3') and structural model (e.g., 'eta2 ~ eta1')."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Model-level settings such as grouping variables for multi-group analysis."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Select a grouping variable to perform multi-group PLS-SEM analysis."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Settings for the PLS-SEM estimation algorithm, convergence criteria, and "
+"error calculation."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Use consistent PLS (PLSc) to correct for attenuation, producing consistent "
+"estimates for common factor models."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Choose the scheme for estimating inner weights relating constructs to each "
+"other."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Estimate the measurement model only, ignoring the structural (inner) model."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Criterion used to assess convergence of the PLS algorithm."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Tolerance threshold for the convergence criterion. Smaller values require "
+"stricter convergence."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Method for computing standard errors and confidence intervals."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Select the error calculation method."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Do not compute standard errors or confidence intervals."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Compute standard errors and confidence intervals using bootstrap resampling."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Number of bootstrap resamples to draw."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Width of the bootstrap confidence intervals."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"How to handle bootstrap samples that produce inadmissible results (e.g., "
+"Heywood cases)."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Replace inadmissible bootstrap samples with new ones."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Keep inadmissible results in the bootstrap distribution."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Drop inadmissible bootstrap samples, reducing the effective number of "
+"resamples."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Additional output tables and statistics to display."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Display the proportion of variance explained for each endogenous construct."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Additional fit measures"
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Display additional fit indices for evaluating model fit."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Display Mardia's multivariate skewness and kurtosis coefficients to assess "
+"multivariate normality."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Display reliability measures for each construct (e.g., Cronbach's alpha, "
+"composite reliability)."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Display the observed correlation matrix of the indicator variables."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Display the model-implied correlation matrix of the indicator variables."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Display the observed correlation matrix of the constructs."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Display the model-implied correlation matrix of the constructs."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Perform an overall model fit test using bootstrap-based tests."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Number of bootstrap samples for the overall model fit test."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Significance level for the overall model fit test."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Use a saturated structural model as a reference for the model fit test."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Save estimated construct scores as new columns in the dataset."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Settings for cross-validated prediction of endogenous indicator scores."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Perform k-fold cross-validation to predict endogenous indicator scores."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Number of folds for cross-validation. Higher values increase computation "
+"time but reduce bias."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Number of times the cross-validation is repeated to reduce variance in the "
+"prediction metrics."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid ""
+"Select a benchmark model to compare the prediction accuracy of the PLS-SEM "
+"model."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "No benchmark comparison."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Compare against a linear regression model."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Compare against Generalized Structured Component Analysis."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Compare against Principal Component Analysis."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Compare against the MAXVAR approach."
+msgstr ""
+
+msgctxt "PLSSEM|"
+msgid "Compare against all available benchmark models."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Specify the structural equation model using lavaan syntax. Multiple models "
+"can be specified and compared. See lavaan.org for syntax tutorials."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Enter the lavaan model syntax using variable names from the dataset."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Select whether the input is a raw data matrix or a variance-covariance "
+"matrix."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Use raw data with observations as rows and variables in columns."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Use a variance-covariance matrix as input. Requires specifying the sample "
+"size."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "The number of observations the covariance matrix is based on."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Select a variable from the dataset to use as sampling weights for each "
+"observation."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Options for configuring the structural equation model specification."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"How the metric of latent variables is determined: by fixing the first "
+"loading to 1 (Factor loadings), fixing factor variance to 1 (Factor "
+"variance), fixing average loadings to 1 (Effects coding), or none."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Estimate observed intercepts and/or latent means. Some elements need to be "
+"fixed for identification."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Fix latent means to zero; observed intercepts are estimated freely."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Fix observed intercepts to zero; latent means are estimated freely."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Fix the mean of manifest intercepts to zero; latent means are estimated "
+"freely."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Estimate factors as orthogonal (uncorrelated) instead of allowing them to "
+"correlate."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"If checked, exogenous covariates are considered fixed and their means, "
+"variances, and covariances are fixed to sample values."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Condition on the exogenous covariates when estimating the model."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Set the residual variance of a single indicator to zero if it is the only "
+"indicator of a latent variable."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Include residual variances of observed and latent variables as free "
+"parameters."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Include covariances of exogenous latent variables in the model."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Include covariances of dependent variables (observed and latent) in the "
+"model."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Include thresholds for limited (non-continuous) dependent variables."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Include response scaling parameters for limited (non-continuous) dependent "
+"variables."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Impose constraints to make exploratory factor analysis blocks identifiable: "
+"factor variances set to 1, covariances to zero, and loadings follow an "
+"echelon pattern."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Options for the estimation method, model test, standard errors, confidence "
+"intervals, and missing data handling."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Choose the estimation method. Some estimators set implicit options for test "
+"and standard errors. ML-based extensions: MLM (robust SE, Satorra-Bentler "
+"test), MLMV (robust SE, scaled-shifted test), MLMVS (robust SE, "
+"Satterthwaite test), MLF (first-order SE), MLR (Huber-White SE, Yuan-Bentler "
+"test). WLS variants: WLSM/WLSMV imply DWLS with robust SE, ULSM/ULSMV imply "
+"ULS with robust SE."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Choose the test statistic for evaluating model fit. If left at Default, the "
+"test is determined by the chosen estimator."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Number of bootstrap samples for the Bollen-Stine bootstrap test."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Matrix used to compute the standard errors: expected, observed, or first "
+"order (outer product of casewise scores)."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Method for computing standard errors. Standard uses the information matrix, "
+"Robust uses robust.sem, Robust Huber-White uses the mlr approach, and "
+"Bootstrap computes SEs from bootstrapped fits."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Number of bootstrap samples to use for computing standard errors."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Type of bootstrap confidence interval."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Width of the confidence intervals for parameter estimates."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Set a seed to guarantee reproducible bootstrap results."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Z-standardize all variables before estimation."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"How to treat missing values. FIML uses full-information maximum likelihood. "
+"Pairwise computes correlations using available pairs. Two-stage uses EM-"
+"estimated statistics. Robust two-stage adds robustness against non-"
+"normality. Doubly robust is for PML estimation."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Emulate the output from different SEM programs."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Options for additional fit measures, parameter estimates, covariance "
+"matrices, plots, and modification indices."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Display a table with various fit measures including CFI, TLI, RMSEA, SRMR, "
+"and information criteria."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Display the explained variance in each dependent variable."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Display the amount of variance captured by a construct relative to "
+"measurement error. Used to evaluate convergent validity."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Display the HTMT ratio to assess discriminant validity between constructs."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Display reliability metrics such as coefficient alpha and composite (omega) "
+"reliability per latent variable."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Measurement-model reliability"
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Treats each latent factor's common-factor variance as true-score variance, "
+"ignoring structural regressions among latent variables. Only affects "
+"coefficient ω."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Display Mardia's multivariate skewness and kurtosis coefficients to assess "
+"multivariate normality."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Display the observed covariance matrix calculated from the data."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Display the model-implied covariance matrix based on estimated parameters."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Display residual covariances (observed minus implied)."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Display the standardized residual covariance matrix."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Display standardized parameter estimates."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Type of standardization."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Standardize based on variances of both observed and latent variables."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Standardize based on latent variable variances only."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Standardize based on variances of observed and latent variables, excluding "
+"exogenous covariates."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Display a path diagram of the model."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Display parameter estimates on the path diagram."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Show standardized estimates on the path diagram."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Display a legend in the path diagram."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Display modification indices showing potential improvements to the model."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Hide modification indices below the specified threshold."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Minimum value for modification indices to be displayed."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Display warnings produced by lavaan during estimation."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Options for fitting the model across multiple groups, with equality "
+"constraints on parameters."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Select a nominal or ordinal variable to fit the model separately for each "
+"group."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Constrain selected parameters to be equal across all groups."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Constrain factor loadings to be equal across groups."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Constrain intercepts to be equal across groups."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Constrain residual variances to be equal across groups."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Constrain residual covariances to be equal across groups."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Constrain means to be equal across groups."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Constrain thresholds to be equal across groups."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Constrain regression coefficients to be equal across groups."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Constrain latent variable variances to be equal across groups."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Constrain latent variable covariances to be equal across groups."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Release specific equality constraints using lavaan syntax, e.g., 'f=~x2' to "
+"release a single loading."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Conduct sensitivity analysis against a potential missing confounder using "
+"phantom variables."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Run a sensitivity analysis by adding phantom variables (latent variables "
+"without indicators) to assess the robustness of the model."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Algorithm for sampling phantom variables."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Use ant colony optimization to find good paths through the parameter space."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Number of artificial ants per iteration, each representing a potential "
+"solution."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Number of best solutions stored during optimization."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"If the change in the objective function is smaller than this threshold, the "
+"algorithm has converged."
+msgstr ""
+
+msgctxt "SEM|"
+msgid ""
+"Use tabu search, which maintains a list of recently visited solutions to "
+"avoid local optima."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Objective function maximized during the optimization."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Significance level for the sensitivity analysis."
+msgstr ""
+
+msgctxt "SEM|"
+msgid "Maximum number of iterations for the optimization algorithm."
 msgstr ""

@@ -26,7 +26,6 @@
 #' @param categorical, Categorical variables acting as factors
 #' @param ciLevel, Set the confidence level for the interval estimates
 #' @param colorPalette, Select a color palette for the plots
-#' @param covariates, Time-varying covariates in the model
 #' @param covaryingLatentCurve, Include covariance between latent growth components
 #'    Defaults to \code{TRUE}.
 #' @param cubic, Include a cubic component in the model
@@ -35,42 +34,33 @@
 #'    Defaults to \code{FALSE}.
 #' @param curvePlotCategorical, Select a categorical variable to color the curves
 #' @param curvePlotMaxLines, Set the maximum number of lines to display in the curve plot
-#' @param dependentCorrelation, Allow dependent variables to correlate
-#'    Defaults to \code{TRUE}.
 #' @param emulation, Select the software to emulate estimation behavior
 #' \itemize{
-#'   \item \code{"eqs"}: Emulate EQS estimation methods
-#'   \item \code{"mplus"}: Emulate Mplus estimation methods
 #'   \item \code{"lavaan"}: Use Lavaan default estimation method
+#'   \item \code{"mplus"}: Emulate Mplus estimation methods
+#'   \item \code{"eqs"}: Emulate EQS estimation methods
 #' }
 #' @param errorCalculationMethod, Select the method for calculating standard errors and confidence intervals
 #' \itemize{
 #'   \item \code{"standard"}: Use standard maximum likelihood estimation for standard errors
-#'   \item \code{"bootstrap"}: Use bootstrap method for estimating standard errors and confidence intervals
 #'   \item \code{"robust"}: Use robust estimation for standard errors
+#'   \item \code{"bootstrap"}: Use bootstrap method for estimating standard errors and confidence intervals
 #' }
 #' @param estimator, Choose the estimator for model fitting
 #' \itemize{
-#'   \item \code{"gls"}: Generalized Least Squares estimator
-#'   \item \code{"ml"}: Maximum Likelihood estimator
-#'   \item \code{"dwls"}: Diagonally Weighted Least Squares estimator
-#'   \item \code{"wls"}: Weighted Least Squares estimator
 #'   \item \code{"default"}: Use the default estimator based on the model and data
+#'   \item \code{"ml"}: Maximum Likelihood estimator
+#'   \item \code{"gls"}: Generalized Least Squares estimator
+#'   \item \code{"wls"}: Weighted Least Squares estimator
 #'   \item \code{"uls"}: Unweighted Least Squares estimator
+#'   \item \code{"dwls"}: Diagonally Weighted Least Squares estimator
 #' }
-#' @param exogenousLatentCorrelation, Allow exogenous latent variables to correlate
-#'    Defaults to \code{TRUE}.
-#' @param group, Select a grouping variable that is ideally nominally scaled
 #' @param impliedCovariance, Display the implied covariance matrix
 #'    Defaults to \code{FALSE}.
 #' @param intercept, Include an intercept in the model
 #'    Defaults to \code{TRUE}.
-#' @param latentInterceptFixedToZero, Fix latent intercepts to zero
-#'    Defaults to \code{TRUE}.
 #' @param linear, Include a linear component in the model
 #'    Defaults to \code{TRUE}.
-#' @param manifestInterceptFixedToZero, Fix manifest intercepts to zero
-#'    Defaults to \code{FALSE}.
 #' @param naAction, Select the method for handling missing data in estimation
 #' \itemize{
 #'   \item \code{"fiml"}: Use Full Information Maximum Likelihood to handle missing data
@@ -89,29 +79,21 @@
 #' @param regressions, Variables to use as regressors in the model
 #' @param residualCovariance, Display the residual covariance matrix
 #'    Defaults to \code{FALSE}.
-#' @param residualSingleIndicatorOmitted, Omit residuals for single indicators
-#'    Defaults to \code{TRUE}.
-#' @param residualVariance, Include residual variances in the model
-#'    Defaults to \code{TRUE}.
-#' @param scalingParameter, Include scaling parameters in the model
-#'    Defaults to \code{TRUE}.
 #' @param standardizedEstimate, Include standardized estimates in the output
 #'    Defaults to \code{FALSE}.
 #' @param standardizedEstimateType, Select the type of standardized estimates to include
 #' \itemize{
 #'   \item \code{"all"}: Include all standardized estimates
-#'   \item \code{"nox"}: Exclude standardized estimates for exogenous covariates
 #'   \item \code{"latents"}: Include standardized estimates for latent variables only
+#'   \item \code{"nox"}: Exclude standardized estimates for exogenous covariates
 #' }
 #' @param syntax, Show the lavaan model syntax
 #'    Defaults to \code{FALSE}.
-#' @param threshold, Include thresholds in the model
-#'    Defaults to \code{TRUE}.
 #' @param timings, Variable timing
 #' @param variables, Variables to include in the latent growth curve model
 LatentGrowthCurve <- function(
           data = NULL,
-          version = "0.95",
+          version = "1",
           additionalFitMeasures = FALSE,
           bootstrapCiType = "percentileBiasCorrected",
           bootstrapSamples = 1000,
@@ -174,5 +156,5 @@ LatentGrowthCurve <- function(
    for (name in optionsWithFormula) {
       if ((name %in% optionsWithFormula) && inherits(options[[name]], "formula")) options[[name]] = jaspBase::jaspFormula(options[[name]], data)   }
 
-   return(jaspBase::runWrappedAnalysis("jaspSem", "LatentGrowthCurve", "LatentGrowthCurve.qml", options, version, FALSE))
+   return(jaspBase::runWrappedAnalysis("jaspSem", "LatentGrowthCurve", "LatentGrowthCurve.qml", options, version, TRUE))
 }

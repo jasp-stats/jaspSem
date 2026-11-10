@@ -486,7 +486,7 @@ msgstr "MES (SEM) de grupos múltiples"
 
 msgctxt "SEM|"
 msgid "Grouping Variable"
-msgstr "Variable de Agrupación"
+msgstr "Variable de agrupación"
 
 msgctxt "SEM|"
 msgid "Equality Constraints"
@@ -555,7 +555,7 @@ msgstr "Ignorar el modelo estructural"
 
 msgctxt "PLSSEM|"
 msgid "Grouping Variable"
-msgstr "Variable de Agrupación"
+msgstr "Variable de agrupación"
 
 msgctxt "PLSSEM|"
 msgid "Estimation"
@@ -1368,7 +1368,7 @@ msgstr "Ajuste global del modelo"
 
 msgctxt "PLSSEM|"
 msgid "Bootstrap samples"
-msgstr "Muestras de Bootstrap"
+msgstr "Muestras de bootstrap"
 
 msgctxt "PLSSEM|"
 msgid "Significance level"
