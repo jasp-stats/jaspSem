@@ -2,1254 +2,1511 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.97.1\n"
 "POT-Creation-Date: 2026-11-07 02:41\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2026-11-11 18:40+0000\n"
+"Last-Translator: Fahad Mahfouz Al-Subhi "
+"<fahadalsubhi@users.noreply.hosted.weblate.org>\n"
+"Language-Team: Arabic <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
+"ar/>\n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
+"X-Generator: Weblate 2026.11.2.dev0\n"
 
 msgid "Fit Indices"
-msgstr ""
+msgstr "مؤشرات المطابقة"
 
 msgid "Detailed model fit indices. Includes incremental fit indices (CFI, TLI, NFI) comparing the model to the independence model, parsimony-adjusted indices, the RMSEA with confidence interval and close-fit test, SRMR, and information criteria (AIC, BIC, log-likelihood). CFI and TLI values above 0.95, RMSEA below 0.06, and SRMR below 0.08 suggest good fit."
 msgstr ""
+"مؤشرات مفصلة لمطابقة النموذج، تشمل مؤشرات المطابقة التزايدية (CFI وTLI وNFI) "
+"التي تقارن النموذج بنموذج الاستقلال، ومؤشرات معدَّلة لمراعاة بساطة النموذج، "
+"وRMSEA مع فترة ثقته واختبار المطابقة التقريبية، وSRMR، ومعايير المعلومات "
+"(AIC وBIC ولوغاريتم الإمكان). تشير قيم CFI وTLI فوق 0.95، وقيم RMSEA دون 0.06"
+"، وقيم SRMR دون 0.08 إلى مطابقة جيدة."
 
 msgid "Index"
-msgstr ""
+msgstr "المؤشر"
 
 msgid "Value"
-msgstr ""
+msgstr "القيمة"
 
 msgid "Comparative Fit Index (CFI)"
-msgstr ""
+msgstr "مؤشر المطابقة المقارن (CFI)"
 
 msgid "Tucker-Lewis Index (TLI)"
-msgstr ""
+msgstr "مؤشر تاكر–لويس (TLI)"
 
 msgid "Bentler-Bonett Non-normed Fit Index (NNFI)"
-msgstr ""
+msgstr "مؤشر بنتلر–بونيت للمطابقة غير المعياري (NNFI)"
 
 msgid "Bentler-Bonett Normed Fit Index (NFI)"
-msgstr ""
+msgstr "مؤشر بنتلر–بونيت للمطابقة المعياري (NFI)"
 
 msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr ""
+msgstr "مؤشر المطابقة المعياري المعدَّل لمراعاة بساطة النموذج (PNFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
-msgstr ""
+msgstr "مؤشر بولن للمطابقة النسبية (RFI)"
 
 msgid "Bollen's Incremental Fit Index (IFI)"
-msgstr ""
+msgstr "مؤشر بولن للمطابقة التزايدية (IFI)"
 
 msgid "Relative Noncentrality Index (RNI)"
-msgstr ""
+msgstr "مؤشر اللامركزية النسبي (RNI)"
 
 msgid "Root mean square error of approximation (RMSEA)"
-msgstr ""
+msgstr "الجذر التربيعي لمتوسط مربع خطأ التقريب (RMSEA)"
 
 msgid "RMSEA 90%% CI lower bound"
-msgstr ""
+msgstr "الحد الأدنى لفترة الثقة 90%% لـRMSEA"
 
 msgid "RMSEA 90%% CI upper bound"
-msgstr ""
+msgstr "الحد الأعلى لفترة الثقة 90%% لـRMSEA"
 
 msgid "RMSEA p-value"
-msgstr ""
+msgstr "قيمة p لـRMSEA"
 
 msgid "Standardized root mean square residual (SRMR)"
-msgstr ""
+msgstr "الجذر التربيعي لمتوسط مربعات البواقي المعيارية (SRMR)"
 
 msgid "Hoelter's critical N (%s = .05)"
-msgstr ""
+msgstr "حجم العينة N الحرج لهولتر (%s = .05)"
 
 msgid "Hoelter's critical N (%s = .01)"
-msgstr ""
+msgstr "حجم العينة N الحرج لهولتر (%s = .01)"
 
 msgid "Goodness of fit index (GFI)"
-msgstr ""
+msgstr "مؤشر حسن المطابقة (GFI)"
 
 msgid "McDonald fit index (MFI)"
-msgstr ""
+msgstr "مؤشر المطابقة لماكدونالد (MFI)"
 
 msgid "Expected cross validation index (ECVI)"
-msgstr ""
+msgstr "مؤشر التحقق المتقاطع المتوقع (ECVI)"
 
 msgid "Log-likelihood"
-msgstr ""
+msgstr "لوغاريتم الإمكان"
 
 msgid "Number of free parameters"
-msgstr ""
+msgstr "عدد المعلمات الحرة"
 
 msgid "Akaike (AIC)"
-msgstr ""
+msgstr "أكايكي (AIC)"
 
 msgid "Bayesian (BIC)"
-msgstr ""
+msgstr "معيار المعلومات البايزي (BIC)"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr ""
+msgstr "معيار المعلومات البايزي المعدَّل بحسب حجم العينة (SSABIC)"
 
 msgid "# Factors"
-msgstr ""
+msgstr "عدد العوامل"
 
 msgid "Robust standard errors are not available for variance-covariance matrix input."
-msgstr ""
+msgstr "الأخطاء المعيارية الحصينة غير متاحة عند إدخال مصفوفة تباين وتغاير."
 
 msgid "The model could not be estimated due to nonconvergence."
-msgstr ""
+msgstr "تعذر تقدير النموذج لعدم التقارب."
 
 msgid "The model could not be estimated: No degrees of freedom left."
-msgstr ""
+msgstr "تعذر تقدير النموذج: لم تتبقَّ درجات حرية."
 
 msgid "Chi-Square Test"
-msgstr ""
+msgstr "اختبار كاي تربيع"
 
 msgid "Chi-square goodness-of-fit test comparing the growth curve model to the baseline (independence) model. A non-significant p-value for the growth curve model suggests adequate fit to the data."
 msgstr ""
+"يعرض الجدول إحصاء كاي تربيع لنموذج منحنى النمو ولنموذج الاستقلال. تُختبر "
+"المطابقة التامة لنموذج منحنى النمو، وتشير قيمة p غير الدالة إلى عدم وجود "
+"دليل كافٍ على رفضها."
 
 msgid "Model"
-msgstr ""
+msgstr "النموذج"
 
 msgid "df"
-msgstr ""
+msgstr "درجات الحرية"
 
 msgid "p"
-msgstr ""
+msgstr "p"
 
 msgid "Model Fit"
-msgstr ""
+msgstr "مطابقة النموذج"
 
 msgid "Model fit statistics for the latent growth curve model."
-msgstr ""
+msgstr "إحصاءات مطابقة نموذج منحنى النمو الكامن."
 
 msgid "Baseline model"
-msgstr ""
+msgstr "نموذج خط الأساس"
 
 msgid "Growth curve model"
-msgstr ""
+msgstr "نموذج منحنى النمو"
 
 msgid "The model is not admissible: %s"
-msgstr ""
+msgstr "النموذج غير مقبول: %s"
 
 msgid "Warning."
-msgstr ""
+msgstr "تحذير."
 
 msgid "Parameter Estimates"
-msgstr ""
+msgstr "تقديرات المعلمات"
 
 msgid "Parameter estimates for the latent growth curve model, including growth factor means, variances, covariances, and regression coefficients."
 msgstr ""
+"تقديرات معلمات نموذج منحنى النمو الكامن، بما فيها متوسطات عوامل النمو "
+"وتبايناتها وتغايراتها ومعاملات الانحدار."
 
 msgid "Std. estimate"
-msgstr ""
+msgstr "التقدير المعياري"
 
 msgid "Estimate"
-msgstr ""
+msgstr "التقدير"
 
 msgid "Latent Curve"
-msgstr ""
+msgstr "المنحنى الكامن"
 
 msgid "Means and variances of the latent growth factors (e.g., intercept, slope). The intercept mean represents the average starting level, the slope mean the average rate of change, and their variances reflect individual differences in starting level and change."
 msgstr ""
+"متوسطات عوامل النمو الكامنة وتبايناتها (مثل الثابت والميل). يمثل متوسط "
+"الثابت متوسط المستوى الابتدائي، ويمثل متوسط الميل متوسط معدل التغير؛ وتعكس "
+"تبايناتهما الفروق الفردية في المستوى الابتدائي والتغير."
 
 msgid "Component"
-msgstr ""
+msgstr "المكوّن"
 
 msgid "Parameter"
-msgstr ""
+msgstr "المعلمة"
 
 msgid "Std. Error"
-msgstr ""
+msgstr "الخطأ المعياري"
 
 msgid "z-value"
-msgstr ""
+msgstr "قيمة z"
 
 msgid "Lower"
-msgstr ""
+msgstr "الحد الأدنى"
 
 msgid "%s%% Confidence Interval"
-msgstr ""
+msgstr "فترة الثقة %s%%"
 
 msgid "Upper"
-msgstr ""
+msgstr "الحد الأعلى"
 
 msgid "Latent Covariances"
-msgstr ""
+msgstr "تغايرات المتغيرات الكامنة"
 
 msgid "Covariances between latent growth factors. For example, a positive intercept-slope covariance indicates that individuals with higher starting values tend to show steeper change over time."
 msgstr ""
+"التغايرات بين عوامل النمو الكامنة. مثلًا، يشير التغاير الموجب بين الثابت "
+"والميل إلى أن الأفراد ذوي القيم الابتدائية الأعلى يميلون إلى إظهار معدل تغير "
+"أعلى عبر الزمن."
 
 msgid "Regressions"
-msgstr ""
+msgstr "الانحدارات"
 
 msgid "Regression coefficients of covariates predicting the latent growth factors. These show how external variables relate to individual differences in initial level and rate of change."
 msgstr ""
+"معاملات انحدار المتغيرات المصاحبة التي تتنبأ بعوامل النمو الكامنة. توضح علاقة "
+"المتغيرات الخارجية بالفروق الفردية في المستوى الابتدائي ومعدل التغير."
 
 msgid "Predictor"
-msgstr ""
+msgstr "المتنبئ"
 
 msgid "Residual Variances"
-msgstr ""
+msgstr "تباينات البواقي"
 
 msgid "Time-specific residual variances of the observed variables. These represent measurement error plus occasion-specific variance not captured by the growth factors. Negative values may indicate model misspecification."
 msgstr ""
+"تباينات بواقي المتغيرات المشاهَدة عند كل نقطة زمنية. تمثل تباين خطأ القياس "
+"مضافًا إليه التباين الخاص بنقطة القياس الذي لا تفسره عوامل النمو. قد تشير "
+"القيم السالبة إلى سوء تحديد النموذج."
 
 msgid "Variable"
-msgstr ""
+msgstr "المتغير"
 
 msgid "Intercept"
-msgstr ""
+msgstr "الثابت"
 
 msgid "Linear slope"
-msgstr ""
+msgstr "الميل الخطي"
 
 msgid "Quadratic slope"
-msgstr ""
+msgstr "ميل تربيعي"
 
 msgid "Cubic slope"
-msgstr ""
+msgstr "ميل تكعيبي"
 
 msgid "Mean"
-msgstr ""
+msgstr "المتوسط"
 
 msgid "Variance"
-msgstr ""
+msgstr "التباين"
 
 msgid "Residual variance is negative. This may indicate model misspecification."
-msgstr ""
+msgstr "تباين البواقي سالب. قد يشير هذا إلى خطأ في توصيف النموذج."
 
 msgid "R-Squared"
-msgstr ""
+msgstr "معامل التحديد"
 
 msgid "Proportion of variance in each observed variable at each time point explained by the latent growth factors."
 msgstr ""
+"نسبة تباين كل متغير مشاهد عند كل نقطة زمنية التي تفسرها عوامل النمو الكامنة."
 
 msgid "Implied Covariance Matrix"
-msgstr ""
+msgstr "مصفوفة التغاير الضمنية"
 
 msgid "Model-implied covariance matrix from the latent growth curve model."
-msgstr ""
+msgstr "مصفوفة التباين والتغاير التي يقتضيها نموذج منحنى النمو الكامن."
 
 msgid "Residual Covariance Matrix"
-msgstr ""
+msgstr "مصفوفة تغاير البواقي"
 
 msgid "Difference between the observed and model-implied covariance matrices. Small residuals indicate the growth curve model adequately reproduces the observed covariances."
 msgstr ""
+"الفرق بين مصفوفة التباين والتغاير المشاهدة والتي يقتضيها النموذج. تشير "
+"البواقي الصغيرة إلى كفاية إعادة إنتاج نموذج منحنى النمو للتغايرات المشاهدة."
 
 msgid "Curve Plot"
-msgstr ""
+msgstr "رسم المنحنى"
 
 msgid "Individual predicted growth trajectories over time. Each line represents a participant's estimated trajectory based on the latent growth factors."
 msgstr ""
+"مسارات النمو الفردية المتنبأ بها عبر الزمن. يمثل كل خط المسار المقدَّر لمشارك "
+"استنادًا إلى عوامل النمو الكامنة."
 
 msgid "Model Plot"
-msgstr ""
+msgstr "مخطط النموذج"
 
 msgid "Path diagram of the latent growth curve model showing the growth factors, their loadings on observed time points, and any covariates."
 msgstr ""
+"مخطط مسار لنموذج منحنى النمو الكامن، يوضح عوامل النمو وتشبعاتها على النقاط "
+"الزمنية المشاهدة وأي متغيرات مصاحبة."
 
 msgid "Model Syntax"
-msgstr ""
+msgstr "صياغة النموذج"
 
 msgid "The lavaan model syntax for the growth curve model, showing fixed factor loadings that define the growth trajectory shape."
 msgstr ""
+"صياغة lavaan لنموذج منحنى النمو، وتعرض التشبعات العاملية المثبتة التي تحدد "
+"شكل مسار النمو."
 
 msgid "Misfit Plot"
-msgstr ""
+msgstr "رسم سوء المطابقة"
 
 msgid "Curve + variance + uncertainty"
-msgstr ""
+msgstr "المنحنى + التباين + عدم اليقين"
 
 msgid "Curve + variance"
-msgstr ""
+msgstr "المنحنى + التباين"
 
 msgid "Curve + parameter uncertainty"
-msgstr ""
+msgstr "المنحنى + عدم اليقين في المعلمات"
 
 msgid "Not all exogenous variables are admissible. Inadmissible exogenous variables: %s. Only binary or continuous exogenous variables allowed."
 msgstr ""
+"بعض المتغيرات الخارجية غير مقبولة. المتغيرات غير المقبولة: %s. يُسمح بمتغيرات "
+"خارجية ثنائية أو مستمرة فقط."
 
 msgid "Not all endogenous variables are admissible. Inadmissible endogenous variables: %s. Only scale or ordinal endogenous variables allowed."
 msgstr ""
+"بعض المتغيرات الداخلية غير مقبولة. المتغيرات غير المقبولة: %s. يُسمح بمتغيرات "
+"داخلية كمية أو رتبية فقط."
 
 msgid "FIML missing value handling only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s"
 msgstr ""
+"معالجة القيم المفقودة بطريقة FIML متاحة فقط عندما تكون جميع المتغيرات "
+"الداخلية كمية. المتغيرات الداخلية الرتبية في النموذج: %s"
 
 msgid "Estimation failed\nMessage:\n%s"
 msgstr ""
+"فشل التقدير\n"
+"الرسالة:\n"
+"%s"
 
 msgid "Estimation failed"
-msgstr ""
+msgstr "فشل التقدير"
 
 msgid "Parameter estimates from the mediation model, organized by direct effects, indirect effects, and total effects."
 msgstr ""
+"تقديرات معلمات نموذج الوساطة، مرتبة حسب الآثار المباشرة وغير المباشرة والكلية."
 
 msgid "Direct effects"
-msgstr ""
+msgstr "التأثيرات المباشرة"
 
 msgid "Direct effects of predictors on outcomes, bypassing all mediators (the c or c' path). A significant direct effect indicates that the predictor influences the outcome independently of the mediation pathway."
 msgstr ""
+"التأثيرات المباشرة للمتنبئات على النتائج دون المرور بالوسطاء (المسار c أو c')"
+". تشير الدلالة الإحصائية إلى أثر مباشر في النموذج بعد أخذ مسار الوساطة في "
+"الحسبان."
 
 msgid "Indirect effects"
-msgstr ""
+msgstr "التأثيرات غير المباشرة"
 
 msgid "Indirect effects of predictors on outcomes transmitted through mediators. Each indirect effect is the product of the path coefficients along the mediation pathway (a × b). A significant indirect effect indicates that mediation occurs through that pathway."
 msgstr ""
+"التأثيرات غير المباشرة للمتغيرات المتنبئة في النتائج عبر الوسطاء. يساوي كل "
+"تأثير غير مباشر حاصل ضرب معاملات المسار على امتداد مسار الوساطة (a × b). تشير "
+"دلالة التأثير غير المباشر إحصائيًا إلى دليل على وساطة عبر ذلك المسار وفق "
+"النموذج."
 
 msgid "Total Effects"
-msgstr ""
+msgstr "التأثيرات الكلية"
 
 msgid "Total effects combining the direct effect and all indirect effects for each predictor-outcome pair. The total effect equals the sum of the direct and indirect effects (c = c' + a × b)."
 msgstr ""
+"التأثيرات الكلية التي تجمع التأثير المباشر وجميع التأثيرات غير المباشرة لكل "
+"زوج من متغير متنبئ ومتغير نتيجة. يساوي التأثير الكلي مجموع التأثيرين المباشر "
+"وغير المباشر (c = c' + a × b)."
 
 msgid "Total indirect effects"
-msgstr ""
+msgstr "مجموع الآثار غير المباشرة"
 
 msgid "Total indirect effects summed across all mediators for each predictor-outcome pair. When there are multiple mediators, this gives the combined strength of all indirect pathways."
 msgstr ""
+"إجمالي التأثيرات غير المباشرة عبر جميع الوسطاء لكل زوج من متغير متنبئ ومتغير "
+"نتيجة. عند وجود وسطاء متعددين، يمثل ذلك القوة المجمعة لجميع المسارات غير "
+"المباشرة."
 
 msgid "Residual covariances"
-msgstr ""
+msgstr "تغايرات البواقي"
 
 msgid "Estimated residual covariances between endogenous variables (mediators and outcomes). These represent shared variance not accounted for by the model's directed paths."
 msgstr ""
+"تغايرات البواقي المقدرة بين المتغيرات الداخلية (الوسطاء والنتائج). تمثل "
+"تباينًا مشتركًا لا تفسره المسارات الموجهة للنموذج."
 
 msgid "Path coefficients"
-msgstr ""
+msgstr "معاملات المسار"
 
 msgid "Individual path coefficients in the mediation model. These include the a paths (predictor to mediator) and b paths (mediator to outcome), which constitute the building blocks of indirect effects."
 msgstr ""
+"معاملات المسارات الفردية في نموذج الوساطة. تشمل مسارات a (المتنبئ إلى الوسيط) "
+"ومسارات b (الوسيط إلى النتيجة)، وهي مكونات الآثار غير المباشرة."
 
 msgid "Estimator is %s."
-msgstr ""
+msgstr "المقدّر هو %s."
 
 msgid "%1$s Not all bootstrap samples were successful: CI based on %2$.0f samples."
 msgstr ""
+"%1$s لم تنجح جميع عينات التمهيد الإحصائي. تستند فترة الثقة إلى %2$.0f عينة."
 
 msgid "Proportion of variance in each mediator and outcome variable explained by its predictors in the mediation model."
 msgstr ""
+"نسبة تباين كل متغير وسيط ومتغير نتيجة التي تفسرها متنبئاته في نموذج الوساطة."
 
 msgid "Path Plot"
-msgstr ""
+msgstr "مخطط المسار"
 
 msgid "Visual representation of the mediation model showing predictors, mediators, outcomes, directed paths, and (optionally) parameter estimates."
 msgstr ""
+"عرض مرئي لنموذج الوساطة يبيّن المتنبئات والوسطاء والنتائج والمسارات الموجَّهة "
+"وتقديرات المعلمات (اختياريًا)."
 
 msgid "Currently it is not possible to plot mediation models with ordinal variables. The plot could not be generated."
 msgstr ""
+"لا يمكن حاليًا رسم نماذج الوساطة ذات المتغيرات الرتبية. تعذر إنشاء المخطط."
 
 msgid "The plot could not be generated. The underlying code resulted in the following error message: %s"
-msgstr ""
+msgstr "تعذر إنشاء المخطط. أرجعت الشيفرة الأساسية رسالة الخطأ التالية: %s"
 
 msgid "Model syntax"
-msgstr ""
+msgstr "صياغة النموذج"
 
 msgid "The lavaan model syntax automatically generated from the mediation analysis specification. This shows the exact model fitted, including labeled direct and indirect effect parameters."
 msgstr ""
+"صياغة نموذج lavaan المولَّدة تلقائيًا من تحديد تحليل الوساطة. تعرض النموذج "
+"الملاءَم بدقة، بما فيه معلمات التأثيرات المباشرة وغير المباشرة المسماة."
 
 msgid "FIML only available with ML-type estimators."
-msgstr ""
+msgstr "لا تتاح طريقة FIML إلا مع مقدّرات من نوع ML."
 
 msgid "Estimation failed! Message: The model did not converge. Try using a different estimator or specify an other MIMIC model."
 msgstr ""
+"فشل التقدير! الرسالة: لم يتقارب النموذج. جرّب مقدِّرًا مختلفًا أو حدد نموذج MIMIC "
+"آخر."
 
 msgid "Chi-square goodness-of-fit test for the MIMIC model. Both the baseline (independence) model and the factor model with predictors are shown. A non-significant chi-square for the factor model indicates adequate fit."
 msgstr ""
+"اختبار كاي تربيع لحسن مطابقة نموذج MIMIC. يُعرض نموذج الاستقلال الأساسي والنموذج "
+"العاملي مع المتنبئات. إذا لم تكن نتيجة اختبار النموذج العاملي دالة، فلا "
+"يتوافر دليل كافٍ على رفض مطابقته التامة."
 
 msgid "&#967;&sup2;"
-msgstr ""
+msgstr "&#967;&sup2;"
 
 msgid "Factor model"
-msgstr ""
+msgstr "النموذج العاملي"
 
 msgid "Parameter estimates for the MIMIC (Multiple Indicators, Multiple Causes) model. The model has observed predictors influencing a latent variable, which in turn is measured by observed indicators."
 msgstr ""
+"تقديرات معلمات نموذج MIMIC (مؤشرات متعددة، أسباب متعددة). يتأثر المتغير "
+"الكامن بمتنبئات مشاهدَة، ويُقاس بدوره بمؤشرات مشاهدَة."
 
 msgid "Predictor coefficients"
-msgstr ""
+msgstr "معاملات المتنبئات"
 
 msgid "Regression coefficients of the observed predictor (cause) variables on the latent variable. These represent the direct effects of each predictor on the latent construct."
 msgstr ""
+"معاملات انحدار المتغير الكامن على المتغيرات المتنبئة (السببية) المشاهَدة. تمثل "
+"التأثيرات المباشرة لكل متغير متنبئ في البناء الكامن."
 
 msgid "Indicator coefficients"
-msgstr ""
+msgstr "معاملات المؤشرات"
 
 msgid "Factor loadings of the latent variable on its observed indicators. These represent how strongly each indicator reflects the underlying latent construct."
 msgstr ""
+"تشبعات المتغير الكامن على مؤشراته المشاهدة. تمثل مدى قوة تعبير كل مؤشر عن "
+"البنية الكامنة الأساسية."
 
 msgid "Indicator"
-msgstr ""
+msgstr "المؤشر"
 
 msgid "Residual variances"
-msgstr ""
+msgstr "تباينات البواقي"
 
 msgid "Std. error"
-msgstr ""
+msgstr "الخطأ المعياري"
 
 msgid "Predictor covariances"
-msgstr ""
+msgstr "تغايرات المتنبئات"
 
 msgid "Variables"
-msgstr ""
+msgstr "المتغيرات"
 
 msgid "Proportion of variance explained in the latent variable (by the predictors) and in each indicator (by the latent variable)."
 msgstr ""
+"نسبة التباين المفسَّر في المتغير الكامن (بالمتنبئات)، وفي كل مؤشر (بالمتغير "
+"الكامن)."
 
 msgid "Path diagram of the MIMIC model showing observed predictors (causes), the latent variable, and its observed indicators."
 msgstr ""
+"مخطط مسار لنموذج MIMIC يبيّن المتنبئات المشاهَدة (الأسباب) والمتغير الكامن "
+"ومؤشراته المشاهَدة."
 
 msgid "Model plot not available with ordinal variables"
-msgstr ""
+msgstr "مخطط النموذج غير متاح مع المتغيرات الرتبية"
 
 msgid "The lavaan model syntax specifying the MIMIC model structure, including the measurement model and the regression of the latent variable on the predictors."
 msgstr ""
+"صياغة نموذج lavaan التي تحدد بنية نموذج MIMIC، بما فيها نموذج القياس وانحدار "
+"المتغير الكامن على المتغيرات المتنبئة."
 
 msgid "Specify both factor indicator variables and moderator variables to run the analysis."
-msgstr ""
+msgstr "تحديد متغيرات مؤشرات العوامل والمتغيرات المعدِّلة معًا لإجراء التحليل."
 
 msgid "Check the 'Sync Analysis' box to run the analysis."
-msgstr ""
+msgstr "حدّد مربع «بدء التحليل/مزامنته» لتشغيل التحليل."
 
 msgid "The moderator variable '%s' already has '_squared' in its name. Please rename the variable before proceeding."
 msgstr ""
+"يتضمن اسم المتغير المعدِّل '%s' اللاحقة '_squared' بالفعل. يرجى إعادة تسمية "
+"المتغير قبل المتابعة."
 
 msgid "The moderator variable '%s' already has '_cubic' in its name. Please rename the variable before proceeding."
 msgstr ""
+"يتضمن اسم المتغير المعدِّل '%s' اللاحقة '_cubic' بالفعل. يرجى إعادة تسمية "
+"المتغير قبل المتابعة."
 
 msgid "Fitting invariance model"
-msgstr ""
+msgstr "ملاءمة نموذج ثبات القياس"
 
 msgid "Fit per Group Test"
-msgstr ""
+msgstr "اختبار المطابقة لكل مجموعة"
 
 msgid "CFA fit statistics computed separately for each group defined by the moderator. This checks whether the baseline factor model fits adequately within each group before testing invariance."
 msgstr ""
+"تُحسب إحصاءات مطابقة CFA لكل مجموعة يحددها المتغير المعدِّل على حدة. يفحص ذلك "
+"كفاية مطابقة النموذج العاملي الأساسي داخل كل مجموعة قبل اختبار الثبات."
 
 msgid "Group Model"
-msgstr ""
+msgstr "نموذج المجموعة"
 
 msgid "Error in fit per group test. Internal error message(s): %s"
-msgstr ""
+msgstr "حدث خطأ في اختبار المطابقة لكل مجموعة. رسائل الخطأ الداخلية: %s"
 
 msgid "N"
-msgstr ""
+msgstr "N"
 
 msgid "RMSEA"
-msgstr ""
+msgstr "RMSEA"
 
 msgid "CFI"
-msgstr ""
+msgstr "CFI"
 
 msgid "SRMR"
-msgstr ""
+msgstr "SRMR"
 
 msgid "The model for group %s did not converge."
-msgstr ""
+msgstr "لم يتقارب نموذج المجموعة %s."
 
 msgid "Global Invariance Fit"
-msgstr ""
+msgstr "مطابقة ثبات القياس العام"
 
 msgid "Comparison of MNLFA invariance models (configural, metric, scalar, strict) using -2 log-likelihood difference tests. Significant differences indicate that the more constrained model fits significantly worse, suggesting non-invariance at that level."
 msgstr ""
+"مقارنة نماذج ثبات MNLFA (التكويني والمتري وثبات الثوابت والصارم) باختبارات "
+"فرق -2 لوغاريتم الإمكان. تشير الفروق الدالة إلى سوء مطابقة أكبر للنموذج الأشد "
+"تقييدًا، مما يدل على غياب الثبات عند ذلك المستوى."
 
 msgid "Type"
-msgstr ""
+msgstr "النوع"
 
 msgid "n(Par)"
-msgstr ""
+msgstr "n(Par)"
 
 msgid "Fit (-2LL)"
-msgstr ""
+msgstr "المطابقة (-2LL)"
 
 msgid "AIC"
-msgstr ""
+msgstr "AIC"
 
 msgid "SAAIC"
-msgstr ""
+msgstr "SAAIC"
 
 msgid "BIC"
-msgstr ""
+msgstr "BIC"
 
 msgid "SABIC"
-msgstr ""
+msgstr "SABIC"
 
 msgid "Choose one of the global invariance tests to perform the test."
-msgstr ""
+msgstr "اختر أحد اختبارات ثبات القياس العامة لإجراء الاختبار."
 
 msgid "Δ(LL)"
-msgstr ""
+msgstr "Δ(LL)"
 
 msgid "Δ(df)"
-msgstr ""
+msgstr "Δ(df)"
 
 msgid "%1$s Error in fitting the %2$s model. Internal error message(s): %3$s"
-msgstr ""
+msgstr "%1$s خطأ في ملاءمة النموذج %2$s. رسائل الخطأ الداخلية: %3$s"
 
 msgid "OK"
-msgstr ""
+msgstr "موافق"
 
 msgid "%1$s: optimizer status '%2$s'."
-msgstr ""
+msgstr "%1$s: حالة خوارزمية التحسين '%2$s'."
 
 msgid "Fitting the model resulted in warnings. Check the 'Show warnings' box in the Output Options to see the warnings."
 msgstr ""
+"أسفرت ملاءمة النموذج عن تحذيرات. حدد مربع 'عرض التحذيرات' ضمن خيارات المخرجات "
+"للاطلاع عليها."
 
 msgid "Warnings (from R):"
-msgstr ""
+msgstr "تحذيرات (من R):"
 
 msgid "Parameter estimates from the MNLFA invariance models. Moderation effects show how each parameter varies as a function of the moderator variable. Estimates on 'Effect' rows represent the linear change in the parameter per unit change in the moderator. For factor correlations, these coefficients are on the Fisher z scale."
 msgstr ""
+"تقديرات معلمات نماذج ثبات القياس MNLFA. توضح تأثيرات التعديل تغير كل معلمة "
+"بدلالة المتغير المعدِّل. تمثل تقديرات صفوف «التأثير» التغير الخطي في المعلمة "
+"لكل تغير مقداره وحدة في المتغير المعدِّل. ولارتباطات العوامل، تكون هذه المعاملات "
+"على مقياس z لفيشر."
 
 msgid "The %s model could not be fitted"
-msgstr ""
+msgstr "تعذّرت ملاءمة النموذج %s"
 
 msgid "Loadings"
-msgstr ""
+msgstr "التشبعات"
 
 msgid "Factor loadings and their moderation effects. Significant moderation effects indicate that the relationship between the latent factor and its indicator varies across levels of the moderator (metric non-invariance)."
 msgstr ""
+"التشبعات العاملية وآثار التعديل عليها. تشير آثار التعديل الدالة إلى تغير "
+"العلاقة بين العامل الكامن ومؤشره عبر مستويات المتغير المعدِّل (غياب الثبات "
+"المتري)."
 
 msgid "Factor"
-msgstr ""
+msgstr "العامل"
 
 msgid "Effect"
-msgstr ""
+msgstr "الأثر"
 
 msgid "Intercepts"
-msgstr ""
+msgstr "الثوابت"
 
 msgid "Indicator intercepts and their moderation effects. Significant moderation effects indicate that the item difficulty or baseline level varies across the moderator (scalar non-invariance)."
 msgstr ""
+"ثوابت المؤشرات وآثار التعديل عليها. تشير الآثار الدالة إلى اختلاف صعوبة الفقرة "
+"أو مستواها الأساسي عبر قيم المتغير المعدِّل (غياب ثبات الثوابت)."
 
 msgid "Indicator residual variances and their moderation effects. Estimates are on the log scale internally and back-transformed for display. Significant moderation indicates that measurement precision varies across the moderator (strict non-invariance)."
 msgstr ""
+"تباينات بواقي المؤشرات وآثار التعديل عليها. تُقدَّر داخليًا على المقياس "
+"اللوغاريتمي ثم تُحوَّل عكسيًا للعرض. يشير التعديل الدال إلى اختلاف دقة القياس عبر "
+"المتغير المعدِّل (غياب الثبات الصارم)."
 
 msgid "Factor Variances"
-msgstr ""
+msgstr "تباينات العوامل"
 
 msgid "Latent factor variances and their moderation effects. Estimates are on the log scale internally and back-transformed for display. Significant moderation indicates that the spread of the latent trait changes across the moderator."
 msgstr ""
+"تباينات العوامل الكامنة وآثار التعديل عليها. تُقدَّر داخليًا على المقياس "
+"اللوغاريتمي ثم تُحوَّل عكسيًا للعرض. يشير التعديل الدال إلى تغير تشتت السمة "
+"الكامنة عبر المتغير المعدِّل."
 
 msgid "Factor Means"
-msgstr ""
+msgstr "متوسطات العوامل"
 
 msgid "Latent factor means and their moderation effects. Significant moderation indicates that the average level of the latent trait differs across the moderator."
 msgstr ""
+"متوسطات العوامل الكامنة وآثار التعديل عليها. يشير التعديل الدال إلى اختلاف "
+"متوسط مستوى السمة الكامنة عبر قيم المتغير المعدِّل."
 
 msgid "Factor Correlations (Fisher z)"
-msgstr ""
+msgstr "ارتباطات العوامل (z لفيشر)"
 
 msgid "Regression coefficients for Fisher z-transformed latent factor correlations. The baseline is the Fisher z-transformed correlation when all moderators are zero. Moderation coefficients describe changes on this scale. Covariances also depend on the factor standard deviations."
 msgstr ""
+"معاملات انحدار ارتباطات العوامل الكامنة المحوَّلة بتحويل z لفيشر. الأساس هو "
+"الارتباط المحوَّل عندما تساوي جميع المتغيرات المعدِّلة صفرًا. تصف معاملات التعديل "
+"التغير على هذا المقياس. وتعتمد التغايرات أيضًا على الانحرافات المعيارية "
+"للعوامل."
 
 msgid "Parameter Plots"
-msgstr ""
+msgstr "مخططات المعلمات"
 
 msgid "Plots showing how model parameters (loadings, intercepts, variances) vary as a function of the moderator variable. Each plot displays the estimated parameter value across the range of the moderator. Factor correlations are shown on the Fisher z scale."
 msgstr ""
+"رسوم توضح تغير معلمات النموذج (التشبعات والثوابت والتباينات) بدلالة المتغير "
+"المعدِّل. يعرض كل رسم قيمة المعلمة المقدَّرة عبر مدى المتغير المعدِّل. تُعرض "
+"ارتباطات العوامل على مقياس z لفيشر."
 
 msgid "total"
-msgstr ""
+msgstr "الإجمالي"
 
 msgid "Parameter Value"
-msgstr ""
+msgstr "قيمة المعلمة"
 
 msgid "Fisher z"
-msgstr ""
+msgstr "z لفيشر"
 
 msgid "Nothing to print."
-msgstr ""
+msgstr "لا شيء للطباعة."
 
 msgid "addedGroupVariable"
-msgstr ""
+msgstr "addedGroupVariable"
 
 msgid "Column name %s already exists in the dataset"
-msgstr ""
+msgstr "اسم العمود %s موجود بالفعل في مجموعة البيانات"
 
 msgid "# LOADINGS BLOCK"
-msgstr ""
+msgstr "# قسم التشبعات العاملية"
 
 msgid "Baseline"
-msgstr ""
+msgstr "خط الأساس"
 
 msgid "# FACTOR VARIANCES BLOCK"
-msgstr ""
+msgstr "# قسم تباينات العوامل"
 
 msgid "# FACTOR MEANS BLOCK"
-msgstr ""
+msgstr "# قسم متوسطات العوامل"
 
 msgid "# INTERCEPTS BLOCK"
-msgstr ""
+msgstr "# قسم الثوابت"
 
 msgid "# RESIDUAL VARIANCES BLOCK"
-msgstr ""
+msgstr "# قسم تباينات البواقي"
 
 msgid "# FACTOR COVARIANCES BLOCK"
-msgstr ""
+msgstr "# قسم التغايرات بين العوامل"
 
 msgid "Error"
-msgstr ""
+msgstr "خطأ"
 
 msgid "Unknown"
-msgstr ""
+msgstr "مجهول"
 
 msgid "OK/Gradient"
-msgstr ""
+msgstr "سليم/التدرّج"
 
 msgid "Non-convex Hessian"
-msgstr ""
+msgstr "مصفوفة هسيان غير محدّبة"
 
 msgid "Unchecked"
-msgstr ""
+msgstr "لم يُفحص"
 
 msgid "Code %s"
-msgstr ""
+msgstr "الرمز %s"
 
 msgid "Grouping variable has fewer than 3 observations in group %s"
-msgstr ""
+msgstr "تحتوي المجموعة %s على أقل من 3 مشاهدات بحسب متغير التجميع."
 
 msgid "Enter a model"
-msgstr ""
+msgstr "أدخل نموذجًا"
 
 msgid "Variable(s) in model syntax not recognized: %s"
-msgstr ""
+msgstr "متغيرات غير معروفة في صياغة النموذج: %s"
 
 msgid "Using '~~' is not supported for composite covariances. Try '~' instead"
-msgstr ""
+msgstr "استخدام '~~' غير مدعوم لتغايرات المركبات. جرّب '~' بدلًا منه"
 
 msgid "Using '~~' is not supported. Try '~' instead"
-msgstr ""
+msgstr "استخدام '~~' غير مدعوم. جرّب '~' بدلًا منه"
 
 msgid "Estimation failed Message: %s"
-msgstr ""
+msgstr "فشل التقدير. الرسالة: %s"
 
 msgid "Estimation failed! Message: Model %s did not converge!"
-msgstr ""
+msgstr "فشل التقدير! الرسالة: لم يتقارب النموذج %s!"
 
 msgid "Overall model fit test using bootstrap-based distance measures. The test statistic is compared to a critical value obtained from bootstrapping. If the test statistic exceeds the critical value, the model is rejected at the chosen significance level."
 msgstr ""
+"اختبار المطابقة الكلية للنموذج بمقاييس مسافة تستند إلى التمهيد الإحصائي. "
+"يُقارَن إحصاء الاختبار بقيمة حرجة محسوبة بالتمهيد الإحصائي. إذا تجاوزها، يُرفض "
+"النموذج عند مستوى الدلالة المختار."
 
 msgid "Group"
-msgstr ""
+msgstr "المجموعة"
 
 msgid "Distance Measure"
-msgstr ""
+msgstr "مقياس المسافة"
 
 msgid "Test Statistic"
-msgstr ""
+msgstr "إحصاء الاختبار"
 
 msgid "Critical Value (%s%% Quantile)"
-msgstr ""
+msgstr "القيمة الحرجة (القيمة الكمية %s%%)"
 
 msgid "Model selection criteria could not be computed: %s"
-msgstr ""
+msgstr "تعذر حساب معايير اختيار النموذج: %s"
 
 msgid "Model selection criteria could not be computed for group %1$s: %2$s"
-msgstr ""
+msgstr "تعذر حساب معايير اختيار النموذج للمجموعة %1$s: %2$s"
 
 msgid "At least one result is inadmissible."
-msgstr ""
+msgstr "نتيجة واحدة على الأقل غير مقبولة."
 
 msgid "Denotes the fit of the model including a saturated structural model."
-msgstr ""
+msgstr "يدل على مطابقة النموذج الذي يتضمن نموذجًا بنائيًا مشبعًا."
 
 msgid "Parameter estimates for the PLS-SEM model, including outer weights, outer loadings, inner model path coefficients, total effects, and residual correlations."
 msgstr ""
+"تقديرات معلمات PLS-SEM، ومنها الأوزان والتشبعات الخارجية ومعاملات مسارات "
+"النموذج الداخلي والآثار الكلية وارتباطات البواقي."
 
 msgid "Weights"
-msgstr ""
+msgstr "الأوزان"
 
 msgid "Outer weights relating observed indicators to their composite constructs. Weights determine how indicators are combined to form construct scores and reflect each indicator's relative contribution."
 msgstr ""
+"الأوزان الخارجية التي تربط المؤشرات المشاهدة ببناها المركبة. تحدد طريقة جمع "
+"المؤشرات لتكوين درجات البنى، وتعكس المساهمة النسبية لكل مؤشر."
 
 msgid "Construct"
-msgstr ""
+msgstr "البناء"
 
 msgid "Outer loadings (correlations) between indicators and their constructs. Loadings above 0.708 indicate that the construct explains more than 50%% of the indicator's variance."
 msgstr ""
+"التشبعات الخارجية (الارتباطات) بين المؤشرات وبناها. تشير التشبعات الأعلى من "
+"0.708 إلى أن البنية تفسر أكثر من 50%% من تباين المؤشر."
 
 msgid "Regression Coefficients"
-msgstr ""
+msgstr "معاملات الانحدار"
 
 msgid "Inner model path coefficients between constructs. The f² effect size indicates the substantive impact of removing each predictor: 0.02 (small), 0.15 (medium), 0.35 (large)."
 msgstr ""
+"معاملات مسارات النموذج الداخلي بين البنى. يبين حجم الأثر f² الأثر الجوهري لحذف "
+"كل متنبئ: 0.02 (صغير)، و0.15 (متوسط)، و0.35 (كبير)."
 
 msgid "Outcome"
-msgstr ""
+msgstr "النتيجة"
 
 msgid "Total effects combining direct and all indirect paths between constructs."
 msgstr ""
+"الآثار الكلية التي تجمع جميع المسارات المباشرة وغير المباشرة بين البُنى."
 
 msgid "Residual Correlations"
-msgstr ""
+msgstr "ارتباطات البواقي"
 
 msgid "Residual correlations between indicators after accounting for the construct model. These represent correlated measurement errors between indicator pairs."
 msgstr ""
+"ارتباطات البواقي بين المؤشرات بعد أخذ نموذج البناء في الحسبان. تمثل أخطاء "
+"قياس مترابطة بين أزواج المؤشرات."
 
 msgid "VIF"
-msgstr ""
+msgstr "VIF"
 
 msgid "VIF could not be computed."
-msgstr ""
+msgstr "تعذّر حساب عامل تضخم التباين VIF."
 
 msgid "Endogenous Indicator Prediction"
-msgstr ""
+msgstr "التنبؤ بالمؤشرات الداخلية"
 
 msgid "Cross-validated prediction of endogenous indicators using PLSpredict. The prediction metrics assess how well the PLS-SEM model predicts indicator scores out of sample."
 msgstr ""
+"تنبؤ بالمؤشرات الداخلية بالتحقق المتقاطع باستخدام PLSpredict. تقيّم مقاييس "
+"التنبؤ قدرة نموذج PLS-SEM على توقع درجات المؤشرات خارج العينة."
 
 msgid "Prediction Metrics"
-msgstr ""
+msgstr "مقاييس التنبؤ"
 
 msgid "MAE (mean absolute error), RMSE (root mean squared error), and Q² prediction metrics for endogenous indicators. Q² > 0 indicates that prediction error is less than using the training sample mean. When benchmarks are included, lower MAE/RMSE than the benchmark suggests the PLS-SEM model predicts better."
 msgstr ""
+"مقاييس التنبؤ MAE (متوسط الخطأ المطلق) وRMSE (جذر متوسط مربع الخطأ) وQ² "
+"للمؤشرات الداخلية. تشير Q² > 0 إلى خطأ تنبؤ أقل من استخدام متوسط عينة "
+"التدريب. وعند إدراج نماذج مرجعية، تشير MAE/RMSE الأقل من المرجع إلى تنبؤ أفضل "
+"لنموذج PLS-SEM."
 
 msgid "Target MAE"
-msgstr ""
+msgstr "MAE للمتغير الهدف"
 
 msgid "LM MAE"
-msgstr ""
+msgstr "LM MAE"
 
 msgid "GSCA MAE"
-msgstr ""
+msgstr "GSCA MAE"
 
 msgid "PCA MAE"
-msgstr ""
+msgstr "PCA MAE"
 
 msgid "MAXVAR MAE"
-msgstr ""
+msgstr "MAXVAR MAE"
 
 msgid "Target RMSE"
-msgstr ""
+msgstr "RMSE للمتغير الهدف"
 
 msgid "LM RMSE"
-msgstr ""
+msgstr "LM RMSE"
 
 msgid "GSCA RMSE"
-msgstr ""
+msgstr "GSCA RMSE"
 
 msgid "PCA RMSE"
-msgstr ""
+msgstr "PCA RMSE"
 
 msgid "MAXVAR RMSE"
-msgstr ""
+msgstr "MAXVAR RMSE"
 
 msgid "Target Q2 Prediction"
-msgstr ""
+msgstr "Q2 للتنبؤ بالمتغير الهدف"
 
 msgid "There are not enough observations for each k-fold, try setting 'cross-validation k-folds' to a lower number"
 msgstr ""
+"لا توجد مشاهدات كافية لكل طية من k طيات. جرّب ضبط 'عدد طيات التحقق المتقاطع (k)"
+"' على عدد أقل"
 
 msgid "Are all indicator variables set to 'scale'?"
-msgstr ""
+msgstr "هل ضُبطت جميع متغيرات المؤشرات على النوع الكمي (scale)؟"
 
 msgid "Prediction failed Message: %1$s"
-msgstr ""
+msgstr "فشل التنبؤ. الرسالة: %1$s"
 
 msgid "Additional Fit Measures"
-msgstr ""
+msgstr "مقاييس مطابقة إضافية"
 
 msgid "Additional model fit measures for PLS-SEM. Includes CFI, GFI, RMSEA, SRMR for the model-implied indicator correlation matrix, Goodness-of-Fit (GoF) as geometric mean of AVE and R², and bootstrap-based distance measures (dG, dL, dML)."
 msgstr ""
+"مقاييس مطابقة إضافية لـPLS-SEM، تشمل CFI وGFI وRMSEA وSRMR لمصفوفة ارتباط "
+"المؤشرات التي يقتضيها النموذج، ومقياس حسن المطابقة (GoF) بوصفه المتوسط "
+"الهندسي لـAVE وR²، ومقاييس المسافة القائمة على التمهيد الإحصائي (dG, dL, dML)."
 
 msgid "Hoelter's critical N (CN)"
-msgstr ""
+msgstr "حجم العينة N الحرج لهولتر (CN)"
 
 msgid "Root mean square residual covariance (RMS theta)"
-msgstr ""
+msgstr "الجذر التربيعي لمتوسط مربع تغاير البواقي (RMS theta)"
 
 msgid "Goodness of Fit (GoF)"
-msgstr ""
+msgstr "حسن المطابقة (GoF)"
 
 msgid "Geodesic distance"
-msgstr ""
+msgstr "المسافة الجيوديسية"
 
 msgid "Squared Euclidean distance"
-msgstr ""
+msgstr "المسافة الإقليدية المربعة"
 
 msgid "Maximum likelihood-based distance"
-msgstr ""
+msgstr "مسافة قائمة على الإمكان الأعظم"
 
 msgid "Model assessment could not be computed: %s"
-msgstr ""
+msgstr "تعذّر حساب تقييم النموذج: %s"
 
 msgid "Model assessment could not be computed for group %1$s: %2$s"
-msgstr ""
+msgstr "تعذر حساب تقييم النموذج للمجموعة %1$s: %2$s"
 
 msgid "R² and adjusted R² for each endogenous construct. R² represents the proportion of variance in the construct explained by its predictors in the structural model. Values of 0.75, 0.50, and 0.25 are considered substantial, moderate, and weak."
 msgstr ""
+"معامل R² ومعامل R² المعدَّل لكل بناء داخلي. يمثل R² نسبة التباين في البناء "
+"التي تفسرها المتغيرات المتنبئة به في النموذج البنائي. تُعد القيم 0.75 و0.50 "
+"و0.25 كبيرة ومتوسطة وضعيفة، على الترتيب."
 
 msgid "R²"
-msgstr ""
+msgstr "R²"
 
 msgid "Adjusted R²"
-msgstr ""
+msgstr "R² المعدل"
 
 msgid "Reliability Measures"
-msgstr ""
+msgstr "مقاييس الثبات"
 
 msgid "Construct reliability measures. Cronbach's α assumes equal indicator weights (tau-equivalence). Jöreskog's ρ uses the outer loadings and is the preferred measure for PLS-SEM. Dijkstra-Henseler's ρ_A is a consistent reliability estimate. Values above 0.70 indicate acceptable reliability."
 msgstr ""
+"مقاييس ثبات البناء. يفترض α لكرونباخ تكافؤ تاو (تساوي تشبعات المؤشرات). "
+"يستخدم ρ ليوريسكوغ التشبعات الخارجية، وهو المقياس المفضَّل لـPLS-SEM. ويقدم "
+"ρ_A لديكسترا–هنسلر تقديرًا متسقًا للثبات. تشير القيم الأكبر من 0.70 إلى ثبات "
+"مقبول."
 
 msgid "Latent"
-msgstr ""
+msgstr "كامن"
 
 msgid "Cronbach's %s"
-msgstr ""
+msgstr "%s لكرونباخ"
 
 msgid "J%1$sreskog's %2$s"
-msgstr ""
+msgstr "%2$s لـJ%1$sreskog"
 
 msgid "Dijkstra-Henseler's %s"
-msgstr ""
+msgstr "%s لديكسترا–هنسلر"
 
 msgid "Correlation Tables"
-msgstr ""
+msgstr "جداول الارتباط"
 
 msgid "Observed and model-implied correlation matrices for indicators and constructs. Comparing observed and implied matrices helps assess model fit at the indicator and construct level."
 msgstr ""
+"مصفوفات الارتباط المشاهدة والتي يقتضيها النموذج للمؤشرات والبنى. تساعد "
+"مقارنتها في تقييم مطابقة النموذج على مستويي المؤشرات والبنى."
 
 msgid "Observed Indicator Correlation Matrix"
-msgstr ""
+msgstr "مصفوفة ارتباط المؤشرات المشاهدة"
 
 msgid "Sample correlation matrix of the observed indicator variables."
-msgstr ""
+msgstr "مصفوفة ارتباط متغيرات المؤشرات المشاهدة في العينة."
 
 msgid "Implied Indicator Correlation Matrix"
-msgstr ""
+msgstr "مصفوفة ارتباط المؤشرات الضمنية"
 
 msgid "Model-implied correlation matrix of the indicator variables. Closeness to the observed matrix indicates good model fit at the indicator level."
 msgstr ""
+"مصفوفة ارتباط متغيرات المؤشرات التي يقتضيها النموذج. يشير قربها من المصفوفة "
+"المشاهدة إلى مطابقة جيدة على مستوى المؤشرات."
 
 msgid "Observed Construct Correlation Matrix"
-msgstr ""
+msgstr "مصفوفة ارتباط البُنى المشاهدة"
 
 msgid "Sample correlation matrix of the composite construct scores."
-msgstr ""
+msgstr "مصفوفة ارتباط درجات البنى المركبة في العينة."
 
 msgid "Implied Construct Correlation Matrix"
-msgstr ""
+msgstr "مصفوفة ارتباط البُنى الضمنية"
 
 msgid "Model-implied correlation matrix of the constructs. Closeness to the observed construct correlations indicates good structural model fit."
 msgstr ""
+"مصفوفة ارتباط البنى التي يقتضيها النموذج. يشير قربها من ارتباطات البنى "
+"المشاهدة إلى مطابقة جيدة للنموذج البنائي."
 
 msgid "Sample correlation matrix of the observed indicator variables, shown per group."
-msgstr ""
+msgstr "مصفوفة ارتباط متغيرات المؤشرات المشاهدة في العينة، معروضة لكل مجموعة."
 
 msgid "Model-implied correlation matrix of the indicator variables, shown per group."
-msgstr ""
+msgstr "مصفوفة ارتباط متغيرات المؤشرات التي يقتضيها النموذج، معروضة لكل مجموعة."
 
 msgid "Sample correlation matrix of the composite construct scores, shown per group."
-msgstr ""
+msgstr "مصفوفة ارتباط درجات البنى المركبة في العينة، معروضة لكل مجموعة."
 
 msgid "Model-implied correlation matrix of the constructs, shown per group."
-msgstr ""
+msgstr "مصفوفة ارتباط البنى التي يقتضيها النموذج، معروضة لكل مجموعة."
 
 msgid "Implied indicator correlations could not be computed: %s"
-msgstr ""
+msgstr "تعذر حساب ارتباطات المؤشرات التي يقتضيها النموذج: %s"
 
 msgid "Implied construct correlations could not be computed: %s"
-msgstr ""
+msgstr "تعذر حساب ارتباطات البنى التي يقتضيها النموذج: %s"
 
 msgid "Mean structure can not be included when data is variance-covariance matrix"
-msgstr ""
+msgstr "لا يمكن إدراج بنية المتوسطات عندما تكون البيانات مصفوفة تباين وتغاير"
 
 msgid "Please set the sample size!"
-msgstr ""
+msgstr "الرجاء ضبط حجم العينة!"
 
 msgid "Multiple group analysis not supported when data is variance-covariance matrix"
 msgstr ""
+"التحليل متعدد المجموعات غير مدعوم عندما تكون البيانات مصفوفة تباين وتغاير"
 
 msgid "Not more cases than number of variables. Is your data a variance-covariance matrix?"
-msgstr ""
+msgstr "عدد الحالات لا يتجاوز عدد المتغيرات. هل بياناتك مصفوفة تباين وتغاير؟"
 
 msgid "When conditioning estimation on exogenous covariates, the 'Exogenous covariate(s) fixed' box must be checked."
 msgstr ""
+"عند إجراء التقدير مشروطًا بالمتغيرات المصاحبة الخارجية، يجب تحديد مربع 'تثبيت "
+"المتغيرات المصاحبة الخارجية'."
 
 msgid "Bootstrapped standard errors are not yet available when 'Condition on exogenous covariate(s)' box is checked."
 msgstr ""
+"الأخطاء المعيارية بالتمهيد الإحصائي غير متاحة بعد عند تحديد مربع 'الاشتراط على "
+"المتغيرات المصاحبة الخارجية'."
 
 msgid "Invalid model specification. Did you pass a variable name as a string?"
-msgstr ""
+msgstr "توصيف النموذج غير صالح. هل مررت اسم متغير بوصفه سلسلة نصية؟"
 
 msgid "One or more variables are constants or contain only missing values."
-msgstr ""
+msgstr "يوجد متغير واحد أو أكثر ثابت أو لا يحتوي إلا على قيم مفقودة."
 
 msgid "Estimation failed. Message: %s"
-msgstr ""
+msgstr "فشل التقدير. الرسالة: %s"
 
 msgid "Estimation failed! Message: %s did not converge!"
-msgstr ""
+msgstr "فشل التقدير! الرسالة: لم يتقارب %s!"
 
 msgid "Estimation failed! Message: %s has negative degrees of freedom."
-msgstr ""
+msgstr "فشل التقدير! الرسالة: درجات حرية %s سالبة."
 
 msgid "Model fit statistics including AIC, BIC, number of parameters, and a chi-square test for exact fit. A non-significant chi-square suggests the model fits the data well, though this test is sensitive to sample size."
 msgstr ""
+"إحصاءات مطابقة النموذج، ومنها AIC وBIC وعدد المعلمات واختبار كاي تربيع "
+"للمطابقة التامة. إذا لم تكن النتيجة دالة، فلا يتوافر دليل كافٍ على رفض "
+"المطابقة التامة. يتأثر الاختبار بحجم العينة."
 
 msgid "n(Observations)"
-msgstr ""
+msgstr "n(Observations)"
 
 msgid "Total"
-msgstr ""
+msgstr "الإجمالي"
 
 msgid "n(Parameters)"
-msgstr ""
+msgstr "n(Parameters)"
 
 msgid "Free"
-msgstr ""
+msgstr "الحرة"
 
 msgid "Baseline test"
-msgstr ""
+msgstr "اختبار خط الأساس"
 
 msgid "Difference test"
-msgstr ""
+msgstr "اختبار الفرق"
 
 msgid "%1$sdf"
-msgstr ""
+msgstr "%1$sdf"
 
 msgid "%sFitting the model resulted in warnings. Check the 'Show warnings' box in the Output Options to see the warnings."
 msgstr ""
+"%sأسفرت ملاءمة النموذج عن تحذيرات. حدد مربع 'عرض التحذيرات' ضمن خيارات "
+"المخرجات للاطلاع عليها."
 
 msgid "A total of %g cases were removed due to missing values."
-msgstr ""
+msgstr "حُذفت %g حالة بسبب القيم المفقودة."
 
 msgid "Model test is %s."
-msgstr ""
+msgstr "اختبار النموذج هو %s."
 
 msgid "Information matrix is %s."
-msgstr ""
+msgstr "مصفوفة المعلومات هي %s."
 
 msgid "Standard errors are %s."
-msgstr ""
+msgstr "الأخطاء المعيارية هي %s."
 
 msgid "%s The AIC, BIC and additional information criteria are only available with ML-type estimators."
 msgstr ""
+"%s لا تتوفر معايير المعلومات AIC وBIC والمعايير الإضافية إلا مع مقدِّرات من نوع "
+"ML."
 
 msgid "all"
-msgstr ""
+msgstr "الكل"
 
 msgid "<b>Warnings:</b> %s"
-msgstr ""
+msgstr "<b>التحذيرات:</b> %s"
 
 msgid "Parameter estimates from the structural equation model, organized by type: factor loadings, regression coefficients, variances, covariances, and additional parameters."
 msgstr ""
+"تقديرات معلمات نموذج المعادلات البنائية مرتبةً حسب النوع: التشبعات العاملية "
+"ومعاملات الانحدار والتباينات والتغايرات والمعلمات الإضافية."
 
 msgid "Factor Loadings"
-msgstr ""
+msgstr "التشبعات العاملية"
 
 msgid "Factor loadings from the measurement model (=~ operator). Each loading reflects how strongly a latent variable is related to its observed indicator. The first indicator loading is typically fixed to 1 to set the scale of the latent variable."
 msgstr ""
+"التشبعات العاملية من نموذج القياس (المؤثر =~). يعكس كل تشبع قوة ارتباط "
+"المتغير الكامن بمؤشره المشاهد. يُثبَّت تشبع المؤشر الأول عادةً عند 1 لتحديد مقياس "
+"المتغير الكامن."
 
 msgid "Regression coefficients from the structural part of the model (~ operator). These represent directed effects of predictors on outcomes among latent and/or observed variables."
 msgstr ""
+"معاملات الانحدار في الجزء البنائي من النموذج (المؤثر ~). تمثل التأثيرات "
+"الموجهة للمتغيرات المتنبئة في متغيرات النتائج، ضمن المتغيرات الكامنة و/أو "
+"المشاهَدة."
 
 msgid "Estimated variances of the latent variables. For exogenous latent variables these are total variances; for endogenous latent variables these are residual variances (the variance not explained by predictors)."
 msgstr ""
+"تباينات المتغيرات الكامنة المقدرة. للمتغيرات الكامنة الخارجية هي تباينات كلية"
+"؛ وللداخلية تباينات بواقي (التباين الذي لا تفسره المتنبئات)."
 
 msgid "Factor Covariances"
-msgstr ""
+msgstr "تغايرات العوامل"
 
 msgid "Estimated covariances between latent variables (~~ operator). These represent undirected associations between latent variables."
 msgstr ""
+"التغايرات المقدرة بين المتغيرات الكامنة (المؤثر ~~). وتمثل علاقات اقتران غير "
+"موجهة بين المتغيرات الكامنة."
 
 msgid "Residual variances of the observed variables: the variance not explained by the latent variables. Negative residual variances (Heywood cases) may indicate model misspecification."
 msgstr ""
+"تباينات بواقي المتغيرات المشاهَدة: التباين الذي لا تفسره المتغيرات الكامنة. قد "
+"تشير تباينات البواقي السالبة (حالات هيوود) إلى سوء تحديد النموذج."
 
 msgid "Residual Covariances"
-msgstr ""
+msgstr "تغايرات البواقي"
 
 msgid "Residual covariances between observed variables (~~ operator). These represent correlated errors, i.e., shared variance between indicators not accounted for by the latent variables."
 msgstr ""
+"تغايرات البواقي بين المتغيرات المشاهَدة (المؤثر ~~). تمثل أخطاء مترابطة، أي "
+"تباينًا مشتركًا بين المؤشرات لا تفسره المتغيرات الكامنة."
 
 msgid "Intercept (mean) parameters for observed and latent variables in the mean structure. For observed variables, these are the expected values when all predictors are zero."
 msgstr ""
+"معلمات الثوابت (المتوسطات) للمتغيرات المشاهدة والكامنة في بنية المتوسطات. "
+"للمشاهدة، تمثل القيم المتوقعة عندما تساوي جميع المتنبئات صفرًا."
 
 msgid "Missing data method 'FIML' forces meanstructure."
-msgstr ""
+msgstr "تفرض طريقة معالجة البيانات المفقودة 'FIML' إدراج بنية المتوسطات."
 
 msgid "Thresholds"
-msgstr ""
+msgstr "العتبات"
 
 msgid "Threshold parameters for ordinal observed variables. These define the cut-points on the underlying continuous distribution that separate the observed categories."
 msgstr ""
+"معلمات العتبات للمتغيرات المشاهَدة الرتبية. تحدد نقاط القطع في التوزيع "
+"المستمر الكامن التي تفصل بين الفئات المشاهَدة."
 
 msgid "Threshold"
-msgstr ""
+msgstr "العتبة"
 
 msgid "Defined Parameters"
-msgstr ""
+msgstr "المعلمات المعرّفة"
 
 msgid "User-defined parameters specified with the := operator. These are functions of existing model parameters, such as indirect effects or sums of coefficients. Standard errors are computed using the Delta method."
 msgstr ""
+"معلمات يعرّفها المستخدم بالمؤثر :=. تمثل دوالًا لمعلمات النموذج الحالية، مثل "
+"التأثيرات غير المباشرة أو مجاميع المعاملات. تُحسب الأخطاء المعيارية بطريقة دلتا."
 
 msgid "Name"
-msgstr ""
+msgstr "الاسم"
 
 msgid "Indirect Effects"
-msgstr ""
+msgstr "التأثيرات غير المباشرة"
 
 msgid "Indirect effects of predictors on outcomes transmitted through mediating variables. These are computed as the product of the path coefficients along the indirect pathway."
 msgstr ""
+"آثار المتنبئات غير المباشرة على النتائج عبر المتغيرات الوسيطة. تُحسب بحاصل "
+"ضرب معاملات المسارات على امتداد المسار غير المباشر."
 
 msgid "Total effects combining direct and all indirect effects of predictors on outcomes."
 msgstr ""
+"الآثار الكلية التي تجمع الأثر المباشر وجميع الآثار غير المباشرة للمتغيرات "
+"المتنبئة على النتائج."
 
 msgid "Additional model fit indices and information criteria for evaluating overall model quality."
-msgstr ""
+msgstr "مؤشرات إضافية لمطابقة النموذج ومعايير معلومات لتقييم جودة النموذج ككل."
 
 msgid "Model fit indices including incremental indices (CFI, TLI, NFI), absolute indices (RMSEA, SRMR, GFI), and information criteria (AIC, BIC). Common guidelines: CFI/TLI > .95, RMSEA < .06, SRMR < .08 indicate good fit, though these should be interpreted cautiously."
 msgstr ""
+"مؤشرات مطابقة النموذج، ومنها التزايدية (CFI وTLI وNFI)، والمطلقة (RMSEA "
+"وSRMR وGFI)، ومعايير المعلومات (AIC وBIC). من الإرشادات الشائعة أن CFI/TLI > "
+".95 وRMSEA < .06 وSRMR < .08 تشير إلى مطابقة جيدة، مع وجوب تفسيرها بحذر."
 
 msgid "%s Fit indices are based on the scaled test statistic."
-msgstr ""
+msgstr "%s تستند مؤشرات المطابقة إلى إحصاء الاختبار المُحجَّم."
 
 msgid "T-Size Fit Indices"
-msgstr ""
+msgstr "مؤشرات مطابقة T-Size"
 
 msgid "T-size equivalence testing fit indices (Marcoulides & Yuan, 2017). These provide data-driven cutoff values for CFI and RMSEA that replace conventional rules of thumb. The poor-fair and fair-close limits define ranges for interpreting fit."
 msgstr ""
+"مؤشرات المطابقة باختبار التكافؤ T-size (Marcoulides & Yuan, 2017). توفر قيم "
+"قطع مستمدة من البيانات لـCFI وRMSEA بدلًا من القواعد التقريبية المعتادة. تحدد "
+"حدود الانتقال من المطابقة الضعيفة إلى المقبولة، ومن المقبولة إلى القريبة، "
+"نطاقات تفسير المطابقة."
 
 msgid "Poor-fair limit"
-msgstr ""
+msgstr "حد المطابقة الضعيفة–المقبولة (Poor-fair)"
 
 msgid "Fair-close limit"
-msgstr ""
+msgstr "حد المطابقة المقبولة–القريبة (Fair-close)"
 
 msgid "T-size statistics are computed for <i>%s = 0.05</i>."
-msgstr ""
+msgstr "تُحسب إحصاءات T-size عند <i>%s = 0.05</i>."
 
 msgid "Proportion of variance in each endogenous variable explained by its predictors in the model. Values range from 0 to 1, with higher values indicating more variance explained."
 msgstr ""
+"نسبة التباين في كل متغير داخلي التي تفسرها المتغيرات المتنبئة به في النموذج. "
+"تتراوح القيم من 0 إلى 1، وتشير القيم الأعلى إلى تفسير نسبة أكبر من التباين."
 
 msgid "Average Variance Extracted"
-msgstr ""
+msgstr "متوسط التباين المستخرج"
 
 msgid "Average Variance Extracted (AVE) measures the amount of variance captured by a latent construct relative to measurement error. AVE values above 0.5 indicate adequate convergent validity, meaning the construct explains more than half the variance of its indicators."
 msgstr ""
+"يقيس متوسط التباين المستخرج (AVE) مقدار التباين الذي يلتقطه البناء الكامن "
+"نسبةً إلى خطأ القياس. تشير قيم AVE الأكبر من 0.5 إلى صدق تقاربي كافٍ، أي إن "
+"البناء يفسر أكثر من نصف تباين مؤشراته."
 
 msgid "AVE"
-msgstr ""
+msgstr "متوسط التباين المستخرج (AVE)"
 
 msgid "Average variance extracted requires a model with at least one latent variable."
 msgstr ""
+"يتطلب متوسط التباين المستخرج نموذجًا يتضمن متغيرًا كامنًا واحدًا على الأقل."
 
 msgid "Reliability"
-msgstr ""
+msgstr "الثبات"
 
 msgid "Composite reliability coefficients for each latent construct. Coefficient α (alpha) assumes tau-equivalence (equal loadings), while coefficient ω (omega) allows for congeneric indicators (unequal loadings) and is generally preferred. Values above 0.7 are commonly considered acceptable."
 msgstr ""
+"معاملات الثبات المركب لكل بناء كامن. يفترض المعامل α (ألفا) تكافؤ تاو (تساوي "
+"التشبعات)، بينما يسمح المعامل ω (أوميغا) بمؤشرات متجانسة القياس ذات تشبعات "
+"غير متساوية، ويُفضَّل عمومًا. تُعد القيم الأكبر من 0.7 مقبولة عادةً."
 
 msgid "Coefficient α"
-msgstr ""
+msgstr "المعامل α"
 
 msgid "Coefficient ω"
-msgstr ""
+msgstr "المعامل ω"
 
 msgid "Reliability requires a model with at least one latent variable."
-msgstr ""
+msgstr "يتطلب حساب الثبات نموذجًا يتضمن متغيرًا كامنًا واحدًا على الأقل."
 
 msgid "Measurement-model reliability is not yet supported with grouping; default omega values are shown."
 msgstr ""
+"حساب ثبات نموذج القياس غير مدعوم بعد في التحليل متعدد المجموعات. تُعرض قيم "
+"أوميغا الافتراضية."
 
 msgid "Heterotrait-Monotrait Ratio"
-msgstr ""
+msgstr "نسبة الارتباطات بين السمات المختلفة إلى الارتباطات داخل السمة"
 
 msgid "Heterotrait-Monotrait (HTMT) ratio of correlations for assessing discriminant validity. HTMT values below 0.85 (conservative) or 0.90 (liberal) suggest that constructs are empirically distinct from each other."
 msgstr ""
+"تُستخدم نسبة الارتباطات بين السمات المختلفة إلى الارتباطات داخل السمة (HTMT) "
+"لتقييم الصدق التمييزي. تشير القيم دون 0.85 بالمعيار المتحفظ أو 0.90 بالمعيار "
+"الأقل تشددًا إلى تمايز البُنى تجريبيًا."
 
 msgid "The heterotrait-monotrait ratio requires a model with at least two latent variables."
 msgstr ""
+"تتطلب نسبة الارتباطات بين السمات إلى الارتباطات داخل السمة (HTMT) نموذجًا يتضمن "
+"متغيرين كامنين على الأقل."
 
 msgid "Mardia's Coefficients"
-msgstr ""
+msgstr "معاملات مارديا"
 
 msgid "Mardia's multivariate skewness and kurtosis coefficients for assessing whether the data meet the multivariate normality assumption. Significant values suggest non-normality, which may affect chi-square tests and standard errors under ML estimation."
 msgstr ""
+"معاملا مارديا للالتواء والتفرطح متعددي المتغيرات لتقييم افتراض الاعتدالية "
+"متعددة المتغيرات. تشير النتائج الدالة إلى مخالفة هذا الافتراض، مما قد يؤثر في "
+"اختبارات كاي تربيع والأخطاء المعيارية عند استخدام تقدير ML."
 
 msgid "Coefficient"
-msgstr ""
+msgstr "المعامل"
 
 msgid "z"
-msgstr ""
+msgstr "z"
 
 msgid "Multivariate skewness and kurtosis calculated for observed variables from all models."
 msgstr ""
+"حساب الالتواء والتفرطح متعددي المتغيرات للمتغيرات المشاهدة في جميع النماذج."
 
 msgid "Not all used variables are continuous: Mardia's coefficients not available."
-msgstr ""
+msgstr "ليست جميع المتغيرات المستخدمة مستمرة: معاملات مارديا غير متاحة."
 
 msgid "The data covariance matrix could not be inverted: Mardia's coefficients not available."
 msgstr ""
+"تعذر إيجاد معكوس مصفوفة التباين والتغاير للبيانات: معاملات مارديا غير متاحة."
 
 msgid "Skewness"
-msgstr ""
+msgstr "الالتواء"
 
 msgid "Kurtosis"
-msgstr ""
+msgstr "التفرطح"
 
 msgid "Covariance Tables"
-msgstr ""
+msgstr "جداول التغاير"
 
 msgid "Observed, model-implied, and residual covariance matrices. Comparing these matrices helps evaluate local model fit."
 msgstr ""
+"مصفوفات التباين والتغاير المشاهدة والتي يقتضيها النموذج وللبواقي. تساعد "
+"مقارنتها في تقييم المطابقة الموضعية للنموذج."
 
 msgid "Observed Covariance Matrix"
-msgstr ""
+msgstr "مصفوفة التغاير المشاهدة"
 
 msgid "Sample covariance matrix of the observed variables used for model estimation."
 msgstr ""
+"مصفوفة التباين والتغاير في العينة للمتغيرات المشاهدة المستخدمة في تقدير "
+"النموذج."
 
 msgid "Model-implied covariance matrix derived from the estimated parameters. Close correspondence with the observed covariance matrix indicates good model fit."
 msgstr ""
+"مصفوفة التباين والتغاير التي يقتضيها النموذج والمشتقة من المعلمات المقدرة. "
+"يشير توافقها الوثيق مع المصفوفة المشاهدة إلى مطابقة جيدة."
 
 msgid "Difference between the observed and model-implied covariance matrices. Small residuals indicate that the model reproduces the observed covariances well."
 msgstr ""
+"الفرق بين مصفوفة التباين والتغاير المشاهدة والتي يقتضيها النموذج. تشير "
+"البواقي الصغيرة إلى أن النموذج يعيد إنتاج التغايرات المشاهدة جيدًا."
 
 msgid "Standardized Residual Covariance Matrix"
-msgstr ""
+msgstr "مصفوفة تغاير البواقي المعيارية"
 
 msgid "Standardized residual covariances. Values exceeding |2| may indicate localized areas of poor fit for specific pairs of variables."
 msgstr ""
+"تغايرات البواقي المعيارية. قد تشير القيم التي تتجاوز حدود |2| إلى ضعف مطابقة "
+"موضعي لأزواج معينة من المتغيرات."
 
 msgid "The standardized residual covariance table is currently unavailable when the error calculation method is 'Bootstrap'"
 msgstr ""
+"جدول تغايرات البواقي المعيارية غير متاح حاليًا عند اختيار 'التمهيد الإحصائي' "
+"طريقةً لحساب الخطأ"
 
 msgid "The standardized residual covariance matrix could not be computed"
-msgstr ""
+msgstr "تعذر حساب مصفوفة التباين والتغاير للبواقي المعيارية"
 
 msgid "The standardized residual covariance tables are currently unavailable when the error calculation method is 'Bootstrap'"
 msgstr ""
+"جداول تغايرات البواقي المعيارية غير متاحة حاليًا عند اختيار 'التمهيد الإحصائي' "
+"طريقةً لحساب الخطأ"
 
 msgid "The standardized residual covariance matrices could not be computed"
-msgstr ""
+msgstr "تعذر حساب مصفوفات التباين والتغاير للبواقي المعيارية"
 
 msgid "Modification Indices"
-msgstr ""
+msgstr "مؤشرات التعديل"
 
 msgid "Modification indices (MI) estimate the expected decrease in the model chi-square statistic if a currently fixed parameter were freed. The expected parameter change (EPC) indicates the approximate value of the freed parameter."
 msgstr ""
+"تقدّر مؤشرات التعديل (MI) الانخفاض المتوقع في كاي تربيع للنموذج عند تحرير "
+"معلمة مثبتة حاليًا. يمثل تغير المعلمة المتوقع (EPC) التغير التقريبي في قيمتها "
+"بعد تحريرها."
 
 msgid "MI is the expected chi-square decrease if a fixed parameter is freed. EPC is the expected parameter change. SEPC columns show standardized versions (lv = latent only, all = fully, nox = excluding exogenous observed)."
 msgstr ""
+"يمثل MI الانخفاض المتوقع في كاي تربيع عند تحرير معلمة مثبتة، وEPC تغير "
+"المعلمة المتوقع. تعرض أعمدة SEPC نسخًا معيارية (lv = للكامنة فقط، all = "
+"بالكامل، nox = باستثناء المشاهدة الخارجية)."
 
 msgid "MI"
-msgstr ""
+msgstr "MI"
 
 msgid "EPC"
-msgstr ""
+msgstr "EPC"
 
 msgid "SEPC (lv)"
-msgstr ""
+msgstr "SEPC (lv)"
 
 msgid "SEPC (all)"
-msgstr ""
+msgstr "SEPC (all)"
 
 msgid "SEPC (nox)"
-msgstr ""
+msgstr "SEPC (nox)"
 
 msgid "The modification indices could not be computed, most likely because the model's information matrix is singular. This often indicates that the model is not identified (for example, with ordinal indicators combined with (near-)collinear predictors)."
 msgstr ""
+"تعذّر حساب مؤشرات التعديل، والأرجح أن مصفوفة معلومات النموذج منفردة. يشير هذا "
+"غالبًا إلى أن النموذج غير قابل للتعيين (مثل الجمع بين مؤشرات رتبية ومتغيرات "
+"متنبئة ذات اعتماد خطي تام أو شبه تام)."
 
 msgid "Sensitivity Analysis"
-msgstr ""
+msgstr "تحليل الحساسية"
 
 msgid "Sensitivity analysis using phantom variables to assess the robustness of path estimates to unmeasured confounding. Evaluates whether conclusions change when an unobserved common cause is introduced."
 msgstr ""
+"تحليل حساسية باستخدام متغيرات وهمية لتقييم حصانة تقديرات المسارات تجاه "
+"الإرباك غير المقاس. يقيّم تغير الاستنتاجات عند إدخال سبب مشترك غير مشاهَد."
 
 msgid "Summary of Sensitivity Analysis"
-msgstr ""
+msgstr "ملخص تحليل الحساسية"
 
 msgid "Summary of how path estimates and their significance change when phantom variables representing unmeasured confounders are introduced. P* denotes the p-value from the sensitivity model."
 msgstr ""
+"ملخص تغير تقديرات المسارات ودلالتها الإحصائية عند إدخال متغيرات وهمية تمثل "
+"عوامل إرباك غير مقاسة. يشير P* إلى قيمة p من نموذج الحساسية."
 
 msgid "Path"
-msgstr ""
+msgstr "المسار"
 
 msgid "Standardized estimate"
-msgstr ""
+msgstr "التقدير المعياري"
 
 msgid "Original model"
-msgstr ""
+msgstr "النموذج الأصلي"
 
 msgid "p*"
-msgstr ""
+msgstr "p*"
 
 msgid "Sensitivity model"
-msgstr ""
+msgstr "نموذج الحساسيّة"
 
 msgid "Min"
-msgstr ""
+msgstr "الحد الأدنى"
 
 msgid "Max"
-msgstr ""
+msgstr "الحد الأقصى"
 
 msgid "Please include at least one regression path in the model to perform a sensitivity analysis."
-msgstr ""
+msgstr "يرجى إدراج مسار انحدار واحد على الأقل في النموذج لإجراء تحليل الحساسية."
 
 msgid "Performing sensitivity analysis (model: %1$s, group: %2$s)"
-msgstr ""
+msgstr "جارٍ إجراء تحليل الحساسية (النموذج: %1$s، المجموعة: %2$s)"
 
 msgid "Performing sensitivity analysis (model: %1$s)"
-msgstr ""
+msgstr "جارٍ إجراء تحليل الحساسية (النموذج: %1$s)"
 
 msgid "Sensitivity Parameters That Led to a Change in Significance"
-msgstr ""
+msgstr "معلمات الحساسية التي أدت إلى تغير في الدلالة الإحصائية"
 
 msgid "Phantom variable coefficients from sensitivity models where the statistical significance of a path changed compared to the original model."
 msgstr ""
+"معاملات المتغيرات الوهمية من نماذج الحساسية التي تغيرت فيها الدلالة الإحصائية "
+"لمسار مقارنةً بالنموذج الأصلي."
 
 msgid "Sensitivity parameters"
-msgstr ""
+msgstr "معلمات الحساسية"
 
 msgid "Summary of Sensitivity Parameters"
-msgstr ""
+msgstr "ملخص معلمات الحساسية"
 
 msgid "Summary statistics (mean, min, max) of the phantom variable coefficients across all sensitivity analyses, indicating the range of unmeasured confounding explored."
 msgstr ""
+"الإحصاءات الملخصة (المتوسط، والحد الأدنى، والحد الأقصى) لمعاملات المتغيرات "
+"الوهمية عبر جميع تحليلات الحساسية، وتوضح مدى الإرباك غير المقاس الذي جرى "
+"استكشافه."
 
 msgid "Sensitivity parameter"
-msgstr ""
+msgstr "معلمة الحساسية"
 
 msgid "Path Diagram"
-msgstr ""
+msgstr "مخطط المسار"
 
 msgid "Graphical representation of the model showing latent variables (circles), observed variables (squares), and the paths between them."
 msgstr ""
+"تمثيل بياني للنموذج يوضح المتغيرات الكامنة (دوائر) والمشاهدة (مربعات) "
+"والمسارات بينها."
 
 msgid "Satorra-Bentler"
-msgstr ""
+msgstr "ساتورا–بنتلر"
 
 msgid "Yuan-Bentler"
-msgstr ""
+msgstr "يوان–بنتلر"
 
 msgid "Yuan-Bentler Mplus"
-msgstr ""
+msgstr "يوان–بنتلر Mplus"
 
 msgid "mean and variance-adjusted"
-msgstr ""
+msgstr "معدّل بحسب المتوسط والتباين"
 
 msgid "scaled and shifted"
-msgstr ""
+msgstr "مُحجَّم ومُزاح"
 
 msgid "bootstrap (Bollen-Stine)"
-msgstr ""
+msgstr "التمهيد الإحصائي (بولن–ستاين)"
 
 msgid "Browne residual based (ADF)"
-msgstr ""
+msgstr "مقياس براون القائم على البواقي (ADF)"
 
 msgid "Browne residual based (NT)"
-msgstr ""
+msgstr "مقياس براون القائم على البواقي (NT)"
 
 msgid "robust"
-msgstr ""
+msgstr "حصين"
 
 msgid "robust Huber-White"
-msgstr ""
+msgstr "هوبر–وايت الحصين"
 
 msgid "first-order"
-msgstr ""
+msgstr "من الرتبة الأولى"
