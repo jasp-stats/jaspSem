@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.97.1\n"
 "POT-Creation-Date: 2026-11-07 02:41\n"
-"PO-Revision-Date: 2026-11-11 18:40+0000\n"
+"PO-Revision-Date: 2026-11-12 10:32+0000\n"
 "Last-Translator: Fahad Mahfouz Al-Subhi "
 "<fahadalsubhi@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Arabic <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -45,7 +45,7 @@ msgid "Bentler-Bonett Normed Fit Index (NFI)"
 msgstr "مؤشر بنتلر–بونيت للمطابقة المعياري (NFI)"
 
 msgid "Parsimony Normed Fit Index (PNFI)"
-msgstr "مؤشر المطابقة المعياري المعدَّل لمراعاة بساطة النموذج (PNFI)"
+msgstr "مؤشر المطابقة المعياري المقتصد (PNFI)"
 
 msgid "Bollen's Relative Fit Index (RFI)"
 msgstr "مؤشر بولن للمطابقة النسبية (RFI)"
@@ -60,10 +60,10 @@ msgid "Root mean square error of approximation (RMSEA)"
 msgstr "الجذر التربيعي لمتوسط مربع خطأ التقريب (RMSEA)"
 
 msgid "RMSEA 90%% CI lower bound"
-msgstr "الحد الأدنى لفترة الثقة 90%% لـRMSEA"
+msgstr "الحد السفلي لفترة الثقة 90%% لـRMSEA"
 
 msgid "RMSEA 90%% CI upper bound"
-msgstr "الحد الأعلى لفترة الثقة 90%% لـRMSEA"
+msgstr "الحد العلوي لفترة الثقة 90%% لـRMSEA"
 
 msgid "RMSEA p-value"
 msgstr "قيمة p لـRMSEA"
@@ -78,7 +78,7 @@ msgid "Hoelter's critical N (%s = .01)"
 msgstr "حجم العينة N الحرج لهولتر (%s = .01)"
 
 msgid "Goodness of fit index (GFI)"
-msgstr "مؤشر حسن المطابقة (GFI)"
+msgstr "مؤشر جودة المطابقة (GFI)"
 
 msgid "McDonald fit index (MFI)"
 msgstr "مؤشر المطابقة لماكدونالد (MFI)"
@@ -99,7 +99,7 @@ msgid "Bayesian (BIC)"
 msgstr "معيار المعلومات البايزي (BIC)"
 
 msgid "Sample-size adjusted Bayesian (SSABIC)"
-msgstr "معيار المعلومات البايزي المعدَّل بحسب حجم العينة (SSABIC)"
+msgstr "معيار بايز المعدّل بحسب حجم العينة (SSABIC)"
 
 msgid "# Factors"
 msgstr "عدد العوامل"
@@ -247,7 +247,7 @@ msgid "Residual variance is negative. This may indicate model misspecification."
 msgstr "تباين البواقي سالب. قد يشير هذا إلى خطأ في توصيف النموذج."
 
 msgid "R-Squared"
-msgstr "معامل التحديد"
+msgstr "R المربع"
 
 msgid "Proportion of variance in each observed variable at each time point explained by the latent growth factors."
 msgstr ""
@@ -436,7 +436,7 @@ msgid "&#967;&sup2;"
 msgstr "&#967;&sup2;"
 
 msgid "Factor model"
-msgstr "النموذج العاملي"
+msgstr "نموذج العوامل"
 
 msgid "Parameter estimates for the MIMIC (Multiple Indicators, Multiple Causes) model. The model has observed predictors influencing a latent variable, which in turn is measured by observed indicators."
 msgstr ""
@@ -1240,7 +1240,7 @@ msgstr ""
 "البناء يفسر أكثر من نصف تباين مؤشراته."
 
 msgid "AVE"
-msgstr "متوسط التباين المستخرج (AVE)"
+msgstr "متوسط التباين المستخلص (AVE)"
 
 msgid "Average variance extracted requires a model with at least one latent variable."
 msgstr ""
