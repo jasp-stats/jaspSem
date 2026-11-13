@@ -23,6 +23,13 @@ Description
 		func:	"PLSSEM"
 	}
 
+	Analysis 
+	{
+		title:	qsTr("Exploratory Structural Equation Modeling")
+		qml:	"ESEM.qml"
+		func:	"ESEM"
+	}
+
 	Analysis
 	{
 		title:	qsTr("Mediation Analysis")
