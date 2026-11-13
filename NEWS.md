@@ -38,6 +38,7 @@
 
 ## Changed
 * MNLFA: removed dead dependencies (`factorsUncorrelated`, `interceptsFixedToZero`, `packageMimiced`, `estimator`, `naAction`) from the main container — they were listed but never read anywhere in MNLFA code.
+* Updated `semTools` from 0.5-8 to 0.5-10 and `lavaan` from 0.6-21 to 0.7-2 in the lockfile (`semTools` 0.5-10 requires `lavaan >= 0.7-2`). Fixes `compRelSEM()` failing when the first composite has ordinal indicators. Reliability values, estimates and standard errors are unchanged; the robust RMSEA of ordinal (WLSMV) models changes slightly (about 0.0002-0.0004 in the models checked).
 
 
 ---
