@@ -90,6 +90,12 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
 
       if (!all(admissible))
         gettextf("FIML missing value handling only available when all endogenous variables are of scale type. Ordinal endogenous variables in the model: %s", paste(endo[!admissible], collapse = ", "))
+    },
+
+    checkEstimatorMissing = function() {
+      # lavaan refuses full information maximum likelihood (missing = "ml") for these estimators
+      if (anyNA(dataset) && options$naAction == "fiml" && options$estimator %in% c("gls", "wls", "uls"))
+        gettextf("FIML missing value handling is not available for the %s estimator. Select listwise missing value handling or another estimator.", toupper(options$estimator))
     }
 
   )
@@ -116,10 +122,10 @@ MediationAnalysisInternal <- function(jaspResults, dataset, options, ...) {
     missing         = miss
     )))
 
-  if (inherits(medResult$value, "try-error")) {
-    errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(medResult$value, "condition")$message)
+  if (inherits(medResult, "try-error")) {
+    errmsg <- gettextf("Estimation failed\nMessage:\n%s", attr(medResult, "condition")$message)
     modelContainer$setError(.decodeVarsInMessage(names(dataset), errmsg))
-    return(medResult$value)
+    return(medResult)
   }
 
   # there seems to be cases where warnings from the model say: "model estimation failed, returning starting values"
