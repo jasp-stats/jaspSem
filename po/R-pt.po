@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2026-11-07 02:41\n"
+"POT-Creation-Date: 2026-11-14 02:41\n"
 "PO-Revision-Date: 2026-01-28 10:47+0000\n"
 "Last-Translator: Wendel Paulo Silvestre <wpsilvestre@ucs.br>\n"
 "Language-Team: Portuguese <https://hosted.weblate.org/projects/jasp/jaspsem-"
@@ -1338,7 +1338,13 @@ msgid ""
 "these should be interpreted cautiously."
 msgstr ""
 
-msgid "%s Fit indices are based on the scaled test statistic."
+#, fuzzy
+msgid "Fit indices are based on the scaled test statistic."
+msgstr ""
+"%s Os índices de ajuste são baseados na estatística de teste escalonada."
+
+#, fuzzy
+msgid "Fit indices are based on the %s test statistic."
 msgstr ""
 "%s Os índices de ajuste são baseados na estatística de teste escalonada."
 

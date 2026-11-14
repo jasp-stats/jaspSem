@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.19.2\n"
-"POT-Creation-Date: 2026-11-07 02:41\n"
+"POT-Creation-Date: 2026-11-14 02:41\n"
 "PO-Revision-Date: 2025-12-31 12:01+0000\n"
 "Last-Translator: Marko Bojović <bojovicmarko@outlook.com>\n"
 "Language-Team: Serbian <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -1297,7 +1297,10 @@ msgid ""
 "these should be interpreted cautiously."
 msgstr ""
 
-msgid "%s Fit indices are based on the scaled test statistic."
+msgid "Fit indices are based on the scaled test statistic."
+msgstr ""
+
+msgid "Fit indices are based on the %s test statistic."
 msgstr ""
 
 #, fuzzy

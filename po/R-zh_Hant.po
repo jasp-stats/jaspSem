@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
-"POT-Creation-Date: 2026-11-07 02:41\n"
+"POT-Creation-Date: 2026-11-14 02:41\n"
 "PO-Revision-Date: 2026-11-08 05:51+0000\n"
 "Last-Translator: 陳正昌 <chencc99@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
@@ -1386,7 +1386,12 @@ msgstr ""
 "GFI），以及資訊準則（AIC、BIC）。常見參考標準：CFI / TLI > .95、RMSEA < .06、"
 "SRMR < .08 表示適配良好，惟應用時仍須謹慎解讀。"
 
-msgid "%s Fit indices are based on the scaled test statistic."
+#, fuzzy
+msgid "Fit indices are based on the scaled test statistic."
+msgstr "%s 配適指標，將基於量尺化檢定統計數。"
+
+#, fuzzy
+msgid "Fit indices are based on the %s test statistic."
 msgstr "%s 配適指標，將基於量尺化檢定統計數。"
 
 msgid "T-Size Fit Indices"

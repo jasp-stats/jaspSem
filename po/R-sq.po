@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.95.0\n"
-"POT-Creation-Date: 2026-11-07 02:41\n"
+"POT-Creation-Date: 2026-11-14 02:41\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1256,7 +1256,10 @@ msgid ""
 "these should be interpreted cautiously."
 msgstr ""
 
-msgid "%s Fit indices are based on the scaled test statistic."
+msgid "Fit indices are based on the scaled test statistic."
+msgstr ""
+
+msgid "Fit indices are based on the %s test statistic."
 msgstr ""
 
 msgid "T-Size Fit Indices"

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: R 3.6.1\n"
 "Report-Msgid-Bugs-To: github.com/jasp-stats/jasp-issues/issues\n"
-"POT-Creation-Date: 2026-11-07 02:41\n"
+"POT-Creation-Date: 2026-11-14 02:41\n"
 "PO-Revision-Date: 2026-07-26 09:01+0000\n"
 "Last-Translator: Johannes Keyser <joke@fsfe.org>\n"
 "Language-Team: German <https://hosted.weblate.org/projects/jasp/jaspsem-r/de/"
@@ -1584,7 +1584,12 @@ msgstr ""
 "Übliche Richtlinien: CFI/TLI > .95, RMSEA < .06, SRMR < .08 deuten auf einen "
 "guten Fit hin, auch wenn diese Werte vorsichtig interpretiert werden sollten."
 
-msgid "%s Fit indices are based on the scaled test statistic."
+#, fuzzy
+msgid "Fit indices are based on the scaled test statistic."
+msgstr "%s Anpassungsindikatoren basieren auf der skalierten Teststatistik."
+
+#, fuzzy
+msgid "Fit indices are based on the %s test statistic."
 msgstr "%s Anpassungsindikatoren basieren auf der skalierten Teststatistik."
 
 #, fuzzy

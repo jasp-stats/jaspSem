@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.17.0\n"
-"POT-Creation-Date: 2026-11-07 02:41\n"
+"POT-Creation-Date: 2026-11-14 02:41\n"
 "PO-Revision-Date: 2026-11-01 08:51+0000\n"
 "Last-Translator: Shun Wang <shuonwang@gmail.com>\n"
 "Language-Team: Chinese (Simplified Han script) <https://hosted.weblate.org/"
@@ -1382,7 +1382,12 @@ msgstr ""
 "息准则（AIC、BIC）。常见准则：CFI/TLI > .95、RMSEA < .06、SRMR < .08 表明拟合"
 "良好，尽管应谨慎解读这些数值。"
 
-msgid "%s Fit indices are based on the scaled test statistic."
+#, fuzzy
+msgid "Fit indices are based on the scaled test statistic."
+msgstr "%s 拟合指数基于缩放后的检验统计量。"
+
+#, fuzzy
+msgid "Fit indices are based on the %s test statistic."
 msgstr "%s 拟合指数基于缩放后的检验统计量。"
 
 msgid "T-Size Fit Indices"

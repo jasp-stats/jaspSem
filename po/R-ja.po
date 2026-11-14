@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.14.0\n"
-"POT-Creation-Date: 2026-11-07 02:41\n"
+"POT-Creation-Date: 2026-11-14 02:41\n"
 "PO-Revision-Date: 2026-11-08 05:51+0000\n"
 "Last-Translator: Koji Kosugi <kosugitti@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Japanese <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -801,9 +801,9 @@ msgid ""
 "zero. Moderation coefficients describe changes on this scale. Covariances "
 "also depend on the factor standard deviations."
 msgstr ""
-"フィッシャーのz変換をした潜在因子間相関についての回帰係数です。ベースラインは"
-"、すべての調整変数が0のときのフィッシャーのz変換をした相関です。調整の係数は"
-"、このスケールでの変化を表します。共分散は因子の標準偏差にも依存します。"
+"フィッシャーのz変換をした潜在因子間相関についての回帰係数です。ベースライン"
+"は、すべての調整変数が0のときのフィッシャーのz変換をした相関です。調整の係数"
+"は、このスケールでの変化を表します。共分散は因子の標準偏差にも依存します。"
 
 msgid "Parameter Plots"
 msgstr "パラメータのプロット"
@@ -1455,7 +1455,12 @@ msgstr ""
 "BIC)を含む適合度指数です。一般的な目安は CFI/TLI > .95、RMSEA < .06、SRMR < "
 ".08 で適合がよいとされますが、慎重に解釈すべきです。"
 
-msgid "%s Fit indices are based on the scaled test statistic."
+#, fuzzy
+msgid "Fit indices are based on the scaled test statistic."
+msgstr "%s 敵同度指標は標準化された検定統計量に基づいています"
+
+#, fuzzy
+msgid "Fit indices are based on the %s test statistic."
 msgstr "%s 敵同度指標は標準化された検定統計量に基づいています"
 
 msgid "T-Size Fit Indices"

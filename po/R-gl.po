@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2026-11-07 02:41\n"
+"POT-Creation-Date: 2026-11-14 02:41\n"
 "PO-Revision-Date: 2026-08-02 05:01+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Galician <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -1549,7 +1549,12 @@ msgstr ""
 "CIB). Directrices habituais: IAC/ITL > .95, REACM < .06, RECMS < .08 indican "
 "bo axuste, aínda que estes deben interpretarse con precaución."
 
-msgid "%s Fit indices are based on the scaled test statistic."
+#, fuzzy
+msgid "Fit indices are based on the scaled test statistic."
+msgstr "%s Os indicadores do axuste baséanse no estatístico de proba escalado."
+
+#, fuzzy
+msgid "Fit indices are based on the %s test statistic."
 msgstr "%s Os indicadores do axuste baséanse no estatístico de proba escalado."
 
 msgid "T-Size Fit Indices"

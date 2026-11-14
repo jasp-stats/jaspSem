@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: JASP 0.9.2\n"
-"POT-Creation-Date: 2026-11-07 02:41\n"
+"POT-Creation-Date: 2026-11-14 02:41\n"
 "PO-Revision-Date: 2026-08-02 05:01+0000\n"
 "Last-Translator: ecadrian <ecadrian@hotmail.com>\n"
 "Language-Team: Spanish <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -1560,7 +1560,13 @@ msgstr ""
 "(CIA, CIB). Directrices habituales: IAC/ITL > .95, REACM < .06, RECMS < .08 "
 "indican buen ajuste, aunque estos deben interpretarse con precaución."
 
-msgid "%s Fit indices are based on the scaled test statistic."
+#, fuzzy
+msgid "Fit indices are based on the scaled test statistic."
+msgstr ""
+"%s Los indicadores del ajuste se basan en el estadístico de prueba escalado."
+
+#, fuzzy
+msgid "Fit indices are based on the %s test statistic."
 msgstr ""
 "%s Los indicadores del ajuste se basan en el estadístico de prueba escalado."
 

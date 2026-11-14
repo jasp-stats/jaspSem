@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.96.4\n"
-"POT-Creation-Date: 2026-11-07 02:41\n"
+"POT-Creation-Date: 2026-11-14 02:41\n"
 "PO-Revision-Date: 2026-09-15 04:05+0000\n"
 "Last-Translator: Sohrab Delshad <sdel4030@gmail.com>\n"
 "Language-Team: Persian <https://hosted.weblate.org/projects/jasp/jaspsem-r/"
@@ -1258,7 +1258,10 @@ msgid ""
 "these should be interpreted cautiously."
 msgstr ""
 
-msgid "%s Fit indices are based on the scaled test statistic."
+msgid "Fit indices are based on the scaled test statistic."
+msgstr ""
+
+msgid "Fit indices are based on the %s test statistic."
 msgstr ""
 
 msgid "T-Size Fit Indices"

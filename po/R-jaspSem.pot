@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.97.1\n"
-"POT-Creation-Date: 2026-11-07 02:41\n"
+"POT-Creation-Date: 2026-11-14 02:41\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1003,7 +1003,10 @@ msgstr ""
 msgid "Model fit indices including incremental indices (CFI, TLI, NFI), absolute indices (RMSEA, SRMR, GFI), and information criteria (AIC, BIC). Common guidelines: CFI/TLI > .95, RMSEA < .06, SRMR < .08 indicate good fit, though these should be interpreted cautiously."
 msgstr ""
 
-msgid "%s Fit indices are based on the scaled test statistic."
+msgid "Fit indices are based on the scaled test statistic."
+msgstr ""
+
+msgid "Fit indices are based on the %s test statistic."
 msgstr ""
 
 msgid "T-Size Fit Indices"
