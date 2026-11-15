@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: jaspSem 0.15.0\n"
 "POT-Creation-Date: 2026-11-14 02:41\n"
-"PO-Revision-Date: 2026-11-08 05:51+0000\n"
+"PO-Revision-Date: 2026-11-16 06:38+0000\n"
 "Last-Translator: 陳正昌 <chencc99@users.noreply.hosted.weblate.org>\n"
 "Language-Team: Chinese (Traditional Han script) <https://hosted.weblate.org/"
 "projects/jasp/jaspsem-r/zh_Hant/>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 2026.11.2.dev0\n"
+"X-Generator: Weblate 2026.12.dev0\n"
 
 msgid "Fit Indices"
 msgstr "配適指標"
@@ -1386,13 +1386,11 @@ msgstr ""
 "GFI），以及資訊準則（AIC、BIC）。常見參考標準：CFI / TLI > .95、RMSEA < .06、"
 "SRMR < .08 表示適配良好，惟應用時仍須謹慎解讀。"
 
-#, fuzzy
 msgid "Fit indices are based on the scaled test statistic."
-msgstr "%s 配適指標，將基於量尺化檢定統計數。"
+msgstr "適配度指標係根據縮放後的檢定統計量計算。"
 
-#, fuzzy
 msgid "Fit indices are based on the %s test statistic."
-msgstr "%s 配適指標，將基於量尺化檢定統計數。"
+msgstr "適配度指標係根據 %s 檢定統計量計算。"
 
 msgid "T-Size Fit Indices"
 msgstr "T-size 配適指標"
