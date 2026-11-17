@@ -18,6 +18,7 @@
 # jaspSem (development version)
 
 ## Added
+* MNLFA: new **Factor Scores** group in the Output Options section that appends estimated factor scores to the data set. Scores are computed from the selected invariance model and account for the moderation of loadings, intercepts, residual variances, factor variances, means, and covariances, so each case is scored with its own model-implied parameters. Options for the source model, a column-name prefix, per-case standard errors, and the scoring method (**Thurstone**, the default, or **Bartlett**).
 * MNLFA: new **Estimation Options** section with an **Indicator preprocessing** option (None / Center / Z-standardize) that transforms all indicator variables before the mxsem script is built.
 * MNLFA: new **Show warnings** checkbox in the Output Options section that prints captured OpenMx warning text above the Global Invariance Fit table.
 * MNLFA: Global Invariance Fit table now adds a per-model footnote whenever the OpenMx optimizer status is anything other than OK (e.g. "Non-convex Hessian", "OK/Gradient").
