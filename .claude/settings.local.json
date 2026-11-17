@@ -22,9 +22,15 @@
       "mcp__r-mcptools__btw_tool_docs_help_page",
       "mcp__r-mcptools__btw_tool_run_r",
       "mcp__markitdown__convert_to_markdown",
-      "Read(/Users/julius/Packages/**)"
+      "Read(/Users/julius/Packages/**)",
+      "Bash(git:*)"
     ]
   },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "r-mcptools",
+    "markitdown"
+  ],
   "hooks": {
     "PreToolUse": [
       {
@@ -37,10 +43,5 @@
         ]
       }
     ]
-  },
-  "enableAllProjectMcpServers": true,
-  "enabledMcpjsonServers": [
-    "r-mcptools",
-    "markitdown"
-  ]
+  }
 }
