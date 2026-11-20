@@ -1,7 +1,7 @@
 Package: jaspSem
 Type: Package
 Title: SEM Module for JASP
-Version: 0.97.1
+Version: 0.98.0
 Date: 2026-05-13
 Author: JASP Team
 Website: https://github.com/jasp-stats/jaspSem/
@@ -23,9 +23,9 @@ Imports:
   tibble,
   tidyr,
   SEMsens, 
-  mxsem,
-  OpenMx
+  MoFIA
 Remotes:
   jasp-stats/jaspBase,
-  jasp-stats/jaspGraphs
+  jasp-stats/jaspGraphs,
+  hrgodmann/MoFIA@2553b5b041b66117c24d1c819a03c5c23213acc6
 

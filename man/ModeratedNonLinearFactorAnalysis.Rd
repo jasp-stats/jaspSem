@@ -8,7 +8,12 @@ ModeratedNonLinearFactorAnalysis(
   data = NULL,
   version = "1",
   addGroupVariableToData = FALSE,
+  categoricalIndicatorLink = "logit",
   checkModelFitPerGroup = FALSE,
+  errorCalculationMethod = "robustHuberWhite",
+  factorScoreColumnPrefix = "FS_",
+  factorScoreModel = "",
+  factorScoreSavedToData = FALSE,
   factors = list(list(indicators = list(), name = "Factor1", title = "Factor 1")),
   includeIndividualModerationsList = list(),
   indicatorPreprocessing = "none",
@@ -39,55 +44,79 @@ ModeratedNonLinearFactorAnalysis(
 \item{addGroupVariableToData, }{Save the group variable created by splitting the continuous moderator to the dataset.
 Defaults to \code{FALSE}.}
 
+\item{categoricalIndicatorLink, }{Link function of the ordinal and binary indicators (indicators assigned as ordinal columns): logit (default) or probit. Available only when an ordinal indicator is assigned; continuous indicators are not affected.}
+
 \item{checkModelFitPerGroup, }{Fit the measurement model separately in each group to verify that the model fits adequately before testing moderation.
 Defaults to \code{FALSE}.}
 
-\item{factors, }{Define latent factors and assign observed indicator variables to each factor.}
+\item{errorCalculationMethod, }{Standard errors for the parameter tables, the likelihood-ratio tests and the plot bands; all three come from the same fit, so changing them does not refit the models. Huber-White sandwich (default) uses the exact information matrix. The reduced-information variant follows the convention of other MNLFA software; if its information matrix is not positive definite for a model, that model is shown without standard errors. Standard uses the inverse observed information and the ordinary likelihood-ratio test; the sandwich choices use scaled tests. Sandwich standard errors are valid for the model as fitted (its pseudo-true parameters); they do not correct bias from a wrong response model, invalid anchors or unmodelled dependence. Their calibration was studied only for ordinal, binary, continuous and mixed indicators, one or two factors, logit and probit links, and sample sizes of 500 to 2000.}
 
-\item{includeIndividualModerationsList, }{For each invariance level, specify which individual measurement parameters should be tested for moderation effects.}
+\item{factorScoreColumnPrefix, }{Text placed before each factor title in the saved score column names.}
 
-\item{invarianceTestConfigural, }{Test configural invariance: same factor structure across groups but all parameters free.
+\item{factorScoreModel, }{Select one of the enabled invariance models for the factor scores. Scores are saved only from a model that converged; otherwise a footnote under the table 'Factor Scores' says why.}
+
+\item{factorScoreSavedToData, }{Save expected a posteriori factor scores from the selected model. Scores include moderated factor means and variances; posterior standard deviations do not include parameter uncertainty.
 Defaults to \code{FALSE}.}
 
-\item{invarianceTestCustom, }{Define a custom set of parameter constraints for invariance testing.
+\item{factors, }{Define latent factors and assign observed indicator variables to each factor. Scale variables are continuous indicators; ordinal variables are categorical (binary or ordinal) indicators.}
+
+\item{includeIndividualModerationsList, }{For each model, tick the parameters that depend on the moderators; a ticked parameter depends on all moderator terms. The default anchor of a factor is its first indicator that loads on this factor only, otherwise its first indicator that is not already another factor's anchor; its loading and intercept are unticked by default. When a factor's default anchor changes (for example, its first indicator is removed), the loading and intercept boxes of the old and the new anchor return to their defaults. All other boxes keep their values when you rename a factor, add, remove or reorder indicators, or reorder the moderators; an indicator that you assign again gets back its earlier values. Residual variances exist only for continuous (scale) indicators. The factor correlation can depend on the moderators only with exactly two factors.}
+
+\item{indicatorPreprocessing, }{Transformation of the continuous (scale) indicators before fitting, with the mean and standard deviation of the analysed cases. Ordinal indicators are never transformed.
+\itemize{
+  \item \code{"none"}: Use the continuous indicators as they are.
+  \item \code{"center"}: Subtract the mean from each continuous indicator.
+  \item \code{"standardize"}: Subtract the mean and divide by the standard deviation of each continuous indicator.
+}}
+
+\item{invarianceTestConfigural, }{Preset: loadings and intercepts (thresholds) of all indicators except the anchors, residual variances, factor variances, factor means and, with two factors, the factor correlation depend on the moderators.
 Defaults to \code{FALSE}.}
 
-\item{invarianceTestMetric, }{Test metric invariance: constrain factor loadings to be equal across groups.
+\item{invarianceTestCustom, }{Preset: nothing depends on the moderators; tick the parameters that should.
 Defaults to \code{FALSE}.}
 
-\item{invarianceTestScalar, }{Test scalar invariance: constrain factor loadings and intercepts to be equal across groups.
+\item{invarianceTestMetric, }{Preset: as Configural, but no loading depends on the moderators.
 Defaults to \code{FALSE}.}
 
-\item{invarianceTestStrict, }{Test strict invariance: constrain factor loadings, intercepts, and residual variances to be equal across groups.
+\item{invarianceTestScalar, }{Preset: as Metric, but no intercept or threshold depends on the moderators.
 Defaults to \code{FALSE}.}
 
-\item{moderatorInteractionTerms, }{Include interaction terms between pairs of moderators.}
-
-\item{moderators, }{Variables hypothesized to moderate the measurement model parameters. Continuous moderators can optionally include squared and cubic effects.}
-
-\item{parameterEstimatesAlphaLevel, }{Significance level for flagging parameter estimates.}
-
-\item{parameterEstimatesFactorCovariances, }{Display regression coefficients for Fisher z-transformed latent factor correlations.
+\item{invarianceTestStrict, }{Preset: as Scalar, but no residual variance depends on the moderators. With only ordinal indicators, Scalar and Strict are the same model.
 Defaults to \code{FALSE}.}
 
-\item{parameterEstimatesFactorMeans, }{Display latent factor mean estimates.
+\item{moderatorInteractionTerms, }{Include interaction terms between pairs of moderators. An included interaction stays included when you reorder the moderators; its name follows their order.}
+
+\item{moderators, }{Variables that may moderate the parameters of the measurement model. A scale moderator with two distinct values is used as coded (effects per unit); with more values it is standardized on the analysed cases (effects per standard deviation) and can also enter as a square and a cube. A nominal moderator is dummy coded against its first level. Cases with a missing moderator value are excluded from all models.}
+
+\item{parameterEstimatesAlphaLevel, }{Significance level alpha of the tests; confidence intervals and plot bands have level 1 - alpha.}
+
+\item{parameterEstimatesFactorCovariances, }{Display the factor correlations: the baseline on the Fisher z and the correlation scale, moderation effects on the Fisher z scale.
 Defaults to \code{FALSE}.}
 
-\item{parameterEstimatesFactorVariance, }{Display latent factor variance estimates.
+\item{parameterEstimatesFactorMeans, }{Display the moderation effects on the factor means; the baseline mean is fixed at 0.
 Defaults to \code{FALSE}.}
 
-\item{parameterEstimatesIntercepts, }{Display intercept estimates for observed indicators.
+\item{parameterEstimatesFactorVariance, }{Display the moderation effects on the factor variances as variance ratios; the baseline variance is fixed at 1.
 Defaults to \code{FALSE}.}
 
-\item{parameterEstimatesLoadings, }{Display factor loading estimates.
+\item{parameterEstimatesIntercepts, }{Display the intercepts of continuous indicators and the thresholds of ordinal indicators, with their moderation effects.
 Defaults to \code{FALSE}.}
 
-\item{parameterEstimatesResidualVariances, }{Display residual variance estimates for observed indicators.
+\item{parameterEstimatesLoadings, }{Display the loadings: baseline and moderation effects.
+Defaults to \code{FALSE}.}
+
+\item{parameterEstimatesResidualVariances, }{Display the residual variances of continuous indicators; moderation effects are shown as variance ratios.
+Defaults to \code{FALSE}.}
+
+\item{showSyntax, }{Show R code that fits each model with the MoFIA package outside JASP.
 Defaults to \code{FALSE}.}
 
 \item{splitContinuousVariablesIntoGroups, }{Number of groups into which continuous moderator variables are split for the assumption check.}
 
-\item{syncAnalysisBox, }{Click to start or synchronize the analysis. The analysis does not run automatically due to computational intensity.
+\item{syncAnalysisBox, }{Fit the models. While unchecked, nothing is fitted; results of the last synchronized run stay visible as long as the model settings are unchanged.
+Defaults to \code{FALSE}.}
+
+\item{warnings, }{List the warnings of each model fit. Identification, convergence and quadrature notes are always shown.
 Defaults to \code{FALSE}.}
 }
 \description{
