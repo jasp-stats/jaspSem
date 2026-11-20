@@ -117,7 +117,7 @@
                sprintf("summary(fit_%s, se = %s, information = %s)", tag, .mnlfaQuote(se[["se"]]),
                        .mnlfaQuote(se[["information"]])))
   } else {
-    lines <- c(paste("#", gettext("JASP refuses to fit this model (see Model Specification); this code only reproduces its specification.")),
+    lines <- c(paste("#", gettext("JASP refuses to fit this model (see the table 'Model Fit (MoFIA)'); this code only reproduces its specification.")),
                lines)
   }
   return(paste(lines, collapse = "\n"))

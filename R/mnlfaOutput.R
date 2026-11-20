@@ -64,6 +64,9 @@
     container$position <- 100
     jaspResults[["mofiaContainer"]] <- container
   }
+  # The section shows only what needs attention (invalid settings, data notes, a model's notes and warnings). Without
+  # any, it keeps no title and so shows nothing; it stays in place because the Sync-off display relies on it.
+  on.exit(container$title <- if (container$length() > 0) gettext("Model Specification") else "", add = TRUE)
 
   spec     <- .mnlfaReadSpec(options, dataset)
   prepared <- if (length(spec[["errors"]]) == 0) .mnlfaMofiaPreparedState(jaspResults, spec, dataset)
@@ -202,30 +205,27 @@
 
 .mnlfaFitSignature <- function(spec, key) list(model = spec[["models"]][[key]], link = spec[["link"]])
 
-# Per model: whether it was refused, its specification footnotes, and MoFIA's other warnings (model
-# construction and fitting) under "Show warnings". Refusal messages and identification warnings are shown in
-# the model's row of the fit table. MoFIA's full estimation-error message, which the fit table replaces by a short
-# text, is listed here under "Show warnings".
+# Per model, only what is shown nowhere else: its specification footnotes (ignored settings) and, under "Show
+# warnings", MoFIA's full estimation-error message (the fit table shows a short text) and MoFIA's other warnings
+# (model construction and fitting). Refusals and identification warnings are in the model's row of the fit table. A
+# model with nothing to report has no block. The block is rebuilt on every run (nothing is fitted here), so no block of
+# an earlier option state or an earlier build stays.
 .mnlfaMofiaModelMessages <- function(container, model, fit, key, position, options) {
   htmlKey <- paste0(key, "Checks")
-  if (!is.null(container[[htmlKey]]))
-    return()
+  container[[htmlKey]] <- NULL
 
-  refused         <- length(model[["errors"]]) > 0
   mofiaWarnings   <- unique(c(model[["mofiaWarnings"]], fit[["warnings"]]))
   estimationError <- if (.mnlfaIsEstimationError(fit)) fit[["error"]]
   lines <- c(
-    if (refused)
-      gettext("This model is refused and will not be fitted; the reason is shown in the table 'Model Fit (MoFIA)'.")
-    else
-      gettext("The model passed the identification pre-checks; its fit is shown in the table 'Model Fit (MoFIA)'."),
     model[["footnotes"]],
     if (options[["warnings"]] && length(estimationError) > 0)
       gettextf("MoFIA error: %s", estimationError),
     if (options[["warnings"]] && length(mofiaWarnings) > 0)
       gettextf("MoFIA warning: %s", mofiaWarnings))
+  if (length(lines) == 0)
+    return()
+
   html <- createJaspHtml(text = paste(.mnlfaHtmlEscape(lines), collapse = "<br>"), title = .mnlfaModelLabel(key))
-  html$dependOn("warnings")
   html$position <- 1 + position
   container[[htmlKey]] <- html
   return()
@@ -247,7 +247,7 @@
     key <- names(spec[["models"]])[k]
     if (length(spec[["models"]][[key]][["errors"]]) > 0) {
       # Invalid settings: no code, never a substitute model built from the readable rows.
-      html <- createJaspHtml(text = gettext("No code is shown: the moderation settings of this model are invalid (see Model Specification)."),
+      html <- createJaspHtml(text = gettext("No code is shown: the moderation settings of this model are invalid (see the table 'Model Fit (MoFIA)')."),
                              title = .mnlfaModelLabel(key))
     } else {
       refused <- length(models[[key]][["errors"]]) > 0
