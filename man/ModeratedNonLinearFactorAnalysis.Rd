@@ -8,7 +8,12 @@ ModeratedNonLinearFactorAnalysis(
   data = NULL,
   version = "1",
   addGroupVariableToData = FALSE,
+  categoricalIndicatorLink = "logit",
   checkModelFitPerGroup = FALSE,
+  errorCalculationMethod = "robustHuberWhite",
+  factorScoreColumnPrefix = "FS_",
+  factorScoreModel = "",
+  factorScoreSavedToData = FALSE,
   factors = list(list(indicators = list(), name = "Factor1", title = "Factor 1")),
   includeIndividualModerationsList = list(),
   indicatorPreprocessing = "none",
@@ -39,55 +44,79 @@ ModeratedNonLinearFactorAnalysis(
 \item{addGroupVariableToData, }{Save the group variable created by splitting the continuous moderator to the dataset.
 Defaults to \code{FALSE}.}
 
-\item{checkModelFitPerGroup, }{Fit the measurement model separately in each group to verify that the model fits adequately before testing moderation.
+\item{categoricalIndicatorLink, }{Link function for ordinal and binary indicators: logit (default) or probit. Available only when an ordinal indicator is assigned.}
+
+\item{checkModelFitPerGroup, }{Fit the measurement model separately in each group.
 Defaults to \code{FALSE}.}
 
-\item{factors, }{Define latent factors and assign observed indicator variables to each factor.}
+\item{errorCalculationMethod, }{Standard errors for the parameter tables, likelihood-ratio tests and plot bands; changing them does not refit the models. Huber-White sandwich (default) uses the exact information matrix and scaled likelihood-ratio tests. The reduced-information variant is for comparison with other MNLFA software and is not robust to misspecification. Standard uses the inverse observed information and the unscaled likelihood-ratio test.}
 
-\item{includeIndividualModerationsList, }{For each invariance level, specify which individual measurement parameters should be tested for moderation effects.}
+\item{factorScoreColumnPrefix, }{Text placed before each factor title in the saved score column names.}
 
-\item{invarianceTestConfigural, }{Test configural invariance: same factor structure across groups but all parameters free.
+\item{factorScoreModel, }{Model whose factor scores are saved (only if it converged).}
+
+\item{factorScoreSavedToData, }{Save expected a posteriori factor scores from the selected model. Scores include moderated factor means and variances; posterior standard deviations do not include parameter uncertainty.
 Defaults to \code{FALSE}.}
 
-\item{invarianceTestCustom, }{Define a custom set of parameter constraints for invariance testing.
+\item{factors, }{Define latent factors and assign observed indicator variables to each factor. Scale variables are continuous indicators; ordinal variables are categorical (binary or ordinal) indicators.}
+
+\item{includeIndividualModerationsList, }{For each model, tick the parameters that depend on the moderators (on all moderator terms). Each factor's default anchor is its first indicator that loads on that factor only; its loading and intercept are unticked by default. Residual variances exist only for continuous (scale) indicators, and the factor correlation can be moderated only with two factors.}
+
+\item{indicatorPreprocessing, }{Transformation of the continuous (scale) indicators before fitting, with the mean and standard deviation of the analysed cases. Ordinal indicators are never transformed.
+\itemize{
+  \item \code{"none"}: Use the continuous indicators as they are.
+  \item \code{"center"}: Subtract the mean from each continuous indicator.
+  \item \code{"standardize"}: Subtract the mean and divide by the standard deviation of each continuous indicator.
+}}
+
+\item{invarianceTestConfigural, }{Preset: every parameter depends on the moderators except the anchors' loadings and intercepts (thresholds); the factor correlation only with two factors.
 Defaults to \code{FALSE}.}
 
-\item{invarianceTestMetric, }{Test metric invariance: constrain factor loadings to be equal across groups.
+\item{invarianceTestCustom, }{Preset: nothing depends on the moderators; tick the parameters that should.
 Defaults to \code{FALSE}.}
 
-\item{invarianceTestScalar, }{Test scalar invariance: constrain factor loadings and intercepts to be equal across groups.
+\item{invarianceTestMetric, }{Preset: as Configural, but no loading depends on the moderators.
 Defaults to \code{FALSE}.}
 
-\item{invarianceTestStrict, }{Test strict invariance: constrain factor loadings, intercepts, and residual variances to be equal across groups.
+\item{invarianceTestScalar, }{Preset: as Metric, but no intercept or threshold depends on the moderators.
 Defaults to \code{FALSE}.}
 
-\item{moderatorInteractionTerms, }{Include interaction terms between pairs of moderators.}
-
-\item{moderators, }{Variables hypothesized to moderate the measurement model parameters. Continuous moderators can optionally include squared and cubic effects.}
-
-\item{parameterEstimatesAlphaLevel, }{Significance level for flagging parameter estimates.}
-
-\item{parameterEstimatesFactorCovariances, }{Display regression coefficients for Fisher z-transformed latent factor correlations.
+\item{invarianceTestStrict, }{Preset: as Scalar, but no residual variance depends on the moderators. With only ordinal indicators, Scalar and Strict are the same model.
 Defaults to \code{FALSE}.}
 
-\item{parameterEstimatesFactorMeans, }{Display latent factor mean estimates.
+\item{moderatorInteractionTerms, }{Include interactions between pairs of moderators.}
+
+\item{moderators, }{Variables that can moderate the measurement model. Scale moderators with more than two distinct values are standardized on the analysed cases (effects per standard deviation); with two values they are used as coded. Nominal moderators are dummy coded against their first level. Cases with a missing moderator value are excluded.}
+
+\item{parameterEstimatesAlphaLevel, }{Significance level alpha of the tests; confidence intervals and plot bands have level 1 - alpha.}
+
+\item{parameterEstimatesFactorCovariances, }{Display the factor correlations: the baseline on the Fisher z and the correlation scale, moderation effects on the Fisher z scale.
 Defaults to \code{FALSE}.}
 
-\item{parameterEstimatesFactorVariance, }{Display latent factor variance estimates.
+\item{parameterEstimatesFactorMeans, }{Display the moderation effects on the factor means; the baseline mean is fixed at 0.
 Defaults to \code{FALSE}.}
 
-\item{parameterEstimatesIntercepts, }{Display intercept estimates for observed indicators.
+\item{parameterEstimatesFactorVariance, }{Display the moderation effects on the factor variances as variance ratios; the baseline variance is fixed at 1.
 Defaults to \code{FALSE}.}
 
-\item{parameterEstimatesLoadings, }{Display factor loading estimates.
+\item{parameterEstimatesIntercepts, }{Display the intercepts of continuous indicators and the thresholds of ordinal indicators, with their moderation effects.
 Defaults to \code{FALSE}.}
 
-\item{parameterEstimatesResidualVariances, }{Display residual variance estimates for observed indicators.
+\item{parameterEstimatesLoadings, }{Display the loadings: baseline and moderation effects.
+Defaults to \code{FALSE}.}
+
+\item{parameterEstimatesResidualVariances, }{Display the residual variances of continuous indicators; moderation effects are shown as variance ratios.
+Defaults to \code{FALSE}.}
+
+\item{showSyntax, }{Show R code that fits each model with the MoFIA package outside JASP.
 Defaults to \code{FALSE}.}
 
 \item{splitContinuousVariablesIntoGroups, }{Number of groups into which continuous moderator variables are split for the assumption check.}
 
-\item{syncAnalysisBox, }{Click to start or synchronize the analysis. The analysis does not run automatically due to computational intensity.
+\item{syncAnalysisBox, }{Fit the models. While unchecked, they are not fitted (the fit per group still runs).
+Defaults to \code{FALSE}.}
+
+\item{warnings, }{List the warnings of each model fit. Identification, convergence and quadrature notes are always shown.
 Defaults to \code{FALSE}.}
 }
 \description{

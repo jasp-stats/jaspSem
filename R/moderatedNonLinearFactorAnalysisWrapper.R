@@ -21,43 +21,64 @@
 #'
 #' @param addGroupVariableToData, Save the group variable created by splitting the continuous moderator to the dataset.
 #'    Defaults to \code{FALSE}.
-#' @param checkModelFitPerGroup, Fit the measurement model separately in each group to verify that the model fits adequately before testing moderation.
+#' @param categoricalIndicatorLink, Link function for ordinal and binary indicators: logit (default) or probit. Available only when an ordinal indicator is assigned.
+#' @param checkModelFitPerGroup, Fit the measurement model separately in each group.
 #'    Defaults to \code{FALSE}.
-#' @param factors, Define latent factors and assign observed indicator variables to each factor.
-#' @param includeIndividualModerationsList, For each invariance level, specify which individual measurement parameters should be tested for moderation effects.
-#' @param invarianceTestConfigural, Test configural invariance: same factor structure across groups but all parameters free.
+#' @param errorCalculationMethod, Standard errors for the parameter tables, likelihood-ratio tests and plot bands; changing them does not refit the models. Huber-White sandwich (default) uses the exact information matrix and scaled likelihood-ratio tests. The reduced-information variant is for comparison with other MNLFA software and is not robust to misspecification. Standard uses the inverse observed information and the unscaled likelihood-ratio test.
+#' @param factorScoreColumnPrefix, Text placed before each factor title in the saved score column names.
+#' @param factorScoreModel, Model whose factor scores are saved (only if it converged).
+#' @param factorScoreSavedToData, Save expected a posteriori factor scores from the selected model. Scores include moderated factor means and variances; posterior standard deviations do not include parameter uncertainty.
 #'    Defaults to \code{FALSE}.
-#' @param invarianceTestCustom, Define a custom set of parameter constraints for invariance testing.
+#' @param factors, Define latent factors and assign observed indicator variables to each factor. Scale variables are continuous indicators; ordinal variables are categorical (binary or ordinal) indicators.
+#' @param includeIndividualModerationsList, For each model, tick the parameters that depend on the moderators (on all moderator terms). Each factor's default anchor is its first indicator that loads on that factor only; its loading and intercept are unticked by default. Residual variances exist only for continuous (scale) indicators, and the factor correlation can be moderated only with two factors.
+#' @param indicatorPreprocessing, Transformation of the continuous (scale) indicators before fitting, with the mean and standard deviation of the analysed cases. Ordinal indicators are never transformed.
+#' \itemize{
+#'   \item \code{"none"}: Use the continuous indicators as they are.
+#'   \item \code{"center"}: Subtract the mean from each continuous indicator.
+#'   \item \code{"standardize"}: Subtract the mean and divide by the standard deviation of each continuous indicator.
+#' }
+#' @param invarianceTestConfigural, Preset: every parameter depends on the moderators except the anchors' loadings and intercepts (thresholds); the factor correlation only with two factors.
 #'    Defaults to \code{FALSE}.
-#' @param invarianceTestMetric, Test metric invariance: constrain factor loadings to be equal across groups.
+#' @param invarianceTestCustom, Preset: nothing depends on the moderators; tick the parameters that should.
 #'    Defaults to \code{FALSE}.
-#' @param invarianceTestScalar, Test scalar invariance: constrain factor loadings and intercepts to be equal across groups.
+#' @param invarianceTestMetric, Preset: as Configural, but no loading depends on the moderators.
 #'    Defaults to \code{FALSE}.
-#' @param invarianceTestStrict, Test strict invariance: constrain factor loadings, intercepts, and residual variances to be equal across groups.
+#' @param invarianceTestScalar, Preset: as Metric, but no intercept or threshold depends on the moderators.
 #'    Defaults to \code{FALSE}.
-#' @param moderatorInteractionTerms, Include interaction terms between pairs of moderators.
-#' @param moderators, Variables hypothesized to moderate the measurement model parameters. Continuous moderators can optionally include squared and cubic effects.
-#' @param parameterEstimatesAlphaLevel, Significance level for flagging parameter estimates.
-#' @param parameterEstimatesFactorCovariances, Display regression coefficients for Fisher z-transformed latent factor correlations.
+#' @param invarianceTestStrict, Preset: as Scalar, but no residual variance depends on the moderators. With only ordinal indicators, Scalar and Strict are the same model.
 #'    Defaults to \code{FALSE}.
-#' @param parameterEstimatesFactorMeans, Display latent factor mean estimates.
+#' @param moderatorInteractionTerms, Include interactions between pairs of moderators.
+#' @param moderators, Variables that can moderate the measurement model. Scale moderators with more than two distinct values are standardized on the analysed cases (effects per standard deviation); with two values they are used as coded. Nominal moderators are dummy coded against their first level. Cases with a missing moderator value are excluded.
+#' @param parameterEstimatesAlphaLevel, Significance level alpha of the tests; confidence intervals and plot bands have level 1 - alpha.
+#' @param parameterEstimatesFactorCovariances, Display the factor correlations: the baseline on the Fisher z and the correlation scale, moderation effects on the Fisher z scale.
 #'    Defaults to \code{FALSE}.
-#' @param parameterEstimatesFactorVariance, Display latent factor variance estimates.
+#' @param parameterEstimatesFactorMeans, Display the moderation effects on the factor means; the baseline mean is fixed at 0.
 #'    Defaults to \code{FALSE}.
-#' @param parameterEstimatesIntercepts, Display intercept estimates for observed indicators.
+#' @param parameterEstimatesFactorVariance, Display the moderation effects on the factor variances as variance ratios; the baseline variance is fixed at 1.
 #'    Defaults to \code{FALSE}.
-#' @param parameterEstimatesLoadings, Display factor loading estimates.
+#' @param parameterEstimatesIntercepts, Display the intercepts of continuous indicators and the thresholds of ordinal indicators, with their moderation effects.
 #'    Defaults to \code{FALSE}.
-#' @param parameterEstimatesResidualVariances, Display residual variance estimates for observed indicators.
+#' @param parameterEstimatesLoadings, Display the loadings: baseline and moderation effects.
+#'    Defaults to \code{FALSE}.
+#' @param parameterEstimatesResidualVariances, Display the residual variances of continuous indicators; moderation effects are shown as variance ratios.
+#'    Defaults to \code{FALSE}.
+#' @param showSyntax, Show R code that fits each model with the MoFIA package outside JASP.
 #'    Defaults to \code{FALSE}.
 #' @param splitContinuousVariablesIntoGroups, Number of groups into which continuous moderator variables are split for the assumption check.
-#' @param syncAnalysisBox, Click to start or synchronize the analysis. The analysis does not run automatically due to computational intensity.
+#' @param syncAnalysisBox, Fit the models. While unchecked, they are not fitted (the fit per group still runs).
+#'    Defaults to \code{FALSE}.
+#' @param warnings, List the warnings of each model fit. Identification, convergence and quadrature notes are always shown.
 #'    Defaults to \code{FALSE}.
 ModeratedNonLinearFactorAnalysis <- function(
           data = NULL,
           version = "1",
           addGroupVariableToData = FALSE,
+          categoricalIndicatorLink = "logit",
           checkModelFitPerGroup = FALSE,
+          errorCalculationMethod = "robustHuberWhite",
+          factorScoreColumnPrefix = "FS_",
+          factorScoreModel = "",
+          factorScoreSavedToData = FALSE,
           factors = list(list(indicators = list(), name = "Factor1", title = "Factor 1")),
           includeIndividualModerationsList = list(),
           indicatorPreprocessing = "none",
@@ -92,7 +113,7 @@ ModeratedNonLinearFactorAnalysis <- function(
       jaspBase::storeDataSet(data)
    }
 
-   optionsWithFormula <- c("factors", "includeIndividualModerationsList", "moderatorInteractionTerms", "moderators", "plotModelList")
+   optionsWithFormula <- c("categoricalIndicatorLink", "errorCalculationMethod", "factorScoreModel", "factors", "includeIndividualModerationsList", "moderatorInteractionTerms", "moderators", "plotModelList")
    for (name in optionsWithFormula) {
       if ((name %in% optionsWithFormula) && inherits(options[[name]], "formula")) options[[name]] = jaspBase::jaspFormula(options[[name]], data)   }
 

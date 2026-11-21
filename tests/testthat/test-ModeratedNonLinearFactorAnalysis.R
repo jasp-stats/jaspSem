@@ -1,610 +1,414 @@
+context("Moderated Non-Linear Factor Analysis")
 
-context("MNLFA")
+# Curated tests of the MNLFA (estimated with MoFIA). Each test runs one configuration through the analysis form and
+# records what JASP shows, as JASP's generated tests do. Data in tests/testthat/mnlfa/:
+#   continuous.csv     2 factors x 4 continuous items (y1-y8), Age, Male (0/1), Region (south, north, east); N = 400
+#   ordinal.csv        1 factor, 5 ordinal items (o1-o5, levels 1-4; level 3 never observed in o3), Age; N = 400
+#   saved-0.97.1.jasp  an MNLFA saved by jaspSem 0.97.1 (the OpenMx version) on continuous.csv
+# The recorded tables come from running these configurations (as jaspTools::makeTestsFromExamples() records them).
+# When this file was written they were compared with independent fits (relative tolerance 1e-8): tests 1-5 and 7
+# with hand-written MoFIA fits (n(par), -2LL, information criteria, model comparisons, every recorded parameter
+# table), test 8 with lavaan::cfa() per group. Test 6 checks the shown syntax against the fit table itself.
 
-options <- list(
+mnlfaData <- function(file) utils::read.csv(testthat::test_path("mnlfa", file))
 
-  ## ===============================
-  ## General switches
-  ## ===============================
-  addGroupVariableToData = FALSE,
-  checkModelFitPerGroup       = FALSE,
-  syncAnalysisBox        = TRUE,
-
-  invarianceTestConfigural = FALSE,
-  invarianceTestMetric     = FALSE,
-  invarianceTestScalar     = TRUE,
-  invarianceTestStrict     = FALSE,
-  invarianceTestCustom     = FALSE,
-
-  splitContinuousVariablesIntoGroups = 2,
-
-  showSyntax = FALSE,
-  warnings   = FALSE,
-  indicatorPreprocessing = "none",
-
-  ## ===============================
-  ## Factors
-  ## ===============================
-  factors = list(
-
-    list(
-      name = "Factor1",
-      title = "Factor 1",
-      indicators = c(
-        "AgeImportant",
-        "AttractiveImportant",
-        "PhysicalbuildImportant"
-      ),
-      indicators.types = c("scale", "scale", "scale")
-    ),
-
-    list(
-      name = "Factor2",
-      title = "Factor 2",
-      indicators = c(
-        "TrustImportant",
-        "EmotionalconnImportant",
-        "OpennessImportant"
-      ),
-      indicators.types = c("scale", "scale", "scale")
-    )
-  ),
-
-  ## ===============================
-  ## Moderators
-  ## ===============================
-  moderators = list(
-    list(
-      variable = "Age",
-      moderatorSquaredEffect = TRUE,
-      moderatorCubicEffect   = FALSE
-    ),
-    list(
-      variable = "Male",
-      moderatorSquaredEffect = FALSE,
-      moderatorCubicEffect   = FALSE
-    )
-  ),
-
-  moderators.types = c("scale", "nominal"),
-
-  moderatorInteractionTerms = list(
-    list(
-      value = "Age:Male",
-      moderatorInteractionTermsInclude = TRUE
-    )
-  ),
-
-  ## ===============================
-  ## Individual moderation inclusion
-  ## ===============================
-  includeIndividualModerationsList = list(
-
-    list(
-      keyLabel = "Scalar",
-      keyValue = "invarianceTestScalar",
-
-      moderationTypeList = list(
-
-        ## -------- Indicators --------
-        list(
-          keyLabel = "Indicators",
-          keyValue = "indicators",
-
-          moderationParameterList = list(
-
-            ## Loadings
-            list(
-              keyLabel = "Loadings",
-              keyValue = "loadings",
-
-              moderationItemList = list(
-                list(includeIndividualModeration = FALSE, value = "AgeImportant",  value.types = "scale"),
-                list(includeIndividualModeration = FALSE, value = "AttractiveImportant",  value.types = "scale"),
-                list(includeIndividualModeration = FALSE, value = "PhysicalbuildImportant", value.types = "scale"),
-                list(includeIndividualModeration = FALSE, value = "TrustImportant", value.types = "scale"),
-                list(includeIndividualModeration = FALSE, value = "EmotionalconnImportant",  value.types = "scale"),
-                list(includeIndividualModeration = FALSE, value = "OpennessImportant", value.types = "scale")
-              )
-            ),
-
-            ## Intercepts
-            list(
-              keyLabel = "Intercepts",
-              keyValue = "intercepts",
-
-              moderationItemList = list(
-                list(includeIndividualModeration = FALSE, value = "AgeImportant",  value.types = "scale"),
-                list(includeIndividualModeration = FALSE, value = "AttractiveImportant",  value.types = "scale"),
-                list(includeIndividualModeration = FALSE, value = "PhysicalbuildImportant", value.types = "scale"),
-                list(includeIndividualModeration = FALSE, value = "TrustImportant", value.types = "scale"),
-                list(includeIndividualModeration = FALSE, value = "EmotionalconnImportant",  value.types = "scale"),
-                list(includeIndividualModeration = FALSE, value = "OpennessImportant", value.types = "scale")
-              )
-            ),
-
-            ## Residual variances
-            list(
-              keyLabel = "Residual variances",
-              keyValue = "residualVariances",
-
-              moderationItemList = list(
-                list(includeIndividualModeration = TRUE, value = "AgeImportant",  value.types = "scale"),
-                list(includeIndividualModeration = TRUE, value = "AttractiveImportant",  value.types = "scale"),
-                list(includeIndividualModeration = TRUE, value = "PhysicalbuildImportant", value.types = "scale"),
-                list(includeIndividualModeration = TRUE, value = "TrustImportant", value.types = "scale"),
-                list(includeIndividualModeration = TRUE, value = "EmotionalconnImportant",  value.types = "scale"),
-                list(includeIndividualModeration = TRUE, value = "OpennessImportant", value.types = "scale")
-              )
-            )
-          )
-        ),
-
-        ## -------- Factors --------
-        list(
-          keyLabel = "Factors",
-          keyValue = "factors",
-
-          moderationParameterList = list(
-
-            ## Variances
-            list(
-              keyLabel = "Variances",
-              keyValue = "variances",
-              moderationItemList = list(
-                list(includeIndividualModeration = TRUE, value = "Factor1"),
-                list(includeIndividualModeration = TRUE, value = "Factor2")
-              )
-            ),
-
-            ## Means
-            list(
-              keyLabel = "Means",
-              keyValue = "means",
-              moderationItemList = list(
-                list(includeIndividualModeration = TRUE, value = "Factor1"),
-                list(includeIndividualModeration = TRUE, value = "Factor2")
-              )
-            ),
-
-            ## Covariances
-            list(
-              keyLabel = "Covariances",
-              keyValue = "covariances",
-              moderationItemList = list(
-                list(includeIndividualModeration = TRUE, value = "Factor1:Factor2")
-              )
-            )
-          )
-        )
-      )
-    )
-  ),
-
-  ## ===============================
-  ## Parameter output switches
-  ## ===============================
-  parameterEstimatesLoadings          = FALSE,
-  parameterEstimatesIntercepts        = TRUE,
-  parameterEstimatesResidualVariances = TRUE,
-  parameterEstimatesFactorVariance   = FALSE,
-  parameterEstimatesFactorMeans       = FALSE,
-  parameterEstimatesFactorCovariances = FALSE,
-
-  parameterEstimatesAlphaLevel = 0.05,
-
-  ## ===============================
-  ## Plot options
-  ## ===============================
-  plotWidth  = 480,
-  plotHeight = 320,
-
-  plotModelList = list(
-
-    list(
-      keyLabel = "Scalar",
-      keyValue = "invarianceTestScalar",
-
-      plotTypeList = list(
-
-        ## Indicators
-        list(
-          keyLabel = "Indicators",
-          keyValue = "indicators",
-
-          plotParameterList = list(
-
-            list(keyLabel = "Loadings", keyValue = "loadings", plotItemList = list()),
-
-            list(
-              keyLabel = "Intercepts",
-              keyValue = "intercepts",
-              plotItemList = list()
-            ),
-
-            list(
-              keyLabel = "Residual variances",
-              keyValue = "residualVariances",
-              plotItemList = list(
-                list(
-                  includePlot     = TRUE,
-                  plotModerator1 = "Age:Male",
-                  plotModerator2 = "",
-                  value          = "AgeImportant"
-                )
-              )
-            )
-          )
-        ),
-
-        ## Factors
-        list(
-          keyLabel = "Factors",
-          keyValue = "factors",
-
-          plotParameterList = list(
-
-            list(
-              keyLabel = "Variances",
-              keyValue = "variances",
-              plotItemList = list(
-                list(includePlot = FALSE, plotModerator1 = "", plotModerator2 = "", value = "Factor1"),
-                list(includePlot = FALSE, plotModerator1 = "", plotModerator2 = "", value = "Factor2")
-              )
-            ),
-
-            list(
-              keyLabel = "Means",
-              keyValue = "means",
-              plotItemList = list(
-                list(
-                  includePlot     = TRUE,
-                  plotModerator1 = "Age",
-                  plotModerator2 = "Male",
-                  value          = "Factor1"
-                ),
-                list(
-                  includePlot     = FALSE,
-                  plotModerator1 = "",
-                  plotModerator2 = "",
-                  value          = "Factor2"
-                )
-              )
-            ),
-
-            list(
-              keyLabel = "Covariances",
-              keyValue = "covariances",
-              plotItemList = list(
-                list(
-                  includePlot     = FALSE,
-                  plotModerator1 = "",
-                  plotModerator2 = "",
-                  value          = "Factor1:Factor2"
-                )
-              )
-            )
-          )
-        )
-      )
-    )
-  )
-)
-
-results <- runAnalysis(
-  "ModeratedNonLinearFactorAnalysis",
-  dataset = testthat::test_path("AttractDat.csv"),
-  options = options, makeTests = FALSE
-)
-
-# Only do full numeric/plot comparison on macOS; other platforms just check for no errors
-isMacOS <- Sys.info()[["sysname"]] == "Darwin"
-
-test_that("Global Invariance Fit table results match", {
-  table <- results[["results"]][["fitContainer"]][["collection"]][["fitContainer_invFitTable"]][["data"]]
-  if (isMacOS) {
-    jaspTools::expect_equal_tables(table,
-                                   list(110509.388844222, 110941.707465043, 110383.388844222, 63, 110510.541502884, 110741.507918229,
-                                       "Scalar"))
-  } else {
-    expect_true(!is.null(table))
-  }
-})
-
-test_that("Intercepts table results match", {
-  table <- results[["results"]][["mainContainer"]][["collection"]][["mainContainer_globalParameterContainer"]][["collection"]][["mainContainer_globalParameterContainer_Scalar"]][["collection"]][["mainContainer_globalParameterContainer_Scalar_intTable"]][["data"]]
-
-  if (isMacOS) {
-    jaspTools::expect_equal_tables(table,
-                                   list(-0.0575075131128216, 0.00858586357882383, "Baseline", -0.0244608247669989, "AgeImportant",
-                                       0.14685073074176, 0.0168608651008339, -0.0969603033443979, -0.00441671593943532, "Baseline",
-                                       -0.0506885096419166, "AttractiveImportant", 0.0317896476258752, 0.0236084918230474, -0.0849246263215631,
-                                       -0.00673207730417562, "Baseline", -0.0458283518128694, "PhysicalbuildImportant", 0.0215928452942764,
-                                       0.0199474453699559, 0.192723633736811, 0.268130870707717, "Baseline", 0.230427252222264,
-                                       "TrustImportant", 0, 0.0192368935260313, 0.202866409013928, 0.279373155678646, "Baseline",
-                                       0.241119782346287, "EmotionalconnImportant", 0, 0.0195173858469323, 0.124708420112923,
-                                       0.187215688115912, "Baseline", 0.155962054114417, "OpennessImportant", 0, 0.0159460246453603))
-  } else {
-    expect_true(!is.null(table))
-  }
-})
-
-test_that("Residual Variances table results match", {
-  table <- results[["results"]][["mainContainer"]][["collection"]][["mainContainer_globalParameterContainer"]][["collection"]][["mainContainer_globalParameterContainer_Scalar"]][["collection"]][["mainContainer_globalParameterContainer_Scalar_resTable"]][["data"]]
-  if (isMacOS) {
-    jaspTools::expect_equal_tables(table,
-                                   list(0.646612127419697, 0.746964710749845, "Baseline", 0.694979453455565, "AgeImportant", 0,
-                                       0.025578430331697, 0.876100170808923, 0.993060843774282, "Age", 0.932749041733253, "AgeImportant",
-                                       0.029421851488117, 0.0298179412133317, 1.03458330394845, 1.21413705459288, "Male", 1.12077023755404,
-                                       "AgeImportant", 0.00522642485449265, 0.045756526056616, 0.962411222701564, 1.13066578629913,
-                                       "Age_x_Male", 1.04315168688881, "AgeImportant", 0.304031123077225, 0.0428764787164041,
-                                       0.955019483068737, 1.03306580604861, "Age_squared", 0.993276382518247, "AgeImportant",
-                                       0.736383150691772, 0.0199050238170814, 0.160242088254625, 0.256476069631688, "Baseline",
-                                       0.202727060317858, "AttractiveImportant", 0, 0.0243250898552165, 0.917042685898173, 1.22868865912398,
-                                       "Age", 1.06148949504726, "AttractiveImportant", 0.423957815738771, 0.0792201806238112,
-                                       0.570608878553608, 0.888304659944463, "Male", 0.711951210284001, "AttractiveImportant",
-                                       0.00262180024670888, 0.0803885368745447, 0.80486395234456, 1.23548955985828, "Age_x_Male",
-                                       0.997196575519581, "AttractiveImportant", 0.979513491653952, 0.109019327178907, 0.963794507799079,
-                                       1.1997728316164, "Age_squared", 1.07532993342436, "AttractiveImportant", 0.193628424813515,
-                                       0.0600795144536052, 0.409493804875226, 0.494110084794352, "Baseline", 0.449816650036056,
-                                       "PhysicalbuildImportant", 0, 0.0215544809681606, 0.900316944789983, 1.04806398809138, "Age",
-                                       0.971385488723626, "PhysicalbuildImportant", 0.453896601822881, 0.0376550275455605, 0.994700620166836,
-                                       1.19519038396, "Male", 1.09034701638628, "PhysicalbuildImportant", 0.0648151252536744,
-                                       0.0510745064808863, 1.02475323479355, 1.2405735012451, "Age_x_Male", 1.12751128969961,
-                                       "PhysicalbuildImportant", 0.0138367679320477, 0.0549734951680977, 0.943045645565508, 1.03323785832694,
-                                       "Age_squared", 0.987112183659311, "PhysicalbuildImportant", 0.577733881733901, 0.0230006442490908,
-                                       0.349421315658436, 0.437021166411425, "Baseline", 0.390774245489726, "TrustImportant",
-                                       0, 0.0223007822001916, 0.893042880790857, 1.06564416931014, "Age", 0.975533668746858, "TrustImportant",
-                                       0.582653608081049, 0.0439745187978644, 1.38595696583409, 1.71984112765175, "Male", 1.54389954044844,
-                                       "TrustImportant", 3.10862446895044e-15, 0.0850109818424618, 0.974652665270785, 1.22076818539211,
-                                       "Age_x_Male", 1.09079098161389, "TrustImportant", 0.13028501548198, 0.0626533004867506,
-                                       0.90987246686121, 1.01395655882572, "Age_squared", 0.960505676958165, "TrustImportant",
-                                       0.144744569840831, 0.0265395776819324, 0.380787100655736, 0.470843078146671, "Baseline",
-                                       0.42342764504847, "EmotionalconnImportant", 0, 0.022930804473807, 0.872934952333022, 1.0351903407755,
-                                       "Age", 0.950607085383052, "EmotionalconnImportant", 0.244130218958387, 0.0413423587786717,
-                                       1.29233736367395, 1.59051931748833, "Male", 1.43369715827136, "EmotionalconnImportant",
-                                       1.03075326052249e-11, 0.0759317848675833, 0.982491999203281, 1.22211054584811, "Age_x_Male",
-                                       1.09577088546727, "EmotionalconnImportant", 0.100442688220125, 0.061007158269673, 0.898818027181414,
-                                       0.999635306000426, "Age_squared", 0.947887247324381, "EmotionalconnImportant", 0.0484484514846628,
-                                       0.0257070587941207, 0.650687548195195, 0.752880748876231, "Baseline", 0.699921516007072,
-                                       "OpennessImportant", 0, 0.0260470716871623, 0.858023924971641, 0.971812374956781, "Age",
-                                       0.913147451563234, "OpennessImportant", 0.0042365762826746, 0.0290094507432857, 1.14003860255976,
-                                       1.33114599009624, "Male", 1.23189196537373, "OpennessImportant", 1.32774209404829e-07,
-                                       0.0487040248055993, 0.898174132488078, 1.05592020633261, "Age_x_Male", 0.973858416454579,
-                                       "OpennessImportant", 0.521040888125141, 0.0401982200536647, 0.960934442660724, 1.04179549649901,
-                                       "Age_squared", 1.00054843700579, "OpennessImportant", 0.978777748536298, 0.0206225892812422))
-  } else {
-    expect_true(!is.null(table))
-  }
-})
-
-if (isMacOS) {
-  test_that("residualVariances: AgeImportant plot matches", {
-    plotName <- results[["results"]][["plotContainer"]][["collection"]][["plotContainer_plot1"]][["data"]]
-    testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
-    jaspTools::expect_equal_plots(testPlot, "residualvariances-ageimportant")
-  })
-
-  test_that("means: Factor 1 plot matches", {
-    plotName <- results[["results"]][["plotContainer"]][["collection"]][["plotContainer_plot2"]][["data"]]
-    testPlot <- results[["state"]][["figures"]][[plotName]][["obj"]]
-    jaspTools::expect_equal_plots(testPlot, "means-factor-1")
-  })
+mnlfaFactor <- function(k, indicators, type = "scale") {
+  list(name = paste0("Factor", k), title = paste("Factor", k), indicators = indicators,
+       indicators.types = rep(type, length(indicators)))
 }
 
+mnlfaModerator <- function(variable, square = FALSE, cube = FALSE) {
+  list(variable = variable, moderatorSquaredEffect = square, moderatorCubicEffect = cube)
+}
 
-# Configural invariance with loadings, factor variance/means/covariances, fit per group
-# Uses simplified moderator setup (Age + squared only) for faster convergence (~15s vs ~225s)
-options2 <- options
-options2$invarianceTestConfigural <- TRUE
-options2$invarianceTestScalar     <- FALSE
-options2$checkModelFitPerGroup    <- TRUE
-options2$parameterEstimatesLoadings          <- TRUE
-options2$parameterEstimatesIntercepts        <- FALSE
-options2$parameterEstimatesResidualVariances <- FALSE
-options2$parameterEstimatesFactorVariance    <- TRUE
-options2$parameterEstimatesFactorMeans       <- TRUE
-options2$parameterEstimatesFactorCovariances <- TRUE
+mnlfaOptions <- function(factors, moderators, moderatorTypes, models, ...) {
+  options <- jaspTools::analysisOptions("ModeratedNonLinearFactorAnalysis")
+  options$factors          <- factors
+  options$moderators       <- moderators
+  options$moderators.types <- moderatorTypes
+  options$syncAnalysisBox  <- TRUE
+  for (model in models)
+    options[[model]] <- TRUE
+  extra <- list(...)
+  for (name in names(extra))
+    options[[name]] <- extra[[name]]
+  return(options)
+}
 
-# Simplified moderators: Age + squared only (no Male, no interaction)
-options2$moderators <- list(
-  list(variable = "Age", moderatorSquaredEffect = TRUE, moderatorCubicEffect = FALSE)
-)
-options2$moderators.types <- c("scale")
-options2$moderatorInteractionTerms <- list()
+# Two factors, Age with its square and cube, Male (0/1) and the interaction Age:Male.
+continuousOptions <- function(models, ...) {
+  items <- paste0("y", 1:8)
+  mnlfaOptions(factors        = list(mnlfaFactor(1, items[1:4]), mnlfaFactor(2, items[5:8])),
+               moderators     = list(mnlfaModerator("Age", square = TRUE, cube = TRUE), mnlfaModerator("Male")),
+               moderatorTypes = c("scale", "scale"),
+               models         = models,
+               moderatorInteractionTerms = list(list(value = "Age:Male", moderatorInteractionTermsInclude = TRUE)),
+               ...)
+}
 
-# Update individual moderations for configural
-options2$includeIndividualModerationsList <- list(
-  list(
-    keyLabel = "Configural",
-    keyValue = "invarianceTestConfigural",
-    moderationTypeList = list(
-      list(
-        keyLabel = "Indicators",
-        keyValue = "indicators",
-        moderationParameterList = list(
-          list(keyLabel = "Loadings", keyValue = "loadings",
-            moderationItemList = list(
-              list(includeIndividualModeration = TRUE, value = "AgeImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "AttractiveImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "PhysicalbuildImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "TrustImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "EmotionalconnImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "OpennessImportant", value.types = "scale")
-            )),
-          list(keyLabel = "Intercepts", keyValue = "intercepts",
-            moderationItemList = list(
-              list(includeIndividualModeration = TRUE, value = "AgeImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "AttractiveImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "PhysicalbuildImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "TrustImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "EmotionalconnImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "OpennessImportant", value.types = "scale")
-            )),
-          list(keyLabel = "Residual variances", keyValue = "residualVariances",
-            moderationItemList = list(
-              list(includeIndividualModeration = TRUE, value = "AgeImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "AttractiveImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "PhysicalbuildImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "TrustImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "EmotionalconnImportant", value.types = "scale"),
-              list(includeIndividualModeration = TRUE, value = "OpennessImportant", value.types = "scale")
-            ))
-        )
-      ),
-      list(
-        keyLabel = "Factors",
-        keyValue = "factors",
-        moderationParameterList = list(
-          list(keyLabel = "Variances", keyValue = "variances",
-            moderationItemList = list(
-              list(includeIndividualModeration = TRUE, value = "Factor1"),
-              list(includeIndividualModeration = TRUE, value = "Factor2")
-            )),
-          list(keyLabel = "Means", keyValue = "means",
-            moderationItemList = list(
-              list(includeIndividualModeration = TRUE, value = "Factor1"),
-              list(includeIndividualModeration = TRUE, value = "Factor2")
-            )),
-          list(keyLabel = "Covariances", keyValue = "covariances",
-            moderationItemList = list(
-              list(includeIndividualModeration = TRUE, value = "Factor1:Factor2")
-            ))
-        )
-      )
-    )
-  )
-)
+ordinalData <- function() {
+  data <- mnlfaData("ordinal.csv")
+  for (item in paste0("o", 1:5))
+    data[[item]] <- ordered(data[[item]], levels = 1:4)
+  return(data)
+}
 
-# Update plot list for configural
-options2$plotModelList <- list(
-  list(
-    keyLabel = "Configural",
-    keyValue = "invarianceTestConfigural",
-    plotTypeList = list(
-      list(keyLabel = "Indicators", keyValue = "indicators",
-        plotParameterList = list(
-          list(keyLabel = "Loadings", keyValue = "loadings", plotItemList = list()),
-          list(keyLabel = "Intercepts", keyValue = "intercepts", plotItemList = list()),
-          list(keyLabel = "Residual variances", keyValue = "residualVariances", plotItemList = list())
-        )),
-      list(keyLabel = "Factors", keyValue = "factors",
-        plotParameterList = list(
-          list(keyLabel = "Variances", keyValue = "variances",
-            plotItemList = list(
-              list(includePlot = FALSE, plotModerator1 = "", plotModerator2 = "", value = "Factor1"),
-              list(includePlot = FALSE, plotModerator1 = "", plotModerator2 = "", value = "Factor2")
-            )),
-          list(keyLabel = "Means", keyValue = "means",
-            plotItemList = list(
-              list(includePlot = FALSE, plotModerator1 = "", plotModerator2 = "", value = "Factor1"),
-              list(includePlot = FALSE, plotModerator1 = "", plotModerator2 = "", value = "Factor2")
-            )),
-          list(keyLabel = "Covariances", keyValue = "covariances",
-            plotItemList = list(
-              list(includePlot = TRUE, plotModerator1 = "Age", plotModerator2 = "", value = "Factor1:Factor2")
-            ))
-        ))
-    )
-  )
-)
-
-results2 <- runAnalysis(
-  "ModeratedNonLinearFactorAnalysis",
-  dataset = testthat::test_path("AttractDat.csv"),
-  options = options2, makeTests = FALSE
-)
-
-test_that("Configural invariance fit table results match", {
-  table <- results2[["results"]][["fitContainer"]][["collection"]][["fitContainer_invFitTable"]][["data"]]
-  if (isMacOS) {
-    jaspTools::expect_equal_tables(table,
-                                   list(110748.480730426, 111194.523751908, 110618.480730426, 65, 110749.707496225, 110987.968663925,
-                                       "Configural"))
-  } else {
-    expect_true(!is.null(table))
+# The moderation boxes of a Custom model with one factor (Factor1): the ticked indicators and factor parameters.
+customModel <- function(items, loadings, intercepts, means, variances) {
+  rows      <- function(values, ticked) {
+    lapply(values, function(v) list(value = v, includeIndividualModeration = v %in% ticked))
   }
+  parameter <- function(key, label, rows) list(keyValue = key, keyLabel = label, moderationItemList = rows)
+  list(list(keyValue = "invarianceTestCustom", keyLabel = "Custom", moderationTypeList = list(
+    list(keyValue = "indicators", keyLabel = "Indicators", moderationParameterList = list(
+      parameter("loadings",          "Loadings",           rows(items, loadings)),
+      parameter("intercepts",        "Intercepts",         rows(items, intercepts)),
+      parameter("residualVariances", "Residual variances", rows(items, character(0))))),
+    list(keyValue = "factors", keyLabel = "Factors", moderationParameterList = list(
+      parameter("variances", "Variances", rows("Factor1", if (variances) "Factor1")),
+      parameter("means",     "Means",     rows("Factor1", if (means) "Factor1")))))))
+}
+
+# A plot request: one parameter of one indicator against Moderator 1, in one model.
+plotRequest <- function(model, label, parameter, indicator, moderator) {
+  request <- list(value = indicator, plotModerator1 = moderator, plotModerator2 = "", includePlot = TRUE)
+  item  <- function(key) if (key == parameter) list(request) else list()
+  entry <- function(key, label) list(keyValue = key, keyLabel = label, plotItemList = item(key))
+  list(list(keyValue = model, keyLabel = label, plotTypeList = list(
+    list(keyValue = "indicators", keyLabel = "Indicators", plotParameterList = list(
+      entry("loadings", "Loadings"), entry("intercepts", "Intercepts"),
+      entry("residualVariances", "Residual variances"))),
+    list(keyValue = "factors", keyLabel = "Factors", plotParameterList = list(
+      entry("variances", "Variances"), entry("means", "Means"), entry("covariances", "Correlations"))))))
+}
+
+runMnlfa <- function(dataset, options) {
+  set.seed(1)
+  jaspTools::runAnalysis("ModeratedNonLinearFactorAnalysis", dataset, options, view = FALSE, quiet = TRUE)
+}
+
+fitTable <- function(results) results[["results"]][["mofiaFitTable"]][["data"]]
+
+fitTableNotes <- function(results) vapply(results[["results"]][["mofiaFitTable"]][["footnotes"]], `[[`, "", "text")
+
+parameterTable <- function(results, model, type) {
+  models    <- results[["results"]][["mofiaParameterContainer"]][["collection"]]
+  container <- models[[paste0("mofiaParameterContainer_", model)]]
+  container[["collection"]][[paste0("mofiaParameterContainer_", model, "_", type)]][["data"]]
+}
+
+firstPlot <- function(results, model) {
+  container <- results[["results"]][["mofiaPlotContainer"]][["collection"]][[paste0("mofiaPlotContainer_", model)]]
+  container[["collection"]][[1]]
+}
+
+test_that("Continuous items, Configural and Metric, default SEs: fit table, loadings, Configural against MoFIA", {
+  data    <- mnlfaData("continuous.csv")
+  options <- continuousOptions(c("invarianceTestConfigural", "invarianceTestMetric"), parameterEstimatesLoadings = TRUE)
+  results <- runMnlfa(data, options)
+  expect_identical(results[["status"]], "complete")
+  jaspTools::expect_equal_tables(fitTable(results),
+    list(2, 6482.1855371198, 7080.905219186, "", "", "", 6182.1855371198,
+        "Configural", 150, "", 6664.11324796318, 6604.94527586046, "",
+        "", "", 2, 6441.39848656829, 6920.37423222124, "Configural",
+        30, 19.2129494484834, 6201.39848656829, "Metric", 120, 0.936374783964641,
+        6545.48450807366, 6539.60627756081, 1.00223526630851, 19.1700991716742,
+        "SB2001"))
+  jaspTools::expect_equal_tables(parameterTable(results, "invarianceTestMetric", "loadings"),
+    list("Baseline", 0.877785178151725, "Factor 1", "y1", 0.762350894768247,
+        3.10635767837288e-50, 0.0588961247727043, 0.993219461535203,
+        14.9039547430214, "Baseline", 0.868960823477008, "Factor 1",
+        "y2", 0.764293416764468, 1.56371695120473e-59, 0.0534027194061437,
+        0.973628230189547, 16.2718459497971, "Baseline", 0.838215605597909,
+        "Factor 1", "y3", 0.725944467787092, 1.72787989131743e-48, 0.057282245335321,
+        0.950486743408725, 14.6330787260718, "Baseline", 0.898891575086574,
+        "Factor 1", "y4", 0.776707299687082, 3.92062262658198e-47, 0.0623400615334087,
+        1.02107585048607, 14.4191640652271, "Baseline", 0.671650590329338,
+        "Factor 2", "y5", 0.574744025027754, 4.96036056681822e-42, 0.0494430336812161,
+        0.768557155630923, 13.5843321156182, "Baseline", 0.634900209145341,
+        "Factor 2", "y6", 0.547519964595118, 5.09964444241114e-46, 0.0445825766388907,
+        0.722280453695563, 14.240994061153, "Baseline", 0.72300392299806,
+        "Factor 2", "y7", 0.623744121225652, 3.07546626860129e-46, 0.050643686595956,
+        0.822263724770467, 14.2762893382211, "Baseline", 0.666349815787348,
+        "Factor 2", "y8", 0.576518949989857, 6.89150209995187e-48, 0.0458329165770725,
+        0.756180681584838, 14.5386736335406))
+  # nothing to report: the Model Specification section stays empty and untitled
+  expect_identical(results[["results"]][["mofiaContainer"]][["title"]], "")
+
+  # The Configural model written directly with MoFIA, not through JASP: as in JASP's Configural preset, the first
+  # indicator of each factor (y1, y5) keeps its loading and intercept unmoderated and everything else is moderated.
+  # It must give the -2LL and number of parameters of the fit table's Configural row.
+  items <- paste0("y", 1:8)
+  free  <- setdiff(items, c("y1", "y5"))
+  model <- MoFIA::mofia_model(data[, c(items, "Age", "Male")],
+                              items          = items,
+                              loadings       = list(Factor1 = items[1:4], Factor2 = items[5:8]),
+                              moderators     = ~ Age + Male + I(Age^2) + I(Age^3) + Age:Male,
+                              standardize    = TRUE,
+                              continuous     = items,
+                              loading_mod    = free,
+                              threshold_mod  = free,
+                              resvar_mod     = items,
+                              mean_mod       = list(Factor1 = TRUE, Factor2 = TRUE),
+                              var_mod        = list(Factor1 = TRUE, Factor2 = TRUE),
+                              cor_mod        = TRUE,
+                              identification = "variance",
+                              cov_param      = "fisherz",
+                              sparse         = 5)
+  fit        <- MoFIA::mofia(model, link = "logit")
+  rows       <- fitTable(results)
+  configural <- rows[[which(vapply(rows, `[[`, "", "model") == "Configural")]]
+  expect_equal(configural[["minus2LL"]], -2 * fit[["loglik"]], tolerance = 1e-8)
+  expect_identical(as.integer(configural[["npar"]]), as.integer(fit[["npar"]]))
 })
 
-test_that("Configural loadings table results match", {
-  table <- results2[["results"]][["mainContainer"]][["collection"]][["mainContainer_globalParameterContainer"]][["collection"]][["mainContainer_globalParameterContainer_Configural"]][["collection"]][["mainContainer_globalParameterContainer_Configural_loadTable"]][["data"]]
-  expect_true(!is.null(table))
-  expect_true(length(table) > 0)
-})
-
-test_that("Configural factor variance table results match", {
-  table <- results2[["results"]][["mainContainer"]][["collection"]][["mainContainer_globalParameterContainer"]][["collection"]][["mainContainer_globalParameterContainer_Configural"]][["collection"]][["mainContainer_globalParameterContainer_Configural_fvTable"]][["data"]]
-  if (isMacOS) {
-    jaspTools::expect_equal_tables(table,
-                                   list(1.06323315247491, 1.67228127455123, "Age", 1.33342599770886, "Factor 1", 0.0127498564772044,
-                                       0.154052419589609, 0.513573172872568, 0.809038849714203, "Age_squared", 0.644593398216966,
-                                       "Factor 1", 0.000151990779061251, 0.0747305362299116, 1.79420176841326, 4.38925963325172,
-                                       "Age", 2.80628177416402, "Factor 2", 6.14409182109199e-06, 0.64044560136475, 0.675983354732759,
-                                       1.06561462104923, "Age_squared", 0.848727133058166, "Factor 2", 0.157768061964901, 0.0985447832410268))
-  } else {
-    expect_true(!is.null(table))
+test_that("Continuous items, the other two standard-error choices: same estimates, own standard errors and tests", {
+  data     <- mnlfaData("continuous.csv")
+  models   <- c("invarianceTestConfigural", "invarianceTestMetric")
+  reduced  <- runMnlfa(data, continuousOptions(models, parameterEstimatesLoadings = TRUE,
+                                               errorCalculationMethod = "robustHuberWhiteReducedInformation"))
+  standard <- runMnlfa(data, continuousOptions(models, parameterEstimatesLoadings = TRUE,
+                                               errorCalculationMethod = "standard"))
+  jaspTools::expect_equal_tables(fitTable(reduced),
+    list(2, 6482.1855371198, 7080.905219186, "", "", "", 6182.1855371198,
+        "Configural", 150, "", 6664.11324796318, 6604.94527586046, "",
+        "", "", 2, 6441.39848656829, 6920.37423222124, "Configural",
+        30, 19.2129494484834, 6201.39848656829, "Metric", 120, 0.932261390958454,
+        6545.48450807366, 6539.60627756081, 0.99266232498308, 19.3549699277757,
+        "SB2001"))
+  jaspTools::expect_equal_tables(parameterTable(reduced, "invarianceTestMetric", "loadings"),
+    list("Baseline", 0.877785178151725, "Factor 1", "y1", 0.762817384132897,
+        1.25396447949199e-50, 0.0586581156213479, 0.992752972170553,
+        14.9644285169002, "Baseline", 0.868960823477008, "Factor 1",
+        "y2", 0.765075300909354, 2.09996523519245e-60, 0.0530037915936666,
+        0.972846346044661, 16.3943143943091, "Baseline", 0.838215605597909,
+        "Factor 1", "y3", 0.726952915840693, 2.43748767749842e-49, 0.0567677215677644,
+        0.949478295355125, 14.7657080898926, "Baseline", 0.898891575086574,
+        "Factor 1", "y4", 0.778083206463525, 3.58293949901163e-48, 0.0616380553805937,
+        1.01969994370962, 14.5833863436513, "Baseline", 0.671650590329338,
+        "Factor 2", "y5", 0.574647890934335, 5.96107330179902e-42, 0.0494920825893479,
+        0.768653289724342, 13.5708694237469, "Baseline", 0.634900209145341,
+        "Factor 2", "y6", 0.546839257606706, 2.44951854267292e-45, 0.0449298825046013,
+        0.722961160683975, 14.130911850934, "Baseline", 0.72300392299806,
+        "Factor 2", "y7", 0.622790901328298, 2.13777862300205e-45, 0.0511300322149944,
+        0.823216944667821, 14.1404941807573, "Baseline", 0.666349815787348,
+        "Factor 2", "y8", 0.575619366594657, 5.60090620099372e-47, 0.0462918961309292,
+        0.757080264980038, 14.3945241279961))
+  jaspTools::expect_equal_tables(fitTable(standard),
+    list(2, 6482.1855371198, 7080.905219186, "", "", "", 6182.1855371198,
+        "Configural", 150, "", 6664.11324796318, 6604.94527586046, "",
+        "", "", 2, 6441.39848656829, 6920.37423222124, "Configural",
+        30, 19.2129494484834, 6201.39848656829, "Metric", 120, 0.935436699670949,
+        6545.48450807366, 6539.60627756081, "", 19.2129494484834, "LR"))
+  jaspTools::expect_equal_tables(parameterTable(standard, "invarianceTestMetric", "loadings"),
+    list("Baseline", 0.877785178151725, "Factor 1", "y1", 0.74994384734715,
+        2.78092154025675e-41, 0.0652263673276503, 1.0056265089563, 13.4575205413842,
+        "Baseline", 0.868960823477008, "Factor 1", "y2", 0.744445719969096,
+        1.37203308574879e-42, 0.0635292814001027, 0.993475926984919,
+        13.6781151041888, "Baseline", 0.838215605597909, "Factor 1",
+        "y3", 0.717623398856809, 2.90826531328289e-42, 0.0615277666795489,
+        0.958807812339008, 13.6233712165035, "Baseline", 0.898891575086574,
+        "Factor 1", "y4", 0.768394963985379, 1.54905171693648e-41, 0.0665811270668926,
+        1.02938818618777, 13.5006962886567, "Baseline", 0.671650590329338,
+        "Factor 2", "y5", 0.565977987662411, 1.27381715028261e-35, 0.0539155839089182,
+        0.777323192996265, 12.4574481371469, "Baseline", 0.634900209145341,
+        "Factor 2", "y6", 0.532898919269794, 3.12106175133313e-34, 0.0520424307181763,
+        0.736901499020887, 12.1996647809072, "Baseline", 0.72300392299806,
+        "Factor 2", "y7", 0.61320716875594, 4.15158617041138e-38, 0.0560197815409785,
+        0.832800677240179, 12.9062253209463, "Baseline", 0.666349815787348,
+        "Factor 2", "y8", 0.563757141716259, 4.01990222822087e-37, 0.0523441628929545,
+        0.768942489858436, 12.7301647205641))
+  estimates <- function(results) {
+    vapply(parameterTable(results, "invarianceTestMetric", "loadings"), `[[`, 0, "estimate")
   }
+  expect_equal(estimates(reduced), estimates(standard), tolerance = 1e-10)
 })
 
-test_that("Configural factor means table results match", {
-  table <- results2[["results"]][["mainContainer"]][["collection"]][["mainContainer_globalParameterContainer"]][["collection"]][["mainContainer_globalParameterContainer_Configural"]][["collection"]][["mainContainer_globalParameterContainer_Configural_fmTable"]][["data"]]
-  if (isMacOS) {
-    jaspTools::expect_equal_tables(table,
-                                   list(-0.126152180441041, 0.0698625095149789, "Age", -0.028144835463031, "Factor 1", 0.573540992245613,
-                                       0.0500046662852376, -0.0659257782953776, 0.142200788191597, "Age_squared", 0.0381375049481095,
-                                       "Factor 1", 0.472575411744338, 0.053094487482589, -1.05886938015851, 0.0817614733271691,
-                                       "Age", -0.488553953415671, "Factor 2", 0.0931559560072313, 0.290982605415924, -0.248788523974826,
-                                       0.0798657564649268, "Age_squared", -0.0844613837549495, "Factor 2", 0.313748118585263,
-                                       0.0838419182781254))
-  } else {
-    expect_true(!is.null(table))
+test_that("Ordinal items with the probit link: fit table, thresholds and a threshold plot", {
+  options <- mnlfaOptions(factors        = list(mnlfaFactor(1, paste0("o", 1:5), type = "ordinal")),
+                          moderators     = list(mnlfaModerator("Age")),
+                          moderatorTypes = "scale",
+                          models         = c("invarianceTestConfigural", "invarianceTestScalar"),
+                          categoricalIndicatorLink     = "probit",
+                          parameterEstimatesIntercepts = TRUE,
+                          plotModelList  = plotRequest(model = "invarianceTestConfigural", label = "Configural",
+                                                       parameter = "intercepts", indicator = "o2", moderator = "Age"))
+  results <- runMnlfa(ordinalData(), options)
+  jaspTools::expect_equal_tables(fitTable(results),
+    list(2, 2746.38168616274, 2862.13415802887, "", "", "", 2688.38168616274,
+        "Configural", 29, "", 2751.08438886544, 2770.1152356526, "",
+        "", "", 2, 2734.90980406183, 2818.7305595511, "Configural",
+        8, 4.5281178990881, 2692.90980406183, "Scalar", 21, 0.805264603418458,
+        2737.35424850627, 2752.09616748552, 0.997048270968194, 4.54152324509928,
+        "SB2001"))
+  jaspTools::expect_equal_tables(parameterTable(results, "invarianceTestScalar", "intercepts"),
+    list("Threshold 1 (1 | 2)", -4.11514077251821, "o1", -5.30755779150589,
+        1.34218321453221e-11, 0.608387209353497, -2.92272375353053,
+        -6.76401592481072, "Threshold 2 (2 | 3)", 0.452341144997533,
+        "o1", -0.16043763981212, 0.147951114806923, 0.312647982127822,
+        1.06511992980719, 1.44680653915943, "Threshold 3 (3 | 4)", 4.78250263509245,
+        "o1", 3.34406603582102, 7.19798722479776e-11, 0.733909709881217,
+        6.22093923436387, 6.51647276320475, "Threshold 1 (1 | 2)", -4.14522930935415,
+        "o2", -5.199218741357, 1.2747307673703e-14, 0.537759591664228,
+        -3.0912398773513, -7.70833170362565, "Threshold 2 (2 | 3)",
+        0.366683524242342, "o2", -0.224061203327606, 0.223765164015392,
+        0.301405909613476, 0.957428251812291, 1.21657708938945, "Threshold 3 (3 | 4)",
+        5.00269839052741, "o2", 3.85358183687716, 1.42926069148716e-17,
+        0.586294729247237, 6.15181494417765, 8.53273642243132, "Threshold 1 (1 | 2)",
+        -3.01713409662835, "o3", -3.69521046096074, 2.75862528440145e-18,
+        0.345963685904928, -2.33905773229596, -8.72095604119984, "Threshold 2 (2 | 4)",
+        0.339460590365228, "o3", -0.089445197727545, 0.120847130577718,
+        0.218833504837807, 0.768366378458, 1.55122768159668, "Threshold 1 (1 | 2)",
+        -3.27044248254795, "o4", -4.05802134619794, 3.99203816831937e-16,
+        0.401833334623652, -2.48286361889796, -8.13880333151298, "Threshold 2 (2 | 3)",
+        0.633144479252604, "o4", 0.133888150591431, 0.0129341363492837,
+        0.254727297337728, 1.13240080791378, 2.48557765842094, "Threshold 3 (3 | 4)",
+        3.72851312243672, "o4", 2.91677136517773, 2.20520647578817e-19,
+        0.414161568101205, 4.54025487969572, 9.00255699612769, "Threshold 1 (1 | 2)",
+        -3.81713820190554, "o5", -4.67917416151389, 3.99902234358179e-18,
+        0.439822346945137, -2.95510224229719, -8.67881822835546, "Threshold 2 (2 | 3)",
+        0.507561631480617, "o5", 0.00733333405263903, 0.046734656619718,
+        0.255223208882263, 1.00778992890859, 1.9886970064496, "Threshold 3 (3 | 4)",
+        3.97732528393077, "o5", 3.09323398192685, 1.171154166804e-18,
+        0.451075279432434, 4.86141658593468, 8.81743129203453))
+  plot <- firstPlot(results, "invarianceTestConfigural")
+  expect_identical(plot[["status"]], "complete")
+  expect_identical(plot[["title"]], "Intercepts: o2")
+  expect_s3_class(results[["state"]][["figures"]][[plot[["data"]]]][["obj"]], "ggplot")
+})
+
+test_that("Nominal moderator and missing moderator values: cases excluded with a note, dummy-coded effects", {
+  data <- mnlfaData("continuous.csv")
+  data$Region <- factor(data$Region, levels = c("south", "north", "east"))
+  data$Age[c(3, 17)] <- NA
+  data$Region[5]     <- NA
+  options <- mnlfaOptions(factors        = list(mnlfaFactor(1, paste0("y", 1:4)), mnlfaFactor(2, paste0("y", 5:8))),
+                          moderators     = list(mnlfaModerator("Age"), mnlfaModerator("Region")),
+                          moderatorTypes = c("scale", "nominal"),
+                          models         = "invarianceTestScalar",
+                          parameterEstimatesFactorMeans = TRUE)
+  results <- runMnlfa(data, options)
+  jaspTools::expect_equal_tables(fitTable(results),
+    list(2, 6351.60508420933, 6606.57700617331, "", "", "", 6223.60508420933,
+        "Scalar", 64, "", 6376.66532517319, 6403.50316974801, "", "",
+        ""))
+  jaspTools::expect_equal_tables(parameterTable(results, "invarianceTestScalar", "factorMeans"),
+    list("Baseline", 0, "Factor 1", "", "", "", "", "", "Age", 0.101873902825831,
+        "Factor 1", -0.00292031570678503, 0.0567351897381743, 0.0534674205032439,
+        0.206668121358448, 1.90534538354344, "Region (north)", -0.00213563334877999,
+        "Factor 1", -0.251208993034617, 0.986591903539077, 0.127080579873148,
+        0.246937726337057, -0.0168053478423829, "Region (east)", -0.0458687062093067,
+        "Factor 1", -0.31024849332344, 0.733822675509139, 0.134890125124506,
+        0.218511080904826, -0.340044952638075, "Baseline", 0, "Factor 2",
+        "", "", "", "", "", "Age", -0.218604786418627, "Factor 2", -0.326420547461903,
+        7.06819686128101e-05, 0.0550090521528525, -0.11078902537535,
+        -3.97397842469988, "Region (north)", 0.147997380626658, "Factor 2",
+        -0.0967397487987243, 0.235926928651426, 0.124868176841941, 0.39273451005204,
+        1.18522897002007, "Region (east)", 0.0321675285201875, "Factor 2",
+        -0.246171865148065, 0.820803270040769, 0.142012504241791, 0.31050692218844,
+        0.226511944789164))
+  note <- results[["results"]][["mofiaContainer"]][["collection"]][["mofiaContainer_dataNotes"]][["rawtext"]]
+  expect_identical(note, paste("3 cases were excluded: 3 with a missing moderator value and 0 without any observed",
+                               "indicator."))
+})
+
+test_that("Custom model: the ticked boxes are fitted; a model that is not identified is refused with the reason", {
+  data   <- mnlfaData("continuous.csv")
+  items  <- paste0("y", 1:4)
+  custom <- function(boxes) {
+    mnlfaOptions(factors = list(mnlfaFactor(1, items)), moderators = list(mnlfaModerator("Age")),
+                 moderatorTypes = "scale", models = "invarianceTestCustom",
+                 includeIndividualModerationsList = boxes, parameterEstimatesLoadings = TRUE)
   }
+  fitted <- runMnlfa(data, custom(customModel(items, loadings = "y2", intercepts = "y3", means = TRUE,
+                                              variances = TRUE)))
+  jaspTools::expect_equal_tables(fitTable(fitted),
+    list(1, 3241.21488059776, 3305.07831335149, "", "", "", 3209.21488059776,
+        "Custom", 16, "", 3242.63524613301, 3254.3092527301, "", "",
+        ""))
+  jaspTools::expect_equal_tables(parameterTable(fitted, "invarianceTestCustom", "loadings"),
+    list("Baseline", 0.812634741136868, "Factor 1", "y1", 0.738589862902537,
+        1.2443132851639e-102, 0.0377786932915032, 0.886679619371199,
+        21.5103983313165, "Baseline", 0.799748166358896, "Factor 1",
+        "y2", 0.7314586248531, 1.36245746896124e-116, 0.0348422430434719,
+        0.868037707864692, 22.953406454374, "Age", 0.00592804543849329,
+        "Factor 1", "y2", -0.0505020521437479, 0.836871815240739, 0.0287913951620308,
+        0.0623581430207345, 0.205896428607635, "Baseline", 0.767680204217958,
+        "Factor 1", "y3", 0.695402638617284, 3.0155846400926e-96, 0.0368769866032186,
+        0.839957769818633, 20.8173247038291, "Baseline", 0.841896350685597,
+        "Factor 1", "y4", 0.767267674706831, 2.49797081152877e-108,
+        0.0380765547568361, 0.916525026664363, 22.1106230871491))
+  # the factor mean and the intercepts of all its indicators moderated: no anchor, so JASP does not fit the model
+  refused <- runMnlfa(data, custom(customModel(items, loadings = character(0), intercepts = items, means = TRUE,
+                                               variances = FALSE)))
+  jaspTools::expect_equal_tables(fitTable(refused),
+    list(1, "", "", "", "", "", "", "Custom", "", "", "", "", "", "", ""))
+  reason <- paste("Model Custom is not identified: the mean of factor 'Factor 1' and the intercepts or thresholds",
+                  "of all its indicators depend on the moderators (Age), and a shift of the mean is offset exactly by",
+                  "shifts of the intercepts or thresholds. Keep at least one anchor indicator (leave its intercepts",
+                  "unchecked) or uncheck the factor mean.")
+  expect_true(reason %in% fitTableNotes(refused))
 })
 
-test_that("Configural factor correlation coefficients table results match", {
-  table <- results2[["results"]][["mainContainer"]][["collection"]][["mainContainer_globalParameterContainer"]][["collection"]][["mainContainer_globalParameterContainer_Configural"]][["collection"]][["mainContainer_globalParameterContainer_Configural_covTable"]][["data"]]
-  if (isMacOS) {
-    jaspTools::expect_equal_tables(table,
-                                   list(0.109504385177572, 0.202811788254223, "Baseline", 0.156158086715898, 5.36846123111445e-11,
-                                       0.0238033463402001, 0.0731657415284104, 0.137213807413587, "Age", 0.105189774470999, 1.21121557228321e-10,
-                                       0.0163390925523069, -0.0267788590972744, 0.0403803128024518, "Age_squared", 0.00680072685258872,
-                                       0.691409535515424, 0.0171327566295782))
-  } else {
-    expect_true(!is.null(table))
-  }
+test_that("Show syntax: the shown code refits the model outside JASP with the same -2LL and number of parameters", {
+  data    <- mnlfaData("continuous.csv")
+  results <- runMnlfa(data, continuousOptions("invarianceTestConfigural", showSyntax = TRUE))
+  syntax  <- results[["results"]][["mofiaSyntaxContainer"]][["collection"]]
+  html    <- syntax[["mofiaSyntaxContainer_invarianceTestConfiguralSyntax"]][["rawtext"]]
+  code    <- gsub("&amp;", "&", gsub("&gt;", ">", gsub("&lt;", "<", html, fixed = TRUE), fixed = TRUE), fixed = TRUE)
+  env     <- new.env()
+  env$data        <- data
+  env$library     <- function(...) invisible(NULL)   # the code starts with library(MoFIA); use its namespace instead
+  env$mofia_model <- MoFIA::mofia_model
+  env$mofia       <- MoFIA::mofia
+  eval(parse(text = code), envir = env)
+  row <- fitTable(results)[[1]]
+  expect_equal(-2 * env$fit_configural$loglik, row$minus2LL, tolerance = 1e-8)
+  expect_identical(as.integer(env$fit_configural$npar), as.integer(row$npar))
 })
 
-test_that("Factor correlation output identifies and preserves the Fisher z scale", {
-  table <- results2[["results"]][["mainContainer"]][["collection"]][["mainContainer_globalParameterContainer"]][["collection"]][["mainContainer_globalParameterContainer_Configural"]][["collection"]][["mainContainer_globalParameterContainer_Configural_covTable"]]
-  plot <- results2[["results"]][["plotContainer"]][["collection"]][["plotContainer_plot1"]]
-  plotObject <- results2[["state"]][["figures"]][[plot[["data"]]]][["obj"]]
-  expect_equal(table[["title"]], "Factor Correlations (Fisher z)")
-  expect_match(plot[["title"]], "Factor Correlations (Fisher z)", fixed = TRUE)
-  expect_equal(plotObject$labels$y, "Fisher z")
-
-  coefficients <- setNames(vapply(table[["data"]], function(row) row[["est"]], numeric(1)),
-                           vapply(table[["data"]], function(row) row[["effect"]], character(1)))
-  expected <- coefficients[["Baseline"]] + coefficients[["Age"]] * plotObject$data$Age +
-    coefficients[["Age_squared"]] * plotObject$data$Age_squared
-  expect_equal(plotObject$data$estimatedValue, as.numeric(expected), tolerance = 1e-10)
+test_that("An analysis saved with jaspSem 0.97.1 (OpenMx) opens and is refitted with MoFIA, its plot included", {
+  jaspFile <- testthat::test_path("mnlfa", "saved-0.97.1.jasp")
+  options  <- jaspTools::analysisOptions(jaspFile)
+  dataset  <- jaspTools::extractDatasetFromJASPFile(jaspFile)
+  results  <- runMnlfa(dataset, options)
+  expect_identical(results[["status"]], "complete")
+  jaspTools::expect_equal_tables(fitTable(results),
+    list(1, 3308.66373021817, 3596.04917760995, "", "", "", 3164.66373021817,
+        "Configural", 72, "", 3340.810519209, 3367.58840481369, "",
+        "", "", 1, 3287.3230038381, 3514.83648302325, "", "", "", 3173.3230038381,
+        "Metric", 57, "", 3306.65633717143, 3333.97170455955, "", "",
+        ""))
+  jaspTools::expect_equal_tables(parameterTable(results, "invarianceTestMetric", "loadings"),
+    list("Baseline", 0.817627218680242, "Factor 1", "y1", 0.690817965810937,
+        1.31580129653777e-36, 0.0646997872764803, 0.944436471549546,
+        12.6372474021637, "Baseline", 0.814642047972873, "Factor 1",
+        "y2", 0.696200990329669, 2.03153594079278e-41, 0.0604302214619513,
+        0.933083105616077, 13.480705982284, "Baseline", 0.783191601227985,
+        "Factor 1", "y3", 0.65835146262077, 9.52378132435128e-35, 0.0636951186817402,
+        0.9080317398352, 12.2959438248524, "Baseline", 0.852410864595947,
+        "Factor 1", "y4", 0.728711054648522, 1.4406463390802e-41, 0.063113307654198,
+        0.976110674543371, 13.506040109106))
+  plot <- firstPlot(results, "invarianceTestConfigural")
+  expect_identical(plot[["status"]], "complete")
+  expect_identical(plot[["title"]], "Loadings: y2")
 })
 
-test_that("Fit per group table has data", {
-  table <- results2[["results"]][["groupContainer"]][["collection"]][["groupContainer_checkModelFitPerGroupTable"]][["data"]]
-  if (isMacOS) {
-    jaspTools::expect_equal_tables(table,
-                                   list(3541, 0.962855543637307, 167.949620595433, 8, "Age_nominal_1:Age_squared_nominal_1",
-                                        0, 0.0751421557319182, 0.05283866976707, 2397, 0.952922234559455,
-                                        160.894167907472, 8, "Age_nominal_2:Age_squared_nominal_1",
-                                        0, 0.0892928015988366, 0.0549013968491845, 531, 0.95962332082404,
-                                        30.8625752101887, 8, "Age_nominal_1:Age_squared_nominal_2",
-                                        0.000148639143583429, 0.0733618575916063, 0.0631340931013203,
-                                        591, 0.954701825269132, 49.3382567247161, 8, "Age_nominal_2:Age_squared_nominal_2",
-                                        5.47570161435473e-08, 0.093505540527225, 0.0502803502483288
-                                   ))
-  } else {
-    expect_true(!is.null(table))
-    expect_true(length(table) > 0)
-  }
+test_that("Fit per group: one lavaan CFA per group of the binned moderators", {
+  options <- mnlfaOptions(factors        = list(mnlfaFactor(1, paste0("y", 1:4)), mnlfaFactor(2, paste0("y", 5:8))),
+                          moderators     = list(mnlfaModerator("Age"), mnlfaModerator("Male")),
+                          moderatorTypes = c("scale", "scale"),
+                          models         = "invarianceTestScalar",
+                          checkModelFitPerGroup = TRUE)
+  results <- runMnlfa(mnlfaData("continuous.csv"), options)
+  group   <- results[["results"]][["groupContainer"]][["collection"]]
+  table   <- group[["groupContainer_checkModelFitPerGroupTable"]][["data"]]
+  jaspTools::expect_equal_tables(table,
+    list(98, 0.999010505099724, 19.4809280592622, 19, "Age_nominal_1:Male_nominal_1",
+        0.42639794663789, 0.0160712708306746, 0.0484327716818694, 89,
+        0.971409078001804, 31.5850430722906, 19, "Age_nominal_1:Male_nominal_2",
+        0.0347853119875157, 0.0862691560238694, 0.0512309422509571,
+        97, 1, 18.0886341043773, 19, "Age_nominal_2:Male_nominal_2",
+        0.516525116240924, 0, 0.0404636522004913, 116, 1, 18.1806828932366,
+        19, "Age_nominal_2:Male_nominal_1", 0.510400836917032, 0, 0.0391186586499299))
 })
-

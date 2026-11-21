@@ -229,6 +229,53 @@
       "Maintainer": "Martin Maechler <mmaechler+Matrix@gmail.com>",
       "Repository": "CRAN"
     },
+    "MoFIA": {
+      "Package": "MoFIA",
+      "Version": "0.1.0.9000",
+      "Source": "GitHub",
+      "Type": "Package",
+      "Title": "Moderated Factor and Item Analysis",
+      "Authors@R": "person(\"Henrik\", \"Godmann\", email = \"hrgodmann@gmail.com\", role = c(\"aut\", \"cre\"))",
+      "Description": "Fits moderated nonlinear factor analysis models (Bauer and Hussong, 2009, <doi:10.1037/a0015583>; Bauer, 2017, <doi:10.1037/met0000077>) by marginal maximum likelihood. Item loadings, thresholds or intercepts and residual variances, as well as factor means, variances and correlations, can depend on any number of moderators. Items can be binary, ordinal (logit or probit link), continuous, or mixed. The factors are integrated out by adaptive Gauss-Hermite quadrature with analytic gradients in C++. Provides maximum likelihood, robust (sandwich) and score-based standard errors, scaled likelihood-ratio tests (Satorra and Bentler, 2001, <doi:10.1007/BF02296192>) and Wald tests for measurement invariance and differential item functioning.",
+      "License": "GPL (>= 3)",
+      "Encoding": "UTF-8",
+      "Depends": [
+        "R (>= 4.1.0)"
+      ],
+      "Imports": [
+        "Rcpp",
+        "statmod",
+        "stats",
+        "utils",
+        "graphics",
+        "grDevices"
+      ],
+      "LinkingTo": [
+        "Rcpp"
+      ],
+      "Suggests": [
+        "testthat (>= 3.0.0)",
+        "numDeriv",
+        "knitr",
+        "rmarkdown",
+        "generics",
+        "lavaan",
+        "mirt"
+      ],
+      "VignetteBuilder": "knitr",
+      "Config/testthat/edition": "3",
+      "LazyData": "true",
+      "URL": "https://github.com/hrgodmann/MoFIA",
+      "BugReports": "https://github.com/hrgodmann/MoFIA/issues",
+      "Roxygen": "list(markdown = TRUE)",
+      "RoxygenNote": "7.3.3",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "hrgodmann",
+      "RemoteRepo": "MoFIA",
+      "RemoteRef": "2553b5b041b66117c24d1c819a03c5c23213acc6",
+      "RemoteSha": "2553b5b041b66117c24d1c819a03c5c23213acc6"
+    },
     "OpenMx": {
       "Package": "OpenMx",
       "Version": "2.22.11",
@@ -3591,42 +3638,6 @@
       "Maintainer": "Torsten Hothorn <Torsten.Hothorn@R-project.org>",
       "Repository": "CRAN"
     },
-    "mxsem": {
-      "Package": "mxsem",
-      "Version": "0.1.0",
-      "Source": "Repository",
-      "Type": "Package",
-      "Title": "Specify 'OpenMx' Models with a 'lavaan'-Style Syntax",
-      "Authors@R": "c(person(given   = \"Jannik H.\", family = \"Orzek\", role    = c(\"aut\", \"cre\", \"cph\"), email   = \"jannik.orzek@mailbox.org\", comment = c(ORCID = \"0000-0002-3123-2248\")))",
-      "Maintainer": "Jannik H. Orzek <jannik.orzek@mailbox.org>",
-      "Description": "Provides a 'lavaan'-like syntax for 'OpenMx' models. The syntax supports  definition variables, bounds, and parameter transformations. This allows for latent growth curve models with person-specific measurement occasions, moderated nonlinear factor analysis and much more.",
-      "License": "GPL (>= 3)",
-      "Depends": [
-        "OpenMx"
-      ],
-      "Imports": [
-        "Rcpp (>= 1.0.10)",
-        "stats",
-        "methods",
-        "dplyr",
-        "utils"
-      ],
-      "LinkingTo": [
-        "Rcpp"
-      ],
-      "RoxygenNote": "7.3.1",
-      "Encoding": "UTF-8",
-      "Suggests": [
-        "knitr",
-        "rmarkdown"
-      ],
-      "URL": "https://jhorzek.github.io/mxsem/, https://github.com/jhorzek/mxsem/",
-      "BugReports": "https://github.com/jhorzek/mxsem/issues",
-      "VignetteBuilder": "knitr",
-      "NeedsCompilation": "yes",
-      "Author": "Jannik H. Orzek [aut, cre, cph] (<https://orcid.org/0000-0002-3123-2248>)",
-      "Repository": "CRAN"
-    },
     "nleqslv": {
       "Package": "nleqslv",
       "Version": "3.3.7",
@@ -5347,6 +5358,32 @@
       "NeedsCompilation": "yes",
       "Author": "Tyler Morgan-Wall [aut, cph, cre] (<https://orcid.org/0000-0002-3131-3814>), Andrew Helmer [ctb, cph], Leonhard Grünschloß [ctb, cph], Eric Heitz [ctb, cph]",
       "Repository": "CRAN"
+    },
+    "statmod": {
+      "Package": "statmod",
+      "Version": "1.5.1",
+      "Source": "Repository",
+      "Date": "2025-10-08",
+      "Title": "Statistical Modeling",
+      "Authors@R": "c(person(given = \"Gordon\", family = \"Smyth\", role = c(\"cre\", \"aut\"), email = \"smyth@wehi.edu.au\"), person(given = \"Lizhong\", family = \"Chen\", role = \"aut\"), person(given = \"Yifang\", family = \"Hu\", role = \"ctb\"), person(given = \"Peter\", family = \"Dunn\", role = \"ctb\"), person(given = \"Belinda\", family = \"Phipson\", role = \"ctb\"), person(given = \"Yunshun\", family = \"Chen\", role = \"ctb\"))",
+      "Maintainer": "Gordon Smyth <smyth@wehi.edu.au>",
+      "Depends": [
+        "R (>= 3.0.0)"
+      ],
+      "Imports": [
+        "stats",
+        "graphics"
+      ],
+      "Suggests": [
+        "MASS",
+        "tweedie"
+      ],
+      "Description": "A collection of algorithms and functions to aid statistical modeling. Includes limiting dilution analysis (aka ELDA), growth curve comparisons, mixed linear models, heteroscedastic regression, inverse-Gaussian probability calculations, Gauss quadrature and a secure convergence algorithm for nonlinear models. Also includes advanced generalized linear model functions including Tweedie and Digamma distributional families, secure convergence and exact distributional calculations for unit deviances.",
+      "License": "GPL-2 | GPL-3",
+      "NeedsCompilation": "yes",
+      "Author": "Gordon Smyth [cre, aut], Lizhong Chen [aut], Yifang Hu [ctb], Peter Dunn [ctb], Belinda Phipson [ctb], Yunshun Chen [ctb]",
+      "Repository": "https://packagemanager.posit.co/cran/2026-04-22/src/contrib",
+      "Encoding": "UTF-8"
     },
     "stringi": {
       "Package": "stringi",

@@ -22,6 +22,123 @@ import JASP.Controls
 
 Form
 {
+	// Anchor-aware defaults for generated moderation rows.
+	property var defaultAnchorIndicators:
+	{
+		// factorsItems can notify before its child lists exist. countVariables also
+		// notifies on their termsChanged, so initial assignments recompute anchors.
+		if (factors.countVariables === 0)
+			return [];
+		return getDefaultAnchors(factors.factorsItems);
+	}
+
+	// JASP 0.98.1 keeps the values a generated row had when its list was bound and pushes them back onto the row
+	// whenever the list's source is reset (a factor renamed, an indicator removed or added); a re-added indicator's new
+	// row starts from them as well (observed in JASP Desktop). The form therefore remembers, per box, the value it should
+	// have together with its preset default at that moment, and restores that value after such a push (checked in JASP
+	// Desktop 0.98.1). Memory of this form only, not saved: a saved file keeps the values themselves.
+	property var	rowMemory:		({})
+	// The number of factors as an int: a rename does not change it, so the parameter lists are not rebuilt on a rename.
+	property int	factorCount:	factors.factorsTitles.length
+
+	function rememberRow(key, value, preset)
+	{
+		rowMemory[key] = {value: value, preset: preset};
+	}
+
+	function forgetModel(model)
+	{
+		for (var key in rowMemory)
+			if (key.indexOf(model + "|") === 0)
+				delete rowMemory[key];
+	}
+
+	// An interaction row is remembered by its unordered pair, so that "Male:Age" finds the choice made for "Age:Male".
+	// The pair is found among the assigned moderators (whole names, in their order, as
+	// combinePairs builds the term and R resolves it) and kept as a sorted JSON array, so names containing ":" cannot
+	// collide. A term that does not resolve to exactly one pair gets no key ("") and no memory.
+	function interactionMemoryKey(term, moderatorNames)
+	{
+		var found = [];
+		for (var i = 0; i < moderatorNames.length; i++)
+			for (var j = i + 1; j < moderatorNames.length; j++)
+				if (moderatorNames[i] + ":" + moderatorNames[j] === term)
+				{
+					var key = JSON.stringify([moderatorNames[i], moderatorNames[j]].sort());
+					if (found.indexOf(key) === -1)
+						found.push(key);
+				}
+		return found.length === 1 ? "interaction|" + found[0] : "";
+	}
+
+	// JASP keeps an interaction row, and pushes its cached value, by the label; after a reorder
+	// of moderators whose names contain ":", the same label can mean another pair. interactionLabels holds the key each label
+	// last resolved to ("" = no pair or more than one).
+	property var	interactionLabels:	({})
+
+	// The value an interaction row should have: when it is built, after JASP pushes a value onto it, and when its label comes
+	// to mean another pair. The pair's remembered choice if there is one; otherwise the row's value if its label has not meant
+	// anything else before (a new or loaded row), else unticked (the value belonged to something else). A label without
+	// exactly one pair keeps its value and is not remembered.
+	function interactionRowValue(term, key, checked)
+	{
+		var previous = interactionLabels[term];
+		interactionLabels[term] = key;
+		if (key === "")
+			return checked;
+		if (rowMemory[key] === undefined)
+			rememberRow(key, previous === undefined || previous === key ? checked : false, false);
+		return rowMemory[key].value;
+	}
+
+	function getDefaultAnchors(factorItems)
+	{
+		var indicators = [];
+		for (var i = 0; i < factorItems.length; i++)
+			indicators.push(factorItems[i] ? factorItems[i].columnsNames : []);
+
+		var anchors = [];
+		for (var f = 0; f < indicators.length; f++)
+		{
+			var anchor = "";
+			for (var j = 0; j < indicators[f].length; j++)
+			{
+				var item = indicators[f][j];
+				var pure = true;
+				for (var other = 0; other < indicators.length; other++)
+					if (other !== f && indicators[other].indexOf(item) !== -1)
+						pure = false;
+				if (pure)
+				{
+					anchor = item;
+					break;
+				}
+			}
+			if (anchor === "")
+				for (var candidate = 0; candidate < indicators[f].length; candidate++)
+					if (anchors.indexOf(indicators[f][candidate]) === -1)
+					{
+						anchor = indicators[f][candidate];
+						break;
+					}
+			// No third fallback when earlier factors have used all candidates; R's distinct-anchor check decides.
+			anchors.push(anchor);
+		}
+		return anchors;
+	}
+
+	function defaultModeration(model, parameter, item, anchors)
+	{
+		if (model === "invarianceTestCustom")
+			return false;
+		if (parameter === "loadings")
+			return model === "invarianceTestConfigural" && anchors.indexOf(item) === -1;
+		if (parameter === "intercepts")
+			return (model === "invarianceTestConfigural" || model === "invarianceTestMetric") && anchors.indexOf(item) === -1;
+		if (parameter === "residualVariances")
+			return model !== "invarianceTestStrict";
+		return true;
+	}
 
 	// function for getting the values for the plots
 	function getValuesModOptions(rwValue, factorCount) {
@@ -34,13 +151,19 @@ Form
 		return [{value: "variances", label: qsTr("Variances")}, {value: "means", label: qsTr("Means")}];
 	}
 
-	function concatFactorTitles(factorTitles) {
-		var resultLabel = [];
-		for (var i = 0; i < factorTitles.length; i++) {
-			resultLabel.push(factorTitles[i].label);
+	// The correlation row is keyed by the factor names ("Factor1:Factor2"), which a
+	// rename never changes (as the variance and mean rows are); it shows the titles. JASP does not rebuild a title key
+	// after a rename, so a title key went stale.
+	function factorPairRow(factorTitles)
+	{
+		var names	= [];
+		var titles	= [];
+		for (var i = 0; i < factorTitles.length; i++)
+		{
+			names.push(factorTitles[i].value);
+			titles.push(factorTitles[i].label);
 		}
-		resultLabel = resultLabel.join(":");
-		return [resultLabel];
+		return [{value: names.join(":"), label: titles.join(":")}];
 	}
 
 	function combinePairs(values) {
@@ -58,9 +181,10 @@ Form
 		id:					factors
 		name:				"factors"
 		initNumberFactors:	1
-		allowedColumns:		["scale"]
+		// Scale indicators are continuous, ordinal indicators categorical.
+		allowedColumns:		["scale", "ordinal"]
 		keepAvailableVariables: true
-		info: qsTr("Define latent factors and assign observed indicator variables to each factor.")
+		info: qsTr("Define latent factors and assign observed indicator variables to each factor. Scale variables are continuous indicators; ordinal variables are categorical (binary or ordinal) indicators.")
 	}
 
 	Section
@@ -84,7 +208,7 @@ Form
 				allowedColumns:		["scale", "nominal"]
 				title: qsTr("Moderators")
 				name: "moderators"
-				info: qsTr("Variables hypothesized to moderate the measurement model parameters. Continuous moderators can optionally include squared and cubic effects.")
+				info: qsTr("Variables that can moderate the measurement model. Scale moderators with more than two distinct values are standardized on the analysed cases (effects per standard deviation); with two values they are used as coded. Nominal moderators are dummy coded against their first level. Cases with a missing moderator value are excluded.")
 				rowComponentTitle: qsTr("Square   Cubic")
 				rowComponent: RowLayout
 				{
@@ -93,14 +217,14 @@ Form
 						name: "moderatorSquaredEffect"
 						id: squared
 						visible: moderators.getVariableType(rowValue) === columnTypeScale
-						info: qsTr("Include a quadratic (squared) effect for this moderator.")
+						info: qsTr("Add a squared term for this moderator (used only with more than two distinct values).")
 					}
 					CheckBox
 					{
 						name: "moderatorCubicEffect"
 						id: cubic
 						visible: moderators.getVariableType(rowValue) === columnTypeScale
-						info: qsTr("Include a cubic effect for this moderator.")
+						info: qsTr("Add a cubed term for this moderator (used only with more than two distinct values).")
 					}
 				}
 			}
@@ -110,7 +234,7 @@ Form
 				name: 					"syncAnalysisBox"
 				label: 					qsTr("<b>Start/Sync Analysis</b>")
 				checked: 				false
-				info: qsTr("Click to start or synchronize the analysis. The analysis does not run automatically due to computational intensity.")
+				info: qsTr("Fit the models. While unchecked, they are not fitted (the fit per group still runs).")
 				Component.onCompleted:
 				{
 						background.color = "#ffcb98"
@@ -121,7 +245,7 @@ Form
 		Group
 		{
 			title: qsTr("Assumption Check")
-			info: qsTr("Check measurement invariance assumptions by testing model fit across groups defined by the moderator variables.")
+			info: qsTr("Check the model in groups formed from the moderators before testing moderation.")
 			CheckBox
 			{
 				name: "checkModelFitPerGroup";
@@ -129,7 +253,7 @@ Form
 				label: qsTr("Check model fit per group");
 				id: fitPerGroup;
 				enabled: moderators.columnsNames != ""
-				info: qsTr("Fit the measurement model separately in each group to verify that the model fits adequately before testing moderation.")
+				info: qsTr("Fit the measurement model separately in each group.")
 			}
 			IntegerField
 			{
@@ -157,11 +281,35 @@ Form
 				addItemManually: false
 				values: combinePairs(moderators.columnsNames)
 				headerLabels: [qsTr("Include")]
-				info: qsTr("Include interaction terms between pairs of moderators.")
+				info: qsTr("Include interactions between pairs of moderators.")
 				rowComponent: RowLayout
 				{
 					Text { text: rowValue; Layout.preferredWidth: 150 * jaspTheme.uiScale }
-					CheckBox { name: "moderatorInteractionTermsInclude"; id: includeInteraction }
+					CheckBox
+					{
+						name:	"moderatorInteractionTermsInclude"
+						id:		includeInteraction
+						// A reorder of the moderators renames the term ("Age:Male" -> "Male:Age") and
+						// JASP builds a new row; the choice is remembered by the unordered pair and survives JASP's pushes. A kept row
+						// whose label comes to mean another pair takes that pair's choice once JASP has updated it.
+						property string	memoryKey:	interactionMemoryKey(rowValue, moderators.columnsNames)
+						property bool	settled:	false
+						function reconcile()
+						{
+							var wanted = interactionRowValue(rowValue, memoryKey, checked);
+							if (checked !== wanted)
+								checked = wanted;
+						}
+						function settle()
+						{
+							settled = true;
+							reconcile();
+						}
+						Component.onCompleted:	Qt.callLater(settle)
+						onMemoryKeyChanged:		if (settled) Qt.callLater(reconcile)
+						onClicked:				if (memoryKey !== "") rememberRow(memoryKey, checked, false)
+						onCheckedChanged:		if (settled && memoryKey !== "") { if (control.activeFocus) rememberRow(memoryKey, checked, false); else Qt.callLater(reconcile) }
+					}
 				}
 			}
 		}
@@ -171,7 +319,7 @@ Form
 	{
 		id: invOpts
 		title: qsTr("Moderation Options")
-		info: qsTr("Configure invariance test levels and specify which individual parameters should be tested for moderation.")
+		info: qsTr("Choose the models to fit (invariance presets) and, for each model, which parameters depend on the moderators.")
 
 		// property var names: []
 
@@ -179,15 +327,23 @@ Form
 		{
 			columns: 1
 			title: qsTr("Invariance Tests")
-			info: qsTr("Select the levels of measurement invariance to test. Each level constrains an additional set of parameters to be equal across moderator values.")
-			CheckBox { name: "invarianceTestConfigural" ; checked: false ; label: qsTr("Configural"); id: invarianceTestConfigural; info: qsTr("Test configural invariance: same factor structure across groups but all parameters free.") }
-			CheckBox { name: "invarianceTestMetric" ; checked: false ; label: qsTr("Metric"); id: invarianceTestMetric; info: qsTr("Test metric invariance: constrain factor loadings to be equal across groups.") }
-			CheckBox { name: "invarianceTestScalar" ; checked: false ; label: qsTr("Scalar"); id: invarianceTestScalar; info: qsTr("Test scalar invariance: constrain factor loadings and intercepts to be equal across groups.") }
-			CheckBox { name: "invarianceTestStrict" ; checked: false ; label: qsTr("Strict"); id: invarianceTestStrict; info: qsTr("Test strict invariance: constrain factor loadings, intercepts, and residual variances to be equal across groups.") }
-			CheckBox { name: "invarianceTestCustom" ; checked: false;  label: qsTr("Custom"); id: invarianceTestCustom; info: qsTr("Define a custom set of parameter constraints for invariance testing.") }
+			info: qsTr("Select the models to fit. Each starts from a preset of moderation settings (below) that you can change. The presets are nested, and each factor's anchor indicator keeps its loading and intercept (thresholds) unmoderated in all of them.")
+			CheckBox { name: "invarianceTestConfigural" ; checked: false ; label: qsTr("Configural"); id: invarianceTestConfigural; info: qsTr("Preset: every parameter depends on the moderators except the anchors' loadings and intercepts (thresholds); the factor correlation only with two factors.") }
+			CheckBox { name: "invarianceTestMetric" ; checked: false ; label: qsTr("Metric"); id: invarianceTestMetric; info: qsTr("Preset: as Configural, but no loading depends on the moderators.") }
+			CheckBox { name: "invarianceTestScalar" ; checked: false ; label: qsTr("Scalar"); id: invarianceTestScalar; info: qsTr("Preset: as Metric, but no intercept or threshold depends on the moderators.") }
+			CheckBox { name: "invarianceTestStrict" ; checked: false ; label: qsTr("Strict"); id: invarianceTestStrict; info: qsTr("Preset: as Scalar, but no residual variance depends on the moderators. With only ordinal indicators, Scalar and Strict are the same model.") }
+			CheckBox { name: "invarianceTestCustom" ; checked: false;  label: qsTr("Custom"); id: invarianceTestCustom; info: qsTr("Preset: nothing depends on the moderators; tick the parameters that should.") }
 		}
 
 		property var firstLayerValues: [invarianceTestConfigural, invarianceTestMetric, invarianceTestScalar, invarianceTestStrict, invarianceTestCustom].filter(x => x.checked).map(x => ({value: x.name, label: x.label}))
+		// A model switched off forgets its remembered boxes, so switching it on again builds its list as before.
+		onFirstLayerValuesChanged:
+		{
+			var enabled = firstLayerValues.map(x => x.value);
+			for (const model of ["invarianceTestConfigural", "invarianceTestMetric", "invarianceTestScalar", "invarianceTestStrict", "invarianceTestCustom"])
+				if (enabled.indexOf(model) === -1)
+					forgetModel(model);
+		}
 
 		TabView
 		{
@@ -201,7 +357,7 @@ Form
 			optionKeyLabel: "keyLabel"
 			id: modFirstLayer
 			addItemManually: false
-			info: qsTr("For each invariance level, specify which individual measurement parameters should be tested for moderation effects.")
+			info: qsTr("For each model, tick the parameters that depend on the moderators (on all moderator terms). Each factor's default anchor is its first indicator that loads on that factor only; its loading and intercept are unticked by default. Residual variances exist only for continuous (scale) indicators, and the factor correlation can be moderated only with two factors.")
 			rowComponent: TabView
 			{
 				id: modSecondLayer
@@ -221,7 +377,7 @@ Form
 					addItemManually: false
 					optionKey: "keyValue"
 					optionKeyLabel: "keyLabel"
-					values: getValuesModOptions(rowValue, factors.factorsTitles.length)
+					values: getValuesModOptions(rowValue, factorCount)
 					rowComponent: ComponentsList
 					{
 						id: modFourthLayer
@@ -231,7 +387,10 @@ Form
 						implicitWidth: modThirdLayer.width - 2
 						addItemManually: false
 						headerLabels: [qsTr("Include"), "   ", qsTr("Display Plot")]
-						source: modThirdLayer.moderationTypeValue == "indicators" ? factors.name : (rowValue == "covariances" ? {values: concatFactorTitles(factors.factorsTitles)} : {values: factors.factorsTitles})
+						// Categorical indicators have no residual-variance rows.
+						source: modThirdLayer.moderationTypeValue == "indicators" ?
+							{name: factors.name, use: rowValue == "residualVariances" ? "type=scale" : ""} :
+							(rowValue == "covariances" ? {values: factorPairRow(factors.factorsTitles)} : {values: factors.factorsTitles})
 						rowComponent: RowLayout
 						{
 							Text { text: rowLabel ; Layout.preferredWidth: 200*jaspTheme.uiScale }
@@ -239,11 +398,45 @@ Form
 								name: "includeIndividualModeration";
 								id: includeIndividualModeration
 								info: modFourthLayer.moderationParamValue == "covariances" ? qsTr("Allow the Fisher z-transformed factor correlation to depend on the moderators. When unchecked, the correlation is constant, but the covariance can still vary with the factor variances.") : ""
-								checked: 
-								(modSecondLayer.moderationInvValue == "invarianceTestConfigural" && modFourthLayer.moderationParamValue != "variances" && modFourthLayer.moderationParamValue != "means") ||
-									(modSecondLayer.moderationInvValue == "invarianceTestMetric" && modFourthLayer.moderationParamValue != "loadings" && modFourthLayer.moderationParamValue != "means") ||
-										(modSecondLayer.moderationInvValue == "invarianceTestScalar" && (modFourthLayer.moderationParamValue != "loadings" && modFourthLayer.moderationParamValue != "intercepts")) ||
-											(modSecondLayer.moderationInvValue == "invarianceTestStrict" && (modFourthLayer.moderationParamValue != "loadings" && modFourthLayer.moderationParamValue != "intercepts" && modFourthLayer.moderationParamValue != "residualVariances"));
+								// Anchored, nested preset defaults (strict within scalar within metric within configural; custom: none ticked).
+								// Anchor changes must not reapply factor or residual defaults.
+								// A new anchor array must not reapply an unchanged row default.
+								property bool presetDefaultChecked: defaultModeration(modSecondLayer.moderationInvValue,
+									modFourthLayer.moderationParamValue, rowValue,
+									(modFourthLayer.moderationParamValue === "loadings" ||
+									 modFourthLayer.moderationParamValue === "intercepts") ? defaultAnchorIndicators : [])
+								checked: presetDefaultChecked
+								// The value this box should have is remembered (rowMemory) and restored after
+								// JASP pushes cached values onto the row. When the box's preset default changes (the factor's anchor
+								// moved: only the loading and intercept boxes of the old and the new anchor), the box takes the new
+								// default; every other box keeps its value. A rebuilt row (an indicator assigned again) gets back
+								// its last value, or its preset if that changed in the meantime.
+								property string	memoryKey:	modSecondLayer.moderationInvValue + "|" + modFourthLayer.moderationParamValue + "|" + rowValue
+								property bool	settled:	false
+								function settle()
+								{
+									var m = rowMemory[memoryKey];
+									if (m === undefined)
+										rememberRow(memoryKey, checked, presetDefaultChecked);
+									else
+									{
+										var wanted = m.preset === presetDefaultChecked ? m.value : presetDefaultChecked;
+										rememberRow(memoryKey, wanted, presetDefaultChecked);
+										if (checked !== wanted)
+											checked = wanted;
+									}
+									settled = true;
+								}
+								function restore()
+								{
+									var m = rowMemory[memoryKey];
+									if (m !== undefined && checked !== m.value)
+										checked = m.value;
+								}
+								Component.onCompleted:			Qt.callLater(settle)
+								onClicked:						rememberRow(memoryKey, checked, presetDefaultChecked)
+								onCheckedChanged:				if (settled) { if (control.activeFocus) rememberRow(memoryKey, checked, presetDefaultChecked); else Qt.callLater(restore) }
+								onPresetDefaultCheckedChanged:	if (settled) { rememberRow(memoryKey, presetDefaultChecked, presetDefaultChecked); Qt.callLater(restore) }
 							}
 						}
 					}
@@ -257,14 +450,44 @@ Form
 	{
 		title: qsTr("Estimation Options")
 
+		// Three choices from the same fit; never the word "robust" in a label.
+		DropDown
+		{
+			name: "errorCalculationMethod"
+			label: qsTr("Standard errors")
+			startValue: "robustHuberWhite"
+			values: [
+				{value: "robustHuberWhite", label: qsTr("Huber-White sandwich")},
+				{value: "robustHuberWhiteReducedInformation", label: qsTr("Huber-White sandwich (reduced information)")},
+				{value: "standard", label: qsTr("Standard")}
+			]
+			info: qsTr("Standard errors for the parameter tables, likelihood-ratio tests and plot bands; changing them does not refit the models. Huber-White sandwich (default) uses the exact information matrix and scaled likelihood-ratio tests. The reduced-information variant is for comparison with other MNLFA software and is not robust to misspecification. Standard uses the inverse observed information and the unscaled likelihood-ratio test.")
+		}
+
+		DropDown
+		{
+			name: "categoricalIndicatorLink"
+			label: qsTr("Categorical indicator link")
+			values: [{value: "logit", label: qsTr("Logit")}, {value: "probit", label: qsTr("Probit")}]
+			startValue: "logit"
+			// Read the types from the per-factor lists. The FactorsForm's own columnsTypes is not set while
+			// a saved analysis is initialized (FactorsFormBase::termsChangedHandler returns early), which left
+			// the control disabled after reopening a file with ordinal indicators.
+			enabled: factors.countVariables > 0 && factors.factorsItems.some(function(item) {
+				return item && item.columnsTypes && item.columnsTypes.indexOf("ordinal") !== -1;
+			})
+			info: qsTr("Link function for ordinal and binary indicators: logit (default) or probit. Available only when an ordinal indicator is assigned.")
+		}
+
 		RadioButtonGroup
 		{
 			name:  "indicatorPreprocessing"
 			title: qsTr("Indicator preprocessing")
+			info:  qsTr("Transformation of the continuous (scale) indicators before fitting, with the mean and standard deviation of the analysed cases. Ordinal indicators are never transformed.")
 
-			RadioButton { value: "none";        label: qsTr("None");           checked: true }
-			RadioButton { value: "center";      label: qsTr("Center")                        }
-			RadioButton { value: "standardize"; label: qsTr("Z-standardize")                 }
+			RadioButton { value: "none";        label: qsTr("None");           checked: true;	info: qsTr("Use the continuous indicators as they are.")							}
+			RadioButton { value: "center";      label: qsTr("Center");							info: qsTr("Subtract the mean from each continuous indicator.")						}
+			RadioButton { value: "standardize"; label: qsTr("Z-standardize");					info: qsTr("Subtract the mean and divide by the standard deviation of each continuous indicator.")	}
 		}
 	}
 
@@ -278,28 +501,59 @@ Form
 		{
 			title: qsTr("Parameter Estimates")
 			info: qsTr("Select which measurement model parameter estimates to display in the output.")
+			// The confidence level is 1 - alpha, so alpha must lie strictly between 0 and 1.
 			DoubleField
 			{
 				name: "parameterEstimatesAlphaLevel"
 				label: qsTr("Significance level")
 				negativeValues: false
+				min: 0
+				max: 1
+				inclusive: JASP.None
 				decimals: 4
 				defaultValue: 0.05
-				info: qsTr("Significance level for flagging parameter estimates.")
+				info: qsTr("Significance level alpha of the tests; confidence intervals and plot bands have level 1 - alpha.")
 			}
-			CheckBox { name: "parameterEstimatesLoadings"; label: qsTr("Loadings"); info: qsTr("Display factor loading estimates.") }
-			CheckBox { name: "parameterEstimatesIntercepts"; label: qsTr("Intercepts"); info: qsTr("Display intercept estimates for observed indicators.") }
-			CheckBox { name: "parameterEstimatesResidualVariances"; label: qsTr("Residual variances"); info: qsTr("Display residual variance estimates for observed indicators.") }
-			CheckBox { name: "parameterEstimatesFactorVariance"; label: qsTr("Factor variances"); info: qsTr("Display latent factor variance estimates.") }
-			CheckBox { name: "parameterEstimatesFactorMeans"; label: qsTr("Factor means"); info: qsTr("Display latent factor mean estimates.") }
-			CheckBox { name: "parameterEstimatesFactorCovariances"; label: qsTr("Factor correlations"); info: qsTr("Display regression coefficients for Fisher z-transformed latent factor correlations.") }
+			CheckBox { name: "parameterEstimatesLoadings"; label: qsTr("Loadings"); info: qsTr("Display the loadings: baseline and moderation effects.") }
+			CheckBox { name: "parameterEstimatesIntercepts"; label: qsTr("Intercepts"); info: qsTr("Display the intercepts of continuous indicators and the thresholds of ordinal indicators, with their moderation effects.") }
+			CheckBox { name: "parameterEstimatesResidualVariances"; label: qsTr("Residual variances"); info: qsTr("Display the residual variances of continuous indicators; moderation effects are shown as variance ratios.") }
+			CheckBox { name: "parameterEstimatesFactorVariance"; label: qsTr("Factor variances"); info: qsTr("Display the moderation effects on the factor variances as variance ratios; the baseline variance is fixed at 1.") }
+			CheckBox { name: "parameterEstimatesFactorMeans"; label: qsTr("Factor means"); info: qsTr("Display the moderation effects on the factor means; the baseline mean is fixed at 0.") }
+			CheckBox { name: "parameterEstimatesFactorCovariances"; label: qsTr("Factor correlations"); info: qsTr("Display the factor correlations: the baseline on the Fisher z and the correlation scale, moderation effects on the Fisher z scale.") }
 
 		}
 
 		Group
 		{
-			CheckBox { label: qsTr("Show syntax")   ; name: "showSyntax" }
-			CheckBox { label: qsTr("Show warnings") ; name: "warnings"   }
+			CheckBox { label: qsTr("Show syntax")   ; name: "showSyntax"; info: qsTr("Show R code that fits each model with the MoFIA package outside JASP.") }
+			CheckBox { label: qsTr("Show warnings") ; name: "warnings"  ; info: qsTr("List the warnings of each model fit. Identification, convergence and quadrature notes are always shown.") }
+		}
+
+		// EAP scores of the selected model are saved as columns owned by the analysis.
+		CheckBox
+		{
+			name: "factorScoreSavedToData"
+			label: qsTr("Save factor scores to data")
+			checked: false
+			info: qsTr("Save expected a posteriori factor scores from the selected model. Scores include moderated factor means and variances; posterior standard deviations do not include parameter uncertainty.")
+
+			DropDown
+			{
+				name: "factorScoreModel"
+				label: qsTr("Model")
+				// Register the source dependency before restoring a saved model choice.
+				source: modFirstLayer
+				info: qsTr("Model whose factor scores are saved (only if it converged).")
+			}
+
+			TextField
+			{
+				name: "factorScoreColumnPrefix"
+				label: qsTr("Column name prefix")
+				// Column name = prefix + factor title, default prefix "FS_".
+				defaultValue: "FS_"
+				info: qsTr("Text placed before each factor title in the saved score column names.")
+			}
 		}
 
 	}
@@ -309,7 +563,7 @@ Form
 	{
 		title: qsTr("Plots")
 		id: plots
-		info: qsTr("Configure marginal effects plots showing how measurement parameters change as a function of the moderator variables.")
+		info: qsTr("Plot how a moderated parameter changes with the moderators, with pointwise confidence bands. For each model and parameter, the rows list the indicators or factors whose parameter depends on the moderators.")
 
 		TabView
 		{
@@ -339,7 +593,7 @@ Form
 					name: "plotParameterList"
 					addItemManually: false
 
-					values: getValuesModOptions(rowValue, factors.factorsTitles.length)
+					values: getValuesModOptions(rowValue, factorCount)
 
 					rowComponent: ComponentsList
 					{
@@ -360,6 +614,7 @@ Form
 								source: [moderators, {name: "moderatorInteractionTerms", condition: "moderatorInteractionTermsInclude"}]
 
 								addEmptyValue: true
+								info: qsTr("Moderator on the x-axis. An included interaction term A:B puts A on the x-axis with lines for B; then leave Moderator 2 empty.")
 							}
 							DropDown
 							{
@@ -368,9 +623,10 @@ Form
 								addEmptyValue: true
 								source: plotMod1
 								// source: [{id: plotMod1, discard: {values: [plotMod1.currentValue]}}]
+								info: qsTr("Optional second moderator: lines for its values or levels (continuous: mean - 1 SD, mean, mean + 1 SD). Other moderators are held at their mean, 0 or reference level.")
 							}
 
-							CheckBox { name: "includePlot"; enabled: plotMod1.currentValue !== "" || plotMod2.currentValue !== "" }
+							CheckBox { name: "includePlot"; enabled: plotMod1.currentValue !== "" || plotMod2.currentValue !== ""; info: qsTr("Draw this plot.") }
 						}
 					}
 				}
