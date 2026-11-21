@@ -208,7 +208,7 @@ Form
 				allowedColumns:		["scale", "nominal"]
 				title: qsTr("Moderators")
 				name: "moderators"
-				info: qsTr("Variables that may moderate the parameters of the measurement model. A scale moderator with two distinct values is used as coded (effects per unit); with more values it is standardized on the analysed cases (effects per standard deviation) and can also enter as a square and a cube. A nominal moderator is dummy coded against its first level. Cases with a missing moderator value are excluded from all models.")
+				info: qsTr("Variables that can moderate the measurement model. Scale moderators with more than two distinct values are standardized on the analysed cases (effects per standard deviation); with two values they are used as coded. Nominal moderators are dummy coded against their first level. Cases with a missing moderator value are excluded.")
 				rowComponentTitle: qsTr("Square   Cubic")
 				rowComponent: RowLayout
 				{
@@ -217,14 +217,14 @@ Form
 						name: "moderatorSquaredEffect"
 						id: squared
 						visible: moderators.getVariableType(rowValue) === columnTypeScale
-						info: qsTr("Include a quadratic (squared) effect for this moderator. Used only for continuous moderators (more than two distinct values).")
+						info: qsTr("Add a squared term for this moderator (used only with more than two distinct values).")
 					}
 					CheckBox
 					{
 						name: "moderatorCubicEffect"
 						id: cubic
 						visible: moderators.getVariableType(rowValue) === columnTypeScale
-						info: qsTr("Include a cubic effect for this moderator. Used only for continuous moderators (more than two distinct values).")
+						info: qsTr("Add a cubed term for this moderator (used only with more than two distinct values).")
 					}
 				}
 			}
@@ -234,7 +234,7 @@ Form
 				name: 					"syncAnalysisBox"
 				label: 					qsTr("<b>Start/Sync Analysis</b>")
 				checked: 				false
-				info: qsTr("Fit the models. While unchecked, nothing is fitted; results of the last synchronized run stay visible as long as the model settings are unchanged.")
+				info: qsTr("Fit the models. While unchecked, they are not fitted (the fit per group still runs).")
 				Component.onCompleted:
 				{
 						background.color = "#ffcb98"
@@ -245,7 +245,7 @@ Form
 		Group
 		{
 			title: qsTr("Assumption Check")
-			info: qsTr("Check measurement invariance assumptions by testing model fit across groups defined by the moderator variables.")
+			info: qsTr("Check the model in groups formed from the moderators before testing moderation.")
 			CheckBox
 			{
 				name: "checkModelFitPerGroup";
@@ -253,7 +253,7 @@ Form
 				label: qsTr("Check model fit per group");
 				id: fitPerGroup;
 				enabled: moderators.columnsNames != ""
-				info: qsTr("Fit the measurement model separately in each group to verify that the model fits adequately before testing moderation.")
+				info: qsTr("Fit the measurement model separately in each group.")
 			}
 			IntegerField
 			{
@@ -281,7 +281,7 @@ Form
 				addItemManually: false
 				values: combinePairs(moderators.columnsNames)
 				headerLabels: [qsTr("Include")]
-				info: qsTr("Include interaction terms between pairs of moderators. An included interaction stays included when you reorder the moderators; its name follows their order.")
+				info: qsTr("Include interactions between pairs of moderators.")
 				rowComponent: RowLayout
 				{
 					Text { text: rowValue; Layout.preferredWidth: 150 * jaspTheme.uiScale }
@@ -327,8 +327,8 @@ Form
 		{
 			columns: 1
 			title: qsTr("Invariance Tests")
-			info: qsTr("Select the models to fit. Each model starts from a preset of moderation settings (below), which you can change. The presets are nested: every parameter that a model leaves unmoderated is also unmoderated in the models below it. Each factor's anchor indicator keeps its loading and intercept (or thresholds) unmoderated in every preset.")
-			CheckBox { name: "invarianceTestConfigural" ; checked: false ; label: qsTr("Configural"); id: invarianceTestConfigural; info: qsTr("Preset: loadings and intercepts (thresholds) of all indicators except the anchors, residual variances, factor variances, factor means and, with two factors, the factor correlation depend on the moderators.") }
+			info: qsTr("Select the models to fit. Each starts from a preset of moderation settings (below) that you can change. The presets are nested, and each factor's anchor indicator keeps its loading and intercept (thresholds) unmoderated in all of them.")
+			CheckBox { name: "invarianceTestConfigural" ; checked: false ; label: qsTr("Configural"); id: invarianceTestConfigural; info: qsTr("Preset: every parameter depends on the moderators except the anchors' loadings and intercepts (thresholds); the factor correlation only with two factors.") }
 			CheckBox { name: "invarianceTestMetric" ; checked: false ; label: qsTr("Metric"); id: invarianceTestMetric; info: qsTr("Preset: as Configural, but no loading depends on the moderators.") }
 			CheckBox { name: "invarianceTestScalar" ; checked: false ; label: qsTr("Scalar"); id: invarianceTestScalar; info: qsTr("Preset: as Metric, but no intercept or threshold depends on the moderators.") }
 			CheckBox { name: "invarianceTestStrict" ; checked: false ; label: qsTr("Strict"); id: invarianceTestStrict; info: qsTr("Preset: as Scalar, but no residual variance depends on the moderators. With only ordinal indicators, Scalar and Strict are the same model.") }
@@ -357,7 +357,7 @@ Form
 			optionKeyLabel: "keyLabel"
 			id: modFirstLayer
 			addItemManually: false
-			info: qsTr("For each model, tick the parameters that depend on the moderators; a ticked parameter depends on all moderator terms. The default anchor of a factor is its first indicator that loads on this factor only, otherwise its first indicator that is not already another factor's anchor; its loading and intercept are unticked by default. When a factor's default anchor changes (for example, its first indicator is removed), the loading and intercept boxes of the old and the new anchor return to their defaults. All other boxes keep their values when you rename a factor, add, remove or reorder indicators, or reorder the moderators; an indicator that you assign again gets back its earlier values. Residual variances exist only for continuous (scale) indicators. The factor correlation can depend on the moderators only with exactly two factors.")
+			info: qsTr("For each model, tick the parameters that depend on the moderators (on all moderator terms). Each factor's default anchor is its first indicator that loads on that factor only; its loading and intercept are unticked by default. Residual variances exist only for continuous (scale) indicators, and the factor correlation can be moderated only with two factors.")
 			rowComponent: TabView
 			{
 				id: modSecondLayer
@@ -458,10 +458,10 @@ Form
 			startValue: "robustHuberWhite"
 			values: [
 				{value: "robustHuberWhite", label: qsTr("Huber-White sandwich")},
-				{value: "robustHuberWhiteReducedInformation", label: qsTr("Huber-White sandwich, reduced information")},
+				{value: "robustHuberWhiteReducedInformation", label: qsTr("Huber-White sandwich (reduced information)")},
 				{value: "standard", label: qsTr("Standard")}
 			]
-			info: qsTr("Standard errors for the parameter tables, the likelihood-ratio tests and the plot bands; all three come from the same fit, so changing them does not refit the models. Huber-White sandwich (default) uses the exact information matrix. The reduced-information variant follows the convention of other MNLFA software; if its information matrix is not positive definite for a model, that model is shown without standard errors. Standard uses the inverse observed information and the ordinary likelihood-ratio test; the sandwich choices use scaled tests. Sandwich standard errors are valid for the model as fitted (its pseudo-true parameters); they do not correct bias from a wrong response model, invalid anchors or unmodelled dependence. Their calibration was studied only for ordinal, binary, continuous and mixed indicators, one or two factors, logit and probit links, and sample sizes of 500 to 2000.")
+			info: qsTr("Standard errors for the parameter tables, likelihood-ratio tests and plot bands; changing them does not refit the models. Huber-White sandwich (default) uses the exact information matrix and scaled likelihood-ratio tests. The reduced-information variant is for comparison with other MNLFA software and is not robust to misspecification. Standard uses the inverse observed information and the unscaled likelihood-ratio test.")
 		}
 
 		DropDown
@@ -476,7 +476,7 @@ Form
 			enabled: factors.countVariables > 0 && factors.factorsItems.some(function(item) {
 				return item && item.columnsTypes && item.columnsTypes.indexOf("ordinal") !== -1;
 			})
-			info: qsTr("Link function of the ordinal and binary indicators (indicators assigned as ordinal columns): logit (default) or probit. Available only when an ordinal indicator is assigned; continuous indicators are not affected.")
+			info: qsTr("Link function for ordinal and binary indicators: logit (default) or probit. Available only when an ordinal indicator is assigned.")
 		}
 
 		RadioButtonGroup
@@ -543,7 +543,7 @@ Form
 				label: qsTr("Model")
 				// Register the source dependency before restoring a saved model choice.
 				source: modFirstLayer
-				info: qsTr("Select one of the enabled invariance models for the factor scores. Scores are saved only from a model that converged; otherwise a footnote under the table 'Factor Scores' says why.")
+				info: qsTr("Model whose factor scores are saved (only if it converged).")
 			}
 
 			TextField
